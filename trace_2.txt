@@ -1,0 +1,2341 @@
+(Intent_checking) yassineseidou@Yassines-Air intent_checking % uv run main.py
+============================================================
+🚀 AGENT NEURO-SYMBOLIQUE — VÉRIFICATION PAR SCÉNARIO
+============================================================
+✅ CSV chargé (1 lignes).
+
+📥 Norme T : 2469 caractères
+📥 Scénarios détectés : 9
+   • Scenario 1: Personal User - Successful Account Creation — 7 triplets
+   • Scenario 2: Personal User - Failed Account Creation — 7 triplets
+   • Scenario 3: Personal User - Failed Business Details Entry — 4 triplets
+   • Scenario 4: Personal User - Failed Credit Card Details Entry — 5 triplets
+   • Scenario 5: PayPal System - Country Not Accepted — 4 triplets
+   • Scenario 6: PayPal System - Successful Account Creation — 12 triplets
+   • Scenario 7: PayPal System - Business Details Not Accepted — 7 triplets
+   • Scenario 8: PayPal System - Card Details Not Accepted — 9 triplets
+   • Scenario 9: PayPal System - Verification Not Accepted — 11 triplets
+
+============================================================
+📋 SCÉNARIO 1/9 : Scenario 1: Personal User - Successful Account Creation
+   7 triplets SPO
+============================================================
+
+🟢 [NŒUD] : intent_T
+   ↳ Intention T : The process is designed to facilitate the creation of a user account, ensuring that all necessary information is collected and verified to establish a secure and authorized account, while also handling potential errors and rejections based on predefined criteria.
+   ⏱️  0.000s
+
+🟢 [NŒUD] : intent_F
+   ↳ Intention F : The process seems to be trying to register a new user and set up their account by collecting necessary information and verifying their identity.
+   ⏱️  0.000s
+
+🟢 [NŒUD] : universe_construction
+   ↳ 20 états canoniques construits.
+
+   📚 ÉTATS CANONIQUES (U) :
+      • Request:Submitted
+        └─ User submits account creation request
+      • Country:Selected
+        └─ User selects country from list
+      • Country:Accepted
+        └─ System accepts selected country
+      • Country:Rejected
+        └─ System rejects selected country
+      • BusinessDetails:Entered
+        └─ User enters business details
+      • BusinessDetails:Accepted
+        └─ System accepts business details
+      • BusinessDetails:Rejected
+        └─ System rejects business details
+      • CreditCardDetails:Entered
+        └─ User enters credit card details
+      • CreditCardDetails:Accepted
+        └─ System accepts credit card details
+      • CreditCardDetails:Rejected
+        └─ System rejects credit card details
+      • Account:Verified
+        └─ System verifies user account
+      • Account:VerificationFailed
+        └─ System fails to verify account
+      • Password:Created
+        └─ User creates account password
+      • Account:Created
+        └─ System creates user account
+      • Notification:Generated
+        └─ System generates error notification
+      • PersonalInformation:Requested
+        └─ System requests personal information
+      • PersonalInformation:Provided
+        └─ User provides personal information
+      • VerificationEmail:Sent
+        └─ System sends verification email
+      • Verification:Accepted
+        └─ System accepts verification
+      • Verification:Failed
+        └─ System fails verification
+   ⏱️  0.000s
+
+🟢 [NŒUD] : rules_extraction
+   ↳ Préconditions textuelles extraites pour 20 états.
+   ⏱️  0.000s
+Loading weights: 100%|███████████████████████████████████████████████████████████████████████████████████████████| 103/103 [00:00<00:00, 3392.84it/s]
+
+🟢 [NŒUD] : precondition_mapping
+   ↳ Mapping embedding terminé.
+
+   🔗 PRÉCONDITIONS MAPPÉES (Pre_mapped) :
+      • Request:Submitted  [état initial — aucune précondition]
+      • Country:Selected
+        └─ requires : Request:Submitted
+        └─ requires : Password:Created
+        └─ requires : Account:Created
+      • Country:Accepted
+        └─ requires : Country:Selected
+      • Country:Rejected
+        └─ requires : Country:Selected
+        └─ requires : Country:Accepted
+      • BusinessDetails:Entered
+        └─ requires : Country:Selected
+        └─ requires : Country:Accepted
+        └─ requires : Country:Rejected
+        └─ requires : PersonalInformation:Requested
+      • BusinessDetails:Accepted
+        └─ requires : BusinessDetails:Entered
+        └─ requires : PersonalInformation:Provided
+        └─ requires : Country:Accepted
+        └─ requires : Country:Rejected
+      • BusinessDetails:Rejected
+        └─ requires : BusinessDetails:Entered
+        └─ requires : BusinessDetails:Accepted
+        └─ requires : PersonalInformation:Provided
+        └─ requires : Country:Accepted
+        └─ requires : Country:Rejected
+      • CreditCardDetails:Entered
+        └─ requires : BusinessDetails:Entered
+        └─ requires : BusinessDetails:Accepted
+        └─ requires : PersonalInformation:Provided
+        └─ requires : BusinessDetails:Rejected
+        └─ requires : CreditCardDetails:Accepted
+        └─ requires : CreditCardDetails:Rejected
+      • CreditCardDetails:Accepted
+        └─ requires : CreditCardDetails:Entered
+        └─ requires : BusinessDetails:Accepted
+        └─ requires : BusinessDetails:Rejected
+        └─ requires : CreditCardDetails:Rejected
+      • CreditCardDetails:Rejected
+        └─ requires : CreditCardDetails:Entered
+        └─ requires : CreditCardDetails:Accepted
+        └─ requires : BusinessDetails:Accepted
+        └─ requires : BusinessDetails:Rejected
+      • Account:Verified
+        └─ requires : CreditCardDetails:Entered
+        └─ requires : CreditCardDetails:Accepted
+        └─ requires : CreditCardDetails:Rejected
+        └─ requires : Account:VerificationFailed
+      • Account:VerificationFailed
+        └─ requires : CreditCardDetails:Entered
+        └─ requires : CreditCardDetails:Accepted
+        └─ requires : CreditCardDetails:Rejected
+        └─ requires : Account:Verified
+      • Password:Created
+        └─ requires : Account:Verified
+        └─ requires : Account:Created
+      • Account:Created
+        └─ requires : Password:Created
+        └─ requires : Account:Verified
+      • Notification:Generated
+        └─ requires : Country:Accepted
+        └─ requires : Country:Rejected
+        └─ requires : BusinessDetails:Accepted
+        └─ requires : BusinessDetails:Rejected
+        └─ requires : CreditCardDetails:Accepted
+        └─ requires : CreditCardDetails:Rejected
+        └─ requires : Account:VerificationFailed
+        └─ requires : Verification:Failed
+      • PersonalInformation:Requested
+        └─ requires : Country:Accepted
+        └─ requires : Country:Rejected
+      • PersonalInformation:Provided
+        └─ requires : PersonalInformation:Requested
+      • VerificationEmail:Sent
+        └─ requires : CreditCardDetails:Entered
+        └─ requires : CreditCardDetails:Accepted
+        └─ requires : CreditCardDetails:Rejected
+      • Verification:Accepted
+        └─ requires : VerificationEmail:Sent
+      • Verification:Failed
+        └─ requires : VerificationEmail:Sent
+        └─ requires : Verification:Accepted
+        └─ requires : Account:VerificationFailed
+   ⏱️  0.001s
+
+🟢 [NŒUD] : graph_construction
+   ↳ G_T : 63 arêtes causales.
+   ↳ Poids (degré sortant) :
+      • Country:Accepted → poids 6
+      • CreditCardDetails:Accepted → poids 6
+      • CreditCardDetails:Rejected → poids 6
+      • Country:Rejected → poids 5
+      • BusinessDetails:Accepted → poids 5
+      • CreditCardDetails:Entered → poids 5
+      • BusinessDetails:Rejected → poids 4
+      • Country:Selected → poids 3
+      • BusinessDetails:Entered → poids 3
+      • PersonalInformation:Provided → poids 3
+      • Account:VerificationFailed → poids 3
+      • Account:Verified → poids 3
+      • Password:Created → poids 2
+      • Account:Created → poids 2
+      • PersonalInformation:Requested → poids 2
+      • VerificationEmail:Sent → poids 2
+      • Request:Submitted → poids 1
+      • Verification:Failed → poids 1
+      • Verification:Accepted → poids 1
+   ⏱️  0.000s
+Loading weights: 100%|███████████████████████████████████████████████████████████████████████████████████████████| 103/103 [00:00<00:00, 8049.44it/s]
+
+🟢 [NŒUD] : projection
+   ↳ 7 faits projetés, 7 activent au moins un état canonique.
+   ⏱️  0.000s
+
+🟢 [NŒUD] : causal_verification
+   ↳ i=0 | A_i (0 états) : ∅
+      Tentatives d'activation : ['Country:Selected', 'Country:Accepted', 'Country:Rejected']
+      ❌ Country:Selected — manque : ['Request:Submitted', 'Password:Created', 'Account:Created']
+      ❌ Country:Accepted — manque : ['Country:Selected']
+      ❌ Country:Rejected — manque : ['Country:Selected', 'Country:Accepted']
+      🚨 Nouvelles violations : 3
+   ⏱️  0.000s
+
+🟢 [NŒUD] : causal_verification
+   ↳ i=1 | A_i (0 états) : ∅
+      Tentatives d'activation : ['PersonalInformation:Requested']
+      ❌ PersonalInformation:Requested — manque : ['Country:Accepted', 'Country:Rejected']
+      🚨 Nouvelles violations : 1
+   ⏱️  0.000s
+
+🟢 [NŒUD] : causal_verification
+   ↳ i=2 | A_i (0 états) : ∅
+      Tentatives d'activation : ['BusinessDetails:Entered', 'BusinessDetails:Accepted']
+      ❌ BusinessDetails:Entered — manque : ['Country:Selected', 'Country:Accepted', 'Country:Rejected', 'PersonalInformation:Requested']
+      ❌ BusinessDetails:Accepted — manque : ['BusinessDetails:Entered', 'PersonalInformation:Provided', 'Country:Accepted', 'Country:Rejected']
+      🚨 Nouvelles violations : 2
+   ⏱️  0.000s
+
+🟢 [NŒUD] : causal_verification
+   ↳ i=3 | A_i (0 états) : ∅
+      Tentatives d'activation : ['CreditCardDetails:Entered', 'CreditCardDetails:Accepted', 'CreditCardDetails:Rejected']
+      ❌ CreditCardDetails:Entered — manque : ['BusinessDetails:Entered', 'BusinessDetails:Accepted', 'PersonalInformation:Provided', 'BusinessDetails:Rejected', 'CreditCardDetails:Accepted', 'CreditCardDetails:Rejected']
+      ❌ CreditCardDetails:Accepted — manque : ['CreditCardDetails:Entered', 'BusinessDetails:Accepted', 'BusinessDetails:Rejected', 'CreditCardDetails:Rejected']
+      ❌ CreditCardDetails:Rejected — manque : ['CreditCardDetails:Entered', 'CreditCardDetails:Accepted', 'BusinessDetails:Accepted', 'BusinessDetails:Rejected']
+      🚨 Nouvelles violations : 3
+   ⏱️  0.000s
+
+🟢 [NŒUD] : causal_verification
+   ↳ i=4 | A_i (0 états) : ∅
+      Tentatives d'activation : ['Account:VerificationFailed', 'Verification:Accepted']
+      ❌ Account:VerificationFailed — manque : ['CreditCardDetails:Entered', 'CreditCardDetails:Accepted', 'CreditCardDetails:Rejected', 'Account:Verified']
+      ❌ Verification:Accepted — manque : ['VerificationEmail:Sent']
+      🚨 Nouvelles violations : 2
+   ⏱️  0.000s
+
+🟢 [NŒUD] : causal_verification
+   ↳ i=5 | A_i (0 états) : ∅
+      Tentatives d'activation : ['Account:Verified']
+      ❌ Account:Verified — manque : ['CreditCardDetails:Entered', 'CreditCardDetails:Accepted', 'CreditCardDetails:Rejected', 'Account:VerificationFailed']
+      🚨 Nouvelles violations : 1
+   ⏱️  0.000s
+
+🟢 [NŒUD] : causal_verification
+   ↳ i=6 | A_i (0 états) : ∅
+      Tentatives d'activation : ['Password:Created', 'Account:Created']
+      ❌ Password:Created — manque : ['Account:Verified', 'Account:Created']
+      ❌ Account:Created — manque : ['Password:Created', 'Account:Verified']
+      🚨 Nouvelles violations : 2
+   ⏱️  0.000s
+
+🟢 [NŒUD] : propagation
+   ↳ 19 états suspects après propagation :
+      🔴 BusinessDetails:Rejected
+      🔴 Account:Verified
+      🔴 Verification:Failed
+      🔴 CreditCardDetails:Entered
+      🔴 BusinessDetails:Entered
+      🔴 Country:Rejected
+      🔴 Notification:Generated
+      🔴 BusinessDetails:Accepted
+      🔴 VerificationEmail:Sent
+      🔴 Country:Selected
+      🔴 Account:VerificationFailed
+      🔴 PersonalInformation:Provided
+      🔴 Account:Created
+      🔴 Verification:Accepted
+      🔴 Country:Accepted
+      🔴 CreditCardDetails:Accepted
+      🔴 CreditCardDetails:Rejected
+      🔴 Password:Created
+      🔴 PersonalInformation:Requested
+   ⏱️  0.000s
+
+🟢 [NŒUD] : aggregation
+   ↳ Score de conformité : 0.0
+   ⏱️  0.000s
+
+🟢 [NŒUD] : explanation
+   ↳ Rapport d'explication généré.
+   ⏱️  0.000s
+
+============================================================
+📋 SCÉNARIO 2/9 : Scenario 2: Personal User - Failed Account Creation
+   7 triplets SPO
+============================================================
+
+🟢 [NŒUD] : intent_T
+   ↳ Intention T : The process is designed to facilitate the creation of a user account, ensuring that all necessary information is collected and verified to establish a secure and authorized account, while also handling potential errors and rejections throughout the process.
+   ⏱️  0.000s
+
+🟢 [NŒUD] : intent_F
+   ↳ Intention F : The process seems to be trying to facilitate user registration or account creation, while ensuring the security and verification of user information.
+   ⏱️  0.000s
+
+🟢 [NŒUD] : universe_construction
+   ↳ 20 états canoniques construits.
+
+   📚 ÉTATS CANONIQUES (U) :
+      • Request:Submitted
+        └─ User submits account creation request
+      • Country:Selected
+        └─ User selects country from list
+      • Country:Accepted
+        └─ System accepts selected country
+      • Country:Rejected
+        └─ System rejects selected country
+      • BusinessDetails:Entered
+        └─ User enters business details
+      • BusinessDetails:Accepted
+        └─ System accepts business details
+      • BusinessDetails:Rejected
+        └─ System rejects business details
+      • CreditCardDetails:Entered
+        └─ User enters credit card details
+      • CreditCardDetails:Accepted
+        └─ System accepts credit card details
+      • CreditCardDetails:Rejected
+        └─ System rejects credit card details
+      • Account:Verified
+        └─ System verifies user account
+      • Account:VerificationFailed
+        └─ System fails to verify account
+      • Password:Created
+        └─ User creates account password
+      • Account:Created
+        └─ System creates user account
+      • Notification:Generated
+        └─ System generates error notification
+      • PersonalInformation:Requested
+        └─ System requests personal information
+      • PersonalInformation:Provided
+        └─ User provides personal information
+      • VerificationEmail:Sent
+        └─ System sends verification email
+      • Verification:Accepted
+        └─ System accepts verification
+      • Verification:Rejected
+        └─ System rejects verification
+   ⏱️  0.000s
+
+🟢 [NŒUD] : rules_extraction
+   ↳ Préconditions textuelles extraites pour 20 états.
+   ⏱️  0.000s
+Loading weights: 100%|███████████████████████████████████████████████████████████████████████████████████████████| 103/103 [00:00<00:00, 5481.71it/s]
+
+🟢 [NŒUD] : precondition_mapping
+   ↳ Mapping embedding terminé.
+
+   🔗 PRÉCONDITIONS MAPPÉES (Pre_mapped) :
+      • Request:Submitted  [état initial — aucune précondition]
+      • Country:Selected
+        └─ requires : Request:Submitted
+        └─ requires : Password:Created
+        └─ requires : Account:Created
+      • Country:Accepted
+        └─ requires : Country:Selected
+        └─ requires : Country:Rejected
+      • Country:Rejected
+        └─ requires : Country:Selected
+        └─ requires : Country:Accepted
+      • BusinessDetails:Entered
+        └─ requires : Country:Selected
+        └─ requires : Country:Accepted
+        └─ requires : Country:Rejected
+        └─ requires : PersonalInformation:Requested
+      • BusinessDetails:Accepted
+        └─ requires : BusinessDetails:Entered
+        └─ requires : PersonalInformation:Provided
+        └─ requires : BusinessDetails:Rejected
+      • BusinessDetails:Rejected
+        └─ requires : BusinessDetails:Entered
+        └─ requires : BusinessDetails:Accepted
+        └─ requires : PersonalInformation:Provided
+      • CreditCardDetails:Entered
+        └─ requires : BusinessDetails:Entered
+        └─ requires : BusinessDetails:Accepted
+        └─ requires : PersonalInformation:Provided
+        └─ requires : BusinessDetails:Rejected
+      • CreditCardDetails:Accepted
+        └─ requires : CreditCardDetails:Entered
+        └─ requires : CreditCardDetails:Rejected
+      • CreditCardDetails:Rejected
+        └─ requires : CreditCardDetails:Entered
+        └─ requires : CreditCardDetails:Accepted
+      • Account:Verified
+        └─ requires : CreditCardDetails:Entered
+        └─ requires : CreditCardDetails:Accepted
+        └─ requires : CreditCardDetails:Rejected
+        └─ requires : Account:VerificationFailed
+        └─ requires : Account:Created
+      • Account:VerificationFailed
+        └─ requires : CreditCardDetails:Entered
+        └─ requires : CreditCardDetails:Accepted
+        └─ requires : CreditCardDetails:Rejected
+        └─ requires : Account:Verified
+        └─ requires : Account:Created
+      • Password:Created
+        └─ requires : Account:Verified
+        └─ requires : Account:VerificationFailed
+        └─ requires : Verification:Accepted
+      • Account:Created
+        └─ requires : Password:Created
+      • Notification:Generated  [état initial — aucune précondition]
+      • PersonalInformation:Requested
+        └─ requires : Country:Accepted
+        └─ requires : Country:Rejected
+      • PersonalInformation:Provided
+        └─ requires : PersonalInformation:Requested
+      • VerificationEmail:Sent
+        └─ requires : CreditCardDetails:Entered
+        └─ requires : CreditCardDetails:Accepted
+        └─ requires : CreditCardDetails:Rejected
+        └─ requires : Account:Verified
+        └─ requires : Account:Created
+      • Verification:Accepted
+        └─ requires : VerificationEmail:Sent
+      • Verification:Rejected
+        └─ requires : VerificationEmail:Sent
+        └─ requires : Verification:Accepted
+   ⏱️  0.000s
+
+🟢 [NŒUD] : graph_construction
+   ↳ G_T : 50 arêtes causales.
+   ↳ Poids (degré sortant) :
+      • CreditCardDetails:Entered → poids 5
+      • Account:Created → poids 4
+      • CreditCardDetails:Rejected → poids 4
+      • CreditCardDetails:Accepted → poids 4
+      • Country:Selected → poids 3
+      • Country:Rejected → poids 3
+      • Country:Accepted → poids 3
+      • BusinessDetails:Entered → poids 3
+      • PersonalInformation:Provided → poids 3
+      • Account:Verified → poids 3
+      • Password:Created → poids 2
+      • PersonalInformation:Requested → poids 2
+      • BusinessDetails:Rejected → poids 2
+      • BusinessDetails:Accepted → poids 2
+      • Account:VerificationFailed → poids 2
+      • Verification:Accepted → poids 2
+      • VerificationEmail:Sent → poids 2
+      • Request:Submitted → poids 1
+   ⏱️  0.000s
+Loading weights: 100%|███████████████████████████████████████████████████████████████████████████████████████████| 103/103 [00:00<00:00, 9022.46it/s]
+
+🟢 [NŒUD] : projection
+   ↳ 7 faits projetés, 7 activent au moins un état canonique.
+   ⏱️  0.000s
+
+🟢 [NŒUD] : causal_verification
+   ↳ i=0 | A_i (0 états) : ∅
+      Tentatives d'activation : ['Country:Selected', 'Country:Accepted', 'Country:Rejected']
+      ❌ Country:Selected — manque : ['Request:Submitted', 'Password:Created', 'Account:Created']
+      ❌ Country:Accepted — manque : ['Country:Selected', 'Country:Rejected']
+      ❌ Country:Rejected — manque : ['Country:Selected', 'Country:Accepted']
+      🚨 Nouvelles violations : 3
+   ⏱️  0.000s
+
+🟢 [NŒUD] : causal_verification
+   ↳ i=1 | A_i (0 états) : ∅
+      Tentatives d'activation : ['PersonalInformation:Requested']
+      ❌ PersonalInformation:Requested — manque : ['Country:Accepted', 'Country:Rejected']
+      🚨 Nouvelles violations : 1
+   ⏱️  0.000s
+
+🟢 [NŒUD] : causal_verification
+   ↳ i=2 | A_i (0 états) : ∅
+      Tentatives d'activation : ['BusinessDetails:Entered', 'BusinessDetails:Accepted']
+      ❌ BusinessDetails:Entered — manque : ['Country:Selected', 'Country:Accepted', 'Country:Rejected', 'PersonalInformation:Requested']
+      ❌ BusinessDetails:Accepted — manque : ['BusinessDetails:Entered', 'PersonalInformation:Provided', 'BusinessDetails:Rejected']
+      🚨 Nouvelles violations : 2
+   ⏱️  0.000s
+
+🟢 [NŒUD] : causal_verification
+   ↳ i=3 | A_i (0 états) : ∅
+      Tentatives d'activation : ['CreditCardDetails:Entered', 'CreditCardDetails:Accepted', 'CreditCardDetails:Rejected']
+      ❌ CreditCardDetails:Entered — manque : ['BusinessDetails:Entered', 'BusinessDetails:Accepted', 'PersonalInformation:Provided', 'BusinessDetails:Rejected']
+      ❌ CreditCardDetails:Accepted — manque : ['CreditCardDetails:Entered', 'CreditCardDetails:Rejected']
+      ❌ CreditCardDetails:Rejected — manque : ['CreditCardDetails:Entered', 'CreditCardDetails:Accepted']
+      🚨 Nouvelles violations : 3
+   ⏱️  0.000s
+
+🟢 [NŒUD] : causal_verification
+   ↳ i=4 | A_i (0 états) : ∅
+      Tentatives d'activation : ['Account:VerificationFailed', 'Verification:Accepted']
+      ❌ Account:VerificationFailed — manque : ['CreditCardDetails:Entered', 'CreditCardDetails:Accepted', 'CreditCardDetails:Rejected', 'Account:Verified', 'Account:Created']
+      ❌ Verification:Accepted — manque : ['VerificationEmail:Sent']
+      🚨 Nouvelles violations : 2
+   ⏱️  0.000s
+
+🟢 [NŒUD] : causal_verification
+   ↳ i=5 | A_i (0 états) : ∅
+      Tentatives d'activation : ['Account:VerificationFailed']
+      ❌ Account:VerificationFailed — manque : ['CreditCardDetails:Entered', 'CreditCardDetails:Accepted', 'CreditCardDetails:Rejected', 'Account:Verified', 'Account:Created']
+   ⏱️  0.000s
+
+🟢 [NŒUD] : causal_verification
+   ↳ i=6 | A_i (1 états) : ['Notification:Generated']
+      Tentatives d'activation : ['Notification:Generated']
+      ✅ Notification:Generated — préconditions satisfaites
+   ⏱️  0.000s
+
+🟢 [NŒUD] : propagation
+   ↳ 18 états suspects après propagation :
+      🔴 Account:Created
+      🔴 BusinessDetails:Accepted
+      🔴 Country:Accepted
+      🔴 CreditCardDetails:Accepted
+      🔴 CreditCardDetails:Entered
+      🔴 BusinessDetails:Entered
+      🔴 CreditCardDetails:Rejected
+      🔴 Verification:Accepted
+      🔴 BusinessDetails:Rejected
+      🔴 VerificationEmail:Sent
+      🔴 Password:Created
+      🔴 PersonalInformation:Requested
+      🔴 Country:Selected
+      🔴 Account:Verified
+      🔴 Verification:Rejected
+      🔴 Account:VerificationFailed
+      🔴 PersonalInformation:Provided
+      🔴 Country:Rejected
+   ⏱️  0.000s
+
+🟢 [NŒUD] : aggregation
+   ↳ Score de conformité : 0.0
+   ⏱️  0.000s
+
+🟢 [NŒUD] : explanation
+   ↳ Rapport d'explication généré.
+   ⏱️  0.000s
+
+============================================================
+📋 SCÉNARIO 3/9 : Scenario 3: Personal User - Failed Business Details Entry
+   4 triplets SPO
+============================================================
+
+ • Country:Selected
+        └─ requires : Request:Submitted
+        └─ requires : Password:Created
+        └─ requires : Account:Created
+      • Country:Accepted
+        └─ requires : Country:Selected
+      • Country:Rejected
+        └─ requires : Country:Selected
+        └─ requires : Country:Accepted
+      • BusinessDetails:Entered
+        └─ requires : Country:Selected
+        └─ requires : Country:Accepted
+        └─ requires : Country:Rejected
+      • BusinessDetails:Accepted
+        └─ requires : BusinessDetails:Entered
+        └─ requires : PersonalInformation:Provided
+        └─ requires : Country:Accepted
+        └─ requires : Country:Rejected
+      • BusinessDetails:Rejected
+        └─ requires : BusinessDetails:Entered
+        └─ requires : BusinessDetails:Accepted
+        └─ requires : PersonalInformation:Provided
+        └─ requires : Country:Accepted
+        └─ requires : Country:Rejected
+      • CreditCardDetails:Entered
+        └─ requires : BusinessDetails:Entered
+        └─ requires : BusinessDetails:Accepted
+        └─ requires : PersonalInformation:Provided
+        └─ requires : BusinessDetails:Rejected
+      • CreditCardDetails:Accepted
+        └─ requires : CreditCardDetails:Entered
+        └─ requires : BusinessDetails:Accepted
+        └─ requires : BusinessDetails:Rejected
+      • CreditCardDetails:Rejected
+        └─ requires : CreditCardDetails:Entered
+        └─ requires : CreditCardDetails:Accepted
+        └─ requires : BusinessDetails:Accepted
+        └─ requires : BusinessDetails:Rejected
+      • Account:Verified
+        └─ requires : CreditCardDetails:Entered
+        └─ requires : CreditCardDetails:Accepted
+        └─ requires : CreditCardDetails:Rejected
+      • Account:VerificationFailed
+        └─ requires : CreditCardDetails:Entered
+        └─ requires : CreditCardDetails:Accepted
+        └─ requires : CreditCardDetails:Rejected
+      • Password:Created
+        └─ requires : Account:Verified
+        └─ requires : Account:Created
+      • Account:Created
+        └─ requires : Password:Created
+        └─ requires : Account:Verified
+      • Notification:Generated
+        └─ requires : Country:Accepted
+        └─ requires : Country:Rejected
+        └─ requires : BusinessDetails:Accepted
+        └─ requires : BusinessDetails:Rejected
+        └─ requires : CreditCardDetails:Accepted
+        └─ requires : CreditCardDetails:Rejected
+        └─ requires : Account:VerificationFailed
+        └─ requires : Verification:Failed
+      • PersonalInformation:Provided
+        └─ requires : Country:Accepted
+        └─ requires : Country:Rejected
+      • PersonalInformation:Accepted
+        └─ requires : PersonalInformation:Provided
+        └─ requires : Country:Accepted
+        └─ requires : Country:Rejected
+      • PersonalInformation:Rejected
+        └─ requires : PersonalInformation:Provided
+        └─ requires : Country:Accepted
+        └─ requires : Country:Rejected
+      • VerificationEmail:Sent
+        └─ requires : CreditCardDetails:Entered
+        └─ requires : CreditCardDetails:Accepted
+        └─ requires : CreditCardDetails:Rejected
+      • Verification:Accepted
+        └─ requires : VerificationEmail:Sent
+      • Verification:Failed
+        └─ requires : VerificationEmail:Sent
+        └─ requires : Verification:Accepted
+   ⏱️  0.002s
+
+🟢 [NŒUD] : graph_construction
+   ↳ G_T : 61 arêtes causales.
+   ↳ Poids (degré sortant) :
+      • Country:Accepted → poids 8
+      • Country:Rejected → poids 7
+      • PersonalInformation:Provided → poids 5
+      • BusinessDetails:Accepted → poids 5
+      • CreditCardDetails:Entered → poids 5
+      • CreditCardDetails:Accepted → poids 5
+      • BusinessDetails:Rejected → poids 4
+      • CreditCardDetails:Rejected → poids 4
+      • Country:Selected → poids 3
+      • BusinessDetails:Entered → poids 3
+      • Password:Created → poids 2
+      • Account:Created → poids 2
+      • Account:Verified → poids 2
+      • VerificationEmail:Sent → poids 2
+      • Request:Submitted → poids 1
+      • Account:VerificationFailed → poids 1
+      • Verification:Failed → poids 1
+      • Verification:Accepted → poids 1
+   ⏱️  0.000s
+Loading weights: 100%|███████████████████████████████████████████████████████████████████████████████████████████| 103/103 [00:00<00:00, 8313.86it/s]
+
+🟢 [NŒUD] : projection
+   ↳ 4 faits projetés, 3 activent au moins un état canonique.
+   ⏱️  0.000s
+
+🟢 [NŒUD] : causal_verification
+   ↳ i=0 | A_i (0 états) : ∅
+      Tentatives d'activation : ['Country:Selected', 'Country:Accepted', 'Country:Rejected']
+      ❌ Country:Selected — manque : ['Request:Submitted', 'Password:Created', 'Account:Created']
+      ❌ Country:Accepted — manque : ['Country:Selected']
+      ❌ Country:Rejected — manque : ['Country:Selected', 'Country:Accepted']
+      🚨 Nouvelles violations : 3
+   ⏱️  0.000s
+
+🟢 [NŒUD] : causal_verification
+   ↳ i=1 | A_i (0 états) : ∅
+      (aucun état canonique activé par ce fait)
+   ⏱️  0.000s
+
+🟢 [NŒUD] : causal_verification
+   ↳ i=2 | A_i (0 états) : ∅
+      Tentatives d'activation : ['BusinessDetails:Entered', 'BusinessDetails:Rejected']
+      ❌ BusinessDetails:Entered — manque : ['Country:Selected', 'Country:Accepted', 'Country:Rejected']
+      ❌ BusinessDetails:Rejected — manque : ['BusinessDetails:Entered', 'BusinessDetails:Accepted', 'PersonalInformation:Provided', 'Country:Accepted', 'Country:Rejected']
+      🚨 Nouvelles violations : 2
+   ⏱️  0.000s
+
+🟢 [NŒUD] : causal_verification
+   ↳ i=3 | A_i (0 états) : ∅
+      Tentatives d'activation : ['Notification:Generated']
+      ❌ Notification:Generated — manque : ['Country:Accepted', 'Country:Rejected', 'BusinessDetails:Accepted', 'BusinessDetails:Rejected', 'CreditCardDetails:Accepted', 'CreditCardDetails:Rejected', 'Account:VerificationFailed', 'Verification:Failed']
+      🚨 Nouvelles violations : 1
+   ⏱️  0.000s
+
+🟢 [NŒUD] : propagation
+   ↳ 20 états suspects après propagation :
+      🔴 BusinessDetails:Rejected
+      🔴 Account:Verified
+      🔴 Verification:Failed
+      🔴 CreditCardDetails:Entered
+      🔴 BusinessDetails:Entered
+      🔴 Country:Rejected
+      🔴 Notification:Generated
+      🔴 BusinessDetails:Accepted
+      🔴 VerificationEmail:Sent
+      🔴 Country:Selected
+      🔴 Account:VerificationFailed
+      🔴 PersonalInformation:Provided
+      🔴 Account:Created
+      🔴 Verification:Accepted
+      🔴 Country:Accepted
+      🔴 PersonalInformation:Rejected
+      🔴 CreditCardDetails:Accepted
+      🔴 CreditCardDetails:Rejected
+      🔴 Password:Created
+      🔴 PersonalInformation:Accepted
+   ⏱️  0.000s
+
+🟢 [NŒUD] : aggregation
+   ↳ Score de conformité : 0.0
+   ⏱️  0.000s
+
+🟢 [NŒUD] : explanation
+   ↳ Rapport d'explication généré.
+   ⏱️  0.000s
+
+============================================================
+📋 SCÉNARIO 4/9 : Scenario 4: Personal User - Failed Credit Card Details Entry
+   5 triplets SPO
+============================================================
+
+🟢 [NŒUD] : intent_T
+   ↳ Intention T : The process is meant to facilitate the creation of a user account, ensuring that all necessary information is collected and verified to establish a secure and authorized account, and it exists to provide a standardized and controlled method for onboarding new users.
+   ⏱️  0.000s
+
+🟢 [NŒUD] : intent_F
+   ↳ Intention F : The process seems to be trying to collect user information for a business purpose, likely registration or application, and handle potential errors during the data entry process.
+   ⏱️  0.000s
+
+🟢 [NŒUD] : universe_construction
+   ↳ 18 états canoniques construits.
+
+   📚 ÉTATS CANONIQUES (U) :
+      • Request:Submitted
+        └─ User submits account creation request
+      • Country:Selected
+        └─ User selects country from list
+      • Country:Accepted
+        └─ System accepts selected country
+      • Country:Rejected
+        └─ System rejects selected country
+      • BusinessDetails:Entered
+        └─ User enters business details
+      • BusinessDetails:Accepted
+        └─ System accepts business details
+      • BusinessDetails:Rejected
+        └─ System rejects business details
+      • CreditCardDetails:Entered
+        └─ User enters credit card details
+      • CreditCardDetails:Accepted
+        └─ System accepts credit card details
+      • CreditCardDetails:Rejected
+        └─ System rejects credit card details
+      • Account:Verified
+        └─ System verifies user account
+      • Account:VerificationFailed
+        └─ System fails to verify account
+      • Password:Created
+        └─ User creates account password
+      • Account:Created
+        └─ System creates user account
+      • Notification:Generated
+        └─ System generates error notification
+      • PersonalInformation:Provided
+        └─ User provides personal information
+      • PersonalInformation:Accepted
+        └─ System accepts personal information
+      • PersonalInformation:Rejected
+        └─ System rejects personal information
+   ⏱️  0.000s
+
+🟢 [NŒUD] : rules_extraction
+   ↳ Préconditions textuelles extraites pour 18 états.
+   ⏱️  0.000s
+Loading weights: 100%|███████████████████████████████████████████████████████████████████████████████████████████| 103/103 [00:00<00:00, 5720.97it/s]
+
+🟢 [NŒUD] : precondition_mapping
+   ↳ Mapping embedding terminé.
+
+   🔗 PRÉCONDITIONS MAPPÉES (Pre_mapped) :
+      • Request:Submitted  [état initial — aucune précondition]
+      • Country:Selected
+        └─ requires : Request:Submitted
+        └─ requires : Password:Created
+        └─ requires : Account:Created
+      • Country:Accepted
+        └─ requires : Country:Selected
+        └─ requires : Country:Rejected
+      • Country:Rejected
+        └─ requires : Country:Selected
+        └─ requires : Country:Accepted
+      • BusinessDetails:Entered
+        └─ requires : Country:Selected
+        └─ requires : Country:Accepted
+        └─ requires : Country:Rejected
+        └─ requires : PersonalInformation:Provided
+      • BusinessDetails:Accepted
+        └─ requires : BusinessDetails:Entered
+        └─ requires : PersonalInformation:Provided
+        └─ requires : BusinessDetails:Rejected
+      • BusinessDetails:Rejected
+        └─ requires : BusinessDetails:Entered
+        └─ requires : BusinessDetails:Accepted
+        └─ requires : PersonalInformation:Provided
+      • CreditCardDetails:Entered
+        └─ requires : BusinessDetails:Entered
+        └─ requires : BusinessDetails:Accepted
+        └─ requires : PersonalInformation:Provided
+        └─ requires : BusinessDetails:Rejected
+      • CreditCardDetails:Accepted
+        └─ requires : CreditCardDetails:Entered
+        └─ requires : CreditCardDetails:Rejected
+      • CreditCardDetails:Rejected
+        └─ requires : CreditCardDetails:Entered
+        └─ requires : CreditCardDetails:Accepted
+      • Account:Verified
+        └─ requires : CreditCardDetails:Entered
+        └─ requires : CreditCardDetails:Accepted
+        └─ requires : CreditCardDetails:Rejected
+      • Account:VerificationFailed
+        └─ requires : CreditCardDetails:Entered
+        └─ requires : CreditCardDetails:Accepted
+        └─ requires : CreditCardDetails:Rejected
+      • Password:Created
+        └─ requires : Account:Verified
+        └─ requires : Account:Created
+      • Account:Created
+        └─ requires : Password:Created
+      • Notification:Generated
+        └─ requires : Country:Accepted
+        └─ requires : Country:Rejected
+        └─ requires : BusinessDetails:Accepted
+        └─ requires : BusinessDetails:Rejected
+        └─ requires : CreditCardDetails:Accepted
+        └─ requires : CreditCardDetails:Rejected
+        └─ requires : Account:VerificationFailed
+      • PersonalInformation:Provided
+        └─ requires : Country:Accepted
+        └─ requires : Country:Rejected
+      • PersonalInformation:Accepted
+        └─ requires : PersonalInformation:Provided
+        └─ requires : PersonalInformation:Rejected
+      • PersonalInformation:Rejected
+        └─ requires : PersonalInformation:Provided
+        └─ requires : PersonalInformation:Accepted
+   ⏱️  0.000s
+
+🟢 [NŒUD] : graph_construction
+   ↳ G_T : 47 arêtes causales.
+   ↳ Poids (degré sortant) :
+      • PersonalInformation:Provided → poids 6
+      • Country:Rejected → poids 4
+      • Country:Accepted → poids 4
+      • CreditCardDetails:Entered → poids 4
+      • CreditCardDetails:Rejected → poids 4
+      • CreditCardDetails:Accepted → poids 4
+      • Country:Selected → poids 3
+      • BusinessDetails:Entered → poids 3
+      • BusinessDetails:Rejected → poids 3
+      • BusinessDetails:Accepted → poids 3
+      • Password:Created → poids 2
+      • Account:Created → poids 2
+      • Request:Submitted → poids 1
+      • Account:Verified → poids 1
+      • Account:VerificationFailed → poids 1
+      • PersonalInformation:Rejected → poids 1
+      • PersonalInformation:Accepted → poids 1
+   ⏱️  0.000s
+Loading weights: 100%|███████████████████████████████████████████████████████████████████████████████████████████| 103/103 [00:00<00:00, 7974.70it/s]
+
+🟢 [NŒUD] : projection
+   ↳ 5 faits projetés, 4 activent au moins un état canonique.
+   ⏱️  0.000s
+
+🟢 [NŒUD] : causal_verification
+   ↳ i=0 | A_i (0 états) : ∅
+      Tentatives d'activation : ['Country:Selected', 'Country:Accepted', 'Country:Rejected']
+      ❌ Country:Selected — manque : ['Request:Submitted', 'Password:Created', 'Account:Created']
+      ❌ Country:Accepted — manque : ['Country:Selected', 'Country:Rejected']
+      ❌ Country:Rejected — manque : ['Country:Selected', 'Country:Accepted']
+      🚨 Nouvelles violations : 3
+   ⏱️  0.000s
+
+🟢 [NŒUD] : causal_verification
+   ↳ i=1 | A_i (0 états) : ∅
+      (aucun état canonique activé par ce fait)
+   ⏱️  0.000s
+
+🟢 [NŒUD] : causal_verification
+   ↳ i=2 | A_i (0 états) : ∅
+      Tentatives d'activation : ['BusinessDetails:Entered', 'BusinessDetails:Accepted']
+      ❌ BusinessDetails:Entered — manque : ['Country:Selected', 'Country:Accepted', 'Country:Rejected', 'PersonalInformation:Provided']
+      ❌ BusinessDetails:Accepted — manque : ['BusinessDetails:Entered', 'PersonalInformation:Provided', 'BusinessDetails:Rejected']
+      🚨 Nouvelles violations : 2
+   ⏱️  0.000s
+
+🟢 [NŒUD] : causal_verification
+   ↳ i=3 | A_i (0 états) : ∅
+      Tentatives d'activation : ['CreditCardDetails:Entered', 'CreditCardDetails:Accepted', 'CreditCardDetails:Rejected']
+      ❌ CreditCardDetails:Entered — manque : ['BusinessDetails:Entered', 'BusinessDetails:Accepted', 'PersonalInformation:Provided', 'BusinessDetails:Rejected']
+      ❌ CreditCardDetails:Accepted — manque : ['CreditCardDetails:Entered', 'CreditCardDetails:Rejected']
+      ❌ CreditCardDetails:Rejected — manque : ['CreditCardDetails:Entered', 'CreditCardDetails:Accepted']
+      🚨 Nouvelles violations : 3
+   ⏱️  0.000s
+
+🟢 [NŒUD] : causal_verification
+   ↳ i=4 | A_i (0 états) : ∅
+      Tentatives d'activation : ['Notification:Generated']
+      ❌ Notification:Generated — manque : ['Country:Accepted', 'Country:Rejected', 'BusinessDetails:Accepted', 'BusinessDetails:Rejected', 'CreditCardDetails:Accepted', 'CreditCardDetails:Rejected', 'Account:VerificationFailed']
+      🚨 Nouvelles violations : 1
+   ⏱️  0.000s
+
+🟢 [NŒUD] : propagation
+   ↳ 17 états suspects après propagation :
+      🔴 Account:Created
+      🔴 Notification:Generated
+      🔴 BusinessDetails:Accepted
+      🔴 Country:Accepted
+      🔴 CreditCardDetails:Accepted
+      🔴 CreditCardDetails:Entered
+      🔴 BusinessDetails:Entered
+      🔴 CreditCardDetails:Rejected
+      🔴 BusinessDetails:Rejected
+      🔴 PersonalInformation:Rejected
+      🔴 Password:Created
+      🔴 Country:Selected
+      🔴 Account:Verified
+      🔴 Account:VerificationFailed
+      🔴 PersonalInformation:Provided
+      🔴 Country:Rejected
+      🔴 PersonalInformation:Accepted
+   ⏱️  0.000s
+
+🟢 [NŒUD] : aggregation
+   ↳ Score de conformité : 0.0
+   ⏱️  0.000s
+
+🟢 [NŒUD] : explanation
+   ↳ Rapport d'explication généré.
+   ⏱️  0.000s
+
+============================================================
+📋 SCÉNARIO 5/9 : Scenario 5: PayPal System - Country Not Accepted
+   4 triplets SPO
+============================================================
+
+🟢 [NŒUD] : intent_T
+   ↳ Intention T : The process is designed to facilitate the creation of a user account, ensuring that all necessary information is collected and verified to establish a secure and authorized account, while also handling potential errors and rejections throughout the process.
+   ⏱️  0.000s
+
+🟢 [NŒUD] : intent_F
+   ↳ Intention F : The process seems to be trying to validate and process a request based on country information and acceptance criteria, providing an error message if necessary.
+   ⏱️  0.000s
+
+🟢 [NŒUD] : universe_construction
+   ↳ 21 états canoniques construits.
+
+   📚 ÉTATS CANONIQUES (U) :
+      • Request:Submitted
+        └─ User submits account creation request
+      • Country:Selected
+        └─ User selects country from list
+      • Country:Accepted
+        └─ System accepts selected country
+      • Country:Rejected
+        └─ System rejects selected country
+      • BusinessDetails:Entered
+        └─ User enters business details
+      • BusinessDetails:Accepted
+        └─ System accepts business details
+      • BusinessDetails:Rejected
+        └─ System rejects business details
+      • CreditCardDetails:Entered
+        └─ User enters credit card details
+      • CreditCardDetails:Accepted
+        └─ System accepts credit card details
+      • CreditCardDetails:Rejected
+        └─ System rejects credit card details
+      • Account:Verified
+        └─ System verifies user account
+      • Account:VerificationFailed
+        └─ Account verification fails
+      • Password:Created
+        └─ User creates account password
+      • PersonalInformation:Provided
+        └─ User provides personal information
+      • PersonalInformation:Accepted
+        └─ System accepts personal information
+      • PersonalInformation:Rejected
+        └─ System rejects personal information
+      • VerificationEmail:Sent
+        └─ System sends verification email
+      • Verification:Accepted
+        └─ System accepts verification
+      • Verification:Failed
+        └─ Verification fails
+      • Account:Created
+        └─ System creates user account
+      • ErrorNotification:Generated
+        └─ System generates error notification
+   ⏱️  0.001s
+
+🟢 [NŒUD] : rules_extraction
+   ↳ Préconditions textuelles extraites pour 21 états.
+   ⏱️  0.000s
+Loading weights: 100%|███████████████████████████████████████████████████████████████████████████████████████████| 103/103 [00:00<00:00, 5367.89it/s]
+
+🟢 [NŒUD] : precondition_mapping
+   ↳ Mapping embedding terminé.
+
+   🔗 PRÉCONDITIONS MAPPÉES (Pre_mapped) :
+      • Request:Submitted  [état initial — aucune précondition]
+      • Country:Selected
+        └─ requires : Request:Submitted
+        └─ requires : Password:Created
+        └─ requires : Account:Created
+      • Country:Accepted
+        └─ requires : Country:Selected
+      • Country:Rejected
+        └─ requires : Country:Selected
+        └─ requires : Country:Accepted
+      • BusinessDetails:Entered
+        └─ requires : Country:Accepted
+        └─ requires : Country:Rejected
+      • BusinessDetails:Accepted
+        └─ requires : BusinessDetails:Entered
+        └─ requires : PersonalInformation:Provided
+        └─ requires : Country:Accepted
+        └─ requires : Country:Rejected
+      • BusinessDetails:Rejected
+        └─ requires : BusinessDetails:Entered
+        └─ requires : BusinessDetails:Accepted
+        └─ requires : PersonalInformation:Provided
+        └─ requires : Country:Accepted
+        └─ requires : Country:Rejected
+      • CreditCardDetails:Entered
+        └─ requires : BusinessDetails:Accepted
+        └─ requires : BusinessDetails:Rejected
+        └─ requires : CreditCardDetails:Accepted
+      • CreditCardDetails:Accepted
+        └─ requires : CreditCardDetails:Entered
+        └─ requires : BusinessDetails:Accepted
+        └─ requires : BusinessDetails:Rejected
+      • CreditCardDetails:Rejected
+        └─ requires : CreditCardDetails:Entered
+        └─ requires : CreditCardDetails:Accepted
+        └─ requires : BusinessDetails:Accepted
+        └─ requires : BusinessDetails:Rejected
+      • Account:Verified
+        └─ requires : CreditCardDetails:Entered
+        └─ requires : CreditCardDetails:Accepted
+        └─ requires : CreditCardDetails:Rejected
+      • Account:VerificationFailed
+        └─ requires : CreditCardDetails:Entered
+        └─ requires : CreditCardDetails:Accepted
+        └─ requires : CreditCardDetails:Rejected
+      • Password:Created
+        └─ requires : Account:Verified
+        └─ requires : Account:Created
+      • PersonalInformation:Provided
+        └─ requires : Country:Accepted
+        └─ requires : Country:Rejected
+        └─ requires : PersonalInformation:Accepted
+        └─ requires : PersonalInformation:Rejected
+      • PersonalInformation:Accepted
+        └─ requires : PersonalInformation:Provided
+        └─ requires : Country:Accepted
+        └─ requires : Country:Rejected
+      • PersonalInformation:Rejected
+        └─ requires : PersonalInformation:Provided
+        └─ requires : Country:Accepted
+        └─ requires : Country:Rejected
+      • VerificationEmail:Sent
+        └─ requires : CreditCardDetails:Entered
+        └─ requires : CreditCardDetails:Accepted
+        └─ requires : CreditCardDetails:Rejected
+        └─ requires : Account:Verified
+        └─ requires : Account:Created
+      • Verification:Accepted
+        └─ requires : VerificationEmail:Sent
+      • Verification:Failed
+        └─ requires : VerificationEmail:Sent
+        └─ requires : Verification:Accepted
+        └─ requires : Account:VerificationFailed
+      • Account:Created
+        └─ requires : Password:Created
+        └─ requires : VerificationEmail:Sent
+        └─ requires : Verification:Accepted
+        └─ requires : Verification:Failed
+      • ErrorNotification:Generated
+        └─ requires : Country:Rejected
+        └─ requires : BusinessDetails:Rejected
+        └─ requires : CreditCardDetails:Rejected
+   ⏱️  0.000s
+
+🟢 [NŒUD] : graph_construction
+   ↳ G_T : 61 arêtes causales.
+   ↳ Poids (degré sortant) :
+      • Country:Accepted → poids 7
+      • Country:Rejected → poids 7
+      • CreditCardDetails:Accepted → poids 5
+      • CreditCardDetails:Entered → poids 5
+      • PersonalInformation:Provided → poids 4
+      • BusinessDetails:Accepted → poids 4
+      • BusinessDetails:Rejected → poids 4
+      • CreditCardDetails:Rejected → poids 4
+      • Account:Created → poids 3
+      • VerificationEmail:Sent → poids 3
+      • Password:Created → poids 2
+      • Country:Selected → poids 2
+      • BusinessDetails:Entered → poids 2
+      • Account:Verified → poids 2
+      • Verification:Accepted → poids 2
+      • Request:Submitted → poids 1
+      • PersonalInformation:Accepted → poids 1
+      • PersonalInformation:Rejected → poids 1
+      • Account:VerificationFailed → poids 1
+      • Verification:Failed → poids 1
+   ⏱️  0.000s
+Loading weights: 100%|███████████████████████████████████████████████████████████████████████████████████████████| 103/103 [00:00<00:00, 7193.27it/s]
+
+🟢 [NŒUD] : projection
+   ↳ 4 faits projetés, 2 activent au moins un état canonique.
+   ⏱️  0.000s
+
+🟢 [NŒUD] : causal_verification
+   ↳ i=0 | A_i (0 états) : ∅
+      (aucun état canonique activé par ce fait)
+   ⏱️  0.000s
+
+🟢 [NŒUD] : causal_verification
+   ↳ i=1 | A_i (0 états) : ∅
+      (aucun état canonique activé par ce fait)
+   ⏱️  0.000s
+
+🟢 [NŒUD] : causal_verification
+   ↳ i=2 | A_i (0 états) : ∅
+      Tentatives d'activation : ['Country:Accepted', 'Country:Rejected']
+      ❌ Country:Accepted — manque : ['Country:Selected']
+      ❌ Country:Rejected — manque : ['Country:Selected', 'Country:Accepted']
+      🚨 Nouvelles violations : 2
+   ⏱️  0.000s
+
+🟢 [NŒUD] : causal_verification
+   ↳ i=3 | A_i (0 états) : ∅
+      Tentatives d'activation : ['ErrorNotification:Generated']
+      ❌ ErrorNotification:Generated — manque : ['Country:Rejected', 'BusinessDetails:Rejected', 'CreditCardDetails:Rejected']
+      🚨 Nouvelles violations : 1
+   ⏱️  0.000s
+
+🟢 [NŒUD] : propagation
+   ↳ 20 états suspects après propagation :
+      🔴 BusinessDetails:Rejected
+      🔴 ErrorNotification:Generated
+      🔴 Account:Verified
+      🔴 Verification:Failed
+      🔴 CreditCardDetails:Entered
+      🔴 BusinessDetails:Entered
+      🔴 Country:Rejected
+      🔴 BusinessDetails:Accepted
+      🔴 VerificationEmail:Sent
+      🔴 Country:Selected
+      🔴 Account:VerificationFailed
+      🔴 PersonalInformation:Provided
+      🔴 Account:Created
+      🔴 Verification:Accepted
+      🔴 Country:Accepted
+      🔴 PersonalInformation:Rejected
+      🔴 CreditCardDetails:Accepted
+      🔴 CreditCardDetails:Rejected
+      🔴 Password:Created
+      🔴 PersonalInformation:Accepted
+   ⏱️  0.000s
+
+🟢 [NŒUD] : aggregation
+   ↳ Score de conformité : 0.0
+   ⏱️  0.000s
+
+🟢 [NŒUD] : explanation
+   ↳ Rapport d'explication généré.
+   ⏱️  0.000s
+
+============================================================
+📋 SCÉNARIO 6/9 : Scenario 6: PayPal System - Successful Account Creation
+   12 triplets SPO
+============================================================
+
+🟢 [NŒUD] : intent_T
+   ↳ Intention T : The process is designed to facilitate the creation of a user account, ensuring that all necessary information is collected and verified to establish a secure and authorized account, while also handling potential errors and rejections based on predefined criteria.
+   ⏱️  0.000s
+
+🟢 [NŒUD] : intent_F
+   ↳ Intention F : The process seems to be trying to register a new user by gathering and verifying various information, including country, personal, business, and card details, and then creating a password to complete the registration.
+   ⏱️  0.000s
+
+🟢 [NŒUD] : universe_construction
+   ↳ 22 états canoniques construits.
+
+   📚 ÉTATS CANONIQUES (U) :
+      • Request:Submitted
+        └─ User submits account creation request
+      • Country:Selected
+        └─ User selects country from list
+      • Country:Accepted
+        └─ System accepts selected country
+      • Country:Rejected
+        └─ System rejects selected country
+      • BusinessDetails:Entered
+        └─ User enters business details
+      • BusinessDetails:Accepted
+        └─ System accepts business details
+      • BusinessDetails:Rejected
+        └─ System rejects business details
+      • CreditCardDetails:Entered
+        └─ User enters credit card details
+      • CreditCardDetails:Accepted
+        └─ System accepts credit card details
+      • CreditCardDetails:Rejected
+        └─ System rejects credit card details
+      • Account:Verified
+        └─ System verifies user account
+      • Account:VerificationFailed
+        └─ System fails to verify account
+      • Password:Created
+        └─ User creates account password
+      • PersonalInformation:Provided
+        └─ User provides personal information
+      • PersonalInformation:Accepted
+        └─ System accepts personal information
+      • PersonalInformation:Rejected
+        └─ System rejects personal information
+      • VerificationEmail:Sent
+        └─ System sends verification email
+      • Verification:Accepted
+        └─ System accepts verification
+      • Verification:Rejected
+        └─ System rejects verification
+      • Account:Created
+        └─ System creates user account
+      • Account:CreationFailed
+        └─ System fails to create account
+      • ErrorNotification:Generated
+        └─ System generates error notification
+   ⏱️  0.000s
+
+🟢 [NŒUD] : rules_extraction
+   ↳ Préconditions textuelles extraites pour 22 états.
+   ⏱️  0.000s
+Loading weights: 100%|███████████████████████████████████████████████████████████████████████████████████████████| 103/103 [00:00<00:00, 5917.10it/s]
+
+🟢 [NŒUD] : precondition_mapping
+   ↳ Mapping embedding terminé.
+
+   🔗 PRÉCONDITIONS MAPPÉES (Pre_mapped) :
+      • Request:Submitted  [état initial — aucune précondition]
+      • Country:Selected
+        └─ requires : Request:Submitted
+        └─ requires : Password:Created
+        └─ requires : Account:Created
+      • Country:Accepted
+        └─ requires : Country:Selected
+      • Country:Rejected
+        └─ requires : Country:Selected
+        └─ requires : Country:Accepted
+      • BusinessDetails:Entered
+        └─ requires : Country:Accepted
+        └─ requires : Country:Rejected
+        └─ requires : Country:Selected
+      • BusinessDetails:Accepted
+        └─ requires : BusinessDetails:Entered
+        └─ requires : PersonalInformation:Provided
+        └─ requires : Country:Accepted
+        └─ requires : Country:Rejected
+      • BusinessDetails:Rejected
+        └─ requires : BusinessDetails:Entered
+        └─ requires : BusinessDetails:Accepted
+        └─ requires : PersonalInformation:Provided
+        └─ requires : Country:Accepted
+        └─ requires : Country:Rejected
+      • CreditCardDetails:Entered
+        └─ requires : BusinessDetails:Accepted
+        └─ requires : BusinessDetails:Rejected
+        └─ requires : BusinessDetails:Entered
+      • CreditCardDetails:Accepted
+        └─ requires : CreditCardDetails:Entered
+        └─ requires : BusinessDetails:Accepted
+        └─ requires : BusinessDetails:Rejected
+      • CreditCardDetails:Rejected
+        └─ requires : CreditCardDetails:Entered
+        └─ requires : CreditCardDetails:Accepted
+        └─ requires : BusinessDetails:Accepted
+        └─ requires : BusinessDetails:Rejected
+      • Account:Verified
+        └─ requires : CreditCardDetails:Entered
+        └─ requires : CreditCardDetails:Accepted
+        └─ requires : CreditCardDetails:Rejected
+      • Account:VerificationFailed
+        └─ requires : CreditCardDetails:Entered
+        └─ requires : CreditCardDetails:Accepted
+        └─ requires : CreditCardDetails:Rejected
+      • Password:Created
+        └─ requires : Account:Verified
+        └─ requires : Account:VerificationFailed
+        └─ requires : CreditCardDetails:Entered
+        └─ requires : CreditCardDetails:Accepted
+      • PersonalInformation:Provided
+        └─ requires : Country:Accepted
+        └─ requires : Country:Rejected
+        └─ requires : Country:Selected
+      • PersonalInformation:Accepted
+        └─ requires : PersonalInformation:Provided
+        └─ requires : Country:Accepted
+        └─ requires : Country:Rejected
+      • PersonalInformation:Rejected
+        └─ requires : PersonalInformation:Provided
+        └─ requires : Country:Accepted
+        └─ requires : Country:Rejected
+      • VerificationEmail:Sent
+        └─ requires : CreditCardDetails:Accepted
+        └─ requires : PersonalInformation:Provided
+      • Verification:Accepted
+        └─ requires : VerificationEmail:Sent
+        └─ requires : Verification:Rejected
+        └─ requires : PersonalInformation:Provided
+      • Verification:Rejected
+        └─ requires : VerificationEmail:Sent
+        └─ requires : Verification:Accepted
+        └─ requires : PersonalInformation:Provided
+      • Account:Created
+        └─ requires : VerificationEmail:Sent
+        └─ requires : Verification:Accepted
+        └─ requires : Verification:Rejected
+        └─ requires : Password:Created
+      • Account:CreationFailed
+        └─ requires : VerificationEmail:Sent
+        └─ requires : Verification:Accepted
+        └─ requires : Verification:Rejected
+        └─ requires : Password:Created
+      • ErrorNotification:Generated
+        └─ requires : Country:Accepted
+        └─ requires : Country:Rejected
+        └─ requires : BusinessDetails:Accepted
+        └─ requires : BusinessDetails:Rejected
+        └─ requires : CreditCardDetails:Accepted
+        └─ requires : CreditCardDetails:Rejected
+        └─ requires : Account:VerificationFailed
+        └─ requires : Verification:Accepted
+        └─ requires : Verification:Rejected
+   ⏱️  0.000s
+
+🟢 [NŒUD] : graph_construction
+   ↳ G_T : 72 arêtes causales.
+   ↳ Poids (degré sortant) :
+      • Country:Accepted → poids 8
+      • Country:Rejected → poids 7
+      • PersonalInformation:Provided → poids 7
+      • CreditCardDetails:Accepted → poids 6
+      • BusinessDetails:Accepted → poids 5
+      • CreditCardDetails:Entered → poids 5
+      • Country:Selected → poids 4
+      • BusinessDetails:Rejected → poids 4
+      • VerificationEmail:Sent → poids 4
+      • Verification:Rejected → poids 4
+      • Verification:Accepted → poids 4
+      • Password:Created → poids 3
+      • BusinessDetails:Entered → poids 3
+      • CreditCardDetails:Rejected → poids 3
+      • Account:VerificationFailed → poids 2
+      • Request:Submitted → poids 1
+      • Account:Created → poids 1
+      • Account:Verified → poids 1
+   ⏱️  0.000s
+Loading weights: 100%|███████████████████████████████████████████████████████████████████████████████████████████| 103/103 [00:00<00:00, 7267.93it/s]
+
+🟢 [NŒUD] : projection
+   ↳ 12 faits projetés, 8 activent au moins un état canonique.
+   ⏱️  0.000s
+
+🟢 [NŒUD] : causal_verification
+   ↳ i=0 | A_i (0 états) : ∅
+      (aucun état canonique activé par ce fait)
+   ⏱️  0.000s
+
+🟢 [NŒUD] : causal_verification
+   ↳ i=1 | A_i (0 états) : ∅
+      (aucun état canonique activé par ce fait)
+   ⏱️  0.000s
+
+🟢 [NŒUD] : causal_verification
+   ↳ i=2 | A_i (0 états) : ∅
+      Tentatives d'activation : ['Country:Accepted', 'Country:Rejected']
+      ❌ Country:Accepted — manque : ['Country:Selected']
+      ❌ Country:Rejected — manque : ['Country:Selected', 'Country:Accepted']
+      🚨 Nouvelles violations : 2
+   ⏱️  0.000s
+
+🟢 [NŒUD] : causal_verification
+   ↳ i=3 | A_i (0 états) : ∅
+      Tentatives d'activation : ['PersonalInformation:Provided', 'PersonalInformation:Accepted', 'PersonalInformation:Rejected']
+      ❌ PersonalInformation:Provided — manque : ['Country:Accepted', 'Country:Rejected', 'Country:Selected']
+      ❌ PersonalInformation:Accepted — manque : ['PersonalInformation:Provided', 'Country:Accepted', 'Country:Rejected']
+      ❌ PersonalInformation:Rejected — manque : ['PersonalInformation:Provided', 'Country:Accepted', 'Country:Rejected']
+      🚨 Nouvelles violations : 3
+   ⏱️  0.000s
+
+🟢 [NŒUD] : causal_verification
+   ↳ i=4 | A_i (0 états) : ∅
+      Tentatives d'activation : ['BusinessDetails:Accepted']
+      ❌ BusinessDetails:Accepted — manque : ['BusinessDetails:Entered', 'PersonalInformation:Provided', 'Country:Accepted', 'Country:Rejected']
+      🚨 Nouvelles violations : 1
+   ⏱️  0.000s
+
+🟢 [NŒUD] : causal_verification
+   ↳ i=5 | A_i (0 états) : ∅
+      Tentatives d'activation : ['BusinessDetails:Accepted', 'BusinessDetails:Rejected']
+      ❌ BusinessDetails:Accepted — manque : ['BusinessDetails:Entered', 'PersonalInformation:Provided', 'Country:Accepted', 'Country:Rejected']
+      ❌ BusinessDetails:Rejected — manque : ['BusinessDetails:Entered', 'BusinessDetails:Accepted', 'PersonalInformation:Provided', 'Country:Accepted', 'Country:Rejected']
+      🚨 Nouvelles violations : 1
+   ⏱️  0.000s
+
+🟢 [NŒUD] : causal_verification
+   ↳ i=6 | A_i (0 états) : ∅
+      (aucun état canonique activé par ce fait)
+   ⏱️  0.000s
+
+🟢 [NŒUD] : causal_verification
+   ↳ i=7 | A_i (0 états) : ∅
+      Tentatives d'activation : ['CreditCardDetails:Accepted']
+      ❌ CreditCardDetails:Accepted — manque : ['CreditCardDetails:Entered', 'BusinessDetails:Accepted', 'BusinessDetails:Rejected']
+      🚨 Nouvelles violations : 1
+   ⏱️  0.000s
+
+🟢 [NŒUD] : causal_verification
+   ↳ i=8 | A_i (0 états) : ∅
+      Tentatives d'activation : ['VerificationEmail:Sent', 'Verification:Accepted', 'Verification:Rejected']
+      ❌ VerificationEmail:Sent — manque : ['CreditCardDetails:Accepted', 'PersonalInformation:Provided']
+      ❌ Verification:Accepted — manque : ['VerificationEmail:Sent', 'Verification:Rejected', 'PersonalInformation:Provided']
+      ❌ Verification:Rejected — manque : ['VerificationEmail:Sent', 'Verification:Accepted', 'PersonalInformation:Provided']
+      🚨 Nouvelles violations : 3
+   ⏱️  0.000s
+
+🟢 [NŒUD] : causal_verification
+   ↳ i=9 | A_i (0 états) : ∅
+      Tentatives d'activation : ['Verification:Accepted', 'Verification:Rejected']
+      ❌ Verification:Accepted — manque : ['VerificationEmail:Sent', 'Verification:Rejected', 'PersonalInformation:Provided']
+      ❌ Verification:Rejected — manque : ['VerificationEmail:Sent', 'Verification:Accepted', 'PersonalInformation:Provided']
+   ⏱️  0.000s
+
+🟢 [NŒUD] : causal_verification
+   ↳ i=10 | A_i (0 états) : ∅
+      (aucun état canonique activé par ce fait)
+   ⏱️  0.000s
+
+🟢 [NŒUD] : causal_verification
+   ↳ i=11 | A_i (0 états) : ∅
+      Tentatives d'activation : ['Password:Created', 'Account:Created']
+      ❌ Password:Created — manque : ['Account:Verified', 'Account:VerificationFailed', 'CreditCardDetails:Entered', 'CreditCardDetails:Accepted']
+      ❌ Account:Created — manque : ['VerificationEmail:Sent', 'Verification:Accepted', 'Verification:Rejected', 'Password:Created']
+      🚨 Nouvelles violations : 2
+   ⏱️  0.000s
+
+🟢 [NŒUD] : propagation
+   ↳ 21 états suspects après propagation :
+      🔴 BusinessDetails:Rejected
+      🔴 ErrorNotification:Generated
+      🔴 Account:Verified
+      🔴 CreditCardDetails:Entered
+      🔴 BusinessDetails:Entered
+      🔴 Country:Rejected
+      🔴 BusinessDetails:Accepted
+      🔴 VerificationEmail:Sent
+      🔴 Account:CreationFailed
+      🔴 Country:Selected
+      🔴 Account:VerificationFailed
+      🔴 PersonalInformation:Provided
+      🔴 Account:Created
+      🔴 Verification:Accepted
+      🔴 Country:Accepted
+      🔴 CreditCardDetails:Accepted
+      🔴 PersonalInformation:Rejected
+      🔴 CreditCardDetails:Rejected
+      🔴 Password:Created
+      🔴 Verification:Rejected
+      🔴 PersonalInformation:Accepted
+   ⏱️  0.000s
+
+🟢 [NŒUD] : aggregation
+   ↳ Score de conformité : 0.0
+   ⏱️  0.000s
+
+🟢 [NŒUD] : explanation
+   ↳ Rapport d'explication généré.
+   ⏱️  0.000s
+
+============================================================
+📋 SCÉNARIO 7/9 : Scenario 7: PayPal System - Business Details Not Accepted
+   7 triplets SPO
+============================================================
+
+🟢 [NŒUD] : intent_T
+   ↳ Intention T : The process is designed to facilitate the creation of a user account, ensuring that all necessary information is collected and verified to establish a secure and authorized account, while also handling potential errors and rejections based on predefined criteria.
+   ⏱️  0.000s
+
+🟢 [NŒUD] : intent_F
+   ↳ Intention F : The process seems to be trying to validate and process a request by gathering and checking various information, likely for the purpose of approving or rejecting the request based on certain criteria.
+   ⏱️  0.000s
+
+🟢 [NŒUD] : universe_construction
+   ↳ 21 états canoniques construits.
+
+   📚 ÉTATS CANONIQUES (U) :
+      • Request:Submitted
+        └─ User submits account creation request
+      • Country:Selected
+        └─ User selects country from list
+      • Country:Accepted
+        └─ System accepts selected country
+      • Country:Rejected
+        └─ System rejects selected country
+      • BusinessDetails:Entered
+        └─ User enters business details
+      • BusinessDetails:Accepted
+        └─ System accepts business details
+      • BusinessDetails:Rejected
+        └─ System rejects business details
+      • CreditCardDetails:Entered
+        └─ User enters credit card details
+      • CreditCardDetails:Accepted
+        └─ System accepts credit card details
+      • CreditCardDetails:Rejected
+        └─ System rejects credit card details
+      • Account:Verified
+        └─ System verifies user account
+      • Account:VerificationFailed
+        └─ System fails to verify account
+      • Password:Created
+        └─ User creates account password
+      • Account:Created
+        └─ System creates user account
+      • Notification:Generated
+        └─ System generates error notification
+      • PersonalInformation:Provided
+        └─ User provides personal information
+      • PersonalInformation:Accepted
+        └─ System accepts personal information
+      • PersonalInformation:Rejected
+        └─ System rejects personal information
+      • VerificationEmail:Sent
+        └─ System sends verification email
+      • Verification:Accepted
+        └─ System accepts verification
+      • Verification:Rejected
+        └─ System rejects verification
+   ⏱️  0.000s
+
+🟢 [NŒUD] : rules_extraction
+   ↳ Préconditions textuelles extraites pour 21 états.
+   ⏱️  0.000s
+Loading weights: 100%|███████████████████████████████████████████████████████████████████████████████████████████| 103/103 [00:00<00:00, 5420.15it/s]
+
+🟢 [NŒUD] : precondition_mapping
+   ↳ Mapping embedding terminé.
+
+   🔗 PRÉCONDITIONS MAPPÉES (Pre_mapped) :
+      • Request:Submitted  [état initial — aucune précondition]
+      • Country:Selected
+        └─ requires : Request:Submitted
+        └─ requires : Password:Created
+        └─ requires : Account:Created
+      • Country:Accepted
+        └─ requires : Country:Selected
+        └─ requires : Country:Rejected
+      • Country:Rejected
+        └─ requires : Country:Selected
+        └─ requires : Country:Accepted
+      • BusinessDetails:Entered
+        └─ requires : Country:Selected
+        └─ requires : Country:Accepted
+        └─ requires : Country:Rejected
+      • BusinessDetails:Accepted
+        └─ requires : BusinessDetails:Entered
+        └─ requires : PersonalInformation:Provided
+        └─ requires : BusinessDetails:Rejected
+      • BusinessDetails:Rejected
+        └─ requires : BusinessDetails:Entered
+        └─ requires : BusinessDetails:Accepted
+        └─ requires : PersonalInformation:Provided
+      • CreditCardDetails:Entered
+        └─ requires : BusinessDetails:Entered
+        └─ requires : BusinessDetails:Accepted
+        └─ requires : PersonalInformation:Provided
+        └─ requires : BusinessDetails:Rejected
+        └─ requires : CreditCardDetails:Accepted
+        └─ requires : CreditCardDetails:Rejected
+      • CreditCardDetails:Accepted
+        └─ requires : CreditCardDetails:Entered
+        └─ requires : CreditCardDetails:Rejected
+      • CreditCardDetails:Rejected
+        └─ requires : CreditCardDetails:Entered
+        └─ requires : CreditCardDetails:Accepted
+      • Account:Verified
+        └─ requires : CreditCardDetails:Entered
+        └─ requires : CreditCardDetails:Accepted
+        └─ requires : CreditCardDetails:Rejected
+        └─ requires : Account:VerificationFailed
+        └─ requires : Verification:Accepted
+      • Account:VerificationFailed
+        └─ requires : CreditCardDetails:Entered
+        └─ requires : CreditCardDetails:Accepted
+        └─ requires : CreditCardDetails:Rejected
+        └─ requires : Account:Verified
+        └─ requires : Verification:Accepted
+      • Password:Created
+        └─ requires : Account:Verified
+        └─ requires : Account:Created
+      • Account:Created
+        └─ requires : Password:Created
+        └─ requires : Account:Verified
+      • Notification:Generated
+        └─ requires : Country:Accepted
+        └─ requires : Country:Rejected
+        └─ requires : BusinessDetails:Accepted
+        └─ requires : BusinessDetails:Rejected
+        └─ requires : CreditCardDetails:Accepted
+        └─ requires : CreditCardDetails:Rejected
+        └─ requires : Account:VerificationFailed
+      • PersonalInformation:Provided
+        └─ requires : Country:Accepted
+        └─ requires : Country:Rejected
+      • PersonalInformation:Accepted
+        └─ requires : PersonalInformation:Provided
+        └─ requires : PersonalInformation:Rejected
+      • PersonalInformation:Rejected
+        └─ requires : PersonalInformation:Provided
+        └─ requires : PersonalInformation:Accepted
+      • VerificationEmail:Sent
+        └─ requires : CreditCardDetails:Entered
+        └─ requires : CreditCardDetails:Accepted
+        └─ requires : CreditCardDetails:Rejected
+        └─ requires : BusinessDetails:Accepted
+        └─ requires : BusinessDetails:Rejected
+        └─ requires : PersonalInformation:Provided
+        └─ requires : PersonalInformation:Accepted
+        └─ requires : PersonalInformation:Rejected
+      • Verification:Accepted
+        └─ requires : VerificationEmail:Sent
+      • Verification:Rejected
+        └─ requires : VerificationEmail:Sent
+        └─ requires : Verification:Accepted
+   ⏱️  0.000s
+
+🟢 [NŒUD] : graph_construction
+   ↳ G_T : 64 arêtes causales.
+   ↳ Poids (degré sortant) :
+      • PersonalInformation:Provided → poids 6
+      • CreditCardDetails:Accepted → poids 6
+      • CreditCardDetails:Rejected → poids 6
+      • CreditCardDetails:Entered → poids 5
+      • Country:Rejected → poids 4
+      • Country:Accepted → poids 4
+      • BusinessDetails:Rejected → poids 4
+      • BusinessDetails:Accepted → poids 4
+      • Country:Selected → poids 3
+      • BusinessDetails:Entered → poids 3
+      • Verification:Accepted → poids 3
+      • Account:Verified → poids 3
+      • Password:Created → poids 2
+      • Account:Created → poids 2
+      • Account:VerificationFailed → poids 2
+      • PersonalInformation:Rejected → poids 2
+      • PersonalInformation:Accepted → poids 2
+      • VerificationEmail:Sent → poids 2
+      • Request:Submitted → poids 1
+   ⏱️  0.000s
+Loading weights: 100%|██████████████████████████████████████████████████████████████████████████████████████████| 103/103 [00:00<00:00, 10668.05it/s]
+
+🟢 [NŒUD] : projection
+   ↳ 7 faits projetés, 5 activent au moins un état canonique.
+   ⏱️  0.000s
+
+🟢 [NŒUD] : causal_verification
+   ↳ i=0 | A_i (0 états) : ∅
+      (aucun état canonique activé par ce fait)
+   ⏱️  0.000s
+
+🟢 [NŒUD] : causal_verification
+   ↳ i=1 | A_i (0 états) : ∅
+      (aucun état canonique activé par ce fait)
+   ⏱️  0.000s
+
+🟢 [NŒUD] : causal_verification
+   ↳ i=2 | A_i (0 états) : ∅
+      Tentatives d'activation : ['Country:Accepted', 'Country:Rejected']
+      ❌ Country:Accepted — manque : ['Country:Selected', 'Country:Rejected']
+      ❌ Country:Rejected — manque : ['Country:Selected', 'Country:Accepted']
+      🚨 Nouvelles violations : 2
+   ⏱️  0.000s
+
+🟢 [NŒUD] : causal_verification
+   ↳ i=3 | A_i (0 états) : ∅
+      Tentatives d'activation : ['PersonalInformation:Provided', 'PersonalInformation:Accepted', 'PersonalInformation:Rejected']
+      ❌ PersonalInformation:Provided — manque : ['Country:Accepted', 'Country:Rejected']
+      ❌ PersonalInformation:Accepted — manque : ['PersonalInformation:Provided', 'PersonalInformation:Rejected']
+      ❌ PersonalInformation:Rejected — manque : ['PersonalInformation:Provided', 'PersonalInformation:Accepted']
+      🚨 Nouvelles violations : 3
+   ⏱️  0.000s
+
+🟢 [NŒUD] : causal_verification
+   ↳ i=4 | A_i (0 états) : ∅
+      Tentatives d'activation : ['BusinessDetails:Accepted']
+      ❌ BusinessDetails:Accepted — manque : ['BusinessDetails:Entered', 'PersonalInformation:Provided', 'BusinessDetails:Rejected']
+      🚨 Nouvelles violations : 1
+   ⏱️  0.000s
+
+🟢 [NŒUD] : causal_verification
+   ↳ i=5 | A_i (0 états) : ∅
+      Tentatives d'activation : ['BusinessDetails:Accepted', 'BusinessDetails:Rejected']
+      ❌ BusinessDetails:Accepted — manque : ['BusinessDetails:Entered', 'PersonalInformation:Provided', 'BusinessDetails:Rejected']
+      ❌ BusinessDetails:Rejected — manque : ['BusinessDetails:Entered', 'BusinessDetails:Accepted', 'PersonalInformation:Provided']
+      🚨 Nouvelles violations : 1
+   ⏱️  0.000s
+
+🟢 [NŒUD] : causal_verification
+   ↳ i=6 | A_i (0 états) : ∅
+      Tentatives d'activation : ['Notification:Generated']
+      ❌ Notification:Generated — manque : ['Country:Accepted', 'Country:Rejected', 'BusinessDetails:Accepted', 'BusinessDetails:Rejected', 'CreditCardDetails:Accepted', 'CreditCardDetails:Rejected', 'Account:VerificationFailed']
+      🚨 Nouvelles violations : 1
+   ⏱️  0.000s
+
+🟢 [NŒUD] : propagation
+   ↳ 20 états suspects après propagation :
+      🔴 BusinessDetails:Rejected
+      🔴 Account:Verified
+      🔴 CreditCardDetails:Entered
+      🔴 BusinessDetails:Entered
+      🔴 Country:Rejected
+      🔴 Notification:Generated
+      🔴 BusinessDetails:Accepted
+      🔴 VerificationEmail:Sent
+      🔴 Country:Selected
+      🔴 Account:VerificationFailed
+      🔴 PersonalInformation:Provided
+      🔴 Account:Created
+      🔴 Verification:Accepted
+      🔴 Country:Accepted
+      🔴 PersonalInformation:Rejected
+      🔴 CreditCardDetails:Accepted
+      🔴 CreditCardDetails:Rejected
+      🔴 Password:Created
+      🔴 Verification:Rejected
+      🔴 PersonalInformation:Accepted
+   ⏱️  0.000s
+
+🟢 [NŒUD] : aggregation
+   ↳ Score de conformité : 0.0
+   ⏱️  0.000s
+
+🟢 [NŒUD] : explanation
+   ↳ Rapport d'explication généré.
+   ⏱️  0.000s
+
+============================================================
+📋 SCÉNARIO 8/9 : Scenario 8: PayPal System - Card Details Not Accepted
+   9 triplets SPO
+============================================================
+
+🟢 [NŒUD] : intent_T
+   ↳ Intention T : The process is meant to facilitate the creation of a user account, ensuring that all necessary information is collected and verified to establish a secure and validated account, and it exists to provide a standardized and controlled method for onboarding new users.
+   ⏱️  0.000s
+
+🟢 [NŒUD] : intent_F
+   ↳ Intention F : The process seems to be trying to facilitate an application or registration process by gathering and validating various types of information, including country, personal, business, and payment details, and providing error notifications when necessary.
+   ⏱️  0.000s
+
+🟢 [NŒUD] : universe_construction
+   ↳ 23 états canoniques construits.
+
+   📚 ÉTATS CANONIQUES (U) :
+      • Request:Submitted
+        └─ User submits account creation request
+      • Country:Selected
+        └─ User selects country from list
+      • Country:Accepted
+        └─ System accepts selected country
+      • Country:Rejected
+        └─ System rejects selected country
+      • BusinessDetails:Entered
+        └─ User enters business details
+      • BusinessDetails:Accepted
+        └─ System accepts business details
+      • BusinessDetails:Rejected
+        └─ System rejects business details
+      • CreditCardDetails:Entered
+        └─ User enters credit card details
+      • CreditCardDetails:Accepted
+        └─ System accepts credit card details
+      • CreditCardDetails:Rejected
+        └─ System rejects credit card details
+      • Account:Verified
+        └─ System verifies user account
+      • Account:VerificationFailed
+        └─ System fails to verify account
+      • Password:Created
+        └─ User creates account password
+      • Password:CreationFailed
+        └─ User fails to create password
+      • PersonalUser:Registered
+        └─ System registers personal user
+      • PersonalUser:RegistrationFailed
+        └─ System fails to register personal user
+      • PayPalSystem:Requested
+        └─ System receives request
+      • PayPalSystem:ErrorGenerated
+        └─ System generates error message
+      • Verification:Sent
+        └─ System sends verification email
+      • Verification:Accepted
+        └─ System accepts verification
+      • Verification:Failed
+        └─ System fails to accept verification
+      • Account:Created
+        └─ System creates user account
+      • Account:CreationFailed
+        └─ System fails to create account
+   ⏱️  0.001s
+
+🟢 [NŒUD] : rules_extraction
+   ↳ Préconditions textuelles extraites pour 23 états.
+   ⏱️  0.000s
+Loading weights: 100%|███████████████████████████████████████████████████████████████████████████████████████████| 103/103 [00:00<00:00, 5829.75it/s]
+
+🟢 [NŒUD] : precondition_mapping
+   ↳ Mapping embedding terminé.
+
+   🔗 PRÉCONDITIONS MAPPÉES (Pre_mapped) :
+      • Request:Submitted  [état initial — aucune précondition]
+      • Country:Selected
+        └─ requires : Request:Submitted
+        └─ requires : Password:Created
+        └─ requires : Account:Created
+      • Country:Accepted
+        └─ requires : Country:Selected
+        └─ requires : Country:Rejected
+      • Country:Rejected
+        └─ requires : Country:Selected
+        └─ requires : Country:Accepted
+      • BusinessDetails:Entered
+        └─ requires : Country:Selected
+        └─ requires : Country:Accepted
+        └─ requires : Country:Rejected
+      • BusinessDetails:Accepted
+        └─ requires : BusinessDetails:Entered
+        └─ requires : BusinessDetails:Rejected
+      • BusinessDetails:Rejected
+        └─ requires : BusinessDetails:Entered
+        └─ requires : BusinessDetails:Accepted
+      • CreditCardDetails:Entered
+        └─ requires : BusinessDetails:Entered
+        └─ requires : BusinessDetails:Accepted
+        └─ requires : BusinessDetails:Rejected
+      • CreditCardDetails:Accepted
+        └─ requires : CreditCardDetails:Entered
+        └─ requires : CreditCardDetails:Rejected
+      • CreditCardDetails:Rejected
+        └─ requires : CreditCardDetails:Entered
+        └─ requires : CreditCardDetails:Accepted
+      • Account:Verified
+        └─ requires : CreditCardDetails:Entered
+        └─ requires : CreditCardDetails:Accepted
+        └─ requires : CreditCardDetails:Rejected
+        └─ requires : Account:VerificationFailed
+        └─ requires : Account:Created
+      • Account:VerificationFailed
+        └─ requires : CreditCardDetails:Entered
+        └─ requires : CreditCardDetails:Accepted
+        └─ requires : CreditCardDetails:Rejected
+        └─ requires : Account:Verified
+        └─ requires : Account:Created
+      • Password:Created
+        └─ requires : Password:CreationFailed
+        └─ requires : Account:Created
+      • Password:CreationFailed
+        └─ requires : Password:Created
+        └─ requires : Account:Created
+      • PersonalUser:Registered
+        └─ requires : Password:Created
+        └─ requires : Password:CreationFailed
+        └─ requires : Account:Created
+      • PersonalUser:RegistrationFailed
+        └─ requires : Password:Created
+        └─ requires : Password:CreationFailed
+        └─ requires : Account:Created
+      • PayPalSystem:Requested  [état initial — aucune précondition]
+      • PayPalSystem:ErrorGenerated
+        └─ requires : PayPalSystem:Requested
+      • Verification:Sent
+        └─ requires : CreditCardDetails:Accepted
+        └─ requires : BusinessDetails:Accepted
+      • Verification:Accepted
+        └─ requires : Verification:Sent
+        └─ requires : Verification:Failed
+      • Verification:Failed
+        └─ requires : Verification:Sent
+        └─ requires : Verification:Accepted
+      • Account:Created
+        └─ requires : Password:Created
+        └─ requires : Password:CreationFailed
+        └─ requires : Account:Verified
+        └─ requires : PersonalUser:Registered
+      • Account:CreationFailed
+        └─ requires : Password:Created
+        └─ requires : Password:CreationFailed
+        └─ requires : Account:Created
+        └─ requires : Account:Verified
+        └─ requires : PersonalUser:Registered
+   ⏱️  0.000s
+
+🟢 [NŒUD] : graph_construction
+   ↳ G_T : 57 arêtes causales.
+   ↳ Poids (degré sortant) :
+      • Account:Created → poids 8
+      • Password:Created → poids 6
+      • Password:CreationFailed → poids 5
+      • CreditCardDetails:Entered → poids 4
+      • CreditCardDetails:Accepted → poids 4
+      • Country:Selected → poids 3
+      • BusinessDetails:Entered → poids 3
+      • BusinessDetails:Accepted → poids 3
+      • CreditCardDetails:Rejected → poids 3
+      • Account:Verified → poids 3
+      • Country:Rejected → poids 2
+      • Country:Accepted → poids 2
+      • BusinessDetails:Rejected → poids 2
+      • Verification:Sent → poids 2
+      • PersonalUser:Registered → poids 2
+      • Request:Submitted → poids 1
+      • Account:VerificationFailed → poids 1
+      • PayPalSystem:Requested → poids 1
+      • Verification:Failed → poids 1
+      • Verification:Accepted → poids 1
+   ⏱️  0.000s
+Loading weights: 100%|███████████████████████████████████████████████████████████████████████████████████████████| 103/103 [00:00<00:00, 8009.44it/s]
+
+🟢 [NŒUD] : projection
+   ↳ 9 faits projetés, 6 activent au moins un état canonique.
+   ⏱️  0.000s
+
+🟢 [NŒUD] : causal_verification
+   ↳ i=0 | A_i (1 états) : ['PayPalSystem:Requested']
+      Tentatives d'activation : ['PayPalSystem:Requested']
+      ✅ PayPalSystem:Requested — préconditions satisfaites
+   ⏱️  0.000s
+
+🟢 [NŒUD] : causal_verification
+   ↳ i=1 | A_i (1 états) : ['PayPalSystem:Requested']
+      (aucun état canonique activé par ce fait)
+   ⏱️  0.000s
+
+🟢 [NŒUD] : causal_verification
+   ↳ i=2 | A_i (1 états) : ['PayPalSystem:Requested']
+      Tentatives d'activation : ['Country:Accepted', 'Country:Rejected']
+      ❌ Country:Accepted — manque : ['Country:Selected', 'Country:Rejected']
+      ❌ Country:Rejected — manque : ['Country:Selected', 'Country:Accepted']
+      🚨 Nouvelles violations : 2
+   ⏱️  0.000s
+
+🟢 [NŒUD] : causal_verification
+   ↳ i=3 | A_i (1 états) : ['PayPalSystem:Requested']
+      (aucun état canonique activé par ce fait)
+   ⏱️  0.000s
+
+🟢 [NŒUD] : causal_verification
+   ↳ i=4 | A_i (1 états) : ['PayPalSystem:Requested']
+      Tentatives d'activation : ['BusinessDetails:Accepted']
+      ❌ BusinessDetails:Accepted — manque : ['BusinessDetails:Entered', 'BusinessDetails:Rejected']
+      🚨 Nouvelles violations : 1
+   ⏱️  0.000s
+
+🟢 [NŒUD] : causal_verification
+   ↳ i=5 | A_i (1 états) : ['PayPalSystem:Requested']
+      Tentatives d'activation : ['BusinessDetails:Accepted', 'BusinessDetails:Rejected']
+      ❌ BusinessDetails:Accepted — manque : ['BusinessDetails:Entered', 'BusinessDetails:Rejected']
+      ❌ BusinessDetails:Rejected — manque : ['BusinessDetails:Entered', 'BusinessDetails:Accepted']
+      🚨 Nouvelles violations : 1
+   ⏱️  0.000s
+
+🟢 [NŒUD] : causal_verification
+   ↳ i=6 | A_i (1 états) : ['PayPalSystem:Requested']
+      (aucun état canonique activé par ce fait)
+   ⏱️  0.000s
+
+🟢 [NŒUD] : causal_verification
+   ↳ i=7 | A_i (1 états) : ['PayPalSystem:Requested']
+      Tentatives d'activation : ['CreditCardDetails:Accepted']
+      ❌ CreditCardDetails:Accepted — manque : ['CreditCardDetails:Entered', 'CreditCardDetails:Rejected']
+      🚨 Nouvelles violations : 1
+   ⏱️  0.000s
+
+🟢 [NŒUD] : causal_verification
+   ↳ i=8 | A_i (2 états) : ['PayPalSystem:Requested', 'PayPalSystem:ErrorGenerated']
+      Tentatives d'activation : ['PayPalSystem:ErrorGenerated']
+      ✅ PayPalSystem:ErrorGenerated — préconditions satisfaites
+   ⏱️  0.000s
+
+🟢 [NŒUD] : propagation
+   ↳ 20 états suspects après propagation :
+      🔴 Password:CreationFailed
+      🔴 BusinessDetails:Rejected
+      🔴 Account:Verified
+      🔴 Verification:Failed
+      🔴 CreditCardDetails:Entered
+      🔴 BusinessDetails:Entered
+      🔴 PersonalUser:Registered
+      🔴 Country:Rejected
+      🔴 BusinessDetails:Accepted
+      🔴 PersonalUser:RegistrationFailed
+      🔴 Account:CreationFailed
+      🔴 Verification:Sent
+      🔴 Country:Selected
+      🔴 Account:VerificationFailed
+      🔴 Account:Created
+      🔴 Verification:Accepted
+      🔴 Country:Accepted
+      🔴 CreditCardDetails:Accepted
+      🔴 CreditCardDetails:Rejected
+      🔴 Password:Created
+   ⏱️  0.000s
+
+🟢 [NŒUD] : aggregation
+   ↳ Score de conformité : 0.0588
+   ⏱️  0.000s
+
+🟢 [NŒUD] : explanation
+   ↳ Rapport d'explication généré.
+   ⏱️  0.000s
+
+============================================================
+📋 SCÉNARIO 9/9 : Scenario 9: PayPal System - Verification Not Accepted
+   11 triplets SPO
+============================================================
+
+🟢 [NŒUD] : intent_T
+   ↳ Intention T : The process is designed to facilitate the creation of a user account, ensuring that all necessary information is collected and verified to establish a secure and validated account, while also enforcing specific acceptance criteria for country, business, and payment details.
+   ⏱️  0.000s
+
+🟢 [NŒUD] : intent_F
+   ↳ Intention F : The process seems to be trying to validate and verify user information for a potential registration or application, ensuring that all necessary details are provided and accepted before proceeding.
+   ⏱️  0.000s
+
+🟢 [NŒUD] : universe_construction
+   ↳ 21 états canoniques construits.
+
+   📚 ÉTATS CANONIQUES (U) :
+      • Request:Submitted
+        └─ User submits account creation request
+      • Country:Selected
+        └─ User selects country from list
+      • Country:Accepted
+        └─ System accepts selected country
+      • Country:Rejected
+        └─ System rejects selected country
+      • BusinessDetails:Entered
+        └─ User enters business details
+      • BusinessDetails:Accepted
+        └─ System accepts business details
+      • BusinessDetails:Rejected
+        └─ System rejects business details
+      • CreditCardDetails:Entered
+        └─ User enters credit card details
+      • CreditCardDetails:Accepted
+        └─ System accepts credit card details
+      • CreditCardDetails:Rejected
+        └─ System rejects credit card details
+      • Account:Verified
+        └─ System verifies account
+      • Account:VerificationFailed
+        └─ Account verification fails
+      • Password:Created
+        └─ User creates account password
+      • Account:Created
+        └─ System creates account
+      • Notification:Generated
+        └─ System generates error notification
+      • PersonalInformation:Provided
+        └─ User provides personal information
+      • PersonalInformation:Accepted
+        └─ System accepts personal information
+      • PersonalInformation:Rejected
+        └─ System rejects personal information
+      • VerificationEmail:Sent
+        └─ System sends verification email
+      • Verification:Accepted
+        └─ System accepts verification
+      • Verification:Rejected
+        └─ System rejects verification
+   ⏱️  0.000s
+
+🟢 [NŒUD] : rules_extraction
+   ↳ Préconditions textuelles extraites pour 21 états.
+   ⏱️  0.000s
+Loading weights: 100%|███████████████████████████████████████████████████████████████████████████████████████████| 103/103 [00:00<00:00, 5699.38it/s]
+
+🟢 [NŒUD] : precondition_mapping
+   ↳ Mapping embedding terminé.
+
+   🔗 PRÉCONDITIONS MAPPÉES (Pre_mapped) :
+      • Request:Submitted  [état initial — aucune précondition]
+      • Country:Selected
+        └─ requires : Request:Submitted
+        └─ requires : Password:Created
+        └─ requires : Account:Created
+      • Country:Accepted
+        └─ requires : Country:Selected
+        └─ requires : Country:Rejected
+      • Country:Rejected
+        └─ requires : Country:Selected
+        └─ requires : Country:Accepted
+      • BusinessDetails:Entered
+        └─ requires : Country:Selected
+        └─ requires : Country:Accepted
+        └─ requires : Country:Rejected
+        └─ requires : PersonalInformation:Provided
+      • BusinessDetails:Accepted
+        └─ requires : BusinessDetails:Entered
+        └─ requires : PersonalInformation:Provided
+        └─ requires : BusinessDetails:Rejected
+      • BusinessDetails:Rejected
+        └─ requires : BusinessDetails:Entered
+        └─ requires : BusinessDetails:Accepted
+        └─ requires : PersonalInformation:Provided
+      • CreditCardDetails:Entered
+        └─ requires : BusinessDetails:Entered
+        └─ requires : BusinessDetails:Accepted
+        └─ requires : PersonalInformation:Provided
+        └─ requires : BusinessDetails:Rejected
+      • CreditCardDetails:Accepted
+        └─ requires : CreditCardDetails:Entered
+        └─ requires : CreditCardDetails:Rejected
+      • CreditCardDetails:Rejected
+        └─ requires : CreditCardDetails:Entered
+        └─ requires : CreditCardDetails:Accepted
+      • Account:Verified
+        └─ requires : CreditCardDetails:Entered
+        └─ requires : CreditCardDetails:Accepted
+        └─ requires : CreditCardDetails:Rejected
+      • Account:VerificationFailed
+        └─ requires : CreditCardDetails:Entered
+        └─ requires : CreditCardDetails:Accepted
+        └─ requires : CreditCardDetails:Rejected
+      • Password:Created
+        └─ requires : Account:Verified
+        └─ requires : Account:VerificationFailed
+        └─ requires : Verification:Accepted
+      • Account:Created
+        └─ requires : Password:Created
+        └─ requires : Account:Verified
+      • Notification:Generated  [état initial — aucune précondition]
+      • PersonalInformation:Provided
+        └─ requires : Country:Accepted
+        └─ requires : Country:Rejected
+      • PersonalInformation:Accepted
+        └─ requires : PersonalInformation:Provided
+        └─ requires : PersonalInformation:Rejected
+      • PersonalInformation:Rejected
+        └─ requires : PersonalInformation:Provided
+        └─ requires : PersonalInformation:Accepted
+      • VerificationEmail:Sent
+        └─ requires : CreditCardDetails:Entered
+        └─ requires : CreditCardDetails:Accepted
+        └─ requires : CreditCardDetails:Rejected
+      • Verification:Accepted
+        └─ requires : VerificationEmail:Sent
+      • Verification:Rejected
+        └─ requires : VerificationEmail:Sent
+        └─ requires : Verification:Accepted
+        └─ requires : Account:VerificationFailed
+   ⏱️  0.001s
+
+🟢 [NŒUD] : graph_construction
+   ↳ G_T : 49 arêtes causales.
+   ↳ Poids (degré sortant) :
+      • PersonalInformation:Provided → poids 6
+      • CreditCardDetails:Entered → poids 5
+      • CreditCardDetails:Rejected → poids 4
+      • CreditCardDetails:Accepted → poids 4
+      • Country:Selected → poids 3
+      • Country:Rejected → poids 3
+      • Country:Accepted → poids 3
+      • BusinessDetails:Entered → poids 3
+      • Password:Created → poids 2
+      • BusinessDetails:Rejected → poids 2
+      • BusinessDetails:Accepted → poids 2
+      • Account:Verified → poids 2
+      • Account:VerificationFailed → poids 2
+      • Verification:Accepted → poids 2
+      • VerificationEmail:Sent → poids 2
+      • Request:Submitted → poids 1
+      • Account:Created → poids 1
+      • PersonalInformation:Rejected → poids 1
+      • PersonalInformation:Accepted → poids 1
+   ⏱️  0.000s
+Loading weights: 100%|███████████████████████████████████████████████████████████████████████████████████████████| 103/103 [00:00<00:00, 7980.89it/s]
+
+🟢 [NŒUD] : projection
+   ↳ 11 faits projetés, 8 activent au moins un état canonique.
+   ⏱️  0.000s
+
+🟢 [NŒUD] : causal_verification
+   ↳ i=0 | A_i (0 états) : ∅
+      (aucun état canonique activé par ce fait)
+   ⏱️  0.000s
+
+🟢 [NŒUD] : causal_verification
+   ↳ i=1 | A_i (0 états) : ∅
+      (aucun état canonique activé par ce fait)
+   ⏱️  0.000s
+
+🟢 [NŒUD] : causal_verification
+   ↳ i=2 | A_i (0 états) : ∅
+      Tentatives d'activation : ['Country:Accepted', 'Country:Rejected']
+      ❌ Country:Accepted — manque : ['Country:Selected', 'Country:Rejected']
+      ❌ Country:Rejected — manque : ['Country:Selected', 'Country:Accepted']
+      🚨 Nouvelles violations : 2
+   ⏱️  0.000s
+
+🟢 [NŒUD] : causal_verification
+   ↳ i=3 | A_i (0 états) : ∅
+      Tentatives d'activation : ['PersonalInformation:Provided', 'PersonalInformation:Accepted', 'PersonalInformation:Rejected']
+      ❌ PersonalInformation:Provided — manque : ['Country:Accepted', 'Country:Rejected']
+      ❌ PersonalInformation:Accepted — manque : ['PersonalInformation:Provided', 'PersonalInformation:Rejected']
+      ❌ PersonalInformation:Rejected — manque : ['PersonalInformation:Provided', 'PersonalInformation:Accepted']
+      🚨 Nouvelles violations : 3
+   ⏱️  0.000s
+
+🟢 [NŒUD] : causal_verification
+   ↳ i=4 | A_i (0 états) : ∅
+      Tentatives d'activation : ['BusinessDetails:Accepted']
+      ❌ BusinessDetails:Accepted — manque : ['BusinessDetails:Entered', 'PersonalInformation:Provided', 'BusinessDetails:Rejected']
+      🚨 Nouvelles violations : 1
+   ⏱️  0.000s
+
+🟢 [NŒUD] : causal_verification
+   ↳ i=5 | A_i (0 états) : ∅
+      Tentatives d'activation : ['BusinessDetails:Accepted', 'BusinessDetails:Rejected']
+      ❌ BusinessDetails:Accepted — manque : ['BusinessDetails:Entered', 'PersonalInformation:Provided', 'BusinessDetails:Rejected']
+      ❌ BusinessDetails:Rejected — manque : ['BusinessDetails:Entered', 'BusinessDetails:Accepted', 'PersonalInformation:Provided']
+      🚨 Nouvelles violations : 1
+   ⏱️  0.000s
+
+🟢 [NŒUD] : causal_verification
+   ↳ i=6 | A_i (0 états) : ∅
+      (aucun état canonique activé par ce fait)
+   ⏱️  0.000s
+
+🟢 [NŒUD] : causal_verification
+   ↳ i=7 | A_i (0 états) : ∅
+      Tentatives d'activation : ['CreditCardDetails:Accepted']
+      ❌ CreditCardDetails:Accepted — manque : ['CreditCardDetails:Entered', 'CreditCardDetails:Rejected']
+      🚨 Nouvelles violations : 1
+   ⏱️  0.000s
+
+🟢 [NŒUD] : causal_verification
+   ↳ i=8 | A_i (0 états) : ∅
+      Tentatives d'activation : ['VerificationEmail:Sent', 'Verification:Accepted', 'Verification:Rejected']
+      ❌ VerificationEmail:Sent — manque : ['CreditCardDetails:Entered', 'CreditCardDetails:Accepted', 'CreditCardDetails:Rejected']
+      ❌ Verification:Accepted — manque : ['VerificationEmail:Sent']
+      ❌ Verification:Rejected — manque : ['VerificationEmail:Sent', 'Verification:Accepted', 'Account:VerificationFailed']
+      🚨 Nouvelles violations : 3
+   ⏱️  0.000s
+
+🟢 [NŒUD] : causal_verification
+   ↳ i=9 | A_i (0 états) : ∅
+      Tentatives d'activation : ['Verification:Accepted', 'Verification:Rejected']
+      ❌ Verification:Accepted — manque : ['VerificationEmail:Sent']
+      ❌ Verification:Rejected — manque : ['VerificationEmail:Sent', 'Verification:Accepted', 'Account:VerificationFailed']
+   ⏱️  0.000s
+
+🟢 [NŒUD] : causal_verification
+   ↳ i=10 | A_i (1 états) : ['Notification:Generated']
+      Tentatives d'activation : ['Notification:Generated']
+      ✅ Notification:Generated — préconditions satisfaites
+   ⏱️  0.000s
+
+🟢 [NŒUD] : propagation
+   ↳ 19 états suspects après propagation :
+      🔴 BusinessDetails:Rejected
+      🔴 Account:Verified
+      🔴 CreditCardDetails:Entered
+      🔴 BusinessDetails:Entered
+      🔴 Country:Rejected
+      🔴 BusinessDetails:Accepted
+      🔴 VerificationEmail:Sent
+      🔴 Country:Selected
+      🔴 Account:VerificationFailed
+      🔴 PersonalInformation:Provided
+      🔴 Account:Created
+      🔴 Verification:Accepted
+      🔴 Country:Accepted
+      🔴 PersonalInformation:Rejected
+      🔴 CreditCardDetails:Accepted
+      🔴 CreditCardDetails:Rejected
+      🔴 Password:Created
+      🔴 Verification:Rejected
+      🔴 PersonalInformation:Accepted
+   ⏱️  0.000s
+
+🟢 [NŒUD] : aggregation
+   ↳ Score de conformité : 0.0
+   ⏱️  0.000s
+
+🟢 [NŒUD] : explanation
+   ↳ Rapport d'explication généré.
+   ⏱️  0.000s
+
+============================================================
+🏆 SYNTHÈSE GLOBALE
+============================================================
+⏱️  Durée totale : 1891.40s
+
+📊 Score moyen de conformité : 0.0065
+────────────────────────────────────────────────────────────
+❌ [0.0] Scenario 1: Personal User - Successful Account Creation
+   Violations: 14 | États contaminés: 19
+❌ [0.0] Scenario 2: Personal User - Failed Account Creation
+   Violations: 11 | États contaminés: 18
+❌ [0.0] Scenario 3: Personal User - Failed Business Details Entry
+   Violations: 6 | États contaminés: 20
+❌ [0.0] Scenario 4: Personal User - Failed Credit Card Details Entry
+   Violations: 9 | États contaminés: 17
+❌ [0.0] Scenario 5: PayPal System - Country Not Accepted
+   Violations: 3 | États contaminés: 20
+❌ [0.0] Scenario 6: PayPal System - Successful Account Creation
+   Violations: 13 | États contaminés: 21
+❌ [0.0] Scenario 7: PayPal System - Business Details Not Accepted
+   Violations: 8 | États contaminés: 20
+❌ [0.0588] Scenario 8: PayPal System - Card Details Not Accepted
+   Violations: 5 | États contaminés: 20
+❌ [0.0] Scenario 9: PayPal System - Verification Not Accepted
+   Violations: 11 | États contaminés: 19
+
+💾 Rapport sauvegardé dans 'rapport_audit_final.json'
+(Intent_checking) yassineseidou@Yassines-Air intent_checking % 

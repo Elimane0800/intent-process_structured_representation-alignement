@@ -1,0 +1,1220 @@
+trace 5
+(Intent_checking) yassineseidou@Yassines-Air intent_checking % uv run main.py
+============================================================
+🚀 AGENT NEURO-SYMBOLIQUE — ARCHITECTURE DEUX PHASES
+============================================================
+✅ CSV chargé (1 lignes).
+
+📥 Norme T      : 2469 caractères
+📥 Scénarios F  : 9
+   • Scenario 1: Personal User - Successful Account Creation — 7 triplets
+   • Scenario 2: Personal User - Failed Account Creation — 7 triplets
+   • Scenario 3: Personal User - Failed Business Details Entry — 4 triplets
+   • Scenario 4: Personal User - Failed Credit Card Details Entry — 5 triplets
+   • Scenario 5: PayPal System - Country Not Accepted — 4 triplets
+   • Scenario 6: PayPal System - Successful Account Creation — 12 triplets
+   • Scenario 7: PayPal System - Business Details Not Accepted — 7 triplets
+   • Scenario 8: PayPal System - Card Details Not Accepted — 9 triplets
+   • Scenario 9: PayPal System - Verification Not Accepted — 11 triplets
+
+============================================================
+🏗️  PHASE 1 — CONSTRUCTION DE LA RÉFÉRENCE NORMATIVE (T)
+============================================================
+
+🟢 [NŒUD-T] : intent_T
+   ↳ Intention T : The process is meant to facilitate the creation of a user account, ensuring that all necessary information is collected and verified to establish a secure and validated account, and it exists to provide a standardized and controlled method for onboarding new users.
+
+🟢 [NŒUD-T] : universe_construction
+   ↳ 22 états canoniques construits.
+
+   📚 ÉTATS CANONIQUES (U) :
+      • Request:Submitted
+        └─ User submits account creation request
+      • Country:Selected
+        └─ User selects country from list
+      • Country:Accepted
+        └─ System accepts selected country
+      • Country:Rejected
+        └─ System rejects selected country
+      • BusinessDetails:Entered
+        └─ User enters business details
+      • BusinessDetails:Accepted
+        └─ System accepts business details
+      • BusinessDetails:Rejected
+        └─ System rejects business details
+      • CreditCardDetails:Entered
+        └─ User enters credit card details
+      • CreditCardDetails:Accepted
+        └─ System accepts credit card details
+      • CreditCardDetails:Rejected
+        └─ System rejects credit card details
+      • Account:Verified
+        └─ System verifies user account
+      • Account:VerificationFailed
+        └─ Account verification fails
+      • Password:Created
+        └─ User creates account password
+      • PersonalInformation:Entered
+        └─ User enters personal information
+      • PersonalInformation:Accepted
+        └─ System accepts personal information
+      • PersonalInformation:Rejected
+        └─ System rejects personal information
+      • VerificationEmail:Sent
+        └─ System sends verification email
+      • Verification:Accepted
+        └─ System accepts verification
+      • Verification:Failed
+        └─ Verification fails
+      • Account:Created
+        └─ System creates user account
+      • Account:CreationFailed
+        └─ Account creation fails
+      • ErrorNotification:Generated
+        └─ System generates error notification
+
+🟢 [NŒUD-T] : rules_extraction
+   ↳ Préconditions extraites pour 22 états.
+Loading weights: 100%|███████████████████████████████████████████████████████████████████████████████████████████| 103/103 [00:00<00:00, 5855.27it/s]
+
+🟢 [NŒUD-T] : precondition_mapping
+   ↳ Mapping embedding terminé.
+
+   🔗 PRÉCONDITIONS MAPPÉES (Pre_mapped) :
+      • Request:Submitted  [état initial — aucune précondition]
+      • Country:Selected
+        └─ requires : Request:Submitted
+        └─ requires : Password:Created
+        └─ requires : Account:Created
+      • Country:Accepted
+        └─ requires : Country:Selected
+      • Country:Rejected
+        └─ requires : Country:Selected
+        └─ requires : Country:Accepted
+      • BusinessDetails:Entered
+        └─ requires : Country:Selected
+        └─ requires : Country:Accepted
+        └─ requires : CreditCardDetails:Entered
+        └─ requires : PersonalInformation:Entered
+        └─ requires : PersonalInformation:Accepted
+      • BusinessDetails:Accepted
+        └─ requires : BusinessDetails:Entered
+        └─ requires : CreditCardDetails:Entered
+        └─ requires : CreditCardDetails:Accepted
+        └─ requires : PersonalInformation:Entered
+        └─ requires : PersonalInformation:Accepted
+      • BusinessDetails:Rejected
+        └─ requires : BusinessDetails:Entered
+        └─ requires : BusinessDetails:Accepted
+        └─ requires : CreditCardDetails:Entered
+        └─ requires : CreditCardDetails:Accepted
+        └─ requires : PersonalInformation:Entered
+        └─ requires : PersonalInformation:Accepted
+      • CreditCardDetails:Entered
+        └─ requires : BusinessDetails:Entered
+        └─ requires : BusinessDetails:Accepted
+        └─ requires : PersonalInformation:Entered
+        └─ requires : PersonalInformation:Accepted
+        └─ requires : CreditCardDetails:Accepted
+      • CreditCardDetails:Accepted
+        └─ requires : BusinessDetails:Entered
+        └─ requires : CreditCardDetails:Entered
+        └─ requires : PersonalInformation:Entered
+      • CreditCardDetails:Rejected
+        └─ requires : BusinessDetails:Entered
+        └─ requires : CreditCardDetails:Entered
+        └─ requires : CreditCardDetails:Accepted
+        └─ requires : PersonalInformation:Entered
+      • Account:Verified
+        └─ requires : BusinessDetails:Entered
+        └─ requires : CreditCardDetails:Entered
+        └─ requires : CreditCardDetails:Accepted
+        └─ requires : PersonalInformation:Entered
+        └─ requires : Account:VerificationFailed
+        └─ requires : VerificationEmail:Sent
+        └─ requires : Verification:Accepted
+      • Account:VerificationFailed
+        └─ requires : VerificationEmail:Sent
+        └─ requires : Verification:Accepted
+      • Password:Created
+        └─ requires : Request:Submitted
+        └─ requires : Account:Verified
+        └─ requires : Account:Created
+        └─ requires : Verification:Accepted
+      • PersonalInformation:Entered
+        └─ requires : Country:Selected
+        └─ requires : Country:Accepted
+      • PersonalInformation:Accepted
+        └─ requires : BusinessDetails:Entered
+        └─ requires : BusinessDetails:Accepted
+        └─ requires : CreditCardDetails:Entered
+        └─ requires : PersonalInformation:Entered
+      • PersonalInformation:Rejected
+        └─ requires : BusinessDetails:Entered
+        └─ requires : BusinessDetails:Accepted
+        └─ requires : CreditCardDetails:Entered
+        └─ requires : PersonalInformation:Entered
+        └─ requires : PersonalInformation:Accepted
+      • VerificationEmail:Sent
+        └─ requires : BusinessDetails:Entered
+        └─ requires : CreditCardDetails:Entered
+        └─ requires : CreditCardDetails:Accepted
+        └─ requires : PersonalInformation:Entered
+      • Verification:Accepted
+        └─ requires : Account:VerificationFailed
+        └─ requires : VerificationEmail:Sent
+        └─ requires : Verification:Failed
+      • Verification:Failed
+        └─ requires : Account:VerificationFailed
+        └─ requires : VerificationEmail:Sent
+        └─ requires : Verification:Accepted
+      • Account:Created
+        └─ requires : Request:Submitted
+        └─ requires : Account:Verified
+        └─ requires : Password:Created
+        └─ requires : Verification:Accepted
+      • Account:CreationFailed
+        └─ requires : Account:Verified
+        └─ requires : Verification:Accepted
+        └─ requires : VerificationEmail:Sent
+        └─ requires : ErrorNotification:Generated
+      • ErrorNotification:Generated
+        └─ requires : Account:Verified
+        └─ requires : Verification:Accepted
+        └─ requires : Country:Selected
+        └─ requires : Country:Accepted
+        └─ requires : BusinessDetails:Accepted
+        └─ requires : CreditCardDetails:Entered
+        └─ requires : CreditCardDetails:Accepted
+        └─ requires : PersonalInformation:Rejected
+        └─ requires : VerificationEmail:Sent
+
+🟢 [NŒUD-T] : graph_construction
+   ↳ G_T : 85 arêtes causales.
+   ↳ Poids critiques :
+      • CreditCardDetails:Entered → 10
+      • PersonalInformation:Entered → 10
+      • BusinessDetails:Entered → 9
+      • CreditCardDetails:Accepted → 7
+      • Verification:Accepted → 7
+      • VerificationEmail:Sent → 6
+      • Country:Selected → 5
+      • PersonalInformation:Accepted → 5
+
+⏱️  Phase T terminée en 113.6s
+
+============================================================
+📋 SCÉNARIO 1/9 : Scenario 1: Personal User - Successful Account Creation
+   7 triplets SPO
+============================================================
+
+🟢 [NŒUD-F] : intent_F
+   ↳ Intention F : The process seems to be trying to register a new user and set up their account by collecting necessary information and verifying their identity.
+Loading weights: 100%|███████████████████████████████████████████████████████████████████████████████████████████| 103/103 [00:00<00:00, 9050.05it/s]
+
+🟢 [NŒUD-F] : projection
+   ↳ 7 faits projetés, 7 activent au moins un état.
+
+🟢 [NŒUD-F] : causal_verification
+   ↳ i=0 | A_i (0) : ∅
+      ❌ Country:Selected — manque : ['Account:Created', 'Password:Created', 'Request:Submitted']
+      ❌ Country:Accepted — manque : ['Country:Selected']
+      ❌ Country:Rejected — manque : ['Country:Accepted', 'Country:Selected']
+      🚨 3 nouvelle(s) violation(s)
+
+🟢 [NŒUD-F] : causal_verification
+   ↳ i=1 | A_i (1) : ['Request:Submitted']
+      ✅ Request:Submitted
+      ❌ BusinessDetails:Entered — manque : ['Country:Accepted', 'Country:Selected', 'CreditCardDetails:Entered', 'PersonalInformation:Accepted', 'PersonalInformation:Entered']
+      ❌ BusinessDetails:Accepted — manque : ['BusinessDetails:Entered', 'CreditCardDetails:Accepted', 'CreditCardDetails:Entered', 'PersonalInformation:Accepted', 'PersonalInformation:Entered']
+      ❌ Account:Verified — manque : ['Account:VerificationFailed', 'BusinessDetails:Entered', 'CreditCardDetails:Accepted', 'CreditCardDetails:Entered', 'PersonalInformation:Entered', 'Verification:Accepted', 'VerificationEmail:Sent']
+      ❌ PersonalInformation:Entered — manque : ['Country:Accepted', 'Country:Selected']
+      ❌ PersonalInformation:Accepted — manque : ['BusinessDetails:Accepted', 'BusinessDetails:Entered', 'CreditCardDetails:Entered', 'PersonalInformation:Entered']
+      ❌ PersonalInformation:Rejected — manque : ['BusinessDetails:Accepted', 'BusinessDetails:Entered', 'CreditCardDetails:Entered', 'PersonalInformation:Accepted', 'PersonalInformation:Entered']
+      ❌ Account:Created — manque : ['Account:Verified', 'Password:Created', 'Verification:Accepted']
+      🚨 7 nouvelle(s) violation(s)
+
+🟢 [NŒUD-F] : causal_verification
+   ↳ i=2 | A_i (1) : ['Request:Submitted']
+      ❌ BusinessDetails:Entered — manque : ['Country:Accepted', 'Country:Selected', 'CreditCardDetails:Entered', 'PersonalInformation:Accepted', 'PersonalInformation:Entered']
+      ❌ BusinessDetails:Accepted — manque : ['BusinessDetails:Entered', 'CreditCardDetails:Accepted', 'CreditCardDetails:Entered', 'PersonalInformation:Accepted', 'PersonalInformation:Entered']
+      ❌ BusinessDetails:Rejected — manque : ['BusinessDetails:Accepted', 'BusinessDetails:Entered', 'CreditCardDetails:Accepted', 'CreditCardDetails:Entered', 'PersonalInformation:Accepted', 'PersonalInformation:Entered']
+      ❌ CreditCardDetails:Entered — manque : ['BusinessDetails:Accepted', 'BusinessDetails:Entered', 'CreditCardDetails:Accepted', 'PersonalInformation:Accepted', 'PersonalInformation:Entered']
+      ❌ PersonalInformation:Entered — manque : ['Country:Accepted', 'Country:Selected']
+      ❌ PersonalInformation:Accepted — manque : ['BusinessDetails:Accepted', 'BusinessDetails:Entered', 'CreditCardDetails:Entered', 'PersonalInformation:Entered']
+      🚨 2 nouvelle(s) violation(s)
+
+🟢 [NŒUD-F] : causal_verification
+   ↳ i=3 | A_i (1) : ['Request:Submitted']
+      ❌ BusinessDetails:Entered — manque : ['Country:Accepted', 'Country:Selected', 'CreditCardDetails:Entered', 'PersonalInformation:Accepted', 'PersonalInformation:Entered']
+      ❌ CreditCardDetails:Entered — manque : ['BusinessDetails:Accepted', 'BusinessDetails:Entered', 'CreditCardDetails:Accepted', 'PersonalInformation:Accepted', 'PersonalInformation:Entered']
+      ❌ CreditCardDetails:Accepted — manque : ['BusinessDetails:Entered', 'CreditCardDetails:Entered', 'PersonalInformation:Entered']
+      ❌ CreditCardDetails:Rejected — manque : ['BusinessDetails:Entered', 'CreditCardDetails:Accepted', 'CreditCardDetails:Entered', 'PersonalInformation:Entered']
+      ❌ PersonalInformation:Entered — manque : ['Country:Accepted', 'Country:Selected']
+      🚨 2 nouvelle(s) violation(s)
+
+🟢 [NŒUD-F] : causal_verification
+   ↳ i=4 | A_i (1) : ['Request:Submitted']
+      ❌ Account:Verified — manque : ['Account:VerificationFailed', 'BusinessDetails:Entered', 'CreditCardDetails:Accepted', 'CreditCardDetails:Entered', 'PersonalInformation:Entered', 'Verification:Accepted', 'VerificationEmail:Sent']
+      ❌ Account:VerificationFailed — manque : ['Verification:Accepted', 'VerificationEmail:Sent']
+      ❌ VerificationEmail:Sent — manque : ['BusinessDetails:Entered', 'CreditCardDetails:Accepted', 'CreditCardDetails:Entered', 'PersonalInformation:Entered']
+      ❌ Verification:Accepted — manque : ['Account:VerificationFailed', 'Verification:Failed', 'VerificationEmail:Sent']
+      ❌ Verification:Failed — manque : ['Account:VerificationFailed', 'Verification:Accepted', 'VerificationEmail:Sent']
+      ❌ Account:Created — manque : ['Account:Verified', 'Password:Created', 'Verification:Accepted']
+      🚨 4 nouvelle(s) violation(s)
+
+🟢 [NŒUD-F] : causal_verification
+   ↳ i=5 | A_i (1) : ['Request:Submitted']
+      ✅ Request:Submitted
+      ❌ Account:Verified — manque : ['Account:VerificationFailed', 'BusinessDetails:Entered', 'CreditCardDetails:Accepted', 'CreditCardDetails:Entered', 'PersonalInformation:Entered', 'Verification:Accepted', 'VerificationEmail:Sent']
+      ❌ Account:VerificationFailed — manque : ['Verification:Accepted', 'VerificationEmail:Sent']
+      ❌ Password:Created — manque : ['Account:Created', 'Account:Verified', 'Verification:Accepted']
+      ❌ Account:Created — manque : ['Account:Verified', 'Password:Created', 'Verification:Accepted']
+      🚨 1 nouvelle(s) violation(s)
+
+🟢 [NŒUD-F] : causal_verification
+   ↳ i=6 | A_i (1) : ['Request:Submitted']
+      ✅ Request:Submitted
+      ❌ Account:Verified — manque : ['Account:VerificationFailed', 'BusinessDetails:Entered', 'CreditCardDetails:Accepted', 'CreditCardDetails:Entered', 'PersonalInformation:Entered', 'Verification:Accepted', 'VerificationEmail:Sent']
+      ❌ Password:Created — manque : ['Account:Created', 'Account:Verified', 'Verification:Accepted']
+      ❌ PersonalInformation:Entered — manque : ['Country:Accepted', 'Country:Selected']
+      ❌ Account:Created — manque : ['Account:Verified', 'Password:Created', 'Verification:Accepted']
+      ❌ Account:CreationFailed — manque : ['Account:Verified', 'ErrorNotification:Generated', 'Verification:Accepted', 'VerificationEmail:Sent']
+      🚨 1 nouvelle(s) violation(s)
+
+🟢 [NŒUD-F] : propagation
+   ↳ 21 états suspects après propagation.
+      🔴 BusinessDetails:Rejected
+      🔴 Password:Created
+      🔴 CreditCardDetails:Rejected
+      🔴 CreditCardDetails:Entered
+      🔴 PersonalInformation:Entered
+      🔴 VerificationEmail:Sent
+      🔴 CreditCardDetails:Accepted
+      🔴 Country:Accepted
+      🔴 ErrorNotification:Generated
+      🔴 Country:Selected
+      🔴 Verification:Accepted
+      🔴 Account:Created
+      🔴 Country:Rejected
+      🔴 Account:Verified
+      🔴 Account:CreationFailed
+      🔴 PersonalInformation:Accepted
+      🔴 Account:VerificationFailed
+      🔴 PersonalInformation:Rejected
+      🔴 BusinessDetails:Accepted
+      🔴 BusinessDetails:Entered
+      🔴 Verification:Failed
+
+🟢 [NŒUD-F] : aggregation
+   ↳ Score : 0.0497
+
+🟢 [NŒUD-F] : explanation
+   ↳ Rapport généré.
+
+⏱️  Scénario 1 terminé en 62.8s
+
+============================================================
+📋 SCÉNARIO 2/9 : Scenario 2: Personal User - Failed Account Creation
+   7 triplets SPO
+============================================================
+
+🟢 [NŒUD-F] : intent_F
+   ↳ Intention F : The process seems to be trying to facilitate user registration or account creation, while ensuring the security and verification of user information.
+Loading weights: 100%|███████████████████████████████████████████████████████████████████████████████████████████| 103/103 [00:00<00:00, 5200.22it/s]
+
+🟢 [NŒUD-F] : projection
+   ↳ 7 faits projetés, 7 activent au moins un état.
+
+🟢 [NŒUD-F] : causal_verification
+   ↳ i=0 | A_i (0) : ∅
+      ❌ Country:Selected — manque : ['Account:Created', 'Password:Created', 'Request:Submitted']
+      ❌ Country:Accepted — manque : ['Country:Selected']
+      ❌ Country:Rejected — manque : ['Country:Accepted', 'Country:Selected']
+      🚨 3 nouvelle(s) violation(s)
+
+🟢 [NŒUD-F] : causal_verification
+   ↳ i=1 | A_i (1) : ['Request:Submitted']
+      ✅ Request:Submitted
+      ❌ BusinessDetails:Entered — manque : ['Country:Accepted', 'Country:Selected', 'CreditCardDetails:Entered', 'PersonalInformation:Accepted', 'PersonalInformation:Entered']
+      ❌ BusinessDetails:Accepted — manque : ['BusinessDetails:Entered', 'CreditCardDetails:Accepted', 'CreditCardDetails:Entered', 'PersonalInformation:Accepted', 'PersonalInformation:Entered']
+      ❌ Account:Verified — manque : ['Account:VerificationFailed', 'BusinessDetails:Entered', 'CreditCardDetails:Accepted', 'CreditCardDetails:Entered', 'PersonalInformation:Entered', 'Verification:Accepted', 'VerificationEmail:Sent']
+      ❌ PersonalInformation:Entered — manque : ['Country:Accepted', 'Country:Selected']
+      ❌ PersonalInformation:Accepted — manque : ['BusinessDetails:Accepted', 'BusinessDetails:Entered', 'CreditCardDetails:Entered', 'PersonalInformation:Entered']
+      ❌ PersonalInformation:Rejected — manque : ['BusinessDetails:Accepted', 'BusinessDetails:Entered', 'CreditCardDetails:Entered', 'PersonalInformation:Accepted', 'PersonalInformation:Entered']
+      ❌ Account:Created — manque : ['Account:Verified', 'Password:Created', 'Verification:Accepted']
+      🚨 7 nouvelle(s) violation(s)
+
+🟢 [NŒUD-F] : causal_verification
+   ↳ i=2 | A_i (1) : ['Request:Submitted']
+      ❌ BusinessDetails:Entered — manque : ['Country:Accepted', 'Country:Selected', 'CreditCardDetails:Entered', 'PersonalInformation:Accepted', 'PersonalInformation:Entered']
+      ❌ BusinessDetails:Accepted — manque : ['BusinessDetails:Entered', 'CreditCardDetails:Accepted', 'CreditCardDetails:Entered', 'PersonalInformation:Accepted', 'PersonalInformation:Entered']
+      ❌ BusinessDetails:Rejected — manque : ['BusinessDetails:Accepted', 'BusinessDetails:Entered', 'CreditCardDetails:Accepted', 'CreditCardDetails:Entered', 'PersonalInformation:Accepted', 'PersonalInformation:Entered']
+      ❌ CreditCardDetails:Entered — manque : ['BusinessDetails:Accepted', 'BusinessDetails:Entered', 'CreditCardDetails:Accepted', 'PersonalInformation:Accepted', 'PersonalInformation:Entered']
+      ❌ PersonalInformation:Entered — manque : ['Country:Accepted', 'Country:Selected']
+      ❌ PersonalInformation:Accepted — manque : ['BusinessDetails:Accepted', 'BusinessDetails:Entered', 'CreditCardDetails:Entered', 'PersonalInformation:Entered']
+      🚨 2 nouvelle(s) violation(s)
+
+🟢 [NŒUD-F] : causal_verification
+   ↳ i=3 | A_i (1) : ['Request:Submitted']
+      ❌ BusinessDetails:Entered — manque : ['Country:Accepted', 'Country:Selected', 'CreditCardDetails:Entered', 'PersonalInformation:Accepted', 'PersonalInformation:Entered']
+      ❌ CreditCardDetails:Entered — manque : ['BusinessDetails:Accepted', 'BusinessDetails:Entered', 'CreditCardDetails:Accepted', 'PersonalInformation:Accepted', 'PersonalInformation:Entered']
+      ❌ CreditCardDetails:Accepted — manque : ['BusinessDetails:Entered', 'CreditCardDetails:Entered', 'PersonalInformation:Entered']
+      ❌ CreditCardDetails:Rejected — manque : ['BusinessDetails:Entered', 'CreditCardDetails:Accepted', 'CreditCardDetails:Entered', 'PersonalInformation:Entered']
+      ❌ PersonalInformation:Entered — manque : ['Country:Accepted', 'Country:Selected']
+      🚨 2 nouvelle(s) violation(s)
+
+🟢 [NŒUD-F] : causal_verification
+   ↳ i=4 | A_i (1) : ['Request:Submitted']
+      ❌ Account:Verified — manque : ['Account:VerificationFailed', 'BusinessDetails:Entered', 'CreditCardDetails:Accepted', 'CreditCardDetails:Entered', 'PersonalInformation:Entered', 'Verification:Accepted', 'VerificationEmail:Sent']
+      ❌ Account:VerificationFailed — manque : ['Verification:Accepted', 'VerificationEmail:Sent']
+      ❌ VerificationEmail:Sent — manque : ['BusinessDetails:Entered', 'CreditCardDetails:Accepted', 'CreditCardDetails:Entered', 'PersonalInformation:Entered']
+      ❌ Verification:Accepted — manque : ['Account:VerificationFailed', 'Verification:Failed', 'VerificationEmail:Sent']
+      ❌ Verification:Failed — manque : ['Account:VerificationFailed', 'Verification:Accepted', 'VerificationEmail:Sent']
+      ❌ Account:Created — manque : ['Account:Verified', 'Password:Created', 'Verification:Accepted']
+      🚨 4 nouvelle(s) violation(s)
+
+🟢 [NŒUD-F] : causal_verification
+   ↳ i=5 | A_i (1) : ['Request:Submitted']
+      ✅ Request:Submitted
+      ❌ Account:Verified — manque : ['Account:VerificationFailed', 'BusinessDetails:Entered', 'CreditCardDetails:Accepted', 'CreditCardDetails:Entered', 'PersonalInformation:Entered', 'Verification:Accepted', 'VerificationEmail:Sent']
+      ❌ Account:VerificationFailed — manque : ['Verification:Accepted', 'VerificationEmail:Sent']
+      ❌ Password:Created — manque : ['Account:Created', 'Account:Verified', 'Verification:Accepted']
+      ❌ Verification:Accepted — manque : ['Account:VerificationFailed', 'Verification:Failed', 'VerificationEmail:Sent']
+      ❌ Verification:Failed — manque : ['Account:VerificationFailed', 'Verification:Accepted', 'VerificationEmail:Sent']
+      ❌ Account:Created — manque : ['Account:Verified', 'Password:Created', 'Verification:Accepted']
+      ❌ Account:CreationFailed — manque : ['Account:Verified', 'ErrorNotification:Generated', 'Verification:Accepted', 'VerificationEmail:Sent']
+      🚨 2 nouvelle(s) violation(s)
+
+🟢 [NŒUD-F] : causal_verification
+   ↳ i=6 | A_i (1) : ['Request:Submitted']
+      ❌ VerificationEmail:Sent — manque : ['BusinessDetails:Entered', 'CreditCardDetails:Accepted', 'CreditCardDetails:Entered', 'PersonalInformation:Entered']
+      ❌ Verification:Accepted — manque : ['Account:VerificationFailed', 'Verification:Failed', 'VerificationEmail:Sent']
+      ❌ Verification:Failed — manque : ['Account:VerificationFailed', 'Verification:Accepted', 'VerificationEmail:Sent']
+      ❌ ErrorNotification:Generated — manque : ['Account:Verified', 'BusinessDetails:Accepted', 'Country:Accepted', 'Country:Selected', 'CreditCardDetails:Accepted', 'CreditCardDetails:Entered', 'PersonalInformation:Rejected', 'Verification:Accepted', 'VerificationEmail:Sent']
+      🚨 1 nouvelle(s) violation(s)
+
+🟢 [NŒUD-F] : propagation
+   ↳ 21 états suspects après propagation.
+      🔴 BusinessDetails:Rejected
+      🔴 Password:Created
+      🔴 CreditCardDetails:Rejected
+      🔴 CreditCardDetails:Entered
+      🔴 PersonalInformation:Entered
+      🔴 VerificationEmail:Sent
+      🔴 CreditCardDetails:Accepted
+      🔴 Country:Accepted
+      🔴 ErrorNotification:Generated
+      🔴 Country:Selected
+      🔴 Verification:Accepted
+      🔴 Account:Created
+      🔴 Country:Rejected
+      🔴 Account:Verified
+      🔴 Account:CreationFailed
+      🔴 PersonalInformation:Accepted
+      🔴 Account:VerificationFailed
+      🔴 PersonalInformation:Rejected
+      🔴 BusinessDetails:Accepted
+      🔴 BusinessDetails:Entered
+      🔴 Verification:Failed
+
+🟢 [NŒUD-F] : aggregation
+   ↳ Score : 0.0328
+🟢 [NŒUD-F] : explanation
+   ↳ Rapport généré.
+
+⏱️  Scénario 2 terminé en 67.5s
+
+============================================================
+📋 SCÉNARIO 3/9 : Scenario 3: Personal User - Failed Business Details Entry
+   4 triplets SPO
+============================================================
+
+🟢 [NŒUD-F] : intent_F
+   ↳ Intention F : The process seems to be trying to collect user information, including country and additional details, and handle potential errors or failures during the data entry process, likely for registration or account setup purposes.
+Loading weights: 100%|███████████████████████████████████████████████████████████████████████████████████████████| 103/103 [00:00<00:00, 6062.75it/s]
+
+🟢 [NŒUD-F] : projection
+   ↳ 4 faits projetés, 4 activent au moins un état.
+
+🟢 [NŒUD-F] : causal_verification
+   ↳ i=0 | A_i (0) : ∅
+      ❌ Country:Selected — manque : ['Account:Created', 'Password:Created', 'Request:Submitted']
+      ❌ Country:Accepted — manque : ['Country:Selected']
+      ❌ Country:Rejected — manque : ['Country:Accepted', 'Country:Selected']
+      🚨 3 nouvelle(s) violation(s)
+
+🟢 [NŒUD-F] : causal_verification
+   ↳ i=1 | A_i (1) : ['Request:Submitted']
+      ✅ Request:Submitted
+      ❌ BusinessDetails:Entered — manque : ['Country:Accepted', 'Country:Selected', 'CreditCardDetails:Entered', 'PersonalInformation:Accepted', 'PersonalInformation:Entered']
+      ❌ BusinessDetails:Accepted — manque : ['BusinessDetails:Entered', 'CreditCardDetails:Accepted', 'CreditCardDetails:Entered', 'PersonalInformation:Accepted', 'PersonalInformation:Entered']
+      ❌ Account:Verified — manque : ['Account:VerificationFailed', 'BusinessDetails:Entered', 'CreditCardDetails:Accepted', 'CreditCardDetails:Entered', 'PersonalInformation:Entered', 'Verification:Accepted', 'VerificationEmail:Sent']
+      ❌ PersonalInformation:Entered — manque : ['Country:Accepted', 'Country:Selected']
+      ❌ PersonalInformation:Accepted — manque : ['BusinessDetails:Accepted', 'BusinessDetails:Entered', 'CreditCardDetails:Entered', 'PersonalInformation:Entered']
+      ❌ PersonalInformation:Rejected — manque : ['BusinessDetails:Accepted', 'BusinessDetails:Entered', 'CreditCardDetails:Entered', 'PersonalInformation:Accepted', 'PersonalInformation:Entered']
+      ❌ Account:Created — manque : ['Account:Verified', 'Password:Created', 'Verification:Accepted']
+      🚨 7 nouvelle(s) violation(s)
+
+🟢 [NŒUD-F] : causal_verification
+   ↳ i=2 | A_i (1) : ['Request:Submitted']
+      ❌ BusinessDetails:Entered — manque : ['Country:Accepted', 'Country:Selected', 'CreditCardDetails:Entered', 'PersonalInformation:Accepted', 'PersonalInformation:Entered']
+      ❌ BusinessDetails:Accepted — manque : ['BusinessDetails:Entered', 'CreditCardDetails:Accepted', 'CreditCardDetails:Entered', 'PersonalInformation:Accepted', 'PersonalInformation:Entered']
+      ❌ BusinessDetails:Rejected — manque : ['BusinessDetails:Accepted', 'BusinessDetails:Entered', 'CreditCardDetails:Accepted', 'CreditCardDetails:Entered', 'PersonalInformation:Accepted', 'PersonalInformation:Entered']
+      ❌ PersonalInformation:Rejected — manque : ['BusinessDetails:Accepted', 'BusinessDetails:Entered', 'CreditCardDetails:Entered', 'PersonalInformation:Accepted', 'PersonalInformation:Entered']
+      🚨 1 nouvelle(s) violation(s)
+
+🟢 [NŒUD-F] : causal_verification
+   ↳ i=3 | A_i (1) : ['Request:Submitted']
+      ❌ VerificationEmail:Sent — manque : ['BusinessDetails:Entered', 'CreditCardDetails:Accepted', 'CreditCardDetails:Entered', 'PersonalInformation:Entered']
+      ❌ Verification:Accepted — manque : ['Account:VerificationFailed', 'Verification:Failed', 'VerificationEmail:Sent']
+      ❌ Verification:Failed — manque : ['Account:VerificationFailed', 'Verification:Accepted', 'VerificationEmail:Sent']
+      ❌ ErrorNotification:Generated — manque : ['Account:Verified', 'BusinessDetails:Accepted', 'Country:Accepted', 'Country:Selected', 'CreditCardDetails:Accepted', 'CreditCardDetails:Entered', 'PersonalInformation:Rejected', 'Verification:Accepted', 'VerificationEmail:Sent']
+      🚨 4 nouvelle(s) violation(s)
+
+🟢 [NŒUD-F] : propagation
+   ↳ 21 états suspects après propagation.
+      🔴 BusinessDetails:Rejected
+      🔴 Password:Created
+      🔴 CreditCardDetails:Rejected
+      🔴 CreditCardDetails:Entered
+      🔴 PersonalInformation:Entered
+      🔴 VerificationEmail:Sent
+      🔴 CreditCardDetails:Accepted
+      🔴 Country:Accepted
+      🔴 ErrorNotification:Generated
+      🔴 Country:Selected
+      🔴 Verification:Accepted
+      🔴 Account:Created
+      🔴 Account:Verified
+      🔴 Country:Rejected
+      🔴 Account:CreationFailed
+      🔴 PersonalInformation:Accepted
+      🔴 Account:VerificationFailed
+      🔴 PersonalInformation:Rejected
+      🔴 BusinessDetails:Accepted
+      🔴 BusinessDetails:Entered
+      🔴 Verification:Failed
+
+🟢 [NŒUD-F] : aggregation
+   ↳ Score : 0.0385
+
+🟢 [NŒUD-F] : explanation
+   ↳ Rapport généré.
+
+⏱️  Scénario 3 terminé en 48.9s
+
+============================================================
+📋 SCÉNARIO 4/9 : Scenario 4: Personal User - Failed Credit Card Details Entry
+   5 triplets SPO
+============================================================
+
+🟢 [NŒUD-F] : intent_F
+   ↳ Intention F : The process seems to be trying to collect user and business information for a potential transaction, handling errors and user input issues along the way.
+Loading weights: 100%|███████████████████████████████████████████████████████████████████████████████████████████| 103/103 [00:00<00:00, 4673.60it/s]
+
+🟢 [NŒUD-F] : projection
+   ↳ 5 faits projetés, 5 activent au moins un état.
+
+🟢 [NŒUD-F] : causal_verification
+   ↳ i=0 | A_i (0) : ∅
+      ❌ Country:Selected — manque : ['Account:Created', 'Password:Created', 'Request:Submitted']
+      ❌ Country:Accepted — manque : ['Country:Selected']
+      ❌ Country:Rejected — manque : ['Country:Accepted', 'Country:Selected']
+      🚨 3 nouvelle(s) violation(s)
+
+🟢 [NŒUD-F] : causal_verification
+   ↳ i=1 | A_i (1) : ['Request:Submitted']
+      ✅ Request:Submitted
+      ❌ BusinessDetails:Entered — manque : ['Country:Accepted', 'Country:Selected', 'CreditCardDetails:Entered', 'PersonalInformation:Accepted', 'PersonalInformation:Entered']
+      ❌ BusinessDetails:Accepted — manque : ['BusinessDetails:Entered', 'CreditCardDetails:Accepted', 'CreditCardDetails:Entered', 'PersonalInformation:Accepted', 'PersonalInformation:Entered']
+      ❌ Account:Verified — manque : ['Account:VerificationFailed', 'BusinessDetails:Entered', 'CreditCardDetails:Accepted', 'CreditCardDetails:Entered', 'PersonalInformation:Entered', 'Verification:Accepted', 'VerificationEmail:Sent']
+      ❌ PersonalInformation:Entered — manque : ['Country:Accepted', 'Country:Selected']
+      ❌ PersonalInformation:Accepted — manque : ['BusinessDetails:Accepted', 'BusinessDetails:Entered', 'CreditCardDetails:Entered', 'PersonalInformation:Entered']
+      ❌ PersonalInformation:Rejected — manque : ['BusinessDetails:Accepted', 'BusinessDetails:Entered', 'CreditCardDetails:Entered', 'PersonalInformation:Accepted', 'PersonalInformation:Entered']
+      ❌ Account:Created — manque : ['Account:Verified', 'Password:Created', 'Verification:Accepted']
+      🚨 7 nouvelle(s) violation(s)
+
+🟢 [NŒUD-F] : causal_verification
+   ↳ i=2 | A_i (1) : ['Request:Submitted']
+      ❌ BusinessDetails:Entered — manque : ['Country:Accepted', 'Country:Selected', 'CreditCardDetails:Entered', 'PersonalInformation:Accepted', 'PersonalInformation:Entered']
+      ❌ BusinessDetails:Accepted — manque : ['BusinessDetails:Entered', 'CreditCardDetails:Accepted', 'CreditCardDetails:Entered', 'PersonalInformation:Accepted', 'PersonalInformation:Entered']
+      ❌ BusinessDetails:Rejected — manque : ['BusinessDetails:Accepted', 'BusinessDetails:Entered', 'CreditCardDetails:Accepted', 'CreditCardDetails:Entered', 'PersonalInformation:Accepted', 'PersonalInformation:Entered']
+      ❌ CreditCardDetails:Entered — manque : ['BusinessDetails:Accepted', 'BusinessDetails:Entered', 'CreditCardDetails:Accepted', 'PersonalInformation:Accepted', 'PersonalInformation:Entered']
+      ❌ PersonalInformation:Entered — manque : ['Country:Accepted', 'Country:Selected']
+      ❌ PersonalInformation:Accepted — manque : ['BusinessDetails:Accepted', 'BusinessDetails:Entered', 'CreditCardDetails:Entered', 'PersonalInformation:Entered']
+      🚨 2 nouvelle(s) violation(s)
+
+🟢 [NŒUD-F] : causal_verification
+   ↳ i=3 | A_i (1) : ['Request:Submitted']
+      ❌ CreditCardDetails:Entered — manque : ['BusinessDetails:Accepted', 'BusinessDetails:Entered', 'CreditCardDetails:Accepted', 'PersonalInformation:Accepted', 'PersonalInformation:Entered']
+      ❌ CreditCardDetails:Accepted — manque : ['BusinessDetails:Entered', 'CreditCardDetails:Entered', 'PersonalInformation:Entered']
+      ❌ CreditCardDetails:Rejected — manque : ['BusinessDetails:Entered', 'CreditCardDetails:Accepted', 'CreditCardDetails:Entered', 'PersonalInformation:Entered']
+      ❌ Account:VerificationFailed — manque : ['Verification:Accepted', 'VerificationEmail:Sent']
+      🚨 3 nouvelle(s) violation(s)
+
+🟢 [NŒUD-F] : causal_verification
+   ↳ i=4 | A_i (1) : ['Request:Submitted']
+      ❌ VerificationEmail:Sent — manque : ['BusinessDetails:Entered', 'CreditCardDetails:Accepted', 'CreditCardDetails:Entered', 'PersonalInformation:Entered']
+      ❌ Verification:Accepted — manque : ['Account:VerificationFailed', 'Verification:Failed', 'VerificationEmail:Sent']
+      ❌ Verification:Failed — manque : ['Account:VerificationFailed', 'Verification:Accepted', 'VerificationEmail:Sent']
+      ❌ ErrorNotification:Generated — manque : ['Account:Verified', 'BusinessDetails:Accepted', 'Country:Accepted', 'Country:Selected', 'CreditCardDetails:Accepted', 'CreditCardDetails:Entered', 'PersonalInformation:Rejected', 'Verification:Accepted', 'VerificationEmail:Sent']
+      🚨 4 nouvelle(s) violation(s)
+
+🟢 [NŒUD-F] : propagation
+   ↳ 21 états suspects après propagation.
+      🔴 BusinessDetails:Rejected
+      🔴 Password:Created
+      🔴 CreditCardDetails:Rejected
+      🔴 CreditCardDetails:Entered
+      🔴 PersonalInformation:Entered
+      🔴 VerificationEmail:Sent
+      🔴 CreditCardDetails:Accepted
+      🔴 Country:Accepted
+      🔴 ErrorNotification:Generated
+      🔴 Country:Selected
+      🔴 Verification:Accepted
+      🔴 Account:Created
+      🔴 Account:Verified
+      🔴 Country:Rejected
+      🔴 Account:CreationFailed
+      🔴 PersonalInformation:Accepted
+      🔴 Account:VerificationFailed
+      🔴 PersonalInformation:Rejected
+      🔴 BusinessDetails:Accepted
+      🔴 BusinessDetails:Entered
+      🔴 Verification:Failed
+
+🟢 [NŒUD-F] : aggregation
+   ↳ Score : 0.0246
+
+🟢 [NŒUD-F] : explanation
+   ↳ Rapport généré.
+
+⏱️  Scénario 4 terminé en 43.1s
+
+============================================================
+📋 SCÉNARIO 5/9 : Scenario 5: PayPal System - Country Not Accepted
+   4 triplets SPO
+============================================================
+
+🟢 [NŒUD-F] : intent_F
+   ↳ Intention F : The process seems to be handling requests by gathering and checking country information to determine acceptance, and generating error messages when necessary, likely for the purpose of validating and processing international requests or transactions.
+Loading weights: 100%|███████████████████████████████████████████████████████████████████████████████████████████| 103/103 [00:00<00:00, 4332.83it/s]
+
+🟢 [NŒUD-F] : projection
+   ↳ 4 faits projetés, 4 activent au moins un état.
+
+🟢 [NŒUD-F] : causal_verification
+   ↳ i=0 | A_i (1) : ['Request:Submitted']
+      ✅ Request:Submitted
+      ❌ Account:Verified — manque : ['Account:VerificationFailed', 'BusinessDetails:Entered', 'CreditCardDetails:Accepted', 'CreditCardDetails:Entered', 'PersonalInformation:Entered', 'Verification:Accepted', 'VerificationEmail:Sent']
+      ❌ PersonalInformation:Accepted — manque : ['BusinessDetails:Accepted', 'BusinessDetails:Entered', 'CreditCardDetails:Entered', 'PersonalInformation:Entered']
+      ❌ PersonalInformation:Rejected — manque : ['BusinessDetails:Accepted', 'BusinessDetails:Entered', 'CreditCardDetails:Entered', 'PersonalInformation:Accepted', 'PersonalInformation:Entered']
+      ❌ VerificationEmail:Sent — manque : ['BusinessDetails:Entered', 'CreditCardDetails:Accepted', 'CreditCardDetails:Entered', 'PersonalInformation:Entered']
+      ❌ Verification:Accepted — manque : ['Account:VerificationFailed', 'Verification:Failed', 'VerificationEmail:Sent']
+      ❌ ErrorNotification:Generated — manque : ['Account:Verified', 'BusinessDetails:Accepted', 'Country:Accepted', 'Country:Selected', 'CreditCardDetails:Accepted', 'CreditCardDetails:Entered', 'PersonalInformation:Rejected', 'Verification:Accepted', 'VerificationEmail:Sent']
+      🚨 6 nouvelle(s) violation(s)
+
+🟢 [NŒUD-F] : causal_verification
+   ↳ i=1 | A_i (1) : ['Request:Submitted']
+      ❌ Country:Selected — manque : ['Account:Created', 'Password:Created']
+      ❌ Country:Accepted — manque : ['Country:Selected']
+      ❌ Country:Rejected — manque : ['Country:Accepted', 'Country:Selected']
+      ❌ BusinessDetails:Accepted — manque : ['BusinessDetails:Entered', 'CreditCardDetails:Accepted', 'CreditCardDetails:Entered', 'PersonalInformation:Accepted', 'PersonalInformation:Entered']
+      ❌ PersonalInformation:Accepted — manque : ['BusinessDetails:Accepted', 'BusinessDetails:Entered', 'CreditCardDetails:Entered', 'PersonalInformation:Entered']
+      🚨 4 nouvelle(s) violation(s)
+
+🟢 [NŒUD-F] : causal_verification
+   ↳ i=2 | A_i (1) : ['Request:Submitted']
+      ❌ Country:Selected — manque : ['Account:Created', 'Password:Created']
+      ❌ Country:Accepted — manque : ['Country:Selected']
+      ❌ Country:Rejected — manque : ['Country:Accepted', 'Country:Selected']
+      ❌ Verification:Accepted — manque : ['Account:VerificationFailed', 'Verification:Failed', 'VerificationEmail:Sent']
+
+🟢 [NŒUD-F] : causal_verification
+   ↳ i=3 | A_i (1) : ['Request:Submitted']
+      ❌ PersonalInformation:Rejected — manque : ['BusinessDetails:Accepted', 'BusinessDetails:Entered', 'CreditCardDetails:Entered', 'PersonalInformation:Accepted', 'PersonalInformation:Entered']
+      ❌ VerificationEmail:Sent — manque : ['BusinessDetails:Entered', 'CreditCardDetails:Accepted', 'CreditCardDetails:Entered', 'PersonalInformation:Entered']
+      ❌ Verification:Accepted — manque : ['Account:VerificationFailed', 'Verification:Failed', 'VerificationEmail:Sent']
+      ❌ Verification:Failed — manque : ['Account:VerificationFailed', 'Verification:Accepted', 'VerificationEmail:Sent']
+      ❌ Account:CreationFailed — manque : ['Account:Verified', 'ErrorNotification:Generated', 'Verification:Accepted', 'VerificationEmail:Sent']
+      ❌ ErrorNotification:Generated — manque : ['Account:Verified', 'BusinessDetails:Accepted', 'Country:Accepted', 'Country:Selected', 'CreditCardDetails:Accepted', 'CreditCardDetails:Entered', 'PersonalInformation:Rejected', 'Verification:Accepted', 'VerificationEmail:Sent']
+      🚨 2 nouvelle(s) violation(s)
+
+🟢 [NŒUD-F] : propagation
+   ↳ 21 états suspects après propagation.
+      🔴 BusinessDetails:Rejected
+      🔴 Password:Created
+      🔴 CreditCardDetails:Rejected
+      🔴 CreditCardDetails:Entered
+      🔴 PersonalInformation:Entered
+      🔴 VerificationEmail:Sent
+      🔴 CreditCardDetails:Accepted
+      🔴 Country:Accepted
+      🔴 ErrorNotification:Generated
+      🔴 Country:Selected
+      🔴 Verification:Accepted
+      🔴 Account:CreationFailed
+      🔴 Country:Rejected
+      🔴 Account:Verified
+      🔴 Account:Created
+      🔴 PersonalInformation:Accepted
+      🔴 Account:VerificationFailed
+      🔴 PersonalInformation:Rejected
+      🔴 BusinessDetails:Accepted
+      🔴 BusinessDetails:Entered
+      🔴 Verification:Failed
+
+🟢 [NŒUD-F] : aggregation
+   ↳ Score : 0.0385
+
+🟢 [NŒUD-F] : explanation
+   ↳ Rapport généré.
+
+⏱️  Scénario 5 terminé en 41.5s
+
+============================================================
+📋 SCÉNARIO 6/9 : Scenario 6: PayPal System - Successful Account Creation
+   12 triplets SPO
+============================================================
+
+🟢 [NŒUD-F] : intent_F
+   ↳ Intention F : The process seems to be trying to register a new user by gathering and verifying various information, including country, personal, business, and card details, and then creating a password to complete the registration.
+Loading weights: 100%|███████████████████████████████████████████████████████████████████████████████████████████| 103/103 [00:00<00:00, 5510.66it/s]
+
+🟢 [NŒUD-F] : projection
+   ↳ 12 faits projetés, 12 activent au moins un état.
+
+🟢 [NŒUD-F] : causal_verification
+   ↳ i=0 | A_i (1) : ['Request:Submitted']
+      ✅ Request:Submitted
+      ❌ Account:Verified — manque : ['Account:VerificationFailed', 'BusinessDetails:Entered', 'CreditCardDetails:Accepted', 'CreditCardDetails:Entered', 'PersonalInformation:Entered', 'Verification:Accepted', 'VerificationEmail:Sent']
+      ❌ PersonalInformation:Accepted — manque : ['BusinessDetails:Accepted', 'BusinessDetails:Entered', 'CreditCardDetails:Entered', 'PersonalInformation:Entered']
+      ❌ PersonalInformation:Rejected — manque : ['BusinessDetails:Accepted', 'BusinessDetails:Entered', 'CreditCardDetails:Entered', 'PersonalInformation:Accepted', 'PersonalInformation:Entered']
+      ❌ VerificationEmail:Sent — manque : ['BusinessDetails:Entered', 'CreditCardDetails:Accepted', 'CreditCardDetails:Entered', 'PersonalInformation:Entered']
+      ❌ Verification:Accepted — manque : ['Account:VerificationFailed', 'Verification:Failed', 'VerificationEmail:Sent']
+      ❌ ErrorNotification:Generated — manque : ['Account:Verified', 'BusinessDetails:Accepted', 'Country:Accepted', 'Country:Selected', 'CreditCardDetails:Accepted', 'CreditCardDetails:Entered', 'PersonalInformation:Rejected', 'Verification:Accepted', 'VerificationEmail:Sent']
+      🚨 6 nouvelle(s) violation(s)
+
+🟢 [NŒUD-F] : causal_verification
+   ↳ i=1 | A_i (1) : ['Request:Submitted']
+      ❌ Country:Selected — manque : ['Account:Created', 'Password:Created']
+      ❌ Country:Accepted — manque : ['Country:Selected']
+      ❌ Country:Rejected — manque : ['Country:Accepted', 'Country:Selected']
+      ❌ BusinessDetails:Accepted — manque : ['BusinessDetails:Entered', 'CreditCardDetails:Accepted', 'CreditCardDetails:Entered', 'PersonalInformation:Accepted', 'PersonalInformation:Entered']
+      ❌ PersonalInformation:Accepted — manque : ['BusinessDetails:Accepted', 'BusinessDetails:Entered', 'CreditCardDetails:Entered', 'PersonalInformation:Entered']
+      🚨 4 nouvelle(s) violation(s)
+
+🟢 [NŒUD-F] : causal_verification
+   ↳ i=2 | A_i (1) : ['Request:Submitted']
+      ❌ Country:Selected — manque : ['Account:Created', 'Password:Created']
+      ❌ Country:Accepted — manque : ['Country:Selected']
+      ❌ Country:Rejected — manque : ['Country:Accepted', 'Country:Selected']
+      ❌ Verification:Accepted — manque : ['Account:VerificationFailed', 'Verification:Failed', 'VerificationEmail:Sent']
+
+🟢 [NŒUD-F] : causal_verification
+   ↳ i=3 | A_i (1) : ['Request:Submitted']
+      ❌ BusinessDetails:Accepted — manque : ['BusinessDetails:Entered', 'CreditCardDetails:Accepted', 'CreditCardDetails:Entered', 'PersonalInformation:Accepted', 'PersonalInformation:Entered']
+      ❌ PersonalInformation:Entered — manque : ['Country:Accepted', 'Country:Selected']
+      ❌ PersonalInformation:Accepted — manque : ['BusinessDetails:Accepted', 'BusinessDetails:Entered', 'CreditCardDetails:Entered', 'PersonalInformation:Entered']
+      ❌ PersonalInformation:Rejected — manque : ['BusinessDetails:Accepted', 'BusinessDetails:Entered', 'CreditCardDetails:Entered', 'PersonalInformation:Accepted', 'PersonalInformation:Entered']
+      🚨 1 nouvelle(s) violation(s)
+
+🟢 [NŒUD-F] : causal_verification
+   ↳ i=4 | A_i (1) : ['Request:Submitted']
+      ❌ BusinessDetails:Entered — manque : ['Country:Accepted', 'Country:Selected', 'CreditCardDetails:Entered', 'PersonalInformation:Accepted', 'PersonalInformation:Entered']
+      ❌ BusinessDetails:Accepted — manque : ['BusinessDetails:Entered', 'CreditCardDetails:Accepted', 'CreditCardDetails:Entered', 'PersonalInformation:Accepted', 'PersonalInformation:Entered']
+      ❌ BusinessDetails:Rejected — manque : ['BusinessDetails:Accepted', 'BusinessDetails:Entered', 'CreditCardDetails:Accepted', 'CreditCardDetails:Entered', 'PersonalInformation:Accepted', 'PersonalInformation:Entered']
+      ❌ PersonalInformation:Accepted — manque : ['BusinessDetails:Accepted', 'BusinessDetails:Entered', 'CreditCardDetails:Entered', 'PersonalInformation:Entered']
+      🚨 2 nouvelle(s) violation(s)
+
+🟢 [NŒUD-F] : causal_verification
+   ↳ i=5 | A_i (1) : ['Request:Submitted']
+      ❌ BusinessDetails:Entered — manque : ['Country:Accepted', 'Country:Selected', 'CreditCardDetails:Entered', 'PersonalInformation:Accepted', 'PersonalInformation:Entered']
+      ❌ BusinessDetails:Accepted — manque : ['BusinessDetails:Entered', 'CreditCardDetails:Accepted', 'CreditCardDetails:Entered', 'PersonalInformation:Accepted', 'PersonalInformation:Entered']
+      ❌ BusinessDetails:Rejected — manque : ['BusinessDetails:Accepted', 'BusinessDetails:Entered', 'CreditCardDetails:Accepted', 'CreditCardDetails:Entered', 'PersonalInformation:Accepted', 'PersonalInformation:Entered']
+      ❌ CreditCardDetails:Accepted — manque : ['BusinessDetails:Entered', 'CreditCardDetails:Entered', 'PersonalInformation:Entered']
+      ❌ PersonalInformation:Accepted — manque : ['BusinessDetails:Accepted', 'BusinessDetails:Entered', 'CreditCardDetails:Entered', 'PersonalInformation:Entered']
+      ❌ Verification:Accepted — manque : ['Account:VerificationFailed', 'Verification:Failed', 'VerificationEmail:Sent']
+      🚨 1 nouvelle(s) violation(s)
+
+🟢 [NŒUD-F] : causal_verification
+   ↳ i=6 | A_i (1) : ['Request:Submitted']
+      ❌ BusinessDetails:Accepted — manque : ['BusinessDetails:Entered', 'CreditCardDetails:Accepted', 'CreditCardDetails:Entered', 'PersonalInformation:Accepted', 'PersonalInformation:Entered']
+      ❌ CreditCardDetails:Entered — manque : ['BusinessDetails:Accepted', 'BusinessDetails:Entered', 'CreditCardDetails:Accepted', 'PersonalInformation:Accepted', 'PersonalInformation:Entered']
+      ❌ CreditCardDetails:Accepted — manque : ['BusinessDetails:Entered', 'CreditCardDetails:Entered', 'PersonalInformation:Entered']
+      ❌ CreditCardDetails:Rejected — manque : ['BusinessDetails:Entered', 'CreditCardDetails:Accepted', 'CreditCardDetails:Entered', 'PersonalInformation:Entered']
+      ❌ PersonalInformation:Accepted — manque : ['BusinessDetails:Accepted', 'BusinessDetails:Entered', 'CreditCardDetails:Entered', 'PersonalInformation:Entered']
+      ❌ Verification:Accepted — manque : ['Account:VerificationFailed', 'Verification:Failed', 'VerificationEmail:Sent']
+      🚨 2 nouvelle(s) violation(s)
+
+🟢 [NŒUD-F] : causal_verification
+   ↳ i=7 | A_i (1) : ['Request:Submitted']
+      ❌ BusinessDetails:Accepted — manque : ['BusinessDetails:Entered', 'CreditCardDetails:Accepted', 'CreditCardDetails:Entered', 'PersonalInformation:Accepted', 'PersonalInformation:Entered']
+      ❌ CreditCardDetails:Entered — manque : ['BusinessDetails:Accepted', 'BusinessDetails:Entered', 'CreditCardDetails:Accepted', 'PersonalInformation:Accepted', 'PersonalInformation:Entered']
+      ❌ CreditCardDetails:Accepted — manque : ['BusinessDetails:Entered', 'CreditCardDetails:Entered', 'PersonalInformation:Entered']
+      ❌ CreditCardDetails:Rejected — manque : ['BusinessDetails:Entered', 'CreditCardDetails:Accepted', 'CreditCardDetails:Entered', 'PersonalInformation:Entered']
+      ❌ PersonalInformation:Accepted — manque : ['BusinessDetails:Accepted', 'BusinessDetails:Entered', 'CreditCardDetails:Entered', 'PersonalInformation:Entered']
+      ❌ Verification:Accepted — manque : ['Account:VerificationFailed', 'Verification:Failed', 'VerificationEmail:Sent']
+
+🟢 [NŒUD-F] : causal_verification
+   ↳ i=8 | A_i (1) : ['Request:Submitted']
+      ❌ Account:VerificationFailed — manque : ['Verification:Accepted', 'VerificationEmail:Sent']
+      ❌ VerificationEmail:Sent — manque : ['BusinessDetails:Entered', 'CreditCardDetails:Accepted', 'CreditCardDetails:Entered', 'PersonalInformation:Entered']
+      ❌ Verification:Accepted — manque : ['Account:VerificationFailed', 'Verification:Failed', 'VerificationEmail:Sent']
+      ❌ Verification:Failed — manque : ['Account:VerificationFailed', 'Verification:Accepted', 'VerificationEmail:Sent']
+      🚨 2 nouvelle(s) violation(s)
+
+🟢 [NŒUD-F] : causal_verification
+   ↳ i=9 | A_i (1) : ['Request:Submitted']
+      ❌ Account:VerificationFailed — manque : ['Verification:Accepted', 'VerificationEmail:Sent']
+      ❌ PersonalInformation:Accepted — manque : ['BusinessDetails:Accepted', 'BusinessDetails:Entered', 'CreditCardDetails:Entered', 'PersonalInformation:Entered']
+      ❌ VerificationEmail:Sent — manque : ['BusinessDetails:Entered', 'CreditCardDetails:Accepted', 'CreditCardDetails:Entered', 'PersonalInformation:Entered']
+      ❌ Verification:Accepted — manque : ['Account:VerificationFailed', 'Verification:Failed', 'VerificationEmail:Sent']
+      ❌ Verification:Failed — manque : ['Account:VerificationFailed', 'Verification:Accepted', 'VerificationEmail:Sent']
+
+🟢 [NŒUD-F] : causal_verification
+   ↳ i=10 | A_i (1) : ['Request:Submitted']
+      ✅ Request:Submitted
+      ❌ Account:Verified — manque : ['Account:VerificationFailed', 'BusinessDetails:Entered', 'CreditCardDetails:Accepted', 'CreditCardDetails:Entered', 'PersonalInformation:Entered', 'Verification:Accepted', 'VerificationEmail:Sent']
+      ❌ Password:Created — manque : ['Account:Created', 'Account:Verified', 'Verification:Accepted']
+      ❌ Account:Created — manque : ['Account:Verified', 'Password:Created', 'Verification:Accepted']
+      🚨 2 nouvelle(s) violation(s)
+
+🟢 [NŒUD-F] : causal_verification
+   ↳ i=11 | A_i (1) : ['Request:Submitted']
+      ✅ Request:Submitted
+      ❌ Account:Verified — manque : ['Account:VerificationFailed', 'BusinessDetails:Entered', 'CreditCardDetails:Accepted', 'CreditCardDetails:Entered', 'PersonalInformation:Entered', 'Verification:Accepted', 'VerificationEmail:Sent']
+      ❌ Password:Created — manque : ['Account:Created', 'Account:Verified', 'Verification:Accepted']
+      ❌ PersonalInformation:Entered — manque : ['Country:Accepted', 'Country:Selected']
+      ❌ Account:Created — manque : ['Account:Verified', 'Password:Created', 'Verification:Accepted']
+      ❌ Account:CreationFailed — manque : ['Account:Verified', 'ErrorNotification:Generated', 'Verification:Accepted', 'VerificationEmail:Sent']
+      🚨 1 nouvelle(s) violation(s)
+
+🟢 [NŒUD-F] : propagation
+   ↳ 21 états suspects après propagation.
+      🔴 BusinessDetails:Rejected
+      🔴 Password:Created
+      🔴 CreditCardDetails:Rejected
+      🔴 CreditCardDetails:Entered
+      🔴 PersonalInformation:Entered
+      🔴 VerificationEmail:Sent
+      🔴 CreditCardDetails:Accepted
+      🔴 Country:Accepted
+      🔴 ErrorNotification:Generated
+      🔴 Country:Selected
+      🔴 Verification:Accepted
+      🔴 Account:Created
+      🔴 Country:Rejected
+      🔴 Account:Verified
+      🔴 Account:CreationFailed
+      🔴 PersonalInformation:Accepted
+      🔴 Account:VerificationFailed
+      🔴 PersonalInformation:Rejected
+      🔴 BusinessDetails:Accepted
+      🔴 BusinessDetails:Entered
+      🔴 Verification:Failed
+
+🟢 [NŒUD-F] : aggregation
+   ↳ Score : 0.0328
+🟢 [NŒUD-F] : explanation
+   ↳ Rapport généré.
+
+⏱️  Scénario 6 terminé en 93.6s
+
+============================================================
+📋 SCÉNARIO 7/9 : Scenario 7: PayPal System - Business Details Not Accepted
+   7 triplets SPO
+============================================================
+
+🟢 [NŒUD-F] : intent_F
+   ↳ Intention F : The process seems to be trying to validate and process a request by gathering and checking various information, likely for the purpose of evaluating eligibility or acceptance for a specific program or service.
+Loading weights: 100%|███████████████████████████████████████████████████████████████████████████████████████████| 103/103 [00:00<00:00, 5790.99it/s]
+
+🟢 [NŒUD-F] : projection
+   ↳ 7 faits projetés, 7 activent au moins un état.
+
+🟢 [NŒUD-F] : causal_verification
+   ↳ i=0 | A_i (1) : ['Request:Submitted']
+      ✅ Request:Submitted
+      ❌ Account:Verified — manque : ['Account:VerificationFailed', 'BusinessDetails:Entered', 'CreditCardDetails:Accepted', 'CreditCardDetails:Entered', 'PersonalInformation:Entered', 'Verification:Accepted', 'VerificationEmail:Sent']
+      ❌ PersonalInformation:Accepted — manque : ['BusinessDetails:Accepted', 'BusinessDetails:Entered', 'CreditCardDetails:Entered', 'PersonalInformation:Entered']
+      ❌ PersonalInformation:Rejected — manque : ['BusinessDetails:Accepted', 'BusinessDetails:Entered', 'CreditCardDetails:Entered', 'PersonalInformation:Accepted', 'PersonalInformation:Entered']
+      ❌ VerificationEmail:Sent — manque : ['BusinessDetails:Entered', 'CreditCardDetails:Accepted', 'CreditCardDetails:Entered', 'PersonalInformation:Entered']
+      ❌ Verification:Accepted — manque : ['Account:VerificationFailed', 'Verification:Failed', 'VerificationEmail:Sent']
+      ❌ ErrorNotification:Generated — manque : ['Account:Verified', 'BusinessDetails:Accepted', 'Country:Accepted', 'Country:Selected', 'CreditCardDetails:Accepted', 'CreditCardDetails:Entered', 'PersonalInformation:Rejected', 'Verification:Accepted', 'VerificationEmail:Sent']
+      🚨 6 nouvelle(s) violation(s)
+
+🟢 [NŒUD-F] : causal_verification
+   ↳ i=1 | A_i (1) : ['Request:Submitted']
+      ❌ Country:Selected — manque : ['Account:Created', 'Password:Created']
+      ❌ Country:Accepted — manque : ['Country:Selected']
+      ❌ Country:Rejected — manque : ['Country:Accepted', 'Country:Selected']
+      ❌ BusinessDetails:Accepted — manque : ['BusinessDetails:Entered', 'CreditCardDetails:Accepted', 'CreditCardDetails:Entered', 'PersonalInformation:Accepted', 'PersonalInformation:Entered']
+      ❌ PersonalInformation:Accepted — manque : ['BusinessDetails:Accepted', 'BusinessDetails:Entered', 'CreditCardDetails:Entered', 'PersonalInformation:Entered']
+      🚨 4 nouvelle(s) violation(s)
+
+🟢 [NŒUD-F] : causal_verification
+   ↳ i=2 | A_i (1) : ['Request:Submitted']
+      ❌ Country:Selected — manque : ['Account:Created', 'Password:Created']
+      ❌ Country:Accepted — manque : ['Country:Selected']
+      ❌ Country:Rejected — manque : ['Country:Accepted', 'Country:Selected']
+      ❌ Verification:Accepted — manque : ['Account:VerificationFailed', 'Verification:Failed', 'VerificationEmail:Sent']
+
+🟢 [NŒUD-F] : causal_verification
+   ↳ i=3 | A_i (1) : ['Request:Submitted']
+      ❌ BusinessDetails:Accepted — manque : ['BusinessDetails:Entered', 'CreditCardDetails:Accepted', 'CreditCardDetails:Entered', 'PersonalInformation:Accepted', 'PersonalInformation:Entered']
+      ❌ PersonalInformation:Entered — manque : ['Country:Accepted', 'Country:Selected']
+      ❌ PersonalInformation:Accepted — manque : ['BusinessDetails:Accepted', 'BusinessDetails:Entered', 'CreditCardDetails:Entered', 'PersonalInformation:Entered']
+      ❌ PersonalInformation:Rejected — manque : ['BusinessDetails:Accepted', 'BusinessDetails:Entered', 'CreditCardDetails:Entered', 'PersonalInformation:Accepted', 'PersonalInformation:Entered']
+      🚨 1 nouvelle(s) violation(s)
+
+🟢 [NŒUD-F] : causal_verification
+   ↳ i=4 | A_i (1) : ['Request:Submitted']
+      ❌ BusinessDetails:Entered — manque : ['Country:Accepted', 'Country:Selected', 'CreditCardDetails:Entered', 'PersonalInformation:Accepted', 'PersonalInformation:Entered']
+      ❌ BusinessDetails:Accepted — manque : ['BusinessDetails:Entered', 'CreditCardDetails:Accepted', 'CreditCardDetails:Entered', 'PersonalInformation:Accepted', 'PersonalInformation:Entered']
+      ❌ BusinessDetails:Rejected — manque : ['BusinessDetails:Accepted', 'BusinessDetails:Entered', 'CreditCardDetails:Accepted', 'CreditCardDetails:Entered', 'PersonalInformation:Accepted', 'PersonalInformation:Entered']
+      ❌ PersonalInformation:Accepted — manque : ['BusinessDetails:Accepted', 'BusinessDetails:Entered', 'CreditCardDetails:Entered', 'PersonalInformation:Entered']
+      🚨 2 nouvelle(s) violation(s)
+
+🟢 [NŒUD-F] : causal_verification
+   ↳ i=5 | A_i (1) : ['Request:Submitted']
+      ❌ BusinessDetails:Entered — manque : ['Country:Accepted', 'Country:Selected', 'CreditCardDetails:Entered', 'PersonalInformation:Accepted', 'PersonalInformation:Entered']
+      ❌ BusinessDetails:Accepted — manque : ['BusinessDetails:Entered', 'CreditCardDetails:Accepted', 'CreditCardDetails:Entered', 'PersonalInformation:Accepted', 'PersonalInformation:Entered']
+      ❌ BusinessDetails:Rejected — manque : ['BusinessDetails:Accepted', 'BusinessDetails:Entered', 'CreditCardDetails:Accepted', 'CreditCardDetails:Entered', 'PersonalInformation:Accepted', 'PersonalInformation:Entered']
+      ❌ CreditCardDetails:Accepted — manque : ['BusinessDetails:Entered', 'CreditCardDetails:Entered', 'PersonalInformation:Entered']
+      ❌ PersonalInformation:Accepted — manque : ['BusinessDetails:Accepted', 'BusinessDetails:Entered', 'CreditCardDetails:Entered', 'PersonalInformation:Entered']
+      ❌ Verification:Accepted — manque : ['Account:VerificationFailed', 'Verification:Failed', 'VerificationEmail:Sent']
+      🚨 1 nouvelle(s) violation(s)
+
+🟢 [NŒUD-F] : causal_verification
+   ↳ i=6 | A_i (1) : ['Request:Submitted']
+      ❌ VerificationEmail:Sent — manque : ['BusinessDetails:Entered', 'CreditCardDetails:Accepted', 'CreditCardDetails:Entered', 'PersonalInformation:Entered']
+      ❌ Verification:Accepted — manque : ['Account:VerificationFailed', 'Verification:Failed', 'VerificationEmail:Sent']
+      ❌ Verification:Failed — manque : ['Account:VerificationFailed', 'Verification:Accepted', 'VerificationEmail:Sent']
+      ❌ ErrorNotification:Generated — manque : ['Account:Verified', 'BusinessDetails:Accepted', 'Country:Accepted', 'Country:Selected', 'CreditCardDetails:Accepted', 'CreditCardDetails:Entered', 'PersonalInformation:Rejected', 'Verification:Accepted', 'VerificationEmail:Sent']
+      🚨 1 nouvelle(s) violation(s)
+
+🟢 [NŒUD-F] : propagation
+   ↳ 21 états suspects après propagation.
+      🔴 BusinessDetails:Rejected
+      🔴 Password:Created
+      🔴 CreditCardDetails:Rejected
+      🔴 CreditCardDetails:Entered
+      🔴 PersonalInformation:Entered
+      🔴 VerificationEmail:Sent
+      🔴 CreditCardDetails:Accepted
+      🔴 Country:Accepted
+      🔴 ErrorNotification:Generated
+      🔴 Country:Selected
+      🔴 Verification:Accepted
+      🔴 Account:Created
+      🔴 Account:Verified
+      🔴 Country:Rejected
+      🔴 Account:CreationFailed
+      🔴 PersonalInformation:Accepted
+      🔴 Account:VerificationFailed
+      🔴 PersonalInformation:Rejected
+      🔴 BusinessDetails:Accepted
+      🔴 BusinessDetails:Entered
+      🔴 Verification:Failed
+
+🟢 [NŒUD-F] : aggregation
+   ↳ Score : 0.02
+
+🟢 [NŒUD-F] : explanation
+   ↳ Rapport généré.
+
+⏱️  Scénario 7 terminé en 50.4s
+
+============================================================
+📋 SCÉNARIO 8/9 : Scenario 8: PayPal System - Card Details Not Accepted
+   9 triplets SPO
+============================================================
+
+🟢 [NŒUD-F] : intent_F
+   ↳ Intention F : The process seems to be trying to validate and process a request by gathering and checking various information, likely for the purpose of approving or rejecting an application or transaction, and generating an error notification if any issues are found.
+Loading weights: 100%|███████████████████████████████████████████████████████████████████████████████████████████| 103/103 [00:00<00:00, 5175.92it/s]
+
+🟢 [NŒUD-F] : projection
+   ↳ 9 faits projetés, 9 activent au moins un état.
+
+🟢 [NŒUD-F] : causal_verification
+   ↳ i=0 | A_i (1) : ['Request:Submitted']
+      ✅ Request:Submitted
+      ❌ Account:Verified — manque : ['Account:VerificationFailed', 'BusinessDetails:Entered', 'CreditCardDetails:Accepted', 'CreditCardDetails:Entered', 'PersonalInformation:Entered', 'Verification:Accepted', 'VerificationEmail:Sent']
+      ❌ PersonalInformation:Accepted — manque : ['BusinessDetails:Accepted', 'BusinessDetails:Entered', 'CreditCardDetails:Entered', 'PersonalInformation:Entered']
+      ❌ PersonalInformation:Rejected — manque : ['BusinessDetails:Accepted', 'BusinessDetails:Entered', 'CreditCardDetails:Entered', 'PersonalInformation:Accepted', 'PersonalInformation:Entered']
+      ❌ VerificationEmail:Sent — manque : ['BusinessDetails:Entered', 'CreditCardDetails:Accepted', 'CreditCardDetails:Entered', 'PersonalInformation:Entered']
+      ❌ Verification:Accepted — manque : ['Account:VerificationFailed', 'Verification:Failed', 'VerificationEmail:Sent']
+      ❌ ErrorNotification:Generated — manque : ['Account:Verified', 'BusinessDetails:Accepted', 'Country:Accepted', 'Country:Selected', 'CreditCardDetails:Accepted', 'CreditCardDetails:Entered', 'PersonalInformation:Rejected', 'Verification:Accepted', 'VerificationEmail:Sent']
+      🚨 6 nouvelle(s) violation(s)
+
+🟢 [NŒUD-F] : causal_verification
+   ↳ i=1 | A_i (1) : ['Request:Submitted']
+      ❌ Country:Selected — manque : ['Account:Created', 'Password:Created']
+      ❌ Country:Accepted — manque : ['Country:Selected']
+      ❌ Country:Rejected — manque : ['Country:Accepted', 'Country:Selected']
+      ❌ BusinessDetails:Accepted — manque : ['BusinessDetails:Entered', 'CreditCardDetails:Accepted', 'CreditCardDetails:Entered', 'PersonalInformation:Accepted', 'PersonalInformation:Entered']
+      ❌ PersonalInformation:Accepted — manque : ['BusinessDetails:Accepted', 'BusinessDetails:Entered', 'CreditCardDetails:Entered', 'PersonalInformation:Entered']
+      🚨 4 nouvelle(s) violation(s)
+
+🟢 [NŒUD-F] : causal_verification
+   ↳ i=2 | A_i (1) : ['Request:Submitted']
+      ❌ Country:Selected — manque : ['Account:Created', 'Password:Created']
+      ❌ Country:Accepted — manque : ['Country:Selected']
+      ❌ Country:Rejected — manque : ['Country:Accepted', 'Country:Selected']
+      ❌ Verification:Accepted — manque : ['Account:VerificationFailed', 'Verification:Failed', 'VerificationEmail:Sent']
+
+🟢 [NŒUD-F] : causal_verification
+   ↳ i=3 | A_i (1) : ['Request:Submitted']
+      ❌ BusinessDetails:Accepted — manque : ['BusinessDetails:Entered', 'CreditCardDetails:Accepted', 'CreditCardDetails:Entered', 'PersonalInformation:Accepted', 'PersonalInformation:Entered']
+      ❌ PersonalInformation:Entered — manque : ['Country:Accepted', 'Country:Selected']
+      ❌ PersonalInformation:Accepted — manque : ['BusinessDetails:Accepted', 'BusinessDetails:Entered', 'CreditCardDetails:Entered', 'PersonalInformation:Entered']
+      ❌ PersonalInformation:Rejected — manque : ['BusinessDetails:Accepted', 'BusinessDetails:Entered', 'CreditCardDetails:Entered', 'PersonalInformation:Accepted', 'PersonalInformation:Entered']
+      🚨 1 nouvelle(s) violation(s)
+
+🟢 [NŒUD-F] : causal_verification
+   ↳ i=4 | A_i (1) : ['Request:Submitted']
+      ❌ BusinessDetails:Entered — manque : ['Country:Accepted', 'Country:Selected', 'CreditCardDetails:Entered', 'PersonalInformation:Accepted', 'PersonalInformation:Entered']
+      ❌ BusinessDetails:Accepted — manque : ['BusinessDetails:Entered', 'CreditCardDetails:Accepted', 'CreditCardDetails:Entered', 'PersonalInformation:Accepted', 'PersonalInformation:Entered']
+      ❌ BusinessDetails:Rejected — manque : ['BusinessDetails:Accepted', 'BusinessDetails:Entered', 'CreditCardDetails:Accepted', 'CreditCardDetails:Entered', 'PersonalInformation:Accepted', 'PersonalInformation:Entered']
+      ❌ PersonalInformation:Accepted — manque : ['BusinessDetails:Accepted', 'BusinessDetails:Entered', 'CreditCardDetails:Entered', 'PersonalInformation:Entered']
+      🚨 2 nouvelle(s) violation(s)
+
+🟢 [NŒUD-F] : causal_verification
+   ↳ i=5 | A_i (1) : ['Request:Submitted']
+      ❌ BusinessDetails:Entered — manque : ['Country:Accepted', 'Country:Selected', 'CreditCardDetails:Entered', 'PersonalInformation:Accepted', 'PersonalInformation:Entered']
+      ❌ BusinessDetails:Accepted — manque : ['BusinessDetails:Entered', 'CreditCardDetails:Accepted', 'CreditCardDetails:Entered', 'PersonalInformation:Accepted', 'PersonalInformation:Entered']
+      ❌ BusinessDetails:Rejected — manque : ['BusinessDetails:Accepted', 'BusinessDetails:Entered', 'CreditCardDetails:Accepted', 'CreditCardDetails:Entered', 'PersonalInformation:Accepted', 'PersonalInformation:Entered']
+      ❌ CreditCardDetails:Accepted — manque : ['BusinessDetails:Entered', 'CreditCardDetails:Entered', 'PersonalInformation:Entered']
+      ❌ PersonalInformation:Accepted — manque : ['BusinessDetails:Accepted', 'BusinessDetails:Entered', 'CreditCardDetails:Entered', 'PersonalInformation:Entered']
+      ❌ Verification:Accepted — manque : ['Account:VerificationFailed', 'Verification:Failed', 'VerificationEmail:Sent']
+      🚨 1 nouvelle(s) violation(s)
+
+🟢 [NŒUD-F] : causal_verification
+   ↳ i=6 | A_i (1) : ['Request:Submitted']
+      ❌ BusinessDetails:Accepted — manque : ['BusinessDetails:Entered', 'CreditCardDetails:Accepted', 'CreditCardDetails:Entered', 'PersonalInformation:Accepted', 'PersonalInformation:Entered']
+      ❌ CreditCardDetails:Entered — manque : ['BusinessDetails:Accepted', 'BusinessDetails:Entered', 'CreditCardDetails:Accepted', 'PersonalInformation:Accepted', 'PersonalInformation:Entered']
+      ❌ CreditCardDetails:Accepted — manque : ['BusinessDetails:Entered', 'CreditCardDetails:Entered', 'PersonalInformation:Entered']
+      ❌ CreditCardDetails:Rejected — manque : ['BusinessDetails:Entered', 'CreditCardDetails:Accepted', 'CreditCardDetails:Entered', 'PersonalInformation:Entered']
+      ❌ PersonalInformation:Accepted — manque : ['BusinessDetails:Accepted', 'BusinessDetails:Entered', 'CreditCardDetails:Entered', 'PersonalInformation:Entered']
+      ❌ Verification:Accepted — manque : ['Account:VerificationFailed', 'Verification:Failed', 'VerificationEmail:Sent']
+      🚨 2 nouvelle(s) violation(s)
+
+🟢 [NŒUD-F] : causal_verification
+   ↳ i=7 | A_i (1) : ['Request:Submitted']
+      ❌ BusinessDetails:Accepted — manque : ['BusinessDetails:Entered', 'CreditCardDetails:Accepted', 'CreditCardDetails:Entered', 'PersonalInformation:Accepted', 'PersonalInformation:Entered']
+      ❌ CreditCardDetails:Entered — manque : ['BusinessDetails:Accepted', 'BusinessDetails:Entered', 'CreditCardDetails:Accepted', 'PersonalInformation:Accepted', 'PersonalInformation:Entered']
+      ❌ CreditCardDetails:Accepted — manque : ['BusinessDetails:Entered', 'CreditCardDetails:Entered', 'PersonalInformation:Entered']
+      ❌ CreditCardDetails:Rejected — manque : ['BusinessDetails:Entered', 'CreditCardDetails:Accepted', 'CreditCardDetails:Entered', 'PersonalInformation:Entered']
+      ❌ PersonalInformation:Accepted — manque : ['BusinessDetails:Accepted', 'BusinessDetails:Entered', 'CreditCardDetails:Entered', 'PersonalInformation:Entered']
+      ❌ Verification:Accepted — manque : ['Account:VerificationFailed', 'Verification:Failed', 'VerificationEmail:Sent']
+
+🟢 [NŒUD-F] : causal_verification
+   ↳ i=8 | A_i (1) : ['Request:Submitted']
+      ❌ VerificationEmail:Sent — manque : ['BusinessDetails:Entered', 'CreditCardDetails:Accepted', 'CreditCardDetails:Entered', 'PersonalInformation:Entered']
+      ❌ Verification:Accepted — manque : ['Account:VerificationFailed', 'Verification:Failed', 'VerificationEmail:Sent']
+      ❌ Verification:Failed — manque : ['Account:VerificationFailed', 'Verification:Accepted', 'VerificationEmail:Sent']
+      ❌ ErrorNotification:Generated — manque : ['Account:Verified', 'BusinessDetails:Accepted', 'Country:Accepted', 'Country:Selected', 'CreditCardDetails:Accepted', 'CreditCardDetails:Entered', 'PersonalInformation:Rejected', 'Verification:Accepted', 'VerificationEmail:Sent']
+      🚨 1 nouvelle(s) violation(s)
+
+🟢 [NŒUD-F] : propagation
+   ↳ 21 états suspects après propagation.
+      🔴 BusinessDetails:Rejected
+      🔴 Password:Created
+      🔴 CreditCardDetails:Rejected
+      🔴 CreditCardDetails:Entered
+      🔴 PersonalInformation:Entered
+      🔴 VerificationEmail:Sent
+      🔴 CreditCardDetails:Accepted
+      🔴 Country:Accepted
+      🔴 ErrorNotification:Generated
+      🔴 Country:Selected
+      🔴 Verification:Accepted
+      🔴 Account:Created
+      🔴 Account:Verified
+      🔴 Country:Rejected
+      🔴 Account:CreationFailed
+      🔴 PersonalInformation:Accepted
+      🔴 Account:VerificationFailed
+      🔴 PersonalInformation:Rejected
+      🔴 BusinessDetails:Accepted
+      🔴 BusinessDetails:Entered
+      🔴 Verification:Failed
+
+🟢 [NŒUD-F] : aggregation
+   ↳ Score : 0.0138
+
+🟢 [NŒUD-F] : explanation
+   ↳ Rapport généré.
+
+⏱️  Scénario 8 terminé en 34.7s
+
+============================================================
+📋 SCÉNARIO 9/9 : Scenario 9: PayPal System - Verification Not Accepted
+   11 triplets SPO
+============================================================
+
+🟢 [NŒUD-F] : intent_F
+   ↳ Intention F : The system is designed to process and validate user requests, gathering and checking various information to ultimately verify and potentially approve or reject the request, while also handling potential errors.
+Loading weights: 100%|███████████████████████████████████████████████████████████████████████████████████████████| 103/103 [00:00<00:00, 5097.50it/s]
+
+🟢 [NŒUD-F] : projection
+   ↳ 11 faits projetés, 11 activent au moins un état.
+
+🟢 [NŒUD-F] : causal_verification
+   ↳ i=0 | A_i (1) : ['Request:Submitted']
+      ✅ Request:Submitted
+      ❌ Account:Verified — manque : ['Account:VerificationFailed', 'BusinessDetails:Entered', 'CreditCardDetails:Accepted', 'CreditCardDetails:Entered', 'PersonalInformation:Entered', 'Verification:Accepted', 'VerificationEmail:Sent']
+      ❌ PersonalInformation:Accepted — manque : ['BusinessDetails:Accepted', 'BusinessDetails:Entered', 'CreditCardDetails:Entered', 'PersonalInformation:Entered']
+      ❌ PersonalInformation:Rejected — manque : ['BusinessDetails:Accepted', 'BusinessDetails:Entered', 'CreditCardDetails:Entered', 'PersonalInformation:Accepted', 'PersonalInformation:Entered']
+      ❌ VerificationEmail:Sent — manque : ['BusinessDetails:Entered', 'CreditCardDetails:Accepted', 'CreditCardDetails:Entered', 'PersonalInformation:Entered']
+      ❌ Verification:Accepted — manque : ['Account:VerificationFailed', 'Verification:Failed', 'VerificationEmail:Sent']
+      ❌ ErrorNotification:Generated — manque : ['Account:Verified', 'BusinessDetails:Accepted', 'Country:Accepted', 'Country:Selected', 'CreditCardDetails:Accepted', 'CreditCardDetails:Entered', 'PersonalInformation:Rejected', 'Verification:Accepted', 'VerificationEmail:Sent']
+      🚨 6 nouvelle(s) violation(s)
+
+🟢 [NŒUD-F] : causal_verification
+   ↳ i=1 | A_i (1) : ['Request:Submitted']
+      ❌ Country:Selected — manque : ['Account:Created', 'Password:Created']
+      ❌ Country:Accepted — manque : ['Country:Selected']
+      ❌ Country:Rejected — manque : ['Country:Accepted', 'Country:Selected']
+      ❌ BusinessDetails:Accepted — manque : ['BusinessDetails:Entered', 'CreditCardDetails:Accepted', 'CreditCardDetails:Entered', 'PersonalInformation:Accepted', 'PersonalInformation:Entered']
+      ❌ PersonalInformation:Accepted — manque : ['BusinessDetails:Accepted', 'BusinessDetails:Entered', 'CreditCardDetails:Entered', 'PersonalInformation:Entered']
+      🚨 4 nouvelle(s) violation(s)
+
+🟢 [NŒUD-F] : causal_verification
+   ↳ i=2 | A_i (1) : ['Request:Submitted']
+      ❌ Country:Selected — manque : ['Account:Created', 'Password:Created']
+      ❌ Country:Accepted — manque : ['Country:Selected']
+      ❌ Country:Rejected — manque : ['Country:Accepted', 'Country:Selected']
+      ❌ Verification:Accepted — manque : ['Account:VerificationFailed', 'Verification:Failed', 'VerificationEmail:Sent']
+
+🟢 [NŒUD-F] : causal_verification
+   ↳ i=3 | A_i (1) : ['Request:Submitted']
+      ❌ BusinessDetails:Accepted — manque : ['BusinessDetails:Entered', 'CreditCardDetails:Accepted', 'CreditCardDetails:Entered', 'PersonalInformation:Accepted', 'PersonalInformation:Entered']
+      ❌ PersonalInformation:Entered — manque : ['Country:Accepted', 'Country:Selected']
+      ❌ PersonalInformation:Accepted — manque : ['BusinessDetails:Accepted', 'BusinessDetails:Entered', 'CreditCardDetails:Entered', 'PersonalInformation:Entered']
+      ❌ PersonalInformation:Rejected — manque : ['BusinessDetails:Accepted', 'BusinessDetails:Entered', 'CreditCardDetails:Entered', 'PersonalInformation:Accepted', 'PersonalInformation:Entered']
+      🚨 1 nouvelle(s) violation(s)
+
+🟢 [NŒUD-F] : causal_verification
+   ↳ i=4 | A_i (1) : ['Request:Submitted']
+      ❌ BusinessDetails:Entered — manque : ['Country:Accepted', 'Country:Selected', 'CreditCardDetails:Entered', 'PersonalInformation:Accepted', 'PersonalInformation:Entered']
+      ❌ BusinessDetails:Accepted — manque : ['BusinessDetails:Entered', 'CreditCardDetails:Accepted', 'CreditCardDetails:Entered', 'PersonalInformation:Accepted', 'PersonalInformation:Entered']
+      ❌ BusinessDetails:Rejected — manque : ['BusinessDetails:Accepted', 'BusinessDetails:Entered', 'CreditCardDetails:Accepted', 'CreditCardDetails:Entered', 'PersonalInformation:Accepted', 'PersonalInformation:Entered']
+      ❌ PersonalInformation:Accepted — manque : ['BusinessDetails:Accepted', 'BusinessDetails:Entered', 'CreditCardDetails:Entered', 'PersonalInformation:Entered']
+      🚨 2 nouvelle(s) violation(s)
+
+🟢 [NŒUD-F] : causal_verification
+   ↳ i=5 | A_i (1) : ['Request:Submitted']
+      ❌ BusinessDetails:Entered — manque : ['Country:Accepted', 'Country:Selected', 'CreditCardDetails:Entered', 'PersonalInformation:Accepted', 'PersonalInformation:Entered']
+      ❌ BusinessDetails:Accepted — manque : ['BusinessDetails:Entered', 'CreditCardDetails:Accepted', 'CreditCardDetails:Entered', 'PersonalInformation:Accepted', 'PersonalInformation:Entered']
+      ❌ BusinessDetails:Rejected — manque : ['BusinessDetails:Accepted', 'BusinessDetails:Entered', 'CreditCardDetails:Accepted', 'CreditCardDetails:Entered', 'PersonalInformation:Accepted', 'PersonalInformation:Entered']
+      ❌ CreditCardDetails:Accepted — manque : ['BusinessDetails:Entered', 'CreditCardDetails:Entered', 'PersonalInformation:Entered']
+      ❌ PersonalInformation:Accepted — manque : ['BusinessDetails:Accepted', 'BusinessDetails:Entered', 'CreditCardDetails:Entered', 'PersonalInformation:Entered']
+      ❌ Verification:Accepted — manque : ['Account:VerificationFailed', 'Verification:Failed', 'VerificationEmail:Sent']
+      🚨 1 nouvelle(s) violation(s)
+
+🟢 [NŒUD-F] : causal_verification
+   ↳ i=6 | A_i (1) : ['Request:Submitted']
+      ❌ BusinessDetails:Accepted — manque : ['BusinessDetails:Entered', 'CreditCardDetails:Accepted', 'CreditCardDetails:Entered', 'PersonalInformation:Accepted', 'PersonalInformation:Entered']
+      ❌ CreditCardDetails:Entered — manque : ['BusinessDetails:Accepted', 'BusinessDetails:Entered', 'CreditCardDetails:Accepted', 'PersonalInformation:Accepted', 'PersonalInformation:Entered']
+      ❌ CreditCardDetails:Accepted — manque : ['BusinessDetails:Entered', 'CreditCardDetails:Entered', 'PersonalInformation:Entered']
+      ❌ CreditCardDetails:Rejected — manque : ['BusinessDetails:Entered', 'CreditCardDetails:Accepted', 'CreditCardDetails:Entered', 'PersonalInformation:Entered']
+      ❌ PersonalInformation:Accepted — manque : ['BusinessDetails:Accepted', 'BusinessDetails:Entered', 'CreditCardDetails:Entered', 'PersonalInformation:Entered']
+      ❌ Verification:Accepted — manque : ['Account:VerificationFailed', 'Verification:Failed', 'VerificationEmail:Sent']
+      🚨 2 nouvelle(s) violation(s)
+
+🟢 [NŒUD-F] : causal_verification
+   ↳ i=7 | A_i (1) : ['Request:Submitted']
+      ❌ BusinessDetails:Accepted — manque : ['BusinessDetails:Entered', 'CreditCardDetails:Accepted', 'CreditCardDetails:Entered', 'PersonalInformation:Accepted', 'PersonalInformation:Entered']
+      ❌ CreditCardDetails:Entered — manque : ['BusinessDetails:Accepted', 'BusinessDetails:Entered', 'CreditCardDetails:Accepted', 'PersonalInformation:Accepted', 'PersonalInformation:Entered']
+      ❌ CreditCardDetails:Accepted — manque : ['BusinessDetails:Entered', 'CreditCardDetails:Entered', 'PersonalInformation:Entered']
+      ❌ CreditCardDetails:Rejected — manque : ['BusinessDetails:Entered', 'CreditCardDetails:Accepted', 'CreditCardDetails:Entered', 'PersonalInformation:Entered']
+      ❌ PersonalInformation:Accepted — manque : ['BusinessDetails:Accepted', 'BusinessDetails:Entered', 'CreditCardDetails:Entered', 'PersonalInformation:Entered']
+      ❌ Verification:Accepted — manque : ['Account:VerificationFailed', 'Verification:Failed', 'VerificationEmail:Sent']
+
+🟢 [NŒUD-F] : causal_verification
+   ↳ i=8 | A_i (1) : ['Request:Submitted']
+      ❌ Account:VerificationFailed — manque : ['Verification:Accepted', 'VerificationEmail:Sent']
+      ❌ VerificationEmail:Sent — manque : ['BusinessDetails:Entered', 'CreditCardDetails:Accepted', 'CreditCardDetails:Entered', 'PersonalInformation:Entered']
+      ❌ Verification:Accepted — manque : ['Account:VerificationFailed', 'Verification:Failed', 'VerificationEmail:Sent']
+      ❌ Verification:Failed — manque : ['Account:VerificationFailed', 'Verification:Accepted', 'VerificationEmail:Sent']
+      🚨 2 nouvelle(s) violation(s)
+
+🟢 [NŒUD-F] : causal_verification
+   ↳ i=9 | A_i (1) : ['Request:Submitted']
+      ❌ Account:VerificationFailed — manque : ['Verification:Accepted', 'VerificationEmail:Sent']
+      ❌ PersonalInformation:Accepted — manque : ['BusinessDetails:Accepted', 'BusinessDetails:Entered', 'CreditCardDetails:Entered', 'PersonalInformation:Entered']
+      ❌ VerificationEmail:Sent — manque : ['BusinessDetails:Entered', 'CreditCardDetails:Accepted', 'CreditCardDetails:Entered', 'PersonalInformation:Entered']
+      ❌ Verification:Accepted — manque : ['Account:VerificationFailed', 'Verification:Failed', 'VerificationEmail:Sent']
+      ❌ Verification:Failed — manque : ['Account:VerificationFailed', 'Verification:Accepted', 'VerificationEmail:Sent']
+
+🟢 [NŒUD-F] : causal_verification
+   ↳ i=10 | A_i (1) : ['Request:Submitted']
+      ❌ VerificationEmail:Sent — manque : ['BusinessDetails:Entered', 'CreditCardDetails:Accepted', 'CreditCardDetails:Entered', 'PersonalInformation:Entered']
+      ❌ Verification:Accepted — manque : ['Account:VerificationFailed', 'Verification:Failed', 'VerificationEmail:Sent']
+      ❌ Verification:Failed — manque : ['Account:VerificationFailed', 'Verification:Accepted', 'VerificationEmail:Sent']
+      ❌ ErrorNotification:Generated — manque : ['Account:Verified', 'BusinessDetails:Accepted', 'Country:Accepted', 'Country:Selected', 'CreditCardDetails:Accepted', 'CreditCardDetails:Entered', 'PersonalInformation:Rejected', 'Verification:Accepted', 'VerificationEmail:Sent']
+
+🟢 [NŒUD-F] : propagation
+   ↳ 21 états suspects après propagation.
+      🔴 BusinessDetails:Rejected
+      🔴 Password:Created
+      🔴 CreditCardDetails:Rejected
+      🔴 CreditCardDetails:Entered
+      🔴 PersonalInformation:Entered
+      🔴 VerificationEmail:Sent
+      🔴 CreditCardDetails:Accepted
+      🔴 Country:Accepted
+      🔴 ErrorNotification:Generated
+      🔴 Country:Selected
+      🔴 Verification:Accepted
+      🔴 Account:Created
+      🔴 Account:Verified
+      🔴 Country:Rejected
+      🔴 Account:CreationFailed
+      🔴 PersonalInformation:Accepted
+      🔴 Account:VerificationFailed
+      🔴 PersonalInformation:Rejected
+      🔴 BusinessDetails:Accepted
+      🔴 BusinessDetails:Entered
+      🔴 Verification:Failed
+
+🟢 [NŒUD-F] : aggregation
+   ↳ Score : 0.0117
+🟢 [NŒUD-F] : explanation
+   ↳ Rapport généré.
+
+⏱️  Scénario 9 terminé en 84.8s
+
+============================================================
+🏆 SYNTHÈSE GLOBALE
+============================================================
+⏱️  Durée totale : 641.1s
+
+📊 Score moyen : 0.0292
+────────────────────────────────────────────────────────────
+❌ [0.0497] Scenario 1: Personal User - Successful Account Creation
+   Violations: 20 | Contaminés: 21
+❌ [0.0328] Scenario 2: Personal User - Failed Account Creation
+   Violations: 21 | Contaminés: 21
+❌ [0.0385] Scenario 3: Personal User - Failed Business Details Entry
+   Violations: 15 | Contaminés: 21
+❌ [0.0246] Scenario 4: Personal User - Failed Credit Card Details Entry
+   Violations: 19 | Contaminés: 21
+❌ [0.0385] Scenario 5: PayPal System - Country Not Accepted
+   Violations: 12 | Contaminés: 21
+❌ [0.0328] Scenario 6: PayPal System - Successful Account Creation
+   Violations: 21 | Contaminés: 21
+❌ [0.02] Scenario 7: PayPal System - Business Details Not Accepted
+   Violations: 15 | Contaminés: 21
+❌ [0.0138] Scenario 8: PayPal System - Card Details Not Accepted
+   Violations: 17 | Contaminés: 21
+❌ [0.0117] Scenario 9: PayPal System - Verification Not Accepted
+   Violations: 18 | Contaminés: 21
+
+💾 Rapport sauvegardé dans 'rapport_audit_final.json'
+(Intent_checking) yassineseidou@Yassines-Air intent_checking % 
