@@ -79,12 +79,12 @@ def extract_state_space(text: str, llm, prompt_template: str = STATE_SPACE_PROMP
 
 if __name__ == "__main__":
     MODELS = [
-        "meta/llama-3.1-8b-instruct",
+        #"meta/llama-3.1-8b-instruct",
         #"meta/llama-3.3-70b-instruct",
         #"mistralai/mistral-medium-3.5-128b",
         #"mistralai/mistral-nemotron",
         #"openai/gpt-oss-20b",
-        #"openai/gpt-oss-120b",
+        "openai/gpt-oss-120b",
         #"mistralai/mistral-large-3-675b-instruct-2512",
         #"moonshotai/kimi-k2.6"
     ]
