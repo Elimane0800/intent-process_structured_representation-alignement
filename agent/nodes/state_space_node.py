@@ -8,7 +8,6 @@ from agent.prompt.state_space_prompt import (
     STATE_SPACE_PROMPT_V2, STATE_SPACE_PROMPT_FEWSHOT_V2, STATE_SPACE_PROMPT_TWOSHOT_V2, STATE_SPACE_PROMPT_COT_V2,
 )
 from agent.prompt.reformulation_prompt import REFORMULATION_PROMPT, REFORMULATION_PROMPT_ONESHOT
-from agent.prompt.conflict_resolution_prompt import CONFLICT_RESOLUTION_PROMPT
 from agent.prompt.evidence_prompt import EVIDENCE_PROMPT
 
 RESULTS_DIR = os.path.join(os.path.dirname(__file__), "..", "..", "results", "state_space")
@@ -46,21 +45,10 @@ def validate_grounding(evidence: dict, text: str, threshold: float = 0.9) -> dic
     return result
 
 
-def resolve_conflicts(text: str, state_space: dict, llm) -> dict:
-    prompt = CONFLICT_RESOLUTION_PROMPT.format(text=text, state_space=json.dumps(state_space))
-    response = llm.invoke(prompt).content.strip()
-    if "FINAL_ANSWER:" in response:
-        response = response.split("FINAL_ANSWER:")[-1]
-    content = re.sub(r"^```(?:json)?|```$", "", response.strip(), flags=re.MULTILINE).strip()
-    try:
-        return json.loads(content)
-    except json.JSONDecodeError as e:
-        raise ValueError(f"parse failed, raw response={response!r}") from e
-
-
 def postprocess(text: str, state_space: dict, llm) -> dict:
-    """Run evidence extraction + grounding check + conflict resolution on top of an already-produced
-    state space. Each step is independent and failure-isolated, so a failure in one does not block the others."""
+    """Run evidence extraction + grounding check on top of an already-produced state space.
+    Conflict resolution (self-refine) is intentionally excluded here: it showed unreliable
+    behavior (explosion, degenerate collapse, silent no-op) in prior runs and is tested separately."""
     result = {}
     try:
         evidence = extract_evidence(text, state_space, llm)
@@ -68,10 +56,6 @@ def postprocess(text: str, state_space: dict, llm) -> dict:
         result["grounding"] = validate_grounding(evidence, text)
     except Exception as e:
         result["evidence"] = {"error": str(e)}
-    try:
-        result["resolved"] = resolve_conflicts(text, state_space, llm)
-    except Exception as e:
-        result["resolved"] = {"error": str(e)}
     return result
 
 
@@ -95,12 +79,12 @@ def extract_state_space(text: str, llm, prompt_template: str = STATE_SPACE_PROMP
 
 if __name__ == "__main__":
     MODELS = [
-        #"meta/llama-3.1-8b-instruct",
+        "meta/llama-3.1-8b-instruct",
         #"meta/llama-3.3-70b-instruct",
         #"mistralai/mistral-medium-3.5-128b",
         #"mistralai/mistral-nemotron",
         #"openai/gpt-oss-20b",
-        "openai/gpt-oss-120b",
+        #"openai/gpt-oss-120b",
         #"mistralai/mistral-large-3-675b-instruct-2512",
         #"moonshotai/kimi-k2.6"
     ]
@@ -182,13 +166,13 @@ if __name__ == "__main__":
 
     PROMPTS = {
         "zero_shot": STATE_SPACE_PROMPT,
-        "one_shot": STATE_SPACE_PROMPT_FEWSHOT,
-        "two_shot": STATE_SPACE_PROMPT_TWOSHOT,
-        "cot": STATE_SPACE_PROMPT_COT,
+        #"one_shot": STATE_SPACE_PROMPT_FEWSHOT,
+        #"two_shot": STATE_SPACE_PROMPT_TWOSHOT,
+        #"cot": STATE_SPACE_PROMPT_COT,
         "zero_shot_v2": STATE_SPACE_PROMPT_V2,
-        "one_shot_v2": STATE_SPACE_PROMPT_FEWSHOT_V2,
-        "two_shot_v2": STATE_SPACE_PROMPT_TWOSHOT_V2,
-        "cot_v2": STATE_SPACE_PROMPT_COT_V2,
+        #"one_shot_v2": STATE_SPACE_PROMPT_FEWSHOT_V2,
+        #"two_shot_v2": STATE_SPACE_PROMPT_TWOSHOT_V2,
+        #"cot_v2": STATE_SPACE_PROMPT_COT_V2,
     }
 
     results = {}
