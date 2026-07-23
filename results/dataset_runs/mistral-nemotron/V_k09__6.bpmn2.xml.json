@@ -1,0 +1,278 @@
+{
+  "case_name": "V_k09",
+  "text": "Category: Vending and Shipping\nTitle: Storage management\n\nFirst, the order is read from the automatic order management system. \nThen, it's checked if the first product from the order is in stock. \nIf it's in stock then it's withdrawn from the warehouse.\nHowever, if it's not in stock then it's reordered from the wholesaler.\nNote, that if it was necessary to wait more then 10 days for the\narrival of the  product then a delivery delay penalty is automatically demanded\nfrom the wholesaler. \nAfter the ordered product has arrived it's registered in the stock management system. \nFinally, it's checked if the whole order is ready for shipment. \nIf the order is ready for shipment, a courier is requested and the products are packed\nsimultaneously and finally shipped. If it isn't then the next product from\nthe order is selected and the process starts again with checking if this\norder is in stock or not. \n",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "mistral-nemotron",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "mistral-nemotron",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/text_and_bpmn/bpmn/V_k09/6.bpmn2.xml",
+  "dfg_edges": [
+    {
+      "source_id": "sid-51D883F4-B6A4-4C74-876F-EE36ADE9D09F",
+      "source_label": "Courier is requested",
+      "target_id": "sid-D8B08140-7933-4E2C-898C-B6ECDB4BB08C",
+      "target_label": "Shipping the order",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-D0A265AC-07E8-42FC-8ECA-CC12562F92EC",
+      "source_label": "Check if  product is in stock",
+      "target_id": "sid-4BD9CB68-AB5B-43B2-88FD-66E14E56E93C",
+      "target_label": "Withdraw the Product from warehouse",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "Yes"
+      ]
+    },
+    {
+      "source_id": "sid-D0A265AC-07E8-42FC-8ECA-CC12562F92EC",
+      "source_label": "Check if  product is in stock",
+      "target_id": "sid-CAACA799-C985-4B2C-96C6-4869FE8A3825",
+      "target_label": "Reorder from wholesaler",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "No"
+      ]
+    },
+    {
+      "source_id": "sid-D9042950-4D4E-4493-A6DF-A93D275A2D1D",
+      "source_label": "Register in stock management system",
+      "target_id": "sid-54EE0803-705F-4E18-90E2-10C573A34EA5",
+      "target_label": "Check if the whole order is readyfor shipment",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-5DDCB46E-6598-4144-8116-A666902C0BBF",
+      "source_label": "Packing the products",
+      "target_id": "sid-D8B08140-7933-4E2C-898C-B6ECDB4BB08C",
+      "target_label": "Shipping the order",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-4BD9CB68-AB5B-43B2-88FD-66E14E56E93C",
+      "source_label": "Withdraw the Product from warehouse",
+      "target_id": "sid-54EE0803-705F-4E18-90E2-10C573A34EA5",
+      "target_label": "Check if the whole order is readyfor shipment",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-D8B08140-7933-4E2C-898C-B6ECDB4BB08C",
+      "source_label": "Shipping the order",
+      "target_id": "sid-F7764DDB-D79F-4410-B307-F1B9F0E95978",
+      "target_label": "Order was shipped",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-BF93DDA1-CF4B-475E-B398-D853B70B9CB2",
+      "source_label": "Storage management",
+      "target_id": "sid-2D8CB679-C1AA-4948-B6BF-78B75C5F7B71",
+      "target_label": "Read order",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-97DBAD52-EDA7-4B2D-A033-A86555423CE6",
+      "source_label": "Waiting until arrives (handling system)",
+      "target_id": "sid-50C1C141-9679-47AB-905C-2A71065AA45F",
+      "target_label": "Demand delivery delay penalty from the wholesaler",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "Yes"
+      ]
+    },
+    {
+      "source_id": "sid-97DBAD52-EDA7-4B2D-A033-A86555423CE6",
+      "source_label": "Waiting until arrives (handling system)",
+      "target_id": "sid-D9042950-4D4E-4493-A6DF-A93D275A2D1D",
+      "target_label": "Register in stock management system",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "No",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-2D8CB679-C1AA-4948-B6BF-78B75C5F7B71",
+      "source_label": "Read order",
+      "target_id": "sid-D0A265AC-07E8-42FC-8ECA-CC12562F92EC",
+      "target_label": "Check if  product is in stock",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-54EE0803-705F-4E18-90E2-10C573A34EA5",
+      "source_label": "Check if the whole order is readyfor shipment",
+      "target_id": "sid-D0A265AC-07E8-42FC-8ECA-CC12562F92EC",
+      "target_label": "Check if  product is in stock",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "No",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-54EE0803-705F-4E18-90E2-10C573A34EA5",
+      "source_label": "Check if the whole order is readyfor shipment",
+      "target_id": "sid-51D883F4-B6A4-4C74-876F-EE36ADE9D09F",
+      "target_label": "Courier is requested",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "Yes",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-54EE0803-705F-4E18-90E2-10C573A34EA5",
+      "source_label": "Check if the whole order is readyfor shipment",
+      "target_id": "sid-5DDCB46E-6598-4144-8116-A666902C0BBF",
+      "target_label": "Packing the products",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "Yes",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-CAACA799-C985-4B2C-96C6-4869FE8A3825",
+      "source_label": "Reorder from wholesaler",
+      "target_id": "sid-97DBAD52-EDA7-4B2D-A033-A86555423CE6",
+      "target_label": "Waiting until arrives (handling system)",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-50C1C141-9679-47AB-905C-2A71065AA45F",
+      "source_label": "Demand delivery delay penalty from the wholesaler",
+      "target_id": "sid-D9042950-4D4E-4493-A6DF-A93D275A2D1D",
+      "target_label": "Register in stock management system",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "Courier is requested",
+      "subject_id": "sid-51D883F4-B6A4-4C74-876F-EE36ADE9D09F",
+      "predicate": "follows",
+      "object": "Shipping the order",
+      "object_id": "sid-D8B08140-7933-4E2C-898C-B6ECDB4BB08C"
+    },
+    {
+      "subject": "Check if  product is in stock",
+      "subject_id": "sid-D0A265AC-07E8-42FC-8ECA-CC12562F92EC",
+      "predicate": "follows",
+      "object": "Withdraw the Product from warehouse",
+      "object_id": "sid-4BD9CB68-AB5B-43B2-88FD-66E14E56E93C"
+    },
+    {
+      "subject": "Check if  product is in stock",
+      "subject_id": "sid-D0A265AC-07E8-42FC-8ECA-CC12562F92EC",
+      "predicate": "follows",
+      "object": "Reorder from wholesaler",
+      "object_id": "sid-CAACA799-C985-4B2C-96C6-4869FE8A3825"
+    },
+    {
+      "subject": "Register in stock management system",
+      "subject_id": "sid-D9042950-4D4E-4493-A6DF-A93D275A2D1D",
+      "predicate": "follows",
+      "object": "Check if the whole order is readyfor shipment",
+      "object_id": "sid-54EE0803-705F-4E18-90E2-10C573A34EA5"
+    },
+    {
+      "subject": "Packing the products",
+      "subject_id": "sid-5DDCB46E-6598-4144-8116-A666902C0BBF",
+      "predicate": "follows",
+      "object": "Shipping the order",
+      "object_id": "sid-D8B08140-7933-4E2C-898C-B6ECDB4BB08C"
+    },
+    {
+      "subject": "Withdraw the Product from warehouse",
+      "subject_id": "sid-4BD9CB68-AB5B-43B2-88FD-66E14E56E93C",
+      "predicate": "follows",
+      "object": "Check if the whole order is readyfor shipment",
+      "object_id": "sid-54EE0803-705F-4E18-90E2-10C573A34EA5"
+    },
+    {
+      "subject": "Shipping the order",
+      "subject_id": "sid-D8B08140-7933-4E2C-898C-B6ECDB4BB08C",
+      "predicate": "follows",
+      "object": "Order was shipped",
+      "object_id": "sid-F7764DDB-D79F-4410-B307-F1B9F0E95978"
+    },
+    {
+      "subject": "Storage management",
+      "subject_id": "sid-BF93DDA1-CF4B-475E-B398-D853B70B9CB2",
+      "predicate": "follows",
+      "object": "Read order",
+      "object_id": "sid-2D8CB679-C1AA-4948-B6BF-78B75C5F7B71"
+    },
+    {
+      "subject": "Waiting until arrives (handling system)",
+      "subject_id": "sid-97DBAD52-EDA7-4B2D-A033-A86555423CE6",
+      "predicate": "follows",
+      "object": "Demand delivery delay penalty from the wholesaler",
+      "object_id": "sid-50C1C141-9679-47AB-905C-2A71065AA45F"
+    },
+    {
+      "subject": "Waiting until arrives (handling system)",
+      "subject_id": "sid-97DBAD52-EDA7-4B2D-A033-A86555423CE6",
+      "predicate": "follows",
+      "object": "Register in stock management system",
+      "object_id": "sid-D9042950-4D4E-4493-A6DF-A93D275A2D1D"
+    },
+    {
+      "subject": "Read order",
+      "subject_id": "sid-2D8CB679-C1AA-4948-B6BF-78B75C5F7B71",
+      "predicate": "follows",
+      "object": "Check if  product is in stock",
+      "object_id": "sid-D0A265AC-07E8-42FC-8ECA-CC12562F92EC"
+    },
+    {
+      "subject": "Check if the whole order is readyfor shipment",
+      "subject_id": "sid-54EE0803-705F-4E18-90E2-10C573A34EA5",
+      "predicate": "follows",
+      "object": "Check if  product is in stock",
+      "object_id": "sid-D0A265AC-07E8-42FC-8ECA-CC12562F92EC"
+    },
+    {
+      "subject": "Check if the whole order is readyfor shipment",
+      "subject_id": "sid-54EE0803-705F-4E18-90E2-10C573A34EA5",
+      "predicate": "follows",
+      "object": "Courier is requested",
+      "object_id": "sid-51D883F4-B6A4-4C74-876F-EE36ADE9D09F"
+    },
+    {
+      "subject": "Check if the whole order is readyfor shipment",
+      "subject_id": "sid-54EE0803-705F-4E18-90E2-10C573A34EA5",
+      "predicate": "follows",
+      "object": "Packing the products",
+      "object_id": "sid-5DDCB46E-6598-4144-8116-A666902C0BBF"
+    },
+    {
+      "subject": "Reorder from wholesaler",
+      "subject_id": "sid-CAACA799-C985-4B2C-96C6-4869FE8A3825",
+      "predicate": "follows",
+      "object": "Waiting until arrives (handling system)",
+      "object_id": "sid-97DBAD52-EDA7-4B2D-A033-A86555423CE6"
+    },
+    {
+      "subject": "Demand delivery delay penalty from the wholesaler",
+      "subject_id": "sid-50C1C141-9679-47AB-905C-2A71065AA45F",
+      "predicate": "follows",
+      "object": "Register in stock management system",
+      "object_id": "sid-D9042950-4D4E-4493-A6DF-A93D275A2D1D"
+    }
+  ],
+  "errors": [
+    "state_space: Error code: 429 - {'status': 429, 'title': 'Too Many Requests'}",
+    "precondition: 'state_space'",
+    "state_matching: 'state_space'",
+    "graph_construction: 'state_space'",
+    "alignment: 'reference_graph'",
+    "report: 'alignment'"
+  ]
+}

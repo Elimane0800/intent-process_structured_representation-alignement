@@ -1,0 +1,413 @@
+{
+  "case_name": "V_g01",
+  "text": "Category: Vending and Shipping\nTitle: Robotic Burger Seller near the University of Vienna\n\nThe robot receives an order. It asks whether the customer wants a menu or just\nthe burger. If he wants a menu, the robot starts preparing the drink, which\ndepending on the size can take a variable amount of time. While doing so, he\nasks if you want fries or wedges. If you want fries, he prepares the fries; if\nyou want wedges, he prepares wedges. Again the duration varies depending on the\nsize fries/wedges order. After that, he prepares the burger, and gives you\nenthusiastic status updates every 30 seconds. Depending on the number of\ningredients, the duration for creating the burger varies. Your order is delivered\nvia a conveyor belt.\n",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "llama-3.1-8b",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "llama-3.1-8b",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/text_and_bpmn/bpmn/V_g01/5.bpmn2.xml",
+  "dfg_edges": [
+    {
+      "source_id": "sid-F613A2C0-3FBE-495D-B6E3-BE0ED7995F59",
+      "source_label": "Place order",
+      "target_id": "sid-FA90BFFF-CC26-438B-BAB8-3666A323DE6C",
+      "target_label": "Robot receives order",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-3F46F595-DFFF-4AA3-9E57-2AD10398230B",
+      "source_label": "Eat Burger",
+      "target_id": "sid-EE99309E-8992-47C2-97D7-8B7E9B66BD04",
+      "target_label": "Pay",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-563B487A-F4EC-40C7-AA03-DAFD7F6BA579",
+      "source_label": "",
+      "target_id": "sid-11C04537-A53B-4CEB-83B1-B85BCC135AFC",
+      "target_label": "give status updates",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-ACC8AE07-A1A6-4B05-88E3-6619631EE86C",
+      "source_label": "",
+      "target_id": "sid-EE99309E-8992-47C2-97D7-8B7E9B66BD04",
+      "target_label": "Pay",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-55A7E962-E532-4C74-87D7-0996460B016E",
+      "source_label": "prepare burger",
+      "target_id": "sid-99B2B34E-1F1B-4CC5-B05A-2762B3F370F9",
+      "target_label": "Deliver Burger",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-FA90BFFF-CC26-438B-BAB8-3666A323DE6C",
+      "source_label": "Robot receives order",
+      "target_id": "sid-55A7E962-E532-4C74-87D7-0996460B016E",
+      "target_label": "prepare burger",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "no (just burger)",
+        "ExclusiveGateway",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-FA90BFFF-CC26-438B-BAB8-3666A323DE6C",
+      "source_label": "Robot receives order",
+      "target_id": "sid-11C04537-A53B-4CEB-83B1-B85BCC135AFC",
+      "target_label": "give status updates",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "no (just burger)",
+        "ExclusiveGateway",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-FA90BFFF-CC26-438B-BAB8-3666A323DE6C",
+      "source_label": "Robot receives order",
+      "target_id": "sid-A3FB0B03-EF76-48FF-ACDA-F80A02846F43",
+      "target_label": "Ask about side dish",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "yes",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-FA90BFFF-CC26-438B-BAB8-3666A323DE6C",
+      "source_label": "Robot receives order",
+      "target_id": "sid-9D4F686D-5AC2-4E30-8E6E-E05466768E51",
+      "target_label": "prepare drink",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "yes",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-334E7FF1-33E5-4B1E-8C4E-92252A12CE4B",
+      "source_label": "prepare wedges",
+      "target_id": "sid-55A7E962-E532-4C74-87D7-0996460B016E",
+      "target_label": "prepare burger",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ParallelGateway",
+        "ExclusiveGateway",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-334E7FF1-33E5-4B1E-8C4E-92252A12CE4B",
+      "source_label": "prepare wedges",
+      "target_id": "sid-11C04537-A53B-4CEB-83B1-B85BCC135AFC",
+      "target_label": "give status updates",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ParallelGateway",
+        "ExclusiveGateway",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-EE99309E-8992-47C2-97D7-8B7E9B66BD04",
+      "source_label": "Pay",
+      "target_id": "sid-7E1BF9EA-8522-43DB-A5F5-68AD8D95FA52",
+      "target_label": "Done",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-9D4F686D-5AC2-4E30-8E6E-E05466768E51",
+      "source_label": "prepare drink",
+      "target_id": "sid-55A7E962-E532-4C74-87D7-0996460B016E",
+      "target_label": "prepare burger",
+      "gateway_context": [
+        "ParallelGateway",
+        "ExclusiveGateway",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-9D4F686D-5AC2-4E30-8E6E-E05466768E51",
+      "source_label": "prepare drink",
+      "target_id": "sid-11C04537-A53B-4CEB-83B1-B85BCC135AFC",
+      "target_label": "give status updates",
+      "gateway_context": [
+        "ParallelGateway",
+        "ExclusiveGateway",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-A3FB0B03-EF76-48FF-ACDA-F80A02846F43",
+      "source_label": "Ask about side dish",
+      "target_id": "sid-006C59D4-D99C-4318-AD05-237851230113",
+      "target_label": "prepare fries",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "fries"
+      ]
+    },
+    {
+      "source_id": "sid-A3FB0B03-EF76-48FF-ACDA-F80A02846F43",
+      "source_label": "Ask about side dish",
+      "target_id": "sid-334E7FF1-33E5-4B1E-8C4E-92252A12CE4B",
+      "target_label": "prepare wedges",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "wedges"
+      ]
+    },
+    {
+      "source_id": "sid-006C59D4-D99C-4318-AD05-237851230113",
+      "source_label": "prepare fries",
+      "target_id": "sid-55A7E962-E532-4C74-87D7-0996460B016E",
+      "target_label": "prepare burger",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ParallelGateway",
+        "ExclusiveGateway",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-006C59D4-D99C-4318-AD05-237851230113",
+      "source_label": "prepare fries",
+      "target_id": "sid-11C04537-A53B-4CEB-83B1-B85BCC135AFC",
+      "target_label": "give status updates",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ParallelGateway",
+        "ExclusiveGateway",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-99B2B34E-1F1B-4CC5-B05A-2762B3F370F9",
+      "source_label": "Deliver Burger",
+      "target_id": "sid-226828F7-CC22-49F1-9EDF-0B20EE97BECB",
+      "target_label": "Take burger from conveyor belt",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-11C04537-A53B-4CEB-83B1-B85BCC135AFC",
+      "source_label": "give status updates",
+      "target_id": "sid-99B2B34E-1F1B-4CC5-B05A-2762B3F370F9",
+      "target_label": "Deliver Burger",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-BBA86BDC-961D-401C-B304-EDA2E9A1E524",
+      "source_label": "start process",
+      "target_id": "sid-F613A2C0-3FBE-495D-B6E3-BE0ED7995F59",
+      "target_label": "Place order",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-226828F7-CC22-49F1-9EDF-0B20EE97BECB",
+      "source_label": "Take burger from conveyor belt",
+      "target_id": "sid-3F46F595-DFFF-4AA3-9E57-2AD10398230B",
+      "target_label": "Eat Burger",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-279942F3-774E-4B26-8C95-C03F9DAAF10B",
+      "source_label": "",
+      "target_id": "sid-FA90BFFF-CC26-438B-BAB8-3666A323DE6C",
+      "target_label": "Robot receives order",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-E34EA60C-076B-4E99-AC83-71EC6DD8D3CD",
+      "source_label": "",
+      "target_id": "sid-F613A2C0-3FBE-495D-B6E3-BE0ED7995F59",
+      "target_label": "Place order",
+      "gateway_context": []
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "Place order",
+      "subject_id": "sid-F613A2C0-3FBE-495D-B6E3-BE0ED7995F59",
+      "predicate": "follows",
+      "object": "Robot receives order",
+      "object_id": "sid-FA90BFFF-CC26-438B-BAB8-3666A323DE6C"
+    },
+    {
+      "subject": "Eat Burger",
+      "subject_id": "sid-3F46F595-DFFF-4AA3-9E57-2AD10398230B",
+      "predicate": "follows",
+      "object": "Pay",
+      "object_id": "sid-EE99309E-8992-47C2-97D7-8B7E9B66BD04"
+    },
+    {
+      "subject": "",
+      "subject_id": "sid-563B487A-F4EC-40C7-AA03-DAFD7F6BA579",
+      "predicate": "follows",
+      "object": "give status updates",
+      "object_id": "sid-11C04537-A53B-4CEB-83B1-B85BCC135AFC"
+    },
+    {
+      "subject": "",
+      "subject_id": "sid-ACC8AE07-A1A6-4B05-88E3-6619631EE86C",
+      "predicate": "follows",
+      "object": "Pay",
+      "object_id": "sid-EE99309E-8992-47C2-97D7-8B7E9B66BD04"
+    },
+    {
+      "subject": "prepare burger",
+      "subject_id": "sid-55A7E962-E532-4C74-87D7-0996460B016E",
+      "predicate": "follows",
+      "object": "Deliver Burger",
+      "object_id": "sid-99B2B34E-1F1B-4CC5-B05A-2762B3F370F9"
+    },
+    {
+      "subject": "Robot receives order",
+      "subject_id": "sid-FA90BFFF-CC26-438B-BAB8-3666A323DE6C",
+      "predicate": "follows",
+      "object": "prepare burger",
+      "object_id": "sid-55A7E962-E532-4C74-87D7-0996460B016E"
+    },
+    {
+      "subject": "Robot receives order",
+      "subject_id": "sid-FA90BFFF-CC26-438B-BAB8-3666A323DE6C",
+      "predicate": "follows",
+      "object": "give status updates",
+      "object_id": "sid-11C04537-A53B-4CEB-83B1-B85BCC135AFC"
+    },
+    {
+      "subject": "Robot receives order",
+      "subject_id": "sid-FA90BFFF-CC26-438B-BAB8-3666A323DE6C",
+      "predicate": "follows",
+      "object": "Ask about side dish",
+      "object_id": "sid-A3FB0B03-EF76-48FF-ACDA-F80A02846F43"
+    },
+    {
+      "subject": "Robot receives order",
+      "subject_id": "sid-FA90BFFF-CC26-438B-BAB8-3666A323DE6C",
+      "predicate": "follows",
+      "object": "prepare drink",
+      "object_id": "sid-9D4F686D-5AC2-4E30-8E6E-E05466768E51"
+    },
+    {
+      "subject": "prepare wedges",
+      "subject_id": "sid-334E7FF1-33E5-4B1E-8C4E-92252A12CE4B",
+      "predicate": "follows",
+      "object": "prepare burger",
+      "object_id": "sid-55A7E962-E532-4C74-87D7-0996460B016E"
+    },
+    {
+      "subject": "prepare wedges",
+      "subject_id": "sid-334E7FF1-33E5-4B1E-8C4E-92252A12CE4B",
+      "predicate": "follows",
+      "object": "give status updates",
+      "object_id": "sid-11C04537-A53B-4CEB-83B1-B85BCC135AFC"
+    },
+    {
+      "subject": "Pay",
+      "subject_id": "sid-EE99309E-8992-47C2-97D7-8B7E9B66BD04",
+      "predicate": "follows",
+      "object": "Done",
+      "object_id": "sid-7E1BF9EA-8522-43DB-A5F5-68AD8D95FA52"
+    },
+    {
+      "subject": "prepare drink",
+      "subject_id": "sid-9D4F686D-5AC2-4E30-8E6E-E05466768E51",
+      "predicate": "follows",
+      "object": "prepare burger",
+      "object_id": "sid-55A7E962-E532-4C74-87D7-0996460B016E"
+    },
+    {
+      "subject": "prepare drink",
+      "subject_id": "sid-9D4F686D-5AC2-4E30-8E6E-E05466768E51",
+      "predicate": "follows",
+      "object": "give status updates",
+      "object_id": "sid-11C04537-A53B-4CEB-83B1-B85BCC135AFC"
+    },
+    {
+      "subject": "Ask about side dish",
+      "subject_id": "sid-A3FB0B03-EF76-48FF-ACDA-F80A02846F43",
+      "predicate": "follows",
+      "object": "prepare fries",
+      "object_id": "sid-006C59D4-D99C-4318-AD05-237851230113"
+    },
+    {
+      "subject": "Ask about side dish",
+      "subject_id": "sid-A3FB0B03-EF76-48FF-ACDA-F80A02846F43",
+      "predicate": "follows",
+      "object": "prepare wedges",
+      "object_id": "sid-334E7FF1-33E5-4B1E-8C4E-92252A12CE4B"
+    },
+    {
+      "subject": "prepare fries",
+      "subject_id": "sid-006C59D4-D99C-4318-AD05-237851230113",
+      "predicate": "follows",
+      "object": "prepare burger",
+      "object_id": "sid-55A7E962-E532-4C74-87D7-0996460B016E"
+    },
+    {
+      "subject": "prepare fries",
+      "subject_id": "sid-006C59D4-D99C-4318-AD05-237851230113",
+      "predicate": "follows",
+      "object": "give status updates",
+      "object_id": "sid-11C04537-A53B-4CEB-83B1-B85BCC135AFC"
+    },
+    {
+      "subject": "Deliver Burger",
+      "subject_id": "sid-99B2B34E-1F1B-4CC5-B05A-2762B3F370F9",
+      "predicate": "follows",
+      "object": "Take burger from conveyor belt",
+      "object_id": "sid-226828F7-CC22-49F1-9EDF-0B20EE97BECB"
+    },
+    {
+      "subject": "give status updates",
+      "subject_id": "sid-11C04537-A53B-4CEB-83B1-B85BCC135AFC",
+      "predicate": "follows",
+      "object": "Deliver Burger",
+      "object_id": "sid-99B2B34E-1F1B-4CC5-B05A-2762B3F370F9"
+    },
+    {
+      "subject": "start process",
+      "subject_id": "sid-BBA86BDC-961D-401C-B304-EDA2E9A1E524",
+      "predicate": "follows",
+      "object": "Place order",
+      "object_id": "sid-F613A2C0-3FBE-495D-B6E3-BE0ED7995F59"
+    },
+    {
+      "subject": "Take burger from conveyor belt",
+      "subject_id": "sid-226828F7-CC22-49F1-9EDF-0B20EE97BECB",
+      "predicate": "follows",
+      "object": "Eat Burger",
+      "object_id": "sid-3F46F595-DFFF-4AA3-9E57-2AD10398230B"
+    },
+    {
+      "subject": "",
+      "subject_id": "sid-279942F3-774E-4B26-8C95-C03F9DAAF10B",
+      "predicate": "follows",
+      "object": "Robot receives order",
+      "object_id": "sid-FA90BFFF-CC26-438B-BAB8-3666A323DE6C"
+    },
+    {
+      "subject": "",
+      "subject_id": "sid-E34EA60C-076B-4E99-AC83-71EC6DD8D3CD",
+      "predicate": "follows",
+      "object": "Place order",
+      "object_id": "sid-F613A2C0-3FBE-495D-B6E3-BE0ED7995F59"
+    }
+  ],
+  "errors": [
+    "state_space: parse failed, raw response='{\"order\": [\"received\"], \"burger\": [\"prepared\"], \"fries\": [\"prepared\"], \"wedges\": [\"prepared\"], \"drink\": [\"prepared\"], \"customer\": [\"asked\"], \"robot\": [\"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"preparing\", \"pre'",
+    "precondition: 'state_space'",
+    "state_matching: 'state_space'",
+    "graph_construction: 'state_space'",
+    "alignment: 'reference_graph'",
+    "report: 'alignment'"
+  ]
+}

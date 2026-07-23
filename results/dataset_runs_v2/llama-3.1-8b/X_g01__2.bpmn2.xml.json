@@ -1,0 +1,570 @@
+{
+  "case_name": "X_g01",
+  "text": "Category: Miscellaneous\nTitle: New Application for Registering for an USI course\n\nIf you want to register for a course at the sports institute, you need to\nselect a course. If slots are free, the system tells you the courses, and\ndates. Select one. Next, you need to check if you already have an account at\nthe sports institute. If not, you need to check whether you are registered at\nan eligible university. If you are, register your account. If you are not,\nrequest an activation and wait for a response. As soon as you have an account,\nlog into it. The application is also connected to your twitter account, and\nlets you tweet to friends who might want to join you, you can complete the\nregistration for the course and provide the payment information. In the end, you\nwill receive a course ticket.\n",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "llama-3.1-8b",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "llama-3.1-8b",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/text_and_bpmn/bpmn/X_g01/2.bpmn2.xml",
+  "report_model": "llama-3.1-8b",
+  "candidates": {
+    "course": [
+      "selected"
+    ],
+    "slots": [
+      "free"
+    ],
+    "system": [
+      "tells"
+    ],
+    "courses": [
+      "available"
+    ],
+    "dates": [
+      "available"
+    ],
+    "account": [
+      "checked",
+      "registered",
+      "activated",
+      "existing"
+    ],
+    "university": [
+      "eligible"
+    ],
+    "twitter_account": [
+      "connected"
+    ]
+  },
+  "validation_report": {
+    "course": {
+      "f_lex": "ENTITY",
+      "kept": true
+    },
+    "slots": {
+      "f_lex": "ENTITY",
+      "kept": true
+    },
+    "system": {
+      "f_lex": "ENTITY",
+      "kept": true
+    },
+    "courses": {
+      "f_lex": "ENTITY",
+      "kept": true
+    },
+    "dates": {
+      "f_lex": "INDETERMINATE",
+      "kept": true
+    },
+    "account": {
+      "f_lex": "ENTITY",
+      "kept": true
+    },
+    "university": {
+      "f_lex": "ACTOR",
+      "kept": false
+    },
+    "twitter_account": {
+      "f_lex": "ENTITY",
+      "kept": true
+    }
+  },
+  "state_space": {
+    "course": [
+      "selected",
+      "available"
+    ],
+    "slots": [
+      "free"
+    ],
+    "system": [
+      "tells"
+    ],
+    "dates": [
+      "available"
+    ],
+    "twitter_account": [
+      "connected",
+      "checked",
+      "registered",
+      "activated",
+      "existing"
+    ]
+  },
+  "state_space_dedup": {
+    "merged": {
+      "course": {
+        "absorbed": [
+          "courses"
+        ],
+        "rule": "morphological_identity",
+        "states": [
+          "selected",
+          "available"
+        ]
+      },
+      "twitter_account": {
+        "absorbed": [
+          "account"
+        ],
+        "rule": "anaphoric_containment",
+        "states": [
+          "connected",
+          "checked",
+          "registered",
+          "activated",
+          "existing"
+        ]
+      }
+    },
+    "ambiguous_not_merged": {}
+  },
+  "dfg_edges": [
+    {
+      "source_id": "sid-14F13D44-1146-4B03-8737-5E58BCB7AB53",
+      "source_label": "breathe",
+      "target_id": "sid-BADC47AF-E246-4975-9EE6-2875473B0D25",
+      "target_label": "list free slots for the selected course",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-8DA21C82-BE3E-42AF-8C6C-AA7021A023EC",
+      "source_label": "pay for usi course",
+      "target_id": "sid-A58DFE3A-0A82-408D-8FEA-256182A91243",
+      "target_label": "course ticket",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-1A1FBE1E-D99B-44C6-B40C-B5BB266017AD",
+      "source_label": "check for account",
+      "target_id": "sid-6E561BDF-1101-438F-BCC1-3E93B63EEFBD",
+      "target_label": "login",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "YES",
+        "ExclusiveGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-1A1FBE1E-D99B-44C6-B40C-B5BB266017AD",
+      "source_label": "check for account",
+      "target_id": "sid-719FF986-3B4B-4270-BC67-985E99853E23",
+      "target_label": "check if registered at an eligible uni",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "NO"
+      ]
+    },
+    {
+      "source_id": "sid-34307583-759F-4BE9-AEA7-A65A11FB01A7",
+      "source_label": "provide paymend details",
+      "target_id": "sid-8DA21C82-BE3E-42AF-8C6C-AA7021A023EC",
+      "target_label": "pay for usi course",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-FB278505-A8E1-4305-AF73-22C406067156",
+      "source_label": "list usi courses",
+      "target_id": "sid-295D06F5-5CCC-4133-B58C-1D08BF0BCA76",
+      "target_label": "select course",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-FB278505-A8E1-4305-AF73-22C406067156",
+      "source_label": "list usi courses",
+      "target_id": "sid-14F13D44-1146-4B03-8737-5E58BCB7AB53",
+      "target_label": "breathe",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-295D06F5-5CCC-4133-B58C-1D08BF0BCA76",
+      "source_label": "select course",
+      "target_id": "sid-BADC47AF-E246-4975-9EE6-2875473B0D25",
+      "target_label": "list free slots for the selected course",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-719FF986-3B4B-4270-BC67-985E99853E23",
+      "source_label": "check if registered at an eligible uni",
+      "target_id": "sid-342FE2E7-5873-436A-A332-BCF2CD666DD8",
+      "target_label": "register",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "Yes"
+      ]
+    },
+    {
+      "source_id": "sid-719FF986-3B4B-4270-BC67-985E99853E23",
+      "source_label": "check if registered at an eligible uni",
+      "target_id": "sid-4B913F6C-A96F-42E5-B615-98AA816ED3DF",
+      "target_label": "request an activation",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "NO"
+      ]
+    },
+    {
+      "source_id": "sid-4E429958-6A46-4F2F-983F-04A1C64BC058",
+      "source_label": "credentials received",
+      "target_id": "sid-6E561BDF-1101-438F-BCC1-3E93B63EEFBD",
+      "target_label": "login",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-4B913F6C-A96F-42E5-B615-98AA816ED3DF",
+      "source_label": "request an activation",
+      "target_id": "sid-4E429958-6A46-4F2F-983F-04A1C64BC058",
+      "target_label": "credentials received",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-6E561BDF-1101-438F-BCC1-3E93B63EEFBD",
+      "source_label": "login",
+      "target_id": "sid-0ADD0B45-085C-4184-8DC2-C80645D4476B",
+      "target_label": "check credentials",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-BADC47AF-E246-4975-9EE6-2875473B0D25",
+      "source_label": "list free slots for the selected course",
+      "target_id": "sid-1A1FBE1E-D99B-44C6-B40C-B5BB266017AD",
+      "target_label": "check for account",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-342FE2E7-5873-436A-A332-BCF2CD666DD8",
+      "source_label": "register",
+      "target_id": "sid-6E561BDF-1101-438F-BCC1-3E93B63EEFBD",
+      "target_label": "login",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-0ADD0B45-085C-4184-8DC2-C80645D4476B",
+      "source_label": "check credentials",
+      "target_id": "sid-34307583-759F-4BE9-AEA7-A65A11FB01A7",
+      "target_label": "provide paymend details",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "YES"
+      ]
+    },
+    {
+      "source_id": "sid-0ADD0B45-085C-4184-8DC2-C80645D4476B",
+      "source_label": "check credentials",
+      "target_id": "sid-6E561BDF-1101-438F-BCC1-3E93B63EEFBD",
+      "target_label": "login",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "NO",
+        "ExclusiveGateway"
+      ]
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "breathe",
+      "subject_id": "sid-14F13D44-1146-4B03-8737-5E58BCB7AB53",
+      "predicate": "follows",
+      "object": "list free slots for the selected course",
+      "object_id": "sid-BADC47AF-E246-4975-9EE6-2875473B0D25"
+    },
+    {
+      "subject": "pay for usi course",
+      "subject_id": "sid-8DA21C82-BE3E-42AF-8C6C-AA7021A023EC",
+      "predicate": "follows",
+      "object": "course ticket",
+      "object_id": "sid-A58DFE3A-0A82-408D-8FEA-256182A91243"
+    },
+    {
+      "subject": "check for account",
+      "subject_id": "sid-1A1FBE1E-D99B-44C6-B40C-B5BB266017AD",
+      "predicate": "follows",
+      "object": "login",
+      "object_id": "sid-6E561BDF-1101-438F-BCC1-3E93B63EEFBD"
+    },
+    {
+      "subject": "check for account",
+      "subject_id": "sid-1A1FBE1E-D99B-44C6-B40C-B5BB266017AD",
+      "predicate": "follows",
+      "object": "check if registered at an eligible uni",
+      "object_id": "sid-719FF986-3B4B-4270-BC67-985E99853E23"
+    },
+    {
+      "subject": "provide paymend details",
+      "subject_id": "sid-34307583-759F-4BE9-AEA7-A65A11FB01A7",
+      "predicate": "follows",
+      "object": "pay for usi course",
+      "object_id": "sid-8DA21C82-BE3E-42AF-8C6C-AA7021A023EC"
+    },
+    {
+      "subject": "list usi courses",
+      "subject_id": "sid-FB278505-A8E1-4305-AF73-22C406067156",
+      "predicate": "follows",
+      "object": "select course",
+      "object_id": "sid-295D06F5-5CCC-4133-B58C-1D08BF0BCA76"
+    },
+    {
+      "subject": "list usi courses",
+      "subject_id": "sid-FB278505-A8E1-4305-AF73-22C406067156",
+      "predicate": "follows",
+      "object": "breathe",
+      "object_id": "sid-14F13D44-1146-4B03-8737-5E58BCB7AB53"
+    },
+    {
+      "subject": "select course",
+      "subject_id": "sid-295D06F5-5CCC-4133-B58C-1D08BF0BCA76",
+      "predicate": "follows",
+      "object": "list free slots for the selected course",
+      "object_id": "sid-BADC47AF-E246-4975-9EE6-2875473B0D25"
+    },
+    {
+      "subject": "check if registered at an eligible uni",
+      "subject_id": "sid-719FF986-3B4B-4270-BC67-985E99853E23",
+      "predicate": "follows",
+      "object": "register",
+      "object_id": "sid-342FE2E7-5873-436A-A332-BCF2CD666DD8"
+    },
+    {
+      "subject": "check if registered at an eligible uni",
+      "subject_id": "sid-719FF986-3B4B-4270-BC67-985E99853E23",
+      "predicate": "follows",
+      "object": "request an activation",
+      "object_id": "sid-4B913F6C-A96F-42E5-B615-98AA816ED3DF"
+    },
+    {
+      "subject": "credentials received",
+      "subject_id": "sid-4E429958-6A46-4F2F-983F-04A1C64BC058",
+      "predicate": "follows",
+      "object": "login",
+      "object_id": "sid-6E561BDF-1101-438F-BCC1-3E93B63EEFBD"
+    },
+    {
+      "subject": "request an activation",
+      "subject_id": "sid-4B913F6C-A96F-42E5-B615-98AA816ED3DF",
+      "predicate": "follows",
+      "object": "credentials received",
+      "object_id": "sid-4E429958-6A46-4F2F-983F-04A1C64BC058"
+    },
+    {
+      "subject": "login",
+      "subject_id": "sid-6E561BDF-1101-438F-BCC1-3E93B63EEFBD",
+      "predicate": "follows",
+      "object": "check credentials",
+      "object_id": "sid-0ADD0B45-085C-4184-8DC2-C80645D4476B"
+    },
+    {
+      "subject": "list free slots for the selected course",
+      "subject_id": "sid-BADC47AF-E246-4975-9EE6-2875473B0D25",
+      "predicate": "follows",
+      "object": "check for account",
+      "object_id": "sid-1A1FBE1E-D99B-44C6-B40C-B5BB266017AD"
+    },
+    {
+      "subject": "register",
+      "subject_id": "sid-342FE2E7-5873-436A-A332-BCF2CD666DD8",
+      "predicate": "follows",
+      "object": "login",
+      "object_id": "sid-6E561BDF-1101-438F-BCC1-3E93B63EEFBD"
+    },
+    {
+      "subject": "check credentials",
+      "subject_id": "sid-0ADD0B45-085C-4184-8DC2-C80645D4476B",
+      "predicate": "follows",
+      "object": "provide paymend details",
+      "object_id": "sid-34307583-759F-4BE9-AEA7-A65A11FB01A7"
+    },
+    {
+      "subject": "check credentials",
+      "subject_id": "sid-0ADD0B45-085C-4184-8DC2-C80645D4476B",
+      "predicate": "follows",
+      "object": "login",
+      "object_id": "sid-6E561BDF-1101-438F-BCC1-3E93B63EEFBD"
+    }
+  ],
+  "matches": {
+    "breathe": {
+      "match": "system.tells",
+      "score": 0.1425
+    },
+    "check credentials": {
+      "match": "twitter_account.checked",
+      "score": 0.3815
+    },
+    "check for account": {
+      "match": "twitter_account.checked",
+      "score": 0.5316
+    },
+    "check if registered at an eligible uni": {
+      "match": "twitter_account.registered",
+      "score": 0.2605
+    },
+    "course ticket": {
+      "match": "course.available",
+      "score": 0.5709
+    },
+    "credentials received": {
+      "match": "course.available",
+      "score": 0.1944
+    },
+    "list free slots for the selected course": {
+      "match": "slots.free",
+      "score": 0.5827
+    },
+    "list usi courses": {
+      "match": "course.available",
+      "score": 0.5341
+    },
+    "login": {
+      "match": "twitter_account.registered",
+      "score": 0.2543
+    },
+    "pay for usi course": {
+      "match": "course.available",
+      "score": 0.4138
+    },
+    "provide paymend details": {
+      "match": "system.tells",
+      "score": 0.1827
+    },
+    "register": {
+      "match": "twitter_account.registered",
+      "score": 0.4236
+    },
+    "request an activation": {
+      "match": "twitter_account.activated",
+      "score": 0.4447
+    },
+    "select course": {
+      "match": "course.selected",
+      "score": 0.8174
+    }
+  },
+  "process_graph": [
+    {
+      "from": "system.tells",
+      "to": "slots.free",
+      "activity_from": "breathe",
+      "activity_to": "list free slots for the selected course"
+    },
+    {
+      "from": "course.available",
+      "to": "course.available",
+      "activity_from": "pay for usi course",
+      "activity_to": "course ticket"
+    },
+    {
+      "from": "twitter_account.checked",
+      "to": "twitter_account.registered",
+      "activity_from": "check for account",
+      "activity_to": "login"
+    },
+    {
+      "from": "twitter_account.checked",
+      "to": "twitter_account.registered",
+      "activity_from": "check for account",
+      "activity_to": "check if registered at an eligible uni"
+    },
+    {
+      "from": "system.tells",
+      "to": "course.available",
+      "activity_from": "provide paymend details",
+      "activity_to": "pay for usi course"
+    },
+    {
+      "from": "course.available",
+      "to": "course.selected",
+      "activity_from": "list usi courses",
+      "activity_to": "select course"
+    },
+    {
+      "from": "course.available",
+      "to": "system.tells",
+      "activity_from": "list usi courses",
+      "activity_to": "breathe"
+    },
+    {
+      "from": "course.selected",
+      "to": "slots.free",
+      "activity_from": "select course",
+      "activity_to": "list free slots for the selected course"
+    },
+    {
+      "from": "twitter_account.registered",
+      "to": "twitter_account.registered",
+      "activity_from": "check if registered at an eligible uni",
+      "activity_to": "register"
+    },
+    {
+      "from": "twitter_account.registered",
+      "to": "twitter_account.activated",
+      "activity_from": "check if registered at an eligible uni",
+      "activity_to": "request an activation"
+    },
+    {
+      "from": "course.available",
+      "to": "twitter_account.registered",
+      "activity_from": "credentials received",
+      "activity_to": "login"
+    },
+    {
+      "from": "twitter_account.activated",
+      "to": "course.available",
+      "activity_from": "request an activation",
+      "activity_to": "credentials received"
+    },
+    {
+      "from": "twitter_account.registered",
+      "to": "twitter_account.checked",
+      "activity_from": "login",
+      "activity_to": "check credentials"
+    },
+    {
+      "from": "slots.free",
+      "to": "twitter_account.checked",
+      "activity_from": "list free slots for the selected course",
+      "activity_to": "check for account"
+    },
+    {
+      "from": "twitter_account.registered",
+      "to": "twitter_account.registered",
+      "activity_from": "register",
+      "activity_to": "login"
+    },
+    {
+      "from": "twitter_account.checked",
+      "to": "system.tells",
+      "activity_from": "check credentials",
+      "activity_to": "provide paymend details"
+    },
+    {
+      "from": "twitter_account.checked",
+      "to": "twitter_account.registered",
+      "activity_from": "check credentials",
+      "activity_to": "login"
+    }
+  ],
+  "errors": [
+    "precondition: parse failed, raw response='{\\n  \"course.selected\": {\"precondition\": \"INITIAL\", \"quote\": null},\\n  \"slots.free\": {\"precondition\": \"INITIAL\", \"quote\": null},\\n  \"system.tells\": {\"precondition\": \"INITIAL\", \"quote\": null},\\n  \"dates.available\": {\"precondition\": \"INITIAL\", \"quote\": null},\\n  \"twitter_account.connected\": {\"precondition\": \"INITIAL\", \"quote\": null},\\n  \"twitter_account.checked\": {\"precondition\": \"INITIAL\", \"quote\": null},\\n  \"twitter_account.registered\": {\"precondition\": \"INITIAL\", \"quote\": null},\\n  \"twitter_account.activated\": {\"precondition\": \"INITIAL\", \"quote\": null},\\n  \"twitter_account.existing\": {\"precondition\": \"INITIAL\", \"quote\": null},\\n  \"course.available\": {\"precondition\": \"slots.free AND system.tells\", \"quote\": \"If slots are free, the system tells you the courses, and dates.\"},\\n  \"twitter_account.connected AND course.selected\": {\"precondition\": \"twitter_account.connected AND course.selected\", \"quote\": \"The application is also connected to your twitter account, and lets you tweet to friends who might want to join you, you can complete the registration for the course and provide the payment information.\"},\\n  \"twitter_account.registered\": {\"precondition\": \"twitter_account.existing OR twitter_account.activated\", \"quote\": \"If you are registered at an eligible university, register your account. If you are not, request an activation and wait for a response.\"},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered\": {\"precondition\": \"twitter_account.connected AND course.selected AND twitter_account.registered\", \"quote\": \"The application is also connected to your twitter account, and lets you tweet to friends who might want to join you, you can complete the registration for the course and provide the payment information.\"},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.registered\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.activated AND twitter_account.existing\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.registered AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.registered AND twitter_account.existing\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.registered AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.registered AND twitter_account.existing AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.registered AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.registered AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.registered AND twitter_account.registered\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.registered AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.existing\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.activated AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.registered AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.existing AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.registered AND twitter_account.registered\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.registered AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.existing AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.registered AND twitter_account.registered\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.registered AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.existing AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.registered AND twitter_account.registered\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.registered AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.existing AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.registered AND twitter_account.registered\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.registered AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.existing AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.registered AND twitter_account.registered\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.registered AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.existing AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.registered AND twitter_account.registered\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.registered AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.existing AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.registered AND twitter_account.registered\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.registered AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.existing AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.registered AND twitter_account.registered\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.registered AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.existing AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.registered AND twitter_account.registered\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.registered AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.existing AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.registered AND twitter_account.registered\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.registered AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.existing AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.registered AND twitter_account.registered\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.registered AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.existing AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.registered AND twitter_account.registered\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.registered AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.existing AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.registered AND twitter_account.registered\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.registered AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.existing AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.registered AND twitter_account.registered\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.registered AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.existing AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.registered AND twitter_account.registered\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.registered AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.existing AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.registered AND twitter_account.registered\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.registered AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.existing AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.registered AND twitter_account.registered\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.registered AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.existing AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.registered AND twitter_account.registered\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.registered AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.existing AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.registered AND twitter_account.registered\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.registered AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.existing AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.registered AND twitter_account.registered\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.registered AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.existing AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.registered AND twitter_account.registered\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.registered AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.existing AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.registered AND twitter_account.registered\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.registered AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.existing AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.registered AND twitter_account.registered\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.registered AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.existing AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.registered AND twitter_account.registered\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.registered AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.existing AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.registered AND twitter_account.registered\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.registered AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.existing AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.registered AND twitter_account.registered\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.registered AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.existing AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.registered AND twitter_account.registered\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.registered AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.existing AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.registered AND twitter_account.registered\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.registered AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.existing AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.registered AND twitter_account.registered\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.registered AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.existing AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.registered AND twitter_account.registered\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.registered AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.existing AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.registered AND twitter_account.registered\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.registered AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.existing AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.registered AND twitter_account.registered\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.registered AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.existing AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.registered AND twitter_account.registered\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.registered AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.existing AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.registered AND twitter_account.registered\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.registered AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.existing AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.registered AND twitter_account.registered\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.registered AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.existing AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.registered AND twitter_account.registered\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.registered AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.existing AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.registered AND twitter_account.registered\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.registered AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.existing AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.registered AND twitter_account.registered\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.registered AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.existing AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.registered AND twitter_account.registered\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.registered AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.existing AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.registered AND twitter_account.registered\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.registered AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.existing AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.registered AND twitter_account.registered\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.registered AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.existing AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.registered AND twitter_account.registered\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.registered AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.existing AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.registered AND twitter_account.registered\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.registered AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.existing AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.registered AND twitter_account.registered\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.registered AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.existing AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.registered AND twitter_account.registered\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.registered AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.existing AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.registered AND twitter_account.registered\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.registered AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.existing AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.registered AND twitter_account.registered\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.registered AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.existing AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.registered AND twitter_account.registered\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.registered AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.existing AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.registered AND twitter_account.registered\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.registered AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.existing AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.registered AND twitter_account.registered\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.registered AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.existing AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.registered AND twitter_account.registered\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.registered AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.existing AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.registered AND twitter_account.registered\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.registered AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.existing AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.registered AND twitter_account.registered\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.registered AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.existing AND twitter_account.activated\": {\"precondition\": \"UNRESOLVED\", \"quote\": null},\\n  \"twitter_account.connected AND course.selected AND twitter_account.registered AND twitter_account.existing AND twitter_account.registered AND twitter_account.registered\": {\"precondition\": \"UN'",
+    "graph_construction: 'validated_preconditions'",
+    "alignment: 'reference_graph'",
+    "report: 'alignment'"
+  ]
+}

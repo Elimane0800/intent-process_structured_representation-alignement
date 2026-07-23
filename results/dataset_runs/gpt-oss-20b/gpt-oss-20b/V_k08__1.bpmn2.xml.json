@@ -1,0 +1,467 @@
+{
+  "case_name": "V_k08",
+  "text": "Category: Vending and Shipping\nTitle: Ordering in an Online Shop  \n\nA customer that logs into an E-Shop system and has to wait for its login\nconfirmation (its credentials are checked by the system). If the login was\nsuccessful then the customer can continue to select products, else the shopping\nexperience stops. After selecting a product the customer has to add it to a\nshopping cart, save the product and check if every product was already\nselected. These steps repeat until all products were selected. Then the order\nis finished by the shopping system and simultaneously payment and shipment for the order is prepared.\nFor the payment the customer has to enter its payment data\nand has to wait until the bank confirms the payment.\nWhile waiting for the payment confirmation the customer can enter its\nshipping address (an independent billing address can be entered if the shipping\naddress is not equal to the billing address) . Finally if the address and the\npayment steps are executed then the order will be finished by the system.\n",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "openai/gpt-oss-20b",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "openai/gpt-oss-20b",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/text_and_bpmn/bpmn/V_k08/1.bpmn2.xml",
+  "dfg_edges": [
+    {
+      "source_id": "sid-67CCCF4A-FCE5-4AD4-AACD-142745D0D703",
+      "source_label": "Vendor",
+      "target_id": "sid-9E77DC9B-C60D-4E9B-AB80-72C3A9A0BDB9",
+      "target_label": "Receive Order Confirmation",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-67CCCF4A-FCE5-4AD4-AACD-142745D0D703",
+      "source_label": "Vendor",
+      "target_id": "sid-D0C072D3-288E-4D79-8870-3979E282BC2B",
+      "target_label": "Credentials Checked",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-67CCCF4A-FCE5-4AD4-AACD-142745D0D703",
+      "source_label": "Vendor",
+      "target_id": "sid-4FECECB2-4559-470E-9A54-888D7013B918",
+      "target_label": "Finalize Order",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-C2396070-1B72-46F8-B1B5-E1E6D424185A",
+      "source_label": "Processing Payment",
+      "target_id": "sid-77C45E4C-FCBB-48A9-8D16-9564267A0BF7",
+      "target_label": "Enter Payment Data",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "No"
+      ]
+    },
+    {
+      "source_id": "sid-C2396070-1B72-46F8-B1B5-E1E6D424185A",
+      "source_label": "Processing Payment",
+      "target_id": "sid-9E77DC9B-C60D-4E9B-AB80-72C3A9A0BDB9",
+      "target_label": "Receive Order Confirmation",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "Yes",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-96656DAF-AA8E-433C-8E7B-B00C06D4C81C",
+      "source_label": "Add Products",
+      "target_id": "sid-4962AC57-8C31-4914-833B-2E4626B839A2",
+      "target_label": "Select Product",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-A33C0315-B84C-44E4-9D1C-E9BA51F9EB63",
+      "source_label": "Login",
+      "target_id": "sid-67CCCF4A-FCE5-4AD4-AACD-142745D0D703",
+      "target_label": "Vendor",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-A33C0315-B84C-44E4-9D1C-E9BA51F9EB63",
+      "source_label": "Login",
+      "target_id": "sid-D0C072D3-288E-4D79-8870-3979E282BC2B",
+      "target_label": "Credentials Checked",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-4962AC57-8C31-4914-833B-2E4626B839A2",
+      "source_label": "Select Product",
+      "target_id": "sid-D2DF45CA-4955-4766-B59C-C5184FB96456",
+      "target_label": "Add To Shopcart",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-B6F682EB-360E-4A9E-BAAF-A1AF7C917DCD",
+      "source_label": "Enter Billing Address",
+      "target_id": "sid-9E77DC9B-C60D-4E9B-AB80-72C3A9A0BDB9",
+      "target_label": "Receive Order Confirmation",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-70CE53CC-AD97-4C37-BBFA-865226A5FED6",
+      "source_label": "Credentials Unavailable",
+      "target_id": "sid-4A1BE04A-8571-44F9-B846-0CABCD5BC58A",
+      "target_label": "Process FInished",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-6B2035B5-E6E9-4A77-9F65-E9677227CD55",
+      "source_label": "Payment Prepared",
+      "target_id": "sid-77C45E4C-FCBB-48A9-8D16-9564267A0BF7",
+      "target_label": "Enter Payment Data",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-FB17D95A-3B90-4B54-9C80-A91E7162769A",
+      "source_label": "Confirm Choice",
+      "target_id": "sid-9E77DC9B-C60D-4E9B-AB80-72C3A9A0BDB9",
+      "target_label": "Receive Order Confirmation",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-C05C1436-5D27-48F5-9F1E-1D081446FB7C",
+      "source_label": "Process Ordering Start",
+      "target_id": "sid-A33C0315-B84C-44E4-9D1C-E9BA51F9EB63",
+      "target_label": "Login",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-9E77DC9B-C60D-4E9B-AB80-72C3A9A0BDB9",
+      "source_label": "Receive Order Confirmation",
+      "target_id": "sid-1720D590-048D-48E0-A5A4-17FC223A4FBC",
+      "target_label": "Process Ordering Finished",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-77C45E4C-FCBB-48A9-8D16-9564267A0BF7",
+      "source_label": "Enter Payment Data",
+      "target_id": "sid-C2396070-1B72-46F8-B1B5-E1E6D424185A",
+      "target_label": "Processing Payment",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-77C45E4C-FCBB-48A9-8D16-9564267A0BF7",
+      "source_label": "Enter Payment Data",
+      "target_id": "sid-58E66A47-F06A-4A81-BAB8-A64D6C04065D",
+      "target_label": "Enter Shipping Address",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-E6060645-2F19-41E0-8690-39FA12154B3B",
+      "source_label": "Prepare Shipment",
+      "target_id": "sid-77C45E4C-FCBB-48A9-8D16-9564267A0BF7",
+      "target_label": "Enter Payment Data",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-4FECECB2-4559-470E-9A54-888D7013B918",
+      "source_label": "Finalize Order",
+      "target_id": "sid-6B2035B5-E6E9-4A77-9F65-E9677227CD55",
+      "target_label": "Payment Prepared",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-4FECECB2-4559-470E-9A54-888D7013B918",
+      "source_label": "Finalize Order",
+      "target_id": "sid-E6060645-2F19-41E0-8690-39FA12154B3B",
+      "target_label": "Prepare Shipment",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-4FECECB2-4559-470E-9A54-888D7013B918",
+      "source_label": "Finalize Order",
+      "target_id": "sid-67CCCF4A-FCE5-4AD4-AACD-142745D0D703",
+      "target_label": "Vendor",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-B2ECABD6-F83A-4C89-8870-D4977F622CCF",
+      "source_label": "Check Product",
+      "target_id": "sid-96656DAF-AA8E-433C-8E7B-B00C06D4C81C",
+      "target_label": "Add Products",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-B2ECABD6-F83A-4C89-8870-D4977F622CCF",
+      "source_label": "Check Product",
+      "target_id": "sid-4FECECB2-4559-470E-9A54-888D7013B918",
+      "target_label": "Finalize Order",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "Yes"
+      ]
+    },
+    {
+      "source_id": "sid-D2DF45CA-4955-4766-B59C-C5184FB96456",
+      "source_label": "Add To Shopcart",
+      "target_id": "sid-3DF4C158-9A06-47FA-88BD-D4F07C9CD0F5",
+      "target_label": "Save Product",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-58E66A47-F06A-4A81-BAB8-A64D6C04065D",
+      "source_label": "Enter Shipping Address",
+      "target_id": "sid-FB17D95A-3B90-4B54-9C80-A91E7162769A",
+      "target_label": "Confirm Choice",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "Yes"
+      ]
+    },
+    {
+      "source_id": "sid-58E66A47-F06A-4A81-BAB8-A64D6C04065D",
+      "source_label": "Enter Shipping Address",
+      "target_id": "sid-B6F682EB-360E-4A9E-BAAF-A1AF7C917DCD",
+      "target_label": "Enter Billing Address",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "No"
+      ]
+    },
+    {
+      "source_id": "sid-3DF4C158-9A06-47FA-88BD-D4F07C9CD0F5",
+      "source_label": "Save Product",
+      "target_id": "sid-B2ECABD6-F83A-4C89-8870-D4977F622CCF",
+      "target_label": "Check Product",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-D0C072D3-288E-4D79-8870-3979E282BC2B",
+      "source_label": "Credentials Checked",
+      "target_id": "sid-70CE53CC-AD97-4C37-BBFA-865226A5FED6",
+      "target_label": "Credentials Unavailable",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "No"
+      ]
+    },
+    {
+      "source_id": "sid-D0C072D3-288E-4D79-8870-3979E282BC2B",
+      "source_label": "Credentials Checked",
+      "target_id": "sid-4962AC57-8C31-4914-833B-2E4626B839A2",
+      "target_label": "Select Product",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "Yes"
+      ]
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "Vendor",
+      "subject_id": "sid-67CCCF4A-FCE5-4AD4-AACD-142745D0D703",
+      "predicate": "follows",
+      "object": "Receive Order Confirmation",
+      "object_id": "sid-9E77DC9B-C60D-4E9B-AB80-72C3A9A0BDB9"
+    },
+    {
+      "subject": "Vendor",
+      "subject_id": "sid-67CCCF4A-FCE5-4AD4-AACD-142745D0D703",
+      "predicate": "follows",
+      "object": "Credentials Checked",
+      "object_id": "sid-D0C072D3-288E-4D79-8870-3979E282BC2B"
+    },
+    {
+      "subject": "Vendor",
+      "subject_id": "sid-67CCCF4A-FCE5-4AD4-AACD-142745D0D703",
+      "predicate": "follows",
+      "object": "Finalize Order",
+      "object_id": "sid-4FECECB2-4559-470E-9A54-888D7013B918"
+    },
+    {
+      "subject": "Processing Payment",
+      "subject_id": "sid-C2396070-1B72-46F8-B1B5-E1E6D424185A",
+      "predicate": "follows",
+      "object": "Enter Payment Data",
+      "object_id": "sid-77C45E4C-FCBB-48A9-8D16-9564267A0BF7"
+    },
+    {
+      "subject": "Processing Payment",
+      "subject_id": "sid-C2396070-1B72-46F8-B1B5-E1E6D424185A",
+      "predicate": "follows",
+      "object": "Receive Order Confirmation",
+      "object_id": "sid-9E77DC9B-C60D-4E9B-AB80-72C3A9A0BDB9"
+    },
+    {
+      "subject": "Add Products",
+      "subject_id": "sid-96656DAF-AA8E-433C-8E7B-B00C06D4C81C",
+      "predicate": "follows",
+      "object": "Select Product",
+      "object_id": "sid-4962AC57-8C31-4914-833B-2E4626B839A2"
+    },
+    {
+      "subject": "Login",
+      "subject_id": "sid-A33C0315-B84C-44E4-9D1C-E9BA51F9EB63",
+      "predicate": "follows",
+      "object": "Vendor",
+      "object_id": "sid-67CCCF4A-FCE5-4AD4-AACD-142745D0D703"
+    },
+    {
+      "subject": "Login",
+      "subject_id": "sid-A33C0315-B84C-44E4-9D1C-E9BA51F9EB63",
+      "predicate": "follows",
+      "object": "Credentials Checked",
+      "object_id": "sid-D0C072D3-288E-4D79-8870-3979E282BC2B"
+    },
+    {
+      "subject": "Select Product",
+      "subject_id": "sid-4962AC57-8C31-4914-833B-2E4626B839A2",
+      "predicate": "follows",
+      "object": "Add To Shopcart",
+      "object_id": "sid-D2DF45CA-4955-4766-B59C-C5184FB96456"
+    },
+    {
+      "subject": "Enter Billing Address",
+      "subject_id": "sid-B6F682EB-360E-4A9E-BAAF-A1AF7C917DCD",
+      "predicate": "follows",
+      "object": "Receive Order Confirmation",
+      "object_id": "sid-9E77DC9B-C60D-4E9B-AB80-72C3A9A0BDB9"
+    },
+    {
+      "subject": "Credentials Unavailable",
+      "subject_id": "sid-70CE53CC-AD97-4C37-BBFA-865226A5FED6",
+      "predicate": "follows",
+      "object": "Process FInished",
+      "object_id": "sid-4A1BE04A-8571-44F9-B846-0CABCD5BC58A"
+    },
+    {
+      "subject": "Payment Prepared",
+      "subject_id": "sid-6B2035B5-E6E9-4A77-9F65-E9677227CD55",
+      "predicate": "follows",
+      "object": "Enter Payment Data",
+      "object_id": "sid-77C45E4C-FCBB-48A9-8D16-9564267A0BF7"
+    },
+    {
+      "subject": "Confirm Choice",
+      "subject_id": "sid-FB17D95A-3B90-4B54-9C80-A91E7162769A",
+      "predicate": "follows",
+      "object": "Receive Order Confirmation",
+      "object_id": "sid-9E77DC9B-C60D-4E9B-AB80-72C3A9A0BDB9"
+    },
+    {
+      "subject": "Process Ordering Start",
+      "subject_id": "sid-C05C1436-5D27-48F5-9F1E-1D081446FB7C",
+      "predicate": "follows",
+      "object": "Login",
+      "object_id": "sid-A33C0315-B84C-44E4-9D1C-E9BA51F9EB63"
+    },
+    {
+      "subject": "Receive Order Confirmation",
+      "subject_id": "sid-9E77DC9B-C60D-4E9B-AB80-72C3A9A0BDB9",
+      "predicate": "follows",
+      "object": "Process Ordering Finished",
+      "object_id": "sid-1720D590-048D-48E0-A5A4-17FC223A4FBC"
+    },
+    {
+      "subject": "Enter Payment Data",
+      "subject_id": "sid-77C45E4C-FCBB-48A9-8D16-9564267A0BF7",
+      "predicate": "follows",
+      "object": "Processing Payment",
+      "object_id": "sid-C2396070-1B72-46F8-B1B5-E1E6D424185A"
+    },
+    {
+      "subject": "Enter Payment Data",
+      "subject_id": "sid-77C45E4C-FCBB-48A9-8D16-9564267A0BF7",
+      "predicate": "follows",
+      "object": "Enter Shipping Address",
+      "object_id": "sid-58E66A47-F06A-4A81-BAB8-A64D6C04065D"
+    },
+    {
+      "subject": "Prepare Shipment",
+      "subject_id": "sid-E6060645-2F19-41E0-8690-39FA12154B3B",
+      "predicate": "follows",
+      "object": "Enter Payment Data",
+      "object_id": "sid-77C45E4C-FCBB-48A9-8D16-9564267A0BF7"
+    },
+    {
+      "subject": "Finalize Order",
+      "subject_id": "sid-4FECECB2-4559-470E-9A54-888D7013B918",
+      "predicate": "follows",
+      "object": "Payment Prepared",
+      "object_id": "sid-6B2035B5-E6E9-4A77-9F65-E9677227CD55"
+    },
+    {
+      "subject": "Finalize Order",
+      "subject_id": "sid-4FECECB2-4559-470E-9A54-888D7013B918",
+      "predicate": "follows",
+      "object": "Prepare Shipment",
+      "object_id": "sid-E6060645-2F19-41E0-8690-39FA12154B3B"
+    },
+    {
+      "subject": "Finalize Order",
+      "subject_id": "sid-4FECECB2-4559-470E-9A54-888D7013B918",
+      "predicate": "follows",
+      "object": "Vendor",
+      "object_id": "sid-67CCCF4A-FCE5-4AD4-AACD-142745D0D703"
+    },
+    {
+      "subject": "Check Product",
+      "subject_id": "sid-B2ECABD6-F83A-4C89-8870-D4977F622CCF",
+      "predicate": "follows",
+      "object": "Add Products",
+      "object_id": "sid-96656DAF-AA8E-433C-8E7B-B00C06D4C81C"
+    },
+    {
+      "subject": "Check Product",
+      "subject_id": "sid-B2ECABD6-F83A-4C89-8870-D4977F622CCF",
+      "predicate": "follows",
+      "object": "Finalize Order",
+      "object_id": "sid-4FECECB2-4559-470E-9A54-888D7013B918"
+    },
+    {
+      "subject": "Add To Shopcart",
+      "subject_id": "sid-D2DF45CA-4955-4766-B59C-C5184FB96456",
+      "predicate": "follows",
+      "object": "Save Product",
+      "object_id": "sid-3DF4C158-9A06-47FA-88BD-D4F07C9CD0F5"
+    },
+    {
+      "subject": "Enter Shipping Address",
+      "subject_id": "sid-58E66A47-F06A-4A81-BAB8-A64D6C04065D",
+      "predicate": "follows",
+      "object": "Confirm Choice",
+      "object_id": "sid-FB17D95A-3B90-4B54-9C80-A91E7162769A"
+    },
+    {
+      "subject": "Enter Shipping Address",
+      "subject_id": "sid-58E66A47-F06A-4A81-BAB8-A64D6C04065D",
+      "predicate": "follows",
+      "object": "Enter Billing Address",
+      "object_id": "sid-B6F682EB-360E-4A9E-BAAF-A1AF7C917DCD"
+    },
+    {
+      "subject": "Save Product",
+      "subject_id": "sid-3DF4C158-9A06-47FA-88BD-D4F07C9CD0F5",
+      "predicate": "follows",
+      "object": "Check Product",
+      "object_id": "sid-B2ECABD6-F83A-4C89-8870-D4977F622CCF"
+    },
+    {
+      "subject": "Credentials Checked",
+      "subject_id": "sid-D0C072D3-288E-4D79-8870-3979E282BC2B",
+      "predicate": "follows",
+      "object": "Credentials Unavailable",
+      "object_id": "sid-70CE53CC-AD97-4C37-BBFA-865226A5FED6"
+    },
+    {
+      "subject": "Credentials Checked",
+      "subject_id": "sid-D0C072D3-288E-4D79-8870-3979E282BC2B",
+      "predicate": "follows",
+      "object": "Select Product",
+      "object_id": "sid-4962AC57-8C31-4914-833B-2E4626B839A2"
+    }
+  ],
+  "errors": [
+    "state_space: parse failed, raw response=''",
+    "precondition: 'state_space'",
+    "state_matching: 'state_space'",
+    "graph_construction: 'state_space'",
+    "alignment: 'reference_graph'",
+    "report: 'alignment'"
+  ]
+}

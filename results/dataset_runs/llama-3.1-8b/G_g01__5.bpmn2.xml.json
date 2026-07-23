@@ -1,0 +1,762 @@
+{
+  "case_name": "G_g01",
+  "text": "Category: Gaming\nName: LAN Party\n\nYou are planning a LAN party for 10 friends, so the first thing you have to do\nis to send invitations to these 10 friends. Next, you have to find out which\ngames they want to play. As soon as you have received a list of games, you can\nappoint a date when the LAN party is going to happen. If 8 or more people agree\non this date, you are good to continue. Else, you have to appoint another date,\nuntil 8 people are free to join you. While you find a date, you can find out if\nyou have all the games your guests want to play. If some are missing, download\nthem. Next, you should find out how much beer your friends will require. If you\ndo not have enough, buy what's missing. After that, you can enjoy the LAN\nparty.\n",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "llama-3.1-8b",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "llama-3.1-8b",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/text_and_bpmn/bpmn/G_g01/5.bpmn2.xml",
+  "candidates": {
+    "lan_party": [
+      "enjoyed"
+    ],
+    "invitations": [
+      "sent"
+    ],
+    "games": [
+      "chosen",
+      "downloaded"
+    ],
+    "date": [
+      "chosen",
+      "changed"
+    ],
+    "beer": [
+      "ordered"
+    ]
+  },
+  "validation_report": {
+    "lan_party": {
+      "f_lex": "ACTOR",
+      "kept": false
+    },
+    "invitations": {
+      "f_lex": "ENTITY",
+      "kept": true
+    },
+    "games": {
+      "f_lex": "ENTITY",
+      "kept": true
+    },
+    "date": {
+      "f_lex": "INDETERMINATE",
+      "kept": true
+    },
+    "beer": {
+      "f_lex": "INDETERMINATE",
+      "kept": true
+    }
+  },
+  "state_space": {
+    "invitations": [
+      "sent"
+    ],
+    "games": [
+      "chosen",
+      "downloaded"
+    ],
+    "date": [
+      "chosen",
+      "changed"
+    ],
+    "beer": [
+      "ordered"
+    ]
+  },
+  "raw_preconditions": {
+    "invitations.sent": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "games.chosen": {
+      "precondition": "invitations.sent",
+      "quote": "You are planning a LAN party for 10 friends, so the first thing you have to do is to send invitations to these 10 friends. Next, you have to find out which games they want to play."
+    },
+    "games.downloaded": {
+      "precondition": "games.chosen",
+      "quote": "If some are missing, download them."
+    },
+    "date.chosen": {
+      "precondition": "games.chosen",
+      "quote": "As soon as you have received a list of games, you can appoint a date when the LAN party is going to happen."
+    },
+    "date.changed": {
+      "precondition": "date.chosen AND (invitations.sent OR games.chosen)",
+      "quote": "If 8 or more people agree on this date, you are good to continue. Else, you have to appoint another date, until 8 people are free to join you."
+    },
+    "beer.ordered": {
+      "precondition": "date.chosen",
+      "quote": "Next, you should find out how much beer your friends will require. If you do not have enough, buy what's missing."
+    }
+  },
+  "validated_preconditions": {
+    "invitations.sent": {
+      "precondition": "INITIAL",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "games.chosen": {
+      "precondition": "invitations.sent",
+      "quote": "You are planning a LAN party for 10 friends, so the first thing you have to do is to send invitations to these 10 friends. Next, you have to find out which games they want to play.",
+      "status": "OK",
+      "reason": null
+    },
+    "games.downloaded": {
+      "precondition": "games.chosen",
+      "quote": "If some are missing, download them.",
+      "status": "OK",
+      "reason": null
+    },
+    "date.chosen": {
+      "precondition": "games.chosen",
+      "quote": "As soon as you have received a list of games, you can appoint a date when the LAN party is going to happen.",
+      "status": "OK",
+      "reason": null
+    },
+    "date.changed": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "DOWNGRADED",
+      "reason": "mixed AND/OR not supported in a single precondition",
+      "retried": true
+    },
+    "beer.ordered": {
+      "precondition": "date.chosen",
+      "quote": "Next, you should find out how much beer your friends will require. If you do not have enough, buy what's missing.",
+      "status": "OK",
+      "reason": null
+    }
+  },
+  "precondition_cycles": [],
+  "reference_graph": {
+    "nodes": [
+      {
+        "id": "invitations.sent",
+        "weight": 0.333
+      },
+      {
+        "id": "games.chosen",
+        "weight": 1.0
+      },
+      {
+        "id": "games.downloaded",
+        "weight": 0.333
+      },
+      {
+        "id": "date.chosen",
+        "weight": 0.667
+      },
+      {
+        "id": "date.changed",
+        "weight": 0.0
+      },
+      {
+        "id": "beer.ordered",
+        "weight": 0.333
+      }
+    ],
+    "edges": [
+      {
+        "from": "invitations.sent",
+        "to": "games.chosen",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "You are planning a LAN party for 10 friends, so the first thing you have to do is to send invitations to these 10 friends. Next, you have to find out which games they want to play."
+      },
+      {
+        "from": "games.chosen",
+        "to": "games.downloaded",
+        "type": "sequence",
+        "operator": "AND",
+        "quote": "If some are missing, download them."
+      },
+      {
+        "from": "games.chosen",
+        "to": "date.chosen",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "As soon as you have received a list of games, you can appoint a date when the LAN party is going to happen."
+      },
+      {
+        "from": "date.chosen",
+        "to": "beer.ordered",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "Next, you should find out how much beer your friends will require. If you do not have enough, buy what's missing."
+      }
+    ],
+    "cycles": []
+  },
+  "dfg_edges": [
+    {
+      "source_id": "sid-B89B9AE0-2FFA-4BAD-8E4A-5615B38E75AA",
+      "source_label": "Appoint a date when the LAN party is going to happen",
+      "target_id": "sid-DD5A2700-1B73-4159-B835-C910D442DEC9",
+      "target_label": "Host is ready to check the games they will play",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "Yes"
+      ]
+    },
+    {
+      "source_id": "sid-B89B9AE0-2FFA-4BAD-8E4A-5615B38E75AA",
+      "source_label": "Appoint a date when the LAN party is going to happen",
+      "target_id": "sid-A8F2753C-6D1A-43FF-8FB3-E0F0B6A7DF4F",
+      "target_label": "Host finds out ifthere are all the games the guests want to play",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "No",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-B89B9AE0-2FFA-4BAD-8E4A-5615B38E75AA",
+      "source_label": "Appoint a date when the LAN party is going to happen",
+      "target_id": "sid-D09EE3F6-5412-48E8-BE6A-46425D15D4E0",
+      "target_label": "Appoints another date",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "No",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-4501112E-92AC-48FD-9505-B2ACC52665A7",
+      "source_label": "Sending invitations to 10 friends",
+      "target_id": "sid-16E84376-082B-42C4-AB45-74EA221B00C9",
+      "target_label": "Finding out which games they want to play",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-0643EE17-54B5-443B-988A-951FF81F2226",
+      "source_label": "Download games",
+      "target_id": "sid-8A3F8D73-0B29-464B-A645-26458EC61AD1",
+      "target_label": "Host checks how much beer his friends will require",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-BB60C525-0145-4BFE-9DD5-999891419CEA",
+      "source_label": "Receive a list of games",
+      "target_id": "sid-B89B9AE0-2FFA-4BAD-8E4A-5615B38E75AA",
+      "target_label": "Appoint a date when the LAN party is going to happen",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-A8F2753C-6D1A-43FF-8FB3-E0F0B6A7DF4F",
+      "source_label": "Host finds out ifthere are all the games the guests want to play",
+      "target_id": "sid-0643EE17-54B5-443B-988A-951FF81F2226",
+      "target_label": "Download games",
+      "gateway_context": [
+        "ParallelGateway",
+        "ExclusiveGateway",
+        "No"
+      ]
+    },
+    {
+      "source_id": "sid-A8F2753C-6D1A-43FF-8FB3-E0F0B6A7DF4F",
+      "source_label": "Host finds out ifthere are all the games the guests want to play",
+      "target_id": "sid-8A3F8D73-0B29-464B-A645-26458EC61AD1",
+      "target_label": "Host checks how much beer his friends will require",
+      "gateway_context": [
+        "ParallelGateway",
+        "ExclusiveGateway",
+        "Yes"
+      ]
+    },
+    {
+      "source_id": "sid-D09EE3F6-5412-48E8-BE6A-46425D15D4E0",
+      "source_label": "Appoints another date",
+      "target_id": "sid-0643EE17-54B5-443B-988A-951FF81F2226",
+      "target_label": "Download games",
+      "gateway_context": [
+        "ParallelGateway",
+        "ExclusiveGateway",
+        "No"
+      ]
+    },
+    {
+      "source_id": "sid-D09EE3F6-5412-48E8-BE6A-46425D15D4E0",
+      "source_label": "Appoints another date",
+      "target_id": "sid-8A3F8D73-0B29-464B-A645-26458EC61AD1",
+      "target_label": "Host checks how much beer his friends will require",
+      "gateway_context": [
+        "ParallelGateway",
+        "ExclusiveGateway",
+        "Yes"
+      ]
+    },
+    {
+      "source_id": "sid-8A3F8D73-0B29-464B-A645-26458EC61AD1",
+      "source_label": "Host checks how much beer his friends will require",
+      "target_id": "sid-27DCFF76-034E-4820-B530-1857B07C5B81",
+      "target_label": "Enjoying the LAN party.",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "Yes"
+      ]
+    },
+    {
+      "source_id": "sid-8A3F8D73-0B29-464B-A645-26458EC61AD1",
+      "source_label": "Host checks how much beer his friends will require",
+      "target_id": "sid-CD910926-8AAE-4935-8D85-190566C8900F",
+      "target_label": "Host buys what's missing",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "No"
+      ]
+    },
+    {
+      "source_id": "sid-16E84376-082B-42C4-AB45-74EA221B00C9",
+      "source_label": "Finding out which games they want to play",
+      "target_id": "sid-BB60C525-0145-4BFE-9DD5-999891419CEA",
+      "target_label": "Receive a list of games",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-CD910926-8AAE-4935-8D85-190566C8900F",
+      "source_label": "Host buys what's missing",
+      "target_id": "sid-27DCFF76-034E-4820-B530-1857B07C5B81",
+      "target_label": "Enjoying the LAN party.",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-DD5A2700-1B73-4159-B835-C910D442DEC9",
+      "source_label": "Host is ready to check the games they will play",
+      "target_id": "sid-0643EE17-54B5-443B-988A-951FF81F2226",
+      "target_label": "Download games",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "No"
+      ]
+    },
+    {
+      "source_id": "sid-DD5A2700-1B73-4159-B835-C910D442DEC9",
+      "source_label": "Host is ready to check the games they will play",
+      "target_id": "sid-8A3F8D73-0B29-464B-A645-26458EC61AD1",
+      "target_label": "Host checks how much beer his friends will require",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "Yes"
+      ]
+    },
+    {
+      "source_id": "sid-801AB5E6-2E28-4214-8E7B-2B04827CF95B",
+      "source_label": "Planning a LAN party",
+      "target_id": "sid-4501112E-92AC-48FD-9505-B2ACC52665A7",
+      "target_label": "Sending invitations to 10 friends",
+      "gateway_context": []
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "Appoint a date when the LAN party is going to happen",
+      "subject_id": "sid-B89B9AE0-2FFA-4BAD-8E4A-5615B38E75AA",
+      "predicate": "follows",
+      "object": "Host is ready to check the games they will play",
+      "object_id": "sid-DD5A2700-1B73-4159-B835-C910D442DEC9"
+    },
+    {
+      "subject": "Appoint a date when the LAN party is going to happen",
+      "subject_id": "sid-B89B9AE0-2FFA-4BAD-8E4A-5615B38E75AA",
+      "predicate": "follows",
+      "object": "Host finds out ifthere are all the games the guests want to play",
+      "object_id": "sid-A8F2753C-6D1A-43FF-8FB3-E0F0B6A7DF4F"
+    },
+    {
+      "subject": "Appoint a date when the LAN party is going to happen",
+      "subject_id": "sid-B89B9AE0-2FFA-4BAD-8E4A-5615B38E75AA",
+      "predicate": "follows",
+      "object": "Appoints another date",
+      "object_id": "sid-D09EE3F6-5412-48E8-BE6A-46425D15D4E0"
+    },
+    {
+      "subject": "Sending invitations to 10 friends",
+      "subject_id": "sid-4501112E-92AC-48FD-9505-B2ACC52665A7",
+      "predicate": "follows",
+      "object": "Finding out which games they want to play",
+      "object_id": "sid-16E84376-082B-42C4-AB45-74EA221B00C9"
+    },
+    {
+      "subject": "Download games",
+      "subject_id": "sid-0643EE17-54B5-443B-988A-951FF81F2226",
+      "predicate": "follows",
+      "object": "Host checks how much beer his friends will require",
+      "object_id": "sid-8A3F8D73-0B29-464B-A645-26458EC61AD1"
+    },
+    {
+      "subject": "Receive a list of games",
+      "subject_id": "sid-BB60C525-0145-4BFE-9DD5-999891419CEA",
+      "predicate": "follows",
+      "object": "Appoint a date when the LAN party is going to happen",
+      "object_id": "sid-B89B9AE0-2FFA-4BAD-8E4A-5615B38E75AA"
+    },
+    {
+      "subject": "Host finds out ifthere are all the games the guests want to play",
+      "subject_id": "sid-A8F2753C-6D1A-43FF-8FB3-E0F0B6A7DF4F",
+      "predicate": "follows",
+      "object": "Download games",
+      "object_id": "sid-0643EE17-54B5-443B-988A-951FF81F2226"
+    },
+    {
+      "subject": "Host finds out ifthere are all the games the guests want to play",
+      "subject_id": "sid-A8F2753C-6D1A-43FF-8FB3-E0F0B6A7DF4F",
+      "predicate": "follows",
+      "object": "Host checks how much beer his friends will require",
+      "object_id": "sid-8A3F8D73-0B29-464B-A645-26458EC61AD1"
+    },
+    {
+      "subject": "Appoints another date",
+      "subject_id": "sid-D09EE3F6-5412-48E8-BE6A-46425D15D4E0",
+      "predicate": "follows",
+      "object": "Download games",
+      "object_id": "sid-0643EE17-54B5-443B-988A-951FF81F2226"
+    },
+    {
+      "subject": "Appoints another date",
+      "subject_id": "sid-D09EE3F6-5412-48E8-BE6A-46425D15D4E0",
+      "predicate": "follows",
+      "object": "Host checks how much beer his friends will require",
+      "object_id": "sid-8A3F8D73-0B29-464B-A645-26458EC61AD1"
+    },
+    {
+      "subject": "Host checks how much beer his friends will require",
+      "subject_id": "sid-8A3F8D73-0B29-464B-A645-26458EC61AD1",
+      "predicate": "follows",
+      "object": "Enjoying the LAN party.",
+      "object_id": "sid-27DCFF76-034E-4820-B530-1857B07C5B81"
+    },
+    {
+      "subject": "Host checks how much beer his friends will require",
+      "subject_id": "sid-8A3F8D73-0B29-464B-A645-26458EC61AD1",
+      "predicate": "follows",
+      "object": "Host buys what's missing",
+      "object_id": "sid-CD910926-8AAE-4935-8D85-190566C8900F"
+    },
+    {
+      "subject": "Finding out which games they want to play",
+      "subject_id": "sid-16E84376-082B-42C4-AB45-74EA221B00C9",
+      "predicate": "follows",
+      "object": "Receive a list of games",
+      "object_id": "sid-BB60C525-0145-4BFE-9DD5-999891419CEA"
+    },
+    {
+      "subject": "Host buys what's missing",
+      "subject_id": "sid-CD910926-8AAE-4935-8D85-190566C8900F",
+      "predicate": "follows",
+      "object": "Enjoying the LAN party.",
+      "object_id": "sid-27DCFF76-034E-4820-B530-1857B07C5B81"
+    },
+    {
+      "subject": "Host is ready to check the games they will play",
+      "subject_id": "sid-DD5A2700-1B73-4159-B835-C910D442DEC9",
+      "predicate": "follows",
+      "object": "Download games",
+      "object_id": "sid-0643EE17-54B5-443B-988A-951FF81F2226"
+    },
+    {
+      "subject": "Host is ready to check the games they will play",
+      "subject_id": "sid-DD5A2700-1B73-4159-B835-C910D442DEC9",
+      "predicate": "follows",
+      "object": "Host checks how much beer his friends will require",
+      "object_id": "sid-8A3F8D73-0B29-464B-A645-26458EC61AD1"
+    },
+    {
+      "subject": "Planning a LAN party",
+      "subject_id": "sid-801AB5E6-2E28-4214-8E7B-2B04827CF95B",
+      "predicate": "follows",
+      "object": "Sending invitations to 10 friends",
+      "object_id": "sid-4501112E-92AC-48FD-9505-B2ACC52665A7"
+    }
+  ],
+  "matches": {
+    "Appoint a date when the LAN party is going to happen": {
+      "match": "date.chosen",
+      "score": 0.338
+    },
+    "Appoints another date": {
+      "match": "date.chosen",
+      "score": 0.4635
+    },
+    "Download games": {
+      "match": "games.downloaded",
+      "score": 0.8567
+    },
+    "Enjoying the LAN party.": {
+      "match": "games.downloaded",
+      "score": 0.2271
+    },
+    "Finding out which games they want to play": {
+      "match": "games.chosen",
+      "score": 0.4892
+    },
+    "Host buys what's missing": {
+      "match": "games.downloaded",
+      "score": 0.1507
+    },
+    "Host checks how much beer his friends will require": {
+      "match": "beer.ordered",
+      "score": 0.3973
+    },
+    "Host finds out ifthere are all the games the guests want to play": {
+      "match": "games.chosen",
+      "score": 0.3824
+    },
+    "Host is ready to check the games they will play": {
+      "match": "games.chosen",
+      "score": 0.3499
+    },
+    "Planning a LAN party": {
+      "match": "date.chosen",
+      "score": 0.1993
+    },
+    "Receive a list of games": {
+      "match": "games.chosen",
+      "score": 0.4633
+    },
+    "Sending invitations to 10 friends": {
+      "match": "invitations.sent",
+      "score": 0.6097
+    }
+  },
+  "process_graph": [
+    {
+      "from": "date.chosen",
+      "to": "games.chosen",
+      "activity_from": "Appoint a date when the LAN party is going to happen",
+      "activity_to": "Host is ready to check the games they will play"
+    },
+    {
+      "from": "date.chosen",
+      "to": "games.chosen",
+      "activity_from": "Appoint a date when the LAN party is going to happen",
+      "activity_to": "Host finds out ifthere are all the games the guests want to play"
+    },
+    {
+      "from": "date.chosen",
+      "to": "date.chosen",
+      "activity_from": "Appoint a date when the LAN party is going to happen",
+      "activity_to": "Appoints another date"
+    },
+    {
+      "from": "invitations.sent",
+      "to": "games.chosen",
+      "activity_from": "Sending invitations to 10 friends",
+      "activity_to": "Finding out which games they want to play"
+    },
+    {
+      "from": "games.downloaded",
+      "to": "beer.ordered",
+      "activity_from": "Download games",
+      "activity_to": "Host checks how much beer his friends will require"
+    },
+    {
+      "from": "games.chosen",
+      "to": "date.chosen",
+      "activity_from": "Receive a list of games",
+      "activity_to": "Appoint a date when the LAN party is going to happen"
+    },
+    {
+      "from": "games.chosen",
+      "to": "games.downloaded",
+      "activity_from": "Host finds out ifthere are all the games the guests want to play",
+      "activity_to": "Download games"
+    },
+    {
+      "from": "games.chosen",
+      "to": "beer.ordered",
+      "activity_from": "Host finds out ifthere are all the games the guests want to play",
+      "activity_to": "Host checks how much beer his friends will require"
+    },
+    {
+      "from": "date.chosen",
+      "to": "games.downloaded",
+      "activity_from": "Appoints another date",
+      "activity_to": "Download games"
+    },
+    {
+      "from": "date.chosen",
+      "to": "beer.ordered",
+      "activity_from": "Appoints another date",
+      "activity_to": "Host checks how much beer his friends will require"
+    },
+    {
+      "from": "beer.ordered",
+      "to": "games.downloaded",
+      "activity_from": "Host checks how much beer his friends will require",
+      "activity_to": "Enjoying the LAN party."
+    },
+    {
+      "from": "beer.ordered",
+      "to": "games.downloaded",
+      "activity_from": "Host checks how much beer his friends will require",
+      "activity_to": "Host buys what's missing"
+    },
+    {
+      "from": "games.chosen",
+      "to": "games.chosen",
+      "activity_from": "Finding out which games they want to play",
+      "activity_to": "Receive a list of games"
+    },
+    {
+      "from": "games.downloaded",
+      "to": "games.downloaded",
+      "activity_from": "Host buys what's missing",
+      "activity_to": "Enjoying the LAN party."
+    },
+    {
+      "from": "games.chosen",
+      "to": "games.downloaded",
+      "activity_from": "Host is ready to check the games they will play",
+      "activity_to": "Download games"
+    },
+    {
+      "from": "games.chosen",
+      "to": "beer.ordered",
+      "activity_from": "Host is ready to check the games they will play",
+      "activity_to": "Host checks how much beer his friends will require"
+    },
+    {
+      "from": "date.chosen",
+      "to": "invitations.sent",
+      "activity_from": "Planning a LAN party",
+      "activity_to": "Sending invitations to 10 friends"
+    }
+  ],
+  "alignment": {
+    "games.chosen": {
+      "operator": "AND",
+      "quote": "You are planning a LAN party for 10 friends, so the first thing you have to do is to send invitations to these 10 friends. Next, you have to find out which games they want to play.",
+      "terms": [
+        {
+          "term": "invitations.sent",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED"
+    },
+    "games.downloaded": {
+      "operator": "AND",
+      "quote": "If some are missing, download them.",
+      "terms": [
+        {
+          "term": "games.chosen",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED"
+    },
+    "date.chosen": {
+      "operator": "AND",
+      "quote": "As soon as you have received a list of games, you can appoint a date when the LAN party is going to happen.",
+      "terms": [
+        {
+          "term": "games.chosen",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED"
+    },
+    "beer.ordered": {
+      "operator": "AND",
+      "quote": "Next, you should find out how much beer your friends will require. If you do not have enough, buy what's missing.",
+      "terms": [
+        {
+          "term": "date.chosen",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED"
+    }
+  },
+  "report": {
+    "summary": {
+      "ecarts": 0,
+      "non_verifiable": 0,
+      "conforme": 4
+    },
+    "ecarts": [],
+    "non_verifiable": [],
+    "conforme": [
+      {
+        "target": "Finding out which games they want to play",
+        "term": "Sending invitations to 10 friends"
+      },
+      {
+        "target": "Download games",
+        "term": "Finding out which games they want to play"
+      },
+      {
+        "target": "Appoints another date",
+        "term": "Finding out which games they want to play"
+      },
+      {
+        "target": "Host checks how much beer his friends will require",
+        "term": "Appoints another date"
+      }
+    ],
+    "piece_jointe_alignement_brut": {
+      "games.chosen": {
+        "operator": "AND",
+        "quote": "You are planning a LAN party for 10 friends, so the first thing you have to do is to send invitations to these 10 friends. Next, you have to find out which games they want to play.",
+        "terms": [
+          {
+            "term": "invitations.sent",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED"
+      },
+      "games.downloaded": {
+        "operator": "AND",
+        "quote": "If some are missing, download them.",
+        "terms": [
+          {
+            "term": "games.chosen",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED"
+      },
+      "date.chosen": {
+        "operator": "AND",
+        "quote": "As soon as you have received a list of games, you can appoint a date when the LAN party is going to happen.",
+        "terms": [
+          {
+            "term": "games.chosen",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED"
+      },
+      "beer.ordered": {
+        "operator": "AND",
+        "quote": "Next, you should find out how much beer your friends will require. If you do not have enough, buy what's missing.",
+        "terms": [
+          {
+            "term": "date.chosen",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED"
+      }
+    }
+  },
+  "errors": []
+}

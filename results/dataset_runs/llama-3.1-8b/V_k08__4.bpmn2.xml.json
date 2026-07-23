@@ -1,0 +1,1484 @@
+{
+  "case_name": "V_k08",
+  "text": "Category: Vending and Shipping\nTitle: Ordering in an Online Shop  \n\nA customer that logs into an E-Shop system and has to wait for its login\nconfirmation (its credentials are checked by the system). If the login was\nsuccessful then the customer can continue to select products, else the shopping\nexperience stops. After selecting a product the customer has to add it to a\nshopping cart, save the product and check if every product was already\nselected. These steps repeat until all products were selected. Then the order\nis finished by the shopping system and simultaneously payment and shipment for the order is prepared.\nFor the payment the customer has to enter its payment data\nand has to wait until the bank confirms the payment.\nWhile waiting for the payment confirmation the customer can enter its\nshipping address (an independent billing address can be entered if the shipping\naddress is not equal to the billing address) . Finally if the address and the\npayment steps are executed then the order will be finished by the system.\n",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "llama-3.1-8b",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "llama-3.1-8b",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/text_and_bpmn/bpmn/V_k08/4.bpmn2.xml",
+  "candidates": {
+    "customer": [
+      "logged_in",
+      "waiting_for_login_confirmation",
+      "logged_in_successfully",
+      "waiting_for_payment_confirmation",
+      "logged_in_successfully_again"
+    ],
+    "product": [
+      "selected",
+      "added_to_shopping_cart",
+      "saved",
+      "checked"
+    ],
+    "order": [
+      "finished",
+      "prepared_for_payment",
+      "prepared_for_shipment"
+    ],
+    "payment": [
+      "confirmed"
+    ],
+    "shipping_address": [
+      "entered"
+    ],
+    "billing_address": [
+      "entered"
+    ]
+  },
+  "validation_report": {
+    "customer": {
+      "f_lex": "ACTOR",
+      "kept": false
+    },
+    "product": {
+      "f_lex": "ENTITY",
+      "kept": true
+    },
+    "order": {
+      "f_lex": "ENTITY",
+      "kept": true
+    },
+    "payment": {
+      "f_lex": "INDETERMINATE",
+      "kept": true
+    },
+    "shipping_address": {
+      "f_lex": "ENTITY",
+      "kept": true
+    },
+    "billing_address": {
+      "f_lex": "ENTITY",
+      "kept": true
+    }
+  },
+  "state_space": {
+    "product": [
+      "selected",
+      "added_to_shopping_cart",
+      "saved",
+      "checked"
+    ],
+    "order": [
+      "finished",
+      "prepared_for_payment",
+      "prepared_for_shipment"
+    ],
+    "payment": [
+      "confirmed"
+    ],
+    "shipping_address": [
+      "entered"
+    ],
+    "billing_address": [
+      "entered"
+    ]
+  },
+  "raw_preconditions": {
+    "product.selected": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "product.added_to_shopping_cart": {
+      "precondition": "product.selected",
+      "quote": "After selecting a product the customer has to add it to a shopping cart, save the product and check if every product was already selected."
+    },
+    "product.saved": {
+      "precondition": "product.added_to_shopping_cart AND product.checked",
+      "quote": "After selecting a product the customer has to add it to a shopping cart, save the product and check if every product was already selected."
+    },
+    "product.checked": {
+      "precondition": "product.added_to_shopping_cart AND product.saved",
+      "quote": "After selecting a product the customer has to add it to a shopping cart, save the product and check if every product was already selected."
+    },
+    "order.finished": {
+      "precondition": "order.prepared_for_payment AND order.prepared_for_shipment",
+      "quote": "Then the order is finished by the shopping system and simultaneously payment and shipment for the order is prepared."
+    },
+    "order.prepared_for_payment": {
+      "precondition": "product.checked AND payment.confirmed",
+      "quote": "Then the order is finished by the shopping system and simultaneously payment and shipment for the order is prepared."
+    },
+    "order.prepared_for_shipment": {
+      "precondition": "product.checked AND shipping_address.entered",
+      "quote": "Then the order is finished by the shopping system and simultaneously payment and shipment for the order is prepared."
+    },
+    "payment.confirmed": {
+      "precondition": "order.prepared_for_payment",
+      "quote": "For the payment the customer has to enter its payment data and has to wait until the bank confirms the payment."
+    },
+    "shipping_address.entered": {
+      "precondition": "order.prepared_for_shipment",
+      "quote": "While waiting for the payment confirmation the customer can enter its shipping address (an independent billing address can be entered if the shipping address is not equal to the billing address) ."
+    },
+    "billing_address.entered": {
+      "precondition": "shipping_address.entered",
+      "quote": "While waiting for the payment confirmation the customer can enter its shipping address (an independent billing address can be entered if the shipping address is not equal to the billing address) ."
+    }
+  },
+  "validated_preconditions": {
+    "product.selected": {
+      "precondition": "INITIAL",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "product.added_to_shopping_cart": {
+      "precondition": "product.selected",
+      "quote": "After selecting a product the customer has to add it to a shopping cart, save the product and check if every product was already selected.",
+      "status": "OK",
+      "reason": null
+    },
+    "product.saved": {
+      "precondition": "product.selected",
+      "quote": "After selecting a product the customer has to add it to a shopping cart, save the product and check if every product was already selected.",
+      "status": "OK",
+      "reason": null,
+      "retried": true
+    },
+    "product.checked": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "DOWNGRADED",
+      "reason": "mutual exclusivity violation: two states of the same entity in one conjunction",
+      "retried": true
+    },
+    "order.finished": {
+      "precondition": "order.prepared_for_payment AND payment.confirmed",
+      "quote": "For the payment the customer has to enter its payment data and has to wait until the bank confirms the payment.",
+      "status": "OK",
+      "reason": null,
+      "retried": true
+    },
+    "order.prepared_for_payment": {
+      "precondition": "product.checked AND payment.confirmed",
+      "quote": "Then the order is finished by the shopping system and simultaneously payment and shipment for the order is prepared.",
+      "status": "OK",
+      "reason": null
+    },
+    "order.prepared_for_shipment": {
+      "precondition": "product.checked AND shipping_address.entered",
+      "quote": "Then the order is finished by the shopping system and simultaneously payment and shipment for the order is prepared.",
+      "status": "OK",
+      "reason": null
+    },
+    "payment.confirmed": {
+      "precondition": "order.prepared_for_payment",
+      "quote": "For the payment the customer has to enter its payment data and has to wait until the bank confirms the payment.",
+      "status": "OK",
+      "reason": null
+    },
+    "shipping_address.entered": {
+      "precondition": "order.prepared_for_shipment",
+      "quote": "While waiting for the payment confirmation the customer can enter its shipping address (an independent billing address can be entered if the shipping address is not equal to the billing address) .",
+      "status": "OK",
+      "reason": null
+    },
+    "billing_address.entered": {
+      "precondition": "shipping_address.entered",
+      "quote": "While waiting for the payment confirmation the customer can enter its shipping address (an independent billing address can be entered if the shipping address is not equal to the billing address) .",
+      "status": "OK",
+      "reason": null
+    }
+  },
+  "precondition_cycles": [
+    [
+      "order.prepared_for_payment",
+      "payment.confirmed",
+      "order.prepared_for_payment"
+    ],
+    [
+      "order.prepared_for_shipment",
+      "shipping_address.entered",
+      "order.prepared_for_shipment"
+    ]
+  ],
+  "reference_graph": {
+    "nodes": [
+      {
+        "id": "product.selected",
+        "weight": 0.5
+      },
+      {
+        "id": "product.added_to_shopping_cart",
+        "weight": 0.25
+      },
+      {
+        "id": "product.saved",
+        "weight": 0.25
+      },
+      {
+        "id": "product.checked",
+        "weight": 0.5
+      },
+      {
+        "id": "order.finished",
+        "weight": 0.5
+      },
+      {
+        "id": "order.prepared_for_payment",
+        "weight": 1.0
+      },
+      {
+        "id": "order.prepared_for_shipment",
+        "weight": 0.75
+      },
+      {
+        "id": "payment.confirmed",
+        "weight": 0.75
+      },
+      {
+        "id": "shipping_address.entered",
+        "weight": 0.75
+      },
+      {
+        "id": "billing_address.entered",
+        "weight": 0.25
+      }
+    ],
+    "edges": [
+      {
+        "from": "product.selected",
+        "to": "product.added_to_shopping_cart",
+        "type": "sequence",
+        "operator": "AND",
+        "quote": "After selecting a product the customer has to add it to a shopping cart, save the product and check if every product was already selected."
+      },
+      {
+        "from": "product.selected",
+        "to": "product.saved",
+        "type": "sequence",
+        "operator": "AND",
+        "quote": "After selecting a product the customer has to add it to a shopping cart, save the product and check if every product was already selected."
+      },
+      {
+        "from": "order.prepared_for_payment",
+        "to": "order.finished",
+        "type": "sequence",
+        "operator": "AND",
+        "quote": "For the payment the customer has to enter its payment data and has to wait until the bank confirms the payment."
+      },
+      {
+        "from": "payment.confirmed",
+        "to": "order.finished",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "For the payment the customer has to enter its payment data and has to wait until the bank confirms the payment."
+      },
+      {
+        "from": "product.checked",
+        "to": "order.prepared_for_payment",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "Then the order is finished by the shopping system and simultaneously payment and shipment for the order is prepared."
+      },
+      {
+        "from": "payment.confirmed",
+        "to": "order.prepared_for_payment",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "Then the order is finished by the shopping system and simultaneously payment and shipment for the order is prepared."
+      },
+      {
+        "from": "product.checked",
+        "to": "order.prepared_for_shipment",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "Then the order is finished by the shopping system and simultaneously payment and shipment for the order is prepared."
+      },
+      {
+        "from": "shipping_address.entered",
+        "to": "order.prepared_for_shipment",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "Then the order is finished by the shopping system and simultaneously payment and shipment for the order is prepared."
+      },
+      {
+        "from": "order.prepared_for_payment",
+        "to": "payment.confirmed",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "For the payment the customer has to enter its payment data and has to wait until the bank confirms the payment."
+      },
+      {
+        "from": "order.prepared_for_shipment",
+        "to": "shipping_address.entered",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "While waiting for the payment confirmation the customer can enter its shipping address (an independent billing address can be entered if the shipping address is not equal to the billing address) ."
+      },
+      {
+        "from": "shipping_address.entered",
+        "to": "billing_address.entered",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "While waiting for the payment confirmation the customer can enter its shipping address (an independent billing address can be entered if the shipping address is not equal to the billing address) ."
+      }
+    ],
+    "cycles": [
+      [
+        "order.prepared_for_payment",
+        "payment.confirmed",
+        "order.prepared_for_payment"
+      ],
+      [
+        "order.prepared_for_shipment",
+        "shipping_address.entered",
+        "order.prepared_for_shipment"
+      ]
+    ]
+  },
+  "dfg_edges": [
+    {
+      "source_id": "sid-08C1F327-974F-4091-90B1-2C20760D7BA5",
+      "source_label": "",
+      "target_id": "sid-9FE7C0C6-70C2-4361-B98C-B51D5F4E1D74",
+      "target_label": "",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-B5253B6F-3080-4AB9-BF48-06B48D519B0D",
+      "source_label": "send confirmation",
+      "target_id": "sid-4651B9A6-DEDF-4C6D-B409-2BC789B62073",
+      "target_label": "save products",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-B5253B6F-3080-4AB9-BF48-06B48D519B0D",
+      "source_label": "send confirmation",
+      "target_id": "sid-A743B3E0-F8D6-4F33-BD87-C6B86D8E4C6D",
+      "target_label": "Receive confirmation",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-245A7A83-D8A4-4071-B264-6575BF3E9559",
+      "source_label": "",
+      "target_id": "sid-F36CE50A-1D20-48F8-AAEB-722609DC4DDC",
+      "target_label": "check the credential",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-B159754B-39F3-4A74-BE87-A17AEECCFC2E",
+      "source_label": "request shipping adress",
+      "target_id": "sid-7FD5D1EE-AD7F-49AE-AFB5-BD713F7E7287",
+      "target_label": "receive the shipping address",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-B159754B-39F3-4A74-BE87-A17AEECCFC2E",
+      "source_label": "request shipping adress",
+      "target_id": "sid-C834040D-AFE9-44BA-9A1A-C0E170BD3618",
+      "target_label": "",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-F36CE50A-1D20-48F8-AAEB-722609DC4DDC",
+      "source_label": "check the credential",
+      "target_id": "sid-B5253B6F-3080-4AB9-BF48-06B48D519B0D",
+      "target_label": "send confirmation",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "yes"
+      ]
+    },
+    {
+      "source_id": "sid-F36CE50A-1D20-48F8-AAEB-722609DC4DDC",
+      "source_label": "check the credential",
+      "target_id": "sid-D9208EE9-4DDB-4FBA-A88C-C06C4BC5B400",
+      "target_label": "stop the task",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "no"
+      ]
+    },
+    {
+      "source_id": "sid-9B4BF0EF-027C-4BEF-A812-0C00F472CA43",
+      "source_label": "",
+      "target_id": "sid-97173802-403E-49EA-9831-F2314BF3679E",
+      "target_label": "check the payment data",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-9B4BF0EF-027C-4BEF-A812-0C00F472CA43",
+      "source_label": "",
+      "target_id": "sid-B159754B-39F3-4A74-BE87-A17AEECCFC2E",
+      "target_label": "request shipping adress",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-A17DDC23-8FB4-4DBE-925C-063507FBC27E",
+      "source_label": "",
+      "target_id": "sid-245A7A83-D8A4-4071-B264-6575BF3E9559",
+      "target_label": "",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-4651B9A6-DEDF-4C6D-B409-2BC789B62073",
+      "source_label": "save products",
+      "target_id": "sid-6F7BA7CB-8080-4ED8-8733-B429464055F6",
+      "target_label": "ask for the further products",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-9FE7C0C6-70C2-4361-B98C-B51D5F4E1D74",
+      "source_label": "",
+      "target_id": "sid-A743B3E0-F8D6-4F33-BD87-C6B86D8E4C6D",
+      "target_label": "Receive confirmation",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-9FE7C0C6-70C2-4361-B98C-B51D5F4E1D74",
+      "source_label": "",
+      "target_id": "sid-245A7A83-D8A4-4071-B264-6575BF3E9559",
+      "target_label": "",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-1728FD99-95CC-4FF0-9A39-E22479302517",
+      "source_label": "enter the shipping adress",
+      "target_id": "sid-E9202D10-8326-4115-A3E9-B144862C153A",
+      "target_label": "send the addresses",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-AF72D67C-2A1B-4069-AF41-7E8CB11B2DAF",
+      "source_label": "order confirmation",
+      "target_id": "sid-407DD2C4-4119-4CD9-9B03-59812034AD14",
+      "target_label": "",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-E9202D10-8326-4115-A3E9-B144862C153A",
+      "source_label": "send the addresses",
+      "target_id": "sid-AF72D67C-2A1B-4069-AF41-7E8CB11B2DAF",
+      "target_label": "order confirmation",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-E9202D10-8326-4115-A3E9-B144862C153A",
+      "source_label": "send the addresses",
+      "target_id": "sid-7FD5D1EE-AD7F-49AE-AFB5-BD713F7E7287",
+      "target_label": "receive the shipping address",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-A429EAF9-2530-48C0-945F-774EB89622A4",
+      "source_label": "waiting for confirmation",
+      "target_id": "sid-AF72D67C-2A1B-4069-AF41-7E8CB11B2DAF",
+      "target_label": "order confirmation",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-C834040D-AFE9-44BA-9A1A-C0E170BD3618",
+      "source_label": "",
+      "target_id": "sid-1728FD99-95CC-4FF0-9A39-E22479302517",
+      "target_label": "enter the shipping adress",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "no"
+      ]
+    },
+    {
+      "source_id": "sid-C834040D-AFE9-44BA-9A1A-C0E170BD3618",
+      "source_label": "",
+      "target_id": "sid-B070D5BE-FF10-4A48-8703-4646847B3FB2",
+      "target_label": "save the billing address as shipping adress",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "yes"
+      ]
+    },
+    {
+      "source_id": "sid-75710D1B-10BF-4E20-8C71-5F9E66A4FEC2",
+      "source_label": "request payment info",
+      "target_id": "sid-1BB79F23-698C-4849-BF80-8424F5EA6DEB",
+      "target_label": "",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-75710D1B-10BF-4E20-8C71-5F9E66A4FEC2",
+      "source_label": "request payment info",
+      "target_id": "sid-9B4BF0EF-027C-4BEF-A812-0C00F472CA43",
+      "target_label": "",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-97173802-403E-49EA-9831-F2314BF3679E",
+      "source_label": "check the payment data",
+      "target_id": "sid-3196569F-8583-4142-819D-D4EF729CF092",
+      "target_label": "send order confirmation",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-7FD5D1EE-AD7F-49AE-AFB5-BD713F7E7287",
+      "source_label": "receive the shipping address",
+      "target_id": "sid-3196569F-8583-4142-819D-D4EF729CF092",
+      "target_label": "send order confirmation",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-3196569F-8583-4142-819D-D4EF729CF092",
+      "source_label": "send order confirmation",
+      "target_id": "sid-8B9A46E5-79A0-4E63-A9C7-55AFE9DB8DB9",
+      "target_label": "",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-3196569F-8583-4142-819D-D4EF729CF092",
+      "source_label": "send order confirmation",
+      "target_id": "sid-AF72D67C-2A1B-4069-AF41-7E8CB11B2DAF",
+      "target_label": "order confirmation",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-B070D5BE-FF10-4A48-8703-4646847B3FB2",
+      "source_label": "save the billing address as shipping adress",
+      "target_id": "sid-E9202D10-8326-4115-A3E9-B144862C153A",
+      "target_label": "send the addresses",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-6F7BA7CB-8080-4ED8-8733-B429464055F6",
+      "source_label": "ask for the further products",
+      "target_id": "sid-4651B9A6-DEDF-4C6D-B409-2BC789B62073",
+      "target_label": "save products",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "yes"
+      ]
+    },
+    {
+      "source_id": "sid-6F7BA7CB-8080-4ED8-8733-B429464055F6",
+      "source_label": "ask for the further products",
+      "target_id": "sid-75710D1B-10BF-4E20-8C71-5F9E66A4FEC2",
+      "target_label": "request payment info",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "no",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-1BB79F23-698C-4849-BF80-8424F5EA6DEB",
+      "source_label": "",
+      "target_id": "sid-E0363EF5-75A7-4FAE-B62A-7254F8CDF3F4",
+      "target_label": "enter payment data",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-1D69EA81-3B02-4296-80F5-36CD845D96AF",
+      "source_label": "select product",
+      "target_id": "sid-EC191D15-7152-4D97-8794-3B1CB1D0FCAA",
+      "target_label": "add to the cart",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-EC191D15-7152-4D97-8794-3B1CB1D0FCAA",
+      "source_label": "add to the cart",
+      "target_id": "sid-41BE6AA9-D7D4-4FDB-BD96-07252A8DA077",
+      "target_label": "save the products",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-41BE6AA9-D7D4-4FDB-BD96-07252A8DA077",
+      "source_label": "save the products",
+      "target_id": "sid-1BB79F23-698C-4849-BF80-8424F5EA6DEB",
+      "target_label": "",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "no"
+      ]
+    },
+    {
+      "source_id": "sid-41BE6AA9-D7D4-4FDB-BD96-07252A8DA077",
+      "source_label": "save the products",
+      "target_id": "sid-1D69EA81-3B02-4296-80F5-36CD845D96AF",
+      "target_label": "select product",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "yes"
+      ]
+    },
+    {
+      "source_id": "sid-41BE6AA9-D7D4-4FDB-BD96-07252A8DA077",
+      "source_label": "save the products",
+      "target_id": "sid-4651B9A6-DEDF-4C6D-B409-2BC789B62073",
+      "target_label": "save products",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-A743B3E0-F8D6-4F33-BD87-C6B86D8E4C6D",
+      "source_label": "Receive confirmation",
+      "target_id": "sid-1D69EA81-3B02-4296-80F5-36CD845D96AF",
+      "target_label": "select product",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-E0363EF5-75A7-4FAE-B62A-7254F8CDF3F4",
+      "source_label": "enter payment data",
+      "target_id": "sid-9B4BF0EF-027C-4BEF-A812-0C00F472CA43",
+      "target_label": "",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-E0363EF5-75A7-4FAE-B62A-7254F8CDF3F4",
+      "source_label": "enter payment data",
+      "target_id": "sid-C834040D-AFE9-44BA-9A1A-C0E170BD3618",
+      "target_label": "",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-E0363EF5-75A7-4FAE-B62A-7254F8CDF3F4",
+      "source_label": "enter payment data",
+      "target_id": "sid-A429EAF9-2530-48C0-945F-774EB89622A4",
+      "target_label": "waiting for confirmation",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "",
+      "subject_id": "sid-08C1F327-974F-4091-90B1-2C20760D7BA5",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "sid-9FE7C0C6-70C2-4361-B98C-B51D5F4E1D74"
+    },
+    {
+      "subject": "send confirmation",
+      "subject_id": "sid-B5253B6F-3080-4AB9-BF48-06B48D519B0D",
+      "predicate": "follows",
+      "object": "save products",
+      "object_id": "sid-4651B9A6-DEDF-4C6D-B409-2BC789B62073"
+    },
+    {
+      "subject": "send confirmation",
+      "subject_id": "sid-B5253B6F-3080-4AB9-BF48-06B48D519B0D",
+      "predicate": "follows",
+      "object": "Receive confirmation",
+      "object_id": "sid-A743B3E0-F8D6-4F33-BD87-C6B86D8E4C6D"
+    },
+    {
+      "subject": "",
+      "subject_id": "sid-245A7A83-D8A4-4071-B264-6575BF3E9559",
+      "predicate": "follows",
+      "object": "check the credential",
+      "object_id": "sid-F36CE50A-1D20-48F8-AAEB-722609DC4DDC"
+    },
+    {
+      "subject": "request shipping adress",
+      "subject_id": "sid-B159754B-39F3-4A74-BE87-A17AEECCFC2E",
+      "predicate": "follows",
+      "object": "receive the shipping address",
+      "object_id": "sid-7FD5D1EE-AD7F-49AE-AFB5-BD713F7E7287"
+    },
+    {
+      "subject": "request shipping adress",
+      "subject_id": "sid-B159754B-39F3-4A74-BE87-A17AEECCFC2E",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "sid-C834040D-AFE9-44BA-9A1A-C0E170BD3618"
+    },
+    {
+      "subject": "check the credential",
+      "subject_id": "sid-F36CE50A-1D20-48F8-AAEB-722609DC4DDC",
+      "predicate": "follows",
+      "object": "send confirmation",
+      "object_id": "sid-B5253B6F-3080-4AB9-BF48-06B48D519B0D"
+    },
+    {
+      "subject": "check the credential",
+      "subject_id": "sid-F36CE50A-1D20-48F8-AAEB-722609DC4DDC",
+      "predicate": "follows",
+      "object": "stop the task",
+      "object_id": "sid-D9208EE9-4DDB-4FBA-A88C-C06C4BC5B400"
+    },
+    {
+      "subject": "",
+      "subject_id": "sid-9B4BF0EF-027C-4BEF-A812-0C00F472CA43",
+      "predicate": "follows",
+      "object": "check the payment data",
+      "object_id": "sid-97173802-403E-49EA-9831-F2314BF3679E"
+    },
+    {
+      "subject": "",
+      "subject_id": "sid-9B4BF0EF-027C-4BEF-A812-0C00F472CA43",
+      "predicate": "follows",
+      "object": "request shipping adress",
+      "object_id": "sid-B159754B-39F3-4A74-BE87-A17AEECCFC2E"
+    },
+    {
+      "subject": "",
+      "subject_id": "sid-A17DDC23-8FB4-4DBE-925C-063507FBC27E",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "sid-245A7A83-D8A4-4071-B264-6575BF3E9559"
+    },
+    {
+      "subject": "save products",
+      "subject_id": "sid-4651B9A6-DEDF-4C6D-B409-2BC789B62073",
+      "predicate": "follows",
+      "object": "ask for the further products",
+      "object_id": "sid-6F7BA7CB-8080-4ED8-8733-B429464055F6"
+    },
+    {
+      "subject": "",
+      "subject_id": "sid-9FE7C0C6-70C2-4361-B98C-B51D5F4E1D74",
+      "predicate": "follows",
+      "object": "Receive confirmation",
+      "object_id": "sid-A743B3E0-F8D6-4F33-BD87-C6B86D8E4C6D"
+    },
+    {
+      "subject": "",
+      "subject_id": "sid-9FE7C0C6-70C2-4361-B98C-B51D5F4E1D74",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "sid-245A7A83-D8A4-4071-B264-6575BF3E9559"
+    },
+    {
+      "subject": "enter the shipping adress",
+      "subject_id": "sid-1728FD99-95CC-4FF0-9A39-E22479302517",
+      "predicate": "follows",
+      "object": "send the addresses",
+      "object_id": "sid-E9202D10-8326-4115-A3E9-B144862C153A"
+    },
+    {
+      "subject": "order confirmation",
+      "subject_id": "sid-AF72D67C-2A1B-4069-AF41-7E8CB11B2DAF",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "sid-407DD2C4-4119-4CD9-9B03-59812034AD14"
+    },
+    {
+      "subject": "send the addresses",
+      "subject_id": "sid-E9202D10-8326-4115-A3E9-B144862C153A",
+      "predicate": "follows",
+      "object": "order confirmation",
+      "object_id": "sid-AF72D67C-2A1B-4069-AF41-7E8CB11B2DAF"
+    },
+    {
+      "subject": "send the addresses",
+      "subject_id": "sid-E9202D10-8326-4115-A3E9-B144862C153A",
+      "predicate": "follows",
+      "object": "receive the shipping address",
+      "object_id": "sid-7FD5D1EE-AD7F-49AE-AFB5-BD713F7E7287"
+    },
+    {
+      "subject": "waiting for confirmation",
+      "subject_id": "sid-A429EAF9-2530-48C0-945F-774EB89622A4",
+      "predicate": "follows",
+      "object": "order confirmation",
+      "object_id": "sid-AF72D67C-2A1B-4069-AF41-7E8CB11B2DAF"
+    },
+    {
+      "subject": "",
+      "subject_id": "sid-C834040D-AFE9-44BA-9A1A-C0E170BD3618",
+      "predicate": "follows",
+      "object": "enter the shipping adress",
+      "object_id": "sid-1728FD99-95CC-4FF0-9A39-E22479302517"
+    },
+    {
+      "subject": "",
+      "subject_id": "sid-C834040D-AFE9-44BA-9A1A-C0E170BD3618",
+      "predicate": "follows",
+      "object": "save the billing address as shipping adress",
+      "object_id": "sid-B070D5BE-FF10-4A48-8703-4646847B3FB2"
+    },
+    {
+      "subject": "request payment info",
+      "subject_id": "sid-75710D1B-10BF-4E20-8C71-5F9E66A4FEC2",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "sid-1BB79F23-698C-4849-BF80-8424F5EA6DEB"
+    },
+    {
+      "subject": "request payment info",
+      "subject_id": "sid-75710D1B-10BF-4E20-8C71-5F9E66A4FEC2",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "sid-9B4BF0EF-027C-4BEF-A812-0C00F472CA43"
+    },
+    {
+      "subject": "check the payment data",
+      "subject_id": "sid-97173802-403E-49EA-9831-F2314BF3679E",
+      "predicate": "follows",
+      "object": "send order confirmation",
+      "object_id": "sid-3196569F-8583-4142-819D-D4EF729CF092"
+    },
+    {
+      "subject": "receive the shipping address",
+      "subject_id": "sid-7FD5D1EE-AD7F-49AE-AFB5-BD713F7E7287",
+      "predicate": "follows",
+      "object": "send order confirmation",
+      "object_id": "sid-3196569F-8583-4142-819D-D4EF729CF092"
+    },
+    {
+      "subject": "send order confirmation",
+      "subject_id": "sid-3196569F-8583-4142-819D-D4EF729CF092",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "sid-8B9A46E5-79A0-4E63-A9C7-55AFE9DB8DB9"
+    },
+    {
+      "subject": "send order confirmation",
+      "subject_id": "sid-3196569F-8583-4142-819D-D4EF729CF092",
+      "predicate": "follows",
+      "object": "order confirmation",
+      "object_id": "sid-AF72D67C-2A1B-4069-AF41-7E8CB11B2DAF"
+    },
+    {
+      "subject": "save the billing address as shipping adress",
+      "subject_id": "sid-B070D5BE-FF10-4A48-8703-4646847B3FB2",
+      "predicate": "follows",
+      "object": "send the addresses",
+      "object_id": "sid-E9202D10-8326-4115-A3E9-B144862C153A"
+    },
+    {
+      "subject": "ask for the further products",
+      "subject_id": "sid-6F7BA7CB-8080-4ED8-8733-B429464055F6",
+      "predicate": "follows",
+      "object": "save products",
+      "object_id": "sid-4651B9A6-DEDF-4C6D-B409-2BC789B62073"
+    },
+    {
+      "subject": "ask for the further products",
+      "subject_id": "sid-6F7BA7CB-8080-4ED8-8733-B429464055F6",
+      "predicate": "follows",
+      "object": "request payment info",
+      "object_id": "sid-75710D1B-10BF-4E20-8C71-5F9E66A4FEC2"
+    },
+    {
+      "subject": "",
+      "subject_id": "sid-1BB79F23-698C-4849-BF80-8424F5EA6DEB",
+      "predicate": "follows",
+      "object": "enter payment data",
+      "object_id": "sid-E0363EF5-75A7-4FAE-B62A-7254F8CDF3F4"
+    },
+    {
+      "subject": "select product",
+      "subject_id": "sid-1D69EA81-3B02-4296-80F5-36CD845D96AF",
+      "predicate": "follows",
+      "object": "add to the cart",
+      "object_id": "sid-EC191D15-7152-4D97-8794-3B1CB1D0FCAA"
+    },
+    {
+      "subject": "add to the cart",
+      "subject_id": "sid-EC191D15-7152-4D97-8794-3B1CB1D0FCAA",
+      "predicate": "follows",
+      "object": "save the products",
+      "object_id": "sid-41BE6AA9-D7D4-4FDB-BD96-07252A8DA077"
+    },
+    {
+      "subject": "save the products",
+      "subject_id": "sid-41BE6AA9-D7D4-4FDB-BD96-07252A8DA077",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "sid-1BB79F23-698C-4849-BF80-8424F5EA6DEB"
+    },
+    {
+      "subject": "save the products",
+      "subject_id": "sid-41BE6AA9-D7D4-4FDB-BD96-07252A8DA077",
+      "predicate": "follows",
+      "object": "select product",
+      "object_id": "sid-1D69EA81-3B02-4296-80F5-36CD845D96AF"
+    },
+    {
+      "subject": "save the products",
+      "subject_id": "sid-41BE6AA9-D7D4-4FDB-BD96-07252A8DA077",
+      "predicate": "follows",
+      "object": "save products",
+      "object_id": "sid-4651B9A6-DEDF-4C6D-B409-2BC789B62073"
+    },
+    {
+      "subject": "Receive confirmation",
+      "subject_id": "sid-A743B3E0-F8D6-4F33-BD87-C6B86D8E4C6D",
+      "predicate": "follows",
+      "object": "select product",
+      "object_id": "sid-1D69EA81-3B02-4296-80F5-36CD845D96AF"
+    },
+    {
+      "subject": "enter payment data",
+      "subject_id": "sid-E0363EF5-75A7-4FAE-B62A-7254F8CDF3F4",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "sid-9B4BF0EF-027C-4BEF-A812-0C00F472CA43"
+    },
+    {
+      "subject": "enter payment data",
+      "subject_id": "sid-E0363EF5-75A7-4FAE-B62A-7254F8CDF3F4",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "sid-C834040D-AFE9-44BA-9A1A-C0E170BD3618"
+    },
+    {
+      "subject": "enter payment data",
+      "subject_id": "sid-E0363EF5-75A7-4FAE-B62A-7254F8CDF3F4",
+      "predicate": "follows",
+      "object": "waiting for confirmation",
+      "object_id": "sid-A429EAF9-2530-48C0-945F-774EB89622A4"
+    }
+  ],
+  "matches": {
+    "Receive confirmation": {
+      "match": "payment.confirmed",
+      "score": 0.5716
+    },
+    "add to the cart": {
+      "match": "product.added_to_shopping_cart",
+      "score": 0.777
+    },
+    "ask for the further products": {
+      "match": "product.selected",
+      "score": 0.3637
+    },
+    "check the credential": {
+      "match": "product.checked",
+      "score": 0.373
+    },
+    "check the payment data": {
+      "match": "payment.confirmed",
+      "score": 0.5994
+    },
+    "enter payment data": {
+      "match": "payment.confirmed",
+      "score": 0.5014
+    },
+    "enter the shipping adress": {
+      "match": "shipping_address.entered",
+      "score": 0.8586
+    },
+    "order confirmation": {
+      "match": "payment.confirmed",
+      "score": 0.5899
+    },
+    "receive the shipping address": {
+      "match": "shipping_address.entered",
+      "score": 0.764
+    },
+    "request payment info": {
+      "match": "payment.confirmed",
+      "score": 0.5389
+    },
+    "request shipping adress": {
+      "match": "shipping_address.entered",
+      "score": 0.7013
+    },
+    "save products": {
+      "match": "product.saved",
+      "score": 0.7691
+    },
+    "save the billing address as shipping adress": {
+      "match": "billing_address.entered",
+      "score": 0.633
+    },
+    "save the products": {
+      "match": "product.saved",
+      "score": 0.727
+    },
+    "select product": {
+      "match": "product.selected",
+      "score": 0.8473
+    },
+    "send confirmation": {
+      "match": "payment.confirmed",
+      "score": 0.5472
+    },
+    "send order confirmation": {
+      "match": "payment.confirmed",
+      "score": 0.4823
+    },
+    "send the addresses": {
+      "match": "shipping_address.entered",
+      "score": 0.4113
+    },
+    "stop the task": {
+      "match": "order.finished",
+      "score": 0.2943
+    },
+    "waiting for confirmation": {
+      "match": "payment.confirmed",
+      "score": 0.4945
+    }
+  },
+  "process_graph": [
+    {
+      "from": "payment.confirmed",
+      "to": "product.saved",
+      "activity_from": "send confirmation",
+      "activity_to": "save products"
+    },
+    {
+      "from": "payment.confirmed",
+      "to": "payment.confirmed",
+      "activity_from": "send confirmation",
+      "activity_to": "Receive confirmation"
+    },
+    {
+      "from": "shipping_address.entered",
+      "to": "shipping_address.entered",
+      "activity_from": "request shipping adress",
+      "activity_to": "receive the shipping address"
+    },
+    {
+      "from": "product.checked",
+      "to": "payment.confirmed",
+      "activity_from": "check the credential",
+      "activity_to": "send confirmation"
+    },
+    {
+      "from": "product.checked",
+      "to": "order.finished",
+      "activity_from": "check the credential",
+      "activity_to": "stop the task"
+    },
+    {
+      "from": "product.saved",
+      "to": "product.selected",
+      "activity_from": "save products",
+      "activity_to": "ask for the further products"
+    },
+    {
+      "from": "shipping_address.entered",
+      "to": "shipping_address.entered",
+      "activity_from": "enter the shipping adress",
+      "activity_to": "send the addresses"
+    },
+    {
+      "from": "shipping_address.entered",
+      "to": "payment.confirmed",
+      "activity_from": "send the addresses",
+      "activity_to": "order confirmation"
+    },
+    {
+      "from": "shipping_address.entered",
+      "to": "shipping_address.entered",
+      "activity_from": "send the addresses",
+      "activity_to": "receive the shipping address"
+    },
+    {
+      "from": "payment.confirmed",
+      "to": "payment.confirmed",
+      "activity_from": "waiting for confirmation",
+      "activity_to": "order confirmation"
+    },
+    {
+      "from": "payment.confirmed",
+      "to": "payment.confirmed",
+      "activity_from": "check the payment data",
+      "activity_to": "send order confirmation"
+    },
+    {
+      "from": "shipping_address.entered",
+      "to": "payment.confirmed",
+      "activity_from": "receive the shipping address",
+      "activity_to": "send order confirmation"
+    },
+    {
+      "from": "payment.confirmed",
+      "to": "payment.confirmed",
+      "activity_from": "send order confirmation",
+      "activity_to": "order confirmation"
+    },
+    {
+      "from": "billing_address.entered",
+      "to": "shipping_address.entered",
+      "activity_from": "save the billing address as shipping adress",
+      "activity_to": "send the addresses"
+    },
+    {
+      "from": "product.selected",
+      "to": "product.saved",
+      "activity_from": "ask for the further products",
+      "activity_to": "save products"
+    },
+    {
+      "from": "product.selected",
+      "to": "payment.confirmed",
+      "activity_from": "ask for the further products",
+      "activity_to": "request payment info"
+    },
+    {
+      "from": "product.selected",
+      "to": "product.added_to_shopping_cart",
+      "activity_from": "select product",
+      "activity_to": "add to the cart"
+    },
+    {
+      "from": "product.added_to_shopping_cart",
+      "to": "product.saved",
+      "activity_from": "add to the cart",
+      "activity_to": "save the products"
+    },
+    {
+      "from": "product.saved",
+      "to": "product.selected",
+      "activity_from": "save the products",
+      "activity_to": "select product"
+    },
+    {
+      "from": "product.saved",
+      "to": "product.saved",
+      "activity_from": "save the products",
+      "activity_to": "save products"
+    },
+    {
+      "from": "payment.confirmed",
+      "to": "product.selected",
+      "activity_from": "Receive confirmation",
+      "activity_to": "select product"
+    },
+    {
+      "from": "payment.confirmed",
+      "to": "payment.confirmed",
+      "activity_from": "enter payment data",
+      "activity_to": "waiting for confirmation"
+    }
+  ],
+  "alignment": {
+    "product.added_to_shopping_cart": {
+      "operator": "AND",
+      "quote": "After selecting a product the customer has to add it to a shopping cart, save the product and check if every product was already selected.",
+      "terms": [
+        {
+          "term": "product.selected",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED"
+    },
+    "product.saved": {
+      "operator": "AND",
+      "quote": "After selecting a product the customer has to add it to a shopping cart, save the product and check if every product was already selected.",
+      "terms": [
+        {
+          "term": "product.selected",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED"
+    },
+    "order.finished": {
+      "operator": "AND",
+      "quote": "For the payment the customer has to enter its payment data and has to wait until the bank confirms the payment.",
+      "terms": [
+        {
+          "term": "order.prepared_for_payment",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['order.prepared_for_payment']",
+          "missing": [
+            "order.prepared_for_payment"
+          ]
+        },
+        {
+          "term": "payment.confirmed",
+          "status": "VIOLATED",
+          "reason": "both states matched, no path in process",
+          "missing": []
+        }
+      ],
+      "status": "UNRESOLVABLE"
+    },
+    "order.prepared_for_payment": {
+      "operator": "AND",
+      "quote": "Then the order is finished by the shopping system and simultaneously payment and shipment for the order is prepared.",
+      "terms": [
+        {
+          "term": "product.checked",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['order.prepared_for_payment']",
+          "missing": [
+            "order.prepared_for_payment"
+          ]
+        },
+        {
+          "term": "payment.confirmed",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['order.prepared_for_payment']",
+          "missing": [
+            "order.prepared_for_payment"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE"
+    },
+    "order.prepared_for_shipment": {
+      "operator": "AND",
+      "quote": "Then the order is finished by the shopping system and simultaneously payment and shipment for the order is prepared.",
+      "terms": [
+        {
+          "term": "product.checked",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['order.prepared_for_shipment']",
+          "missing": [
+            "order.prepared_for_shipment"
+          ]
+        },
+        {
+          "term": "shipping_address.entered",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['order.prepared_for_shipment']",
+          "missing": [
+            "order.prepared_for_shipment"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE"
+    },
+    "payment.confirmed": {
+      "operator": "AND",
+      "quote": "For the payment the customer has to enter its payment data and has to wait until the bank confirms the payment.",
+      "terms": [
+        {
+          "term": "order.prepared_for_payment",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['order.prepared_for_payment']",
+          "missing": [
+            "order.prepared_for_payment"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE"
+    },
+    "shipping_address.entered": {
+      "operator": "AND",
+      "quote": "While waiting for the payment confirmation the customer can enter its shipping address (an independent billing address can be entered if the shipping address is not equal to the billing address) .",
+      "terms": [
+        {
+          "term": "order.prepared_for_shipment",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['order.prepared_for_shipment']",
+          "missing": [
+            "order.prepared_for_shipment"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE"
+    },
+    "billing_address.entered": {
+      "operator": "AND",
+      "quote": "While waiting for the payment confirmation the customer can enter its shipping address (an independent billing address can be entered if the shipping address is not equal to the billing address) .",
+      "terms": [
+        {
+          "term": "shipping_address.entered",
+          "status": "VIOLATED",
+          "reason": "both states matched, no path in process",
+          "missing": []
+        }
+      ],
+      "status": "VIOLATED"
+    }
+  },
+  "report": {
+    "summary": {
+      "ecarts": 0,
+      "non_verifiable": 2,
+      "conforme": 2
+    },
+    "ecarts": [],
+    "non_verifiable": [
+      {
+        "root_cause": "(aucune activite du processus ne correspond clairement a cela)",
+        "quote": "For the payment the customer has to enter its payment data and has to wait until the bank confirms the payment.",
+        "explanation": "La condition précise qui doit être remplie avant que l'activité \"stop the task\" puisse se produire est que l'ordre soit prêt pour le paiement. Cela est mentionné dans la citation suivante : \"For the payment the customer has to enter its payment data and has to wait until the bank confirms the payment.\"\n\nCependant, il est impossible de vérifier si cette condition est respectée ou non, car elle n'est pas associée à une activité claire du processus observé. (Cette meme cause affecte aussi : (aucune activite du processus ne correspond clairement a cela), check the payment data.)",
+        "affected_activities": [
+          "(aucune activite du processus ne correspond clairement a cela)",
+          "check the payment data",
+          "stop the task"
+        ],
+        "affected_count": 5
+      },
+      {
+        "root_cause": "(aucune activite du processus ne correspond clairement a cela)",
+        "quote": "Then the order is finished by the shopping system and simultaneously payment and shipment for the order is prepared.",
+        "explanation": "Il est impossible de vérifier si l'exigence est respectée ou non avant que l'activité \"aucune activité du processus ne correspond clairement à cela\" puisse se produire. \n\nCette exigence est liée à la condition qui doit être remplie avant que l'ordre soit prêt à être expédié. \n\nLa citation fournie indique que l'ordre est terminé par le système de shopping et que le paiement et l'expédition sont préparés en même temps. \n\nCependant, il n'est pas possible de déterminer avec certitude ce que signifie cette condition, car elle n'est pas décrite explicitement dans la citation. \n\nPar conséquent, il est impossible de vérifier si cette condition est respectée ou non avant que l'activité \"aucune activité du processus ne correspond clairement à cela\" puisse se produire. \n\nCitation : \"Then the order is finished by the shopping system and simultaneously payment and shipment for the order is prepared.\" (Cette meme cause affecte aussi : enter the shipping adress, save the billing address as shipping adress.)",
+        "affected_activities": [
+          "(aucune activite du processus ne correspond clairement a cela)",
+          "enter the shipping adress",
+          "save the billing address as shipping adress"
+        ],
+        "affected_count": 4
+      }
+    ],
+    "conforme": [
+      {
+        "target": "add to the cart",
+        "term": "select product"
+      },
+      {
+        "target": "save products",
+        "term": "select product"
+      }
+    ],
+    "piece_jointe_alignement_brut": {
+      "product.added_to_shopping_cart": {
+        "operator": "AND",
+        "quote": "After selecting a product the customer has to add it to a shopping cart, save the product and check if every product was already selected.",
+        "terms": [
+          {
+            "term": "product.selected",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED"
+      },
+      "product.saved": {
+        "operator": "AND",
+        "quote": "After selecting a product the customer has to add it to a shopping cart, save the product and check if every product was already selected.",
+        "terms": [
+          {
+            "term": "product.selected",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED"
+      },
+      "order.finished": {
+        "operator": "AND",
+        "quote": "For the payment the customer has to enter its payment data and has to wait until the bank confirms the payment.",
+        "terms": [
+          {
+            "term": "order.prepared_for_payment",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['order.prepared_for_payment']",
+            "missing": [
+              "order.prepared_for_payment"
+            ]
+          },
+          {
+            "term": "payment.confirmed",
+            "status": "VIOLATED",
+            "reason": "both states matched, no path in process",
+            "missing": []
+          }
+        ],
+        "status": "UNRESOLVABLE"
+      },
+      "order.prepared_for_payment": {
+        "operator": "AND",
+        "quote": "Then the order is finished by the shopping system and simultaneously payment and shipment for the order is prepared.",
+        "terms": [
+          {
+            "term": "product.checked",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['order.prepared_for_payment']",
+            "missing": [
+              "order.prepared_for_payment"
+            ]
+          },
+          {
+            "term": "payment.confirmed",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['order.prepared_for_payment']",
+            "missing": [
+              "order.prepared_for_payment"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE"
+      },
+      "order.prepared_for_shipment": {
+        "operator": "AND",
+        "quote": "Then the order is finished by the shopping system and simultaneously payment and shipment for the order is prepared.",
+        "terms": [
+          {
+            "term": "product.checked",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['order.prepared_for_shipment']",
+            "missing": [
+              "order.prepared_for_shipment"
+            ]
+          },
+          {
+            "term": "shipping_address.entered",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['order.prepared_for_shipment']",
+            "missing": [
+              "order.prepared_for_shipment"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE"
+      },
+      "payment.confirmed": {
+        "operator": "AND",
+        "quote": "For the payment the customer has to enter its payment data and has to wait until the bank confirms the payment.",
+        "terms": [
+          {
+            "term": "order.prepared_for_payment",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['order.prepared_for_payment']",
+            "missing": [
+              "order.prepared_for_payment"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE"
+      },
+      "shipping_address.entered": {
+        "operator": "AND",
+        "quote": "While waiting for the payment confirmation the customer can enter its shipping address (an independent billing address can be entered if the shipping address is not equal to the billing address) .",
+        "terms": [
+          {
+            "term": "order.prepared_for_shipment",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['order.prepared_for_shipment']",
+            "missing": [
+              "order.prepared_for_shipment"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE"
+      },
+      "billing_address.entered": {
+        "operator": "AND",
+        "quote": "While waiting for the payment confirmation the customer can enter its shipping address (an independent billing address can be entered if the shipping address is not equal to the billing address) .",
+        "terms": [
+          {
+            "term": "shipping_address.entered",
+            "status": "VIOLATED",
+            "reason": "both states matched, no path in process",
+            "missing": []
+          }
+        ],
+        "status": "VIOLATED"
+      }
+    }
+  },
+  "errors": []
+}

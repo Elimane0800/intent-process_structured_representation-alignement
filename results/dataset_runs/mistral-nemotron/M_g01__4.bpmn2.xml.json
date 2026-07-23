@@ -1,0 +1,430 @@
+{
+  "case_name": "M_g01",
+  "text": "Category: Manufacturing\nTitle: Instruct an artist to create a 3D model print it on a 3D printer\n\nWhen craving a custom 3D model, as a first step you have to instruct an artist\nto create a project for you.  First you have to send him several sketches, and\nthen tell him what to change until you are satisfied with the result. After\nthat, you choose a plastic color you want to use for 3D printing. If you have\nthe color at home (in stock), you check how much color you have left. If it's\nunder 100 grams, you put it on your shopping list. If you do not have the color\nat home, you order it. When you have the plastic, you can turn the printer on\nand heat up the bed and the extruder (it continuously sends you back its\nstatus). While doing that, you can generate the gcode file for your printer out\nof the STL sent to you by the artist. After that you print the model.\n",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "mistral-nemotron",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "mistral-nemotron",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/text_and_bpmn/bpmn/M_g01/4.bpmn2.xml",
+  "dfg_edges": [
+    {
+      "source_id": "sid-79C90D3B-9C60-4D2D-914B-CB24319C276C",
+      "source_label": "Generate gcode file",
+      "target_id": "sid-F63224EE-D280-4B9C-B8E0-ECF4F3B6216C",
+      "target_label": "",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-79C90D3B-9C60-4D2D-914B-CB24319C276C",
+      "source_label": "Generate gcode file",
+      "target_id": "sid-44A17E60-B92A-4315-B748-9DC72BC2E9B8",
+      "target_label": "Print model",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-25E54706-C82F-4DE9-AD30-EC9B767326EC",
+      "source_label": "Choose plastic color ",
+      "target_id": "sid-D80A5F2C-F99C-47E8-9983-9A9DEF96CD72",
+      "target_label": "Check color availability",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-C6A1517C-0E32-447D-9124-A55DADA20738",
+      "source_label": "Send sketches",
+      "target_id": "sid-CF6B9FEE-FF54-474E-A57C-7B556D47CFD3",
+      "target_label": "Edit sketch changes",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-CF6B9FEE-FF54-474E-A57C-7B556D47CFD3",
+      "source_label": "Edit sketch changes",
+      "target_id": "sid-2E0A7523-FC8A-43BE-95C7-E277479B2B8E",
+      "target_label": "Revise sketch changes",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "no"
+      ]
+    },
+    {
+      "source_id": "sid-CF6B9FEE-FF54-474E-A57C-7B556D47CFD3",
+      "source_label": "Edit sketch changes",
+      "target_id": "sid-24EFA9F2-0E29-48C2-AAFD-A32A95828A0E",
+      "target_label": "Tell changes to the artist",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "yes"
+      ]
+    },
+    {
+      "source_id": "sid-89AAFA60-98E9-4FC1-89CC-E9395C0301F6",
+      "source_label": "Heat up the bed ",
+      "target_id": "sid-44A17E60-B92A-4315-B748-9DC72BC2E9B8",
+      "target_label": "Print model",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-24EFA9F2-0E29-48C2-AAFD-A32A95828A0E",
+      "source_label": "Tell changes to the artist",
+      "target_id": "sid-25E54706-C82F-4DE9-AD30-EC9B767326EC",
+      "target_label": "Choose plastic color ",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-2EB52FF7-7DA4-4136-89C7-D7826BA7282D",
+      "source_label": "Turn on printer ",
+      "target_id": "sid-44A17E60-B92A-4315-B748-9DC72BC2E9B8",
+      "target_label": "Print model",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-D80A5F2C-F99C-47E8-9983-9A9DEF96CD72",
+      "source_label": "Check color availability",
+      "target_id": "sid-91FCC347-AC18-4838-B0E3-D1B9756D5D20",
+      "target_label": "Order color",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "no"
+      ]
+    },
+    {
+      "source_id": "sid-D80A5F2C-F99C-47E8-9983-9A9DEF96CD72",
+      "source_label": "Check color availability",
+      "target_id": "sid-EA1E138D-93CA-490C-8FD7-7C0E7081C64C",
+      "target_label": "Check color gramm",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "yes"
+      ]
+    },
+    {
+      "source_id": "sid-91FCC347-AC18-4838-B0E3-D1B9756D5D20",
+      "source_label": "Order color",
+      "target_id": "sid-0C9637A0-59F0-401C-9740-561C192588CC",
+      "target_label": "Receive plastic",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-91FCC347-AC18-4838-B0E3-D1B9756D5D20",
+      "source_label": "Order color",
+      "target_id": "sid-A698D982-DA4C-46DF-8AFD-0A5978B044A7",
+      "target_label": "",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-3476FFA6-5DE7-4CD4-BFE2-AF8BF1AA1755",
+      "source_label": "Put on shopping list ",
+      "target_id": "sid-0C9637A0-59F0-401C-9740-561C192588CC",
+      "target_label": "Receive plastic",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-3476FFA6-5DE7-4CD4-BFE2-AF8BF1AA1755",
+      "source_label": "Put on shopping list ",
+      "target_id": "sid-2B36E6D5-7163-4D9F-A613-FFCC54C7E269",
+      "target_label": "",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-0C3304ED-4D2B-4BB8-A14C-796E871C6321",
+      "source_label": "Heat up extruder",
+      "target_id": "sid-44A17E60-B92A-4315-B748-9DC72BC2E9B8",
+      "target_label": "Print model",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-44A17E60-B92A-4315-B748-9DC72BC2E9B8",
+      "source_label": "Print model",
+      "target_id": "sid-BF933C7F-162E-40F4-861F-10A61C7F5AD1",
+      "target_label": "",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-0C9637A0-59F0-401C-9740-561C192588CC",
+      "source_label": "Receive plastic",
+      "target_id": "sid-0C3304ED-4D2B-4BB8-A14C-796E871C6321",
+      "target_label": "Heat up extruder",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-0C9637A0-59F0-401C-9740-561C192588CC",
+      "source_label": "Receive plastic",
+      "target_id": "sid-79C90D3B-9C60-4D2D-914B-CB24319C276C",
+      "target_label": "Generate gcode file",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-0C9637A0-59F0-401C-9740-561C192588CC",
+      "source_label": "Receive plastic",
+      "target_id": "sid-89AAFA60-98E9-4FC1-89CC-E9395C0301F6",
+      "target_label": "Heat up the bed ",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-0C9637A0-59F0-401C-9740-561C192588CC",
+      "source_label": "Receive plastic",
+      "target_id": "sid-2EB52FF7-7DA4-4136-89C7-D7826BA7282D",
+      "target_label": "Turn on printer ",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-00DFD193-F5B7-4963-964C-71A14A33E008",
+      "source_label": "Instruct an artist",
+      "target_id": "sid-C6A1517C-0E32-447D-9124-A55DADA20738",
+      "target_label": "Send sketches",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-EA1E138D-93CA-490C-8FD7-7C0E7081C64C",
+      "source_label": "Check color gramm",
+      "target_id": "sid-0C9637A0-59F0-401C-9740-561C192588CC",
+      "target_label": "Receive plastic",
+      "gateway_context": [
+        "ExclusiveGateway",
+        " >= 100 g",
+        "ExclusiveGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-EA1E138D-93CA-490C-8FD7-7C0E7081C64C",
+      "source_label": "Check color gramm",
+      "target_id": "sid-3476FFA6-5DE7-4CD4-BFE2-AF8BF1AA1755",
+      "target_label": "Put on shopping list ",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "< 100 g"
+      ]
+    },
+    {
+      "source_id": "sid-288938CA-00CE-48F2-BD43-226C05D87101",
+      "source_label": "Start 3D-Projekct ",
+      "target_id": "sid-00DFD193-F5B7-4963-964C-71A14A33E008",
+      "target_label": "Instruct an artist",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-2E0A7523-FC8A-43BE-95C7-E277479B2B8E",
+      "source_label": "Revise sketch changes",
+      "target_id": "sid-CF6B9FEE-FF54-474E-A57C-7B556D47CFD3",
+      "target_label": "Edit sketch changes",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "Generate gcode file",
+      "subject_id": "sid-79C90D3B-9C60-4D2D-914B-CB24319C276C",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "sid-F63224EE-D280-4B9C-B8E0-ECF4F3B6216C"
+    },
+    {
+      "subject": "Generate gcode file",
+      "subject_id": "sid-79C90D3B-9C60-4D2D-914B-CB24319C276C",
+      "predicate": "follows",
+      "object": "Print model",
+      "object_id": "sid-44A17E60-B92A-4315-B748-9DC72BC2E9B8"
+    },
+    {
+      "subject": "Choose plastic color ",
+      "subject_id": "sid-25E54706-C82F-4DE9-AD30-EC9B767326EC",
+      "predicate": "follows",
+      "object": "Check color availability",
+      "object_id": "sid-D80A5F2C-F99C-47E8-9983-9A9DEF96CD72"
+    },
+    {
+      "subject": "Send sketches",
+      "subject_id": "sid-C6A1517C-0E32-447D-9124-A55DADA20738",
+      "predicate": "follows",
+      "object": "Edit sketch changes",
+      "object_id": "sid-CF6B9FEE-FF54-474E-A57C-7B556D47CFD3"
+    },
+    {
+      "subject": "Edit sketch changes",
+      "subject_id": "sid-CF6B9FEE-FF54-474E-A57C-7B556D47CFD3",
+      "predicate": "follows",
+      "object": "Revise sketch changes",
+      "object_id": "sid-2E0A7523-FC8A-43BE-95C7-E277479B2B8E"
+    },
+    {
+      "subject": "Edit sketch changes",
+      "subject_id": "sid-CF6B9FEE-FF54-474E-A57C-7B556D47CFD3",
+      "predicate": "follows",
+      "object": "Tell changes to the artist",
+      "object_id": "sid-24EFA9F2-0E29-48C2-AAFD-A32A95828A0E"
+    },
+    {
+      "subject": "Heat up the bed ",
+      "subject_id": "sid-89AAFA60-98E9-4FC1-89CC-E9395C0301F6",
+      "predicate": "follows",
+      "object": "Print model",
+      "object_id": "sid-44A17E60-B92A-4315-B748-9DC72BC2E9B8"
+    },
+    {
+      "subject": "Tell changes to the artist",
+      "subject_id": "sid-24EFA9F2-0E29-48C2-AAFD-A32A95828A0E",
+      "predicate": "follows",
+      "object": "Choose plastic color ",
+      "object_id": "sid-25E54706-C82F-4DE9-AD30-EC9B767326EC"
+    },
+    {
+      "subject": "Turn on printer ",
+      "subject_id": "sid-2EB52FF7-7DA4-4136-89C7-D7826BA7282D",
+      "predicate": "follows",
+      "object": "Print model",
+      "object_id": "sid-44A17E60-B92A-4315-B748-9DC72BC2E9B8"
+    },
+    {
+      "subject": "Check color availability",
+      "subject_id": "sid-D80A5F2C-F99C-47E8-9983-9A9DEF96CD72",
+      "predicate": "follows",
+      "object": "Order color",
+      "object_id": "sid-91FCC347-AC18-4838-B0E3-D1B9756D5D20"
+    },
+    {
+      "subject": "Check color availability",
+      "subject_id": "sid-D80A5F2C-F99C-47E8-9983-9A9DEF96CD72",
+      "predicate": "follows",
+      "object": "Check color gramm",
+      "object_id": "sid-EA1E138D-93CA-490C-8FD7-7C0E7081C64C"
+    },
+    {
+      "subject": "Order color",
+      "subject_id": "sid-91FCC347-AC18-4838-B0E3-D1B9756D5D20",
+      "predicate": "follows",
+      "object": "Receive plastic",
+      "object_id": "sid-0C9637A0-59F0-401C-9740-561C192588CC"
+    },
+    {
+      "subject": "Order color",
+      "subject_id": "sid-91FCC347-AC18-4838-B0E3-D1B9756D5D20",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "sid-A698D982-DA4C-46DF-8AFD-0A5978B044A7"
+    },
+    {
+      "subject": "Put on shopping list ",
+      "subject_id": "sid-3476FFA6-5DE7-4CD4-BFE2-AF8BF1AA1755",
+      "predicate": "follows",
+      "object": "Receive plastic",
+      "object_id": "sid-0C9637A0-59F0-401C-9740-561C192588CC"
+    },
+    {
+      "subject": "Put on shopping list ",
+      "subject_id": "sid-3476FFA6-5DE7-4CD4-BFE2-AF8BF1AA1755",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "sid-2B36E6D5-7163-4D9F-A613-FFCC54C7E269"
+    },
+    {
+      "subject": "Heat up extruder",
+      "subject_id": "sid-0C3304ED-4D2B-4BB8-A14C-796E871C6321",
+      "predicate": "follows",
+      "object": "Print model",
+      "object_id": "sid-44A17E60-B92A-4315-B748-9DC72BC2E9B8"
+    },
+    {
+      "subject": "Print model",
+      "subject_id": "sid-44A17E60-B92A-4315-B748-9DC72BC2E9B8",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "sid-BF933C7F-162E-40F4-861F-10A61C7F5AD1"
+    },
+    {
+      "subject": "Receive plastic",
+      "subject_id": "sid-0C9637A0-59F0-401C-9740-561C192588CC",
+      "predicate": "follows",
+      "object": "Heat up extruder",
+      "object_id": "sid-0C3304ED-4D2B-4BB8-A14C-796E871C6321"
+    },
+    {
+      "subject": "Receive plastic",
+      "subject_id": "sid-0C9637A0-59F0-401C-9740-561C192588CC",
+      "predicate": "follows",
+      "object": "Generate gcode file",
+      "object_id": "sid-79C90D3B-9C60-4D2D-914B-CB24319C276C"
+    },
+    {
+      "subject": "Receive plastic",
+      "subject_id": "sid-0C9637A0-59F0-401C-9740-561C192588CC",
+      "predicate": "follows",
+      "object": "Heat up the bed ",
+      "object_id": "sid-89AAFA60-98E9-4FC1-89CC-E9395C0301F6"
+    },
+    {
+      "subject": "Receive plastic",
+      "subject_id": "sid-0C9637A0-59F0-401C-9740-561C192588CC",
+      "predicate": "follows",
+      "object": "Turn on printer ",
+      "object_id": "sid-2EB52FF7-7DA4-4136-89C7-D7826BA7282D"
+    },
+    {
+      "subject": "Instruct an artist",
+      "subject_id": "sid-00DFD193-F5B7-4963-964C-71A14A33E008",
+      "predicate": "follows",
+      "object": "Send sketches",
+      "object_id": "sid-C6A1517C-0E32-447D-9124-A55DADA20738"
+    },
+    {
+      "subject": "Check color gramm",
+      "subject_id": "sid-EA1E138D-93CA-490C-8FD7-7C0E7081C64C",
+      "predicate": "follows",
+      "object": "Receive plastic",
+      "object_id": "sid-0C9637A0-59F0-401C-9740-561C192588CC"
+    },
+    {
+      "subject": "Check color gramm",
+      "subject_id": "sid-EA1E138D-93CA-490C-8FD7-7C0E7081C64C",
+      "predicate": "follows",
+      "object": "Put on shopping list ",
+      "object_id": "sid-3476FFA6-5DE7-4CD4-BFE2-AF8BF1AA1755"
+    },
+    {
+      "subject": "Start 3D-Projekct ",
+      "subject_id": "sid-288938CA-00CE-48F2-BD43-226C05D87101",
+      "predicate": "follows",
+      "object": "Instruct an artist",
+      "object_id": "sid-00DFD193-F5B7-4963-964C-71A14A33E008"
+    },
+    {
+      "subject": "Revise sketch changes",
+      "subject_id": "sid-2E0A7523-FC8A-43BE-95C7-E277479B2B8E",
+      "predicate": "follows",
+      "object": "Edit sketch changes",
+      "object_id": "sid-CF6B9FEE-FF54-474E-A57C-7B556D47CFD3"
+    }
+  ],
+  "errors": [
+    "state_space: Error code: 429 - {'status': 429, 'title': 'Too Many Requests'}",
+    "precondition: 'state_space'",
+    "state_matching: 'state_space'",
+    "graph_construction: 'state_space'",
+    "alignment: 'reference_graph'",
+    "report: 'alignment'"
+  ]
+}

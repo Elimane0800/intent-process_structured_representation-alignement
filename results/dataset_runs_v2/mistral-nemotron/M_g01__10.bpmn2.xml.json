@@ -1,0 +1,1462 @@
+{
+  "case_name": "M_g01",
+  "text": "Category: Manufacturing\nTitle: Instruct an artist to create a 3D model print it on a 3D printer\n\nWhen craving a custom 3D model, as a first step you have to instruct an artist\nto create a project for you.  First you have to send him several sketches, and\nthen tell him what to change until you are satisfied with the result. After\nthat, you choose a plastic color you want to use for 3D printing. If you have\nthe color at home (in stock), you check how much color you have left. If it's\nunder 100 grams, you put it on your shopping list. If you do not have the color\nat home, you order it. When you have the plastic, you can turn the printer on\nand heat up the bed and the extruder (it continuously sends you back its\nstatus). While doing that, you can generate the gcode file for your printer out\nof the STL sent to you by the artist. After that you print the model.\n",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "mistral-nemotron",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "mistral-nemotron",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/text_and_bpmn/bpmn/M_g01/10.bpmn2.xml",
+  "report_model": "mistral-nemotron",
+  "candidates": {
+    "artist": [
+      "instructed"
+    ],
+    "project": [
+      "created",
+      "modified"
+    ],
+    "sketches": [
+      "sent"
+    ],
+    "plastic_color": [
+      "chosen",
+      "in_stock",
+      "under_100_grams",
+      "ordered"
+    ],
+    "shopping_list": [
+      "updated"
+    ],
+    "printer": [
+      "turned_on",
+      "heated_up"
+    ],
+    "bed": [
+      "heated_up"
+    ],
+    "extruder": [
+      "heated_up",
+      "status_sent"
+    ],
+    "gcode_file": [
+      "generated"
+    ],
+    "stl": [
+      "received"
+    ],
+    "model": [
+      "printed"
+    ]
+  },
+  "validation_report": {
+    "artist": {
+      "f_lex": "ACTOR",
+      "kept": false
+    },
+    "project": {
+      "f_lex": "ENTITY",
+      "kept": true
+    },
+    "sketches": {
+      "f_lex": "ENTITY",
+      "kept": true
+    },
+    "plastic_color": {
+      "f_lex": "INDETERMINATE",
+      "kept": true
+    },
+    "shopping_list": {
+      "f_lex": "ENTITY",
+      "kept": true
+    },
+    "printer": {
+      "f_lex": "ACTOR",
+      "kept": false
+    },
+    "bed": {
+      "f_lex": "ENTITY",
+      "kept": true
+    },
+    "extruder": {
+      "f_lex": "INDETERMINATE",
+      "kept": true
+    },
+    "gcode_file": {
+      "f_lex": "ENTITY",
+      "kept": true
+    },
+    "stl": {
+      "f_lex": "INDETERMINATE",
+      "kept": true
+    },
+    "model": {
+      "f_lex": "ENTITY",
+      "kept": true
+    }
+  },
+  "state_space": {
+    "project": [
+      "created",
+      "modified"
+    ],
+    "sketches": [
+      "sent"
+    ],
+    "plastic_color": [
+      "chosen",
+      "in_stock",
+      "under_100_grams",
+      "ordered"
+    ],
+    "shopping_list": [
+      "updated"
+    ],
+    "bed": [
+      "heated_up"
+    ],
+    "extruder": [
+      "heated_up",
+      "status_sent"
+    ],
+    "gcode_file": [
+      "generated"
+    ],
+    "stl": [
+      "received"
+    ],
+    "model": [
+      "printed"
+    ]
+  },
+  "state_space_dedup": {
+    "merged": {},
+    "ambiguous_not_merged": {}
+  },
+  "raw_preconditions": {
+    "project.created": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "project.modified": {
+      "precondition": "project.created",
+      "quote": "tell him what to change until you are satisfied with the result"
+    },
+    "sketches.sent": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "plastic_color.chosen": {
+      "precondition": "project.modified",
+      "quote": "After that, you choose a plastic color you want to use for 3D printing"
+    },
+    "plastic_color.in_stock": {
+      "precondition": "plastic_color.chosen",
+      "quote": "If you have the color at home (in stock)"
+    },
+    "plastic_color.under_100_grams": {
+      "precondition": "plastic_color.in_stock",
+      "quote": "you check how much color you have left. If it's under 100 grams"
+    },
+    "plastic_color.ordered": {
+      "precondition": "plastic_color.chosen",
+      "quote": "If you do not have the color at home, you order it"
+    },
+    "shopping_list.updated": {
+      "precondition": "plastic_color.under_100_grams",
+      "quote": "you put it on your shopping list"
+    },
+    "bed.heated_up": {
+      "precondition": "plastic_color.in_stock OR plastic_color.ordered",
+      "quote": "When you have the plastic, you can turn the printer on and heat up the bed"
+    },
+    "extruder.heated_up": {
+      "precondition": "plastic_color.in_stock OR plastic_color.ordered",
+      "quote": "heat up the bed and the extruder"
+    },
+    "extruder.status_sent": {
+      "precondition": "extruder.heated_up",
+      "quote": "it continuously sends you back its status"
+    },
+    "gcode_file.generated": {
+      "precondition": "stl.received",
+      "quote": "you can generate the gcode file for your printer out of the STL sent to you by the artist"
+    },
+    "stl.received": {
+      "precondition": "project.modified",
+      "quote": "the STL sent to you by the artist"
+    },
+    "model.printed": {
+      "precondition": "gcode_file.generated AND bed.heated_up AND extruder.heated_up",
+      "quote": "After that you print the model"
+    }
+  },
+  "validated_preconditions": {
+    "project.created": {
+      "precondition": "INITIAL",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "project.modified": {
+      "precondition": "project.created",
+      "quote": "tell him what to change until you are satisfied with the result",
+      "status": "OK",
+      "reason": null
+    },
+    "sketches.sent": {
+      "precondition": "INITIAL",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "plastic_color.chosen": {
+      "precondition": "project.modified",
+      "quote": "After that, you choose a plastic color you want to use for 3D printing",
+      "status": "OK",
+      "reason": null
+    },
+    "plastic_color.in_stock": {
+      "precondition": "plastic_color.chosen",
+      "quote": "If you have the color at home (in stock)",
+      "status": "OK",
+      "reason": null
+    },
+    "plastic_color.under_100_grams": {
+      "precondition": "plastic_color.in_stock",
+      "quote": "you check how much color you have left. If it's under 100 grams",
+      "status": "OK",
+      "reason": null
+    },
+    "plastic_color.ordered": {
+      "precondition": "plastic_color.chosen",
+      "quote": "If you do not have the color at home, you order it",
+      "status": "OK",
+      "reason": null
+    },
+    "shopping_list.updated": {
+      "precondition": "plastic_color.under_100_grams",
+      "quote": "you put it on your shopping list",
+      "status": "OK",
+      "reason": null
+    },
+    "bed.heated_up": {
+      "precondition": "plastic_color.in_stock OR plastic_color.ordered",
+      "quote": "When you have the plastic, you can turn the printer on and heat up the bed",
+      "status": "OK",
+      "reason": null
+    },
+    "extruder.heated_up": {
+      "precondition": "plastic_color.in_stock OR plastic_color.ordered",
+      "quote": "heat up the bed and the extruder",
+      "status": "OK",
+      "reason": null
+    },
+    "extruder.status_sent": {
+      "precondition": "extruder.heated_up",
+      "quote": "it continuously sends you back its status",
+      "status": "OK",
+      "reason": null
+    },
+    "gcode_file.generated": {
+      "precondition": "stl.received",
+      "quote": "you can generate the gcode file for your printer out of the STL sent to you by the artist",
+      "status": "OK",
+      "reason": null
+    },
+    "stl.received": {
+      "precondition": "project.modified",
+      "quote": "the STL sent to you by the artist",
+      "status": "OK",
+      "reason": null
+    },
+    "model.printed": {
+      "precondition": "gcode_file.generated AND bed.heated_up AND extruder.heated_up",
+      "quote": "After that you print the model",
+      "status": "OK",
+      "reason": null
+    }
+  },
+  "precondition_cycles": [],
+  "reference_graph": {
+    "nodes": [
+      {
+        "id": "project.created",
+        "weight": 0.25
+      },
+      {
+        "id": "project.modified",
+        "weight": 0.75
+      },
+      {
+        "id": "sketches.sent",
+        "weight": 0.0
+      },
+      {
+        "id": "plastic_color.chosen",
+        "weight": 0.75
+      },
+      {
+        "id": "plastic_color.in_stock",
+        "weight": 1.0
+      },
+      {
+        "id": "plastic_color.under_100_grams",
+        "weight": 0.5
+      },
+      {
+        "id": "plastic_color.ordered",
+        "weight": 0.75
+      },
+      {
+        "id": "shopping_list.updated",
+        "weight": 0.25
+      },
+      {
+        "id": "bed.heated_up",
+        "weight": 0.75
+      },
+      {
+        "id": "extruder.heated_up",
+        "weight": 1.0
+      },
+      {
+        "id": "extruder.status_sent",
+        "weight": 0.25
+      },
+      {
+        "id": "gcode_file.generated",
+        "weight": 0.5
+      },
+      {
+        "id": "stl.received",
+        "weight": 0.5
+      },
+      {
+        "id": "model.printed",
+        "weight": 0.75
+      }
+    ],
+    "edges": [
+      {
+        "from": "project.created",
+        "to": "project.modified",
+        "type": "sequence",
+        "operator": "AND",
+        "quote": "tell him what to change until you are satisfied with the result"
+      },
+      {
+        "from": "project.modified",
+        "to": "plastic_color.chosen",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "After that, you choose a plastic color you want to use for 3D printing"
+      },
+      {
+        "from": "plastic_color.chosen",
+        "to": "plastic_color.in_stock",
+        "type": "sequence",
+        "operator": "AND",
+        "quote": "If you have the color at home (in stock)"
+      },
+      {
+        "from": "plastic_color.in_stock",
+        "to": "plastic_color.under_100_grams",
+        "type": "sequence",
+        "operator": "AND",
+        "quote": "you check how much color you have left. If it's under 100 grams"
+      },
+      {
+        "from": "plastic_color.chosen",
+        "to": "plastic_color.ordered",
+        "type": "sequence",
+        "operator": "AND",
+        "quote": "If you do not have the color at home, you order it"
+      },
+      {
+        "from": "plastic_color.under_100_grams",
+        "to": "shopping_list.updated",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "you put it on your shopping list"
+      },
+      {
+        "from": "plastic_color.in_stock",
+        "to": "bed.heated_up",
+        "type": "cross_entity_guard",
+        "operator": "OR",
+        "quote": "When you have the plastic, you can turn the printer on and heat up the bed"
+      },
+      {
+        "from": "plastic_color.ordered",
+        "to": "bed.heated_up",
+        "type": "cross_entity_guard",
+        "operator": "OR",
+        "quote": "When you have the plastic, you can turn the printer on and heat up the bed"
+      },
+      {
+        "from": "plastic_color.in_stock",
+        "to": "extruder.heated_up",
+        "type": "cross_entity_guard",
+        "operator": "OR",
+        "quote": "heat up the bed and the extruder"
+      },
+      {
+        "from": "plastic_color.ordered",
+        "to": "extruder.heated_up",
+        "type": "cross_entity_guard",
+        "operator": "OR",
+        "quote": "heat up the bed and the extruder"
+      },
+      {
+        "from": "extruder.heated_up",
+        "to": "extruder.status_sent",
+        "type": "sequence",
+        "operator": "AND",
+        "quote": "it continuously sends you back its status"
+      },
+      {
+        "from": "stl.received",
+        "to": "gcode_file.generated",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "you can generate the gcode file for your printer out of the STL sent to you by the artist"
+      },
+      {
+        "from": "project.modified",
+        "to": "stl.received",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "the STL sent to you by the artist"
+      },
+      {
+        "from": "gcode_file.generated",
+        "to": "model.printed",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "After that you print the model"
+      },
+      {
+        "from": "bed.heated_up",
+        "to": "model.printed",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "After that you print the model"
+      },
+      {
+        "from": "extruder.heated_up",
+        "to": "model.printed",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "After that you print the model"
+      }
+    ],
+    "cycles": []
+  },
+  "dfg_edges": [
+    {
+      "source_id": "sid-CFA6F4B4-13F6-45B6-AA5D-55459CABAD36",
+      "source_label": "Order color",
+      "target_id": "sid-30799381-1ABB-4A70-BA2F-50450728D21A",
+      "target_label": "Enough color available",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-AE38DC80-DC15-461B-94D1-84784094EFFA",
+      "source_label": "Send sketches to the artist",
+      "target_id": "sid-7E2EC646-4B07-4FD7-B232-CADC837DB5C9",
+      "target_label": "Review draft",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-9D0B2FA4-0547-4B66-AAFB-2218F08A5338",
+      "source_label": "Updating status",
+      "target_id": "sid-D2F48F13-DAD1-43D9-9991-1C096197A93E",
+      "target_label": "Print the model",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "Yes. Heated up",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-9D0B2FA4-0547-4B66-AAFB-2218F08A5338",
+      "source_label": "Updating status",
+      "target_id": "sid-9D0B2FA4-0547-4B66-AAFB-2218F08A5338",
+      "target_label": "Updating status",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "No. Still heating up.",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-EE91AAAC-0188-4F19-9EB3-DB5F24B18DB0",
+      "source_label": "Discuss changes",
+      "target_id": "sid-7E2EC646-4B07-4FD7-B232-CADC837DB5C9",
+      "target_label": "Review draft",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-29911FD6-158B-4E34-9F16-2C50E0A144A6",
+      "source_label": "Check  how much color is left",
+      "target_id": "sid-D86F4524-E82F-49BB-BDD2-EC8A6A1967EE",
+      "target_label": "Put color on shopping list",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "< 100g"
+      ]
+    },
+    {
+      "source_id": "sid-29911FD6-158B-4E34-9F16-2C50E0A144A6",
+      "source_label": "Check  how much color is left",
+      "target_id": "sid-30799381-1ABB-4A70-BA2F-50450728D21A",
+      "target_label": "Enough color available",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "> 100g",
+        "ExclusiveGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-B2CF1148-7ED7-4B40-982D-BEDD8A93F374",
+      "source_label": "Get STL File",
+      "target_id": "sid-8C5F8CF2-11A9-4CF6-9D56-36F16C2C9BB5",
+      "target_label": "Generate gcode file",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-35AF7D49-DCB5-4308-8052-83FAC29502E8",
+      "source_label": "Instruct an artist",
+      "target_id": "sid-AE38DC80-DC15-461B-94D1-84784094EFFA",
+      "target_label": "Send sketches to the artist",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-7E2EC646-4B07-4FD7-B232-CADC837DB5C9",
+      "source_label": "Review draft",
+      "target_id": "sid-C4E811C0-9FB5-46DF-9ACF-8E80B46B9B6E",
+      "target_label": "Choose plastic color",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "Yes"
+      ]
+    },
+    {
+      "source_id": "sid-7E2EC646-4B07-4FD7-B232-CADC837DB5C9",
+      "source_label": "Review draft",
+      "target_id": "sid-EE91AAAC-0188-4F19-9EB3-DB5F24B18DB0",
+      "target_label": "Discuss changes",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "No"
+      ]
+    },
+    {
+      "source_id": "sid-6471C65E-57D8-47D9-93E1-DD1EB282E9DB",
+      "source_label": "Heat up bed",
+      "target_id": "sid-9D0B2FA4-0547-4B66-AAFB-2218F08A5338",
+      "target_label": "Updating status",
+      "gateway_context": [
+        "ParallelGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-30799381-1ABB-4A70-BA2F-50450728D21A",
+      "source_label": "Enough color available",
+      "target_id": "sid-743A867A-430E-4455-8800-8C5848ADBC0B",
+      "target_label": "Turn on the printer",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-30799381-1ABB-4A70-BA2F-50450728D21A",
+      "source_label": "Enough color available",
+      "target_id": "sid-B2CF1148-7ED7-4B40-982D-BEDD8A93F374",
+      "target_label": "Get STL File",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-C4E811C0-9FB5-46DF-9ACF-8E80B46B9B6E",
+      "source_label": "Choose plastic color",
+      "target_id": "sid-CFA6F4B4-13F6-45B6-AA5D-55459CABAD36",
+      "target_label": "Order color",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "Color not in stock"
+      ]
+    },
+    {
+      "source_id": "sid-C4E811C0-9FB5-46DF-9ACF-8E80B46B9B6E",
+      "source_label": "Choose plastic color",
+      "target_id": "sid-29911FD6-158B-4E34-9F16-2C50E0A144A6",
+      "target_label": "Check  how much color is left",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "Color in stock"
+      ]
+    },
+    {
+      "source_id": "sid-8C5F8CF2-11A9-4CF6-9D56-36F16C2C9BB5",
+      "source_label": "Generate gcode file",
+      "target_id": "sid-D2F48F13-DAD1-43D9-9991-1C096197A93E",
+      "target_label": "Print the model",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-D86F4524-E82F-49BB-BDD2-EC8A6A1967EE",
+      "source_label": "Put color on shopping list",
+      "target_id": "sid-30799381-1ABB-4A70-BA2F-50450728D21A",
+      "target_label": "Enough color available",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-274C4D02-2000-4E72-A5BF-F63ADC833D34",
+      "source_label": "Heat up extruder",
+      "target_id": "sid-9D0B2FA4-0547-4B66-AAFB-2218F08A5338",
+      "target_label": "Updating status",
+      "gateway_context": [
+        "ParallelGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-743A867A-430E-4455-8800-8C5848ADBC0B",
+      "source_label": "Turn on the printer",
+      "target_id": "sid-6471C65E-57D8-47D9-93E1-DD1EB282E9DB",
+      "target_label": "Heat up bed",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-743A867A-430E-4455-8800-8C5848ADBC0B",
+      "source_label": "Turn on the printer",
+      "target_id": "sid-274C4D02-2000-4E72-A5BF-F63ADC833D34",
+      "target_label": "Heat up extruder",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "Order color",
+      "subject_id": "sid-CFA6F4B4-13F6-45B6-AA5D-55459CABAD36",
+      "predicate": "follows",
+      "object": "Enough color available",
+      "object_id": "sid-30799381-1ABB-4A70-BA2F-50450728D21A"
+    },
+    {
+      "subject": "Send sketches to the artist",
+      "subject_id": "sid-AE38DC80-DC15-461B-94D1-84784094EFFA",
+      "predicate": "follows",
+      "object": "Review draft",
+      "object_id": "sid-7E2EC646-4B07-4FD7-B232-CADC837DB5C9"
+    },
+    {
+      "subject": "Updating status",
+      "subject_id": "sid-9D0B2FA4-0547-4B66-AAFB-2218F08A5338",
+      "predicate": "follows",
+      "object": "Print the model",
+      "object_id": "sid-D2F48F13-DAD1-43D9-9991-1C096197A93E"
+    },
+    {
+      "subject": "Updating status",
+      "subject_id": "sid-9D0B2FA4-0547-4B66-AAFB-2218F08A5338",
+      "predicate": "follows",
+      "object": "Updating status",
+      "object_id": "sid-9D0B2FA4-0547-4B66-AAFB-2218F08A5338"
+    },
+    {
+      "subject": "Discuss changes",
+      "subject_id": "sid-EE91AAAC-0188-4F19-9EB3-DB5F24B18DB0",
+      "predicate": "follows",
+      "object": "Review draft",
+      "object_id": "sid-7E2EC646-4B07-4FD7-B232-CADC837DB5C9"
+    },
+    {
+      "subject": "Check  how much color is left",
+      "subject_id": "sid-29911FD6-158B-4E34-9F16-2C50E0A144A6",
+      "predicate": "follows",
+      "object": "Put color on shopping list",
+      "object_id": "sid-D86F4524-E82F-49BB-BDD2-EC8A6A1967EE"
+    },
+    {
+      "subject": "Check  how much color is left",
+      "subject_id": "sid-29911FD6-158B-4E34-9F16-2C50E0A144A6",
+      "predicate": "follows",
+      "object": "Enough color available",
+      "object_id": "sid-30799381-1ABB-4A70-BA2F-50450728D21A"
+    },
+    {
+      "subject": "Get STL File",
+      "subject_id": "sid-B2CF1148-7ED7-4B40-982D-BEDD8A93F374",
+      "predicate": "follows",
+      "object": "Generate gcode file",
+      "object_id": "sid-8C5F8CF2-11A9-4CF6-9D56-36F16C2C9BB5"
+    },
+    {
+      "subject": "Instruct an artist",
+      "subject_id": "sid-35AF7D49-DCB5-4308-8052-83FAC29502E8",
+      "predicate": "follows",
+      "object": "Send sketches to the artist",
+      "object_id": "sid-AE38DC80-DC15-461B-94D1-84784094EFFA"
+    },
+    {
+      "subject": "Review draft",
+      "subject_id": "sid-7E2EC646-4B07-4FD7-B232-CADC837DB5C9",
+      "predicate": "follows",
+      "object": "Choose plastic color",
+      "object_id": "sid-C4E811C0-9FB5-46DF-9ACF-8E80B46B9B6E"
+    },
+    {
+      "subject": "Review draft",
+      "subject_id": "sid-7E2EC646-4B07-4FD7-B232-CADC837DB5C9",
+      "predicate": "follows",
+      "object": "Discuss changes",
+      "object_id": "sid-EE91AAAC-0188-4F19-9EB3-DB5F24B18DB0"
+    },
+    {
+      "subject": "Heat up bed",
+      "subject_id": "sid-6471C65E-57D8-47D9-93E1-DD1EB282E9DB",
+      "predicate": "follows",
+      "object": "Updating status",
+      "object_id": "sid-9D0B2FA4-0547-4B66-AAFB-2218F08A5338"
+    },
+    {
+      "subject": "Enough color available",
+      "subject_id": "sid-30799381-1ABB-4A70-BA2F-50450728D21A",
+      "predicate": "follows",
+      "object": "Turn on the printer",
+      "object_id": "sid-743A867A-430E-4455-8800-8C5848ADBC0B"
+    },
+    {
+      "subject": "Enough color available",
+      "subject_id": "sid-30799381-1ABB-4A70-BA2F-50450728D21A",
+      "predicate": "follows",
+      "object": "Get STL File",
+      "object_id": "sid-B2CF1148-7ED7-4B40-982D-BEDD8A93F374"
+    },
+    {
+      "subject": "Choose plastic color",
+      "subject_id": "sid-C4E811C0-9FB5-46DF-9ACF-8E80B46B9B6E",
+      "predicate": "follows",
+      "object": "Order color",
+      "object_id": "sid-CFA6F4B4-13F6-45B6-AA5D-55459CABAD36"
+    },
+    {
+      "subject": "Choose plastic color",
+      "subject_id": "sid-C4E811C0-9FB5-46DF-9ACF-8E80B46B9B6E",
+      "predicate": "follows",
+      "object": "Check  how much color is left",
+      "object_id": "sid-29911FD6-158B-4E34-9F16-2C50E0A144A6"
+    },
+    {
+      "subject": "Generate gcode file",
+      "subject_id": "sid-8C5F8CF2-11A9-4CF6-9D56-36F16C2C9BB5",
+      "predicate": "follows",
+      "object": "Print the model",
+      "object_id": "sid-D2F48F13-DAD1-43D9-9991-1C096197A93E"
+    },
+    {
+      "subject": "Put color on shopping list",
+      "subject_id": "sid-D86F4524-E82F-49BB-BDD2-EC8A6A1967EE",
+      "predicate": "follows",
+      "object": "Enough color available",
+      "object_id": "sid-30799381-1ABB-4A70-BA2F-50450728D21A"
+    },
+    {
+      "subject": "Heat up extruder",
+      "subject_id": "sid-274C4D02-2000-4E72-A5BF-F63ADC833D34",
+      "predicate": "follows",
+      "object": "Updating status",
+      "object_id": "sid-9D0B2FA4-0547-4B66-AAFB-2218F08A5338"
+    },
+    {
+      "subject": "Turn on the printer",
+      "subject_id": "sid-743A867A-430E-4455-8800-8C5848ADBC0B",
+      "predicate": "follows",
+      "object": "Heat up bed",
+      "object_id": "sid-6471C65E-57D8-47D9-93E1-DD1EB282E9DB"
+    },
+    {
+      "subject": "Turn on the printer",
+      "subject_id": "sid-743A867A-430E-4455-8800-8C5848ADBC0B",
+      "predicate": "follows",
+      "object": "Heat up extruder",
+      "object_id": "sid-274C4D02-2000-4E72-A5BF-F63ADC833D34"
+    }
+  ],
+  "matches": {
+    "Check  how much color is left": {
+      "match": "plastic_color.in_stock",
+      "score": 0.3556
+    },
+    "Choose plastic color": {
+      "match": "plastic_color.chosen",
+      "score": 0.8893
+    },
+    "Discuss changes": {
+      "match": "project.modified",
+      "score": 0.209
+    },
+    "Enough color available": {
+      "match": "plastic_color.in_stock",
+      "score": 0.5083
+    },
+    "Generate gcode file": {
+      "match": "gcode_file.generated",
+      "score": 0.8953
+    },
+    "Get STL File": {
+      "match": "stl.received",
+      "score": 0.5053
+    },
+    "Heat up bed": {
+      "match": "bed.heated_up",
+      "score": 0.848
+    },
+    "Heat up extruder": {
+      "match": "extruder.heated_up",
+      "score": 0.8904
+    },
+    "Instruct an artist": {
+      "match": "sketches.sent",
+      "score": 0.2002
+    },
+    "Order color": {
+      "match": "plastic_color.ordered",
+      "score": 0.6037
+    },
+    "Print the model": {
+      "match": "model.printed",
+      "score": 0.7955
+    },
+    "Put color on shopping list": {
+      "match": "shopping_list.updated",
+      "score": 0.6091
+    },
+    "Review draft": {
+      "match": "project.modified",
+      "score": 0.2115
+    },
+    "Send sketches to the artist": {
+      "match": "sketches.sent",
+      "score": 0.7495
+    },
+    "Turn on the printer": {
+      "match": "model.printed",
+      "score": 0.3867
+    },
+    "Updating status": {
+      "match": "extruder.status_sent",
+      "score": 0.4277
+    }
+  },
+  "process_graph": [
+    {
+      "from": "plastic_color.ordered",
+      "to": "plastic_color.in_stock",
+      "activity_from": "Order color",
+      "activity_to": "Enough color available"
+    },
+    {
+      "from": "sketches.sent",
+      "to": "project.modified",
+      "activity_from": "Send sketches to the artist",
+      "activity_to": "Review draft"
+    },
+    {
+      "from": "extruder.status_sent",
+      "to": "model.printed",
+      "activity_from": "Updating status",
+      "activity_to": "Print the model"
+    },
+    {
+      "from": "extruder.status_sent",
+      "to": "extruder.status_sent",
+      "activity_from": "Updating status",
+      "activity_to": "Updating status"
+    },
+    {
+      "from": "project.modified",
+      "to": "project.modified",
+      "activity_from": "Discuss changes",
+      "activity_to": "Review draft"
+    },
+    {
+      "from": "plastic_color.in_stock",
+      "to": "shopping_list.updated",
+      "activity_from": "Check  how much color is left",
+      "activity_to": "Put color on shopping list"
+    },
+    {
+      "from": "plastic_color.in_stock",
+      "to": "plastic_color.in_stock",
+      "activity_from": "Check  how much color is left",
+      "activity_to": "Enough color available"
+    },
+    {
+      "from": "stl.received",
+      "to": "gcode_file.generated",
+      "activity_from": "Get STL File",
+      "activity_to": "Generate gcode file"
+    },
+    {
+      "from": "sketches.sent",
+      "to": "sketches.sent",
+      "activity_from": "Instruct an artist",
+      "activity_to": "Send sketches to the artist"
+    },
+    {
+      "from": "project.modified",
+      "to": "plastic_color.chosen",
+      "activity_from": "Review draft",
+      "activity_to": "Choose plastic color"
+    },
+    {
+      "from": "project.modified",
+      "to": "project.modified",
+      "activity_from": "Review draft",
+      "activity_to": "Discuss changes"
+    },
+    {
+      "from": "bed.heated_up",
+      "to": "extruder.status_sent",
+      "activity_from": "Heat up bed",
+      "activity_to": "Updating status"
+    },
+    {
+      "from": "plastic_color.in_stock",
+      "to": "model.printed",
+      "activity_from": "Enough color available",
+      "activity_to": "Turn on the printer"
+    },
+    {
+      "from": "plastic_color.in_stock",
+      "to": "stl.received",
+      "activity_from": "Enough color available",
+      "activity_to": "Get STL File"
+    },
+    {
+      "from": "plastic_color.chosen",
+      "to": "plastic_color.ordered",
+      "activity_from": "Choose plastic color",
+      "activity_to": "Order color"
+    },
+    {
+      "from": "plastic_color.chosen",
+      "to": "plastic_color.in_stock",
+      "activity_from": "Choose plastic color",
+      "activity_to": "Check  how much color is left"
+    },
+    {
+      "from": "gcode_file.generated",
+      "to": "model.printed",
+      "activity_from": "Generate gcode file",
+      "activity_to": "Print the model"
+    },
+    {
+      "from": "shopping_list.updated",
+      "to": "plastic_color.in_stock",
+      "activity_from": "Put color on shopping list",
+      "activity_to": "Enough color available"
+    },
+    {
+      "from": "extruder.heated_up",
+      "to": "extruder.status_sent",
+      "activity_from": "Heat up extruder",
+      "activity_to": "Updating status"
+    },
+    {
+      "from": "model.printed",
+      "to": "bed.heated_up",
+      "activity_from": "Turn on the printer",
+      "activity_to": "Heat up bed"
+    },
+    {
+      "from": "model.printed",
+      "to": "extruder.heated_up",
+      "activity_from": "Turn on the printer",
+      "activity_to": "Heat up extruder"
+    }
+  ],
+  "alignment": {
+    "project.modified": {
+      "operator": "AND",
+      "quote": "tell him what to change until you are satisfied with the result",
+      "terms": [
+        {
+          "term": "project.created",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['project.created']",
+          "missing": [
+            "project.created"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE"
+    },
+    "plastic_color.chosen": {
+      "operator": "AND",
+      "quote": "After that, you choose a plastic color you want to use for 3D printing",
+      "terms": [
+        {
+          "term": "project.modified",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED"
+    },
+    "plastic_color.in_stock": {
+      "operator": "AND",
+      "quote": "If you have the color at home (in stock)",
+      "terms": [
+        {
+          "term": "plastic_color.chosen",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED"
+    },
+    "plastic_color.under_100_grams": {
+      "operator": "AND",
+      "quote": "you check how much color you have left. If it's under 100 grams",
+      "terms": [
+        {
+          "term": "plastic_color.in_stock",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['plastic_color.under_100_grams']",
+          "missing": [
+            "plastic_color.under_100_grams"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE"
+    },
+    "plastic_color.ordered": {
+      "operator": "AND",
+      "quote": "If you do not have the color at home, you order it",
+      "terms": [
+        {
+          "term": "plastic_color.chosen",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED"
+    },
+    "shopping_list.updated": {
+      "operator": "AND",
+      "quote": "you put it on your shopping list",
+      "terms": [
+        {
+          "term": "plastic_color.under_100_grams",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['plastic_color.under_100_grams']",
+          "missing": [
+            "plastic_color.under_100_grams"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE"
+    },
+    "bed.heated_up": {
+      "operator": "OR",
+      "quote": "When you have the plastic, you can turn the printer on and heat up the bed",
+      "terms": [
+        {
+          "term": "plastic_color.in_stock",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        },
+        {
+          "term": "plastic_color.ordered",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED"
+    },
+    "extruder.heated_up": {
+      "operator": "OR",
+      "quote": "heat up the bed and the extruder",
+      "terms": [
+        {
+          "term": "plastic_color.in_stock",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        },
+        {
+          "term": "plastic_color.ordered",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED"
+    },
+    "extruder.status_sent": {
+      "operator": "AND",
+      "quote": "it continuously sends you back its status",
+      "terms": [
+        {
+          "term": "extruder.heated_up",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED"
+    },
+    "gcode_file.generated": {
+      "operator": "AND",
+      "quote": "you can generate the gcode file for your printer out of the STL sent to you by the artist",
+      "terms": [
+        {
+          "term": "stl.received",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED"
+    },
+    "stl.received": {
+      "operator": "AND",
+      "quote": "the STL sent to you by the artist",
+      "terms": [
+        {
+          "term": "project.modified",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED"
+    },
+    "model.printed": {
+      "operator": "AND",
+      "quote": "After that you print the model",
+      "terms": [
+        {
+          "term": "gcode_file.generated",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        },
+        {
+          "term": "bed.heated_up",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        },
+        {
+          "term": "extruder.heated_up",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED"
+    }
+  },
+  "report": {
+    "summary": {
+      "ecarts": 0,
+      "non_verifiable": 2,
+      "conforme": 13
+    },
+    "ecarts": [],
+    "non_verifiable": [
+      {
+        "root_cause": "(aucune activite du processus ne correspond clairement a cela)",
+        "quote": "tell him what to change until you are satisfied with the result",
+        "explanation": "Le processus exige que l'activité \"Review draft\" ne puisse se produire qu'après une condition précise : \"project created\". Cependant, cette condition n'est associée à aucune activité claire dans le processus observé, ce qui rend impossible de vérifier si elle est respectée ou non.\n\nLe texte source justifie cette exigence avec la citation : *\"tell him what to change until you are satisfied with the result\"*, mais cette citation ne décrit pas explicitement ce que signifie la condition manquante.",
+        "quote_verbatim": true,
+        "affected_activities": [
+          "Review draft"
+        ],
+        "affected_count": 1
+      },
+      {
+        "root_cause": "(aucune activite du processus ne correspond clairement a cela)",
+        "quote": "you check how much color you have left. If it's under 100 grams",
+        "explanation": "Le texte source exige que la quantité de colorant plastique soit inférieure à 100 grammes avant une étape du processus, mais cette condition ne correspond à aucune activité claire dans le processus observé. La citation du texte source est : *\"you check how much color you have left. If it's under 100 grams\"*. Sans activité identifiable dans le processus, il est impossible de vérifier si cette exigence est respectée ou non. (Cette meme cause affecte aussi : Put color on shopping list.)",
+        "quote_verbatim": true,
+        "affected_activities": [
+          "(aucune activite du processus ne correspond clairement a cela)",
+          "Put color on shopping list"
+        ],
+        "affected_count": 2
+      }
+    ],
+    "conforme": [
+      {
+        "target": "Choose plastic color",
+        "term": "Review draft"
+      },
+      {
+        "target": "Enough color available",
+        "term": "Choose plastic color"
+      },
+      {
+        "target": "Order color",
+        "term": "Choose plastic color"
+      },
+      {
+        "target": "Heat up bed",
+        "term": "Enough color available"
+      },
+      {
+        "target": "Heat up bed",
+        "term": "Order color"
+      },
+      {
+        "target": "Heat up extruder",
+        "term": "Enough color available"
+      },
+      {
+        "target": "Heat up extruder",
+        "term": "Order color"
+      },
+      {
+        "target": "Updating status",
+        "term": "Heat up extruder"
+      },
+      {
+        "target": "Generate gcode file",
+        "term": "Get STL File"
+      },
+      {
+        "target": "Get STL File",
+        "term": "Review draft"
+      },
+      {
+        "target": "Print the model",
+        "term": "Generate gcode file"
+      },
+      {
+        "target": "Print the model",
+        "term": "Heat up bed"
+      },
+      {
+        "target": "Print the model",
+        "term": "Heat up extruder"
+      }
+    ],
+    "piece_jointe_alignement_brut": {
+      "project.modified": {
+        "operator": "AND",
+        "quote": "tell him what to change until you are satisfied with the result",
+        "terms": [
+          {
+            "term": "project.created",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['project.created']",
+            "missing": [
+              "project.created"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE"
+      },
+      "plastic_color.chosen": {
+        "operator": "AND",
+        "quote": "After that, you choose a plastic color you want to use for 3D printing",
+        "terms": [
+          {
+            "term": "project.modified",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED"
+      },
+      "plastic_color.in_stock": {
+        "operator": "AND",
+        "quote": "If you have the color at home (in stock)",
+        "terms": [
+          {
+            "term": "plastic_color.chosen",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED"
+      },
+      "plastic_color.under_100_grams": {
+        "operator": "AND",
+        "quote": "you check how much color you have left. If it's under 100 grams",
+        "terms": [
+          {
+            "term": "plastic_color.in_stock",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['plastic_color.under_100_grams']",
+            "missing": [
+              "plastic_color.under_100_grams"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE"
+      },
+      "plastic_color.ordered": {
+        "operator": "AND",
+        "quote": "If you do not have the color at home, you order it",
+        "terms": [
+          {
+            "term": "plastic_color.chosen",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED"
+      },
+      "shopping_list.updated": {
+        "operator": "AND",
+        "quote": "you put it on your shopping list",
+        "terms": [
+          {
+            "term": "plastic_color.under_100_grams",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['plastic_color.under_100_grams']",
+            "missing": [
+              "plastic_color.under_100_grams"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE"
+      },
+      "bed.heated_up": {
+        "operator": "OR",
+        "quote": "When you have the plastic, you can turn the printer on and heat up the bed",
+        "terms": [
+          {
+            "term": "plastic_color.in_stock",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          },
+          {
+            "term": "plastic_color.ordered",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED"
+      },
+      "extruder.heated_up": {
+        "operator": "OR",
+        "quote": "heat up the bed and the extruder",
+        "terms": [
+          {
+            "term": "plastic_color.in_stock",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          },
+          {
+            "term": "plastic_color.ordered",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED"
+      },
+      "extruder.status_sent": {
+        "operator": "AND",
+        "quote": "it continuously sends you back its status",
+        "terms": [
+          {
+            "term": "extruder.heated_up",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED"
+      },
+      "gcode_file.generated": {
+        "operator": "AND",
+        "quote": "you can generate the gcode file for your printer out of the STL sent to you by the artist",
+        "terms": [
+          {
+            "term": "stl.received",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED"
+      },
+      "stl.received": {
+        "operator": "AND",
+        "quote": "the STL sent to you by the artist",
+        "terms": [
+          {
+            "term": "project.modified",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED"
+      },
+      "model.printed": {
+        "operator": "AND",
+        "quote": "After that you print the model",
+        "terms": [
+          {
+            "term": "gcode_file.generated",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          },
+          {
+            "term": "bed.heated_up",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          },
+          {
+            "term": "extruder.heated_up",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED"
+      }
+    }
+  },
+  "errors": []
+}

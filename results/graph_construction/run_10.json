@@ -1,0 +1,425 @@
+{
+  "zero_shot": {
+    "openai/gpt-oss-20b": {
+      "job_application": {
+        "nodes": [
+          {
+            "id": "job_application.confirmed",
+            "weight": 1.0
+          },
+          {
+            "id": "job_application.rated",
+            "weight": 0.5
+          },
+          {
+            "id": "job_application.reported",
+            "weight": 1.0
+          },
+          {
+            "id": "job_offer.sent",
+            "weight": 1.0
+          },
+          {
+            "id": "job_offer.received",
+            "weight": 0.5
+          },
+          {
+            "id": "job_interview.negotiated",
+            "weight": 0.0
+          },
+          {
+            "id": "probation_phase.entered",
+            "weight": 0.5
+          },
+          {
+            "id": "review.visible",
+            "weight": 0.5
+          },
+          {
+            "id": "job.permanent",
+            "weight": 0.0
+          },
+          {
+            "id": "process.ended",
+            "weight": 0.0
+          }
+        ],
+        "edges": [
+          {
+            "from": "job_application.reported",
+            "to": "job_application.confirmed",
+            "type": "sequence",
+            "operator": "AND",
+            "quote": "You have to regularly report, to which companies you wrote job applications."
+          },
+          {
+            "from": "job_application.confirmed",
+            "to": "job_application.rated",
+            "type": "sequence",
+            "operator": "AND",
+            "quote": "Companies have to confirm that they received job applications and rate the application."
+          },
+          {
+            "from": "job_application.reported",
+            "to": "job_offer.sent",
+            "type": "cross_entity_guard",
+            "operator": "AND",
+            "quote": "Based on your job applications, new potential job offers are sent to you."
+          },
+          {
+            "from": "job_offer.sent",
+            "to": "job_offer.received",
+            "type": "sequence",
+            "operator": "AND",
+            "quote": "Based on your job applications, new potential job offers are sent to you."
+          },
+          {
+            "from": "probation_phase.entered",
+            "to": "review.visible",
+            "type": "cross_entity_guard",
+            "operator": "AND",
+            "quote": "After probation phase, you can rate the company and the company can rate you."
+          }
+        ],
+        "cycles": []
+      },
+      "maternity_leave": {
+        "nodes": [
+          {
+            "id": "maternity_leave.planned",
+            "weight": 1.0
+          },
+          {
+            "id": "maternity_leave.taken",
+            "weight": 0.5
+          },
+          {
+            "id": "maternity_leave.extended",
+            "weight": 0.5
+          },
+          {
+            "id": "potential_models.fetched",
+            "weight": 0.5
+          },
+          {
+            "id": "relevant_information.collected",
+            "weight": 0.5
+          },
+          {
+            "id": "information.fetched",
+            "weight": 0.0
+          },
+          {
+            "id": "information.collected",
+            "weight": 0.0
+          },
+          {
+            "id": "information.gathered",
+            "weight": 0.0
+          },
+          {
+            "id": "social_security.notified",
+            "weight": 0.0
+          },
+          {
+            "id": "company_information.gathered",
+            "weight": 0.0
+          }
+        ],
+        "edges": [
+          {
+            "from": "potential_models.fetched",
+            "to": "maternity_leave.planned",
+            "type": "cross_entity_guard",
+            "operator": "AND",
+            "quote": "* Fetch information about potential models (months duration, split between parents) * Let parent select * Collect relevant information * Notify Social Security, Company in time * Gather information from companies * At the end of the period let parent decide about extension."
+          },
+          {
+            "from": "relevant_information.collected",
+            "to": "maternity_leave.planned",
+            "type": "cross_entity_guard",
+            "operator": "AND",
+            "quote": "* Fetch information about potential models (months duration, split between parents) * Let parent select * Collect relevant information * Notify Social Security, Company in time * Gather information from companies * At the end of the period let parent decide about extension."
+          },
+          {
+            "from": "maternity_leave.taken",
+            "to": "maternity_leave.extended",
+            "type": "sequence",
+            "operator": "AND",
+            "quote": "At the end of the period let parent decide about extension."
+          }
+        ],
+        "cycles": []
+      },
+      "work_accident": {
+        "error": "parse failed, raw response=''"
+      }
+    }
+  },
+  "one_shot": {
+    "openai/gpt-oss-20b": {
+      "job_application": {
+        "nodes": [
+          {
+            "id": "job_application.confirmed",
+            "weight": 0.5
+          },
+          {
+            "id": "job_application.rated",
+            "weight": 0.5
+          },
+          {
+            "id": "job_application.reported",
+            "weight": 0.0
+          },
+          {
+            "id": "job_offer.sent",
+            "weight": 0.0
+          },
+          {
+            "id": "job_offer.received",
+            "weight": 1.0
+          },
+          {
+            "id": "job_interview.negotiated",
+            "weight": 0.0
+          },
+          {
+            "id": "probation_phase.entered",
+            "weight": 0.5
+          },
+          {
+            "id": "review.visible",
+            "weight": 0.0
+          },
+          {
+            "id": "job.permanent",
+            "weight": 1.0
+          },
+          {
+            "id": "process.ended",
+            "weight": 0.5
+          }
+        ],
+        "edges": [
+          {
+            "from": "job_application.confirmed",
+            "to": "job_application.rated",
+            "type": "sequence",
+            "operator": "AND",
+            "quote": "Companies have to confirm that they received job applications and rate the application."
+          },
+          {
+            "from": "job_offer.received",
+            "to": "probation_phase.entered",
+            "type": "cross_entity_guard",
+            "operator": "AND",
+            "quote": "When a company wants you to work for them, you enter the probation phase."
+          },
+          {
+            "from": "job_offer.received",
+            "to": "job.permanent",
+            "type": "cross_entity_guard",
+            "operator": "AND",
+            "quote": "If a job becomes permanent, the process ends, unless you rated the company C or less, then you continue to receive job offers, but no longer have to report."
+          },
+          {
+            "from": "job.permanent",
+            "to": "process.ended",
+            "type": "cross_entity_guard",
+            "operator": "AND",
+            "quote": "If a job becomes permanent, the process ends, unless you rated the company C or less, then you continue to receive job offers, but no longer have to report."
+          }
+        ],
+        "cycles": []
+      },
+      "maternity_leave": {
+        "nodes": [
+          {
+            "id": "maternity_leave.planned",
+            "weight": 0.0
+          },
+          {
+            "id": "maternity_leave.taken",
+            "weight": 0.0
+          },
+          {
+            "id": "maternity_leave.extended",
+            "weight": 0.0
+          },
+          {
+            "id": "potential_models.fetched",
+            "weight": 0.0
+          },
+          {
+            "id": "relevant_information.collected",
+            "weight": 0.0
+          },
+          {
+            "id": "information.fetched",
+            "weight": 0.0
+          },
+          {
+            "id": "information.collected",
+            "weight": 0.0
+          },
+          {
+            "id": "information.gathered",
+            "weight": 0.0
+          },
+          {
+            "id": "social_security.notified",
+            "weight": 0.0
+          },
+          {
+            "id": "company_information.gathered",
+            "weight": 0.0
+          }
+        ],
+        "edges": [],
+        "cycles": []
+      },
+      "work_accident": {
+        "nodes": [
+          {
+            "id": "work_accident.considered",
+            "weight": 1.0
+          },
+          {
+            "id": "work_accident.reported",
+            "weight": 0.5
+          },
+          {
+            "id": "work_accident.fatal",
+            "weight": 0.0
+          },
+          {
+            "id": "work_accident.serious_injury",
+            "weight": 0.0
+          },
+          {
+            "id": "work_accident.killed",
+            "weight": 0.5
+          },
+          {
+            "id": "work_accident.injured",
+            "weight": 0.5
+          },
+          {
+            "id": "work_accident.unable_to_work",
+            "weight": 0.5
+          },
+          {
+            "id": "work_accident.almost_occurred",
+            "weight": 0.0
+          },
+          {
+            "id": "work_accident.reported_to_inspectorate",
+            "weight": 0.0
+          },
+          {
+            "id": "work_accident.reported_to_insurance",
+            "weight": 0.0
+          },
+          {
+            "id": "work_accident.reported_to_employer",
+            "weight": 0.5
+          },
+          {
+            "id": "work_accident.reported_immediately",
+            "weight": 0.5
+          },
+          {
+            "id": "work_accident.reported_within_five_days",
+            "weight": 0.0
+          },
+          {
+            "id": "self_employed_person.reported",
+            "weight": 0.5
+          },
+          {
+            "id": "person_with_accident_insurance.killed",
+            "weight": 0.5
+          },
+          {
+            "id": "person_with_accident_insurance.injured",
+            "weight": 0.5
+          },
+          {
+            "id": "person_with_accident_insurance.unable_to_work",
+            "weight": 0.5
+          },
+          {
+            "id": "person_with_accident_insurance.physically_injured",
+            "weight": 0.0
+          },
+          {
+            "id": "educational_facility.obliged_to_report",
+            "weight": 0.0
+          },
+          {
+            "id": "incident.almost_occurred",
+            "weight": 0.0
+          },
+          {
+            "id": "defect.discovered",
+            "weight": 0.0
+          },
+          {
+            "id": "serious_risk.discovered",
+            "weight": 0.0
+          },
+          {
+            "id": "doctor_visit.notified",
+            "weight": 0.0
+          }
+        ],
+        "edges": [
+          {
+            "from": "work_accident.considered",
+            "to": "work_accident.reported_to_employer",
+            "type": "sequence",
+            "operator": "AND",
+            "quote": "The employees must inform the employer immediately of: any work accident"
+          },
+          {
+            "from": "work_accident.considered",
+            "to": "work_accident.reported_immediately",
+            "type": "sequence",
+            "operator": "AND",
+            "quote": "The employees must inform the employer immediately of: any work accident"
+          },
+          {
+            "from": "work_accident.reported",
+            "to": "self_employed_person.reported",
+            "type": "cross_entity_guard",
+            "operator": "AND",
+            "quote": "As a self-employed person, accidents involving people you employ and those that involve you must be reported to the accident insurance provider in good time"
+          },
+          {
+            "from": "work_accident.killed",
+            "to": "person_with_accident_insurance.killed",
+            "type": "cross_entity_guard",
+            "operator": "AND",
+            "quote": "every work accident in which a person with accident insurance has been killed"
+          },
+          {
+            "from": "work_accident.injured",
+            "to": "person_with_accident_insurance.injured",
+            "type": "cross_entity_guard",
+            "operator": "AND",
+            "quote": "every work accident in which a person with accident insurance has been killed, or injured in such a way that they are unable to work for three days"
+          },
+          {
+            "from": "work_accident.unable_to_work",
+            "to": "person_with_accident_insurance.unable_to_work",
+            "type": "cross_entity_guard",
+            "operator": "AND",
+            "quote": "every work accident in which a person with accident insurance has been killed, or injured in such a way that they are unable to work for three days"
+          }
+        ],
+        "cycles": []
+      }
+    }
+  }
+}

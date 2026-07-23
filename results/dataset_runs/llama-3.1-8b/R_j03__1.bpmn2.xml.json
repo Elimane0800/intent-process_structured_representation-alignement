@@ -1,0 +1,850 @@
+{
+  "case_name": "R_j03",
+  "text": "Category: Repair and Service\nTitle: Service for Your Fridge\n\nYour fridge produces strange noises. You describe the symptoms, and send them\ntogether with the type of fridge to the central fridge service center.  They\nselect a local service facility (which all have their own way of interacting\nwith customers).\n\nThe service facility makes an appointment. They arrive at a random time, and\nsometimes have to leave without repairing your fridge, because they need\nadditional parts.\n\nAfter your fridge is repaired, you have to confirm that it is OK again. You\ncan rate the service facility.\n",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "llama-3.1-8b",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "llama-3.1-8b",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/text_and_bpmn/bpmn/R_j03/1.bpmn2.xml",
+  "candidates": {
+    "fridge": [
+      "repaired",
+      "OK"
+    ],
+    "service_facility": [
+      "local"
+    ],
+    "appointment": [
+      "made"
+    ],
+    "parts": [
+      "additional"
+    ],
+    "symptoms": [
+      "described"
+    ],
+    "service": [
+      "central"
+    ]
+  },
+  "validation_report": {
+    "fridge": {
+      "f_lex": "ENTITY",
+      "kept": true
+    },
+    "service_facility": {
+      "f_lex": "ENTITY",
+      "kept": true
+    },
+    "appointment": {
+      "f_lex": "ENTITY",
+      "kept": true
+    },
+    "parts": {
+      "f_lex": "INDETERMINATE",
+      "kept": true
+    },
+    "symptoms": {
+      "f_lex": "INDETERMINATE",
+      "kept": true
+    },
+    "service": {
+      "f_lex": "ENTITY",
+      "kept": true
+    }
+  },
+  "state_space": {
+    "fridge": [
+      "repaired",
+      "OK"
+    ],
+    "service_facility": [
+      "local"
+    ],
+    "appointment": [
+      "made"
+    ],
+    "parts": [
+      "additional"
+    ],
+    "symptoms": [
+      "described"
+    ],
+    "service": [
+      "central"
+    ]
+  },
+  "raw_preconditions": {
+    "fridge.repaired": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "fridge.OK": {
+      "precondition": "fridge.repaired",
+      "quote": null
+    },
+    "service_facility.local": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "appointment.made": {
+      "precondition": "service_facility.local AND symptoms.described AND service.central",
+      "quote": "You describe the symptoms, and send them together with the type of fridge to the central fridge service center."
+    },
+    "parts.additional": {
+      "precondition": "UNRESOLVED",
+      "quote": null
+    },
+    "symptoms.described": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "service.central": {
+      "precondition": "INITIAL",
+      "quote": null
+    }
+  },
+  "validated_preconditions": {
+    "fridge.repaired": {
+      "precondition": "INITIAL",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "fridge.OK": {
+      "precondition": "appointment.made AND symptoms.described",
+      "quote": "You describe the symptoms, and send them together with the type of fridge to the central fridge service center.",
+      "status": "OK",
+      "reason": null,
+      "retried": true
+    },
+    "service_facility.local": {
+      "precondition": "INITIAL",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "appointment.made": {
+      "precondition": "service_facility.local AND symptoms.described AND service.central",
+      "quote": "You describe the symptoms, and send them together with the type of fridge to the central fridge service center.",
+      "status": "OK",
+      "reason": null
+    },
+    "parts.additional": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "symptoms.described": {
+      "precondition": "INITIAL",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "service.central": {
+      "precondition": "INITIAL",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    }
+  },
+  "precondition_cycles": [],
+  "reference_graph": {
+    "nodes": [
+      {
+        "id": "fridge.repaired",
+        "weight": 0.0
+      },
+      {
+        "id": "fridge.OK",
+        "weight": 0.5
+      },
+      {
+        "id": "service_facility.local",
+        "weight": 0.25
+      },
+      {
+        "id": "appointment.made",
+        "weight": 1.0
+      },
+      {
+        "id": "parts.additional",
+        "weight": 0.0
+      },
+      {
+        "id": "symptoms.described",
+        "weight": 0.5
+      },
+      {
+        "id": "service.central",
+        "weight": 0.25
+      }
+    ],
+    "edges": [
+      {
+        "from": "appointment.made",
+        "to": "fridge.OK",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "You describe the symptoms, and send them together with the type of fridge to the central fridge service center."
+      },
+      {
+        "from": "symptoms.described",
+        "to": "fridge.OK",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "You describe the symptoms, and send them together with the type of fridge to the central fridge service center."
+      },
+      {
+        "from": "service_facility.local",
+        "to": "appointment.made",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "You describe the symptoms, and send them together with the type of fridge to the central fridge service center."
+      },
+      {
+        "from": "symptoms.described",
+        "to": "appointment.made",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "You describe the symptoms, and send them together with the type of fridge to the central fridge service center."
+      },
+      {
+        "from": "service.central",
+        "to": "appointment.made",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "You describe the symptoms, and send them together with the type of fridge to the central fridge service center."
+      }
+    ],
+    "cycles": []
+  },
+  "dfg_edges": [
+    {
+      "source_id": "sid-23B17CB7-01F6-47A2-B260-1BDEC1F80230",
+      "source_label": "checking if its ok",
+      "target_id": "sid-15ABE0D1-D622-4983-9174-BE56703DCA2E",
+      "target_label": "make an appointment",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-23B17CB7-01F6-47A2-B260-1BDEC1F80230",
+      "source_label": "checking if its ok",
+      "target_id": "sid-69556AEF-EC63-4FC2-B668-B197B9873FDD",
+      "target_label": "rate the service",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "yes",
+        "ExclusiveGateway",
+        "yes"
+      ]
+    },
+    {
+      "source_id": "sid-23B17CB7-01F6-47A2-B260-1BDEC1F80230",
+      "source_label": "checking if its ok",
+      "target_id": "sid-DD582AA2-33CA-43FE-9C9D-3729ED292EAD",
+      "target_label": "repaired fridge",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "yes",
+        "ExclusiveGateway",
+        "no"
+      ]
+    },
+    {
+      "source_id": "sid-69556AEF-EC63-4FC2-B668-B197B9873FDD",
+      "source_label": "rate the service",
+      "target_id": "sid-FDE29BE1-E482-42BB-B0CC-26552AD20101",
+      "target_label": "repaired fridge",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-1549F301-AFE8-48E2-81A1-2B3B1BA08B1A",
+      "source_label": "service team arrives",
+      "target_id": "sid-CB31E05C-6E80-4807-9B74-D646D8C96D63",
+      "target_label": "fridge gets repaired",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "yes"
+      ]
+    },
+    {
+      "source_id": "sid-1549F301-AFE8-48E2-81A1-2B3B1BA08B1A",
+      "source_label": "service team arrives",
+      "target_id": "sid-C50EDD65-3C2B-412D-B51E-EE61C034BFC3",
+      "target_label": "Parts are missing",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "no"
+      ]
+    },
+    {
+      "source_id": "sid-73E2608E-70C9-4F61-8B7C-A63BF964A610",
+      "source_label": "strange noise from the fridge",
+      "target_id": "sid-A0CB4792-71F9-403A-8841-743248834B09",
+      "target_label": "Describing the noise",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-15ABE0D1-D622-4983-9174-BE56703DCA2E",
+      "source_label": "make an appointment",
+      "target_id": "sid-1549F301-AFE8-48E2-81A1-2B3B1BA08B1A",
+      "target_label": "service team arrives",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-8A716BD6-1F5E-43EB-95A1-215E8BDC9C12",
+      "source_label": "searching  for the type",
+      "target_id": "sid-9A1B39FE-8A46-4C9E-AFE4-892F9DC83965",
+      "target_label": "send mail to service center",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-C50EDD65-3C2B-412D-B51E-EE61C034BFC3",
+      "source_label": "Parts are missing",
+      "target_id": "sid-992EA19C-2D07-434A-9914-D4C7A840A23C",
+      "target_label": "system check of the storage",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-CB31E05C-6E80-4807-9B74-D646D8C96D63",
+      "source_label": "fridge gets repaired",
+      "target_id": "sid-23B17CB7-01F6-47A2-B260-1BDEC1F80230",
+      "target_label": "checking if its ok",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-9A1B39FE-8A46-4C9E-AFE4-892F9DC83965",
+      "source_label": "send mail to service center",
+      "target_id": "sid-4ABD7530-9056-44F3-9DDD-A72A2327D5D6",
+      "target_label": "answer mail",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "e-mail"
+      ]
+    },
+    {
+      "source_id": "sid-9A1B39FE-8A46-4C9E-AFE4-892F9DC83965",
+      "source_label": "send mail to service center",
+      "target_id": "sid-5134CD6A-A322-47F1-9AC5-ED18415B753B",
+      "target_label": "contact via phone",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "phone"
+      ]
+    },
+    {
+      "source_id": "sid-6EFC9C97-1B24-459F-B95B-C29CA6353F02",
+      "source_label": "collect all data",
+      "target_id": "sid-9A1B39FE-8A46-4C9E-AFE4-892F9DC83965",
+      "target_label": "send mail to service center",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-4ABD7530-9056-44F3-9DDD-A72A2327D5D6",
+      "source_label": "answer mail",
+      "target_id": "sid-15ABE0D1-D622-4983-9174-BE56703DCA2E",
+      "target_label": "make an appointment",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-A0CB4792-71F9-403A-8841-743248834B09",
+      "source_label": "Describing the noise",
+      "target_id": "sid-6EFC9C97-1B24-459F-B95B-C29CA6353F02",
+      "target_label": "collect all data",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "Knowing the type"
+      ]
+    },
+    {
+      "source_id": "sid-A0CB4792-71F9-403A-8841-743248834B09",
+      "source_label": "Describing the noise",
+      "target_id": "sid-8A716BD6-1F5E-43EB-95A1-215E8BDC9C12",
+      "target_label": "searching  for the type",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "Not knowing the type "
+      ]
+    },
+    {
+      "source_id": "sid-5134CD6A-A322-47F1-9AC5-ED18415B753B",
+      "source_label": "contact via phone",
+      "target_id": "sid-15ABE0D1-D622-4983-9174-BE56703DCA2E",
+      "target_label": "make an appointment",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-992EA19C-2D07-434A-9914-D4C7A840A23C",
+      "source_label": "system check of the storage",
+      "target_id": "sid-15ABE0D1-D622-4983-9174-BE56703DCA2E",
+      "target_label": "make an appointment",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-992EA19C-2D07-434A-9914-D4C7A840A23C",
+      "source_label": "system check of the storage",
+      "target_id": "sid-CA22B23A-5532-4999-B046-DE653C808D0B",
+      "target_label": "",
+      "gateway_context": []
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "checking if its ok",
+      "subject_id": "sid-23B17CB7-01F6-47A2-B260-1BDEC1F80230",
+      "predicate": "follows",
+      "object": "make an appointment",
+      "object_id": "sid-15ABE0D1-D622-4983-9174-BE56703DCA2E"
+    },
+    {
+      "subject": "checking if its ok",
+      "subject_id": "sid-23B17CB7-01F6-47A2-B260-1BDEC1F80230",
+      "predicate": "follows",
+      "object": "rate the service",
+      "object_id": "sid-69556AEF-EC63-4FC2-B668-B197B9873FDD"
+    },
+    {
+      "subject": "checking if its ok",
+      "subject_id": "sid-23B17CB7-01F6-47A2-B260-1BDEC1F80230",
+      "predicate": "follows",
+      "object": "repaired fridge",
+      "object_id": "sid-DD582AA2-33CA-43FE-9C9D-3729ED292EAD"
+    },
+    {
+      "subject": "rate the service",
+      "subject_id": "sid-69556AEF-EC63-4FC2-B668-B197B9873FDD",
+      "predicate": "follows",
+      "object": "repaired fridge",
+      "object_id": "sid-FDE29BE1-E482-42BB-B0CC-26552AD20101"
+    },
+    {
+      "subject": "service team arrives",
+      "subject_id": "sid-1549F301-AFE8-48E2-81A1-2B3B1BA08B1A",
+      "predicate": "follows",
+      "object": "fridge gets repaired",
+      "object_id": "sid-CB31E05C-6E80-4807-9B74-D646D8C96D63"
+    },
+    {
+      "subject": "service team arrives",
+      "subject_id": "sid-1549F301-AFE8-48E2-81A1-2B3B1BA08B1A",
+      "predicate": "follows",
+      "object": "Parts are missing",
+      "object_id": "sid-C50EDD65-3C2B-412D-B51E-EE61C034BFC3"
+    },
+    {
+      "subject": "strange noise from the fridge",
+      "subject_id": "sid-73E2608E-70C9-4F61-8B7C-A63BF964A610",
+      "predicate": "follows",
+      "object": "Describing the noise",
+      "object_id": "sid-A0CB4792-71F9-403A-8841-743248834B09"
+    },
+    {
+      "subject": "make an appointment",
+      "subject_id": "sid-15ABE0D1-D622-4983-9174-BE56703DCA2E",
+      "predicate": "follows",
+      "object": "service team arrives",
+      "object_id": "sid-1549F301-AFE8-48E2-81A1-2B3B1BA08B1A"
+    },
+    {
+      "subject": "searching  for the type",
+      "subject_id": "sid-8A716BD6-1F5E-43EB-95A1-215E8BDC9C12",
+      "predicate": "follows",
+      "object": "send mail to service center",
+      "object_id": "sid-9A1B39FE-8A46-4C9E-AFE4-892F9DC83965"
+    },
+    {
+      "subject": "Parts are missing",
+      "subject_id": "sid-C50EDD65-3C2B-412D-B51E-EE61C034BFC3",
+      "predicate": "follows",
+      "object": "system check of the storage",
+      "object_id": "sid-992EA19C-2D07-434A-9914-D4C7A840A23C"
+    },
+    {
+      "subject": "fridge gets repaired",
+      "subject_id": "sid-CB31E05C-6E80-4807-9B74-D646D8C96D63",
+      "predicate": "follows",
+      "object": "checking if its ok",
+      "object_id": "sid-23B17CB7-01F6-47A2-B260-1BDEC1F80230"
+    },
+    {
+      "subject": "send mail to service center",
+      "subject_id": "sid-9A1B39FE-8A46-4C9E-AFE4-892F9DC83965",
+      "predicate": "follows",
+      "object": "answer mail",
+      "object_id": "sid-4ABD7530-9056-44F3-9DDD-A72A2327D5D6"
+    },
+    {
+      "subject": "send mail to service center",
+      "subject_id": "sid-9A1B39FE-8A46-4C9E-AFE4-892F9DC83965",
+      "predicate": "follows",
+      "object": "contact via phone",
+      "object_id": "sid-5134CD6A-A322-47F1-9AC5-ED18415B753B"
+    },
+    {
+      "subject": "collect all data",
+      "subject_id": "sid-6EFC9C97-1B24-459F-B95B-C29CA6353F02",
+      "predicate": "follows",
+      "object": "send mail to service center",
+      "object_id": "sid-9A1B39FE-8A46-4C9E-AFE4-892F9DC83965"
+    },
+    {
+      "subject": "answer mail",
+      "subject_id": "sid-4ABD7530-9056-44F3-9DDD-A72A2327D5D6",
+      "predicate": "follows",
+      "object": "make an appointment",
+      "object_id": "sid-15ABE0D1-D622-4983-9174-BE56703DCA2E"
+    },
+    {
+      "subject": "Describing the noise",
+      "subject_id": "sid-A0CB4792-71F9-403A-8841-743248834B09",
+      "predicate": "follows",
+      "object": "collect all data",
+      "object_id": "sid-6EFC9C97-1B24-459F-B95B-C29CA6353F02"
+    },
+    {
+      "subject": "Describing the noise",
+      "subject_id": "sid-A0CB4792-71F9-403A-8841-743248834B09",
+      "predicate": "follows",
+      "object": "searching  for the type",
+      "object_id": "sid-8A716BD6-1F5E-43EB-95A1-215E8BDC9C12"
+    },
+    {
+      "subject": "contact via phone",
+      "subject_id": "sid-5134CD6A-A322-47F1-9AC5-ED18415B753B",
+      "predicate": "follows",
+      "object": "make an appointment",
+      "object_id": "sid-15ABE0D1-D622-4983-9174-BE56703DCA2E"
+    },
+    {
+      "subject": "system check of the storage",
+      "subject_id": "sid-992EA19C-2D07-434A-9914-D4C7A840A23C",
+      "predicate": "follows",
+      "object": "make an appointment",
+      "object_id": "sid-15ABE0D1-D622-4983-9174-BE56703DCA2E"
+    },
+    {
+      "subject": "system check of the storage",
+      "subject_id": "sid-992EA19C-2D07-434A-9914-D4C7A840A23C",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "sid-CA22B23A-5532-4999-B046-DE653C808D0B"
+    }
+  ],
+  "matches": {
+    "Describing the noise": {
+      "match": "symptoms.described",
+      "score": 0.3331
+    },
+    "Parts are missing": {
+      "match": "parts.additional",
+      "score": 0.456
+    },
+    "answer mail": {
+      "match": "service.central",
+      "score": 0.1462
+    },
+    "checking if its ok": {
+      "match": "fridge.OK",
+      "score": 0.4151
+    },
+    "collect all data": {
+      "match": "parts.additional",
+      "score": 0.1722
+    },
+    "contact via phone": {
+      "match": "appointment.made",
+      "score": 0.1482
+    },
+    "fridge gets repaired": {
+      "match": "fridge.repaired",
+      "score": 0.8981
+    },
+    "make an appointment": {
+      "match": "appointment.made",
+      "score": 0.6566
+    },
+    "rate the service": {
+      "match": "service.central",
+      "score": 0.3977
+    },
+    "repaired fridge": {
+      "match": "fridge.repaired",
+      "score": 0.9464
+    },
+    "searching  for the type": {
+      "match": "symptoms.described",
+      "score": 0.1583
+    },
+    "send mail to service center": {
+      "match": "service.central",
+      "score": 0.4571
+    },
+    "service team arrives": {
+      "match": "service_facility.local",
+      "score": 0.4241
+    },
+    "strange noise from the fridge": {
+      "match": "fridge.OK",
+      "score": 0.5136
+    },
+    "system check of the storage": {
+      "match": "fridge.OK",
+      "score": 0.2054
+    }
+  },
+  "process_graph": [
+    {
+      "from": "fridge.OK",
+      "to": "appointment.made",
+      "activity_from": "checking if its ok",
+      "activity_to": "make an appointment"
+    },
+    {
+      "from": "fridge.OK",
+      "to": "service.central",
+      "activity_from": "checking if its ok",
+      "activity_to": "rate the service"
+    },
+    {
+      "from": "fridge.OK",
+      "to": "fridge.repaired",
+      "activity_from": "checking if its ok",
+      "activity_to": "repaired fridge"
+    },
+    {
+      "from": "service.central",
+      "to": "fridge.repaired",
+      "activity_from": "rate the service",
+      "activity_to": "repaired fridge"
+    },
+    {
+      "from": "service_facility.local",
+      "to": "fridge.repaired",
+      "activity_from": "service team arrives",
+      "activity_to": "fridge gets repaired"
+    },
+    {
+      "from": "service_facility.local",
+      "to": "parts.additional",
+      "activity_from": "service team arrives",
+      "activity_to": "Parts are missing"
+    },
+    {
+      "from": "fridge.OK",
+      "to": "symptoms.described",
+      "activity_from": "strange noise from the fridge",
+      "activity_to": "Describing the noise"
+    },
+    {
+      "from": "appointment.made",
+      "to": "service_facility.local",
+      "activity_from": "make an appointment",
+      "activity_to": "service team arrives"
+    },
+    {
+      "from": "symptoms.described",
+      "to": "service.central",
+      "activity_from": "searching  for the type",
+      "activity_to": "send mail to service center"
+    },
+    {
+      "from": "parts.additional",
+      "to": "fridge.OK",
+      "activity_from": "Parts are missing",
+      "activity_to": "system check of the storage"
+    },
+    {
+      "from": "fridge.repaired",
+      "to": "fridge.OK",
+      "activity_from": "fridge gets repaired",
+      "activity_to": "checking if its ok"
+    },
+    {
+      "from": "service.central",
+      "to": "service.central",
+      "activity_from": "send mail to service center",
+      "activity_to": "answer mail"
+    },
+    {
+      "from": "service.central",
+      "to": "appointment.made",
+      "activity_from": "send mail to service center",
+      "activity_to": "contact via phone"
+    },
+    {
+      "from": "parts.additional",
+      "to": "service.central",
+      "activity_from": "collect all data",
+      "activity_to": "send mail to service center"
+    },
+    {
+      "from": "service.central",
+      "to": "appointment.made",
+      "activity_from": "answer mail",
+      "activity_to": "make an appointment"
+    },
+    {
+      "from": "symptoms.described",
+      "to": "parts.additional",
+      "activity_from": "Describing the noise",
+      "activity_to": "collect all data"
+    },
+    {
+      "from": "symptoms.described",
+      "to": "symptoms.described",
+      "activity_from": "Describing the noise",
+      "activity_to": "searching  for the type"
+    },
+    {
+      "from": "appointment.made",
+      "to": "appointment.made",
+      "activity_from": "contact via phone",
+      "activity_to": "make an appointment"
+    },
+    {
+      "from": "fridge.OK",
+      "to": "appointment.made",
+      "activity_from": "system check of the storage",
+      "activity_to": "make an appointment"
+    }
+  ],
+  "alignment": {
+    "fridge.OK": {
+      "operator": "AND",
+      "quote": "You describe the symptoms, and send them together with the type of fridge to the central fridge service center.",
+      "terms": [
+        {
+          "term": "appointment.made",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        },
+        {
+          "term": "symptoms.described",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED"
+    },
+    "appointment.made": {
+      "operator": "AND",
+      "quote": "You describe the symptoms, and send them together with the type of fridge to the central fridge service center.",
+      "terms": [
+        {
+          "term": "service_facility.local",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        },
+        {
+          "term": "symptoms.described",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        },
+        {
+          "term": "service.central",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED"
+    }
+  },
+  "report": {
+    "summary": {
+      "ecarts": 0,
+      "non_verifiable": 0,
+      "conforme": 5
+    },
+    "ecarts": [],
+    "non_verifiable": [],
+    "conforme": [
+      {
+        "target": "strange noise from the fridge",
+        "term": "make an appointment"
+      },
+      {
+        "target": "strange noise from the fridge",
+        "term": "Describing the noise"
+      },
+      {
+        "target": "make an appointment",
+        "term": "service team arrives"
+      },
+      {
+        "target": "make an appointment",
+        "term": "Describing the noise"
+      },
+      {
+        "target": "make an appointment",
+        "term": "send mail to service center"
+      }
+    ],
+    "piece_jointe_alignement_brut": {
+      "fridge.OK": {
+        "operator": "AND",
+        "quote": "You describe the symptoms, and send them together with the type of fridge to the central fridge service center.",
+        "terms": [
+          {
+            "term": "appointment.made",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          },
+          {
+            "term": "symptoms.described",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED"
+      },
+      "appointment.made": {
+        "operator": "AND",
+        "quote": "You describe the symptoms, and send them together with the type of fridge to the central fridge service center.",
+        "terms": [
+          {
+            "term": "service_facility.local",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          },
+          {
+            "term": "symptoms.described",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          },
+          {
+            "term": "service.central",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED"
+      }
+    }
+  },
+  "errors": []
+}

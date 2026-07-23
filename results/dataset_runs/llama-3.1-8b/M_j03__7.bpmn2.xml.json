@@ -1,0 +1,568 @@
+{
+  "case_name": "M_j03",
+  "text": "Category: Manufacturing\nTitle: Contract\n\nFor your contract project you need parts from several web shops. In order to\nfind out which web shop has the right parts, you have to query them all, and\nfind out how much they can deliver, at which price, and how long it will take.\n\nCreate a list of parts that you order from each shop. If one shop has not enough \nparts, order from several shops. Always use the cheapest parts.\n\nThe parts arrive in batches in a random order, typically they are +/- 2 days\nearlier/later.  \n\nWhen the first parts arrive you start building. Sometimes you have to reorder parts.\nIf your stock (for a single part) falls below 5, you reorder (the cheapest), if it\nfalls below 3 you reorder again (the fastest). If it is zero, you write a mail\nto your friends, complaining about the webshops.\n",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "llama-3.1-8b",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "llama-3.1-8b",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/text_and_bpmn/bpmn/M_j03/7.bpmn2.xml",
+  "candidates": {
+    "part": [
+      "ordered",
+      "delivered",
+      "arrived",
+      "in_stock",
+      "reordered",
+      "out_of_stock",
+      "low_stock",
+      "zero_stock"
+    ],
+    "shop": [
+      "queried",
+      "selected",
+      "used"
+    ],
+    "stock": [
+      "low",
+      "zero"
+    ],
+    "mail": [
+      "sent"
+    ]
+  },
+  "validation_report": {
+    "part": {
+      "f_lex": "INDETERMINATE",
+      "kept": true
+    },
+    "shop": {
+      "f_lex": "ENTITY",
+      "kept": true
+    },
+    "stock": {
+      "f_lex": "INDETERMINATE",
+      "kept": true
+    },
+    "mail": {
+      "f_lex": "ENTITY",
+      "kept": true
+    }
+  },
+  "state_space": {
+    "part": [
+      "ordered",
+      "delivered",
+      "arrived",
+      "in_stock",
+      "reordered",
+      "out_of_stock",
+      "low_stock",
+      "zero_stock"
+    ],
+    "shop": [
+      "queried",
+      "selected",
+      "used"
+    ],
+    "stock": [
+      "low",
+      "zero"
+    ],
+    "mail": [
+      "sent"
+    ]
+  },
+  "dfg_edges": [
+    {
+      "source_id": "sid-662F6A6D-5A80-4159-9C3D-89CD3BF92A08",
+      "source_label": "Contract project starts ",
+      "target_id": "sid-5523DC8D-0B8B-4A73-8B52-2F893AD39245",
+      "target_label": "Query web shops",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-5523DC8D-0B8B-4A73-8B52-2F893AD39245",
+      "source_label": "Query web shops",
+      "target_id": "sid-523E384D-0F0A-46D2-8693-9874A0C40872",
+      "target_label": "Create order list",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-28E76CEB-8093-4ED7-94F1-FD224D2E7808",
+      "source_label": "Write complaint mail to friends",
+      "target_id": "sid-523E384D-0F0A-46D2-8693-9874A0C40872",
+      "target_label": "Create order list",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-D7077B96-9448-4998-BB1B-2E97B827586C",
+      "source_label": "Order the cheapest",
+      "target_id": "sid-523E384D-0F0A-46D2-8693-9874A0C40872",
+      "target_label": "Create order list",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-E4B41E3E-BC7F-494E-80B4-ACE1AF417DCB",
+      "source_label": "Order from one shop",
+      "target_id": "sid-76EF8337-7AFA-4BD6-B358-1CEA037DF91A",
+      "target_label": "Parts arrive ",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-6736C11B-FBDD-41D9-A042-B90B24CE1AFE",
+      "source_label": "Check amount in stock",
+      "target_id": "sid-C1EEBBA5-7BF9-459D-9D5E-A90F1F6769DE",
+      "target_label": "Order the fastest",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "stock < 3"
+      ]
+    },
+    {
+      "source_id": "sid-6736C11B-FBDD-41D9-A042-B90B24CE1AFE",
+      "source_label": "Check amount in stock",
+      "target_id": "sid-D7077B96-9448-4998-BB1B-2E97B827586C",
+      "target_label": "Order the cheapest",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "stock <5, stock >= 3"
+      ]
+    },
+    {
+      "source_id": "sid-6736C11B-FBDD-41D9-A042-B90B24CE1AFE",
+      "source_label": "Check amount in stock",
+      "target_id": "sid-1A48E0CF-928E-4BBF-ABB0-5337CFCC6904",
+      "target_label": "Enough parts available",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "stock > 5"
+      ]
+    },
+    {
+      "source_id": "sid-523E384D-0F0A-46D2-8693-9874A0C40872",
+      "source_label": "Create order list",
+      "target_id": "sid-EAE388F6-1046-4045-94C0-15F3A3151210",
+      "target_label": "Order from several shops",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "If one shop has not enough parts"
+      ]
+    },
+    {
+      "source_id": "sid-523E384D-0F0A-46D2-8693-9874A0C40872",
+      "source_label": "Create order list",
+      "target_id": "sid-E4B41E3E-BC7F-494E-80B4-ACE1AF417DCB",
+      "target_label": "Order from one shop",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "If one shop has enough parts"
+      ]
+    },
+    {
+      "source_id": "sid-EAE388F6-1046-4045-94C0-15F3A3151210",
+      "source_label": "Order from several shops",
+      "target_id": "sid-76EF8337-7AFA-4BD6-B358-1CEA037DF91A",
+      "target_label": "Parts arrive ",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-1A48E0CF-928E-4BBF-ABB0-5337CFCC6904",
+      "source_label": "Enough parts available",
+      "target_id": "sid-02B05052-9527-4889-9A92-515E8B1BC0E1",
+      "target_label": "Contract project ends ",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-76EF8337-7AFA-4BD6-B358-1CEA037DF91A",
+      "source_label": "Parts arrive ",
+      "target_id": "sid-44576601-1AA1-43A3-BE29-10019AEF50B6",
+      "target_label": "Start building",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-C1EEBBA5-7BF9-459D-9D5E-A90F1F6769DE",
+      "source_label": "Order the fastest",
+      "target_id": "sid-B4D4660F-140B-4B85-ADC6-FA2CFFE2883D",
+      "target_label": "Continue order normally",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "stock > 0"
+      ]
+    },
+    {
+      "source_id": "sid-C1EEBBA5-7BF9-459D-9D5E-A90F1F6769DE",
+      "source_label": "Order the fastest",
+      "target_id": "sid-28E76CEB-8093-4ED7-94F1-FD224D2E7808",
+      "target_label": "Write complaint mail to friends",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "stock = 0"
+      ]
+    },
+    {
+      "source_id": "sid-B4D4660F-140B-4B85-ADC6-FA2CFFE2883D",
+      "source_label": "Continue order normally",
+      "target_id": "sid-523E384D-0F0A-46D2-8693-9874A0C40872",
+      "target_label": "Create order list",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-44576601-1AA1-43A3-BE29-10019AEF50B6",
+      "source_label": "Start building",
+      "target_id": "sid-6736C11B-FBDD-41D9-A042-B90B24CE1AFE",
+      "target_label": "Check amount in stock",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-44576601-1AA1-43A3-BE29-10019AEF50B6",
+      "source_label": "Start building",
+      "target_id": "sid-35B30898-6D0A-45B0-BE79-93A840C72F61",
+      "target_label": "Continue building",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-35B30898-6D0A-45B0-BE79-93A840C72F61",
+      "source_label": "Continue building",
+      "target_id": "sid-02B05052-9527-4889-9A92-515E8B1BC0E1",
+      "target_label": "Contract project ends ",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "Contract project starts ",
+      "subject_id": "sid-662F6A6D-5A80-4159-9C3D-89CD3BF92A08",
+      "predicate": "follows",
+      "object": "Query web shops",
+      "object_id": "sid-5523DC8D-0B8B-4A73-8B52-2F893AD39245"
+    },
+    {
+      "subject": "Query web shops",
+      "subject_id": "sid-5523DC8D-0B8B-4A73-8B52-2F893AD39245",
+      "predicate": "follows",
+      "object": "Create order list",
+      "object_id": "sid-523E384D-0F0A-46D2-8693-9874A0C40872"
+    },
+    {
+      "subject": "Write complaint mail to friends",
+      "subject_id": "sid-28E76CEB-8093-4ED7-94F1-FD224D2E7808",
+      "predicate": "follows",
+      "object": "Create order list",
+      "object_id": "sid-523E384D-0F0A-46D2-8693-9874A0C40872"
+    },
+    {
+      "subject": "Order the cheapest",
+      "subject_id": "sid-D7077B96-9448-4998-BB1B-2E97B827586C",
+      "predicate": "follows",
+      "object": "Create order list",
+      "object_id": "sid-523E384D-0F0A-46D2-8693-9874A0C40872"
+    },
+    {
+      "subject": "Order from one shop",
+      "subject_id": "sid-E4B41E3E-BC7F-494E-80B4-ACE1AF417DCB",
+      "predicate": "follows",
+      "object": "Parts arrive ",
+      "object_id": "sid-76EF8337-7AFA-4BD6-B358-1CEA037DF91A"
+    },
+    {
+      "subject": "Check amount in stock",
+      "subject_id": "sid-6736C11B-FBDD-41D9-A042-B90B24CE1AFE",
+      "predicate": "follows",
+      "object": "Order the fastest",
+      "object_id": "sid-C1EEBBA5-7BF9-459D-9D5E-A90F1F6769DE"
+    },
+    {
+      "subject": "Check amount in stock",
+      "subject_id": "sid-6736C11B-FBDD-41D9-A042-B90B24CE1AFE",
+      "predicate": "follows",
+      "object": "Order the cheapest",
+      "object_id": "sid-D7077B96-9448-4998-BB1B-2E97B827586C"
+    },
+    {
+      "subject": "Check amount in stock",
+      "subject_id": "sid-6736C11B-FBDD-41D9-A042-B90B24CE1AFE",
+      "predicate": "follows",
+      "object": "Enough parts available",
+      "object_id": "sid-1A48E0CF-928E-4BBF-ABB0-5337CFCC6904"
+    },
+    {
+      "subject": "Create order list",
+      "subject_id": "sid-523E384D-0F0A-46D2-8693-9874A0C40872",
+      "predicate": "follows",
+      "object": "Order from several shops",
+      "object_id": "sid-EAE388F6-1046-4045-94C0-15F3A3151210"
+    },
+    {
+      "subject": "Create order list",
+      "subject_id": "sid-523E384D-0F0A-46D2-8693-9874A0C40872",
+      "predicate": "follows",
+      "object": "Order from one shop",
+      "object_id": "sid-E4B41E3E-BC7F-494E-80B4-ACE1AF417DCB"
+    },
+    {
+      "subject": "Order from several shops",
+      "subject_id": "sid-EAE388F6-1046-4045-94C0-15F3A3151210",
+      "predicate": "follows",
+      "object": "Parts arrive ",
+      "object_id": "sid-76EF8337-7AFA-4BD6-B358-1CEA037DF91A"
+    },
+    {
+      "subject": "Enough parts available",
+      "subject_id": "sid-1A48E0CF-928E-4BBF-ABB0-5337CFCC6904",
+      "predicate": "follows",
+      "object": "Contract project ends ",
+      "object_id": "sid-02B05052-9527-4889-9A92-515E8B1BC0E1"
+    },
+    {
+      "subject": "Parts arrive ",
+      "subject_id": "sid-76EF8337-7AFA-4BD6-B358-1CEA037DF91A",
+      "predicate": "follows",
+      "object": "Start building",
+      "object_id": "sid-44576601-1AA1-43A3-BE29-10019AEF50B6"
+    },
+    {
+      "subject": "Order the fastest",
+      "subject_id": "sid-C1EEBBA5-7BF9-459D-9D5E-A90F1F6769DE",
+      "predicate": "follows",
+      "object": "Continue order normally",
+      "object_id": "sid-B4D4660F-140B-4B85-ADC6-FA2CFFE2883D"
+    },
+    {
+      "subject": "Order the fastest",
+      "subject_id": "sid-C1EEBBA5-7BF9-459D-9D5E-A90F1F6769DE",
+      "predicate": "follows",
+      "object": "Write complaint mail to friends",
+      "object_id": "sid-28E76CEB-8093-4ED7-94F1-FD224D2E7808"
+    },
+    {
+      "subject": "Continue order normally",
+      "subject_id": "sid-B4D4660F-140B-4B85-ADC6-FA2CFFE2883D",
+      "predicate": "follows",
+      "object": "Create order list",
+      "object_id": "sid-523E384D-0F0A-46D2-8693-9874A0C40872"
+    },
+    {
+      "subject": "Start building",
+      "subject_id": "sid-44576601-1AA1-43A3-BE29-10019AEF50B6",
+      "predicate": "follows",
+      "object": "Check amount in stock",
+      "object_id": "sid-6736C11B-FBDD-41D9-A042-B90B24CE1AFE"
+    },
+    {
+      "subject": "Start building",
+      "subject_id": "sid-44576601-1AA1-43A3-BE29-10019AEF50B6",
+      "predicate": "follows",
+      "object": "Continue building",
+      "object_id": "sid-35B30898-6D0A-45B0-BE79-93A840C72F61"
+    },
+    {
+      "subject": "Continue building",
+      "subject_id": "sid-35B30898-6D0A-45B0-BE79-93A840C72F61",
+      "predicate": "follows",
+      "object": "Contract project ends ",
+      "object_id": "sid-02B05052-9527-4889-9A92-515E8B1BC0E1"
+    }
+  ],
+  "matches": {
+    "Check amount in stock": {
+      "match": "part.in_stock",
+      "score": 0.4787
+    },
+    "Continue building": {
+      "match": "part.ordered",
+      "score": 0.1364
+    },
+    "Continue order normally": {
+      "match": "part.ordered",
+      "score": 0.3459
+    },
+    "Contract project ends ": {
+      "match": "part.out_of_stock",
+      "score": 0.1625
+    },
+    "Contract project starts ": {
+      "match": "shop.selected",
+      "score": 0.1622
+    },
+    "Create order list": {
+      "match": "part.ordered",
+      "score": 0.386
+    },
+    "Enough parts available": {
+      "match": "part.low_stock",
+      "score": 0.5138
+    },
+    "Order from one shop": {
+      "match": "shop.selected",
+      "score": 0.5274
+    },
+    "Order from several shops": {
+      "match": "shop.selected",
+      "score": 0.5126
+    },
+    "Order the cheapest": {
+      "match": "part.ordered",
+      "score": 0.3732
+    },
+    "Order the fastest": {
+      "match": "part.ordered",
+      "score": 0.4298
+    },
+    "Parts arrive ": {
+      "match": "part.arrived",
+      "score": 0.7843
+    },
+    "Query web shops": {
+      "match": "shop.queried",
+      "score": 0.6409
+    },
+    "Start building": {
+      "match": "part.ordered",
+      "score": 0.1703
+    },
+    "Write complaint mail to friends": {
+      "match": "mail.sent",
+      "score": 0.4556
+    }
+  },
+  "process_graph": [
+    {
+      "from": "shop.selected",
+      "to": "shop.queried",
+      "activity_from": "Contract project starts ",
+      "activity_to": "Query web shops"
+    },
+    {
+      "from": "shop.queried",
+      "to": "part.ordered",
+      "activity_from": "Query web shops",
+      "activity_to": "Create order list"
+    },
+    {
+      "from": "mail.sent",
+      "to": "part.ordered",
+      "activity_from": "Write complaint mail to friends",
+      "activity_to": "Create order list"
+    },
+    {
+      "from": "part.ordered",
+      "to": "part.ordered",
+      "activity_from": "Order the cheapest",
+      "activity_to": "Create order list"
+    },
+    {
+      "from": "shop.selected",
+      "to": "part.arrived",
+      "activity_from": "Order from one shop",
+      "activity_to": "Parts arrive "
+    },
+    {
+      "from": "part.in_stock",
+      "to": "part.ordered",
+      "activity_from": "Check amount in stock",
+      "activity_to": "Order the fastest"
+    },
+    {
+      "from": "part.in_stock",
+      "to": "part.ordered",
+      "activity_from": "Check amount in stock",
+      "activity_to": "Order the cheapest"
+    },
+    {
+      "from": "part.in_stock",
+      "to": "part.low_stock",
+      "activity_from": "Check amount in stock",
+      "activity_to": "Enough parts available"
+    },
+    {
+      "from": "part.ordered",
+      "to": "shop.selected",
+      "activity_from": "Create order list",
+      "activity_to": "Order from several shops"
+    },
+    {
+      "from": "part.ordered",
+      "to": "shop.selected",
+      "activity_from": "Create order list",
+      "activity_to": "Order from one shop"
+    },
+    {
+      "from": "shop.selected",
+      "to": "part.arrived",
+      "activity_from": "Order from several shops",
+      "activity_to": "Parts arrive "
+    },
+    {
+      "from": "part.low_stock",
+      "to": "part.out_of_stock",
+      "activity_from": "Enough parts available",
+      "activity_to": "Contract project ends "
+    },
+    {
+      "from": "part.arrived",
+      "to": "part.ordered",
+      "activity_from": "Parts arrive ",
+      "activity_to": "Start building"
+    },
+    {
+      "from": "part.ordered",
+      "to": "part.ordered",
+      "activity_from": "Order the fastest",
+      "activity_to": "Continue order normally"
+    },
+    {
+      "from": "part.ordered",
+      "to": "mail.sent",
+      "activity_from": "Order the fastest",
+      "activity_to": "Write complaint mail to friends"
+    },
+    {
+      "from": "part.ordered",
+      "to": "part.ordered",
+      "activity_from": "Continue order normally",
+      "activity_to": "Create order list"
+    },
+    {
+      "from": "part.ordered",
+      "to": "part.in_stock",
+      "activity_from": "Start building",
+      "activity_to": "Check amount in stock"
+    },
+    {
+      "from": "part.ordered",
+      "to": "part.ordered",
+      "activity_from": "Start building",
+      "activity_to": "Continue building"
+    },
+    {
+      "from": "part.ordered",
+      "to": "part.out_of_stock",
+      "activity_from": "Continue building",
+      "activity_to": "Contract project ends "
+    }
+  ],
+  "errors": [
+    "precondition: parse failed, raw response='{\\n  \"part.ordered\": {\"precondition\": \"INITIAL\", \"quote\": null},\\n  \"part.delivered\": {\"precondition\": \"part.ordered\", \"quote\": null},\\n  \"part.arrived\": {\"precondition\": \"part.delivered\", \"quote\": null},\\n  \"part.in_stock\": {\"precondition\": \"part.arrived\", \"quote\": null},\\n  \"shop.queried\": {\"precondition\": \"INITIAL\", \"quote\": null},\\n  \"shop.selected\": {\"precondition\": \"shop.queried\", \"quote\": null},\\n  \"shop.used\": {\"precondition\": \"shop.selected\", \"quote\": null},\\n  \"stock.low\": {\"precondition\": \"part.in_stock\", \"quote\": null},\\n  \"stock.zero\": {\"precondition\": \"part.in_stock\", \"quote\": null},\\n  \"mail.sent\": {\"precondition\": \"part.in_stock\", \"quote\": null},\\n  \"part.reordered\": {\"precondition\": \"part.in_stock AND (stock.low OR stock.zero)\", \"quote\": \"If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below 3 you reorder again (the fastest). If it is zero, you write a mail to your friends, complaining about the webshops.\"},\\n  \"part.out_of_stock\": {\"precondition\": \"part.reordered\", \"quote\": null},\\n  \"part.low_stock\": {\"precondition\": \"part.reordered\", \"quote\": null},\\n  \"part.zero_stock\": {\"precondition\": \"part.reordered\", \"quote\": null},\\n  \"part.in_stock\": {\"precondition\": \"part.arrived\", \"quote\": null},\\n  \"stock.low\": {\"precondition\": \"part.in_stock\", \"quote\": \"If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below 3 you reorder again (the fastest). If it is zero, you write a mail to your friends, complaining about the webshops.\"},\\n  \"stock.zero\": {\"precondition\": \"part.in_stock\", \"quote\": \"If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below 3 you reorder again (the fastest). If it is zero, you write a mail to your friends, complaining about the webshops.\"},\\n  \"mail.sent\": {\"precondition\": \"part.in_stock\", \"quote\": \"If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below 3 you reorder again (the fastest). If it is zero, you write a mail to your friends, complaining about the webshops.\"},\\n  \"shop.queried\": {\"precondition\": \"INITIAL\", \"quote\": null},\\n  \"shop.selected\": {\"precondition\": \"shop.queried\", \"quote\": null},\\n  \"shop.used\": {\"precondition\": \"shop.selected\", \"quote\": null},\\n  \"part.arrived\": {\"precondition\": \"part.delivered\", \"quote\": null},\\n  \"part.delivered\": {\"precondition\": \"part.ordered\", \"quote\": null},\\n  \"part.ordered\": {\"precondition\": \"INITIAL\", \"quote\": null},\\n  \"stock.low\": {\"precondition\": \"part.in_stock\", \"quote\": \"If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below 3 you reorder again (the fastest). If it is zero, you write a mail to your friends, complaining about the webshops.\"},\\n  \"stock.zero\": {\"precondition\": \"part.in_stock\", \"quote\": \"If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below 3 you reorder again (the fastest). If it is zero, you write a mail to your friends, complaining about the webshops.\"},\\n  \"mail.sent\": {\"precondition\": \"part.in_stock\", \"quote\": \"If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below 3 you reorder again (the fastest). If it is zero, you write a mail to your friends, complaining about the webshops.\"},\\n  \"part.reordered\": {\"precondition\": \"part.in_stock AND (stock.low OR stock.zero)\", \"quote\": \"If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below 3 you reorder again (the fastest). If it is zero, you write a mail to your friends, complaining about the webshops.\"},\\n  \"part.out_of_stock\": {\"precondition\": \"part.reordered\", \"quote\": null},\\n  \"part.low_stock\": {\"precondition\": \"part.reordered\", \"quote\": null},\\n  \"part.zero_stock\": {\"precondition\": \"part.reordered\", \"quote\": null},\\n  \"part.in_stock\": {\"precondition\": \"part.arrived\", \"quote\": null},\\n  \"stock.low\": {\"precondition\": \"part.in_stock\", \"quote\": \"If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below 3 you reorder again (the fastest). If it is zero, you write a mail to your friends, complaining about the webshops.\"},\\n  \"stock.zero\": {\"precondition\": \"part.in_stock\", \"quote\": \"If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below 3 you reorder again (the fastest). If it is zero, you write a mail to your friends, complaining about the webshops.\"},\\n  \"mail.sent\": {\"precondition\": \"part.in_stock\", \"quote\": \"If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below 3 you reorder again (the fastest). If it is zero, you write a mail to your friends, complaining about the webshops.\"},\\n  \"shop.queried\": {\"precondition\": \"INITIAL\", \"quote\": null},\\n  \"shop.selected\": {\"precondition\": \"shop.queried\", \"quote\": null},\\n  \"shop.used\": {\"precondition\": \"shop.selected\", \"quote\": null},\\n  \"part.arrived\": {\"precondition\": \"part.delivered\", \"quote\": null},\\n  \"part.delivered\": {\"precondition\": \"part.ordered\", \"quote\": null},\\n  \"part.ordered\": {\"precondition\": \"INITIAL\", \"quote\": null},\\n  \"stock.low\": {\"precondition\": \"part.in_stock\", \"quote\": \"If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below 3 you reorder again (the fastest). If it is zero, you write a mail to your friends, complaining about the webshops.\"},\\n  \"stock.zero\": {\"precondition\": \"part.in_stock\", \"quote\": \"If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below 3 you reorder again (the fastest). If it is zero, you write a mail to your friends, complaining about the webshops.\"},\\n  \"mail.sent\": {\"precondition\": \"part.in_stock\", \"quote\": \"If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below 3 you reorder again (the fastest). If it is zero, you write a mail to your friends, complaining about the webshops.\"},\\n  \"part.reordered\": {\"precondition\": \"part.in_stock AND (stock.low OR stock.zero)\", \"quote\": \"If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below 3 you reorder again (the fastest). If it is zero, you write a mail to your friends, complaining about the webshops.\"},\\n  \"part.out_of_stock\": {\"precondition\": \"part.reordered\", \"quote\": null},\\n  \"part.low_stock\": {\"precondition\": \"part.reordered\", \"quote\": null},\\n  \"part.zero_stock\": {\"precondition\": \"part.reordered\", \"quote\": null},\\n  \"part.in_stock\": {\"precondition\": \"part.arrived\", \"quote\": null},\\n  \"stock.low\": {\"precondition\": \"part.in_stock\", \"quote\": \"If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below 3 you reorder again (the fastest). If it is zero, you write a mail to your friends, complaining about the webshops.\"},\\n  \"stock.zero\": {\"precondition\": \"part.in_stock\", \"quote\": \"If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below 3 you reorder again (the fastest). If it is zero, you write a mail to your friends, complaining about the webshops.\"},\\n  \"mail.sent\": {\"precondition\": \"part.in_stock\", \"quote\": \"If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below 3 you reorder again (the fastest). If it is zero, you write a mail to your friends, complaining about the webshops.\"},\\n  \"shop.queried\": {\"precondition\": \"INITIAL\", \"quote\": null},\\n  \"shop.selected\": {\"precondition\": \"shop.queried\", \"quote\": null},\\n  \"shop.used\": {\"precondition\": \"shop.selected\", \"quote\": null},\\n  \"part.arrived\": {\"precondition\": \"part.delivered\", \"quote\": null},\\n  \"part.delivered\": {\"precondition\": \"part.ordered\", \"quote\": null},\\n  \"part.ordered\": {\"precondition\": \"INITIAL\", \"quote\": null},\\n  \"stock.low\": {\"precondition\": \"part.in_stock\", \"quote\": \"If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below 3 you reorder again (the fastest). If it is zero, you write a mail to your friends, complaining about the webshops.\"},\\n  \"stock.zero\": {\"precondition\": \"part.in_stock\", \"quote\": \"If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below 3 you reorder again (the fastest). If it is zero, you write a mail to your friends, complaining about the webshops.\"},\\n  \"mail.sent\": {\"precondition\": \"part.in_stock\", \"quote\": \"If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below 3 you reorder again (the fastest). If it is zero, you write a mail to your friends, complaining about the webshops.\"},\\n  \"part.reordered\": {\"precondition\": \"part.in_stock AND (stock.low OR stock.zero)\", \"quote\": \"If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below 3 you reorder again (the fastest). If it is zero, you write a mail to your friends, complaining about the webshops.\"},\\n  \"part.out_of_stock\": {\"precondition\": \"part.reordered\", \"quote\": null},\\n  \"part.low_stock\": {\"precondition\": \"part.reordered\", \"quote\": null},\\n  \"part.zero_stock\": {\"precondition\": \"part.reordered\", \"quote\": null},\\n  \"part.in_stock\": {\"precondition\": \"part.arrived\", \"quote\": null},\\n  \"stock.low\": {\"precondition\": \"part.in_stock\", \"quote\": \"If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below 3 you reorder again (the fastest). If it is zero, you write a mail to your friends, complaining about the webshops.\"},\\n  \"stock.zero\": {\"precondition\": \"part.in_stock\", \"quote\": \"If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below 3 you reorder again (the fastest). If it is zero, you write a mail to your friends, complaining about the webshops.\"},\\n  \"mail.sent\": {\"precondition\": \"part.in_stock\", \"quote\": \"If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below 3 you reorder again (the fastest). If it is zero, you write a mail to your friends, complaining about the webshops.\"},\\n  \"shop.queried\": {\"precondition\": \"INITIAL\", \"quote\": null},\\n  \"shop.selected\": {\"precondition\": \"shop.queried\", \"quote\": null},\\n  \"shop.used\": {\"precondition\": \"shop.selected\", \"quote\": null},\\n  \"part.arrived\": {\"precondition\": \"part.delivered\", \"quote\": null},\\n  \"part.delivered\": {\"precondition\": \"part.ordered\", \"quote\": null},\\n  \"part.ordered\": {\"precondition\": \"INITIAL\", \"quote\": null},\\n  \"stock.low\": {\"precondition\": \"part.in_stock\", \"quote\": \"If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below 3 you reorder again (the fastest). If it is zero, you write a mail to your friends, complaining about the webshops.\"},\\n  \"stock.zero\": {\"precondition\": \"part.in_stock\", \"quote\": \"If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below 3 you reorder again (the fastest). If it is zero, you write a mail to your friends, complaining about the webshops.\"},\\n  \"mail.sent\": {\"precondition\": \"part.in_stock\", \"quote\": \"If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below 3 you reorder again (the fastest). If it is zero, you write a mail to your friends, complaining about the webshops.\"},\\n  \"part.reordered\": {\"precondition\": \"part.in_stock AND (stock.low OR stock.zero)\", \"quote\": \"If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below 3 you reorder again (the fastest). If it is zero, you write a mail to your friends, complaining about the webshops.\"},\\n  \"part.out_of_stock\": {\"precondition\": \"part.reordered\", \"quote\": null},\\n  \"part.low_stock\": {\"precondition\": \"part.reordered\", \"quote\": null},\\n  \"part.zero_stock\": {\"precondition\": \"part.reordered\", \"quote\": null},\\n  \"part.in_stock\": {\"precondition\": \"part.arrived\", \"quote\": null},\\n  \"stock.low\": {\"precondition\": \"part.in_stock\", \"quote\": \"If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below 3 you reorder again (the fastest). If it is zero, you write a mail to your friends, complaining about the webshops.\"},\\n  \"stock.zero\": {\"precondition\": \"part.in_stock\", \"quote\": \"If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below 3 you reorder again (the fastest). If it is zero, you write a mail to your friends, complaining about the webshops.\"},\\n  \"mail.sent\": {\"precondition\": \"part.in_stock\", \"quote\": \"If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below 3 you reorder again (the fastest). If it is zero, you write a mail to your friends, complaining about the webshops.\"},\\n  \"shop.queried\": {\"precondition\": \"INITIAL\", \"quote\": null},\\n  \"shop.selected\": {\"precondition\": \"shop.queried\", \"quote\": null},\\n  \"shop.used\": {\"precondition\": \"shop.selected\", \"quote\": null},\\n  \"part.arrived\": {\"precondition\": \"part.delivered\", \"quote\": null},\\n  \"part.delivered\": {\"precondition\": \"part.ordered\", \"quote\": null},\\n  \"part.ordered\": {\"precondition\": \"INITIAL\", \"quote\": null},\\n  \"stock.low\": {\"precondition\": \"part.in_stock\", \"quote\": \"If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below 3 you reorder again (the fastest). If it is zero, you write a mail to your friends, complaining about the webshops.\"},\\n  \"stock.zero\": {\"precondition\": \"part.in_stock\", \"quote\": \"If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below 3 you reorder again (the fastest). If it is zero, you write a mail to your friends, complaining about the webshops.\"},\\n  \"mail.sent\": {\"precondition\": \"part.in_stock\", \"quote\": \"If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below 3 you reorder again (the fastest). If it is zero, you write a mail to your friends, complaining about the webshops.\"},\\n  \"part.reordered\": {\"precondition\": \"part.in_stock AND (stock.low OR stock.zero)\", \"quote\": \"If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below 3 you reorder again (the fastest). If it is zero, you write a mail to your friends, complaining about the webshops.\"},\\n  \"part.out_of_stock\": {\"precondition\": \"part.reordered\", \"quote\": null},\\n  \"part.low_stock\": {\"precondition\": \"part.reordered\", \"quote\": null},\\n  \"part.zero_stock\": {\"precondition\": \"part.reordered\", \"quote\": null},\\n  \"part.in_stock\": {\"precondition\": \"part.arrived\", \"quote\": null},\\n  \"stock.low\": {\"precondition\": \"part.in_stock\", \"quote\": \"If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below 3 you reorder again (the fastest). If it is zero, you write a mail to your friends, complaining about the webshops.\"},\\n  \"stock.zero\": {\"precondition\": \"part.in_stock\", \"quote\": \"If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below 3 you reorder again (the fastest). If it is zero, you write a mail to your friends, complaining about the webshops.\"},\\n  \"mail.sent\": {\"precondition\": \"part.in_stock\", \"quote\": \"If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below 3 you reorder again (the fastest). If it is zero, you write a mail to your friends, complaining about the webshops.\"},\\n  \"shop.queried\": {\"precondition\": \"INITIAL\", \"quote\": null},\\n  \"shop.selected\": {\"precondition\": \"shop.queried\", \"quote\": null},\\n  \"shop.used\": {\"precondition\": \"shop.selected\", \"quote\": null},\\n  \"part.arrived\": {\"precondition\": \"part.delivered\", \"quote\": null},\\n  \"part.delivered\": {\"precondition\": \"part.ordered\", \"quote\": null},\\n  \"part.ordered\": {\"precondition\": \"INITIAL\", \"quote\": null},\\n  \"stock.low\": {\"precondition\": \"part.in_stock\", \"quote\": \"If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below 3 you reorder again (the fastest). If it is zero, you write a mail to your friends, complaining about the webshops.\"},\\n  \"stock.zero\": {\"precondition\": \"part.in_stock\", \"quote\": \"If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below 3 you reorder again (the fastest). If it is zero, you write a mail to your friends, complaining about the webshops.\"},\\n  \"mail.sent\": {\"precondition\": \"part.in_stock\", \"quote\": \"If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below 3 you reorder again (the fastest). If it is zero, you write a mail to your friends, complaining about the webshops.\"},\\n  \"part.reordered\": {\"precondition\": \"part.in_stock AND (stock.low OR stock.zero)\", \"quote\": \"If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below 3 you reorder again (the fastest). If it is zero, you write a mail to your friends, complaining about the webshops.\"},\\n  \"part.out_of_stock\": {\"precondition\": \"part.reordered\", \"quote\": null},\\n  \"part.low_stock\": {\"precondition\": \"part.reordered\", \"quote\": null},\\n  \"part.zero_stock\": {\"precondition\": \"part.reordered\", \"quote\": null},\\n  \"part.in_stock\": {\"precondition\": \"part.arrived\", \"quote\": null},\\n  \"stock.low\": {\"precondition\": \"part.in_stock\", \"quote\": \"If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below 3 you reorder again (the fastest). If it is zero, you write a mail to your friends, complaining about the webshops.\"},\\n  \"stock.zero\": {\"precondition\": \"part.in_stock\", \"quote\": \"If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below 3 you reorder again (the fastest). If it is zero, you write a mail to your friends, complaining about the webshops.\"},\\n  \"mail.sent\": {\"precondition\": \"part.in_stock\", \"quote\": \"If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below 3 you reorder again (the fastest). If it is zero, you write a mail to your friends, complaining about the webshops.\"},\\n  \"shop.queried\": {\"precondition\": \"INITIAL\", \"quote\": null},\\n  \"shop.selected\": {\"precondition\": \"shop.queried\", \"quote\": null},\\n  \"shop.used\": {\"precondition\": \"shop.selected\", \"quote\": null},\\n  \"part.arrived\": {\"precondition\": \"part.delivered\", \"quote\": null},\\n  \"part.delivered\": {\"precondition\": \"part.ordered\", \"quote\": null},\\n  \"part.ordered\": {\"precondition\": \"INITIAL\", \"quote\": null},\\n  \"stock.low\": {\"precondition\": \"part.in_stock\", \"quote\": \"If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below 3 you reorder again (the fastest). If it is zero, you write a mail to your friends, complaining about the webshops.\"},\\n  \"stock.zero\": {\"precondition\": \"part.in_stock\", \"quote\": \"If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below 3 you reorder again (the fastest). If it is zero, you write a mail to your friends, complaining about the webshops.\"},\\n  \"mail.sent\": {\"precondition\": \"part.in_stock\", \"quote\": \"If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below 3 you reorder again (the fastest). If it is zero, you write a mail to your friends, complaining about the webshops.\"},\\n  \"part.reordered\": {\"precondition\": \"part.in_stock AND (stock.low OR stock.zero)\", \"quote\": \"If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below 3 you reorder again (the fastest). If it is zero, you write a mail to your friends, complaining about the webshops.\"},\\n  \"part.out_of_stock\": {\"precondition\": \"part.reordered\", \"quote\": null},\\n  \"part.low_stock\": {\"precondition\": \"part.reordered\", \"quote\": null},\\n  \"part.zero_stock\": {\"precondition\": \"part.reordered\", \"quote\": null},\\n  \"part.in_stock\": {\"precondition\": \"part.arrived\", \"quote\": null},\\n  \"stock.low\": {\"precondition\": \"part.in_stock\", \"quote\": \"If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below 3 you reorder again (the fastest). If it is zero, you write a mail to your friends, complaining about the webshops.\"},\\n  \"stock.zero\": {\"precondition\": \"part.in_stock\", \"quote\": \"If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below 3 you reorder again (the fastest). If it is zero, you write a mail to your friends, complaining about the webshops.\"},\\n  \"mail.sent\": {\"precondition\": \"part.in_stock\", \"quote\": \"If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below 3 you reorder again (the fastest). If it is zero, you write a mail to your friends, complaining about the webshops.\"},\\n  \"shop.queried\": {\"precondition\": \"INITIAL\", \"quote\": null},\\n  \"shop.selected\": {\"precondition\": \"shop.queried\", \"quote\": null},\\n  \"shop.used\": {\"precondition\": \"shop.selected\", \"quote\": null},\\n  \"part.arrived\": {\"precondition\": \"part.delivered\", \"quote\": null},\\n  \"part.delivered\": {\"precondition\": \"part.ordered\", \"quote\": null},\\n  \"part.ordered\": {\"precondition\": \"INITIAL\", \"quote\": null},\\n  \"stock.low\": {\"precondition\": \"part.in_stock\", \"quote\": \"If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below 3 you reorder again (the fastest). If it is zero, you write a mail to your friends, complaining about the webshops.\"},\\n  \"stock.zero\": {\"precondition\": \"part.in_stock\", \"quote\": \"If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below 3 you reorder again (the fastest). If it is zero, you write a mail to your friends, complaining about the webshops.\"},\\n  \"mail.sent\": {\"precondition\": \"part.in_stock\", \"quote\": \"If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below 3 you reorder again (the fastest). If it is zero, you write a mail to your friends, complaining about the webshops.\"},\\n  \"part.reordered\": {\"precondition\": \"part.in_stock AND (stock.low OR stock.zero)\", \"quote\": \"If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below 3 you reorder again (the fastest). If it is zero, you write a mail to your friends, complaining about the webshops.\"},\\n  \"part.out_of_stock\": {\"precondition\": \"part.reordered\", \"quote\": null},\\n  \"part.low_stock\": {\"precondition\": \"part.reordered\", \"quote\": null},\\n  \"part.zero_stock\": {\"precondition\": \"part.reordered\", \"quote\": null},\\n  \"part.in_stock\": {\"precondition\": \"part.arrived\", \"quote\": null},\\n  \"stock.low\": {\"precondition\": \"part.in_stock\", \"quote\": \"If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below 3 you reorder again (the fastest). If it is zero, you write a mail to your friends, complaining about the webshops.\"},\\n  \"stock.zero\": {\"precondition\": \"part.in_stock\", \"quote\": \"If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below 3 you reorder again (the fastest). If it is zero, you write a mail to your friends, complaining about the webshops.\"},\\n  \"mail.sent\": {\"precondition\": \"part.in_stock\", \"quote\": \"If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below 3 you reorder again (the fastest). If it is zero, you write a mail to your friends, complaining about the webshops.\"},\\n  \"shop.queried\": {\"precondition\": \"INITIAL\", \"quote\": null},\\n  \"shop.selected\": {\"precondition\": \"shop.queried\", \"quote\": null},\\n  \"shop.used\": {\"precondition\": \"shop.selected\", \"quote\": null},\\n  \"part.arrived\": {\"precondition\": \"part.delivered\", \"quote\": null},\\n  \"part.delivered\": {\"precondition\": \"part.ordered\", \"quote\": null},\\n  \"part.ordered\": {\"precondition\": \"INITIAL\", \"quote\": null},\\n  \"stock.low\": {\"precondition\": \"part.in_stock\", \"quote\": \"If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below 3 you reorder again (the fastest). If it is zero, you write a mail to your friends, complaining about the webshops.\"},\\n  \"stock.zero\": {\"precondition\": \"part.in_stock\", \"quote\": \"If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below 3 you reorder again (the fastest). If it is zero, you write a mail to your friends, complaining about the webshops.\"},\\n  \"mail.sent\": {\"precondition\": \"part.in_stock\", \"quote\": \"If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below 3 you reorder again (the fastest). If it is zero, you write a mail to your friends, complaining about the webshops.\"},\\n  \"part.reordered\": {\"precondition\": \"part.in_stock AND (stock.low OR stock.zero)\", \"quote\": \"If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below 3 you reorder again (the fastest). If it is zero, you write a mail to your friends, complaining about the webshops.\"},\\n  \"part.out_of_stock\": {\"precondition\": \"part.reordered\", \"quote\": null},\\n  \"part.low_stock\": {\"precondition\": \"part.reordered\", \"quote\": null},\\n  \"part.zero_stock\": {\"precondition\": \"part.reordered\", \"quote\": null},\\n  \"part.in_stock\": {\"precondition\": \"part.arrived\", \"quote\": null},\\n  \"stock.low\": {\"precondition\": \"part.in_stock\", \"quote\": \"If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below 3 you reorder again (the fastest). If it is zero, you write a mail to your friends, complaining about the webshops.\"},\\n  \"stock.zero\": {\"precondition\": \"part.in_stock\", \"quote\": \"If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below 3 you reorder again (the fastest). If it is zero, you write a mail to your friends, complaining about the webshops.\"},\\n  \"mail.sent\": {\"precondition\": \"part.in_stock\", \"quote\": \"If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below 3 you reorder again (the fastest). If it is zero, you write a mail to your friends, complaining about the webshops.\"},\\n  \"shop.queried\": {\"precondition\": \"INITIAL\", \"quote\": null},\\n  \"shop.selected\": {\"precondition\": \"shop.queried\", \"quote\": null},\\n  \"shop.used\": {\"precondition\": \"shop.selected\", \"quote\": null},\\n  \"part.arrived\": {\"precondition\": \"part.delivered\", \"quote\": null},\\n  \"part.delivered\": {\"precondition\": \"part.ordered\", \"quote\": null},\\n  \"part.ordered\": {\"precondition\": \"INITIAL\", \"quote\": null},\\n  \"stock.low\": {\"precondition\": \"part.in_stock\", \"quote\": \"If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below 3 you reorder again (the fastest). If it is zero, you write a mail to your friends, complaining about the webshops.\"},\\n  \"stock.zero\": {\"precondition\": \"part.in_stock\", \"quote\": \"If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below 3 you reorder again (the fastest). If it is zero, you write a mail to your friends, complaining about the webshops.\"},\\n  \"mail.sent\": {\"precondition\": \"part.in_stock\", \"quote\": \"If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below 3 you reorder again (the fastest). If it is zero, you write a mail to your friends, complaining about the webshops.\"},\\n  \"part.reordered\": {\"precondition\": \"part.in_stock AND (stock.low OR stock.zero)\", \"quote\": \"If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below 3 you reorder again (the fastest). If it is zero, you write a mail to your friends, complaining about the webshops.\"},\\n  \"part.out_of_stock\": {\"precondition\": \"part.reordered\", \"quote\": null},\\n  \"part.low_stock\": {\"precondition\": \"part.reordered\", \"quote\": null},\\n  \"part.zero_stock\": {\"precondition\": \"part.reordered\", \"quote\": null},\\n  \"part.in_stock\": {\"precondition\": \"part.arrived\", \"quote\": null},\\n  \"stock.low\": {\"precondition\": \"part.in_stock\", \"quote\": \"If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below 3 you reorder again (the fastest). If it is zero, you write a mail to your friends, complaining about the webshops.\"},\\n  \"stock.zero\": {\"precondition\": \"part.in_stock\", \"quote\": \"If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below 3 you reorder again (the fastest). If it is zero, you write a mail to your friends, complaining about the webshops.\"},\\n  \"mail.sent\": {\"precondition\": \"part.in_stock\", \"quote\": \"If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below 3 you reorder again (the fastest). If it is zero, you write a mail to your friends, complaining about the webshops.\"},\\n  \"shop.queried\": {\"precondition\": \"INITIAL\", \"quote\": null},\\n  \"shop.selected\": {\"precondition\": \"shop.queried\", \"quote\": null},\\n  \"shop.used\": {\"precondition\": \"shop.selected\", \"quote\": null},\\n  \"part.arrived\": {\"precondition\": \"part.delivered\", \"quote\": null},\\n  \"part.delivered\": {\"precondition\": \"part.ordered\", \"quote\": null},\\n  \"part.ordered\": {\"precondition\": \"INITIAL\", \"quote\": null},\\n  \"stock.low\": {\"precondition\": \"part.in_stock\", \"quote\": \"If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below 3 you reorder again (the fastest). If it is zero, you write a mail to your friends, complaining about the webshops.\"},\\n  \"stock.zero\": {\"precondition\": \"part.in_stock\", \"quote\": \"If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below 3 you reorder again (the fastest). If it is zero, you write a mail to your friends, complaining about the webshops.\"},\\n  \"mail.sent\": {\"precondition\": \"part.in_stock\", \"quote\": \"If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below 3 you reorder again (the fastest). If it is zero, you write a mail to your friends, complaining about the webshops.\"},\\n  \"part.reordered\": {\"precondition\": \"part.in_stock AND (stock.low OR stock.zero)\", \"quote\": \"If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below 3 you reorder again (the fastest). If it is zero, you write a mail to your friends, complaining about the webshops.\"},\\n  \"part.out_of_stock\": {\"precondition\": \"part.reordered\", \"quote\": null},\\n  \"part.low_stock\": {\"precondition\": \"part.reordered\", \"quote\": null},\\n  \"part.zero_stock\": {\"precondition\": \"part.reordered\", \"quote\": null},\\n  \"part.in_stock\": {\"precondition\": \"part.arrived\", \"quote\": null},\\n  \"stock.low\": {\"precondition\": \"part.in_stock\", \"quote\": \"If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below 3 you reorder again (the fastest). If it is zero, you write a mail to your friends, complaining about the webshops.\"},\\n  \"stock.zero\": {\"precondition\": \"part.in_stock\", \"quote\": \"If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below 3 you reorder again (the fastest). If it is zero, you write a mail to your friends, complaining about the webshops.\"},\\n  \"mail.sent\": {\"precondition\": \"part.in_stock\", \"quote\": \"If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below'",
+    "graph_construction: 'validated_preconditions'",
+    "alignment: 'reference_graph'",
+    "report: 'alignment'"
+  ]
+}

@@ -1,0 +1,807 @@
+{
+  "case_name": "R_j04",
+  "text": "Category: Repair and Service\nTitle: Car Service\n\nThe police has a new app to remind you of your car service. The process is\nstarted after a successful service. When a service is necessary, the system\nchecks if your car is still registered. If it is registered, you are notified.\nIf you do not go to the service, you are fined after 30 days. At the car\nservice facility the mechanic enters the problems of your car for reference.\nWhile you wait (can take several days), you get status updates via email).\nYou can pay through the app, when the repair is done. The mechanic enters\nthat the repair was successful and you got your \"Pickerl\". The mechanic enters\nthe time for you next service.\n",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "llama-3.1-8b",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "llama-3.1-8b",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/text_and_bpmn/bpmn/R_j04/4.bpmn2.xml",
+  "candidates": {
+    "car_service": [
+      "started",
+      "necessary",
+      "registered",
+      "fined",
+      "done",
+      "successful",
+      "next"
+    ],
+    "car": [
+      "registered",
+      "fined",
+      "done",
+      "successful",
+      "next"
+    ],
+    "car_service_facility": [
+      "started",
+      "necessary",
+      "registered",
+      "fined",
+      "done",
+      "successful",
+      "next"
+    ],
+    "mechanic": [
+      "successful",
+      "next"
+    ],
+    "app": [
+      "successful"
+    ],
+    "repair": [
+      "done",
+      "successful"
+    ],
+    "service": [
+      "started",
+      "necessary",
+      "registered",
+      "fined",
+      "done",
+      "successful",
+      "next"
+    ]
+  },
+  "validation_report": {
+    "car_service": {
+      "f_lex": "ENTITY",
+      "kept": true
+    },
+    "car": {
+      "f_lex": "ENTITY",
+      "kept": true
+    },
+    "car_service_facility": {
+      "f_lex": "ENTITY",
+      "kept": true
+    },
+    "mechanic": {
+      "f_lex": "ACTOR",
+      "kept": false
+    },
+    "app": {
+      "f_lex": "INDETERMINATE",
+      "kept": true
+    },
+    "repair": {
+      "f_lex": "ENTITY",
+      "kept": true
+    },
+    "service": {
+      "f_lex": "ENTITY",
+      "kept": true
+    }
+  },
+  "state_space": {
+    "car_service": [
+      "started",
+      "necessary",
+      "registered",
+      "fined",
+      "done",
+      "successful",
+      "next"
+    ],
+    "car": [
+      "registered",
+      "fined",
+      "done",
+      "successful",
+      "next"
+    ],
+    "car_service_facility": [
+      "started",
+      "necessary",
+      "registered",
+      "fined",
+      "done",
+      "successful",
+      "next"
+    ],
+    "app": [
+      "successful"
+    ],
+    "repair": [
+      "done",
+      "successful"
+    ],
+    "service": [
+      "started",
+      "necessary",
+      "registered",
+      "fined",
+      "done",
+      "successful",
+      "next"
+    ]
+  },
+  "dfg_edges": [
+    {
+      "source_id": "sid-ED12C75E-438C-40D9-BE9F-DB0770628E68",
+      "source_label": "Successful service",
+      "target_id": "sid-D5A731FF-1755-466A-A47E-4B2E270BD19F",
+      "target_label": "Notify owner",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "Yes",
+        "ExclusiveGateway",
+        "Yes"
+      ]
+    },
+    {
+      "source_id": "sid-ED12C75E-438C-40D9-BE9F-DB0770628E68",
+      "source_label": "Successful service",
+      "target_id": "sid-54E4137A-4235-487C-AC75-EC8C7BEA9CD4",
+      "target_label": "Repair sucessful / aborted",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "Yes",
+        "ExclusiveGateway",
+        "No"
+      ]
+    },
+    {
+      "source_id": "sid-ED12C75E-438C-40D9-BE9F-DB0770628E68",
+      "source_label": "Successful service",
+      "target_id": "sid-E1539B9C-00DD-4000-911B-09570597470F",
+      "target_label": "Use car normally",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "No"
+      ]
+    },
+    {
+      "source_id": "sid-7EB6F0E7-92BC-4B41-8F70-D690F9F14535",
+      "source_label": "Receive funds in person",
+      "target_id": "sid-A005574E-3E39-41A4-83BE-3BB8212A25BA",
+      "target_label": "Update repair status to \"done\"",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-8EF56DC3-D153-45F5-A94E-6947D03BD511",
+      "source_label": "30 days",
+      "target_id": "sid-634A2122-D00C-42B1-B7A0-D2E15A0E83D4",
+      "target_label": "Fine owner",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-79240C44-4326-42E5-BF55-66DD7D371020",
+      "source_label": "Car arrives",
+      "target_id": "sid-99742F4A-25D2-43B6-A46E-DD6F141E2961",
+      "target_label": "Enter problems",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-79240C44-4326-42E5-BF55-66DD7D371020",
+      "source_label": "Car arrives",
+      "target_id": "sid-7268A530-38EE-42F5-A146-2AD20887972C",
+      "target_label": "Car repaired",
+      "gateway_context": [
+        "ParallelGateway",
+        "ExclusiveGateway",
+        "EventBasedGateway"
+      ]
+    },
+    {
+      "source_id": "sid-79240C44-4326-42E5-BF55-66DD7D371020",
+      "source_label": "Car arrives",
+      "target_id": "sid-D6ACB73B-76B7-464B-9F30-077413447D2B",
+      "target_label": "1 day",
+      "gateway_context": [
+        "ParallelGateway",
+        "ExclusiveGateway",
+        "EventBasedGateway"
+      ]
+    },
+    {
+      "source_id": "sid-8B1CB8FC-386A-4D2B-8EFA-FFED4B68E463",
+      "source_label": "Repair the car",
+      "target_id": "sid-7EB6F0E7-92BC-4B41-8F70-D690F9F14535",
+      "target_label": "Receive funds in person",
+      "gateway_context": [
+        "ParallelGateway",
+        "ExclusiveGateway",
+        "No"
+      ]
+    },
+    {
+      "source_id": "sid-8B1CB8FC-386A-4D2B-8EFA-FFED4B68E463",
+      "source_label": "Repair the car",
+      "target_id": "sid-35D44EC1-79A5-4520-9402-AF744AB762F4",
+      "target_label": "Receive funds via app",
+      "gateway_context": [
+        "ParallelGateway",
+        "ExclusiveGateway",
+        "Yes"
+      ]
+    },
+    {
+      "source_id": "sid-A005574E-3E39-41A4-83BE-3BB8212A25BA",
+      "source_label": "Update repair status to \"done\"",
+      "target_id": "sid-8EA9B658-D3CB-4B8F-877B-765093643A7E",
+      "target_label": "Give \"Pickerl\"",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-028E78D4-8C6B-40DF-99FB-A857373FC8E1",
+      "source_label": "Enter the date of next service",
+      "target_id": "sid-54E4137A-4235-487C-AC75-EC8C7BEA9CD4",
+      "target_label": "Repair sucessful / aborted",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-99742F4A-25D2-43B6-A46E-DD6F141E2961",
+      "source_label": "Enter problems",
+      "target_id": "sid-8B1CB8FC-386A-4D2B-8EFA-FFED4B68E463",
+      "target_label": "Repair the car",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-D5A1C7DA-F9F1-4345-830C-D68ECC0883E7",
+      "source_label": "Send status updates via mail",
+      "target_id": "sid-7268A530-38EE-42F5-A146-2AD20887972C",
+      "target_label": "Car repaired",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "EventBasedGateway"
+      ]
+    },
+    {
+      "source_id": "sid-D5A1C7DA-F9F1-4345-830C-D68ECC0883E7",
+      "source_label": "Send status updates via mail",
+      "target_id": "sid-D6ACB73B-76B7-464B-9F30-077413447D2B",
+      "target_label": "1 day",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "EventBasedGateway"
+      ]
+    },
+    {
+      "source_id": "sid-7268A530-38EE-42F5-A146-2AD20887972C",
+      "source_label": "Car repaired",
+      "target_id": "sid-7EB6F0E7-92BC-4B41-8F70-D690F9F14535",
+      "target_label": "Receive funds in person",
+      "gateway_context": [
+        "ParallelGateway",
+        "ExclusiveGateway",
+        "No"
+      ]
+    },
+    {
+      "source_id": "sid-7268A530-38EE-42F5-A146-2AD20887972C",
+      "source_label": "Car repaired",
+      "target_id": "sid-35D44EC1-79A5-4520-9402-AF744AB762F4",
+      "target_label": "Receive funds via app",
+      "gateway_context": [
+        "ParallelGateway",
+        "ExclusiveGateway",
+        "Yes"
+      ]
+    },
+    {
+      "source_id": "sid-35D44EC1-79A5-4520-9402-AF744AB762F4",
+      "source_label": "Receive funds via app",
+      "target_id": "sid-A005574E-3E39-41A4-83BE-3BB8212A25BA",
+      "target_label": "Update repair status to \"done\"",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-D5A731FF-1755-466A-A47E-4B2E270BD19F",
+      "source_label": "Notify owner",
+      "target_id": "sid-8EF56DC3-D153-45F5-A94E-6947D03BD511",
+      "target_label": "30 days",
+      "gateway_context": [
+        "EventBasedGateway"
+      ]
+    },
+    {
+      "source_id": "sid-D5A731FF-1755-466A-A47E-4B2E270BD19F",
+      "source_label": "Notify owner",
+      "target_id": "sid-79240C44-4326-42E5-BF55-66DD7D371020",
+      "target_label": "Car arrives",
+      "gateway_context": [
+        "EventBasedGateway"
+      ]
+    },
+    {
+      "source_id": "sid-D6ACB73B-76B7-464B-9F30-077413447D2B",
+      "source_label": "1 day",
+      "target_id": "sid-D5A1C7DA-F9F1-4345-830C-D68ECC0883E7",
+      "target_label": "Send status updates via mail",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-8EA9B658-D3CB-4B8F-877B-765093643A7E",
+      "source_label": "Give \"Pickerl\"",
+      "target_id": "sid-028E78D4-8C6B-40DF-99FB-A857373FC8E1",
+      "target_label": "Enter the date of next service",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-634A2122-D00C-42B1-B7A0-D2E15A0E83D4",
+      "source_label": "Fine owner",
+      "target_id": "sid-54E4137A-4235-487C-AC75-EC8C7BEA9CD4",
+      "target_label": "Repair sucessful / aborted",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-E1539B9C-00DD-4000-911B-09570597470F",
+      "source_label": "Use car normally",
+      "target_id": "sid-D5A731FF-1755-466A-A47E-4B2E270BD19F",
+      "target_label": "Notify owner",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "Yes",
+        "ExclusiveGateway",
+        "Yes"
+      ]
+    },
+    {
+      "source_id": "sid-E1539B9C-00DD-4000-911B-09570597470F",
+      "source_label": "Use car normally",
+      "target_id": "sid-54E4137A-4235-487C-AC75-EC8C7BEA9CD4",
+      "target_label": "Repair sucessful / aborted",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "Yes",
+        "ExclusiveGateway",
+        "No"
+      ]
+    },
+    {
+      "source_id": "sid-E1539B9C-00DD-4000-911B-09570597470F",
+      "source_label": "Use car normally",
+      "target_id": "sid-E1539B9C-00DD-4000-911B-09570597470F",
+      "target_label": "Use car normally",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "No"
+      ]
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "Successful service",
+      "subject_id": "sid-ED12C75E-438C-40D9-BE9F-DB0770628E68",
+      "predicate": "follows",
+      "object": "Notify owner",
+      "object_id": "sid-D5A731FF-1755-466A-A47E-4B2E270BD19F"
+    },
+    {
+      "subject": "Successful service",
+      "subject_id": "sid-ED12C75E-438C-40D9-BE9F-DB0770628E68",
+      "predicate": "follows",
+      "object": "Repair sucessful / aborted",
+      "object_id": "sid-54E4137A-4235-487C-AC75-EC8C7BEA9CD4"
+    },
+    {
+      "subject": "Successful service",
+      "subject_id": "sid-ED12C75E-438C-40D9-BE9F-DB0770628E68",
+      "predicate": "follows",
+      "object": "Use car normally",
+      "object_id": "sid-E1539B9C-00DD-4000-911B-09570597470F"
+    },
+    {
+      "subject": "Receive funds in person",
+      "subject_id": "sid-7EB6F0E7-92BC-4B41-8F70-D690F9F14535",
+      "predicate": "follows",
+      "object": "Update repair status to \"done\"",
+      "object_id": "sid-A005574E-3E39-41A4-83BE-3BB8212A25BA"
+    },
+    {
+      "subject": "30 days",
+      "subject_id": "sid-8EF56DC3-D153-45F5-A94E-6947D03BD511",
+      "predicate": "follows",
+      "object": "Fine owner",
+      "object_id": "sid-634A2122-D00C-42B1-B7A0-D2E15A0E83D4"
+    },
+    {
+      "subject": "Car arrives",
+      "subject_id": "sid-79240C44-4326-42E5-BF55-66DD7D371020",
+      "predicate": "follows",
+      "object": "Enter problems",
+      "object_id": "sid-99742F4A-25D2-43B6-A46E-DD6F141E2961"
+    },
+    {
+      "subject": "Car arrives",
+      "subject_id": "sid-79240C44-4326-42E5-BF55-66DD7D371020",
+      "predicate": "follows",
+      "object": "Car repaired",
+      "object_id": "sid-7268A530-38EE-42F5-A146-2AD20887972C"
+    },
+    {
+      "subject": "Car arrives",
+      "subject_id": "sid-79240C44-4326-42E5-BF55-66DD7D371020",
+      "predicate": "follows",
+      "object": "1 day",
+      "object_id": "sid-D6ACB73B-76B7-464B-9F30-077413447D2B"
+    },
+    {
+      "subject": "Repair the car",
+      "subject_id": "sid-8B1CB8FC-386A-4D2B-8EFA-FFED4B68E463",
+      "predicate": "follows",
+      "object": "Receive funds in person",
+      "object_id": "sid-7EB6F0E7-92BC-4B41-8F70-D690F9F14535"
+    },
+    {
+      "subject": "Repair the car",
+      "subject_id": "sid-8B1CB8FC-386A-4D2B-8EFA-FFED4B68E463",
+      "predicate": "follows",
+      "object": "Receive funds via app",
+      "object_id": "sid-35D44EC1-79A5-4520-9402-AF744AB762F4"
+    },
+    {
+      "subject": "Update repair status to \"done\"",
+      "subject_id": "sid-A005574E-3E39-41A4-83BE-3BB8212A25BA",
+      "predicate": "follows",
+      "object": "Give \"Pickerl\"",
+      "object_id": "sid-8EA9B658-D3CB-4B8F-877B-765093643A7E"
+    },
+    {
+      "subject": "Enter the date of next service",
+      "subject_id": "sid-028E78D4-8C6B-40DF-99FB-A857373FC8E1",
+      "predicate": "follows",
+      "object": "Repair sucessful / aborted",
+      "object_id": "sid-54E4137A-4235-487C-AC75-EC8C7BEA9CD4"
+    },
+    {
+      "subject": "Enter problems",
+      "subject_id": "sid-99742F4A-25D2-43B6-A46E-DD6F141E2961",
+      "predicate": "follows",
+      "object": "Repair the car",
+      "object_id": "sid-8B1CB8FC-386A-4D2B-8EFA-FFED4B68E463"
+    },
+    {
+      "subject": "Send status updates via mail",
+      "subject_id": "sid-D5A1C7DA-F9F1-4345-830C-D68ECC0883E7",
+      "predicate": "follows",
+      "object": "Car repaired",
+      "object_id": "sid-7268A530-38EE-42F5-A146-2AD20887972C"
+    },
+    {
+      "subject": "Send status updates via mail",
+      "subject_id": "sid-D5A1C7DA-F9F1-4345-830C-D68ECC0883E7",
+      "predicate": "follows",
+      "object": "1 day",
+      "object_id": "sid-D6ACB73B-76B7-464B-9F30-077413447D2B"
+    },
+    {
+      "subject": "Car repaired",
+      "subject_id": "sid-7268A530-38EE-42F5-A146-2AD20887972C",
+      "predicate": "follows",
+      "object": "Receive funds in person",
+      "object_id": "sid-7EB6F0E7-92BC-4B41-8F70-D690F9F14535"
+    },
+    {
+      "subject": "Car repaired",
+      "subject_id": "sid-7268A530-38EE-42F5-A146-2AD20887972C",
+      "predicate": "follows",
+      "object": "Receive funds via app",
+      "object_id": "sid-35D44EC1-79A5-4520-9402-AF744AB762F4"
+    },
+    {
+      "subject": "Receive funds via app",
+      "subject_id": "sid-35D44EC1-79A5-4520-9402-AF744AB762F4",
+      "predicate": "follows",
+      "object": "Update repair status to \"done\"",
+      "object_id": "sid-A005574E-3E39-41A4-83BE-3BB8212A25BA"
+    },
+    {
+      "subject": "Notify owner",
+      "subject_id": "sid-D5A731FF-1755-466A-A47E-4B2E270BD19F",
+      "predicate": "follows",
+      "object": "30 days",
+      "object_id": "sid-8EF56DC3-D153-45F5-A94E-6947D03BD511"
+    },
+    {
+      "subject": "Notify owner",
+      "subject_id": "sid-D5A731FF-1755-466A-A47E-4B2E270BD19F",
+      "predicate": "follows",
+      "object": "Car arrives",
+      "object_id": "sid-79240C44-4326-42E5-BF55-66DD7D371020"
+    },
+    {
+      "subject": "1 day",
+      "subject_id": "sid-D6ACB73B-76B7-464B-9F30-077413447D2B",
+      "predicate": "follows",
+      "object": "Send status updates via mail",
+      "object_id": "sid-D5A1C7DA-F9F1-4345-830C-D68ECC0883E7"
+    },
+    {
+      "subject": "Give \"Pickerl\"",
+      "subject_id": "sid-8EA9B658-D3CB-4B8F-877B-765093643A7E",
+      "predicate": "follows",
+      "object": "Enter the date of next service",
+      "object_id": "sid-028E78D4-8C6B-40DF-99FB-A857373FC8E1"
+    },
+    {
+      "subject": "Fine owner",
+      "subject_id": "sid-634A2122-D00C-42B1-B7A0-D2E15A0E83D4",
+      "predicate": "follows",
+      "object": "Repair sucessful / aborted",
+      "object_id": "sid-54E4137A-4235-487C-AC75-EC8C7BEA9CD4"
+    },
+    {
+      "subject": "Use car normally",
+      "subject_id": "sid-E1539B9C-00DD-4000-911B-09570597470F",
+      "predicate": "follows",
+      "object": "Notify owner",
+      "object_id": "sid-D5A731FF-1755-466A-A47E-4B2E270BD19F"
+    },
+    {
+      "subject": "Use car normally",
+      "subject_id": "sid-E1539B9C-00DD-4000-911B-09570597470F",
+      "predicate": "follows",
+      "object": "Repair sucessful / aborted",
+      "object_id": "sid-54E4137A-4235-487C-AC75-EC8C7BEA9CD4"
+    },
+    {
+      "subject": "Use car normally",
+      "subject_id": "sid-E1539B9C-00DD-4000-911B-09570597470F",
+      "predicate": "follows",
+      "object": "Use car normally",
+      "object_id": "sid-E1539B9C-00DD-4000-911B-09570597470F"
+    }
+  ],
+  "matches": {
+    "1 day": {
+      "match": "car.done",
+      "score": 0.1492
+    },
+    "30 days": {
+      "match": "car.done",
+      "score": 0.1285
+    },
+    "Car arrives": {
+      "match": "car.next",
+      "score": 0.5359
+    },
+    "Car repaired": {
+      "match": "repair.done",
+      "score": 0.6432
+    },
+    "Enter problems": {
+      "match": "app.successful",
+      "score": 0.125
+    },
+    "Enter the date of next service": {
+      "match": "service.next",
+      "score": 0.6909
+    },
+    "Fine owner": {
+      "match": "service.fined",
+      "score": 0.3
+    },
+    "Give \"Pickerl\"": {
+      "match": "car_service.started",
+      "score": 0.0764
+    },
+    "Notify owner": {
+      "match": "repair.done",
+      "score": 0.1982
+    },
+    "Receive funds in person": {
+      "match": "car.fined",
+      "score": 0.1692
+    },
+    "Receive funds via app": {
+      "match": "app.successful",
+      "score": 0.3885
+    },
+    "Repair sucessful / aborted": {
+      "match": "repair.successful",
+      "score": 0.7398
+    },
+    "Repair the car": {
+      "match": "repair.done",
+      "score": 0.6769
+    },
+    "Send status updates via mail": {
+      "match": "car_service.done",
+      "score": 0.1488
+    },
+    "Successful service": {
+      "match": "service.successful",
+      "score": 0.9153
+    },
+    "Update repair status to \"done\"": {
+      "match": "repair.done",
+      "score": 0.6903
+    },
+    "Use car normally": {
+      "match": "car.done",
+      "score": 0.4345
+    }
+  },
+  "process_graph": [
+    {
+      "from": "service.successful",
+      "to": "repair.done",
+      "activity_from": "Successful service",
+      "activity_to": "Notify owner"
+    },
+    {
+      "from": "service.successful",
+      "to": "repair.successful",
+      "activity_from": "Successful service",
+      "activity_to": "Repair sucessful / aborted"
+    },
+    {
+      "from": "service.successful",
+      "to": "car.done",
+      "activity_from": "Successful service",
+      "activity_to": "Use car normally"
+    },
+    {
+      "from": "car.fined",
+      "to": "repair.done",
+      "activity_from": "Receive funds in person",
+      "activity_to": "Update repair status to \"done\""
+    },
+    {
+      "from": "car.done",
+      "to": "service.fined",
+      "activity_from": "30 days",
+      "activity_to": "Fine owner"
+    },
+    {
+      "from": "car.next",
+      "to": "app.successful",
+      "activity_from": "Car arrives",
+      "activity_to": "Enter problems"
+    },
+    {
+      "from": "car.next",
+      "to": "repair.done",
+      "activity_from": "Car arrives",
+      "activity_to": "Car repaired"
+    },
+    {
+      "from": "car.next",
+      "to": "car.done",
+      "activity_from": "Car arrives",
+      "activity_to": "1 day"
+    },
+    {
+      "from": "repair.done",
+      "to": "car.fined",
+      "activity_from": "Repair the car",
+      "activity_to": "Receive funds in person"
+    },
+    {
+      "from": "repair.done",
+      "to": "app.successful",
+      "activity_from": "Repair the car",
+      "activity_to": "Receive funds via app"
+    },
+    {
+      "from": "repair.done",
+      "to": "car_service.started",
+      "activity_from": "Update repair status to \"done\"",
+      "activity_to": "Give \"Pickerl\""
+    },
+    {
+      "from": "service.next",
+      "to": "repair.successful",
+      "activity_from": "Enter the date of next service",
+      "activity_to": "Repair sucessful / aborted"
+    },
+    {
+      "from": "app.successful",
+      "to": "repair.done",
+      "activity_from": "Enter problems",
+      "activity_to": "Repair the car"
+    },
+    {
+      "from": "car_service.done",
+      "to": "repair.done",
+      "activity_from": "Send status updates via mail",
+      "activity_to": "Car repaired"
+    },
+    {
+      "from": "car_service.done",
+      "to": "car.done",
+      "activity_from": "Send status updates via mail",
+      "activity_to": "1 day"
+    },
+    {
+      "from": "repair.done",
+      "to": "car.fined",
+      "activity_from": "Car repaired",
+      "activity_to": "Receive funds in person"
+    },
+    {
+      "from": "repair.done",
+      "to": "app.successful",
+      "activity_from": "Car repaired",
+      "activity_to": "Receive funds via app"
+    },
+    {
+      "from": "app.successful",
+      "to": "repair.done",
+      "activity_from": "Receive funds via app",
+      "activity_to": "Update repair status to \"done\""
+    },
+    {
+      "from": "repair.done",
+      "to": "car.done",
+      "activity_from": "Notify owner",
+      "activity_to": "30 days"
+    },
+    {
+      "from": "repair.done",
+      "to": "car.next",
+      "activity_from": "Notify owner",
+      "activity_to": "Car arrives"
+    },
+    {
+      "from": "car.done",
+      "to": "car_service.done",
+      "activity_from": "1 day",
+      "activity_to": "Send status updates via mail"
+    },
+    {
+      "from": "car_service.started",
+      "to": "service.next",
+      "activity_from": "Give \"Pickerl\"",
+      "activity_to": "Enter the date of next service"
+    },
+    {
+      "from": "service.fined",
+      "to": "repair.successful",
+      "activity_from": "Fine owner",
+      "activity_to": "Repair sucessful / aborted"
+    },
+    {
+      "from": "car.done",
+      "to": "repair.done",
+      "activity_from": "Use car normally",
+      "activity_to": "Notify owner"
+    },
+    {
+      "from": "car.done",
+      "to": "repair.successful",
+      "activity_from": "Use car normally",
+      "activity_to": "Repair sucessful / aborted"
+    },
+    {
+      "from": "car.done",
+      "to": "car.done",
+      "activity_from": "Use car normally",
+      "activity_to": "Use car normally"
+    }
+  ],
+  "errors": [
+    "precondition: parse failed, raw response='{\\n  \"car_service.started\": {\"precondition\": \"INITIAL\", \"quote\": null},\\n  \"car_service.necessary\": {\"precondition\": \"car_service.registered\", \"quote\": \"When a service is necessary, the system checks if your car is still registered.\"},\\n  \"car_service.registered\": {\"precondition\": \"car_service.necessary\", \"quote\": \"When a service is necessary, the system checks if your car is still registered.\"},\\n  \"car_service.fined\": {\"precondition\": \"car_service.registered AND NOT car_service.done\", \"quote\": \"If you do not go to the service, you are fined after 30 days.\"},\\n  \"car_service.done\": {\"precondition\": \"car_service.registered AND car_service.fined OR car_service.registered AND car_service.successful\", \"quote\": \"If it is registered, you are notified. If you do not go to the service, you are fined after 30 days. At the car service facility the mechanic enters the problems of your car for reference.\"},\\n  \"car_service.successful\": {\"precondition\": \"car_service.done\", \"quote\": \"The mechanic enters that the repair was successful and you got your \\\\\"Pickerl\\\\\".\"},\\n  \"car_service.next\": {\"precondition\": \"car_service.done\", \"quote\": \"The mechanic enters the time for you next service.\"},\\n  \"car.registered\": {\"precondition\": \"INITIAL\", \"quote\": null},\\n  \"car.fined\": {\"precondition\": \"car_service.fined\", \"quote\": \"If you do not go to the service, you are fined after 30 days.\"},\\n  \"car.done\": {\"precondition\": \"car_service.done\", \"quote\": \"At the car service facility the mechanic enters the problems of your car for reference.\"},\\n  \"car.successful\": {\"precondition\": \"car_service.successful\", \"quote\": \"The mechanic enters that the repair was successful and you got your \\\\\"Pickerl\\\\\".\"},\\n  \"car.next\": {\"precondition\": \"car_service.next\", \"quote\": \"The mechanic enters the time for you next service.\"},\\n  \"car_service_facility.started\": {\"precondition\": \"INITIAL\", \"quote\": null},\\n  \"car_service_facility.necessary\": {\"precondition\": \"car_service.necessary\", \"quote\": \"When a service is necessary, the system checks if your car is still registered.\"},\\n  \"car_service_facility.registered\": {\"precondition\": \"car_service.registered\", \"quote\": \"When a service is necessary, the system checks if your car is still registered.\"},\\n  \"car_service_facility.fined\": {\"precondition\": \"car_service.fined\", \"quote\": \"If you do not go to the service, you are fined after 30 days.\"},\\n  \"car_service_facility.done\": {\"precondition\": \"car_service.done\", \"quote\": \"At the car service facility the mechanic enters the problems of your car for reference.\"},\\n  \"car_service_facility.successful\": {\"precondition\": \"car_service.successful\", \"quote\": \"The mechanic enters that the repair was successful and you got your \\\\\"Pickerl\\\\\".\"},\\n  \"car_service_facility.next\": {\"precondition\": \"car_service.next\", \"quote\": \"The mechanic enters the time for you next service.\"},\\n  \"app.successful\": {\"precondition\": \"car_service.done\", \"quote\": \"You can pay through the app, when the repair is done.\"},\\n  \"repair.done\": {\"precondition\": \"car_service.done\", \"quote\": \"You can pay through the app, when the repair is done.\"},\\n  \"repair.successful\": {\"precondition\": \"car_service.successful\", \"quote\": \"The mechanic enters that the repair was successful and you got your \\\\\"Pickerl\\\\\".\"},\\n  \"service.started\": {\"precondition\": \"INITIAL\", \"quote\": null},\\n  \"service.necessary\": {\"precondition\": \"car_service.necessary\", \"quote\": \"When a service is necessary, the system checks if your car is still registered.\"},\\n  \"service.registered\": {\"precondition\": \"car_service.registered\", \"quote\": \"When a service is necessary, the system checks if your car is still registered.\"},\\n  \"service.fined\": {\"precondition\": \"car_service.fined\", \"quote\": \"If you do not go to the service, you are fined after 30 days.\"},\\n  \"service.done\": {\"precondition\": \"car_service.done\", \"quote\": \"At the car service facility the mechanic enters the problems of your car for reference.\"},\\n  \"service.successful\": {\"precondition\": \"car_service.successful\", \"quote\": \"The mechanic enters that the repair was successful and you got your \\\\\"Pickerl\\\\\".\"},\\n  \"service.next\": {\"precondition\": \"car_service.next\", \"quote\": \"The mechanic enters the time for you next service.\"}'",
+    "graph_construction: 'validated_preconditions'",
+    "alignment: 'reference_graph'",
+    "report: 'alignment'"
+  ]
+}

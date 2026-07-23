@@ -1,0 +1,1286 @@
+{
+  "case_name": "E_j02",
+  "text": "Category: E-Government\nTitle: Becoming A Parent\n\nCreate a process that support in planning, taking and extending a maternity\nleave.\n\n* Fetch information about potential models (months duration, split between parents)\n* Let parent select\n* Collect relevant information\n* Notify Social Security, Company in time\n* Gather information from companies\n* At the end of the period let parent decide about extension.\n",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "llama-3.1-8b",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "llama-3.1-8b",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/text_and_bpmn/bpmn/E_j02/0.bpmn2.xml",
+  "candidates": {
+    "maternity_leave": [
+      "planned",
+      "taken",
+      "extended"
+    ],
+    "parent": [
+      "selected"
+    ],
+    "information": [
+      "collected",
+      "gathered"
+    ],
+    "model": [
+      "selected"
+    ],
+    "period": [
+      "extended"
+    ]
+  },
+  "validation_report": {
+    "maternity_leave": {
+      "f_lex": "INDETERMINATE",
+      "kept": true
+    },
+    "parent": {
+      "f_lex": "ACTOR",
+      "kept": false
+    },
+    "information": {
+      "f_lex": "ENTITY",
+      "kept": true
+    },
+    "model": {
+      "f_lex": "ENTITY",
+      "kept": true
+    },
+    "period": {
+      "f_lex": "INDETERMINATE",
+      "kept": true
+    }
+  },
+  "state_space": {
+    "maternity_leave": [
+      "planned",
+      "taken",
+      "extended"
+    ],
+    "information": [
+      "collected",
+      "gathered"
+    ],
+    "model": [
+      "selected"
+    ],
+    "period": [
+      "extended"
+    ]
+  },
+  "raw_preconditions": {
+    "maternity_leave.planned": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "maternity_leave.taken": {
+      "precondition": "maternity_leave.planned AND model.selected AND information.collected",
+      "quote": "Let parent select"
+    },
+    "maternity_leave.extended": {
+      "precondition": "maternity_leave.taken AND period.extended",
+      "quote": "At the end of the period let parent decide about extension."
+    },
+    "information.collected": {
+      "precondition": "maternity_leave.planned AND model.selected",
+      "quote": "Collect relevant information"
+    },
+    "information.gathered": {
+      "precondition": "UNRESOLVED",
+      "quote": "Gather information from companies"
+    },
+    "model.selected": {
+      "precondition": "maternity_leave.planned",
+      "quote": "Let parent select"
+    },
+    "period.extended": {
+      "precondition": "maternity_leave.extended",
+      "quote": "At the end of the period let parent decide about extension."
+    },
+    "maternity_leave.taken OR information.gathered": {
+      "precondition": "UNRESOLVED",
+      "quote": "Notify Social Security, Company in time"
+    }
+  },
+  "validated_preconditions": {
+    "maternity_leave.planned": {
+      "precondition": "INITIAL",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "maternity_leave.taken": {
+      "precondition": "maternity_leave.planned AND model.selected AND information.collected",
+      "quote": "Let parent select",
+      "status": "OK",
+      "reason": null
+    },
+    "maternity_leave.extended": {
+      "precondition": "maternity_leave.taken AND period.extended",
+      "quote": "At the end of the period let parent decide about extension.",
+      "status": "OK",
+      "reason": null
+    },
+    "information.collected": {
+      "precondition": "maternity_leave.planned AND model.selected",
+      "quote": "Collect relevant information",
+      "status": "OK",
+      "reason": null
+    },
+    "information.gathered": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "model.selected": {
+      "precondition": "maternity_leave.planned",
+      "quote": "Let parent select",
+      "status": "OK",
+      "reason": null
+    },
+    "period.extended": {
+      "precondition": "maternity_leave.extended",
+      "quote": "At the end of the period let parent decide about extension.",
+      "status": "OK",
+      "reason": null
+    },
+    "maternity_leave.taken OR information.gathered": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "DOWNGRADED",
+      "reason": "malformed or unknown target key: 'maternity_leave.taken OR information.gathered' is not a valid entity.state of the state space"
+    }
+  },
+  "precondition_cycles": [
+    [
+      "maternity_leave.extended",
+      "period.extended",
+      "maternity_leave.extended"
+    ]
+  ],
+  "reference_graph": {
+    "nodes": [
+      {
+        "id": "maternity_leave.planned",
+        "weight": 0.75
+      },
+      {
+        "id": "maternity_leave.taken",
+        "weight": 1.0
+      },
+      {
+        "id": "maternity_leave.extended",
+        "weight": 0.75
+      },
+      {
+        "id": "information.collected",
+        "weight": 0.75
+      },
+      {
+        "id": "information.gathered",
+        "weight": 0.0
+      },
+      {
+        "id": "model.selected",
+        "weight": 0.75
+      },
+      {
+        "id": "period.extended",
+        "weight": 0.5
+      }
+    ],
+    "edges": [
+      {
+        "from": "maternity_leave.planned",
+        "to": "maternity_leave.taken",
+        "type": "sequence",
+        "operator": "AND",
+        "quote": "Let parent select"
+      },
+      {
+        "from": "model.selected",
+        "to": "maternity_leave.taken",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "Let parent select"
+      },
+      {
+        "from": "information.collected",
+        "to": "maternity_leave.taken",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "Let parent select"
+      },
+      {
+        "from": "maternity_leave.taken",
+        "to": "maternity_leave.extended",
+        "type": "sequence",
+        "operator": "AND",
+        "quote": "At the end of the period let parent decide about extension."
+      },
+      {
+        "from": "period.extended",
+        "to": "maternity_leave.extended",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "At the end of the period let parent decide about extension."
+      },
+      {
+        "from": "maternity_leave.planned",
+        "to": "information.collected",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "Collect relevant information"
+      },
+      {
+        "from": "model.selected",
+        "to": "information.collected",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "Collect relevant information"
+      },
+      {
+        "from": "maternity_leave.planned",
+        "to": "model.selected",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "Let parent select"
+      },
+      {
+        "from": "maternity_leave.extended",
+        "to": "period.extended",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "At the end of the period let parent decide about extension."
+      }
+    ],
+    "cycles": [
+      [
+        "maternity_leave.extended",
+        "period.extended",
+        "maternity_leave.extended"
+      ]
+    ]
+  },
+  "dfg_edges": [
+    {
+      "source_id": "sid-C9B2D052-1EFA-4F0A-92B4-FB61666D34F6",
+      "source_label": "decide about parental leave extension",
+      "target_id": "sid-4621E338-2C2F-47EC-B37E-75BE860D8796",
+      "target_label": "notify to the employer",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "yes"
+      ]
+    },
+    {
+      "source_id": "sid-C9B2D052-1EFA-4F0A-92B4-FB61666D34F6",
+      "source_label": "decide about parental leave extension",
+      "target_id": "sid-0570650D-A309-44B8-8DEA-96475917C068",
+      "target_label": "go back to your work",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "no",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-E4A0FA18-7EA5-4358-A70A-C05CC28408F0",
+      "source_label": "Social Security checks the Parents Information",
+      "target_id": "sid-BF522142-E4D1-435F-AFF6-3ABA9CC62FCF",
+      "target_label": "Social Security sends back Parents Information to employee",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-E127AC8D-2A64-4EDC-9958-52BE2A5B19AC",
+      "source_label": "enjoy the parental leave",
+      "target_id": "sid-C9B2D052-1EFA-4F0A-92B4-FB61666D34F6",
+      "target_label": "decide about parental leave extension",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-EF6BB0F1-3276-44DF-888B-4A8166711FEA",
+      "source_label": "Employee sends parent information to Social Security",
+      "target_id": "sid-0BDD7034-D091-4927-8736-5697A13EBA88",
+      "target_label": "Social Security receives Info und updates the data",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-255F9C90-1A65-41DD-B83B-8DFA9BBEC726",
+      "source_label": "notify to the parent",
+      "target_id": "sid-0570650D-A309-44B8-8DEA-96475917C068",
+      "target_label": "go back to your work",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-461A2EF8-024D-4CB7-A2B5-FABC7D069C7E",
+      "source_label": "choose the employment type",
+      "target_id": "sid-EC90CEB0-3369-4F28-AF53-B92E4DF3F32C",
+      "target_label": "select a parent type",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "no"
+      ]
+    },
+    {
+      "source_id": "sid-461A2EF8-024D-4CB7-A2B5-FABC7D069C7E",
+      "source_label": "choose the employment type",
+      "target_id": "sid-E0ABCE28-8BE4-49DE-BE69-8F724B17C1EA",
+      "target_label": "End",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "yes",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-EC90CEB0-3369-4F28-AF53-B92E4DF3F32C",
+      "source_label": "select a parent type",
+      "target_id": "sid-A69F27DA-FBD3-4990-90C4-F7AA180B054E",
+      "target_label": "send all the neccesarry Info  to employer",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "father?",
+        "ExclusiveGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-EC90CEB0-3369-4F28-AF53-B92E4DF3F32C",
+      "source_label": "select a parent type",
+      "target_id": "sid-C1813A4E-A400-498C-9C70-7F81B9F0495E",
+      "target_label": "take  protection period ",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-4621E338-2C2F-47EC-B37E-75BE860D8796",
+      "source_label": "notify to the employer",
+      "target_id": "sid-9672E999-853B-42FB-843A-25347E626CBC",
+      "target_label": "check the if the request informed in last 3 month",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-C36DA939-7991-4AE6-AE44-CB185C99AF9A",
+      "source_label": "The employer receives info and checks  it",
+      "target_id": "sid-DCF9D7F9-4CA8-4CD9-8601-8F3B25EEEB35",
+      "target_label": "The employer sends parents information to the Social Security",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "yes"
+      ]
+    },
+    {
+      "source_id": "sid-C36DA939-7991-4AE6-AE44-CB185C99AF9A",
+      "source_label": "The employer receives info and checks  it",
+      "target_id": "sid-A69F27DA-FBD3-4990-90C4-F7AA180B054E",
+      "target_label": "send all the neccesarry Info  to employer",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "no",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-C1813A4E-A400-498C-9C70-7F81B9F0495E",
+      "source_label": "take  protection period ",
+      "target_id": "sid-A69F27DA-FBD3-4990-90C4-F7AA180B054E",
+      "target_label": "send all the neccesarry Info  to employer",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-9672E999-853B-42FB-843A-25347E626CBC",
+      "source_label": "check the if the request informed in last 3 month",
+      "target_id": "sid-6580B3F4-71E0-45A2-B543-E23EA588330D",
+      "target_label": "reject the extension",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "no"
+      ]
+    },
+    {
+      "source_id": "sid-9672E999-853B-42FB-843A-25347E626CBC",
+      "source_label": "check the if the request informed in last 3 month",
+      "target_id": "sid-8B399D54-66BD-4D7C-97DE-C9128621F480",
+      "target_label": "extend the parental leave",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "yes"
+      ]
+    },
+    {
+      "source_id": "sid-6322E19D-5532-47AA-8FC2-EB0D3DEDF659",
+      "source_label": "notify to the parent",
+      "target_id": "sid-E0ABCE28-8BE4-49DE-BE69-8F724B17C1EA",
+      "target_label": "End",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "no",
+        "ExclusiveGateway",
+        "ParallelGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-6322E19D-5532-47AA-8FC2-EB0D3DEDF659",
+      "source_label": "notify to the parent",
+      "target_id": "sid-E127AC8D-2A64-4EDC-9958-52BE2A5B19AC",
+      "target_label": "enjoy the parental leave",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "yes"
+      ]
+    },
+    {
+      "source_id": "sid-0BDD7034-D091-4927-8736-5697A13EBA88",
+      "source_label": "Social Security receives Info und updates the data",
+      "target_id": "sid-E0ABCE28-8BE4-49DE-BE69-8F724B17C1EA",
+      "target_label": "End",
+      "gateway_context": [
+        "ParallelGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-29B41C62-9F67-495D-BF4F-39CCE639E892",
+      "source_label": "The employee approve parental leave request",
+      "target_id": "sid-EF6BB0F1-3276-44DF-888B-4A8166711FEA",
+      "target_label": "Employee sends parent information to Social Security",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-29B41C62-9F67-495D-BF4F-39CCE639E892",
+      "source_label": "The employee approve parental leave request",
+      "target_id": "sid-6322E19D-5532-47AA-8FC2-EB0D3DEDF659",
+      "target_label": "notify to the parent",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-A69F27DA-FBD3-4990-90C4-F7AA180B054E",
+      "source_label": "send all the neccesarry Info  to employer",
+      "target_id": "sid-C36DA939-7991-4AE6-AE44-CB185C99AF9A",
+      "target_label": "The employer receives info and checks  it",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-BF522142-E4D1-435F-AFF6-3ABA9CC62FCF",
+      "source_label": "Social Security sends back Parents Information to employee",
+      "target_id": "sid-29B41C62-9F67-495D-BF4F-39CCE639E892",
+      "target_label": "The employee approve parental leave request",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "no"
+      ]
+    },
+    {
+      "source_id": "sid-BF522142-E4D1-435F-AFF6-3ABA9CC62FCF",
+      "source_label": "Social Security sends back Parents Information to employee",
+      "target_id": "sid-DB7F58EA-593A-4E68-964E-3C1467D3DA8C",
+      "target_label": "The employee reject parental leave request",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "yes"
+      ]
+    },
+    {
+      "source_id": "sid-6580B3F4-71E0-45A2-B543-E23EA588330D",
+      "source_label": "reject the extension",
+      "target_id": "sid-255F9C90-1A65-41DD-B83B-8DFA9BBEC726",
+      "target_label": "notify to the parent",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-0570650D-A309-44B8-8DEA-96475917C068",
+      "source_label": "go back to your work",
+      "target_id": "sid-E0ABCE28-8BE4-49DE-BE69-8F724B17C1EA",
+      "target_label": "End",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ParallelGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-DCF9D7F9-4CA8-4CD9-8601-8F3B25EEEB35",
+      "source_label": "The employer sends parents information to the Social Security",
+      "target_id": "sid-E4A0FA18-7EA5-4358-A70A-C05CC28408F0",
+      "target_label": "Social Security checks the Parents Information",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-DB7F58EA-593A-4E68-964E-3C1467D3DA8C",
+      "source_label": "The employee reject parental leave request",
+      "target_id": "sid-EF6BB0F1-3276-44DF-888B-4A8166711FEA",
+      "target_label": "Employee sends parent information to Social Security",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-DB7F58EA-593A-4E68-964E-3C1467D3DA8C",
+      "source_label": "The employee reject parental leave request",
+      "target_id": "sid-6322E19D-5532-47AA-8FC2-EB0D3DEDF659",
+      "target_label": "notify to the parent",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-5A399E90-9F20-44A3-9815-8DE1277759E8",
+      "source_label": "Start",
+      "target_id": "sid-461A2EF8-024D-4CB7-A2B5-FABC7D069C7E",
+      "target_label": "choose the employment type",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-8B399D54-66BD-4D7C-97DE-C9128621F480",
+      "source_label": "extend the parental leave",
+      "target_id": "sid-255F9C90-1A65-41DD-B83B-8DFA9BBEC726",
+      "target_label": "notify to the parent",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "decide about parental leave extension",
+      "subject_id": "sid-C9B2D052-1EFA-4F0A-92B4-FB61666D34F6",
+      "predicate": "follows",
+      "object": "notify to the employer",
+      "object_id": "sid-4621E338-2C2F-47EC-B37E-75BE860D8796"
+    },
+    {
+      "subject": "decide about parental leave extension",
+      "subject_id": "sid-C9B2D052-1EFA-4F0A-92B4-FB61666D34F6",
+      "predicate": "follows",
+      "object": "go back to your work",
+      "object_id": "sid-0570650D-A309-44B8-8DEA-96475917C068"
+    },
+    {
+      "subject": "Social Security checks the Parents Information",
+      "subject_id": "sid-E4A0FA18-7EA5-4358-A70A-C05CC28408F0",
+      "predicate": "follows",
+      "object": "Social Security sends back Parents Information to employee",
+      "object_id": "sid-BF522142-E4D1-435F-AFF6-3ABA9CC62FCF"
+    },
+    {
+      "subject": "enjoy the parental leave",
+      "subject_id": "sid-E127AC8D-2A64-4EDC-9958-52BE2A5B19AC",
+      "predicate": "follows",
+      "object": "decide about parental leave extension",
+      "object_id": "sid-C9B2D052-1EFA-4F0A-92B4-FB61666D34F6"
+    },
+    {
+      "subject": "Employee sends parent information to Social Security",
+      "subject_id": "sid-EF6BB0F1-3276-44DF-888B-4A8166711FEA",
+      "predicate": "follows",
+      "object": "Social Security receives Info und updates the data",
+      "object_id": "sid-0BDD7034-D091-4927-8736-5697A13EBA88"
+    },
+    {
+      "subject": "notify to the parent",
+      "subject_id": "sid-255F9C90-1A65-41DD-B83B-8DFA9BBEC726",
+      "predicate": "follows",
+      "object": "go back to your work",
+      "object_id": "sid-0570650D-A309-44B8-8DEA-96475917C068"
+    },
+    {
+      "subject": "choose the employment type",
+      "subject_id": "sid-461A2EF8-024D-4CB7-A2B5-FABC7D069C7E",
+      "predicate": "follows",
+      "object": "select a parent type",
+      "object_id": "sid-EC90CEB0-3369-4F28-AF53-B92E4DF3F32C"
+    },
+    {
+      "subject": "choose the employment type",
+      "subject_id": "sid-461A2EF8-024D-4CB7-A2B5-FABC7D069C7E",
+      "predicate": "follows",
+      "object": "End",
+      "object_id": "sid-E0ABCE28-8BE4-49DE-BE69-8F724B17C1EA"
+    },
+    {
+      "subject": "select a parent type",
+      "subject_id": "sid-EC90CEB0-3369-4F28-AF53-B92E4DF3F32C",
+      "predicate": "follows",
+      "object": "send all the neccesarry Info  to employer",
+      "object_id": "sid-A69F27DA-FBD3-4990-90C4-F7AA180B054E"
+    },
+    {
+      "subject": "select a parent type",
+      "subject_id": "sid-EC90CEB0-3369-4F28-AF53-B92E4DF3F32C",
+      "predicate": "follows",
+      "object": "take  protection period ",
+      "object_id": "sid-C1813A4E-A400-498C-9C70-7F81B9F0495E"
+    },
+    {
+      "subject": "notify to the employer",
+      "subject_id": "sid-4621E338-2C2F-47EC-B37E-75BE860D8796",
+      "predicate": "follows",
+      "object": "check the if the request informed in last 3 month",
+      "object_id": "sid-9672E999-853B-42FB-843A-25347E626CBC"
+    },
+    {
+      "subject": "The employer receives info and checks  it",
+      "subject_id": "sid-C36DA939-7991-4AE6-AE44-CB185C99AF9A",
+      "predicate": "follows",
+      "object": "The employer sends parents information to the Social Security",
+      "object_id": "sid-DCF9D7F9-4CA8-4CD9-8601-8F3B25EEEB35"
+    },
+    {
+      "subject": "The employer receives info and checks  it",
+      "subject_id": "sid-C36DA939-7991-4AE6-AE44-CB185C99AF9A",
+      "predicate": "follows",
+      "object": "send all the neccesarry Info  to employer",
+      "object_id": "sid-A69F27DA-FBD3-4990-90C4-F7AA180B054E"
+    },
+    {
+      "subject": "take  protection period ",
+      "subject_id": "sid-C1813A4E-A400-498C-9C70-7F81B9F0495E",
+      "predicate": "follows",
+      "object": "send all the neccesarry Info  to employer",
+      "object_id": "sid-A69F27DA-FBD3-4990-90C4-F7AA180B054E"
+    },
+    {
+      "subject": "check the if the request informed in last 3 month",
+      "subject_id": "sid-9672E999-853B-42FB-843A-25347E626CBC",
+      "predicate": "follows",
+      "object": "reject the extension",
+      "object_id": "sid-6580B3F4-71E0-45A2-B543-E23EA588330D"
+    },
+    {
+      "subject": "check the if the request informed in last 3 month",
+      "subject_id": "sid-9672E999-853B-42FB-843A-25347E626CBC",
+      "predicate": "follows",
+      "object": "extend the parental leave",
+      "object_id": "sid-8B399D54-66BD-4D7C-97DE-C9128621F480"
+    },
+    {
+      "subject": "notify to the parent",
+      "subject_id": "sid-6322E19D-5532-47AA-8FC2-EB0D3DEDF659",
+      "predicate": "follows",
+      "object": "End",
+      "object_id": "sid-E0ABCE28-8BE4-49DE-BE69-8F724B17C1EA"
+    },
+    {
+      "subject": "notify to the parent",
+      "subject_id": "sid-6322E19D-5532-47AA-8FC2-EB0D3DEDF659",
+      "predicate": "follows",
+      "object": "enjoy the parental leave",
+      "object_id": "sid-E127AC8D-2A64-4EDC-9958-52BE2A5B19AC"
+    },
+    {
+      "subject": "Social Security receives Info und updates the data",
+      "subject_id": "sid-0BDD7034-D091-4927-8736-5697A13EBA88",
+      "predicate": "follows",
+      "object": "End",
+      "object_id": "sid-E0ABCE28-8BE4-49DE-BE69-8F724B17C1EA"
+    },
+    {
+      "subject": "The employee approve parental leave request",
+      "subject_id": "sid-29B41C62-9F67-495D-BF4F-39CCE639E892",
+      "predicate": "follows",
+      "object": "Employee sends parent information to Social Security",
+      "object_id": "sid-EF6BB0F1-3276-44DF-888B-4A8166711FEA"
+    },
+    {
+      "subject": "The employee approve parental leave request",
+      "subject_id": "sid-29B41C62-9F67-495D-BF4F-39CCE639E892",
+      "predicate": "follows",
+      "object": "notify to the parent",
+      "object_id": "sid-6322E19D-5532-47AA-8FC2-EB0D3DEDF659"
+    },
+    {
+      "subject": "send all the neccesarry Info  to employer",
+      "subject_id": "sid-A69F27DA-FBD3-4990-90C4-F7AA180B054E",
+      "predicate": "follows",
+      "object": "The employer receives info and checks  it",
+      "object_id": "sid-C36DA939-7991-4AE6-AE44-CB185C99AF9A"
+    },
+    {
+      "subject": "Social Security sends back Parents Information to employee",
+      "subject_id": "sid-BF522142-E4D1-435F-AFF6-3ABA9CC62FCF",
+      "predicate": "follows",
+      "object": "The employee approve parental leave request",
+      "object_id": "sid-29B41C62-9F67-495D-BF4F-39CCE639E892"
+    },
+    {
+      "subject": "Social Security sends back Parents Information to employee",
+      "subject_id": "sid-BF522142-E4D1-435F-AFF6-3ABA9CC62FCF",
+      "predicate": "follows",
+      "object": "The employee reject parental leave request",
+      "object_id": "sid-DB7F58EA-593A-4E68-964E-3C1467D3DA8C"
+    },
+    {
+      "subject": "reject the extension",
+      "subject_id": "sid-6580B3F4-71E0-45A2-B543-E23EA588330D",
+      "predicate": "follows",
+      "object": "notify to the parent",
+      "object_id": "sid-255F9C90-1A65-41DD-B83B-8DFA9BBEC726"
+    },
+    {
+      "subject": "go back to your work",
+      "subject_id": "sid-0570650D-A309-44B8-8DEA-96475917C068",
+      "predicate": "follows",
+      "object": "End",
+      "object_id": "sid-E0ABCE28-8BE4-49DE-BE69-8F724B17C1EA"
+    },
+    {
+      "subject": "The employer sends parents information to the Social Security",
+      "subject_id": "sid-DCF9D7F9-4CA8-4CD9-8601-8F3B25EEEB35",
+      "predicate": "follows",
+      "object": "Social Security checks the Parents Information",
+      "object_id": "sid-E4A0FA18-7EA5-4358-A70A-C05CC28408F0"
+    },
+    {
+      "subject": "The employee reject parental leave request",
+      "subject_id": "sid-DB7F58EA-593A-4E68-964E-3C1467D3DA8C",
+      "predicate": "follows",
+      "object": "Employee sends parent information to Social Security",
+      "object_id": "sid-EF6BB0F1-3276-44DF-888B-4A8166711FEA"
+    },
+    {
+      "subject": "The employee reject parental leave request",
+      "subject_id": "sid-DB7F58EA-593A-4E68-964E-3C1467D3DA8C",
+      "predicate": "follows",
+      "object": "notify to the parent",
+      "object_id": "sid-6322E19D-5532-47AA-8FC2-EB0D3DEDF659"
+    },
+    {
+      "subject": "Start",
+      "subject_id": "sid-5A399E90-9F20-44A3-9815-8DE1277759E8",
+      "predicate": "follows",
+      "object": "choose the employment type",
+      "object_id": "sid-461A2EF8-024D-4CB7-A2B5-FABC7D069C7E"
+    },
+    {
+      "subject": "extend the parental leave",
+      "subject_id": "sid-8B399D54-66BD-4D7C-97DE-C9128621F480",
+      "predicate": "follows",
+      "object": "notify to the parent",
+      "object_id": "sid-255F9C90-1A65-41DD-B83B-8DFA9BBEC726"
+    }
+  ],
+  "matches": {
+    "Employee sends parent information to Social Security": {
+      "match": "information.collected",
+      "score": 0.3162
+    },
+    "End": {
+      "match": "period.extended",
+      "score": 0.2782
+    },
+    "Social Security checks the Parents Information": {
+      "match": "information.collected",
+      "score": 0.2374
+    },
+    "Social Security receives Info und updates the data": {
+      "match": "information.collected",
+      "score": 0.3842
+    },
+    "Social Security sends back Parents Information to employee": {
+      "match": "information.collected",
+      "score": 0.2442
+    },
+    "Start": {
+      "match": "period.extended",
+      "score": 0.2265
+    },
+    "The employee approve parental leave request": {
+      "match": "maternity_leave.planned",
+      "score": 0.4603
+    },
+    "The employee reject parental leave request": {
+      "match": "maternity_leave.taken",
+      "score": 0.3996
+    },
+    "The employer receives info and checks  it": {
+      "match": "information.gathered",
+      "score": 0.3835
+    },
+    "The employer sends parents information to the Social Security": {
+      "match": "information.collected",
+      "score": 0.2596
+    },
+    "check the if the request informed in last 3 month": {
+      "match": "information.collected",
+      "score": 0.1868
+    },
+    "choose the employment type": {
+      "match": "model.selected",
+      "score": 0.2759
+    },
+    "decide about parental leave extension": {
+      "match": "maternity_leave.extended",
+      "score": 0.5328
+    },
+    "enjoy the parental leave": {
+      "match": "maternity_leave.taken",
+      "score": 0.5088
+    },
+    "extend the parental leave": {
+      "match": "maternity_leave.extended",
+      "score": 0.7717
+    },
+    "go back to your work": {
+      "match": "maternity_leave.taken",
+      "score": 0.105
+    },
+    "notify to the employer": {
+      "match": "information.gathered",
+      "score": 0.1937
+    },
+    "notify to the parent": {
+      "match": "information.gathered",
+      "score": 0.1949
+    },
+    "reject the extension": {
+      "match": "period.extended",
+      "score": 0.4013
+    },
+    "select a parent type": {
+      "match": "model.selected",
+      "score": 0.3794
+    },
+    "send all the neccesarry Info  to employer": {
+      "match": "information.collected",
+      "score": 0.3163
+    },
+    "take  protection period ": {
+      "match": "maternity_leave.taken",
+      "score": 0.3259
+    }
+  },
+  "process_graph": [
+    {
+      "from": "maternity_leave.extended",
+      "to": "information.gathered",
+      "activity_from": "decide about parental leave extension",
+      "activity_to": "notify to the employer"
+    },
+    {
+      "from": "maternity_leave.extended",
+      "to": "maternity_leave.taken",
+      "activity_from": "decide about parental leave extension",
+      "activity_to": "go back to your work"
+    },
+    {
+      "from": "information.collected",
+      "to": "information.collected",
+      "activity_from": "Social Security checks the Parents Information",
+      "activity_to": "Social Security sends back Parents Information to employee"
+    },
+    {
+      "from": "maternity_leave.taken",
+      "to": "maternity_leave.extended",
+      "activity_from": "enjoy the parental leave",
+      "activity_to": "decide about parental leave extension"
+    },
+    {
+      "from": "information.collected",
+      "to": "information.collected",
+      "activity_from": "Employee sends parent information to Social Security",
+      "activity_to": "Social Security receives Info und updates the data"
+    },
+    {
+      "from": "information.gathered",
+      "to": "maternity_leave.taken",
+      "activity_from": "notify to the parent",
+      "activity_to": "go back to your work"
+    },
+    {
+      "from": "model.selected",
+      "to": "model.selected",
+      "activity_from": "choose the employment type",
+      "activity_to": "select a parent type"
+    },
+    {
+      "from": "model.selected",
+      "to": "period.extended",
+      "activity_from": "choose the employment type",
+      "activity_to": "End"
+    },
+    {
+      "from": "model.selected",
+      "to": "information.collected",
+      "activity_from": "select a parent type",
+      "activity_to": "send all the neccesarry Info  to employer"
+    },
+    {
+      "from": "model.selected",
+      "to": "maternity_leave.taken",
+      "activity_from": "select a parent type",
+      "activity_to": "take  protection period "
+    },
+    {
+      "from": "information.gathered",
+      "to": "information.collected",
+      "activity_from": "notify to the employer",
+      "activity_to": "check the if the request informed in last 3 month"
+    },
+    {
+      "from": "information.gathered",
+      "to": "information.collected",
+      "activity_from": "The employer receives info and checks  it",
+      "activity_to": "The employer sends parents information to the Social Security"
+    },
+    {
+      "from": "information.gathered",
+      "to": "information.collected",
+      "activity_from": "The employer receives info and checks  it",
+      "activity_to": "send all the neccesarry Info  to employer"
+    },
+    {
+      "from": "maternity_leave.taken",
+      "to": "information.collected",
+      "activity_from": "take  protection period ",
+      "activity_to": "send all the neccesarry Info  to employer"
+    },
+    {
+      "from": "information.collected",
+      "to": "period.extended",
+      "activity_from": "check the if the request informed in last 3 month",
+      "activity_to": "reject the extension"
+    },
+    {
+      "from": "information.collected",
+      "to": "maternity_leave.extended",
+      "activity_from": "check the if the request informed in last 3 month",
+      "activity_to": "extend the parental leave"
+    },
+    {
+      "from": "information.gathered",
+      "to": "period.extended",
+      "activity_from": "notify to the parent",
+      "activity_to": "End"
+    },
+    {
+      "from": "information.gathered",
+      "to": "maternity_leave.taken",
+      "activity_from": "notify to the parent",
+      "activity_to": "enjoy the parental leave"
+    },
+    {
+      "from": "information.collected",
+      "to": "period.extended",
+      "activity_from": "Social Security receives Info und updates the data",
+      "activity_to": "End"
+    },
+    {
+      "from": "maternity_leave.planned",
+      "to": "information.collected",
+      "activity_from": "The employee approve parental leave request",
+      "activity_to": "Employee sends parent information to Social Security"
+    },
+    {
+      "from": "maternity_leave.planned",
+      "to": "information.gathered",
+      "activity_from": "The employee approve parental leave request",
+      "activity_to": "notify to the parent"
+    },
+    {
+      "from": "information.collected",
+      "to": "information.gathered",
+      "activity_from": "send all the neccesarry Info  to employer",
+      "activity_to": "The employer receives info and checks  it"
+    },
+    {
+      "from": "information.collected",
+      "to": "maternity_leave.planned",
+      "activity_from": "Social Security sends back Parents Information to employee",
+      "activity_to": "The employee approve parental leave request"
+    },
+    {
+      "from": "information.collected",
+      "to": "maternity_leave.taken",
+      "activity_from": "Social Security sends back Parents Information to employee",
+      "activity_to": "The employee reject parental leave request"
+    },
+    {
+      "from": "period.extended",
+      "to": "information.gathered",
+      "activity_from": "reject the extension",
+      "activity_to": "notify to the parent"
+    },
+    {
+      "from": "maternity_leave.taken",
+      "to": "period.extended",
+      "activity_from": "go back to your work",
+      "activity_to": "End"
+    },
+    {
+      "from": "information.collected",
+      "to": "information.collected",
+      "activity_from": "The employer sends parents information to the Social Security",
+      "activity_to": "Social Security checks the Parents Information"
+    },
+    {
+      "from": "maternity_leave.taken",
+      "to": "information.collected",
+      "activity_from": "The employee reject parental leave request",
+      "activity_to": "Employee sends parent information to Social Security"
+    },
+    {
+      "from": "maternity_leave.taken",
+      "to": "information.gathered",
+      "activity_from": "The employee reject parental leave request",
+      "activity_to": "notify to the parent"
+    },
+    {
+      "from": "period.extended",
+      "to": "model.selected",
+      "activity_from": "Start",
+      "activity_to": "choose the employment type"
+    },
+    {
+      "from": "maternity_leave.extended",
+      "to": "information.gathered",
+      "activity_from": "extend the parental leave",
+      "activity_to": "notify to the parent"
+    }
+  ],
+  "alignment": {
+    "maternity_leave.taken": {
+      "operator": "AND",
+      "quote": "Let parent select",
+      "terms": [
+        {
+          "term": "maternity_leave.planned",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        },
+        {
+          "term": "model.selected",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        },
+        {
+          "term": "information.collected",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED"
+    },
+    "maternity_leave.extended": {
+      "operator": "AND",
+      "quote": "At the end of the period let parent decide about extension.",
+      "terms": [
+        {
+          "term": "maternity_leave.taken",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        },
+        {
+          "term": "period.extended",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED"
+    },
+    "information.collected": {
+      "operator": "AND",
+      "quote": "Collect relevant information",
+      "terms": [
+        {
+          "term": "maternity_leave.planned",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        },
+        {
+          "term": "model.selected",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED"
+    },
+    "model.selected": {
+      "operator": "AND",
+      "quote": "Let parent select",
+      "terms": [
+        {
+          "term": "maternity_leave.planned",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED"
+    },
+    "period.extended": {
+      "operator": "AND",
+      "quote": "At the end of the period let parent decide about extension.",
+      "terms": [
+        {
+          "term": "maternity_leave.extended",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED"
+    }
+  },
+  "report": {
+    "summary": {
+      "ecarts": 0,
+      "non_verifiable": 0,
+      "conforme": 9
+    },
+    "ecarts": [],
+    "non_verifiable": [],
+    "conforme": [
+      {
+        "target": "enjoy the parental leave",
+        "term": "The employee approve parental leave request"
+      },
+      {
+        "target": "enjoy the parental leave",
+        "term": "select a parent type"
+      },
+      {
+        "target": "enjoy the parental leave",
+        "term": "Social Security receives Info und updates the data"
+      },
+      {
+        "target": "extend the parental leave",
+        "term": "enjoy the parental leave"
+      },
+      {
+        "target": "extend the parental leave",
+        "term": "reject the extension"
+      },
+      {
+        "target": "Social Security receives Info und updates the data",
+        "term": "The employee approve parental leave request"
+      },
+      {
+        "target": "Social Security receives Info und updates the data",
+        "term": "select a parent type"
+      },
+      {
+        "target": "select a parent type",
+        "term": "The employee approve parental leave request"
+      },
+      {
+        "target": "reject the extension",
+        "term": "extend the parental leave"
+      }
+    ],
+    "piece_jointe_alignement_brut": {
+      "maternity_leave.taken": {
+        "operator": "AND",
+        "quote": "Let parent select",
+        "terms": [
+          {
+            "term": "maternity_leave.planned",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          },
+          {
+            "term": "model.selected",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          },
+          {
+            "term": "information.collected",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED"
+      },
+      "maternity_leave.extended": {
+        "operator": "AND",
+        "quote": "At the end of the period let parent decide about extension.",
+        "terms": [
+          {
+            "term": "maternity_leave.taken",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          },
+          {
+            "term": "period.extended",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED"
+      },
+      "information.collected": {
+        "operator": "AND",
+        "quote": "Collect relevant information",
+        "terms": [
+          {
+            "term": "maternity_leave.planned",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          },
+          {
+            "term": "model.selected",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED"
+      },
+      "model.selected": {
+        "operator": "AND",
+        "quote": "Let parent select",
+        "terms": [
+          {
+            "term": "maternity_leave.planned",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED"
+      },
+      "period.extended": {
+        "operator": "AND",
+        "quote": "At the end of the period let parent decide about extension.",
+        "terms": [
+          {
+            "term": "maternity_leave.extended",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED"
+      }
+    }
+  },
+  "errors": []
+}

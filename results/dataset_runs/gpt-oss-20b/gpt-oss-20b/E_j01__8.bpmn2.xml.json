@@ -1,0 +1,361 @@
+{
+  "case_name": "E_j01",
+  "text": "Category: E-Government\nTitle: Find a Job\n\nYou have to regularly report, to which companies you wrote job applications.\nBased on your job applications, new potential job offers are sent to you.\nCompanies have to confirm that they received job applications and rate the\napplication. A job interview can be negotiated. When a company wants you to\nwork for them, you enter the probation phase. After probation phase, you can\nrate the company and the company can rate you. Reviews for a company can only\nbe seen (by job applicants) after 1 year. If a job becomes permanent, the\nprocess ends, unless you rated the company C or less, then you continue to\nreceive job offers, but no longer have to report. \n",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "openai/gpt-oss-20b",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "openai/gpt-oss-20b",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/text_and_bpmn/bpmn/E_j01/8.bpmn2.xml",
+  "dfg_edges": [
+    {
+      "source_id": "sid-91367D8E-9AD1-41A9-BBAD-498EC40C61C4",
+      "source_label": "Get application rating",
+      "target_id": "sid-228B11D5-CBA3-4812-B289-C39D7622811E",
+      "target_label": "Receive an offer",
+      "gateway_context": [
+        "ParallelGateway",
+        "ExclusiveGateway",
+        "Bad Rating"
+      ]
+    },
+    {
+      "source_id": "sid-91367D8E-9AD1-41A9-BBAD-498EC40C61C4",
+      "source_label": "Get application rating",
+      "target_id": "sid-49871BAC-C8D7-4AC9-BC6A-9B1ED9BB3C77",
+      "target_label": "Negotiate Job Interview",
+      "gateway_context": [
+        "ParallelGateway",
+        "ExclusiveGateway",
+        "Good Rating"
+      ]
+    },
+    {
+      "source_id": "sid-E2583505-D0D3-496B-9528-FAC918F54BEB",
+      "source_label": "Don't send the report",
+      "target_id": "sid-91367D8E-9AD1-41A9-BBAD-498EC40C61C4",
+      "target_label": "Get application rating",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-E2583505-D0D3-496B-9528-FAC918F54BEB",
+      "source_label": "Don't send the report",
+      "target_id": "sid-E880BC84-ADD2-4F75-AAE8-6D1C6298A490",
+      "target_label": "Get read confirmation",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-9894F2CA-38F4-44E1-9416-437D5534EFD4",
+      "source_label": "Get rating confirmationCompany",
+      "target_id": "sid-228B11D5-CBA3-4812-B289-C39D7622811E",
+      "target_label": "Receive an offer",
+      "gateway_context": [
+        "ParallelGateway",
+        "ExclusiveGateway",
+        "Rating below C"
+      ]
+    },
+    {
+      "source_id": "sid-9894F2CA-38F4-44E1-9416-437D5534EFD4",
+      "source_label": "Get rating confirmationCompany",
+      "target_id": "sid-48A248CF-1D03-491C-93E4-2373E44DFC76",
+      "target_label": "Job becomes permanent",
+      "gateway_context": [
+        "ParallelGateway",
+        "ExclusiveGateway",
+        "Rating above C"
+      ]
+    },
+    {
+      "source_id": "sid-6D5B89A7-F0DF-48CA-8D60-70A501A4304A",
+      "source_label": "Enter probation phase",
+      "target_id": "sid-65389E20-B9EF-4EF6-9C23-27362D249112",
+      "target_label": "Rate the company",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-6D5B89A7-F0DF-48CA-8D60-70A501A4304A",
+      "source_label": "Enter probation phase",
+      "target_id": "sid-9894F2CA-38F4-44E1-9416-437D5534EFD4",
+      "target_label": "Get rating confirmationCompany",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-65389E20-B9EF-4EF6-9C23-27362D249112",
+      "source_label": "Rate the company",
+      "target_id": "sid-228B11D5-CBA3-4812-B289-C39D7622811E",
+      "target_label": "Receive an offer",
+      "gateway_context": [
+        "ParallelGateway",
+        "ExclusiveGateway",
+        "Rating below C"
+      ]
+    },
+    {
+      "source_id": "sid-65389E20-B9EF-4EF6-9C23-27362D249112",
+      "source_label": "Rate the company",
+      "target_id": "sid-48A248CF-1D03-491C-93E4-2373E44DFC76",
+      "target_label": "Job becomes permanent",
+      "gateway_context": [
+        "ParallelGateway",
+        "ExclusiveGateway",
+        "Rating above C"
+      ]
+    },
+    {
+      "source_id": "sid-9FEDB648-69CD-44F9-87C1-4E86F83FF52F",
+      "source_label": "Start ",
+      "target_id": "sid-228B11D5-CBA3-4812-B289-C39D7622811E",
+      "target_label": "Receive an offer",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-E880BC84-ADD2-4F75-AAE8-6D1C6298A490",
+      "source_label": "Get read confirmation",
+      "target_id": "sid-228B11D5-CBA3-4812-B289-C39D7622811E",
+      "target_label": "Receive an offer",
+      "gateway_context": [
+        "ParallelGateway",
+        "ExclusiveGateway",
+        "Bad Rating"
+      ]
+    },
+    {
+      "source_id": "sid-E880BC84-ADD2-4F75-AAE8-6D1C6298A490",
+      "source_label": "Get read confirmation",
+      "target_id": "sid-49871BAC-C8D7-4AC9-BC6A-9B1ED9BB3C77",
+      "target_label": "Negotiate Job Interview",
+      "gateway_context": [
+        "ParallelGateway",
+        "ExclusiveGateway",
+        "Good Rating"
+      ]
+    },
+    {
+      "source_id": "sid-9A986823-774D-46F1-8728-8C6746704B9F",
+      "source_label": "Send the report",
+      "target_id": "sid-91367D8E-9AD1-41A9-BBAD-498EC40C61C4",
+      "target_label": "Get application rating",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-9A986823-774D-46F1-8728-8C6746704B9F",
+      "source_label": "Send the report",
+      "target_id": "sid-E880BC84-ADD2-4F75-AAE8-6D1C6298A490",
+      "target_label": "Get read confirmation",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-48A248CF-1D03-491C-93E4-2373E44DFC76",
+      "source_label": "Job becomes permanent",
+      "target_id": "sid-1E4DFB9B-310F-479F-86F4-CFD2CE55B197",
+      "target_label": "End ",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-228B11D5-CBA3-4812-B289-C39D7622811E",
+      "source_label": "Receive an offer",
+      "target_id": "sid-9A986823-774D-46F1-8728-8C6746704B9F",
+      "target_label": "Send the report",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "Already an Probation Phase ? No"
+      ]
+    },
+    {
+      "source_id": "sid-228B11D5-CBA3-4812-B289-C39D7622811E",
+      "source_label": "Receive an offer",
+      "target_id": "sid-E2583505-D0D3-496B-9528-FAC918F54BEB",
+      "target_label": "Don't send the report",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "Already an Probation Phase ? Yes"
+      ]
+    },
+    {
+      "source_id": "sid-49871BAC-C8D7-4AC9-BC6A-9B1ED9BB3C77",
+      "source_label": "Negotiate Job Interview",
+      "target_id": "sid-6D5B89A7-F0DF-48CA-8D60-70A501A4304A",
+      "target_label": "Enter probation phase",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "Company says Yes"
+      ]
+    },
+    {
+      "source_id": "sid-49871BAC-C8D7-4AC9-BC6A-9B1ED9BB3C77",
+      "source_label": "Negotiate Job Interview",
+      "target_id": "sid-228B11D5-CBA3-4812-B289-C39D7622811E",
+      "target_label": "Receive an offer",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "Company says No"
+      ]
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "Get application rating",
+      "subject_id": "sid-91367D8E-9AD1-41A9-BBAD-498EC40C61C4",
+      "predicate": "follows",
+      "object": "Receive an offer",
+      "object_id": "sid-228B11D5-CBA3-4812-B289-C39D7622811E"
+    },
+    {
+      "subject": "Get application rating",
+      "subject_id": "sid-91367D8E-9AD1-41A9-BBAD-498EC40C61C4",
+      "predicate": "follows",
+      "object": "Negotiate Job Interview",
+      "object_id": "sid-49871BAC-C8D7-4AC9-BC6A-9B1ED9BB3C77"
+    },
+    {
+      "subject": "Don't send the report",
+      "subject_id": "sid-E2583505-D0D3-496B-9528-FAC918F54BEB",
+      "predicate": "follows",
+      "object": "Get application rating",
+      "object_id": "sid-91367D8E-9AD1-41A9-BBAD-498EC40C61C4"
+    },
+    {
+      "subject": "Don't send the report",
+      "subject_id": "sid-E2583505-D0D3-496B-9528-FAC918F54BEB",
+      "predicate": "follows",
+      "object": "Get read confirmation",
+      "object_id": "sid-E880BC84-ADD2-4F75-AAE8-6D1C6298A490"
+    },
+    {
+      "subject": "Get rating confirmationCompany",
+      "subject_id": "sid-9894F2CA-38F4-44E1-9416-437D5534EFD4",
+      "predicate": "follows",
+      "object": "Receive an offer",
+      "object_id": "sid-228B11D5-CBA3-4812-B289-C39D7622811E"
+    },
+    {
+      "subject": "Get rating confirmationCompany",
+      "subject_id": "sid-9894F2CA-38F4-44E1-9416-437D5534EFD4",
+      "predicate": "follows",
+      "object": "Job becomes permanent",
+      "object_id": "sid-48A248CF-1D03-491C-93E4-2373E44DFC76"
+    },
+    {
+      "subject": "Enter probation phase",
+      "subject_id": "sid-6D5B89A7-F0DF-48CA-8D60-70A501A4304A",
+      "predicate": "follows",
+      "object": "Rate the company",
+      "object_id": "sid-65389E20-B9EF-4EF6-9C23-27362D249112"
+    },
+    {
+      "subject": "Enter probation phase",
+      "subject_id": "sid-6D5B89A7-F0DF-48CA-8D60-70A501A4304A",
+      "predicate": "follows",
+      "object": "Get rating confirmationCompany",
+      "object_id": "sid-9894F2CA-38F4-44E1-9416-437D5534EFD4"
+    },
+    {
+      "subject": "Rate the company",
+      "subject_id": "sid-65389E20-B9EF-4EF6-9C23-27362D249112",
+      "predicate": "follows",
+      "object": "Receive an offer",
+      "object_id": "sid-228B11D5-CBA3-4812-B289-C39D7622811E"
+    },
+    {
+      "subject": "Rate the company",
+      "subject_id": "sid-65389E20-B9EF-4EF6-9C23-27362D249112",
+      "predicate": "follows",
+      "object": "Job becomes permanent",
+      "object_id": "sid-48A248CF-1D03-491C-93E4-2373E44DFC76"
+    },
+    {
+      "subject": "Start ",
+      "subject_id": "sid-9FEDB648-69CD-44F9-87C1-4E86F83FF52F",
+      "predicate": "follows",
+      "object": "Receive an offer",
+      "object_id": "sid-228B11D5-CBA3-4812-B289-C39D7622811E"
+    },
+    {
+      "subject": "Get read confirmation",
+      "subject_id": "sid-E880BC84-ADD2-4F75-AAE8-6D1C6298A490",
+      "predicate": "follows",
+      "object": "Receive an offer",
+      "object_id": "sid-228B11D5-CBA3-4812-B289-C39D7622811E"
+    },
+    {
+      "subject": "Get read confirmation",
+      "subject_id": "sid-E880BC84-ADD2-4F75-AAE8-6D1C6298A490",
+      "predicate": "follows",
+      "object": "Negotiate Job Interview",
+      "object_id": "sid-49871BAC-C8D7-4AC9-BC6A-9B1ED9BB3C77"
+    },
+    {
+      "subject": "Send the report",
+      "subject_id": "sid-9A986823-774D-46F1-8728-8C6746704B9F",
+      "predicate": "follows",
+      "object": "Get application rating",
+      "object_id": "sid-91367D8E-9AD1-41A9-BBAD-498EC40C61C4"
+    },
+    {
+      "subject": "Send the report",
+      "subject_id": "sid-9A986823-774D-46F1-8728-8C6746704B9F",
+      "predicate": "follows",
+      "object": "Get read confirmation",
+      "object_id": "sid-E880BC84-ADD2-4F75-AAE8-6D1C6298A490"
+    },
+    {
+      "subject": "Job becomes permanent",
+      "subject_id": "sid-48A248CF-1D03-491C-93E4-2373E44DFC76",
+      "predicate": "follows",
+      "object": "End ",
+      "object_id": "sid-1E4DFB9B-310F-479F-86F4-CFD2CE55B197"
+    },
+    {
+      "subject": "Receive an offer",
+      "subject_id": "sid-228B11D5-CBA3-4812-B289-C39D7622811E",
+      "predicate": "follows",
+      "object": "Send the report",
+      "object_id": "sid-9A986823-774D-46F1-8728-8C6746704B9F"
+    },
+    {
+      "subject": "Receive an offer",
+      "subject_id": "sid-228B11D5-CBA3-4812-B289-C39D7622811E",
+      "predicate": "follows",
+      "object": "Don't send the report",
+      "object_id": "sid-E2583505-D0D3-496B-9528-FAC918F54BEB"
+    },
+    {
+      "subject": "Negotiate Job Interview",
+      "subject_id": "sid-49871BAC-C8D7-4AC9-BC6A-9B1ED9BB3C77",
+      "predicate": "follows",
+      "object": "Enter probation phase",
+      "object_id": "sid-6D5B89A7-F0DF-48CA-8D60-70A501A4304A"
+    },
+    {
+      "subject": "Negotiate Job Interview",
+      "subject_id": "sid-49871BAC-C8D7-4AC9-BC6A-9B1ED9BB3C77",
+      "predicate": "follows",
+      "object": "Receive an offer",
+      "object_id": "sid-228B11D5-CBA3-4812-B289-C39D7622811E"
+    }
+  ],
+  "errors": [
+    "state_space: parse failed, raw response=''",
+    "precondition: 'state_space'",
+    "state_matching: 'state_space'",
+    "graph_construction: 'state_space'",
+    "alignment: 'reference_graph'",
+    "report: 'alignment'"
+  ]
+}

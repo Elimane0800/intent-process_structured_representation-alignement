@@ -1,0 +1,620 @@
+{
+  "case_name": "E_j01",
+  "text": "Category: E-Government\nTitle: Find a Job\n\nYou have to regularly report, to which companies you wrote job applications.\nBased on your job applications, new potential job offers are sent to you.\nCompanies have to confirm that they received job applications and rate the\napplication. A job interview can be negotiated. When a company wants you to\nwork for them, you enter the probation phase. After probation phase, you can\nrate the company and the company can rate you. Reviews for a company can only\nbe seen (by job applicants) after 1 year. If a job becomes permanent, the\nprocess ends, unless you rated the company C or less, then you continue to\nreceive job offers, but no longer have to report. \n",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "llama-3.1-8b",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "llama-3.1-8b",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/text_and_bpmn/bpmn/E_j01/8.bpmn2.xml",
+  "candidates": {
+    "job_application": [
+      "confirmed",
+      "rated",
+      "negotiated",
+      "received"
+    ],
+    "job_offer": [
+      "sent"
+    ],
+    "job_interview": [
+      "negotiated"
+    ],
+    "probation_phase": [
+      "entered"
+    ],
+    "company": [
+      "rated",
+      "reviewed"
+    ],
+    "job_applicant": [
+      "rated"
+    ],
+    "job": [
+      "permanent"
+    ],
+    "process": [
+      "ended",
+      "continued"
+    ]
+  },
+  "validation_report": {
+    "job_application": {
+      "f_lex": "ENTITY",
+      "kept": true
+    },
+    "job_offer": {
+      "f_lex": "ENTITY",
+      "kept": true
+    },
+    "job_interview": {
+      "f_lex": "ENTITY",
+      "kept": true
+    },
+    "probation_phase": {
+      "f_lex": "INDETERMINATE",
+      "kept": true
+    },
+    "company": {
+      "f_lex": "ACTOR",
+      "kept": false
+    },
+    "job_applicant": {
+      "f_lex": "ACTOR",
+      "kept": false
+    },
+    "job": {
+      "f_lex": "ENTITY",
+      "kept": true
+    },
+    "process": {
+      "f_lex": "ENTITY",
+      "kept": true
+    }
+  },
+  "state_space": {
+    "job_application": [
+      "confirmed",
+      "rated",
+      "negotiated",
+      "received"
+    ],
+    "job_offer": [
+      "sent"
+    ],
+    "job_interview": [
+      "negotiated"
+    ],
+    "probation_phase": [
+      "entered"
+    ],
+    "job": [
+      "permanent"
+    ],
+    "process": [
+      "ended",
+      "continued"
+    ]
+  },
+  "dfg_edges": [
+    {
+      "source_id": "sid-91367D8E-9AD1-41A9-BBAD-498EC40C61C4",
+      "source_label": "Get application rating",
+      "target_id": "sid-228B11D5-CBA3-4812-B289-C39D7622811E",
+      "target_label": "Receive an offer",
+      "gateway_context": [
+        "ParallelGateway",
+        "ExclusiveGateway",
+        "Bad Rating"
+      ]
+    },
+    {
+      "source_id": "sid-91367D8E-9AD1-41A9-BBAD-498EC40C61C4",
+      "source_label": "Get application rating",
+      "target_id": "sid-49871BAC-C8D7-4AC9-BC6A-9B1ED9BB3C77",
+      "target_label": "Negotiate Job Interview",
+      "gateway_context": [
+        "ParallelGateway",
+        "ExclusiveGateway",
+        "Good Rating"
+      ]
+    },
+    {
+      "source_id": "sid-E2583505-D0D3-496B-9528-FAC918F54BEB",
+      "source_label": "Don't send the report",
+      "target_id": "sid-91367D8E-9AD1-41A9-BBAD-498EC40C61C4",
+      "target_label": "Get application rating",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-E2583505-D0D3-496B-9528-FAC918F54BEB",
+      "source_label": "Don't send the report",
+      "target_id": "sid-E880BC84-ADD2-4F75-AAE8-6D1C6298A490",
+      "target_label": "Get read confirmation",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-9894F2CA-38F4-44E1-9416-437D5534EFD4",
+      "source_label": "Get rating confirmationCompany",
+      "target_id": "sid-228B11D5-CBA3-4812-B289-C39D7622811E",
+      "target_label": "Receive an offer",
+      "gateway_context": [
+        "ParallelGateway",
+        "ExclusiveGateway",
+        "Rating below C"
+      ]
+    },
+    {
+      "source_id": "sid-9894F2CA-38F4-44E1-9416-437D5534EFD4",
+      "source_label": "Get rating confirmationCompany",
+      "target_id": "sid-48A248CF-1D03-491C-93E4-2373E44DFC76",
+      "target_label": "Job becomes permanent",
+      "gateway_context": [
+        "ParallelGateway",
+        "ExclusiveGateway",
+        "Rating above C"
+      ]
+    },
+    {
+      "source_id": "sid-6D5B89A7-F0DF-48CA-8D60-70A501A4304A",
+      "source_label": "Enter probation phase",
+      "target_id": "sid-65389E20-B9EF-4EF6-9C23-27362D249112",
+      "target_label": "Rate the company",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-6D5B89A7-F0DF-48CA-8D60-70A501A4304A",
+      "source_label": "Enter probation phase",
+      "target_id": "sid-9894F2CA-38F4-44E1-9416-437D5534EFD4",
+      "target_label": "Get rating confirmationCompany",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-65389E20-B9EF-4EF6-9C23-27362D249112",
+      "source_label": "Rate the company",
+      "target_id": "sid-228B11D5-CBA3-4812-B289-C39D7622811E",
+      "target_label": "Receive an offer",
+      "gateway_context": [
+        "ParallelGateway",
+        "ExclusiveGateway",
+        "Rating below C"
+      ]
+    },
+    {
+      "source_id": "sid-65389E20-B9EF-4EF6-9C23-27362D249112",
+      "source_label": "Rate the company",
+      "target_id": "sid-48A248CF-1D03-491C-93E4-2373E44DFC76",
+      "target_label": "Job becomes permanent",
+      "gateway_context": [
+        "ParallelGateway",
+        "ExclusiveGateway",
+        "Rating above C"
+      ]
+    },
+    {
+      "source_id": "sid-9FEDB648-69CD-44F9-87C1-4E86F83FF52F",
+      "source_label": "Start ",
+      "target_id": "sid-228B11D5-CBA3-4812-B289-C39D7622811E",
+      "target_label": "Receive an offer",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-E880BC84-ADD2-4F75-AAE8-6D1C6298A490",
+      "source_label": "Get read confirmation",
+      "target_id": "sid-228B11D5-CBA3-4812-B289-C39D7622811E",
+      "target_label": "Receive an offer",
+      "gateway_context": [
+        "ParallelGateway",
+        "ExclusiveGateway",
+        "Bad Rating"
+      ]
+    },
+    {
+      "source_id": "sid-E880BC84-ADD2-4F75-AAE8-6D1C6298A490",
+      "source_label": "Get read confirmation",
+      "target_id": "sid-49871BAC-C8D7-4AC9-BC6A-9B1ED9BB3C77",
+      "target_label": "Negotiate Job Interview",
+      "gateway_context": [
+        "ParallelGateway",
+        "ExclusiveGateway",
+        "Good Rating"
+      ]
+    },
+    {
+      "source_id": "sid-9A986823-774D-46F1-8728-8C6746704B9F",
+      "source_label": "Send the report",
+      "target_id": "sid-91367D8E-9AD1-41A9-BBAD-498EC40C61C4",
+      "target_label": "Get application rating",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-9A986823-774D-46F1-8728-8C6746704B9F",
+      "source_label": "Send the report",
+      "target_id": "sid-E880BC84-ADD2-4F75-AAE8-6D1C6298A490",
+      "target_label": "Get read confirmation",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-48A248CF-1D03-491C-93E4-2373E44DFC76",
+      "source_label": "Job becomes permanent",
+      "target_id": "sid-1E4DFB9B-310F-479F-86F4-CFD2CE55B197",
+      "target_label": "End ",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-228B11D5-CBA3-4812-B289-C39D7622811E",
+      "source_label": "Receive an offer",
+      "target_id": "sid-E2583505-D0D3-496B-9528-FAC918F54BEB",
+      "target_label": "Don't send the report",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "Already an Probation Phase ? Yes"
+      ]
+    },
+    {
+      "source_id": "sid-228B11D5-CBA3-4812-B289-C39D7622811E",
+      "source_label": "Receive an offer",
+      "target_id": "sid-9A986823-774D-46F1-8728-8C6746704B9F",
+      "target_label": "Send the report",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "Already an Probation Phase ? No"
+      ]
+    },
+    {
+      "source_id": "sid-49871BAC-C8D7-4AC9-BC6A-9B1ED9BB3C77",
+      "source_label": "Negotiate Job Interview",
+      "target_id": "sid-228B11D5-CBA3-4812-B289-C39D7622811E",
+      "target_label": "Receive an offer",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "Company says No"
+      ]
+    },
+    {
+      "source_id": "sid-49871BAC-C8D7-4AC9-BC6A-9B1ED9BB3C77",
+      "source_label": "Negotiate Job Interview",
+      "target_id": "sid-6D5B89A7-F0DF-48CA-8D60-70A501A4304A",
+      "target_label": "Enter probation phase",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "Company says Yes"
+      ]
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "Get application rating",
+      "subject_id": "sid-91367D8E-9AD1-41A9-BBAD-498EC40C61C4",
+      "predicate": "follows",
+      "object": "Receive an offer",
+      "object_id": "sid-228B11D5-CBA3-4812-B289-C39D7622811E"
+    },
+    {
+      "subject": "Get application rating",
+      "subject_id": "sid-91367D8E-9AD1-41A9-BBAD-498EC40C61C4",
+      "predicate": "follows",
+      "object": "Negotiate Job Interview",
+      "object_id": "sid-49871BAC-C8D7-4AC9-BC6A-9B1ED9BB3C77"
+    },
+    {
+      "subject": "Don't send the report",
+      "subject_id": "sid-E2583505-D0D3-496B-9528-FAC918F54BEB",
+      "predicate": "follows",
+      "object": "Get application rating",
+      "object_id": "sid-91367D8E-9AD1-41A9-BBAD-498EC40C61C4"
+    },
+    {
+      "subject": "Don't send the report",
+      "subject_id": "sid-E2583505-D0D3-496B-9528-FAC918F54BEB",
+      "predicate": "follows",
+      "object": "Get read confirmation",
+      "object_id": "sid-E880BC84-ADD2-4F75-AAE8-6D1C6298A490"
+    },
+    {
+      "subject": "Get rating confirmationCompany",
+      "subject_id": "sid-9894F2CA-38F4-44E1-9416-437D5534EFD4",
+      "predicate": "follows",
+      "object": "Receive an offer",
+      "object_id": "sid-228B11D5-CBA3-4812-B289-C39D7622811E"
+    },
+    {
+      "subject": "Get rating confirmationCompany",
+      "subject_id": "sid-9894F2CA-38F4-44E1-9416-437D5534EFD4",
+      "predicate": "follows",
+      "object": "Job becomes permanent",
+      "object_id": "sid-48A248CF-1D03-491C-93E4-2373E44DFC76"
+    },
+    {
+      "subject": "Enter probation phase",
+      "subject_id": "sid-6D5B89A7-F0DF-48CA-8D60-70A501A4304A",
+      "predicate": "follows",
+      "object": "Rate the company",
+      "object_id": "sid-65389E20-B9EF-4EF6-9C23-27362D249112"
+    },
+    {
+      "subject": "Enter probation phase",
+      "subject_id": "sid-6D5B89A7-F0DF-48CA-8D60-70A501A4304A",
+      "predicate": "follows",
+      "object": "Get rating confirmationCompany",
+      "object_id": "sid-9894F2CA-38F4-44E1-9416-437D5534EFD4"
+    },
+    {
+      "subject": "Rate the company",
+      "subject_id": "sid-65389E20-B9EF-4EF6-9C23-27362D249112",
+      "predicate": "follows",
+      "object": "Receive an offer",
+      "object_id": "sid-228B11D5-CBA3-4812-B289-C39D7622811E"
+    },
+    {
+      "subject": "Rate the company",
+      "subject_id": "sid-65389E20-B9EF-4EF6-9C23-27362D249112",
+      "predicate": "follows",
+      "object": "Job becomes permanent",
+      "object_id": "sid-48A248CF-1D03-491C-93E4-2373E44DFC76"
+    },
+    {
+      "subject": "Start ",
+      "subject_id": "sid-9FEDB648-69CD-44F9-87C1-4E86F83FF52F",
+      "predicate": "follows",
+      "object": "Receive an offer",
+      "object_id": "sid-228B11D5-CBA3-4812-B289-C39D7622811E"
+    },
+    {
+      "subject": "Get read confirmation",
+      "subject_id": "sid-E880BC84-ADD2-4F75-AAE8-6D1C6298A490",
+      "predicate": "follows",
+      "object": "Receive an offer",
+      "object_id": "sid-228B11D5-CBA3-4812-B289-C39D7622811E"
+    },
+    {
+      "subject": "Get read confirmation",
+      "subject_id": "sid-E880BC84-ADD2-4F75-AAE8-6D1C6298A490",
+      "predicate": "follows",
+      "object": "Negotiate Job Interview",
+      "object_id": "sid-49871BAC-C8D7-4AC9-BC6A-9B1ED9BB3C77"
+    },
+    {
+      "subject": "Send the report",
+      "subject_id": "sid-9A986823-774D-46F1-8728-8C6746704B9F",
+      "predicate": "follows",
+      "object": "Get application rating",
+      "object_id": "sid-91367D8E-9AD1-41A9-BBAD-498EC40C61C4"
+    },
+    {
+      "subject": "Send the report",
+      "subject_id": "sid-9A986823-774D-46F1-8728-8C6746704B9F",
+      "predicate": "follows",
+      "object": "Get read confirmation",
+      "object_id": "sid-E880BC84-ADD2-4F75-AAE8-6D1C6298A490"
+    },
+    {
+      "subject": "Job becomes permanent",
+      "subject_id": "sid-48A248CF-1D03-491C-93E4-2373E44DFC76",
+      "predicate": "follows",
+      "object": "End ",
+      "object_id": "sid-1E4DFB9B-310F-479F-86F4-CFD2CE55B197"
+    },
+    {
+      "subject": "Receive an offer",
+      "subject_id": "sid-228B11D5-CBA3-4812-B289-C39D7622811E",
+      "predicate": "follows",
+      "object": "Don't send the report",
+      "object_id": "sid-E2583505-D0D3-496B-9528-FAC918F54BEB"
+    },
+    {
+      "subject": "Receive an offer",
+      "subject_id": "sid-228B11D5-CBA3-4812-B289-C39D7622811E",
+      "predicate": "follows",
+      "object": "Send the report",
+      "object_id": "sid-9A986823-774D-46F1-8728-8C6746704B9F"
+    },
+    {
+      "subject": "Negotiate Job Interview",
+      "subject_id": "sid-49871BAC-C8D7-4AC9-BC6A-9B1ED9BB3C77",
+      "predicate": "follows",
+      "object": "Receive an offer",
+      "object_id": "sid-228B11D5-CBA3-4812-B289-C39D7622811E"
+    },
+    {
+      "subject": "Negotiate Job Interview",
+      "subject_id": "sid-49871BAC-C8D7-4AC9-BC6A-9B1ED9BB3C77",
+      "predicate": "follows",
+      "object": "Enter probation phase",
+      "object_id": "sid-6D5B89A7-F0DF-48CA-8D60-70A501A4304A"
+    }
+  ],
+  "matches": {
+    "Don't send the report": {
+      "match": "job_offer.sent",
+      "score": 0.2862
+    },
+    "End ": {
+      "match": "process.ended",
+      "score": 0.4085
+    },
+    "Enter probation phase": {
+      "match": "probation_phase.entered",
+      "score": 0.9029
+    },
+    "Get application rating": {
+      "match": "job_application.rated",
+      "score": 0.6816
+    },
+    "Get rating confirmationCompany": {
+      "match": "job_application.confirmed",
+      "score": 0.3956
+    },
+    "Get read confirmation": {
+      "match": "job_application.confirmed",
+      "score": 0.3795
+    },
+    "Job becomes permanent": {
+      "match": "job.permanent",
+      "score": 0.781
+    },
+    "Negotiate Job Interview": {
+      "match": "job_interview.negotiated",
+      "score": 0.854
+    },
+    "Rate the company": {
+      "match": "job_application.rated",
+      "score": 0.4146
+    },
+    "Receive an offer": {
+      "match": "job_offer.sent",
+      "score": 0.6191
+    },
+    "Send the report": {
+      "match": "job_offer.sent",
+      "score": 0.3531
+    },
+    "Start ": {
+      "match": "process.ended",
+      "score": 0.3154
+    }
+  },
+  "process_graph": [
+    {
+      "from": "job_application.rated",
+      "to": "job_offer.sent",
+      "activity_from": "Get application rating",
+      "activity_to": "Receive an offer"
+    },
+    {
+      "from": "job_application.rated",
+      "to": "job_interview.negotiated",
+      "activity_from": "Get application rating",
+      "activity_to": "Negotiate Job Interview"
+    },
+    {
+      "from": "job_offer.sent",
+      "to": "job_application.rated",
+      "activity_from": "Don't send the report",
+      "activity_to": "Get application rating"
+    },
+    {
+      "from": "job_offer.sent",
+      "to": "job_application.confirmed",
+      "activity_from": "Don't send the report",
+      "activity_to": "Get read confirmation"
+    },
+    {
+      "from": "job_application.confirmed",
+      "to": "job_offer.sent",
+      "activity_from": "Get rating confirmationCompany",
+      "activity_to": "Receive an offer"
+    },
+    {
+      "from": "job_application.confirmed",
+      "to": "job.permanent",
+      "activity_from": "Get rating confirmationCompany",
+      "activity_to": "Job becomes permanent"
+    },
+    {
+      "from": "probation_phase.entered",
+      "to": "job_application.rated",
+      "activity_from": "Enter probation phase",
+      "activity_to": "Rate the company"
+    },
+    {
+      "from": "probation_phase.entered",
+      "to": "job_application.confirmed",
+      "activity_from": "Enter probation phase",
+      "activity_to": "Get rating confirmationCompany"
+    },
+    {
+      "from": "job_application.rated",
+      "to": "job_offer.sent",
+      "activity_from": "Rate the company",
+      "activity_to": "Receive an offer"
+    },
+    {
+      "from": "job_application.rated",
+      "to": "job.permanent",
+      "activity_from": "Rate the company",
+      "activity_to": "Job becomes permanent"
+    },
+    {
+      "from": "process.ended",
+      "to": "job_offer.sent",
+      "activity_from": "Start ",
+      "activity_to": "Receive an offer"
+    },
+    {
+      "from": "job_application.confirmed",
+      "to": "job_offer.sent",
+      "activity_from": "Get read confirmation",
+      "activity_to": "Receive an offer"
+    },
+    {
+      "from": "job_application.confirmed",
+      "to": "job_interview.negotiated",
+      "activity_from": "Get read confirmation",
+      "activity_to": "Negotiate Job Interview"
+    },
+    {
+      "from": "job_offer.sent",
+      "to": "job_application.rated",
+      "activity_from": "Send the report",
+      "activity_to": "Get application rating"
+    },
+    {
+      "from": "job_offer.sent",
+      "to": "job_application.confirmed",
+      "activity_from": "Send the report",
+      "activity_to": "Get read confirmation"
+    },
+    {
+      "from": "job.permanent",
+      "to": "process.ended",
+      "activity_from": "Job becomes permanent",
+      "activity_to": "End "
+    },
+    {
+      "from": "job_offer.sent",
+      "to": "job_offer.sent",
+      "activity_from": "Receive an offer",
+      "activity_to": "Don't send the report"
+    },
+    {
+      "from": "job_offer.sent",
+      "to": "job_offer.sent",
+      "activity_from": "Receive an offer",
+      "activity_to": "Send the report"
+    },
+    {
+      "from": "job_interview.negotiated",
+      "to": "job_offer.sent",
+      "activity_from": "Negotiate Job Interview",
+      "activity_to": "Receive an offer"
+    },
+    {
+      "from": "job_interview.negotiated",
+      "to": "probation_phase.entered",
+      "activity_from": "Negotiate Job Interview",
+      "activity_to": "Enter probation phase"
+    }
+  ],
+  "errors": [
+    "precondition: parse failed, raw response='{\\n  \"job_application.confirmed\": {\"precondition\": \"INITIAL\", \"quote\": null},\\n  \"job_application.received\": {\"precondition\": \"job_application.confirmed\", \"quote\": \"Companies have to confirm that they received job applications\"},\\n  \"job_offer.sent\": {\"precondition\": \"job_application.received\", \"quote\": \"Based on your job applications, new potential job offers are sent to you\"},\\n  \"job_application.rated\": {\"precondition\": \"job_application.received AND job_offer.sent\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_interview.negotiated\": {\"precondition\": \"job_application.rated\", \"quote\": \"A job interview can be negotiated\"},\\n  \"probation_phase.entered\": {\"precondition\": \"job_application.rated\", \"quote\": \"When a company wants you to work for them, you enter the probation phase\"},\\n  \"job.permanent\": {\"precondition\": \"probation_phase.entered\", \"quote\": \"If a job becomes permanent\"},\\n  \"process.ended\": {\"precondition\": \"job.permanent\", \"quote\": \"When a job becomes permanent, the process ends\"},\\n  \"process.continued\": {\"precondition\": \"job.permanent AND job_application.rated\", \"quote\": \"If a job becomes permanent, the process ends, unless you rated the company C or less\"},\\n  \"job_application.negotiated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"A job interview can be negotiated\"},\\n  \"job_application.sent\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Based on your job applications, new potential job offers are sent to you\"},\\n  \"job_application.confirmed OR job_application.received\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications\"},\\n  \"job_application.received OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.received OR job_application.negotiated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"A job interview can be negotiated\"},\\n  \"job_application.received OR job_application.sent\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Based on your job applications, new potential job offers are sent to you\"},\\n  \"job_application.rated OR job_application.negotiated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"A job interview can be negotiated\"},\\n  \"job_application.rated OR job_application.sent\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Based on your job applications, new potential job offers are sent to you\"},\\n  \"job_application.negotiated OR job_application.sent\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Based on your job applications, new potential job offers are sent to you\"},\\n  \"job_application.confirmed OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.negotiated OR job_application.received\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications\"},\\n  \"job_application.sent OR job_application.received\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications\"},\\n  \"job_application.sent OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.negotiated OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.negotiated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"A job interview can be negotiated\"},\\n  \"job_application.received OR job_application.negotiated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"A job interview can be negotiated\"},\\n  \"job_application.sent OR job_application.negotiated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"A job interview can be negotiated\"},\\n  \"job_application.confirmed OR job_application.sent\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Based on your job applications, new potential job offers are sent to you\"},\\n  \"job_application.rated OR job_application.sent\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Based on your job applications, new potential job offers are sent to you\"},\\n  \"job_application.negotiated OR job_application.sent\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Based on your job applications, new potential job offers are sent to you\"},\\n  \"job_application.confirmed OR job_application.rated OR job_application.sent\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.negotiated OR job_application.sent\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Based on your job applications, new potential job offers are sent to you\"},\\n  \"job_application.received OR job_application.negotiated OR job_application.sent\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Based on your job applications, new potential job offers are sent to you\"},\\n  \"job_application.received OR job_application.rated OR job_application.sent\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.received OR job_application.negotiated OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications\"},\\n  \"job_application.negotiated OR job_application.rated OR job_application.sent\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.negotiated OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.sent OR job_application.negotiated OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.negotiated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.sent\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications\"},\\n  \"job_application.confirmed OR job_application.negotiated OR job_application.sent\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Based on your job applications, new potential job offers are sent to you\"},\\n  \"job_application.received OR job_application.negotiated OR job_application.sent\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Based on your job applications, new potential job offers are sent to you\"},\\n  \"job_application.received OR job_application.rated OR job_application.sent\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.negotiated OR job_application.rated OR job_application.sent\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.negotiated OR job_application.rated OR job_application.sent\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.negotiated OR job_application.sent\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Based on your job applications, new potential job offers are sent to you\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.negotiated OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.negotiated OR job_application.sent\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.rated OR job_application.sent\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.negotiated OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.sent OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.negotiated OR job_application.sent OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.received OR job_application.negotiated OR job_application.sent OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.received OR job_application.negotiated OR job_application.sent OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.negotiated OR job_application.sent OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.negotiated OR job_application.sent OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.sent OR job_application.negotiated OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.received OR job_application.sent OR job_application.negotiated OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.sent OR job_application.negotiated OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.negotiated OR job_application.sent OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.sent OR job_application.negotiated OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.received OR job_application.sent OR job_application.negotiated OR job_application.rated OR job_application.confirmed\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.sent OR job_application.negotiated OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.sent OR job_application.negotiated OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.received OR job_application.sent OR job_application.negotiated OR job_application.rated OR job_application.confirmed\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.sent OR job_application.negotiated OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.sent OR job_application.negotiated OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.sent OR job_application.negotiated OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.sent OR job_application.negotiated OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.sent OR job_application.negotiated OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.sent OR job_application.negotiated OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.sent OR job_application.negotiated OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.sent OR job_application.negotiated OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.sent OR job_application.negotiated OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.sent OR job_application.negotiated OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.sent OR job_application.negotiated OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.sent OR job_application.negotiated OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.sent OR job_application.negotiated OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.sent OR job_application.negotiated OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.sent OR job_application.negotiated OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.sent OR job_application.negotiated OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.sent OR job_application.negotiated OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.sent OR job_application.negotiated OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.sent OR job_application.negotiated OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.sent OR job_application.negotiated OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.sent OR job_application.negotiated OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.sent OR job_application.negotiated OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.sent OR job_application.negotiated OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.sent OR job_application.negotiated OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.sent OR job_application.negotiated OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.sent OR job_application.negotiated OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.sent OR job_application.negotiated OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.sent OR job_application.negotiated OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.sent OR job_application.negotiated OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.sent OR job_application.negotiated OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.sent OR job_application.negotiated OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.sent OR job_application.negotiated OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.sent OR job_application.negotiated OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.sent OR job_application.negotiated OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.sent OR job_application.negotiated OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.sent OR job_application.negotiated OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.sent OR job_application.negotiated OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.sent OR job_application.negotiated OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.sent OR job_application.negotiated OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.sent OR job_application.negotiated OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.sent OR job_application.negotiated OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.sent OR job_application.negotiated OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.sent OR job_application.negotiated OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.sent OR job_application.negotiated OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.sent OR job_application.negotiated OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.sent OR job_application.negotiated OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.sent OR job_application.negotiated OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.sent OR job_application.negotiated OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.sent OR job_application.negotiated OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.sent OR job_application.negotiated OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.sent OR job_application.negotiated OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.sent OR job_application.negotiated OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.sent OR job_application.negotiated OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.sent OR job_application.negotiated OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.sent OR job_application.negotiated OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.sent OR job_application.negotiated OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.sent OR job_application.negotiated OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.sent OR job_application.negotiated OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.sent OR job_application.negotiated OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.sent OR job_application.negotiated OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.sent OR job_application.negotiated OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.sent OR job_application.negotiated OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.sent OR job_application.negotiated OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.sent OR job_application.negotiated OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.sent OR job_application.negotiated OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.sent OR job_application.negotiated OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.sent OR job_application.negotiated OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.sent OR job_application.negotiated OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.sent OR job_application.negotiated OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.sent OR job_application.negotiated OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.sent OR job_application.negotiated OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.sent OR job_application.negotiated OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.sent OR job_application.negotiated OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.sent OR job_application.negotiated OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.sent OR job_application.negotiated OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.sent OR job_application.negotiated OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.sent OR job_application.negotiated OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.sent OR job_application.negotiated OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.sent OR job_application.negotiated OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.sent OR job_application.negotiated OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.sent OR job_application.negotiated OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.sent OR job_application.negotiated OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.sent OR job_application.negotiated OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.sent OR job_application.negotiated OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.sent OR job_application.negotiated OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.sent OR job_application.negotiated OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.sent OR job_application.negotiated OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.sent OR job_application.negotiated OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.sent OR job_application.negotiated OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.sent OR job_application.negotiated OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.sent OR job_application.negotiated OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.sent OR job_application.negotiated OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.sent OR job_application.negotiated OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.sent OR job_application.negotiated OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.sent OR job_application.negotiated OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.sent OR job_application.negotiated OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.sent OR job_application.negotiated OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.received OR job_application.sent OR job_application.negotiated OR job_application.rated\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"Companies have to confirm that they received job applications and rate the application\"},\\n  \"job_application.confirmed OR job_application.received OR'",
+    "graph_construction: 'validated_preconditions'",
+    "alignment: 'reference_graph'",
+    "report: 'alignment'"
+  ]
+}

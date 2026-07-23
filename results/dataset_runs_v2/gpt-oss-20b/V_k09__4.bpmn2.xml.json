@@ -1,0 +1,1038 @@
+{
+  "case_name": "V_k09",
+  "text": "Category: Vending and Shipping\nTitle: Storage management\n\nFirst, the order is read from the automatic order management system. \nThen, it's checked if the first product from the order is in stock. \nIf it's in stock then it's withdrawn from the warehouse.\nHowever, if it's not in stock then it's reordered from the wholesaler.\nNote, that if it was necessary to wait more then 10 days for the\narrival of the  product then a delivery delay penalty is automatically demanded\nfrom the wholesaler. \nAfter the ordered product has arrived it's registered in the stock management system. \nFinally, it's checked if the whole order is ready for shipment. \nIf the order is ready for shipment, a courier is requested and the products are packed\nsimultaneously and finally shipped. If it isn't then the next product from\nthe order is selected and the process starts again with checking if this\norder is in stock or not. \n",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "gpt-oss-20b",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "gpt-oss-20b",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/text_and_bpmn/bpmn/V_k09/4.bpmn2.xml",
+  "report_model": "gpt-oss-20b",
+  "candidates": {
+    "order": [
+      "read",
+      "checked",
+      "ready_for_shipment"
+    ],
+    "product": [
+      "in_stock",
+      "withdrawn",
+      "reordered",
+      "delayed",
+      "registered",
+      "packed",
+      "shipped"
+    ],
+    "warehouse": [
+      "withdrawn"
+    ],
+    "wholesaler": [
+      "reordered",
+      "delayed"
+    ],
+    "delivery_delay_penalty": [
+      "demanded"
+    ],
+    "stock_management_system": [
+      "registered"
+    ],
+    "courier": [
+      "requested"
+    ],
+    "shipment": [
+      "shipped"
+    ]
+  },
+  "validation_report": {
+    "order": {
+      "f_lex": "ENTITY",
+      "kept": true
+    },
+    "product": {
+      "f_lex": "ENTITY",
+      "kept": true
+    },
+    "warehouse": {
+      "f_lex": "ENTITY",
+      "kept": true
+    },
+    "wholesaler": {
+      "f_lex": "ACTOR",
+      "kept": false
+    },
+    "delivery_delay_penalty": {
+      "f_lex": "ENTITY",
+      "kept": true
+    },
+    "stock_management_system": {
+      "f_lex": "ENTITY",
+      "kept": true
+    },
+    "courier": {
+      "f_lex": "ACTOR",
+      "kept": false
+    },
+    "shipment": {
+      "f_lex": "ENTITY",
+      "kept": true
+    }
+  },
+  "state_space": {
+    "order": [
+      "read",
+      "checked",
+      "ready_for_shipment"
+    ],
+    "product": [
+      "in_stock",
+      "withdrawn",
+      "reordered",
+      "delayed",
+      "registered",
+      "packed",
+      "shipped"
+    ],
+    "warehouse": [
+      "withdrawn"
+    ],
+    "delivery_delay_penalty": [
+      "demanded"
+    ],
+    "stock_management_system": [
+      "registered"
+    ],
+    "shipment": [
+      "shipped"
+    ]
+  },
+  "state_space_dedup": {
+    "merged": {},
+    "ambiguous_not_merged": {}
+  },
+  "raw_preconditions": {
+    "order.read": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "order.checked": {
+      "precondition": "order.read",
+      "quote": "Then, it's checked if the first product from the order is in stock."
+    },
+    "order.ready_for_shipment": {
+      "precondition": "order.checked AND product.registered",
+      "quote": "Finally, it's checked if the whole order is ready for shipment."
+    },
+    "product.in_stock": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "product.withdrawn": {
+      "precondition": "product.in_stock",
+      "quote": "If it's in stock then it's withdrawn from the warehouse."
+    },
+    "product.reordered": {
+      "precondition": "UNRESOLVED",
+      "quote": null
+    },
+    "product.delayed": {
+      "precondition": "UNRESOLVED",
+      "quote": null
+    },
+    "product.registered": {
+      "precondition": "UNRESOLVED",
+      "quote": null
+    },
+    "product.packed": {
+      "precondition": "order.ready_for_shipment",
+      "quote": "If the order is ready for shipment, a courier is requested and the products are packed simultaneously and finally shipped."
+    },
+    "product.shipped": {
+      "precondition": "order.ready_for_shipment",
+      "quote": "If the order is ready for shipment, a courier is requested and the products are packed simultaneously and finally shipped."
+    },
+    "warehouse.withdrawn": {
+      "precondition": "product.withdrawn",
+      "quote": "If it's in stock then it's withdrawn from the warehouse."
+    },
+    "delivery_delay_penalty.demanded": {
+      "precondition": "UNRESOLVED",
+      "quote": null
+    },
+    "stock_management_system.registered": {
+      "precondition": "product.registered",
+      "quote": "After the ordered product has arrived it's registered in the stock management system."
+    },
+    "shipment.shipped": {
+      "precondition": "order.ready_for_shipment",
+      "quote": "If the order is ready for shipment, a courier is requested and the products are packed simultaneously and finally shipped."
+    }
+  },
+  "validated_preconditions": {
+    "order.read": {
+      "precondition": "INITIAL",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "order.checked": {
+      "precondition": "order.read",
+      "quote": "Then, it's checked if the first product from the order is in stock.",
+      "status": "OK",
+      "reason": null
+    },
+    "order.ready_for_shipment": {
+      "precondition": "order.checked AND product.registered",
+      "quote": "Finally, it's checked if the whole order is ready for shipment.",
+      "status": "OK",
+      "reason": null
+    },
+    "product.in_stock": {
+      "precondition": "INITIAL",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "product.withdrawn": {
+      "precondition": "product.in_stock",
+      "quote": "If it's in stock then it's withdrawn from the warehouse.",
+      "status": "OK",
+      "reason": null
+    },
+    "product.reordered": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "product.delayed": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "product.registered": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "product.packed": {
+      "precondition": "order.ready_for_shipment",
+      "quote": "If the order is ready for shipment, a courier is requested and the products are packed simultaneously and finally shipped.",
+      "status": "OK",
+      "reason": null
+    },
+    "product.shipped": {
+      "precondition": "order.ready_for_shipment",
+      "quote": "If the order is ready for shipment, a courier is requested and the products are packed simultaneously and finally shipped.",
+      "status": "OK",
+      "reason": null
+    },
+    "warehouse.withdrawn": {
+      "precondition": "product.withdrawn",
+      "quote": "If it's in stock then it's withdrawn from the warehouse.",
+      "status": "OK",
+      "reason": null
+    },
+    "delivery_delay_penalty.demanded": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "stock_management_system.registered": {
+      "precondition": "product.registered",
+      "quote": "After the ordered product has arrived it's registered in the stock management system.",
+      "status": "OK",
+      "reason": null
+    },
+    "shipment.shipped": {
+      "precondition": "order.ready_for_shipment",
+      "quote": "If the order is ready for shipment, a courier is requested and the products are packed simultaneously and finally shipped.",
+      "status": "OK",
+      "reason": null
+    }
+  },
+  "precondition_cycles": [],
+  "reference_graph": {
+    "nodes": [
+      {
+        "id": "order.read",
+        "weight": 0.2
+      },
+      {
+        "id": "order.checked",
+        "weight": 0.4
+      },
+      {
+        "id": "order.ready_for_shipment",
+        "weight": 1.0
+      },
+      {
+        "id": "product.in_stock",
+        "weight": 0.2
+      },
+      {
+        "id": "product.withdrawn",
+        "weight": 0.4
+      },
+      {
+        "id": "product.reordered",
+        "weight": 0.0
+      },
+      {
+        "id": "product.delayed",
+        "weight": 0.0
+      },
+      {
+        "id": "product.registered",
+        "weight": 0.4
+      },
+      {
+        "id": "product.packed",
+        "weight": 0.2
+      },
+      {
+        "id": "product.shipped",
+        "weight": 0.2
+      },
+      {
+        "id": "warehouse.withdrawn",
+        "weight": 0.2
+      },
+      {
+        "id": "delivery_delay_penalty.demanded",
+        "weight": 0.0
+      },
+      {
+        "id": "stock_management_system.registered",
+        "weight": 0.2
+      },
+      {
+        "id": "shipment.shipped",
+        "weight": 0.2
+      }
+    ],
+    "edges": [
+      {
+        "from": "order.read",
+        "to": "order.checked",
+        "type": "sequence",
+        "operator": "AND",
+        "quote": "Then, it's checked if the first product from the order is in stock."
+      },
+      {
+        "from": "order.checked",
+        "to": "order.ready_for_shipment",
+        "type": "sequence",
+        "operator": "AND",
+        "quote": "Finally, it's checked if the whole order is ready for shipment."
+      },
+      {
+        "from": "product.registered",
+        "to": "order.ready_for_shipment",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "Finally, it's checked if the whole order is ready for shipment."
+      },
+      {
+        "from": "product.in_stock",
+        "to": "product.withdrawn",
+        "type": "sequence",
+        "operator": "AND",
+        "quote": "If it's in stock then it's withdrawn from the warehouse."
+      },
+      {
+        "from": "order.ready_for_shipment",
+        "to": "product.packed",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "If the order is ready for shipment, a courier is requested and the products are packed simultaneously and finally shipped."
+      },
+      {
+        "from": "order.ready_for_shipment",
+        "to": "product.shipped",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "If the order is ready for shipment, a courier is requested and the products are packed simultaneously and finally shipped."
+      },
+      {
+        "from": "product.withdrawn",
+        "to": "warehouse.withdrawn",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "If it's in stock then it's withdrawn from the warehouse."
+      },
+      {
+        "from": "product.registered",
+        "to": "stock_management_system.registered",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "After the ordered product has arrived it's registered in the stock management system."
+      },
+      {
+        "from": "order.ready_for_shipment",
+        "to": "shipment.shipped",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "If the order is ready for shipment, a courier is requested and the products are packed simultaneously and finally shipped."
+      }
+    ],
+    "cycles": []
+  },
+  "dfg_edges": [
+    {
+      "source_id": "sid-86EEE27D-AC0A-4EDD-A149-E5B76B3E9BEF",
+      "source_label": "Withdraw from the warehouse list",
+      "target_id": "sid-60FEB43F-1EA5-4F1F-A8F5-D8C7E26DFEA9",
+      "target_label": "Check if the whole order is ready for shipment",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-46F96CA4-1C47-48AD-8138-EE6CB825371D",
+      "source_label": "Check if product is in stock",
+      "target_id": "sid-86EEE27D-AC0A-4EDD-A149-E5B76B3E9BEF",
+      "target_label": "Withdraw from the warehouse list",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "Yes"
+      ]
+    },
+    {
+      "source_id": "sid-46F96CA4-1C47-48AD-8138-EE6CB825371D",
+      "source_label": "Check if product is in stock",
+      "target_id": "sid-9790D5ED-DAEB-4F30-AE51-543FA372FE17",
+      "target_label": "Reorder from wholesaler",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "No"
+      ]
+    },
+    {
+      "source_id": "sid-8F8F47AD-52B2-45C3-B25B-CE00984A8F8F",
+      "source_label": "Read order",
+      "target_id": "sid-46F96CA4-1C47-48AD-8138-EE6CB825371D",
+      "target_label": "Check if product is in stock",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-60FEB43F-1EA5-4F1F-A8F5-D8C7E26DFEA9",
+      "source_label": "Check if the whole order is ready for shipment",
+      "target_id": "sid-8910D9CA-D8F7-4233-88C2-C76ABF9E4F79",
+      "target_label": "Request courier",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "Yes",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-60FEB43F-1EA5-4F1F-A8F5-D8C7E26DFEA9",
+      "source_label": "Check if the whole order is ready for shipment",
+      "target_id": "sid-7C064E58-CABF-4887-9960-47D93D665F27",
+      "target_label": "Pack products",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "Yes",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-60FEB43F-1EA5-4F1F-A8F5-D8C7E26DFEA9",
+      "source_label": "Check if the whole order is ready for shipment",
+      "target_id": "sid-46F96CA4-1C47-48AD-8138-EE6CB825371D",
+      "target_label": "Check if product is in stock",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "No",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-7C064E58-CABF-4887-9960-47D93D665F27",
+      "source_label": "Pack products",
+      "target_id": "sid-76D9CB45-7ABB-49BA-88ED-C5B3FCED8FC3",
+      "target_label": "Send the order for shipment",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-50F9EE96-6957-4DB2-ACB7-F5CF6B8CBF4B",
+      "source_label": "Demand delay penalty from wholesaler",
+      "target_id": "sid-FA3E3BE9-245A-4832-A218-090DE3E08BA3",
+      "target_label": "Register product in stock",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-FA3E3BE9-245A-4832-A218-090DE3E08BA3",
+      "source_label": "Register product in stock",
+      "target_id": "sid-60FEB43F-1EA5-4F1F-A8F5-D8C7E26DFEA9",
+      "target_label": "Check if the whole order is ready for shipment",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-9790D5ED-DAEB-4F30-AE51-543FA372FE17",
+      "source_label": "Reorder from wholesaler",
+      "target_id": "sid-50F9EE96-6957-4DB2-ACB7-F5CF6B8CBF4B",
+      "target_label": "Demand delay penalty from wholesaler",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "Yes"
+      ]
+    },
+    {
+      "source_id": "sid-9790D5ED-DAEB-4F30-AE51-543FA372FE17",
+      "source_label": "Reorder from wholesaler",
+      "target_id": "sid-FA3E3BE9-245A-4832-A218-090DE3E08BA3",
+      "target_label": "Register product in stock",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "No"
+      ]
+    },
+    {
+      "source_id": "sid-8910D9CA-D8F7-4233-88C2-C76ABF9E4F79",
+      "source_label": "Request courier",
+      "target_id": "sid-76D9CB45-7ABB-49BA-88ED-C5B3FCED8FC3",
+      "target_label": "Send the order for shipment",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "Withdraw from the warehouse list",
+      "subject_id": "sid-86EEE27D-AC0A-4EDD-A149-E5B76B3E9BEF",
+      "predicate": "follows",
+      "object": "Check if the whole order is ready for shipment",
+      "object_id": "sid-60FEB43F-1EA5-4F1F-A8F5-D8C7E26DFEA9"
+    },
+    {
+      "subject": "Check if product is in stock",
+      "subject_id": "sid-46F96CA4-1C47-48AD-8138-EE6CB825371D",
+      "predicate": "follows",
+      "object": "Withdraw from the warehouse list",
+      "object_id": "sid-86EEE27D-AC0A-4EDD-A149-E5B76B3E9BEF"
+    },
+    {
+      "subject": "Check if product is in stock",
+      "subject_id": "sid-46F96CA4-1C47-48AD-8138-EE6CB825371D",
+      "predicate": "follows",
+      "object": "Reorder from wholesaler",
+      "object_id": "sid-9790D5ED-DAEB-4F30-AE51-543FA372FE17"
+    },
+    {
+      "subject": "Read order",
+      "subject_id": "sid-8F8F47AD-52B2-45C3-B25B-CE00984A8F8F",
+      "predicate": "follows",
+      "object": "Check if product is in stock",
+      "object_id": "sid-46F96CA4-1C47-48AD-8138-EE6CB825371D"
+    },
+    {
+      "subject": "Check if the whole order is ready for shipment",
+      "subject_id": "sid-60FEB43F-1EA5-4F1F-A8F5-D8C7E26DFEA9",
+      "predicate": "follows",
+      "object": "Request courier",
+      "object_id": "sid-8910D9CA-D8F7-4233-88C2-C76ABF9E4F79"
+    },
+    {
+      "subject": "Check if the whole order is ready for shipment",
+      "subject_id": "sid-60FEB43F-1EA5-4F1F-A8F5-D8C7E26DFEA9",
+      "predicate": "follows",
+      "object": "Pack products",
+      "object_id": "sid-7C064E58-CABF-4887-9960-47D93D665F27"
+    },
+    {
+      "subject": "Check if the whole order is ready for shipment",
+      "subject_id": "sid-60FEB43F-1EA5-4F1F-A8F5-D8C7E26DFEA9",
+      "predicate": "follows",
+      "object": "Check if product is in stock",
+      "object_id": "sid-46F96CA4-1C47-48AD-8138-EE6CB825371D"
+    },
+    {
+      "subject": "Pack products",
+      "subject_id": "sid-7C064E58-CABF-4887-9960-47D93D665F27",
+      "predicate": "follows",
+      "object": "Send the order for shipment",
+      "object_id": "sid-76D9CB45-7ABB-49BA-88ED-C5B3FCED8FC3"
+    },
+    {
+      "subject": "Demand delay penalty from wholesaler",
+      "subject_id": "sid-50F9EE96-6957-4DB2-ACB7-F5CF6B8CBF4B",
+      "predicate": "follows",
+      "object": "Register product in stock",
+      "object_id": "sid-FA3E3BE9-245A-4832-A218-090DE3E08BA3"
+    },
+    {
+      "subject": "Register product in stock",
+      "subject_id": "sid-FA3E3BE9-245A-4832-A218-090DE3E08BA3",
+      "predicate": "follows",
+      "object": "Check if the whole order is ready for shipment",
+      "object_id": "sid-60FEB43F-1EA5-4F1F-A8F5-D8C7E26DFEA9"
+    },
+    {
+      "subject": "Reorder from wholesaler",
+      "subject_id": "sid-9790D5ED-DAEB-4F30-AE51-543FA372FE17",
+      "predicate": "follows",
+      "object": "Demand delay penalty from wholesaler",
+      "object_id": "sid-50F9EE96-6957-4DB2-ACB7-F5CF6B8CBF4B"
+    },
+    {
+      "subject": "Reorder from wholesaler",
+      "subject_id": "sid-9790D5ED-DAEB-4F30-AE51-543FA372FE17",
+      "predicate": "follows",
+      "object": "Register product in stock",
+      "object_id": "sid-FA3E3BE9-245A-4832-A218-090DE3E08BA3"
+    },
+    {
+      "subject": "Request courier",
+      "subject_id": "sid-8910D9CA-D8F7-4233-88C2-C76ABF9E4F79",
+      "predicate": "follows",
+      "object": "Send the order for shipment",
+      "object_id": "sid-76D9CB45-7ABB-49BA-88ED-C5B3FCED8FC3"
+    }
+  ],
+  "matches": {
+    "Check if product is in stock": {
+      "match": "product.in_stock",
+      "score": 0.7794
+    },
+    "Check if the whole order is ready for shipment": {
+      "match": "order.ready_for_shipment",
+      "score": 0.7137
+    },
+    "Demand delay penalty from wholesaler": {
+      "match": "delivery_delay_penalty.demanded",
+      "score": 0.7168
+    },
+    "Pack products": {
+      "match": "product.packed",
+      "score": 0.7646
+    },
+    "Read order": {
+      "match": "order.read",
+      "score": 0.8218
+    },
+    "Register product in stock": {
+      "match": "product.in_stock",
+      "score": 0.6861
+    },
+    "Reorder from wholesaler": {
+      "match": "product.reordered",
+      "score": 0.5126
+    },
+    "Request courier": {
+      "match": "shipment.shipped",
+      "score": 0.2997
+    },
+    "Send the order for shipment": {
+      "match": "order.ready_for_shipment",
+      "score": 0.7329
+    },
+    "Withdraw from the warehouse list": {
+      "match": "warehouse.withdrawn",
+      "score": 0.7213
+    }
+  },
+  "process_graph": [
+    {
+      "from": "warehouse.withdrawn",
+      "to": "order.ready_for_shipment",
+      "activity_from": "Withdraw from the warehouse list",
+      "activity_to": "Check if the whole order is ready for shipment"
+    },
+    {
+      "from": "product.in_stock",
+      "to": "warehouse.withdrawn",
+      "activity_from": "Check if product is in stock",
+      "activity_to": "Withdraw from the warehouse list"
+    },
+    {
+      "from": "product.in_stock",
+      "to": "product.reordered",
+      "activity_from": "Check if product is in stock",
+      "activity_to": "Reorder from wholesaler"
+    },
+    {
+      "from": "order.read",
+      "to": "product.in_stock",
+      "activity_from": "Read order",
+      "activity_to": "Check if product is in stock"
+    },
+    {
+      "from": "order.ready_for_shipment",
+      "to": "shipment.shipped",
+      "activity_from": "Check if the whole order is ready for shipment",
+      "activity_to": "Request courier"
+    },
+    {
+      "from": "order.ready_for_shipment",
+      "to": "product.packed",
+      "activity_from": "Check if the whole order is ready for shipment",
+      "activity_to": "Pack products"
+    },
+    {
+      "from": "order.ready_for_shipment",
+      "to": "product.in_stock",
+      "activity_from": "Check if the whole order is ready for shipment",
+      "activity_to": "Check if product is in stock"
+    },
+    {
+      "from": "product.packed",
+      "to": "order.ready_for_shipment",
+      "activity_from": "Pack products",
+      "activity_to": "Send the order for shipment"
+    },
+    {
+      "from": "delivery_delay_penalty.demanded",
+      "to": "product.in_stock",
+      "activity_from": "Demand delay penalty from wholesaler",
+      "activity_to": "Register product in stock"
+    },
+    {
+      "from": "product.in_stock",
+      "to": "order.ready_for_shipment",
+      "activity_from": "Register product in stock",
+      "activity_to": "Check if the whole order is ready for shipment"
+    },
+    {
+      "from": "product.reordered",
+      "to": "delivery_delay_penalty.demanded",
+      "activity_from": "Reorder from wholesaler",
+      "activity_to": "Demand delay penalty from wholesaler"
+    },
+    {
+      "from": "product.reordered",
+      "to": "product.in_stock",
+      "activity_from": "Reorder from wholesaler",
+      "activity_to": "Register product in stock"
+    },
+    {
+      "from": "shipment.shipped",
+      "to": "order.ready_for_shipment",
+      "activity_from": "Request courier",
+      "activity_to": "Send the order for shipment"
+    }
+  ],
+  "alignment": {
+    "order.checked": {
+      "operator": "AND",
+      "quote": "Then, it's checked if the first product from the order is in stock.",
+      "terms": [
+        {
+          "term": "order.read",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['order.checked']",
+          "missing": [
+            "order.checked"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE"
+    },
+    "order.ready_for_shipment": {
+      "operator": "AND",
+      "quote": "Finally, it's checked if the whole order is ready for shipment.",
+      "terms": [
+        {
+          "term": "order.checked",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['order.checked']",
+          "missing": [
+            "order.checked"
+          ]
+        },
+        {
+          "term": "product.registered",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['product.registered']",
+          "missing": [
+            "product.registered"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE"
+    },
+    "product.withdrawn": {
+      "operator": "AND",
+      "quote": "If it's in stock then it's withdrawn from the warehouse.",
+      "terms": [
+        {
+          "term": "product.in_stock",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['product.withdrawn']",
+          "missing": [
+            "product.withdrawn"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE"
+    },
+    "product.packed": {
+      "operator": "AND",
+      "quote": "If the order is ready for shipment, a courier is requested and the products are packed simultaneously and finally shipped.",
+      "terms": [
+        {
+          "term": "order.ready_for_shipment",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED"
+    },
+    "product.shipped": {
+      "operator": "AND",
+      "quote": "If the order is ready for shipment, a courier is requested and the products are packed simultaneously and finally shipped.",
+      "terms": [
+        {
+          "term": "order.ready_for_shipment",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['product.shipped']",
+          "missing": [
+            "product.shipped"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE"
+    },
+    "warehouse.withdrawn": {
+      "operator": "AND",
+      "quote": "If it's in stock then it's withdrawn from the warehouse.",
+      "terms": [
+        {
+          "term": "product.withdrawn",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['product.withdrawn']",
+          "missing": [
+            "product.withdrawn"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE"
+    },
+    "stock_management_system.registered": {
+      "operator": "AND",
+      "quote": "After the ordered product has arrived it's registered in the stock management system.",
+      "terms": [
+        {
+          "term": "product.registered",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['product.registered', 'stock_management_system.registered']",
+          "missing": [
+            "product.registered",
+            "stock_management_system.registered"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE"
+    },
+    "shipment.shipped": {
+      "operator": "AND",
+      "quote": "If the order is ready for shipment, a courier is requested and the products are packed simultaneously and finally shipped.",
+      "terms": [
+        {
+          "term": "order.ready_for_shipment",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED"
+    }
+  },
+  "report": {
+    "summary": {
+      "ecarts": 0,
+      "non_verifiable": 4,
+      "conforme": 2
+    },
+    "ecarts": [],
+    "non_verifiable": [
+      {
+        "root_cause": "(aucune activite du processus ne correspond clairement a cela)",
+        "quote": "Then, it's checked if the first product from the order is in stock.",
+        "explanation": "Dans le texte source, il est écrit : “Then, it's checked if the first product from the order is in stock.”  \nCette phrase indique qu’une condition doit être remplie avant que l’activité « (aucune activité du processus ne correspond clairement à cela) » puisse se produire.  \nCependant, aucune activité clairement identifiée dans le processus observé correspond à cette vérification.  \nPar conséquent, il est impossible de savoir si cette exigence est respectée ou non. (Cette meme cause affecte aussi : Send the order for shipment.)",
+        "quote_verbatim": true,
+        "affected_activities": [
+          "(aucune activite du processus ne correspond clairement a cela)",
+          "Send the order for shipment"
+        ],
+        "affected_count": 2
+      },
+      {
+        "root_cause": "(aucune activite du processus ne correspond clairement a cela)",
+        "quote": "Finally, it's checked if the whole order is ready for shipment.",
+        "explanation": "Dans le texte source, il est indiqué que « Finally, it's checked if the whole order is ready for shipment. » Cela montre qu’une condition doit être remplie avant l’activité « Send the order for shipment ». Cependant, aucune activité claire du processus observé n’est identifiée comme vérifiant ou garantissant cette condition. Par conséquent, il est impossible de déterminer si l’exigence « product registered » est respectée ou non. (Cette meme cause affecte aussi : (aucune activite du processus ne correspond clairement a cela).)",
+        "quote_verbatim": true,
+        "affected_activities": [
+          "(aucune activite du processus ne correspond clairement a cela)",
+          "Send the order for shipment"
+        ],
+        "affected_count": 3
+      },
+      {
+        "root_cause": "(aucune activite du processus ne correspond clairement a cela)",
+        "quote": "If it's in stock then it's withdrawn from the warehouse.",
+        "explanation": "Dans le texte source, il est indiqué que « If it's in stock then it's withdrawn from the warehouse. » Cette phrase montre qu’une condition doit être remplie avant que l’activité « (aucune activité du processus ne correspond clairement à cela) » puisse se produire.  \nCependant, aucune activité clairement identifiée dans le processus observé correspond à cette condition. Par conséquent, il est impossible de vérifier si l’exigence est respectée ou non. (Cette meme cause affecte aussi : Withdraw from the warehouse list.)",
+        "quote_verbatim": true,
+        "affected_activities": [
+          "(aucune activite du processus ne correspond clairement a cela)",
+          "Withdraw from the warehouse list"
+        ],
+        "affected_count": 2
+      },
+      {
+        "root_cause": "(aucune activite du processus ne correspond clairement a cela)",
+        "quote": "If the order is ready for shipment, a courier is requested and the products are packed simultaneously and finally shipped.",
+        "explanation": "Le texte source indique qu’une condition doit être remplie avant que l’activité « aucune activité du processus ne correspond clairement à cela » puisse se produire : product shipped.  \n« If the order is ready for shipment, a courier is requested and the products are packed simultaneously and finally shipped. »  \n\nCette condition n’est associée à aucune activité clairement identifiée dans le processus observé, ce qui rend impossible de vérifier si l’exigence est respectée ou non.  \nCette observation ne confirme ni ne réfute la conformité globale du processus.",
+        "quote_verbatim": true,
+        "affected_activities": [
+          "(aucune activite du processus ne correspond clairement a cela)"
+        ],
+        "affected_count": 1
+      }
+    ],
+    "conforme": [
+      {
+        "target": "Pack products",
+        "term": "Send the order for shipment"
+      },
+      {
+        "target": "Request courier",
+        "term": "Send the order for shipment"
+      }
+    ],
+    "piece_jointe_alignement_brut": {
+      "order.checked": {
+        "operator": "AND",
+        "quote": "Then, it's checked if the first product from the order is in stock.",
+        "terms": [
+          {
+            "term": "order.read",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['order.checked']",
+            "missing": [
+              "order.checked"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE"
+      },
+      "order.ready_for_shipment": {
+        "operator": "AND",
+        "quote": "Finally, it's checked if the whole order is ready for shipment.",
+        "terms": [
+          {
+            "term": "order.checked",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['order.checked']",
+            "missing": [
+              "order.checked"
+            ]
+          },
+          {
+            "term": "product.registered",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['product.registered']",
+            "missing": [
+              "product.registered"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE"
+      },
+      "product.withdrawn": {
+        "operator": "AND",
+        "quote": "If it's in stock then it's withdrawn from the warehouse.",
+        "terms": [
+          {
+            "term": "product.in_stock",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['product.withdrawn']",
+            "missing": [
+              "product.withdrawn"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE"
+      },
+      "product.packed": {
+        "operator": "AND",
+        "quote": "If the order is ready for shipment, a courier is requested and the products are packed simultaneously and finally shipped.",
+        "terms": [
+          {
+            "term": "order.ready_for_shipment",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED"
+      },
+      "product.shipped": {
+        "operator": "AND",
+        "quote": "If the order is ready for shipment, a courier is requested and the products are packed simultaneously and finally shipped.",
+        "terms": [
+          {
+            "term": "order.ready_for_shipment",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['product.shipped']",
+            "missing": [
+              "product.shipped"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE"
+      },
+      "warehouse.withdrawn": {
+        "operator": "AND",
+        "quote": "If it's in stock then it's withdrawn from the warehouse.",
+        "terms": [
+          {
+            "term": "product.withdrawn",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['product.withdrawn']",
+            "missing": [
+              "product.withdrawn"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE"
+      },
+      "stock_management_system.registered": {
+        "operator": "AND",
+        "quote": "After the ordered product has arrived it's registered in the stock management system.",
+        "terms": [
+          {
+            "term": "product.registered",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['product.registered', 'stock_management_system.registered']",
+            "missing": [
+              "product.registered",
+              "stock_management_system.registered"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE"
+      },
+      "shipment.shipped": {
+        "operator": "AND",
+        "quote": "If the order is ready for shipment, a courier is requested and the products are packed simultaneously and finally shipped.",
+        "terms": [
+          {
+            "term": "order.ready_for_shipment",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED"
+      }
+    }
+  },
+  "errors": []
+}

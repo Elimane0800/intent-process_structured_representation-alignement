@@ -1,0 +1,1056 @@
+{
+  "case_name": "M_j01",
+  "text": "Category: Manufacturing\nTitle: Chainsaw\n\nYou produce custom chainsaws on demand. Your chainsaws have at least 5\nproperties such as length of the \"guide bar\" (Schwertlaenge), chain width,\nelectric or motor chainsaw. After your customer told you the properties, you\ncan start ordering the parts from various online sources (in parallel). After\nthe parts arrive you have to do a manual inspection of all parts, and then\nassemble the parts. During production, you regularly send updates to your\ncustomer. After producing the first saw you send it to your customer. If he\nlikes it, the rest of his order are produced.\n\n",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "llama-3.1-8b",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "llama-3.1-8b",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/text_and_bpmn/bpmn/M_j01/7.bpmn2.xml",
+  "candidates": {
+    "chainsaw": [
+      "custom",
+      "produced",
+      "ordered",
+      "inspected",
+      "assembled",
+      "sent",
+      "produced_first",
+      "produced_rest"
+    ]
+  },
+  "validation_report": {
+    "chainsaw": {
+      "f_lex": "ENTITY",
+      "kept": true
+    }
+  },
+  "state_space": {
+    "chainsaw": [
+      "custom",
+      "produced",
+      "ordered",
+      "inspected",
+      "assembled",
+      "sent",
+      "produced_first",
+      "produced_rest"
+    ]
+  },
+  "raw_preconditions": {
+    "chainsaw.custom": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "chainsaw.produced": {
+      "precondition": "UNRESOLVED",
+      "quote": null
+    },
+    "chainsaw.ordered": {
+      "precondition": "chainsaw.custom AND customer.properties_received",
+      "quote": "You produce custom chainsaws on demand. Your chainsaws have at least 5 properties such as length of the \"guide bar\" (Schwertlaenge), chain width, electric or motor chainsaw. After your customer told you the properties, you can start ordering the parts from various online sources (in parallel)."
+    },
+    "chainsaw.inspected": {
+      "precondition": "chainsaw.ordered AND parts.arrived",
+      "quote": "After the parts arrive you have to do a manual inspection of all parts, and then assemble the parts."
+    },
+    "chainsaw.assembled": {
+      "precondition": "chainsaw.inspected",
+      "quote": "After the parts arrive you have to do a manual inspection of all parts, and then assemble the parts."
+    },
+    "chainsaw.sent": {
+      "precondition": "chainsaw.assembled",
+      "quote": "After producing the first saw you send it to your customer."
+    },
+    "chainsaw.produced_first": {
+      "precondition": "chainsaw.assembled AND customer.likes",
+      "quote": "If he likes it, the rest of his order are produced."
+    },
+    "chainsaw.produced_rest": {
+      "precondition": "chainsaw.produced_first",
+      "quote": "If he likes it, the rest of his order are produced."
+    }
+  },
+  "validated_preconditions": {
+    "chainsaw.custom": {
+      "precondition": "INITIAL",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "chainsaw.produced": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "chainsaw.ordered": {
+      "precondition": "chainsaw.custom",
+      "quote": "After your customer told you the properties, you can start ordering the parts from various online sources (in parallel).",
+      "status": "OK",
+      "reason": null,
+      "retried": true
+    },
+    "chainsaw.inspected": {
+      "precondition": "chainsaw.ordered",
+      "quote": "After your customer told you the properties, you can start ordering the parts from various online sources (in parallel).",
+      "status": "OK",
+      "reason": null,
+      "retried": true
+    },
+    "chainsaw.assembled": {
+      "precondition": "chainsaw.inspected",
+      "quote": "After the parts arrive you have to do a manual inspection of all parts, and then assemble the parts.",
+      "status": "OK",
+      "reason": null
+    },
+    "chainsaw.sent": {
+      "precondition": "chainsaw.assembled",
+      "quote": "After producing the first saw you send it to your customer.",
+      "status": "OK",
+      "reason": null
+    },
+    "chainsaw.produced_first": {
+      "precondition": "chainsaw.assembled",
+      "quote": "After your customer told you the properties, you can start ordering the parts from various online sources (in parallel).",
+      "status": "OK",
+      "reason": null,
+      "retried": true
+    },
+    "chainsaw.produced_rest": {
+      "precondition": "chainsaw.produced_first",
+      "quote": "If he likes it, the rest of his order are produced.",
+      "status": "OK",
+      "reason": null
+    }
+  },
+  "precondition_cycles": [],
+  "reference_graph": {
+    "nodes": [
+      {
+        "id": "chainsaw.custom",
+        "weight": 0.333
+      },
+      {
+        "id": "chainsaw.produced",
+        "weight": 0.0
+      },
+      {
+        "id": "chainsaw.ordered",
+        "weight": 0.667
+      },
+      {
+        "id": "chainsaw.inspected",
+        "weight": 0.667
+      },
+      {
+        "id": "chainsaw.assembled",
+        "weight": 1.0
+      },
+      {
+        "id": "chainsaw.sent",
+        "weight": 0.333
+      },
+      {
+        "id": "chainsaw.produced_first",
+        "weight": 0.667
+      },
+      {
+        "id": "chainsaw.produced_rest",
+        "weight": 0.333
+      }
+    ],
+    "edges": [
+      {
+        "from": "chainsaw.custom",
+        "to": "chainsaw.ordered",
+        "type": "sequence",
+        "operator": "AND",
+        "quote": "After your customer told you the properties, you can start ordering the parts from various online sources (in parallel)."
+      },
+      {
+        "from": "chainsaw.ordered",
+        "to": "chainsaw.inspected",
+        "type": "sequence",
+        "operator": "AND",
+        "quote": "After your customer told you the properties, you can start ordering the parts from various online sources (in parallel)."
+      },
+      {
+        "from": "chainsaw.inspected",
+        "to": "chainsaw.assembled",
+        "type": "sequence",
+        "operator": "AND",
+        "quote": "After the parts arrive you have to do a manual inspection of all parts, and then assemble the parts."
+      },
+      {
+        "from": "chainsaw.assembled",
+        "to": "chainsaw.sent",
+        "type": "sequence",
+        "operator": "AND",
+        "quote": "After producing the first saw you send it to your customer."
+      },
+      {
+        "from": "chainsaw.assembled",
+        "to": "chainsaw.produced_first",
+        "type": "sequence",
+        "operator": "AND",
+        "quote": "After your customer told you the properties, you can start ordering the parts from various online sources (in parallel)."
+      },
+      {
+        "from": "chainsaw.produced_first",
+        "to": "chainsaw.produced_rest",
+        "type": "sequence",
+        "operator": "AND",
+        "quote": "If he likes it, the rest of his order are produced."
+      }
+    ],
+    "cycles": []
+  },
+  "dfg_edges": [
+    {
+      "source_id": "sid-B56C5C48-5300-4A6E-A24B-A68788CEF4F3",
+      "source_label": "choose batery typ",
+      "target_id": "sid-17304259-5F5C-4297-AC8F-9FF6ED45E79C",
+      "target_label": "ordering parts",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-3326BB66-9159-47CF-B9CC-E4BB233BDCC0",
+      "source_label": "send prototyp to customer",
+      "target_id": "sid-C8779ED1-782C-4B99-9A3B-14B46729B891",
+      "target_label": "produce rest of order",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "yes"
+      ]
+    },
+    {
+      "source_id": "sid-3326BB66-9159-47CF-B9CC-E4BB233BDCC0",
+      "source_label": "send prototyp to customer",
+      "target_id": "sid-AD5C5237-DABC-4B8A-B842-8DC85D588EEC",
+      "target_label": "ask for feedback",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "no"
+      ]
+    },
+    {
+      "source_id": "sid-3611EB30-4FB2-43B2-A7CE-765A4DF1C832",
+      "source_label": "choose type of chainsaw",
+      "target_id": "sid-17304259-5F5C-4297-AC8F-9FF6ED45E79C",
+      "target_label": "ordering parts",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-D1FF267A-C951-409B-A763-13673E989A50",
+      "source_label": "assemble the parts",
+      "target_id": "sid-3326BB66-9159-47CF-B9CC-E4BB233BDCC0",
+      "target_label": "send prototyp to customer",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-22D40CAC-937E-4DB2-8227-F393AC0918CB",
+      "source_label": "receive the feedback from customer",
+      "target_id": "sid-A354EC16-6BFB-4B1E-B544-9421542898B6",
+      "target_label": "start producition",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-53E42EA2-05E6-43A3-8524-53F7A11F27B3",
+      "source_label": "",
+      "target_id": "sid-41DB4A2C-2034-4026-A23F-024A13F7DD5E",
+      "target_label": "receive customer request",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-41DB4A2C-2034-4026-A23F-024A13F7DD5E",
+      "source_label": "receive customer request",
+      "target_id": "sid-288E360A-C442-4970-B969-F476A62C94EC",
+      "target_label": "ask customer for equipment",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-63D25E4D-F1DC-4228-9741-B52F5F38718D",
+      "source_label": "inspection of all parts",
+      "target_id": "sid-A3E3086F-8FBF-4D3F-A898-42E39B984F16",
+      "target_label": "return the parts",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "no"
+      ]
+    },
+    {
+      "source_id": "sid-63D25E4D-F1DC-4228-9741-B52F5F38718D",
+      "source_label": "inspection of all parts",
+      "target_id": "sid-A354EC16-6BFB-4B1E-B544-9421542898B6",
+      "target_label": "start producition",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "yes"
+      ]
+    },
+    {
+      "source_id": "sid-288E360A-C442-4970-B969-F476A62C94EC",
+      "source_label": "ask customer for equipment",
+      "target_id": "sid-CCCD9170-8285-47A5-B847-497C4283A425",
+      "target_label": "choose chain width",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-288E360A-C442-4970-B969-F476A62C94EC",
+      "source_label": "ask customer for equipment",
+      "target_id": "sid-16605868-27C0-4996-9D53-5297C1CD86B1",
+      "target_label": "choose surface material",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-288E360A-C442-4970-B969-F476A62C94EC",
+      "source_label": "ask customer for equipment",
+      "target_id": "sid-B56C5C48-5300-4A6E-A24B-A68788CEF4F3",
+      "target_label": "choose batery typ",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-288E360A-C442-4970-B969-F476A62C94EC",
+      "source_label": "ask customer for equipment",
+      "target_id": "sid-3611EB30-4FB2-43B2-A7CE-765A4DF1C832",
+      "target_label": "choose type of chainsaw",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-288E360A-C442-4970-B969-F476A62C94EC",
+      "source_label": "ask customer for equipment",
+      "target_id": "sid-48C43DD9-FC73-4836-9913-35C1D0E64693",
+      "target_label": "choose lenght of the \"guide bar\"",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-C8779ED1-782C-4B99-9A3B-14B46729B891",
+      "source_label": "produce rest of order",
+      "target_id": "sid-DC1D1C08-8ECE-492C-92DE-5BD20E05FD5B",
+      "target_label": "",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-17304259-5F5C-4297-AC8F-9FF6ED45E79C",
+      "source_label": "ordering parts",
+      "target_id": "sid-70C6623C-0B0D-407F-BE35-1DDF72C9A085",
+      "target_label": "get material delivered",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-CCCD9170-8285-47A5-B847-497C4283A425",
+      "source_label": "choose chain width",
+      "target_id": "sid-17304259-5F5C-4297-AC8F-9FF6ED45E79C",
+      "target_label": "ordering parts",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-16605868-27C0-4996-9D53-5297C1CD86B1",
+      "source_label": "choose surface material",
+      "target_id": "sid-17304259-5F5C-4297-AC8F-9FF6ED45E79C",
+      "target_label": "ordering parts",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-A354EC16-6BFB-4B1E-B544-9421542898B6",
+      "source_label": "start producition",
+      "target_id": "sid-D1FF267A-C951-409B-A763-13673E989A50",
+      "target_label": "assemble the parts",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-A354EC16-6BFB-4B1E-B544-9421542898B6",
+      "source_label": "start producition",
+      "target_id": "sid-C37FE417-CD60-4E22-9064-5B147CC3BC47",
+      "target_label": "sending Update to customer",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-AD5C5237-DABC-4B8A-B842-8DC85D588EEC",
+      "source_label": "ask for feedback",
+      "target_id": "sid-22D40CAC-937E-4DB2-8227-F393AC0918CB",
+      "target_label": "receive the feedback from customer",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-A3E3086F-8FBF-4D3F-A898-42E39B984F16",
+      "source_label": "return the parts",
+      "target_id": "sid-3069D5C5-AF12-4725-BF5A-F4EFA2555BB7",
+      "target_label": "give a reson for defect",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-70C6623C-0B0D-407F-BE35-1DDF72C9A085",
+      "source_label": "get material delivered",
+      "target_id": "sid-63D25E4D-F1DC-4228-9741-B52F5F38718D",
+      "target_label": "inspection of all parts",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-C37FE417-CD60-4E22-9064-5B147CC3BC47",
+      "source_label": "sending Update to customer",
+      "target_id": "sid-3326BB66-9159-47CF-B9CC-E4BB233BDCC0",
+      "target_label": "send prototyp to customer",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-3069D5C5-AF12-4725-BF5A-F4EFA2555BB7",
+      "source_label": "give a reson for defect",
+      "target_id": "sid-17304259-5F5C-4297-AC8F-9FF6ED45E79C",
+      "target_label": "ordering parts",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-48C43DD9-FC73-4836-9913-35C1D0E64693",
+      "source_label": "choose lenght of the \"guide bar\"",
+      "target_id": "sid-17304259-5F5C-4297-AC8F-9FF6ED45E79C",
+      "target_label": "ordering parts",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "choose batery typ",
+      "subject_id": "sid-B56C5C48-5300-4A6E-A24B-A68788CEF4F3",
+      "predicate": "follows",
+      "object": "ordering parts",
+      "object_id": "sid-17304259-5F5C-4297-AC8F-9FF6ED45E79C"
+    },
+    {
+      "subject": "send prototyp to customer",
+      "subject_id": "sid-3326BB66-9159-47CF-B9CC-E4BB233BDCC0",
+      "predicate": "follows",
+      "object": "produce rest of order",
+      "object_id": "sid-C8779ED1-782C-4B99-9A3B-14B46729B891"
+    },
+    {
+      "subject": "send prototyp to customer",
+      "subject_id": "sid-3326BB66-9159-47CF-B9CC-E4BB233BDCC0",
+      "predicate": "follows",
+      "object": "ask for feedback",
+      "object_id": "sid-AD5C5237-DABC-4B8A-B842-8DC85D588EEC"
+    },
+    {
+      "subject": "choose type of chainsaw",
+      "subject_id": "sid-3611EB30-4FB2-43B2-A7CE-765A4DF1C832",
+      "predicate": "follows",
+      "object": "ordering parts",
+      "object_id": "sid-17304259-5F5C-4297-AC8F-9FF6ED45E79C"
+    },
+    {
+      "subject": "assemble the parts",
+      "subject_id": "sid-D1FF267A-C951-409B-A763-13673E989A50",
+      "predicate": "follows",
+      "object": "send prototyp to customer",
+      "object_id": "sid-3326BB66-9159-47CF-B9CC-E4BB233BDCC0"
+    },
+    {
+      "subject": "receive the feedback from customer",
+      "subject_id": "sid-22D40CAC-937E-4DB2-8227-F393AC0918CB",
+      "predicate": "follows",
+      "object": "start producition",
+      "object_id": "sid-A354EC16-6BFB-4B1E-B544-9421542898B6"
+    },
+    {
+      "subject": "",
+      "subject_id": "sid-53E42EA2-05E6-43A3-8524-53F7A11F27B3",
+      "predicate": "follows",
+      "object": "receive customer request",
+      "object_id": "sid-41DB4A2C-2034-4026-A23F-024A13F7DD5E"
+    },
+    {
+      "subject": "receive customer request",
+      "subject_id": "sid-41DB4A2C-2034-4026-A23F-024A13F7DD5E",
+      "predicate": "follows",
+      "object": "ask customer for equipment",
+      "object_id": "sid-288E360A-C442-4970-B969-F476A62C94EC"
+    },
+    {
+      "subject": "inspection of all parts",
+      "subject_id": "sid-63D25E4D-F1DC-4228-9741-B52F5F38718D",
+      "predicate": "follows",
+      "object": "return the parts",
+      "object_id": "sid-A3E3086F-8FBF-4D3F-A898-42E39B984F16"
+    },
+    {
+      "subject": "inspection of all parts",
+      "subject_id": "sid-63D25E4D-F1DC-4228-9741-B52F5F38718D",
+      "predicate": "follows",
+      "object": "start producition",
+      "object_id": "sid-A354EC16-6BFB-4B1E-B544-9421542898B6"
+    },
+    {
+      "subject": "ask customer for equipment",
+      "subject_id": "sid-288E360A-C442-4970-B969-F476A62C94EC",
+      "predicate": "follows",
+      "object": "choose chain width",
+      "object_id": "sid-CCCD9170-8285-47A5-B847-497C4283A425"
+    },
+    {
+      "subject": "ask customer for equipment",
+      "subject_id": "sid-288E360A-C442-4970-B969-F476A62C94EC",
+      "predicate": "follows",
+      "object": "choose surface material",
+      "object_id": "sid-16605868-27C0-4996-9D53-5297C1CD86B1"
+    },
+    {
+      "subject": "ask customer for equipment",
+      "subject_id": "sid-288E360A-C442-4970-B969-F476A62C94EC",
+      "predicate": "follows",
+      "object": "choose batery typ",
+      "object_id": "sid-B56C5C48-5300-4A6E-A24B-A68788CEF4F3"
+    },
+    {
+      "subject": "ask customer for equipment",
+      "subject_id": "sid-288E360A-C442-4970-B969-F476A62C94EC",
+      "predicate": "follows",
+      "object": "choose type of chainsaw",
+      "object_id": "sid-3611EB30-4FB2-43B2-A7CE-765A4DF1C832"
+    },
+    {
+      "subject": "ask customer for equipment",
+      "subject_id": "sid-288E360A-C442-4970-B969-F476A62C94EC",
+      "predicate": "follows",
+      "object": "choose lenght of the \"guide bar\"",
+      "object_id": "sid-48C43DD9-FC73-4836-9913-35C1D0E64693"
+    },
+    {
+      "subject": "produce rest of order",
+      "subject_id": "sid-C8779ED1-782C-4B99-9A3B-14B46729B891",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "sid-DC1D1C08-8ECE-492C-92DE-5BD20E05FD5B"
+    },
+    {
+      "subject": "ordering parts",
+      "subject_id": "sid-17304259-5F5C-4297-AC8F-9FF6ED45E79C",
+      "predicate": "follows",
+      "object": "get material delivered",
+      "object_id": "sid-70C6623C-0B0D-407F-BE35-1DDF72C9A085"
+    },
+    {
+      "subject": "choose chain width",
+      "subject_id": "sid-CCCD9170-8285-47A5-B847-497C4283A425",
+      "predicate": "follows",
+      "object": "ordering parts",
+      "object_id": "sid-17304259-5F5C-4297-AC8F-9FF6ED45E79C"
+    },
+    {
+      "subject": "choose surface material",
+      "subject_id": "sid-16605868-27C0-4996-9D53-5297C1CD86B1",
+      "predicate": "follows",
+      "object": "ordering parts",
+      "object_id": "sid-17304259-5F5C-4297-AC8F-9FF6ED45E79C"
+    },
+    {
+      "subject": "start producition",
+      "subject_id": "sid-A354EC16-6BFB-4B1E-B544-9421542898B6",
+      "predicate": "follows",
+      "object": "assemble the parts",
+      "object_id": "sid-D1FF267A-C951-409B-A763-13673E989A50"
+    },
+    {
+      "subject": "start producition",
+      "subject_id": "sid-A354EC16-6BFB-4B1E-B544-9421542898B6",
+      "predicate": "follows",
+      "object": "sending Update to customer",
+      "object_id": "sid-C37FE417-CD60-4E22-9064-5B147CC3BC47"
+    },
+    {
+      "subject": "ask for feedback",
+      "subject_id": "sid-AD5C5237-DABC-4B8A-B842-8DC85D588EEC",
+      "predicate": "follows",
+      "object": "receive the feedback from customer",
+      "object_id": "sid-22D40CAC-937E-4DB2-8227-F393AC0918CB"
+    },
+    {
+      "subject": "return the parts",
+      "subject_id": "sid-A3E3086F-8FBF-4D3F-A898-42E39B984F16",
+      "predicate": "follows",
+      "object": "give a reson for defect",
+      "object_id": "sid-3069D5C5-AF12-4725-BF5A-F4EFA2555BB7"
+    },
+    {
+      "subject": "get material delivered",
+      "subject_id": "sid-70C6623C-0B0D-407F-BE35-1DDF72C9A085",
+      "predicate": "follows",
+      "object": "inspection of all parts",
+      "object_id": "sid-63D25E4D-F1DC-4228-9741-B52F5F38718D"
+    },
+    {
+      "subject": "sending Update to customer",
+      "subject_id": "sid-C37FE417-CD60-4E22-9064-5B147CC3BC47",
+      "predicate": "follows",
+      "object": "send prototyp to customer",
+      "object_id": "sid-3326BB66-9159-47CF-B9CC-E4BB233BDCC0"
+    },
+    {
+      "subject": "give a reson for defect",
+      "subject_id": "sid-3069D5C5-AF12-4725-BF5A-F4EFA2555BB7",
+      "predicate": "follows",
+      "object": "ordering parts",
+      "object_id": "sid-17304259-5F5C-4297-AC8F-9FF6ED45E79C"
+    },
+    {
+      "subject": "choose lenght of the \"guide bar\"",
+      "subject_id": "sid-48C43DD9-FC73-4836-9913-35C1D0E64693",
+      "predicate": "follows",
+      "object": "ordering parts",
+      "object_id": "sid-17304259-5F5C-4297-AC8F-9FF6ED45E79C"
+    }
+  ],
+  "matches": {
+    "ask customer for equipment": {
+      "match": "chainsaw.ordered",
+      "score": 0.1994
+    },
+    "ask for feedback": {
+      "match": "chainsaw.inspected",
+      "score": 0.1017
+    },
+    "assemble the parts": {
+      "match": "chainsaw.assembled",
+      "score": 0.4891
+    },
+    "choose batery typ": {
+      "match": "chainsaw.assembled",
+      "score": 0.1292
+    },
+    "choose chain width": {
+      "match": "chainsaw.custom",
+      "score": 0.3075
+    },
+    "choose lenght of the \"guide bar\"": {
+      "match": "chainsaw.custom",
+      "score": 0.1122
+    },
+    "choose surface material": {
+      "match": "chainsaw.custom",
+      "score": 0.1139
+    },
+    "choose type of chainsaw": {
+      "match": "chainsaw.produced",
+      "score": 0.5309
+    },
+    "get material delivered": {
+      "match": "chainsaw.ordered",
+      "score": 0.2584
+    },
+    "give a reson for defect": {
+      "match": "chainsaw.produced_rest",
+      "score": 0.0678
+    },
+    "inspection of all parts": {
+      "match": "chainsaw.inspected",
+      "score": 0.4218
+    },
+    "ordering parts": {
+      "match": "chainsaw.ordered",
+      "score": 0.353
+    },
+    "produce rest of order": {
+      "match": "chainsaw.produced_rest",
+      "score": 0.4187
+    },
+    "receive customer request": {
+      "match": "chainsaw.ordered",
+      "score": 0.1809
+    },
+    "receive the feedback from customer": {
+      "match": "chainsaw.ordered",
+      "score": 0.0957
+    },
+    "return the parts": {
+      "match": "chainsaw.assembled",
+      "score": 0.1923
+    },
+    "send prototyp to customer": {
+      "match": "chainsaw.sent",
+      "score": 0.1978
+    },
+    "sending Update to customer": {
+      "match": "chainsaw.sent",
+      "score": 0.181
+    },
+    "start producition": {
+      "match": "chainsaw.produced_first",
+      "score": 0.2761
+    }
+  },
+  "process_graph": [
+    {
+      "from": "chainsaw.assembled",
+      "to": "chainsaw.ordered",
+      "activity_from": "choose batery typ",
+      "activity_to": "ordering parts"
+    },
+    {
+      "from": "chainsaw.sent",
+      "to": "chainsaw.produced_rest",
+      "activity_from": "send prototyp to customer",
+      "activity_to": "produce rest of order"
+    },
+    {
+      "from": "chainsaw.sent",
+      "to": "chainsaw.inspected",
+      "activity_from": "send prototyp to customer",
+      "activity_to": "ask for feedback"
+    },
+    {
+      "from": "chainsaw.produced",
+      "to": "chainsaw.ordered",
+      "activity_from": "choose type of chainsaw",
+      "activity_to": "ordering parts"
+    },
+    {
+      "from": "chainsaw.assembled",
+      "to": "chainsaw.sent",
+      "activity_from": "assemble the parts",
+      "activity_to": "send prototyp to customer"
+    },
+    {
+      "from": "chainsaw.ordered",
+      "to": "chainsaw.produced_first",
+      "activity_from": "receive the feedback from customer",
+      "activity_to": "start producition"
+    },
+    {
+      "from": "chainsaw.ordered",
+      "to": "chainsaw.ordered",
+      "activity_from": "receive customer request",
+      "activity_to": "ask customer for equipment"
+    },
+    {
+      "from": "chainsaw.inspected",
+      "to": "chainsaw.assembled",
+      "activity_from": "inspection of all parts",
+      "activity_to": "return the parts"
+    },
+    {
+      "from": "chainsaw.inspected",
+      "to": "chainsaw.produced_first",
+      "activity_from": "inspection of all parts",
+      "activity_to": "start producition"
+    },
+    {
+      "from": "chainsaw.ordered",
+      "to": "chainsaw.custom",
+      "activity_from": "ask customer for equipment",
+      "activity_to": "choose chain width"
+    },
+    {
+      "from": "chainsaw.ordered",
+      "to": "chainsaw.custom",
+      "activity_from": "ask customer for equipment",
+      "activity_to": "choose surface material"
+    },
+    {
+      "from": "chainsaw.ordered",
+      "to": "chainsaw.assembled",
+      "activity_from": "ask customer for equipment",
+      "activity_to": "choose batery typ"
+    },
+    {
+      "from": "chainsaw.ordered",
+      "to": "chainsaw.produced",
+      "activity_from": "ask customer for equipment",
+      "activity_to": "choose type of chainsaw"
+    },
+    {
+      "from": "chainsaw.ordered",
+      "to": "chainsaw.custom",
+      "activity_from": "ask customer for equipment",
+      "activity_to": "choose lenght of the \"guide bar\""
+    },
+    {
+      "from": "chainsaw.ordered",
+      "to": "chainsaw.ordered",
+      "activity_from": "ordering parts",
+      "activity_to": "get material delivered"
+    },
+    {
+      "from": "chainsaw.custom",
+      "to": "chainsaw.ordered",
+      "activity_from": "choose chain width",
+      "activity_to": "ordering parts"
+    },
+    {
+      "from": "chainsaw.custom",
+      "to": "chainsaw.ordered",
+      "activity_from": "choose surface material",
+      "activity_to": "ordering parts"
+    },
+    {
+      "from": "chainsaw.produced_first",
+      "to": "chainsaw.assembled",
+      "activity_from": "start producition",
+      "activity_to": "assemble the parts"
+    },
+    {
+      "from": "chainsaw.produced_first",
+      "to": "chainsaw.sent",
+      "activity_from": "start producition",
+      "activity_to": "sending Update to customer"
+    },
+    {
+      "from": "chainsaw.inspected",
+      "to": "chainsaw.ordered",
+      "activity_from": "ask for feedback",
+      "activity_to": "receive the feedback from customer"
+    },
+    {
+      "from": "chainsaw.assembled",
+      "to": "chainsaw.produced_rest",
+      "activity_from": "return the parts",
+      "activity_to": "give a reson for defect"
+    },
+    {
+      "from": "chainsaw.ordered",
+      "to": "chainsaw.inspected",
+      "activity_from": "get material delivered",
+      "activity_to": "inspection of all parts"
+    },
+    {
+      "from": "chainsaw.sent",
+      "to": "chainsaw.sent",
+      "activity_from": "sending Update to customer",
+      "activity_to": "send prototyp to customer"
+    },
+    {
+      "from": "chainsaw.produced_rest",
+      "to": "chainsaw.ordered",
+      "activity_from": "give a reson for defect",
+      "activity_to": "ordering parts"
+    },
+    {
+      "from": "chainsaw.custom",
+      "to": "chainsaw.ordered",
+      "activity_from": "choose lenght of the \"guide bar\"",
+      "activity_to": "ordering parts"
+    }
+  ],
+  "alignment": {
+    "chainsaw.ordered": {
+      "operator": "AND",
+      "quote": "After your customer told you the properties, you can start ordering the parts from various online sources (in parallel).",
+      "terms": [
+        {
+          "term": "chainsaw.custom",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED"
+    },
+    "chainsaw.inspected": {
+      "operator": "AND",
+      "quote": "After your customer told you the properties, you can start ordering the parts from various online sources (in parallel).",
+      "terms": [
+        {
+          "term": "chainsaw.ordered",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED"
+    },
+    "chainsaw.assembled": {
+      "operator": "AND",
+      "quote": "After the parts arrive you have to do a manual inspection of all parts, and then assemble the parts.",
+      "terms": [
+        {
+          "term": "chainsaw.inspected",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED"
+    },
+    "chainsaw.sent": {
+      "operator": "AND",
+      "quote": "After producing the first saw you send it to your customer.",
+      "terms": [
+        {
+          "term": "chainsaw.assembled",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED"
+    },
+    "chainsaw.produced_first": {
+      "operator": "AND",
+      "quote": "After your customer told you the properties, you can start ordering the parts from various online sources (in parallel).",
+      "terms": [
+        {
+          "term": "chainsaw.assembled",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED"
+    },
+    "chainsaw.produced_rest": {
+      "operator": "AND",
+      "quote": "If he likes it, the rest of his order are produced.",
+      "terms": [
+        {
+          "term": "chainsaw.produced_first",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED"
+    }
+  },
+  "report": {
+    "summary": {
+      "ecarts": 0,
+      "non_verifiable": 0,
+      "conforme": 6
+    },
+    "ecarts": [],
+    "non_verifiable": [],
+    "conforme": [
+      {
+        "target": "ordering parts",
+        "term": "choose chain width"
+      },
+      {
+        "target": "inspection of all parts",
+        "term": "ordering parts"
+      },
+      {
+        "target": "assemble the parts",
+        "term": "inspection of all parts"
+      },
+      {
+        "target": "send prototyp to customer",
+        "term": "assemble the parts"
+      },
+      {
+        "target": "start producition",
+        "term": "assemble the parts"
+      },
+      {
+        "target": "produce rest of order",
+        "term": "start producition"
+      }
+    ],
+    "piece_jointe_alignement_brut": {
+      "chainsaw.ordered": {
+        "operator": "AND",
+        "quote": "After your customer told you the properties, you can start ordering the parts from various online sources (in parallel).",
+        "terms": [
+          {
+            "term": "chainsaw.custom",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED"
+      },
+      "chainsaw.inspected": {
+        "operator": "AND",
+        "quote": "After your customer told you the properties, you can start ordering the parts from various online sources (in parallel).",
+        "terms": [
+          {
+            "term": "chainsaw.ordered",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED"
+      },
+      "chainsaw.assembled": {
+        "operator": "AND",
+        "quote": "After the parts arrive you have to do a manual inspection of all parts, and then assemble the parts.",
+        "terms": [
+          {
+            "term": "chainsaw.inspected",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED"
+      },
+      "chainsaw.sent": {
+        "operator": "AND",
+        "quote": "After producing the first saw you send it to your customer.",
+        "terms": [
+          {
+            "term": "chainsaw.assembled",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED"
+      },
+      "chainsaw.produced_first": {
+        "operator": "AND",
+        "quote": "After your customer told you the properties, you can start ordering the parts from various online sources (in parallel).",
+        "terms": [
+          {
+            "term": "chainsaw.assembled",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED"
+      },
+      "chainsaw.produced_rest": {
+        "operator": "AND",
+        "quote": "If he likes it, the rest of his order are produced.",
+        "terms": [
+          {
+            "term": "chainsaw.produced_first",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED"
+      }
+    }
+  },
+  "errors": []
+}

@@ -1,0 +1,342 @@
+{
+  "case_name": "R_j01",
+  "text": "Category: Repair and Service\nTitle: OEE\n\nWrite a process, that collects relevant information from a machine, and\ncalculated the Overall Equipment Efficiency (OEE). If the OEE falls below a\ncertain value/percentage, stop the machine and send an email to an engineer.\nWhen the machine is restarted, continue measuring. When the machine is\ndisconnected, stop the process.\n",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "mistral-nemotron",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "mistral-nemotron",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/text_and_bpmn/bpmn/R_j01/8.bpmn2.xml",
+  "dfg_edges": [
+    {
+      "source_id": "sid-0C6B00C4-45EF-42B2-8BA2-0739DB0D62D3",
+      "source_label": "upload messurement data",
+      "target_id": "sid-DDE42B75-A69B-4BA1-987F-C00A78809508",
+      "target_label": "Restart process at the beginning",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-45D2F460-E296-4543-96B6-1AEB2BE01FEF",
+      "source_label": "sent mail to engineer",
+      "target_id": "sid-1DABD432-7999-4AF4-A7D4-2D8C5DF1DEEB",
+      "target_label": "run machine diagnosis",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-A7F54176-2F6A-4D96-BFA3-9B0D46119704",
+      "source_label": "stop machine",
+      "target_id": "sid-1DABD432-7999-4AF4-A7D4-2D8C5DF1DEEB",
+      "target_label": "run machine diagnosis",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-97D5674B-B19F-4CD8-8DAC-FD811888F859",
+      "source_label": "sending request ",
+      "target_id": "sid-5DF13E42-3535-4004-AD1D-76F7008EEF15",
+      "target_label": "safe data",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-1DABD432-7999-4AF4-A7D4-2D8C5DF1DEEB",
+      "source_label": "run machine diagnosis",
+      "target_id": "sid-C3651DF7-A4E4-4604-B118-373A5CFD33C5",
+      "target_label": "",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-1DABD432-7999-4AF4-A7D4-2D8C5DF1DEEB",
+      "source_label": "run machine diagnosis",
+      "target_id": "sid-FCB46BBD-6BD8-42C2-9240-8FB0D7777F58",
+      "target_label": "change parts",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "error occurs"
+      ]
+    },
+    {
+      "source_id": "sid-1DABD432-7999-4AF4-A7D4-2D8C5DF1DEEB",
+      "source_label": "run machine diagnosis",
+      "target_id": "sid-19442480-8880-4AB3-A7B7-7997D615A67F",
+      "target_label": "restart machine",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "no errors"
+      ]
+    },
+    {
+      "source_id": "sid-84F21849-3851-4D8A-8814-801F5623504D",
+      "source_label": "Restart process at the beginning",
+      "target_id": "sid-16550BD4-2553-4A8C-965B-C5CA059CDF89",
+      "target_label": "",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-5DF13E42-3535-4004-AD1D-76F7008EEF15",
+      "source_label": "safe data",
+      "target_id": "sid-69A6BF4E-B846-47A9-93FC-A350366E4776",
+      "target_label": "Cloud upload",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-5DF13E42-3535-4004-AD1D-76F7008EEF15",
+      "source_label": "safe data",
+      "target_id": "sid-2ABC4F50-D94D-485D-86A8-06FB2029AF00",
+      "target_label": "",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-6BC92C80-899C-4F55-BFB0-7EC991797169",
+      "source_label": "start measurement cycle",
+      "target_id": "sid-5C166F81-C7B3-4124-892D-0FF140731C45",
+      "target_label": "",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-6BC92C80-899C-4F55-BFB0-7EC991797169",
+      "source_label": "start measurement cycle",
+      "target_id": "sid-97D5674B-B19F-4CD8-8DAC-FD811888F859",
+      "target_label": "sending request ",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "yes"
+      ]
+    },
+    {
+      "source_id": "sid-6BC92C80-899C-4F55-BFB0-7EC991797169",
+      "source_label": "start measurement cycle",
+      "target_id": "sid-FC027EC6-39AB-49F8-8C78-F3AFDA943EA2",
+      "target_label": "End process",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "no"
+      ]
+    },
+    {
+      "source_id": "sid-DDE42B75-A69B-4BA1-987F-C00A78809508",
+      "source_label": "Restart process at the beginning",
+      "target_id": "sid-88749EC3-C9A0-427D-B11B-B2645122B080",
+      "target_label": "",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-19442480-8880-4AB3-A7B7-7997D615A67F",
+      "source_label": "restart machine",
+      "target_id": "sid-84F21849-3851-4D8A-8814-801F5623504D",
+      "target_label": "Restart process at the beginning",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-69A6BF4E-B846-47A9-93FC-A350366E4776",
+      "source_label": "Cloud upload",
+      "target_id": "sid-878F8632-3784-42BE-AD07-3FC7F53281AD",
+      "target_label": "calculate OEE",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-878F8632-3784-42BE-AD07-3FC7F53281AD",
+      "source_label": "calculate OEE",
+      "target_id": "sid-45D2F460-E296-4543-96B6-1AEB2BE01FEF",
+      "target_label": "sent mail to engineer",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "yes",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-878F8632-3784-42BE-AD07-3FC7F53281AD",
+      "source_label": "calculate OEE",
+      "target_id": "sid-A7F54176-2F6A-4D96-BFA3-9B0D46119704",
+      "target_label": "stop machine",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "yes",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-878F8632-3784-42BE-AD07-3FC7F53281AD",
+      "source_label": "calculate OEE",
+      "target_id": "sid-0C6B00C4-45EF-42B2-8BA2-0739DB0D62D3",
+      "target_label": "upload messurement data",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "no"
+      ]
+    },
+    {
+      "source_id": "sid-FCB46BBD-6BD8-42C2-9240-8FB0D7777F58",
+      "source_label": "change parts",
+      "target_id": "sid-688B1971-71F7-44D8-8A43-5FAFD326D761",
+      "target_label": "",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-FCB46BBD-6BD8-42C2-9240-8FB0D7777F58",
+      "source_label": "change parts",
+      "target_id": "sid-1DABD432-7999-4AF4-A7D4-2D8C5DF1DEEB",
+      "target_label": "run machine diagnosis",
+      "gateway_context": []
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "upload messurement data",
+      "subject_id": "sid-0C6B00C4-45EF-42B2-8BA2-0739DB0D62D3",
+      "predicate": "follows",
+      "object": "Restart process at the beginning",
+      "object_id": "sid-DDE42B75-A69B-4BA1-987F-C00A78809508"
+    },
+    {
+      "subject": "sent mail to engineer",
+      "subject_id": "sid-45D2F460-E296-4543-96B6-1AEB2BE01FEF",
+      "predicate": "follows",
+      "object": "run machine diagnosis",
+      "object_id": "sid-1DABD432-7999-4AF4-A7D4-2D8C5DF1DEEB"
+    },
+    {
+      "subject": "stop machine",
+      "subject_id": "sid-A7F54176-2F6A-4D96-BFA3-9B0D46119704",
+      "predicate": "follows",
+      "object": "run machine diagnosis",
+      "object_id": "sid-1DABD432-7999-4AF4-A7D4-2D8C5DF1DEEB"
+    },
+    {
+      "subject": "sending request ",
+      "subject_id": "sid-97D5674B-B19F-4CD8-8DAC-FD811888F859",
+      "predicate": "follows",
+      "object": "safe data",
+      "object_id": "sid-5DF13E42-3535-4004-AD1D-76F7008EEF15"
+    },
+    {
+      "subject": "run machine diagnosis",
+      "subject_id": "sid-1DABD432-7999-4AF4-A7D4-2D8C5DF1DEEB",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "sid-C3651DF7-A4E4-4604-B118-373A5CFD33C5"
+    },
+    {
+      "subject": "run machine diagnosis",
+      "subject_id": "sid-1DABD432-7999-4AF4-A7D4-2D8C5DF1DEEB",
+      "predicate": "follows",
+      "object": "change parts",
+      "object_id": "sid-FCB46BBD-6BD8-42C2-9240-8FB0D7777F58"
+    },
+    {
+      "subject": "run machine diagnosis",
+      "subject_id": "sid-1DABD432-7999-4AF4-A7D4-2D8C5DF1DEEB",
+      "predicate": "follows",
+      "object": "restart machine",
+      "object_id": "sid-19442480-8880-4AB3-A7B7-7997D615A67F"
+    },
+    {
+      "subject": "Restart process at the beginning",
+      "subject_id": "sid-84F21849-3851-4D8A-8814-801F5623504D",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "sid-16550BD4-2553-4A8C-965B-C5CA059CDF89"
+    },
+    {
+      "subject": "safe data",
+      "subject_id": "sid-5DF13E42-3535-4004-AD1D-76F7008EEF15",
+      "predicate": "follows",
+      "object": "Cloud upload",
+      "object_id": "sid-69A6BF4E-B846-47A9-93FC-A350366E4776"
+    },
+    {
+      "subject": "safe data",
+      "subject_id": "sid-5DF13E42-3535-4004-AD1D-76F7008EEF15",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "sid-2ABC4F50-D94D-485D-86A8-06FB2029AF00"
+    },
+    {
+      "subject": "start measurement cycle",
+      "subject_id": "sid-6BC92C80-899C-4F55-BFB0-7EC991797169",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "sid-5C166F81-C7B3-4124-892D-0FF140731C45"
+    },
+    {
+      "subject": "start measurement cycle",
+      "subject_id": "sid-6BC92C80-899C-4F55-BFB0-7EC991797169",
+      "predicate": "follows",
+      "object": "sending request ",
+      "object_id": "sid-97D5674B-B19F-4CD8-8DAC-FD811888F859"
+    },
+    {
+      "subject": "start measurement cycle",
+      "subject_id": "sid-6BC92C80-899C-4F55-BFB0-7EC991797169",
+      "predicate": "follows",
+      "object": "End process",
+      "object_id": "sid-FC027EC6-39AB-49F8-8C78-F3AFDA943EA2"
+    },
+    {
+      "subject": "Restart process at the beginning",
+      "subject_id": "sid-DDE42B75-A69B-4BA1-987F-C00A78809508",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "sid-88749EC3-C9A0-427D-B11B-B2645122B080"
+    },
+    {
+      "subject": "restart machine",
+      "subject_id": "sid-19442480-8880-4AB3-A7B7-7997D615A67F",
+      "predicate": "follows",
+      "object": "Restart process at the beginning",
+      "object_id": "sid-84F21849-3851-4D8A-8814-801F5623504D"
+    },
+    {
+      "subject": "Cloud upload",
+      "subject_id": "sid-69A6BF4E-B846-47A9-93FC-A350366E4776",
+      "predicate": "follows",
+      "object": "calculate OEE",
+      "object_id": "sid-878F8632-3784-42BE-AD07-3FC7F53281AD"
+    },
+    {
+      "subject": "calculate OEE",
+      "subject_id": "sid-878F8632-3784-42BE-AD07-3FC7F53281AD",
+      "predicate": "follows",
+      "object": "sent mail to engineer",
+      "object_id": "sid-45D2F460-E296-4543-96B6-1AEB2BE01FEF"
+    },
+    {
+      "subject": "calculate OEE",
+      "subject_id": "sid-878F8632-3784-42BE-AD07-3FC7F53281AD",
+      "predicate": "follows",
+      "object": "stop machine",
+      "object_id": "sid-A7F54176-2F6A-4D96-BFA3-9B0D46119704"
+    },
+    {
+      "subject": "calculate OEE",
+      "subject_id": "sid-878F8632-3784-42BE-AD07-3FC7F53281AD",
+      "predicate": "follows",
+      "object": "upload messurement data",
+      "object_id": "sid-0C6B00C4-45EF-42B2-8BA2-0739DB0D62D3"
+    },
+    {
+      "subject": "change parts",
+      "subject_id": "sid-FCB46BBD-6BD8-42C2-9240-8FB0D7777F58",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "sid-688B1971-71F7-44D8-8A43-5FAFD326D761"
+    },
+    {
+      "subject": "change parts",
+      "subject_id": "sid-FCB46BBD-6BD8-42C2-9240-8FB0D7777F58",
+      "predicate": "follows",
+      "object": "run machine diagnosis",
+      "object_id": "sid-1DABD432-7999-4AF4-A7D4-2D8C5DF1DEEB"
+    }
+  ],
+  "errors": [
+    "state_space: Error code: 429 - {'status': 429, 'title': 'Too Many Requests'}",
+    "precondition: 'state_space'",
+    "state_matching: 'state_space'",
+    "graph_construction: 'state_space'",
+    "alignment: 'reference_graph'",
+    "report: 'alignment'"
+  ]
+}

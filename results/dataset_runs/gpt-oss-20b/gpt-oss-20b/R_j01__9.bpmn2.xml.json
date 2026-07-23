@@ -1,0 +1,920 @@
+{
+  "case_name": "R_j01",
+  "text": "Category: Repair and Service\nTitle: OEE\n\nWrite a process, that collects relevant information from a machine, and\ncalculated the Overall Equipment Efficiency (OEE). If the OEE falls below a\ncertain value/percentage, stop the machine and send an email to an engineer.\nWhen the machine is restarted, continue measuring. When the machine is\ndisconnected, stop the process.\n",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "openai/gpt-oss-20b",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "openai/gpt-oss-20b",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/text_and_bpmn/bpmn/R_j01/9.bpmn2.xml",
+  "candidates": {
+    "machine": [
+      "stopped",
+      "restarted",
+      "disconnected"
+    ],
+    "oee": [
+      "calculated",
+      "measured",
+      "below_threshold"
+    ],
+    "email": [
+      "sent"
+    ],
+    "process": [
+      "stopped",
+      "continued"
+    ]
+  },
+  "validation_report": {
+    "machine": {
+      "f_lex": "ENTITY",
+      "kept": true
+    },
+    "oee": {
+      "f_lex": "INDETERMINATE",
+      "kept": true
+    },
+    "email": {
+      "f_lex": "ENTITY",
+      "kept": true
+    },
+    "process": {
+      "f_lex": "ENTITY",
+      "kept": true
+    }
+  },
+  "state_space": {
+    "machine": [
+      "stopped",
+      "restarted",
+      "disconnected"
+    ],
+    "oee": [
+      "calculated",
+      "measured",
+      "below_threshold"
+    ],
+    "email": [
+      "sent"
+    ],
+    "process": [
+      "stopped",
+      "continued"
+    ]
+  },
+  "raw_preconditions": {
+    "machine.stopped": {
+      "precondition": "oee.below_threshold",
+      "quote": "If the OEE falls below a certain value/percentage, stop the machine and send an email to an engineer."
+    },
+    "machine.restarted": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "machine.disconnected": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "oee.calculated": {
+      "precondition": "process.continued",
+      "quote": "Write a process, that collects relevant information from a machine, and calculated the Overall Equipment Efficiency (OEE)."
+    },
+    "oee.measured": {
+      "precondition": "machine.restarted",
+      "quote": "When the machine is restarted, continue measuring."
+    },
+    "oee.below_threshold": {
+      "precondition": "oee.calculated",
+      "quote": "If the OEE falls below a certain value/percentage, stop the machine and send an email to an engineer."
+    },
+    "email.sent": {
+      "precondition": "oee.below_threshold",
+      "quote": "If the OEE falls below a certain value/percentage, stop the machine and send an email to an engineer."
+    },
+    "process.stopped": {
+      "precondition": "machine.disconnected",
+      "quote": "When the machine is disconnected, stop the process."
+    },
+    "process.continued": {
+      "precondition": "machine.restarted",
+      "quote": "When the machine is restarted, continue measuring."
+    }
+  },
+  "validated_preconditions": {
+    "machine.stopped": {
+      "precondition": "oee.below_threshold",
+      "quote": "If the OEE falls below a certain value/percentage, stop the machine and send an email to an engineer.",
+      "status": "OK",
+      "reason": null
+    },
+    "machine.restarted": {
+      "precondition": "INITIAL",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "machine.disconnected": {
+      "precondition": "INITIAL",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "oee.calculated": {
+      "precondition": "process.continued",
+      "quote": "Write a process, that collects relevant information from a machine, and calculated the Overall Equipment Efficiency (OEE).",
+      "status": "OK",
+      "reason": null
+    },
+    "oee.measured": {
+      "precondition": "machine.restarted",
+      "quote": "When the machine is restarted, continue measuring.",
+      "status": "OK",
+      "reason": null
+    },
+    "oee.below_threshold": {
+      "precondition": "oee.calculated",
+      "quote": "If the OEE falls below a certain value/percentage, stop the machine and send an email to an engineer.",
+      "status": "OK",
+      "reason": null
+    },
+    "email.sent": {
+      "precondition": "oee.below_threshold",
+      "quote": "If the OEE falls below a certain value/percentage, stop the machine and send an email to an engineer.",
+      "status": "OK",
+      "reason": null
+    },
+    "process.stopped": {
+      "precondition": "machine.disconnected",
+      "quote": "When the machine is disconnected, stop the process.",
+      "status": "OK",
+      "reason": null
+    },
+    "process.continued": {
+      "precondition": "machine.restarted",
+      "quote": "When the machine is restarted, continue measuring.",
+      "status": "OK",
+      "reason": null
+    }
+  },
+  "precondition_cycles": [],
+  "reference_graph": {
+    "nodes": [
+      {
+        "id": "machine.stopped",
+        "weight": 0.333
+      },
+      {
+        "id": "machine.restarted",
+        "weight": 0.667
+      },
+      {
+        "id": "machine.disconnected",
+        "weight": 0.333
+      },
+      {
+        "id": "oee.calculated",
+        "weight": 0.667
+      },
+      {
+        "id": "oee.measured",
+        "weight": 0.333
+      },
+      {
+        "id": "oee.below_threshold",
+        "weight": 1.0
+      },
+      {
+        "id": "email.sent",
+        "weight": 0.333
+      },
+      {
+        "id": "process.stopped",
+        "weight": 0.333
+      },
+      {
+        "id": "process.continued",
+        "weight": 0.667
+      }
+    ],
+    "edges": [
+      {
+        "from": "oee.below_threshold",
+        "to": "machine.stopped",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "If the OEE falls below a certain value/percentage, stop the machine and send an email to an engineer."
+      },
+      {
+        "from": "process.continued",
+        "to": "oee.calculated",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "Write a process, that collects relevant information from a machine, and calculated the Overall Equipment Efficiency (OEE)."
+      },
+      {
+        "from": "machine.restarted",
+        "to": "oee.measured",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "When the machine is restarted, continue measuring."
+      },
+      {
+        "from": "oee.calculated",
+        "to": "oee.below_threshold",
+        "type": "sequence",
+        "operator": "AND",
+        "quote": "If the OEE falls below a certain value/percentage, stop the machine and send an email to an engineer."
+      },
+      {
+        "from": "oee.below_threshold",
+        "to": "email.sent",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "If the OEE falls below a certain value/percentage, stop the machine and send an email to an engineer."
+      },
+      {
+        "from": "machine.disconnected",
+        "to": "process.stopped",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "When the machine is disconnected, stop the process."
+      },
+      {
+        "from": "machine.restarted",
+        "to": "process.continued",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "When the machine is restarted, continue measuring."
+      }
+    ],
+    "cycles": []
+  },
+  "dfg_edges": [
+    {
+      "source_id": "sid-CB0A1E96-D290-4B24-B1A5-08849DF03647",
+      "source_label": "OEE data required",
+      "target_id": "sid-7B53F0F4-E6AC-47AE-B158-1D1D680995A1",
+      "target_label": "Get quality data",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-CB0A1E96-D290-4B24-B1A5-08849DF03647",
+      "source_label": "OEE data required",
+      "target_id": "sid-893AF56A-DF61-49F3-925F-5C5E57F4F51D",
+      "target_label": "Get performance data",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-CB0A1E96-D290-4B24-B1A5-08849DF03647",
+      "source_label": "OEE data required",
+      "target_id": "sid-F98F6A04-6084-4C3B-861A-7296C0A3FD5A",
+      "target_label": "Get availability data",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-7B53F0F4-E6AC-47AE-B158-1D1D680995A1",
+      "source_label": "Get quality data",
+      "target_id": "sid-71E29C83-B619-4B75-9872-B496734D1EB7",
+      "target_label": "Calculate OEE",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-893AF56A-DF61-49F3-925F-5C5E57F4F51D",
+      "source_label": "Get performance data",
+      "target_id": "sid-71E29C83-B619-4B75-9872-B496734D1EB7",
+      "target_label": "Calculate OEE",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-6B4C0785-CF3B-448A-ACFE-65D58490B0FE",
+      "source_label": "Disconnect the machine",
+      "target_id": "sid-45B59E6C-0272-4A50-A586-D1F6F0EABF2A",
+      "target_label": "Machine operating normally / Machine disconnected",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-A96F0AE9-B014-4485-88B6-1A18E19FAA4D",
+      "source_label": "Continue measuring",
+      "target_id": "sid-45B59E6C-0272-4A50-A586-D1F6F0EABF2A",
+      "target_label": "Machine operating normally / Machine disconnected",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-C2C437F2-7F39-4775-B15F-4556CD546DB6",
+      "source_label": "Restart the machine",
+      "target_id": "sid-A96F0AE9-B014-4485-88B6-1A18E19FAA4D",
+      "target_label": "Continue measuring",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-81711710-A881-483C-B3E6-DCDBD71C8BE7",
+      "source_label": "Repair the issue",
+      "target_id": "sid-C2C437F2-7F39-4775-B15F-4556CD546DB6",
+      "target_label": "Restart the machine",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "No"
+      ]
+    },
+    {
+      "source_id": "sid-81711710-A881-483C-B3E6-DCDBD71C8BE7",
+      "source_label": "Repair the issue",
+      "target_id": "sid-81711710-A881-483C-B3E6-DCDBD71C8BE7",
+      "target_label": "Repair the issue",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "Yes",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-F98F6A04-6084-4C3B-861A-7296C0A3FD5A",
+      "source_label": "Get availability data",
+      "target_id": "sid-71E29C83-B619-4B75-9872-B496734D1EB7",
+      "target_label": "Calculate OEE",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-B562080D-A0A6-47B4-B3A4-F49034C110BB",
+      "source_label": "Stop the machine",
+      "target_id": "sid-B9BBEFFA-4B96-4942-AD47-F62E0CEC6F9E",
+      "target_label": "Send email to  an engineer",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-B9BBEFFA-4B96-4942-AD47-F62E0CEC6F9E",
+      "source_label": "Send email to  an engineer",
+      "target_id": "sid-6B4C0785-CF3B-448A-ACFE-65D58490B0FE",
+      "target_label": "Disconnect the machine",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "No"
+      ]
+    },
+    {
+      "source_id": "sid-B9BBEFFA-4B96-4942-AD47-F62E0CEC6F9E",
+      "source_label": "Send email to  an engineer",
+      "target_id": "sid-81711710-A881-483C-B3E6-DCDBD71C8BE7",
+      "target_label": "Repair the issue",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "Yes",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-71E29C83-B619-4B75-9872-B496734D1EB7",
+      "source_label": "Calculate OEE",
+      "target_id": "sid-45B59E6C-0272-4A50-A586-D1F6F0EABF2A",
+      "target_label": "Machine operating normally / Machine disconnected",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "No",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-71E29C83-B619-4B75-9872-B496734D1EB7",
+      "source_label": "Calculate OEE",
+      "target_id": "sid-B562080D-A0A6-47B4-B3A4-F49034C110BB",
+      "target_label": "Stop the machine",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "Yes"
+      ]
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "OEE data required",
+      "subject_id": "sid-CB0A1E96-D290-4B24-B1A5-08849DF03647",
+      "predicate": "follows",
+      "object": "Get quality data",
+      "object_id": "sid-7B53F0F4-E6AC-47AE-B158-1D1D680995A1"
+    },
+    {
+      "subject": "OEE data required",
+      "subject_id": "sid-CB0A1E96-D290-4B24-B1A5-08849DF03647",
+      "predicate": "follows",
+      "object": "Get performance data",
+      "object_id": "sid-893AF56A-DF61-49F3-925F-5C5E57F4F51D"
+    },
+    {
+      "subject": "OEE data required",
+      "subject_id": "sid-CB0A1E96-D290-4B24-B1A5-08849DF03647",
+      "predicate": "follows",
+      "object": "Get availability data",
+      "object_id": "sid-F98F6A04-6084-4C3B-861A-7296C0A3FD5A"
+    },
+    {
+      "subject": "Get quality data",
+      "subject_id": "sid-7B53F0F4-E6AC-47AE-B158-1D1D680995A1",
+      "predicate": "follows",
+      "object": "Calculate OEE",
+      "object_id": "sid-71E29C83-B619-4B75-9872-B496734D1EB7"
+    },
+    {
+      "subject": "Get performance data",
+      "subject_id": "sid-893AF56A-DF61-49F3-925F-5C5E57F4F51D",
+      "predicate": "follows",
+      "object": "Calculate OEE",
+      "object_id": "sid-71E29C83-B619-4B75-9872-B496734D1EB7"
+    },
+    {
+      "subject": "Disconnect the machine",
+      "subject_id": "sid-6B4C0785-CF3B-448A-ACFE-65D58490B0FE",
+      "predicate": "follows",
+      "object": "Machine operating normally / Machine disconnected",
+      "object_id": "sid-45B59E6C-0272-4A50-A586-D1F6F0EABF2A"
+    },
+    {
+      "subject": "Continue measuring",
+      "subject_id": "sid-A96F0AE9-B014-4485-88B6-1A18E19FAA4D",
+      "predicate": "follows",
+      "object": "Machine operating normally / Machine disconnected",
+      "object_id": "sid-45B59E6C-0272-4A50-A586-D1F6F0EABF2A"
+    },
+    {
+      "subject": "Restart the machine",
+      "subject_id": "sid-C2C437F2-7F39-4775-B15F-4556CD546DB6",
+      "predicate": "follows",
+      "object": "Continue measuring",
+      "object_id": "sid-A96F0AE9-B014-4485-88B6-1A18E19FAA4D"
+    },
+    {
+      "subject": "Repair the issue",
+      "subject_id": "sid-81711710-A881-483C-B3E6-DCDBD71C8BE7",
+      "predicate": "follows",
+      "object": "Restart the machine",
+      "object_id": "sid-C2C437F2-7F39-4775-B15F-4556CD546DB6"
+    },
+    {
+      "subject": "Repair the issue",
+      "subject_id": "sid-81711710-A881-483C-B3E6-DCDBD71C8BE7",
+      "predicate": "follows",
+      "object": "Repair the issue",
+      "object_id": "sid-81711710-A881-483C-B3E6-DCDBD71C8BE7"
+    },
+    {
+      "subject": "Get availability data",
+      "subject_id": "sid-F98F6A04-6084-4C3B-861A-7296C0A3FD5A",
+      "predicate": "follows",
+      "object": "Calculate OEE",
+      "object_id": "sid-71E29C83-B619-4B75-9872-B496734D1EB7"
+    },
+    {
+      "subject": "Stop the machine",
+      "subject_id": "sid-B562080D-A0A6-47B4-B3A4-F49034C110BB",
+      "predicate": "follows",
+      "object": "Send email to  an engineer",
+      "object_id": "sid-B9BBEFFA-4B96-4942-AD47-F62E0CEC6F9E"
+    },
+    {
+      "subject": "Send email to  an engineer",
+      "subject_id": "sid-B9BBEFFA-4B96-4942-AD47-F62E0CEC6F9E",
+      "predicate": "follows",
+      "object": "Disconnect the machine",
+      "object_id": "sid-6B4C0785-CF3B-448A-ACFE-65D58490B0FE"
+    },
+    {
+      "subject": "Send email to  an engineer",
+      "subject_id": "sid-B9BBEFFA-4B96-4942-AD47-F62E0CEC6F9E",
+      "predicate": "follows",
+      "object": "Repair the issue",
+      "object_id": "sid-81711710-A881-483C-B3E6-DCDBD71C8BE7"
+    },
+    {
+      "subject": "Calculate OEE",
+      "subject_id": "sid-71E29C83-B619-4B75-9872-B496734D1EB7",
+      "predicate": "follows",
+      "object": "Machine operating normally / Machine disconnected",
+      "object_id": "sid-45B59E6C-0272-4A50-A586-D1F6F0EABF2A"
+    },
+    {
+      "subject": "Calculate OEE",
+      "subject_id": "sid-71E29C83-B619-4B75-9872-B496734D1EB7",
+      "predicate": "follows",
+      "object": "Stop the machine",
+      "object_id": "sid-B562080D-A0A6-47B4-B3A4-F49034C110BB"
+    }
+  ],
+  "matches": {
+    "Calculate OEE": {
+      "match": "oee.calculated",
+      "score": 0.8465
+    },
+    "Continue measuring": {
+      "match": "process.continued",
+      "score": 0.4057
+    },
+    "Disconnect the machine": {
+      "match": "machine.disconnected",
+      "score": 0.7931
+    },
+    "Get availability data": {
+      "match": "machine.disconnected",
+      "score": 0.1108
+    },
+    "Get performance data": {
+      "match": "oee.measured",
+      "score": 0.2496
+    },
+    "Get quality data": {
+      "match": "oee.measured",
+      "score": 0.1256
+    },
+    "Machine operating normally / Machine disconnected": {
+      "match": "machine.disconnected",
+      "score": 0.7472
+    },
+    "OEE data required": {
+      "match": "oee.measured",
+      "score": 0.6683
+    },
+    "Repair the issue": {
+      "match": "machine.restarted",
+      "score": 0.2525
+    },
+    "Restart the machine": {
+      "match": "machine.restarted",
+      "score": 0.834
+    },
+    "Send email to  an engineer": {
+      "match": "email.sent",
+      "score": 0.6032
+    },
+    "Stop the machine": {
+      "match": "machine.stopped",
+      "score": 0.7427
+    }
+  },
+  "process_graph": [
+    {
+      "from": "oee.measured",
+      "to": "oee.measured",
+      "activity_from": "OEE data required",
+      "activity_to": "Get quality data"
+    },
+    {
+      "from": "oee.measured",
+      "to": "oee.measured",
+      "activity_from": "OEE data required",
+      "activity_to": "Get performance data"
+    },
+    {
+      "from": "oee.measured",
+      "to": "machine.disconnected",
+      "activity_from": "OEE data required",
+      "activity_to": "Get availability data"
+    },
+    {
+      "from": "oee.measured",
+      "to": "oee.calculated",
+      "activity_from": "Get quality data",
+      "activity_to": "Calculate OEE"
+    },
+    {
+      "from": "oee.measured",
+      "to": "oee.calculated",
+      "activity_from": "Get performance data",
+      "activity_to": "Calculate OEE"
+    },
+    {
+      "from": "machine.disconnected",
+      "to": "machine.disconnected",
+      "activity_from": "Disconnect the machine",
+      "activity_to": "Machine operating normally / Machine disconnected"
+    },
+    {
+      "from": "process.continued",
+      "to": "machine.disconnected",
+      "activity_from": "Continue measuring",
+      "activity_to": "Machine operating normally / Machine disconnected"
+    },
+    {
+      "from": "machine.restarted",
+      "to": "process.continued",
+      "activity_from": "Restart the machine",
+      "activity_to": "Continue measuring"
+    },
+    {
+      "from": "machine.restarted",
+      "to": "machine.restarted",
+      "activity_from": "Repair the issue",
+      "activity_to": "Restart the machine"
+    },
+    {
+      "from": "machine.restarted",
+      "to": "machine.restarted",
+      "activity_from": "Repair the issue",
+      "activity_to": "Repair the issue"
+    },
+    {
+      "from": "machine.disconnected",
+      "to": "oee.calculated",
+      "activity_from": "Get availability data",
+      "activity_to": "Calculate OEE"
+    },
+    {
+      "from": "machine.stopped",
+      "to": "email.sent",
+      "activity_from": "Stop the machine",
+      "activity_to": "Send email to  an engineer"
+    },
+    {
+      "from": "email.sent",
+      "to": "machine.disconnected",
+      "activity_from": "Send email to  an engineer",
+      "activity_to": "Disconnect the machine"
+    },
+    {
+      "from": "email.sent",
+      "to": "machine.restarted",
+      "activity_from": "Send email to  an engineer",
+      "activity_to": "Repair the issue"
+    },
+    {
+      "from": "oee.calculated",
+      "to": "machine.disconnected",
+      "activity_from": "Calculate OEE",
+      "activity_to": "Machine operating normally / Machine disconnected"
+    },
+    {
+      "from": "oee.calculated",
+      "to": "machine.stopped",
+      "activity_from": "Calculate OEE",
+      "activity_to": "Stop the machine"
+    }
+  ],
+  "alignment": {
+    "machine.stopped": {
+      "operator": "AND",
+      "quote": "If the OEE falls below a certain value/percentage, stop the machine and send an email to an engineer.",
+      "terms": [
+        {
+          "term": "oee.below_threshold",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['oee.below_threshold']",
+          "missing": [
+            "oee.below_threshold"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE"
+    },
+    "oee.calculated": {
+      "operator": "AND",
+      "quote": "Write a process, that collects relevant information from a machine, and calculated the Overall Equipment Efficiency (OEE).",
+      "terms": [
+        {
+          "term": "process.continued",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED"
+    },
+    "oee.measured": {
+      "operator": "AND",
+      "quote": "When the machine is restarted, continue measuring.",
+      "terms": [
+        {
+          "term": "machine.restarted",
+          "status": "VIOLATED",
+          "reason": "both states matched, no path in process",
+          "missing": []
+        }
+      ],
+      "status": "VIOLATED"
+    },
+    "oee.below_threshold": {
+      "operator": "AND",
+      "quote": "If the OEE falls below a certain value/percentage, stop the machine and send an email to an engineer.",
+      "terms": [
+        {
+          "term": "oee.calculated",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['oee.below_threshold']",
+          "missing": [
+            "oee.below_threshold"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE"
+    },
+    "email.sent": {
+      "operator": "AND",
+      "quote": "If the OEE falls below a certain value/percentage, stop the machine and send an email to an engineer.",
+      "terms": [
+        {
+          "term": "oee.below_threshold",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['oee.below_threshold']",
+          "missing": [
+            "oee.below_threshold"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE"
+    },
+    "process.stopped": {
+      "operator": "AND",
+      "quote": "When the machine is disconnected, stop the process.",
+      "terms": [
+        {
+          "term": "machine.disconnected",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['process.stopped']",
+          "missing": [
+            "process.stopped"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE"
+    },
+    "process.continued": {
+      "operator": "AND",
+      "quote": "When the machine is restarted, continue measuring.",
+      "terms": [
+        {
+          "term": "machine.restarted",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED"
+    }
+  },
+  "report": {
+    "summary": {
+      "ecarts": 1,
+      "non_verifiable": 2,
+      "conforme": 2
+    },
+    "ecarts": [
+      {
+        "root_cause": "Restart the machine",
+        "quote": "When the machine is restarted, continue measuring.",
+        "explanation": "L'écart se produit entre les activités \"Restart the machine\" et \"OEE data required\". Selon le texte source, il est exigé que \"Restart the machine\" ait déjà eu lieu avant \"OEE data required\".\n\nLa citation fournie, \"When the machine is restarted, continue measuring.\", montre qu'une condition est exigée avant cette étape, mais elle ne décrit pas explicitement ce que cette condition signifie.\n\nDans le processus observé, les deux activités existent bien, mais rien n'indique que \"Restart the machine\" précède effectivement \"OEE data required\".",
+        "affected_activities": [
+          "OEE data required"
+        ],
+        "affected_count": 1
+      }
+    ],
+    "non_verifiable": [
+      {
+        "root_cause": "(aucune activite du processus ne correspond clairement a cela)",
+        "quote": "If the OEE falls below a certain value/percentage, stop the machine and send an email to an engineer.",
+        "explanation": "La condition \"oee below threshold\" n'a pas pu être associée à une activité claire du processus observé. Cela signifie qu'il est impossible de vérifier si cette condition est respectée ou non.\n\nLa citation fournie indique qu'une condition est exigée avant l'activité \"Stop the machine\" : \"If the OEE falls below a certain value/percentage, stop the machine and send an email to an engineer.\" Cela montre que l'exigence existe, mais ne décrit pas ce que cette condition signifie précisément.\n\nEn conséquence, il est impossible de déterminer si l'exigence \"oee below threshold\" est respectée ou non, car elle n'est pas associée à une activité claire du processus observé. (Cette meme cause affecte aussi : (aucune activite du processus ne correspond clairement a cela), Send email to  an engineer.)",
+        "affected_activities": [
+          "(aucune activite du processus ne correspond clairement a cela)",
+          "Send email to  an engineer",
+          "Stop the machine"
+        ],
+        "affected_count": 3
+      },
+      {
+        "root_cause": "(aucune activite du processus ne correspond clairement a cela)",
+        "quote": "When the machine is disconnected, stop the process.",
+        "explanation": "La condition précise qui doit être remplie avant que l'activité \"process stopped\" puisse se produire n'est pas clairement décrite. Cependant, il est mentionné que \"When the machine is disconnected, stop the process.\" Cela suggère qu'une condition est exigée, mais son sens précis n'est pas décrit.\n\nIl est impossible de vérifier si cette condition est respectée ou non, car il n'y a pas d'activité claire du processus qui correspond à cette condition.",
+        "affected_activities": [
+          "(aucune activite du processus ne correspond clairement a cela)"
+        ],
+        "affected_count": 1
+      }
+    ],
+    "conforme": [
+      {
+        "target": "Calculate OEE",
+        "term": "Continue measuring"
+      },
+      {
+        "target": "Continue measuring",
+        "term": "Restart the machine"
+      }
+    ],
+    "piece_jointe_alignement_brut": {
+      "machine.stopped": {
+        "operator": "AND",
+        "quote": "If the OEE falls below a certain value/percentage, stop the machine and send an email to an engineer.",
+        "terms": [
+          {
+            "term": "oee.below_threshold",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['oee.below_threshold']",
+            "missing": [
+              "oee.below_threshold"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE"
+      },
+      "oee.calculated": {
+        "operator": "AND",
+        "quote": "Write a process, that collects relevant information from a machine, and calculated the Overall Equipment Efficiency (OEE).",
+        "terms": [
+          {
+            "term": "process.continued",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED"
+      },
+      "oee.measured": {
+        "operator": "AND",
+        "quote": "When the machine is restarted, continue measuring.",
+        "terms": [
+          {
+            "term": "machine.restarted",
+            "status": "VIOLATED",
+            "reason": "both states matched, no path in process",
+            "missing": []
+          }
+        ],
+        "status": "VIOLATED"
+      },
+      "oee.below_threshold": {
+        "operator": "AND",
+        "quote": "If the OEE falls below a certain value/percentage, stop the machine and send an email to an engineer.",
+        "terms": [
+          {
+            "term": "oee.calculated",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['oee.below_threshold']",
+            "missing": [
+              "oee.below_threshold"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE"
+      },
+      "email.sent": {
+        "operator": "AND",
+        "quote": "If the OEE falls below a certain value/percentage, stop the machine and send an email to an engineer.",
+        "terms": [
+          {
+            "term": "oee.below_threshold",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['oee.below_threshold']",
+            "missing": [
+              "oee.below_threshold"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE"
+      },
+      "process.stopped": {
+        "operator": "AND",
+        "quote": "When the machine is disconnected, stop the process.",
+        "terms": [
+          {
+            "term": "machine.disconnected",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['process.stopped']",
+            "missing": [
+              "process.stopped"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE"
+      },
+      "process.continued": {
+        "operator": "AND",
+        "quote": "When the machine is restarted, continue measuring.",
+        "terms": [
+          {
+            "term": "machine.restarted",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED"
+      }
+    }
+  },
+  "errors": []
+}

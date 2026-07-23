@@ -1,0 +1,305 @@
+{
+  "case_name": "R_j01",
+  "text": "Category: Repair and Service\nTitle: OEE\n\nWrite a process, that collects relevant information from a machine, and\ncalculated the Overall Equipment Efficiency (OEE). If the OEE falls below a\ncertain value/percentage, stop the machine and send an email to an engineer.\nWhen the machine is restarted, continue measuring. When the machine is\ndisconnected, stop the process.\n",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "mistral-nemotron",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "mistral-nemotron",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/text_and_bpmn/bpmn/R_j01/2.bpmn2.xml",
+  "dfg_edges": [
+    {
+      "source_id": "sid-D091C31E-9129-4242-8B75-2B2CA992A917",
+      "source_label": "Send engineer an email",
+      "target_id": "sid-067A6C2B-EF44-429B-AEA2-0A7B5C46F8E6",
+      "target_label": "Notify the Repair and Service center",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "No"
+      ]
+    },
+    {
+      "source_id": "sid-D091C31E-9129-4242-8B75-2B2CA992A917",
+      "source_label": "Send engineer an email",
+      "target_id": "sid-80D7C71E-090E-4B26-8AE0-BFB73046ED22",
+      "target_label": "Do the diagnosis/repair",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-B316A10B-88B4-4AC1-932D-D7FA750913DB",
+      "source_label": "Restart the machine",
+      "target_id": "sid-1468526D-B5B0-42E5-B896-1092677B6911",
+      "target_label": "Collect information from machine",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-D6B4DF54-7D94-4C42-AD42-59CDD038C779",
+      "source_label": "Stop the machine",
+      "target_id": "sid-80D7C71E-090E-4B26-8AE0-BFB73046ED22",
+      "target_label": "Do the diagnosis/repair",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-1468526D-B5B0-42E5-B896-1092677B6911",
+      "source_label": "Collect information from machine",
+      "target_id": "sid-6C539287-3BBB-41AB-855A-F853939B5EA5",
+      "target_label": "Calculate OEE",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-780D9930-2BC5-48E9-A1A8-B7D2ADBC0EEA",
+      "source_label": "Report Repair and Service center",
+      "target_id": "sid-C2EFEA17-47E2-47FB-BDC6-74EE00B4F0EB",
+      "target_label": "End",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-6C539287-3BBB-41AB-855A-F853939B5EA5",
+      "source_label": "Calculate OEE",
+      "target_id": "sid-886DAD25-0507-4E83-B7DD-09ED7059CB85",
+      "target_label": "Represent the result",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-5CD28324-53A3-499A-8C64-A8247F41FB8D",
+      "source_label": "Check connection",
+      "target_id": "sid-1468526D-B5B0-42E5-B896-1092677B6911",
+      "target_label": "Collect information from machine",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-5CD28324-53A3-499A-8C64-A8247F41FB8D",
+      "source_label": "Check connection",
+      "target_id": "sid-780D9930-2BC5-48E9-A1A8-B7D2ADBC0EEA",
+      "target_label": "Report Repair and Service center",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "No"
+      ]
+    },
+    {
+      "source_id": "sid-A029FD8A-D758-4395-933F-6A8A8E5A4AE3",
+      "source_label": "",
+      "target_id": "sid-780D9930-2BC5-48E9-A1A8-B7D2ADBC0EEA",
+      "target_label": "Report Repair and Service center",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-4FBC9CE2-0B7A-4128-9FBB-EFD6E129CE62",
+      "source_label": "Keep going",
+      "target_id": "sid-C2EFEA17-47E2-47FB-BDC6-74EE00B4F0EB",
+      "target_label": "End",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-C8DC4E7C-9233-4FCF-ADB6-689B6ED9FB22",
+      "source_label": "",
+      "target_id": "sid-5CD28324-53A3-499A-8C64-A8247F41FB8D",
+      "target_label": "Check connection",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-886DAD25-0507-4E83-B7DD-09ED7059CB85",
+      "source_label": "Represent the result",
+      "target_id": "sid-4FBC9CE2-0B7A-4128-9FBB-EFD6E129CE62",
+      "target_label": "Keep going",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "No"
+      ]
+    },
+    {
+      "source_id": "sid-886DAD25-0507-4E83-B7DD-09ED7059CB85",
+      "source_label": "Represent the result",
+      "target_id": "sid-D6B4DF54-7D94-4C42-AD42-59CDD038C779",
+      "target_label": "Stop the machine",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-886DAD25-0507-4E83-B7DD-09ED7059CB85",
+      "source_label": "Represent the result",
+      "target_id": "sid-D091C31E-9129-4242-8B75-2B2CA992A917",
+      "target_label": "Send engineer an email",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ParallelGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-DD6D441E-A796-4F57-8023-F5D95DA60DC5",
+      "source_label": "OEE check",
+      "target_id": "sid-5CD28324-53A3-499A-8C64-A8247F41FB8D",
+      "target_label": "Check connection",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-067A6C2B-EF44-429B-AEA2-0A7B5C46F8E6",
+      "source_label": "Notify the Repair and Service center",
+      "target_id": "sid-D091C31E-9129-4242-8B75-2B2CA992A917",
+      "target_label": "Send engineer an email",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-80D7C71E-090E-4B26-8AE0-BFB73046ED22",
+      "source_label": "Do the diagnosis/repair",
+      "target_id": "sid-B316A10B-88B4-4AC1-932D-D7FA750913DB",
+      "target_label": "Restart the machine",
+      "gateway_context": []
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "Send engineer an email",
+      "subject_id": "sid-D091C31E-9129-4242-8B75-2B2CA992A917",
+      "predicate": "follows",
+      "object": "Notify the Repair and Service center",
+      "object_id": "sid-067A6C2B-EF44-429B-AEA2-0A7B5C46F8E6"
+    },
+    {
+      "subject": "Send engineer an email",
+      "subject_id": "sid-D091C31E-9129-4242-8B75-2B2CA992A917",
+      "predicate": "follows",
+      "object": "Do the diagnosis/repair",
+      "object_id": "sid-80D7C71E-090E-4B26-8AE0-BFB73046ED22"
+    },
+    {
+      "subject": "Restart the machine",
+      "subject_id": "sid-B316A10B-88B4-4AC1-932D-D7FA750913DB",
+      "predicate": "follows",
+      "object": "Collect information from machine",
+      "object_id": "sid-1468526D-B5B0-42E5-B896-1092677B6911"
+    },
+    {
+      "subject": "Stop the machine",
+      "subject_id": "sid-D6B4DF54-7D94-4C42-AD42-59CDD038C779",
+      "predicate": "follows",
+      "object": "Do the diagnosis/repair",
+      "object_id": "sid-80D7C71E-090E-4B26-8AE0-BFB73046ED22"
+    },
+    {
+      "subject": "Collect information from machine",
+      "subject_id": "sid-1468526D-B5B0-42E5-B896-1092677B6911",
+      "predicate": "follows",
+      "object": "Calculate OEE",
+      "object_id": "sid-6C539287-3BBB-41AB-855A-F853939B5EA5"
+    },
+    {
+      "subject": "Report Repair and Service center",
+      "subject_id": "sid-780D9930-2BC5-48E9-A1A8-B7D2ADBC0EEA",
+      "predicate": "follows",
+      "object": "End",
+      "object_id": "sid-C2EFEA17-47E2-47FB-BDC6-74EE00B4F0EB"
+    },
+    {
+      "subject": "Calculate OEE",
+      "subject_id": "sid-6C539287-3BBB-41AB-855A-F853939B5EA5",
+      "predicate": "follows",
+      "object": "Represent the result",
+      "object_id": "sid-886DAD25-0507-4E83-B7DD-09ED7059CB85"
+    },
+    {
+      "subject": "Check connection",
+      "subject_id": "sid-5CD28324-53A3-499A-8C64-A8247F41FB8D",
+      "predicate": "follows",
+      "object": "Collect information from machine",
+      "object_id": "sid-1468526D-B5B0-42E5-B896-1092677B6911"
+    },
+    {
+      "subject": "Check connection",
+      "subject_id": "sid-5CD28324-53A3-499A-8C64-A8247F41FB8D",
+      "predicate": "follows",
+      "object": "Report Repair and Service center",
+      "object_id": "sid-780D9930-2BC5-48E9-A1A8-B7D2ADBC0EEA"
+    },
+    {
+      "subject": "",
+      "subject_id": "sid-A029FD8A-D758-4395-933F-6A8A8E5A4AE3",
+      "predicate": "follows",
+      "object": "Report Repair and Service center",
+      "object_id": "sid-780D9930-2BC5-48E9-A1A8-B7D2ADBC0EEA"
+    },
+    {
+      "subject": "Keep going",
+      "subject_id": "sid-4FBC9CE2-0B7A-4128-9FBB-EFD6E129CE62",
+      "predicate": "follows",
+      "object": "End",
+      "object_id": "sid-C2EFEA17-47E2-47FB-BDC6-74EE00B4F0EB"
+    },
+    {
+      "subject": "",
+      "subject_id": "sid-C8DC4E7C-9233-4FCF-ADB6-689B6ED9FB22",
+      "predicate": "follows",
+      "object": "Check connection",
+      "object_id": "sid-5CD28324-53A3-499A-8C64-A8247F41FB8D"
+    },
+    {
+      "subject": "Represent the result",
+      "subject_id": "sid-886DAD25-0507-4E83-B7DD-09ED7059CB85",
+      "predicate": "follows",
+      "object": "Keep going",
+      "object_id": "sid-4FBC9CE2-0B7A-4128-9FBB-EFD6E129CE62"
+    },
+    {
+      "subject": "Represent the result",
+      "subject_id": "sid-886DAD25-0507-4E83-B7DD-09ED7059CB85",
+      "predicate": "follows",
+      "object": "Stop the machine",
+      "object_id": "sid-D6B4DF54-7D94-4C42-AD42-59CDD038C779"
+    },
+    {
+      "subject": "Represent the result",
+      "subject_id": "sid-886DAD25-0507-4E83-B7DD-09ED7059CB85",
+      "predicate": "follows",
+      "object": "Send engineer an email",
+      "object_id": "sid-D091C31E-9129-4242-8B75-2B2CA992A917"
+    },
+    {
+      "subject": "OEE check",
+      "subject_id": "sid-DD6D441E-A796-4F57-8023-F5D95DA60DC5",
+      "predicate": "follows",
+      "object": "Check connection",
+      "object_id": "sid-5CD28324-53A3-499A-8C64-A8247F41FB8D"
+    },
+    {
+      "subject": "Notify the Repair and Service center",
+      "subject_id": "sid-067A6C2B-EF44-429B-AEA2-0A7B5C46F8E6",
+      "predicate": "follows",
+      "object": "Send engineer an email",
+      "object_id": "sid-D091C31E-9129-4242-8B75-2B2CA992A917"
+    },
+    {
+      "subject": "Do the diagnosis/repair",
+      "subject_id": "sid-80D7C71E-090E-4B26-8AE0-BFB73046ED22",
+      "predicate": "follows",
+      "object": "Restart the machine",
+      "object_id": "sid-B316A10B-88B4-4AC1-932D-D7FA750913DB"
+    }
+  ],
+  "errors": [
+    "state_space: Error code: 429 - {'status': 429, 'title': 'Too Many Requests'}",
+    "precondition: 'state_space'",
+    "state_matching: 'state_space'",
+    "graph_construction: 'state_space'",
+    "alignment: 'reference_graph'",
+    "report: 'alignment'"
+  ]
+}

@@ -1,0 +1,549 @@
+{
+  "case_name": "V_k09",
+  "text": "Category: Vending and Shipping\nTitle: Storage management\n\nFirst, the order is read from the automatic order management system. \nThen, it's checked if the first product from the order is in stock. \nIf it's in stock then it's withdrawn from the warehouse.\nHowever, if it's not in stock then it's reordered from the wholesaler.\nNote, that if it was necessary to wait more then 10 days for the\narrival of the  product then a delivery delay penalty is automatically demanded\nfrom the wholesaler. \nAfter the ordered product has arrived it's registered in the stock management system. \nFinally, it's checked if the whole order is ready for shipment. \nIf the order is ready for shipment, a courier is requested and the products are packed\nsimultaneously and finally shipped. If it isn't then the next product from\nthe order is selected and the process starts again with checking if this\norder is in stock or not. \n",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "llama-3.1-8b",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "llama-3.1-8b",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/text_and_bpmn/bpmn/V_k09/7.bpmn2.xml",
+  "candidates": {
+    "order": [
+      "read",
+      "checked",
+      "withdrawn",
+      "reordered",
+      "registered",
+      "ready_for_shipment"
+    ],
+    "product": [
+      "in_stock",
+      "withdrawn",
+      "reordered",
+      "arrived",
+      "registered",
+      "packed",
+      "shipped"
+    ],
+    "wholesaler": [
+      "reordered",
+      "demanded_penalty"
+    ],
+    "courier": [
+      "requested"
+    ],
+    "warehouse": [
+      "withdrawn"
+    ],
+    "stock_management_system": [
+      "registered"
+    ],
+    "delivery_delay_penalty": [
+      "demanded"
+    ]
+  },
+  "validation_report": {
+    "order": {
+      "f_lex": "ENTITY",
+      "kept": true
+    },
+    "product": {
+      "f_lex": "ENTITY",
+      "kept": true
+    },
+    "wholesaler": {
+      "f_lex": "ACTOR",
+      "kept": false
+    },
+    "courier": {
+      "f_lex": "ACTOR",
+      "kept": false
+    },
+    "warehouse": {
+      "f_lex": "ENTITY",
+      "kept": true
+    },
+    "stock_management_system": {
+      "f_lex": "ENTITY",
+      "kept": true
+    },
+    "delivery_delay_penalty": {
+      "f_lex": "ENTITY",
+      "kept": true
+    }
+  },
+  "state_space": {
+    "order": [
+      "read",
+      "checked",
+      "withdrawn",
+      "reordered",
+      "registered",
+      "ready_for_shipment"
+    ],
+    "product": [
+      "in_stock",
+      "withdrawn",
+      "reordered",
+      "arrived",
+      "registered",
+      "packed",
+      "shipped"
+    ],
+    "warehouse": [
+      "withdrawn"
+    ],
+    "stock_management_system": [
+      "registered"
+    ],
+    "delivery_delay_penalty": [
+      "demanded"
+    ]
+  },
+  "raw_preconditions": {
+    "order": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "order.read": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "order.checked": {
+      "precondition": "order.read",
+      "quote": "Then, it's checked if the first product from the order is in stock."
+    },
+    "order.withdrawn": {
+      "precondition": "order.checked AND product.in_stock",
+      "quote": "If it's in stock then it's withdrawn from the warehouse."
+    },
+    "order.reordered": {
+      "precondition": "order.checked AND product.not in_stock",
+      "quote": "However, if it's not in stock then it's reordered from the wholesaler."
+    },
+    "order.registered": {
+      "precondition": "order.arrived",
+      "quote": "After the ordered product has arrived it's registered in the stock management system."
+    },
+    "order.ready_for_shipment": {
+      "precondition": "order.registered AND product.packed",
+      "quote": "If the order is ready for shipment, a courier is requested and the products are packed simultaneously and finally shipped."
+    },
+    "product": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "product.in_stock": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "product.withdrawn": {
+      "precondition": "order.withdrawn",
+      "quote": "If it's in stock then it's withdrawn from the warehouse."
+    },
+    "product.reordered": {
+      "precondition": "order.reordered",
+      "quote": "However, if it's not in stock then it's reordered from the wholesaler."
+    },
+    "product.arrived": {
+      "precondition": "product.reordered OR product.withdrawn",
+      "quote": "Note, that if it was necessary to wait more then 10 days for the arrival of the product then a delivery delay penalty is automatically demanded from the wholesaler."
+    },
+    "product.registered": {
+      "precondition": "product.arrived",
+      "quote": "After the ordered product has arrived it's registered in the stock management system."
+    },
+    "product.packed": {
+      "precondition": "order.ready_for_shipment",
+      "quote": "If the order is ready for shipment, a courier is requested and the products are packed simultaneously and finally shipped."
+    },
+    "product.shipped": {
+      "precondition": "product.packed",
+      "quote": "If the order is ready for shipment, a courier is requested and the products are packed simultaneously and finally shipped."
+    },
+    "warehouse": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "warehouse.withdrawn": {
+      "precondition": "order.withdrawn",
+      "quote": "If it's in stock then it's withdrawn from the warehouse."
+    },
+    "stock_management_system": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "stock_management_system.registered": {
+      "precondition": "order.registered",
+      "quote": "After the ordered product has arrived it's registered in the stock management system."
+    },
+    "delivery_delay_penalty": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "delivery_delay_penalty.demanded": {
+      "precondition": "product.reordered AND product.arrival_time > 10",
+      "quote": "Note, that if it was necessary to wait more then 10 days for the arrival of the product then a delivery delay penalty is automatically demanded from the wholesaler."
+    }
+  },
+  "validated_preconditions": {
+    "order": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "DOWNGRADED",
+      "reason": "malformed or unknown target key: 'order' is not a valid entity.state of the state space"
+    },
+    "order.read": {
+      "precondition": "INITIAL",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "order.checked": {
+      "precondition": "order.read",
+      "quote": "Then, it's checked if the first product from the order is in stock.",
+      "status": "OK",
+      "reason": null
+    },
+    "order.withdrawn": {
+      "precondition": "order.checked AND product.in_stock",
+      "quote": "If it's in stock then it's withdrawn from the warehouse.",
+      "status": "OK",
+      "reason": null
+    },
+    "order.reordered": {
+      "precondition": "order.checked AND product.in_stock",
+      "quote": "If it's in stock then it's withdrawn from the warehouse.",
+      "status": "OK",
+      "reason": null,
+      "retried": true
+    },
+    "order.registered": {
+      "precondition": "order.checked AND product.in_stock",
+      "quote": "Then, it's checked if the first product from the order is in stock.",
+      "status": "OK",
+      "reason": null,
+      "retried": true
+    },
+    "order.ready_for_shipment": {
+      "precondition": "order.registered AND product.packed",
+      "quote": "If the order is ready for shipment, a courier is requested and the products are packed simultaneously and finally shipped.",
+      "status": "OK",
+      "reason": null
+    },
+    "product": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "DOWNGRADED",
+      "reason": "malformed or unknown target key: 'product' is not a valid entity.state of the state space"
+    },
+    "product.in_stock": {
+      "precondition": "INITIAL",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "product.withdrawn": {
+      "precondition": "order.withdrawn",
+      "quote": "If it's in stock then it's withdrawn from the warehouse.",
+      "status": "OK",
+      "reason": null
+    },
+    "product.reordered": {
+      "precondition": "order.reordered",
+      "quote": "However, if it's not in stock then it's reordered from the wholesaler.",
+      "status": "OK",
+      "reason": null
+    },
+    "product.arrived": {
+      "precondition": "product.reordered OR product.withdrawn",
+      "quote": "Note, that if it was necessary to wait more then 10 days for the arrival of the product then a delivery delay penalty is automatically demanded from the wholesaler.",
+      "status": "OK",
+      "reason": null
+    },
+    "product.registered": {
+      "precondition": "product.arrived",
+      "quote": "After the ordered product has arrived it's registered in the stock management system.",
+      "status": "OK",
+      "reason": null
+    },
+    "product.packed": {
+      "precondition": "order.ready_for_shipment",
+      "quote": "If the order is ready for shipment, a courier is requested and the products are packed simultaneously and finally shipped.",
+      "status": "OK",
+      "reason": null
+    },
+    "product.shipped": {
+      "precondition": "product.packed",
+      "quote": "If the order is ready for shipment, a courier is requested and the products are packed simultaneously and finally shipped.",
+      "status": "OK",
+      "reason": null
+    },
+    "warehouse": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "DOWNGRADED",
+      "reason": "malformed or unknown target key: 'warehouse' is not a valid entity.state of the state space"
+    },
+    "warehouse.withdrawn": {
+      "precondition": "order.withdrawn",
+      "quote": "If it's in stock then it's withdrawn from the warehouse.",
+      "status": "OK",
+      "reason": null
+    },
+    "stock_management_system": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "DOWNGRADED",
+      "reason": "malformed or unknown target key: 'stock_management_system' is not a valid entity.state of the state space"
+    },
+    "stock_management_system.registered": {
+      "precondition": "order.registered",
+      "quote": "After the ordered product has arrived it's registered in the stock management system.",
+      "status": "OK",
+      "reason": null
+    },
+    "delivery_delay_penalty": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "DOWNGRADED",
+      "reason": "malformed or unknown target key: 'delivery_delay_penalty' is not a valid entity.state of the state space"
+    },
+    "delivery_delay_penalty.demanded": {
+      "precondition": "order.checked AND product.in_stock",
+      "quote": "Then, it's checked if the first product from the order is in stock.",
+      "status": "OK",
+      "reason": null,
+      "retried": true
+    }
+  },
+  "precondition_cycles": [
+    [
+      "order.ready_for_shipment",
+      "product.packed",
+      "order.ready_for_shipment"
+    ]
+  ],
+  "reference_graph": {
+    "nodes": [
+      {
+        "id": "order.read",
+        "weight": 0.2
+      },
+      {
+        "id": "order.checked",
+        "weight": 1.0
+      },
+      {
+        "id": "order.withdrawn",
+        "weight": 0.8
+      },
+      {
+        "id": "order.reordered",
+        "weight": 0.6
+      },
+      {
+        "id": "order.registered",
+        "weight": 0.8
+      },
+      {
+        "id": "order.ready_for_shipment",
+        "weight": 0.6
+      },
+      {
+        "id": "product.in_stock",
+        "weight": 0.8
+      },
+      {
+        "id": "product.withdrawn",
+        "weight": 0.4
+      },
+      {
+        "id": "product.reordered",
+        "weight": 0.4
+      },
+      {
+        "id": "product.arrived",
+        "weight": 0.6
+      },
+      {
+        "id": "product.registered",
+        "weight": 0.2
+      },
+      {
+        "id": "product.packed",
+        "weight": 0.6
+      },
+      {
+        "id": "product.shipped",
+        "weight": 0.2
+      },
+      {
+        "id": "warehouse.withdrawn",
+        "weight": 0.2
+      },
+      {
+        "id": "stock_management_system.registered",
+        "weight": 0.2
+      },
+      {
+        "id": "delivery_delay_penalty.demanded",
+        "weight": 0.4
+      }
+    ],
+    "edges": [
+      {
+        "from": "order.read",
+        "to": "order.checked",
+        "type": "sequence",
+        "operator": "AND",
+        "quote": "Then, it's checked if the first product from the order is in stock."
+      },
+      {
+        "from": "order.checked",
+        "to": "order.withdrawn",
+        "type": "sequence",
+        "operator": "AND",
+        "quote": "If it's in stock then it's withdrawn from the warehouse."
+      },
+      {
+        "from": "product.in_stock",
+        "to": "order.withdrawn",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "If it's in stock then it's withdrawn from the warehouse."
+      },
+      {
+        "from": "order.checked",
+        "to": "order.reordered",
+        "type": "sequence",
+        "operator": "AND",
+        "quote": "If it's in stock then it's withdrawn from the warehouse."
+      },
+      {
+        "from": "product.in_stock",
+        "to": "order.reordered",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "If it's in stock then it's withdrawn from the warehouse."
+      },
+      {
+        "from": "order.checked",
+        "to": "order.registered",
+        "type": "sequence",
+        "operator": "AND",
+        "quote": "Then, it's checked if the first product from the order is in stock."
+      },
+      {
+        "from": "product.in_stock",
+        "to": "order.registered",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "Then, it's checked if the first product from the order is in stock."
+      },
+      {
+        "from": "order.registered",
+        "to": "order.ready_for_shipment",
+        "type": "sequence",
+        "operator": "AND",
+        "quote": "If the order is ready for shipment, a courier is requested and the products are packed simultaneously and finally shipped."
+      },
+      {
+        "from": "product.packed",
+        "to": "order.ready_for_shipment",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "If the order is ready for shipment, a courier is requested and the products are packed simultaneously and finally shipped."
+      },
+      {
+        "from": "order.withdrawn",
+        "to": "product.withdrawn",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "If it's in stock then it's withdrawn from the warehouse."
+      },
+      {
+        "from": "order.reordered",
+        "to": "product.reordered",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "However, if it's not in stock then it's reordered from the wholesaler."
+      },
+      {
+        "from": "product.reordered",
+        "to": "product.arrived",
+        "type": "sequence",
+        "operator": "OR",
+        "quote": "Note, that if it was necessary to wait more then 10 days for the arrival of the product then a delivery delay penalty is automatically demanded from the wholesaler."
+      },
+      {
+        "from": "product.withdrawn",
+        "to": "product.arrived",
+        "type": "sequence",
+        "operator": "OR",
+        "quote": "Note, that if it was necessary to wait more then 10 days for the arrival of the product then a delivery delay penalty is automatically demanded from the wholesaler."
+      },
+      {
+        "from": "product.arrived",
+        "to": "product.registered",
+        "type": "sequence",
+        "operator": "AND",
+        "quote": "After the ordered product has arrived it's registered in the stock management system."
+      },
+      {
+        "from": "order.ready_for_shipment",
+        "to": "product.packed",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "If the order is ready for shipment, a courier is requested and the products are packed simultaneously and finally shipped."
+      },
+      {
+        "from": "product.packed",
+        "to": "product.shipped",
+        "type": "sequence",
+        "operator": "AND",
+        "quote": "If the order is ready for shipment, a courier is requested and the products are packed simultaneously and finally shipped."
+      },
+      {
+        "from": "order.withdrawn",
+        "to": "warehouse.withdrawn",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "If it's in stock then it's withdrawn from the warehouse."
+      },
+      {
+        "from": "order.registered",
+        "to": "stock_management_system.registered",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "After the ordered product has arrived it's registered in the stock management system."
+      },
+      {
+        "from": "order.checked",
+        "to": "delivery_delay_penalty.demanded",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "Then, it's checked if the first product from the order is in stock."
+      },
+      {
+        "from": "product.in_stock",
+        "to": "delivery_delay_penalty.demanded",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "Then, it's checked if the first product from the order is in stock."
+      }
+    ],
+    "cycles": [
+      [
+        "order.ready_for_shipment",
+        "product.packed",
+        "order.ready_for_shipment"
+      ]
+    ]
+  },
+  "errors": [
+    "bpmn_to_spo: 'str' object has no attribute 'add_in_arc'",
+    "state_matching: 'spo_triples'",
+    "alignment: 'process_graph'",
+    "report: 'alignment'"
+  ]
+}

@@ -1,0 +1,760 @@
+{
+  "zero_shot": {
+    "mistralai/mistral-nemotron": {
+      "job_application": {
+        "nodes": [
+          {
+            "id": "job_application.confirmed",
+            "weight": 0.5
+          },
+          {
+            "id": "job_application.rated",
+            "weight": 0.5
+          },
+          {
+            "id": "job_application.reported",
+            "weight": 1.0
+          },
+          {
+            "id": "job_offer.sent",
+            "weight": 0.5
+          },
+          {
+            "id": "job_offer.received",
+            "weight": 1.0
+          },
+          {
+            "id": "job_interview.negotiated",
+            "weight": 1.0
+          },
+          {
+            "id": "probation_phase.entered",
+            "weight": 1.0
+          },
+          {
+            "id": "review.visible",
+            "weight": 0.0
+          },
+          {
+            "id": "job.permanent",
+            "weight": 1.0
+          },
+          {
+            "id": "process.ended",
+            "weight": 0.5
+          }
+        ],
+        "edges": [
+          {
+            "from": "job_application.confirmed",
+            "to": "job_application.rated",
+            "type": "sequence",
+            "operator": "AND",
+            "quote": "Companies have to confirm that they received job applications and rate the application."
+          },
+          {
+            "from": "job_application.reported",
+            "to": "job_offer.sent",
+            "type": "cross_entity_guard",
+            "operator": "AND",
+            "quote": "Based on your job applications, new potential job offers are sent to you."
+          },
+          {
+            "from": "job_application.reported",
+            "to": "job_offer.received",
+            "type": "cross_entity_guard",
+            "operator": "AND",
+            "quote": "You have to regularly report, to which companies you wrote job applications."
+          },
+          {
+            "from": "job_offer.received",
+            "to": "job_interview.negotiated",
+            "type": "cross_entity_guard",
+            "operator": "AND",
+            "quote": "A job interview can be negotiated."
+          },
+          {
+            "from": "job_interview.negotiated",
+            "to": "probation_phase.entered",
+            "type": "cross_entity_guard",
+            "operator": "AND",
+            "quote": "When a company wants you to work for them, you enter the probation phase."
+          },
+          {
+            "from": "probation_phase.entered",
+            "to": "job.permanent",
+            "type": "cross_entity_guard",
+            "operator": "AND",
+            "quote": "If a job becomes permanent, the process ends"
+          },
+          {
+            "from": "job.permanent",
+            "to": "process.ended",
+            "type": "cross_entity_guard",
+            "operator": "AND",
+            "quote": "If a job becomes permanent, the process ends"
+          }
+        ],
+        "cycles": []
+      },
+      "maternity_leave": {
+        "nodes": [
+          {
+            "id": "maternity_leave.planned",
+            "weight": 0.5
+          },
+          {
+            "id": "maternity_leave.taken",
+            "weight": 1.0
+          },
+          {
+            "id": "maternity_leave.extended",
+            "weight": 0.5
+          },
+          {
+            "id": "potential_models.fetched",
+            "weight": 0.5
+          },
+          {
+            "id": "relevant_information.collected",
+            "weight": 1.0
+          },
+          {
+            "id": "information.fetched",
+            "weight": 0.0
+          },
+          {
+            "id": "information.collected",
+            "weight": 0.0
+          },
+          {
+            "id": "information.gathered",
+            "weight": 0.5
+          },
+          {
+            "id": "social_security.notified",
+            "weight": 0.5
+          },
+          {
+            "id": "company_information.gathered",
+            "weight": 0.5
+          }
+        ],
+        "edges": [
+          {
+            "from": "maternity_leave.planned",
+            "to": "maternity_leave.taken",
+            "type": "sequence",
+            "operator": "AND",
+            "quote": "Create a process that support in planning, taking and extending a maternity leave."
+          },
+          {
+            "from": "maternity_leave.taken",
+            "to": "maternity_leave.extended",
+            "type": "sequence",
+            "operator": "AND",
+            "quote": "At the end of the period let parent decide about extension."
+          },
+          {
+            "from": "potential_models.fetched",
+            "to": "relevant_information.collected",
+            "type": "cross_entity_guard",
+            "operator": "AND",
+            "quote": "* Collect relevant information"
+          },
+          {
+            "from": "company_information.gathered",
+            "to": "information.gathered",
+            "type": "cross_entity_guard",
+            "operator": "AND",
+            "quote": "* Gather information from companies"
+          },
+          {
+            "from": "relevant_information.collected",
+            "to": "social_security.notified",
+            "type": "cross_entity_guard",
+            "operator": "AND",
+            "quote": "* Notify Social Security, Company in time"
+          }
+        ],
+        "cycles": []
+      },
+      "work_accident": {
+        "nodes": [
+          {
+            "id": "work_accident.considered",
+            "weight": 1.0
+          },
+          {
+            "id": "work_accident.reported",
+            "weight": 0.071
+          },
+          {
+            "id": "work_accident.fatal",
+            "weight": 0.071
+          },
+          {
+            "id": "work_accident.serious_injury",
+            "weight": 0.071
+          },
+          {
+            "id": "work_accident.killed",
+            "weight": 0.071
+          },
+          {
+            "id": "work_accident.injured",
+            "weight": 0.071
+          },
+          {
+            "id": "work_accident.unable_to_work",
+            "weight": 0.071
+          },
+          {
+            "id": "work_accident.almost_occurred",
+            "weight": 0.0
+          },
+          {
+            "id": "work_accident.reported_to_inspectorate",
+            "weight": 0.0
+          },
+          {
+            "id": "work_accident.reported_to_insurance",
+            "weight": 0.0
+          },
+          {
+            "id": "work_accident.reported_to_employer",
+            "weight": 0.071
+          },
+          {
+            "id": "work_accident.reported_immediately",
+            "weight": 0.071
+          },
+          {
+            "id": "work_accident.reported_within_five_days",
+            "weight": 0.0
+          },
+          {
+            "id": "self_employed_person.reported",
+            "weight": 0.071
+          },
+          {
+            "id": "person_with_accident_insurance.killed",
+            "weight": 0.071
+          },
+          {
+            "id": "person_with_accident_insurance.injured",
+            "weight": 0.071
+          },
+          {
+            "id": "person_with_accident_insurance.unable_to_work",
+            "weight": 0.071
+          },
+          {
+            "id": "person_with_accident_insurance.physically_injured",
+            "weight": 0.071
+          },
+          {
+            "id": "educational_facility.obliged_to_report",
+            "weight": 0.071
+          },
+          {
+            "id": "incident.almost_occurred",
+            "weight": 0.0
+          },
+          {
+            "id": "defect.discovered",
+            "weight": 0.0
+          },
+          {
+            "id": "serious_risk.discovered",
+            "weight": 0.0
+          },
+          {
+            "id": "doctor_visit.notified",
+            "weight": 0.0
+          }
+        ],
+        "edges": [
+          {
+            "from": "work_accident.considered",
+            "to": "work_accident.reported",
+            "type": "sequence",
+            "operator": "AND",
+            "quote": "The employees must inform the employer immediately of: any work accident"
+          },
+          {
+            "from": "work_accident.considered",
+            "to": "work_accident.fatal",
+            "type": "sequence",
+            "operator": "AND",
+            "quote": "The employer must immediately report any work accident that leads to a fatality"
+          },
+          {
+            "from": "work_accident.considered",
+            "to": "work_accident.serious_injury",
+            "type": "sequence",
+            "operator": "AND",
+            "quote": "The employer must immediately report any work accident that leads to a fatality or serious injury"
+          },
+          {
+            "from": "work_accident.considered",
+            "to": "work_accident.killed",
+            "type": "sequence",
+            "operator": "AND",
+            "quote": "every work accident in which a person with accident insurance has been killed"
+          },
+          {
+            "from": "work_accident.considered",
+            "to": "work_accident.injured",
+            "type": "sequence",
+            "operator": "AND",
+            "quote": "every work accident in which a person with accident insurance has been killed, or injured"
+          },
+          {
+            "from": "work_accident.considered",
+            "to": "work_accident.unable_to_work",
+            "type": "sequence",
+            "operator": "AND",
+            "quote": "every work accident in which a person with accident insurance has been killed, or injured in such a way that they are unable to work for three days"
+          },
+          {
+            "from": "work_accident.considered",
+            "to": "work_accident.reported_to_employer",
+            "type": "sequence",
+            "operator": "AND",
+            "quote": "The employees must inform the employer immediately of: any work accident"
+          },
+          {
+            "from": "work_accident.considered",
+            "to": "work_accident.reported_immediately",
+            "type": "sequence",
+            "operator": "AND",
+            "quote": "The employees must inform the employer immediately of: any work accident"
+          },
+          {
+            "from": "work_accident.considered",
+            "to": "self_employed_person.reported",
+            "type": "cross_entity_guard",
+            "operator": "AND",
+            "quote": "As a self-employed person, accidents involving people you employ and those that involve you must be reported to the accident insurance provider in good time"
+          },
+          {
+            "from": "work_accident.considered",
+            "to": "person_with_accident_insurance.killed",
+            "type": "cross_entity_guard",
+            "operator": "AND",
+            "quote": "every work accident in which a person with accident insurance has been killed"
+          },
+          {
+            "from": "work_accident.considered",
+            "to": "person_with_accident_insurance.injured",
+            "type": "cross_entity_guard",
+            "operator": "AND",
+            "quote": "every work accident in which a person with accident insurance has been killed, or injured"
+          },
+          {
+            "from": "work_accident.considered",
+            "to": "person_with_accident_insurance.unable_to_work",
+            "type": "cross_entity_guard",
+            "operator": "AND",
+            "quote": "every work accident in which a person with accident insurance has been killed, or injured in such a way that they are unable to work for three days"
+          },
+          {
+            "from": "work_accident.considered",
+            "to": "person_with_accident_insurance.physically_injured",
+            "type": "cross_entity_guard",
+            "operator": "AND",
+            "quote": "Schools, educational facilities and universities are obliged to report every work accident through which a person with accident insurance is physically injured"
+          },
+          {
+            "from": "work_accident.considered",
+            "to": "educational_facility.obliged_to_report",
+            "type": "cross_entity_guard",
+            "operator": "AND",
+            "quote": "Schools, educational facilities and universities are obliged to report every work accident through which a person with accident insurance is physically injured"
+          }
+        ],
+        "cycles": []
+      }
+    }
+  },
+  "one_shot": {
+    "mistralai/mistral-nemotron": {
+      "job_application": {
+        "nodes": [
+          {
+            "id": "job_application.confirmed",
+            "weight": 0.5
+          },
+          {
+            "id": "job_application.rated",
+            "weight": 1.0
+          },
+          {
+            "id": "job_application.reported",
+            "weight": 0.5
+          },
+          {
+            "id": "job_offer.sent",
+            "weight": 0.5
+          },
+          {
+            "id": "job_offer.received",
+            "weight": 0.0
+          },
+          {
+            "id": "job_interview.negotiated",
+            "weight": 1.0
+          },
+          {
+            "id": "probation_phase.entered",
+            "weight": 1.0
+          },
+          {
+            "id": "review.visible",
+            "weight": 0.0
+          },
+          {
+            "id": "job.permanent",
+            "weight": 1.0
+          },
+          {
+            "id": "process.ended",
+            "weight": 0.5
+          }
+        ],
+        "edges": [
+          {
+            "from": "job_application.confirmed",
+            "to": "job_application.rated",
+            "type": "sequence",
+            "operator": "AND",
+            "quote": "Companies have to confirm that they received job applications and rate the application"
+          },
+          {
+            "from": "job_application.reported",
+            "to": "job_offer.sent",
+            "type": "cross_entity_guard",
+            "operator": "AND",
+            "quote": "Based on your job applications, new potential job offers are sent to you"
+          },
+          {
+            "from": "job_application.rated",
+            "to": "job_interview.negotiated",
+            "type": "cross_entity_guard",
+            "operator": "AND",
+            "quote": "A job interview can be negotiated"
+          },
+          {
+            "from": "job_interview.negotiated",
+            "to": "probation_phase.entered",
+            "type": "cross_entity_guard",
+            "operator": "AND",
+            "quote": "When a company wants you to work for them, you enter the probation phase"
+          },
+          {
+            "from": "probation_phase.entered",
+            "to": "job.permanent",
+            "type": "cross_entity_guard",
+            "operator": "AND",
+            "quote": "If a job becomes permanent, the process ends"
+          },
+          {
+            "from": "job.permanent",
+            "to": "process.ended",
+            "type": "cross_entity_guard",
+            "operator": "AND",
+            "quote": "If a job becomes permanent, the process ends"
+          }
+        ],
+        "cycles": []
+      },
+      "maternity_leave": {
+        "nodes": [
+          {
+            "id": "maternity_leave.planned",
+            "weight": 0.5
+          },
+          {
+            "id": "maternity_leave.taken",
+            "weight": 1.0
+          },
+          {
+            "id": "maternity_leave.extended",
+            "weight": 0.5
+          },
+          {
+            "id": "potential_models.fetched",
+            "weight": 0.5
+          },
+          {
+            "id": "relevant_information.collected",
+            "weight": 1.0
+          },
+          {
+            "id": "information.fetched",
+            "weight": 0.0
+          },
+          {
+            "id": "information.collected",
+            "weight": 0.0
+          },
+          {
+            "id": "information.gathered",
+            "weight": 0.5
+          },
+          {
+            "id": "social_security.notified",
+            "weight": 1.0
+          },
+          {
+            "id": "company_information.gathered",
+            "weight": 1.0
+          }
+        ],
+        "edges": [
+          {
+            "from": "maternity_leave.planned",
+            "to": "maternity_leave.taken",
+            "type": "sequence",
+            "operator": "AND",
+            "quote": "Let parent select"
+          },
+          {
+            "from": "maternity_leave.taken",
+            "to": "maternity_leave.extended",
+            "type": "sequence",
+            "operator": "AND",
+            "quote": "At the end of the period let parent decide about extension"
+          },
+          {
+            "from": "potential_models.fetched",
+            "to": "relevant_information.collected",
+            "type": "cross_entity_guard",
+            "operator": "AND",
+            "quote": "Collect relevant information"
+          },
+          {
+            "from": "company_information.gathered",
+            "to": "information.gathered",
+            "type": "cross_entity_guard",
+            "operator": "AND",
+            "quote": "Gather information from companies"
+          },
+          {
+            "from": "relevant_information.collected",
+            "to": "social_security.notified",
+            "type": "cross_entity_guard",
+            "operator": "AND",
+            "quote": "Notify Social Security, Company in time"
+          },
+          {
+            "from": "social_security.notified",
+            "to": "company_information.gathered",
+            "type": "cross_entity_guard",
+            "operator": "AND",
+            "quote": "Gather information from companies"
+          }
+        ],
+        "cycles": []
+      },
+      "work_accident": {
+        "nodes": [
+          {
+            "id": "work_accident.considered",
+            "weight": 1.0
+          },
+          {
+            "id": "work_accident.reported",
+            "weight": 0.071
+          },
+          {
+            "id": "work_accident.fatal",
+            "weight": 0.071
+          },
+          {
+            "id": "work_accident.serious_injury",
+            "weight": 0.071
+          },
+          {
+            "id": "work_accident.killed",
+            "weight": 0.071
+          },
+          {
+            "id": "work_accident.injured",
+            "weight": 0.071
+          },
+          {
+            "id": "work_accident.unable_to_work",
+            "weight": 0.071
+          },
+          {
+            "id": "work_accident.almost_occurred",
+            "weight": 0.0
+          },
+          {
+            "id": "work_accident.reported_to_inspectorate",
+            "weight": 0.0
+          },
+          {
+            "id": "work_accident.reported_to_insurance",
+            "weight": 0.0
+          },
+          {
+            "id": "work_accident.reported_to_employer",
+            "weight": 0.071
+          },
+          {
+            "id": "work_accident.reported_immediately",
+            "weight": 0.071
+          },
+          {
+            "id": "work_accident.reported_within_five_days",
+            "weight": 0.0
+          },
+          {
+            "id": "self_employed_person.reported",
+            "weight": 0.071
+          },
+          {
+            "id": "person_with_accident_insurance.killed",
+            "weight": 0.071
+          },
+          {
+            "id": "person_with_accident_insurance.injured",
+            "weight": 0.071
+          },
+          {
+            "id": "person_with_accident_insurance.unable_to_work",
+            "weight": 0.071
+          },
+          {
+            "id": "person_with_accident_insurance.physically_injured",
+            "weight": 0.071
+          },
+          {
+            "id": "educational_facility.obliged_to_report",
+            "weight": 0.071
+          },
+          {
+            "id": "incident.almost_occurred",
+            "weight": 0.0
+          },
+          {
+            "id": "defect.discovered",
+            "weight": 0.0
+          },
+          {
+            "id": "serious_risk.discovered",
+            "weight": 0.0
+          },
+          {
+            "id": "doctor_visit.notified",
+            "weight": 0.0
+          }
+        ],
+        "edges": [
+          {
+            "from": "work_accident.considered",
+            "to": "work_accident.reported",
+            "type": "sequence",
+            "operator": "AND",
+            "quote": "The employees must inform the employer immediately of: any work accident"
+          },
+          {
+            "from": "work_accident.considered",
+            "to": "work_accident.fatal",
+            "type": "sequence",
+            "operator": "AND",
+            "quote": "The employer must immediately report any work accident that leads to a fatality or serious injury to the Labour Inspectorate"
+          },
+          {
+            "from": "work_accident.considered",
+            "to": "work_accident.serious_injury",
+            "type": "sequence",
+            "operator": "AND",
+            "quote": "The employer must immediately report any work accident that leads to a fatality or serious injury to the Labour Inspectorate"
+          },
+          {
+            "from": "work_accident.considered",
+            "to": "work_accident.killed",
+            "type": "sequence",
+            "operator": "AND",
+            "quote": "Independent of this, every work accident in which a person with accident insurance has been killed"
+          },
+          {
+            "from": "work_accident.considered",
+            "to": "work_accident.injured",
+            "type": "sequence",
+            "operator": "AND",
+            "quote": "Independent of this, every work accident in which a person with accident insurance has been killed, or injured in such a way that they are unable to work for three days"
+          },
+          {
+            "from": "work_accident.considered",
+            "to": "work_accident.unable_to_work",
+            "type": "sequence",
+            "operator": "AND",
+            "quote": "Independent of this, every work accident in which a person with accident insurance has been killed, or injured in such a way that they are unable to work for three days"
+          },
+          {
+            "from": "work_accident.considered",
+            "to": "work_accident.reported_to_employer",
+            "type": "sequence",
+            "operator": "AND",
+            "quote": "The employees must inform the employer immediately of: any work accident"
+          },
+          {
+            "from": "work_accident.considered",
+            "to": "work_accident.reported_immediately",
+            "type": "sequence",
+            "operator": "AND",
+            "quote": "The employees must inform the employer immediately of: any work accident"
+          },
+          {
+            "from": "work_accident.considered",
+            "to": "self_employed_person.reported",
+            "type": "cross_entity_guard",
+            "operator": "AND",
+            "quote": "As a self-employed person, accidents involving people you employ and those that involve you must be reported to the accident insurance provider in good time"
+          },
+          {
+            "from": "work_accident.considered",
+            "to": "person_with_accident_insurance.killed",
+            "type": "cross_entity_guard",
+            "operator": "AND",
+            "quote": "Independent of this, every work accident in which a person with accident insurance has been killed"
+          },
+          {
+            "from": "work_accident.considered",
+            "to": "person_with_accident_insurance.injured",
+            "type": "cross_entity_guard",
+            "operator": "AND",
+            "quote": "Independent of this, every work accident in which a person with accident insurance has been killed, or injured in such a way that they are unable to work for three days"
+          },
+          {
+            "from": "work_accident.considered",
+            "to": "person_with_accident_insurance.unable_to_work",
+            "type": "cross_entity_guard",
+            "operator": "AND",
+            "quote": "Independent of this, every work accident in which a person with accident insurance has been killed, or injured in such a way that they are unable to work for three days"
+          },
+          {
+            "from": "work_accident.considered",
+            "to": "person_with_accident_insurance.physically_injured",
+            "type": "cross_entity_guard",
+            "operator": "AND",
+            "quote": "Schools, educational facilities and universities are obliged to report every work accident through which a person with accident insurance is physically injured or killed within a maximum of five days to the responsible accident insurance provider in triplicate"
+          },
+          {
+            "from": "work_accident.considered",
+            "to": "educational_facility.obliged_to_report",
+            "type": "cross_entity_guard",
+            "operator": "AND",
+            "quote": "Schools, educational facilities and universities are obliged to report every work accident through which a person with accident insurance is physically injured or killed within a maximum of five days to the responsible accident insurance provider in triplicate"
+          }
+        ],
+        "cycles": []
+      }
+    }
+  }
+}

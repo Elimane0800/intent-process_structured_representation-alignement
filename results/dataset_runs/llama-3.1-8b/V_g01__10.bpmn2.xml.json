@@ -1,0 +1,265 @@
+{
+  "case_name": "V_g01",
+  "text": "Category: Vending and Shipping\nTitle: Robotic Burger Seller near the University of Vienna\n\nThe robot receives an order. It asks whether the customer wants a menu or just\nthe burger. If he wants a menu, the robot starts preparing the drink, which\ndepending on the size can take a variable amount of time. While doing so, he\nasks if you want fries or wedges. If you want fries, he prepares the fries; if\nyou want wedges, he prepares wedges. Again the duration varies depending on the\nsize fries/wedges order. After that, he prepares the burger, and gives you\nenthusiastic status updates every 30 seconds. Depending on the number of\ningredients, the duration for creating the burger varies. Your order is delivered\nvia a conveyor belt.\n",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "llama-3.1-8b",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "llama-3.1-8b",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/text_and_bpmn/bpmn/V_g01/10.bpmn2.xml",
+  "candidates": {
+    "order": [
+      "received"
+    ],
+    "burger": [
+      "prepared"
+    ],
+    "drink": [
+      "prepared"
+    ],
+    "fries": [
+      "prepared"
+    ],
+    "wedges": [
+      "prepared"
+    ],
+    "customer": [
+      "asked"
+    ],
+    "robot": [
+      "preparing",
+      "preparing",
+      "preparing",
+      "preparing",
+      "delivering"
+    ]
+  },
+  "validation_report": {
+    "order": {
+      "f_lex": "ENTITY",
+      "kept": true
+    },
+    "burger": {
+      "f_lex": "ACTOR",
+      "kept": false
+    },
+    "drink": {
+      "f_lex": "INDETERMINATE",
+      "kept": true
+    },
+    "fries": {
+      "f_lex": "INDETERMINATE",
+      "kept": true
+    },
+    "wedges": {
+      "f_lex": "INDETERMINATE",
+      "kept": true
+    },
+    "customer": {
+      "f_lex": "ACTOR",
+      "kept": false
+    },
+    "robot": {
+      "f_lex": "ENTITY",
+      "kept": true
+    }
+  },
+  "state_space": {
+    "order": [
+      "received"
+    ],
+    "drink": [
+      "prepared"
+    ],
+    "fries": [
+      "prepared"
+    ],
+    "wedges": [
+      "prepared"
+    ],
+    "robot": [
+      "preparing",
+      "preparing",
+      "preparing",
+      "preparing",
+      "delivering"
+    ]
+  },
+  "raw_preconditions": {
+    "order.received": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "drink.prepared": {
+      "precondition": "order.received",
+      "quote": "The robot receives an order."
+    },
+    "fries.prepared": {
+      "precondition": "order.received AND drink.prepared",
+      "quote": "If he wants a menu, the robot starts preparing the drink, which depending on the size can take a variable amount of time. While doing so, he asks if you want fries or wedges."
+    },
+    "wedges.prepared": {
+      "precondition": "order.received AND drink.prepared",
+      "quote": "If he wants a menu, the robot starts preparing the drink, which depending on the size can take a variable amount of time. While doing so, he asks if you want fries or wedges."
+    },
+    "robot.preparing": {
+      "precondition": "order.received AND drink.prepared AND (fries.prepared OR wedges.prepared)",
+      "quote": "If he wants a menu, the robot starts preparing the drink, which depending on the size can take a variable amount of time. While doing so, he asks if you want fries or wedges."
+    },
+    "robot.delivering": {
+      "precondition": "order.received AND drink.prepared AND fries.prepared AND wedges.prepared",
+      "quote": "Your order is delivered via a conveyor belt."
+    }
+  },
+  "validated_preconditions": {
+    "order.received": {
+      "precondition": "INITIAL",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "drink.prepared": {
+      "precondition": "order.received",
+      "quote": "The robot receives an order.",
+      "status": "OK",
+      "reason": null
+    },
+    "fries.prepared": {
+      "precondition": "order.received AND drink.prepared",
+      "quote": "If he wants a menu, the robot starts preparing the drink, which depending on the size can take a variable amount of time. While doing so, he asks if you want fries or wedges.",
+      "status": "OK",
+      "reason": null
+    },
+    "wedges.prepared": {
+      "precondition": "order.received AND drink.prepared",
+      "quote": "If he wants a menu, the robot starts preparing the drink, which depending on the size can take a variable amount of time. While doing so, he asks if you want fries or wedges.",
+      "status": "OK",
+      "reason": null
+    },
+    "robot.preparing": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "DOWNGRADED",
+      "reason": "mixed AND/OR not supported in a single precondition",
+      "retried": true
+    },
+    "robot.delivering": {
+      "precondition": "order.received AND drink.prepared AND fries.prepared AND wedges.prepared",
+      "quote": "Your order is delivered via a conveyor belt.",
+      "status": "OK",
+      "reason": null
+    }
+  },
+  "precondition_cycles": [],
+  "reference_graph": {
+    "nodes": [
+      {
+        "id": "order.received",
+        "weight": 1.0
+      },
+      {
+        "id": "drink.prepared",
+        "weight": 1.0
+      },
+      {
+        "id": "fries.prepared",
+        "weight": 0.75
+      },
+      {
+        "id": "wedges.prepared",
+        "weight": 0.75
+      },
+      {
+        "id": "robot.preparing",
+        "weight": 0.0
+      },
+      {
+        "id": "robot.preparing",
+        "weight": 0.0
+      },
+      {
+        "id": "robot.preparing",
+        "weight": 0.0
+      },
+      {
+        "id": "robot.preparing",
+        "weight": 0.0
+      },
+      {
+        "id": "robot.delivering",
+        "weight": 1.0
+      }
+    ],
+    "edges": [
+      {
+        "from": "order.received",
+        "to": "drink.prepared",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "The robot receives an order."
+      },
+      {
+        "from": "order.received",
+        "to": "fries.prepared",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "If he wants a menu, the robot starts preparing the drink, which depending on the size can take a variable amount of time. While doing so, he asks if you want fries or wedges."
+      },
+      {
+        "from": "drink.prepared",
+        "to": "fries.prepared",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "If he wants a menu, the robot starts preparing the drink, which depending on the size can take a variable amount of time. While doing so, he asks if you want fries or wedges."
+      },
+      {
+        "from": "order.received",
+        "to": "wedges.prepared",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "If he wants a menu, the robot starts preparing the drink, which depending on the size can take a variable amount of time. While doing so, he asks if you want fries or wedges."
+      },
+      {
+        "from": "drink.prepared",
+        "to": "wedges.prepared",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "If he wants a menu, the robot starts preparing the drink, which depending on the size can take a variable amount of time. While doing so, he asks if you want fries or wedges."
+      },
+      {
+        "from": "order.received",
+        "to": "robot.delivering",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "Your order is delivered via a conveyor belt."
+      },
+      {
+        "from": "drink.prepared",
+        "to": "robot.delivering",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "Your order is delivered via a conveyor belt."
+      },
+      {
+        "from": "fries.prepared",
+        "to": "robot.delivering",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "Your order is delivered via a conveyor belt."
+      },
+      {
+        "from": "wedges.prepared",
+        "to": "robot.delivering",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "Your order is delivered via a conveyor belt."
+      }
+    ],
+    "cycles": []
+  },
+  "errors": [
+    "bpmn_to_spo: 'str' object has no attribute 'add_out_arc'",
+    "state_matching: 'spo_triples'",
+    "alignment: 'process_graph'",
+    "report: 'alignment'"
+  ]
+}

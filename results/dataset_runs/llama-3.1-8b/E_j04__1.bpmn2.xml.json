@@ -1,0 +1,1100 @@
+{
+  "case_name": "E_j04",
+  "text": "Category: E-Government\nTitle: Internship\n\nYou can enter a topic that interests you, and how much money you want. You can\nalso enter experience and hobbies. Several offers will arrive (at arbitrary\npoints in time). You can accept or deny offers. As soon as an offer is accepted, \nall other offers become invalid. You have to write at least 3 status updates\nabout your internship (every week). The company has to write 3 status updates\nabout you. After the internship is finished you can recommend the company to a\nlist of friends (via twitter). Separate tweets are sent in parallel.\n",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "llama-3.1-8b",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "llama-3.1-8b",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/text_and_bpmn/bpmn/E_j04/1.bpmn2.xml",
+  "candidates": {
+    "topic": [
+      "entered"
+    ],
+    "offer": [
+      "arrived",
+      "accepted",
+      "invalidated",
+      "denied"
+    ],
+    "status_update": [
+      "written"
+    ],
+    "internship": [
+      "finished"
+    ],
+    "company": [
+      "wrote"
+    ],
+    "tweet": [
+      "sent"
+    ]
+  },
+  "validation_report": {
+    "topic": {
+      "f_lex": "ENTITY",
+      "kept": true
+    },
+    "offer": {
+      "f_lex": "ENTITY",
+      "kept": true
+    },
+    "status_update": {
+      "f_lex": "ENTITY",
+      "kept": true
+    },
+    "internship": {
+      "f_lex": "ENTITY",
+      "kept": true
+    },
+    "company": {
+      "f_lex": "ACTOR",
+      "kept": false
+    },
+    "tweet": {
+      "f_lex": "ENTITY",
+      "kept": true
+    }
+  },
+  "state_space": {
+    "topic": [
+      "entered"
+    ],
+    "offer": [
+      "arrived",
+      "accepted",
+      "invalidated",
+      "denied"
+    ],
+    "status_update": [
+      "written"
+    ],
+    "internship": [
+      "finished"
+    ],
+    "tweet": [
+      "sent"
+    ]
+  },
+  "raw_preconditions": {
+    "topic.entered": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "offer.arrived": {
+      "precondition": "topic.entered",
+      "quote": "You can enter a topic that interests you, and how much money you want."
+    },
+    "offer.denied": {
+      "precondition": "topic.entered",
+      "quote": "You can also enter experience and hobbies."
+    },
+    "offer.accepted": {
+      "precondition": "offer.arrived AND topic.entered",
+      "quote": "You can accept or deny offers."
+    },
+    "status_update.written": {
+      "precondition": "offer.accepted",
+      "quote": "You have to write at least 3 status updates about your internship (every week)."
+    },
+    "company.status_update.written": {
+      "precondition": "offer.accepted",
+      "quote": "The company has to write 3 status updates about you."
+    },
+    "offer.invalidated": {
+      "precondition": "offer.accepted",
+      "quote": "As soon as an offer is accepted, all other offers become invalid."
+    },
+    "internship.finished": {
+      "precondition": "offer.accepted",
+      "quote": "The company has to write 3 status updates about you."
+    },
+    "tweet.sent": {
+      "precondition": "tweet.sent OR internship.finished",
+      "quote": "Separate tweets are sent in parallel."
+    }
+  },
+  "validated_preconditions": {
+    "topic.entered": {
+      "precondition": "INITIAL",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "offer.arrived": {
+      "precondition": "topic.entered",
+      "quote": "You can enter a topic that interests you, and how much money you want.",
+      "status": "OK",
+      "reason": null
+    },
+    "offer.denied": {
+      "precondition": "topic.entered",
+      "quote": "You can also enter experience and hobbies.",
+      "status": "OK",
+      "reason": null
+    },
+    "offer.accepted": {
+      "precondition": "offer.arrived AND topic.entered",
+      "quote": "You can accept or deny offers.",
+      "status": "OK",
+      "reason": null
+    },
+    "status_update.written": {
+      "precondition": "offer.accepted",
+      "quote": "You have to write at least 3 status updates about your internship (every week).",
+      "status": "OK",
+      "reason": null
+    },
+    "company.status_update.written": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "DOWNGRADED",
+      "reason": "malformed or unknown target key: 'company.status_update.written' is not a valid entity.state of the state space"
+    },
+    "offer.invalidated": {
+      "precondition": "offer.accepted",
+      "quote": "As soon as an offer is accepted, all other offers become invalid.",
+      "status": "OK",
+      "reason": null
+    },
+    "internship.finished": {
+      "precondition": "offer.accepted",
+      "quote": "The company has to write 3 status updates about you.",
+      "status": "OK",
+      "reason": null
+    },
+    "tweet.sent": {
+      "precondition": "topic.entered AND offer.arrived",
+      "quote": "You can enter a topic that interests you, and how much money you want. You can also enter experience and hobbies.",
+      "status": "OK",
+      "reason": null,
+      "retried": true
+    }
+  },
+  "precondition_cycles": [],
+  "reference_graph": {
+    "nodes": [
+      {
+        "id": "topic.entered",
+        "weight": 0.8
+      },
+      {
+        "id": "offer.arrived",
+        "weight": 0.6
+      },
+      {
+        "id": "offer.accepted",
+        "weight": 1.0
+      },
+      {
+        "id": "offer.invalidated",
+        "weight": 0.2
+      },
+      {
+        "id": "offer.denied",
+        "weight": 0.2
+      },
+      {
+        "id": "status_update.written",
+        "weight": 0.2
+      },
+      {
+        "id": "internship.finished",
+        "weight": 0.2
+      },
+      {
+        "id": "tweet.sent",
+        "weight": 0.4
+      }
+    ],
+    "edges": [
+      {
+        "from": "topic.entered",
+        "to": "offer.arrived",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "You can enter a topic that interests you, and how much money you want."
+      },
+      {
+        "from": "topic.entered",
+        "to": "offer.denied",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "You can also enter experience and hobbies."
+      },
+      {
+        "from": "offer.arrived",
+        "to": "offer.accepted",
+        "type": "sequence",
+        "operator": "AND",
+        "quote": "You can accept or deny offers."
+      },
+      {
+        "from": "topic.entered",
+        "to": "offer.accepted",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "You can accept or deny offers."
+      },
+      {
+        "from": "offer.accepted",
+        "to": "status_update.written",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "You have to write at least 3 status updates about your internship (every week)."
+      },
+      {
+        "from": "offer.accepted",
+        "to": "offer.invalidated",
+        "type": "sequence",
+        "operator": "AND",
+        "quote": "As soon as an offer is accepted, all other offers become invalid."
+      },
+      {
+        "from": "offer.accepted",
+        "to": "internship.finished",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "The company has to write 3 status updates about you."
+      },
+      {
+        "from": "topic.entered",
+        "to": "tweet.sent",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "You can enter a topic that interests you, and how much money you want. You can also enter experience and hobbies."
+      },
+      {
+        "from": "offer.arrived",
+        "to": "tweet.sent",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "You can enter a topic that interests you, and how much money you want. You can also enter experience and hobbies."
+      }
+    ],
+    "cycles": []
+  },
+  "dfg_edges": [
+    {
+      "source_id": "sid-1EC7FC30-E638-4527-A567-F7D98DE1CF2D",
+      "source_label": "Invalid other offers",
+      "target_id": "sid-D6B4DF54-7D94-4C42-AD42-59CDD038C779",
+      "target_label": "Checking applicants status updates",
+      "gateway_context": [
+        "ParallelGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-1EC7FC30-E638-4527-A567-F7D98DE1CF2D",
+      "source_label": "Invalid other offers",
+      "target_id": "sid-C8E72C83-2B14-420A-AF22-F69BE6D7B303",
+      "target_label": "Checking companies status updates",
+      "gateway_context": [
+        "ParallelGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-392895E9-8D0A-497B-B5C3-197EF7A5AAA4",
+      "source_label": "Tweets will be sent",
+      "target_id": "sid-C2EFEA17-47E2-47FB-BDC6-74EE00B4F0EB",
+      "target_label": "End",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-D6B4DF54-7D94-4C42-AD42-59CDD038C779",
+      "source_label": "Checking applicants status updates",
+      "target_id": "sid-BCF56244-30C3-4B9D-9372-E1C56888BD5E",
+      "target_label": "Update the status",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "no"
+      ]
+    },
+    {
+      "source_id": "sid-D6B4DF54-7D94-4C42-AD42-59CDD038C779",
+      "source_label": "Checking applicants status updates",
+      "target_id": "sid-241CA720-0F6C-447A-A138-CFB26E1BC77F",
+      "target_label": "Enter all friends twitter accounts",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ParallelGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-D6B4DF54-7D94-4C42-AD42-59CDD038C779",
+      "source_label": "Checking applicants status updates",
+      "target_id": "sid-C2EFEA17-47E2-47FB-BDC6-74EE00B4F0EB",
+      "target_label": "End",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ParallelGateway",
+        "ExclusiveGateway",
+        "No",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-1468526D-B5B0-42E5-B896-1092677B6911",
+      "source_label": "Enter desired topic and amount of money.",
+      "target_id": "sid-6C539287-3BBB-41AB-855A-F853939B5EA5",
+      "target_label": "Enter experiences and hobbies.",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-780D9930-2BC5-48E9-A1A8-B7D2ADBC0EEA",
+      "source_label": "Report E-Government",
+      "target_id": "sid-C2EFEA17-47E2-47FB-BDC6-74EE00B4F0EB",
+      "target_label": "End",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-3F7DD687-00D8-403B-A214-B4977B067F4D",
+      "source_label": "Offers arrival",
+      "target_id": "sid-1EC7FC30-E638-4527-A567-F7D98DE1CF2D",
+      "target_label": "Invalid other offers",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-3F7DD687-00D8-403B-A214-B4977B067F4D",
+      "source_label": "Offers arrival",
+      "target_id": "sid-1468526D-B5B0-42E5-B896-1092677B6911",
+      "target_label": "Enter desired topic and amount of money.",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "No",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-6C539287-3BBB-41AB-855A-F853939B5EA5",
+      "source_label": "Enter experiences and hobbies.",
+      "target_id": "sid-3F7DD687-00D8-403B-A214-B4977B067F4D",
+      "target_label": "Offers arrival",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-5CD28324-53A3-499A-8C64-A8247F41FB8D",
+      "source_label": "Check registration",
+      "target_id": "sid-780D9930-2BC5-48E9-A1A8-B7D2ADBC0EEA",
+      "target_label": "Report E-Government",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "No"
+      ]
+    },
+    {
+      "source_id": "sid-5CD28324-53A3-499A-8C64-A8247F41FB8D",
+      "source_label": "Check registration",
+      "target_id": "sid-1468526D-B5B0-42E5-B896-1092677B6911",
+      "target_label": "Enter desired topic and amount of money.",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-A029FD8A-D758-4395-933F-6A8A8E5A4AE3",
+      "source_label": "",
+      "target_id": "sid-780D9930-2BC5-48E9-A1A8-B7D2ADBC0EEA",
+      "target_label": "Report E-Government",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-C8DC4E7C-9233-4FCF-ADB6-689B6ED9FB22",
+      "source_label": "",
+      "target_id": "sid-5CD28324-53A3-499A-8C64-A8247F41FB8D",
+      "target_label": "Check registration",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-241CA720-0F6C-447A-A138-CFB26E1BC77F",
+      "source_label": "Enter all friends twitter accounts",
+      "target_id": "sid-392895E9-8D0A-497B-B5C3-197EF7A5AAA4",
+      "target_label": "Tweets will be sent",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-C8E72C83-2B14-420A-AF22-F69BE6D7B303",
+      "source_label": "Checking companies status updates",
+      "target_id": "sid-241CA720-0F6C-447A-A138-CFB26E1BC77F",
+      "target_label": "Enter all friends twitter accounts",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ParallelGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-C8E72C83-2B14-420A-AF22-F69BE6D7B303",
+      "source_label": "Checking companies status updates",
+      "target_id": "sid-C2EFEA17-47E2-47FB-BDC6-74EE00B4F0EB",
+      "target_label": "End",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ParallelGateway",
+        "ExclusiveGateway",
+        "No",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-C8E72C83-2B14-420A-AF22-F69BE6D7B303",
+      "source_label": "Checking companies status updates",
+      "target_id": "sid-067A6C2B-EF44-429B-AEA2-0A7B5C46F8E6",
+      "target_label": "Notify the company",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "no"
+      ]
+    },
+    {
+      "source_id": "sid-DD6D441E-A796-4F57-8023-F5D95DA60DC5",
+      "source_label": "Internship application",
+      "target_id": "sid-5CD28324-53A3-499A-8C64-A8247F41FB8D",
+      "target_label": "Check registration",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-067A6C2B-EF44-429B-AEA2-0A7B5C46F8E6",
+      "source_label": "Notify the company",
+      "target_id": "sid-C8E72C83-2B14-420A-AF22-F69BE6D7B303",
+      "target_label": "Checking companies status updates",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-BCF56244-30C3-4B9D-9372-E1C56888BD5E",
+      "source_label": "Update the status",
+      "target_id": "sid-D6B4DF54-7D94-4C42-AD42-59CDD038C779",
+      "target_label": "Checking applicants status updates",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "Invalid other offers",
+      "subject_id": "sid-1EC7FC30-E638-4527-A567-F7D98DE1CF2D",
+      "predicate": "follows",
+      "object": "Checking applicants status updates",
+      "object_id": "sid-D6B4DF54-7D94-4C42-AD42-59CDD038C779"
+    },
+    {
+      "subject": "Invalid other offers",
+      "subject_id": "sid-1EC7FC30-E638-4527-A567-F7D98DE1CF2D",
+      "predicate": "follows",
+      "object": "Checking companies status updates",
+      "object_id": "sid-C8E72C83-2B14-420A-AF22-F69BE6D7B303"
+    },
+    {
+      "subject": "Tweets will be sent",
+      "subject_id": "sid-392895E9-8D0A-497B-B5C3-197EF7A5AAA4",
+      "predicate": "follows",
+      "object": "End",
+      "object_id": "sid-C2EFEA17-47E2-47FB-BDC6-74EE00B4F0EB"
+    },
+    {
+      "subject": "Checking applicants status updates",
+      "subject_id": "sid-D6B4DF54-7D94-4C42-AD42-59CDD038C779",
+      "predicate": "follows",
+      "object": "Update the status",
+      "object_id": "sid-BCF56244-30C3-4B9D-9372-E1C56888BD5E"
+    },
+    {
+      "subject": "Checking applicants status updates",
+      "subject_id": "sid-D6B4DF54-7D94-4C42-AD42-59CDD038C779",
+      "predicate": "follows",
+      "object": "Enter all friends twitter accounts",
+      "object_id": "sid-241CA720-0F6C-447A-A138-CFB26E1BC77F"
+    },
+    {
+      "subject": "Checking applicants status updates",
+      "subject_id": "sid-D6B4DF54-7D94-4C42-AD42-59CDD038C779",
+      "predicate": "follows",
+      "object": "End",
+      "object_id": "sid-C2EFEA17-47E2-47FB-BDC6-74EE00B4F0EB"
+    },
+    {
+      "subject": "Enter desired topic and amount of money.",
+      "subject_id": "sid-1468526D-B5B0-42E5-B896-1092677B6911",
+      "predicate": "follows",
+      "object": "Enter experiences and hobbies.",
+      "object_id": "sid-6C539287-3BBB-41AB-855A-F853939B5EA5"
+    },
+    {
+      "subject": "Report E-Government",
+      "subject_id": "sid-780D9930-2BC5-48E9-A1A8-B7D2ADBC0EEA",
+      "predicate": "follows",
+      "object": "End",
+      "object_id": "sid-C2EFEA17-47E2-47FB-BDC6-74EE00B4F0EB"
+    },
+    {
+      "subject": "Offers arrival",
+      "subject_id": "sid-3F7DD687-00D8-403B-A214-B4977B067F4D",
+      "predicate": "follows",
+      "object": "Invalid other offers",
+      "object_id": "sid-1EC7FC30-E638-4527-A567-F7D98DE1CF2D"
+    },
+    {
+      "subject": "Offers arrival",
+      "subject_id": "sid-3F7DD687-00D8-403B-A214-B4977B067F4D",
+      "predicate": "follows",
+      "object": "Enter desired topic and amount of money.",
+      "object_id": "sid-1468526D-B5B0-42E5-B896-1092677B6911"
+    },
+    {
+      "subject": "Enter experiences and hobbies.",
+      "subject_id": "sid-6C539287-3BBB-41AB-855A-F853939B5EA5",
+      "predicate": "follows",
+      "object": "Offers arrival",
+      "object_id": "sid-3F7DD687-00D8-403B-A214-B4977B067F4D"
+    },
+    {
+      "subject": "Check registration",
+      "subject_id": "sid-5CD28324-53A3-499A-8C64-A8247F41FB8D",
+      "predicate": "follows",
+      "object": "Report E-Government",
+      "object_id": "sid-780D9930-2BC5-48E9-A1A8-B7D2ADBC0EEA"
+    },
+    {
+      "subject": "Check registration",
+      "subject_id": "sid-5CD28324-53A3-499A-8C64-A8247F41FB8D",
+      "predicate": "follows",
+      "object": "Enter desired topic and amount of money.",
+      "object_id": "sid-1468526D-B5B0-42E5-B896-1092677B6911"
+    },
+    {
+      "subject": "",
+      "subject_id": "sid-A029FD8A-D758-4395-933F-6A8A8E5A4AE3",
+      "predicate": "follows",
+      "object": "Report E-Government",
+      "object_id": "sid-780D9930-2BC5-48E9-A1A8-B7D2ADBC0EEA"
+    },
+    {
+      "subject": "",
+      "subject_id": "sid-C8DC4E7C-9233-4FCF-ADB6-689B6ED9FB22",
+      "predicate": "follows",
+      "object": "Check registration",
+      "object_id": "sid-5CD28324-53A3-499A-8C64-A8247F41FB8D"
+    },
+    {
+      "subject": "Enter all friends twitter accounts",
+      "subject_id": "sid-241CA720-0F6C-447A-A138-CFB26E1BC77F",
+      "predicate": "follows",
+      "object": "Tweets will be sent",
+      "object_id": "sid-392895E9-8D0A-497B-B5C3-197EF7A5AAA4"
+    },
+    {
+      "subject": "Checking companies status updates",
+      "subject_id": "sid-C8E72C83-2B14-420A-AF22-F69BE6D7B303",
+      "predicate": "follows",
+      "object": "Enter all friends twitter accounts",
+      "object_id": "sid-241CA720-0F6C-447A-A138-CFB26E1BC77F"
+    },
+    {
+      "subject": "Checking companies status updates",
+      "subject_id": "sid-C8E72C83-2B14-420A-AF22-F69BE6D7B303",
+      "predicate": "follows",
+      "object": "End",
+      "object_id": "sid-C2EFEA17-47E2-47FB-BDC6-74EE00B4F0EB"
+    },
+    {
+      "subject": "Checking companies status updates",
+      "subject_id": "sid-C8E72C83-2B14-420A-AF22-F69BE6D7B303",
+      "predicate": "follows",
+      "object": "Notify the company",
+      "object_id": "sid-067A6C2B-EF44-429B-AEA2-0A7B5C46F8E6"
+    },
+    {
+      "subject": "Internship application",
+      "subject_id": "sid-DD6D441E-A796-4F57-8023-F5D95DA60DC5",
+      "predicate": "follows",
+      "object": "Check registration",
+      "object_id": "sid-5CD28324-53A3-499A-8C64-A8247F41FB8D"
+    },
+    {
+      "subject": "Notify the company",
+      "subject_id": "sid-067A6C2B-EF44-429B-AEA2-0A7B5C46F8E6",
+      "predicate": "follows",
+      "object": "Checking companies status updates",
+      "object_id": "sid-C8E72C83-2B14-420A-AF22-F69BE6D7B303"
+    },
+    {
+      "subject": "Update the status",
+      "subject_id": "sid-BCF56244-30C3-4B9D-9372-E1C56888BD5E",
+      "predicate": "follows",
+      "object": "Checking applicants status updates",
+      "object_id": "sid-D6B4DF54-7D94-4C42-AD42-59CDD038C779"
+    }
+  ],
+  "matches": {
+    "Check registration": {
+      "match": "status_update.written",
+      "score": 0.1784
+    },
+    "Checking applicants status updates": {
+      "match": "status_update.written",
+      "score": 0.426
+    },
+    "Checking companies status updates": {
+      "match": "status_update.written",
+      "score": 0.4641
+    },
+    "End": {
+      "match": "topic.entered",
+      "score": 0.2435
+    },
+    "Enter all friends twitter accounts": {
+      "match": "tweet.sent",
+      "score": 0.3021
+    },
+    "Enter desired topic and amount of money.": {
+      "match": "topic.entered",
+      "score": 0.4972
+    },
+    "Enter experiences and hobbies.": {
+      "match": "topic.entered",
+      "score": 0.2646
+    },
+    "Internship application": {
+      "match": "internship.finished",
+      "score": 0.5709
+    },
+    "Invalid other offers": {
+      "match": "offer.invalidated",
+      "score": 0.6888
+    },
+    "Notify the company": {
+      "match": "status_update.written",
+      "score": 0.2167
+    },
+    "Offers arrival": {
+      "match": "offer.arrived",
+      "score": 0.6921
+    },
+    "Report E-Government": {
+      "match": "internship.finished",
+      "score": 0.1061
+    },
+    "Tweets will be sent": {
+      "match": "tweet.sent",
+      "score": 0.7583
+    },
+    "Update the status": {
+      "match": "status_update.written",
+      "score": 0.7179
+    }
+  },
+  "process_graph": [
+    {
+      "from": "offer.invalidated",
+      "to": "status_update.written",
+      "activity_from": "Invalid other offers",
+      "activity_to": "Checking applicants status updates"
+    },
+    {
+      "from": "offer.invalidated",
+      "to": "status_update.written",
+      "activity_from": "Invalid other offers",
+      "activity_to": "Checking companies status updates"
+    },
+    {
+      "from": "tweet.sent",
+      "to": "topic.entered",
+      "activity_from": "Tweets will be sent",
+      "activity_to": "End"
+    },
+    {
+      "from": "status_update.written",
+      "to": "status_update.written",
+      "activity_from": "Checking applicants status updates",
+      "activity_to": "Update the status"
+    },
+    {
+      "from": "status_update.written",
+      "to": "tweet.sent",
+      "activity_from": "Checking applicants status updates",
+      "activity_to": "Enter all friends twitter accounts"
+    },
+    {
+      "from": "status_update.written",
+      "to": "topic.entered",
+      "activity_from": "Checking applicants status updates",
+      "activity_to": "End"
+    },
+    {
+      "from": "topic.entered",
+      "to": "topic.entered",
+      "activity_from": "Enter desired topic and amount of money.",
+      "activity_to": "Enter experiences and hobbies."
+    },
+    {
+      "from": "internship.finished",
+      "to": "topic.entered",
+      "activity_from": "Report E-Government",
+      "activity_to": "End"
+    },
+    {
+      "from": "offer.arrived",
+      "to": "offer.invalidated",
+      "activity_from": "Offers arrival",
+      "activity_to": "Invalid other offers"
+    },
+    {
+      "from": "offer.arrived",
+      "to": "topic.entered",
+      "activity_from": "Offers arrival",
+      "activity_to": "Enter desired topic and amount of money."
+    },
+    {
+      "from": "topic.entered",
+      "to": "offer.arrived",
+      "activity_from": "Enter experiences and hobbies.",
+      "activity_to": "Offers arrival"
+    },
+    {
+      "from": "status_update.written",
+      "to": "internship.finished",
+      "activity_from": "Check registration",
+      "activity_to": "Report E-Government"
+    },
+    {
+      "from": "status_update.written",
+      "to": "topic.entered",
+      "activity_from": "Check registration",
+      "activity_to": "Enter desired topic and amount of money."
+    },
+    {
+      "from": "tweet.sent",
+      "to": "tweet.sent",
+      "activity_from": "Enter all friends twitter accounts",
+      "activity_to": "Tweets will be sent"
+    },
+    {
+      "from": "status_update.written",
+      "to": "tweet.sent",
+      "activity_from": "Checking companies status updates",
+      "activity_to": "Enter all friends twitter accounts"
+    },
+    {
+      "from": "status_update.written",
+      "to": "topic.entered",
+      "activity_from": "Checking companies status updates",
+      "activity_to": "End"
+    },
+    {
+      "from": "status_update.written",
+      "to": "status_update.written",
+      "activity_from": "Checking companies status updates",
+      "activity_to": "Notify the company"
+    },
+    {
+      "from": "internship.finished",
+      "to": "status_update.written",
+      "activity_from": "Internship application",
+      "activity_to": "Check registration"
+    },
+    {
+      "from": "status_update.written",
+      "to": "status_update.written",
+      "activity_from": "Notify the company",
+      "activity_to": "Checking companies status updates"
+    },
+    {
+      "from": "status_update.written",
+      "to": "status_update.written",
+      "activity_from": "Update the status",
+      "activity_to": "Checking applicants status updates"
+    }
+  ],
+  "alignment": {
+    "offer.arrived": {
+      "operator": "AND",
+      "quote": "You can enter a topic that interests you, and how much money you want.",
+      "terms": [
+        {
+          "term": "topic.entered",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED"
+    },
+    "offer.denied": {
+      "operator": "AND",
+      "quote": "You can also enter experience and hobbies.",
+      "terms": [
+        {
+          "term": "topic.entered",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['offer.denied']",
+          "missing": [
+            "offer.denied"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE"
+    },
+    "offer.accepted": {
+      "operator": "AND",
+      "quote": "You can accept or deny offers.",
+      "terms": [
+        {
+          "term": "offer.arrived",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['offer.accepted']",
+          "missing": [
+            "offer.accepted"
+          ]
+        },
+        {
+          "term": "topic.entered",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['offer.accepted']",
+          "missing": [
+            "offer.accepted"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE"
+    },
+    "status_update.written": {
+      "operator": "AND",
+      "quote": "You have to write at least 3 status updates about your internship (every week).",
+      "terms": [
+        {
+          "term": "offer.accepted",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['offer.accepted']",
+          "missing": [
+            "offer.accepted"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE"
+    },
+    "offer.invalidated": {
+      "operator": "AND",
+      "quote": "As soon as an offer is accepted, all other offers become invalid.",
+      "terms": [
+        {
+          "term": "offer.accepted",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['offer.accepted']",
+          "missing": [
+            "offer.accepted"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE"
+    },
+    "internship.finished": {
+      "operator": "AND",
+      "quote": "The company has to write 3 status updates about you.",
+      "terms": [
+        {
+          "term": "offer.accepted",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['offer.accepted']",
+          "missing": [
+            "offer.accepted"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE"
+    },
+    "tweet.sent": {
+      "operator": "AND",
+      "quote": "You can enter a topic that interests you, and how much money you want. You can also enter experience and hobbies.",
+      "terms": [
+        {
+          "term": "topic.entered",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        },
+        {
+          "term": "offer.arrived",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED"
+    }
+  },
+  "report": {
+    "summary": {
+      "ecarts": 0,
+      "non_verifiable": 2,
+      "conforme": 3
+    },
+    "ecarts": [],
+    "non_verifiable": [
+      {
+        "root_cause": "(aucune activite du processus ne correspond clairement a cela)",
+        "quote": "You can also enter experience and hobbies.",
+        "explanation": "La condition précise qui doit être remplie avant que l'activité \"aucune activité du processus ne correspond clairement à cela\" puisse se produire n'est pas clairement décrite. Cependant, il est mentionné que \"You can also enter experience and hobbies.\" Cette citation montre qu'une condition est exigée avant cette étape, mais elle ne décrit pas ce que cette condition signifie précisément.\n\nIl est impossible de vérifier si cette condition est respectée ou non, car il n'y a pas d'activité claire du processus qui correspond à cette condition. Cela signifie que nous ne pouvons pas déterminer si la condition est remplie ou non, et donc, nous ne pouvons pas vérifier si l'activité \"aucune activité du processus ne correspond clairement à cela\" se produira ou non.",
+        "affected_activities": [
+          "(aucune activite du processus ne correspond clairement a cela)"
+        ],
+        "affected_count": 1
+      },
+      {
+        "root_cause": "(aucune activite du processus ne correspond clairement a cela)",
+        "quote": "You can accept or deny offers.",
+        "explanation": "La condition \"offer accepted\" est exigée avant que l'activité \"aucune activité du processus ne correspond clairement à cela\" puisse se produire. Cela est mentionné dans la citation suivante : \"You can accept or deny offers.\"\n\nCependant, il est impossible de vérifier si cette condition est respectée ou non, car il n'y a aucune activité claire du processus qui correspond à cette condition. (Cette meme cause affecte aussi : Internship application, Invalid other offers, Update the status.)",
+        "affected_activities": [
+          "(aucune activite du processus ne correspond clairement a cela)",
+          "Internship application",
+          "Invalid other offers",
+          "Update the status"
+        ],
+        "affected_count": 5
+      }
+    ],
+    "conforme": [
+      {
+        "target": "Offers arrival",
+        "term": "Enter desired topic and amount of money."
+      },
+      {
+        "target": "Tweets will be sent",
+        "term": "Enter desired topic and amount of money."
+      },
+      {
+        "target": "Tweets will be sent",
+        "term": "Offers arrival"
+      }
+    ],
+    "piece_jointe_alignement_brut": {
+      "offer.arrived": {
+        "operator": "AND",
+        "quote": "You can enter a topic that interests you, and how much money you want.",
+        "terms": [
+          {
+            "term": "topic.entered",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED"
+      },
+      "offer.denied": {
+        "operator": "AND",
+        "quote": "You can also enter experience and hobbies.",
+        "terms": [
+          {
+            "term": "topic.entered",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['offer.denied']",
+            "missing": [
+              "offer.denied"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE"
+      },
+      "offer.accepted": {
+        "operator": "AND",
+        "quote": "You can accept or deny offers.",
+        "terms": [
+          {
+            "term": "offer.arrived",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['offer.accepted']",
+            "missing": [
+              "offer.accepted"
+            ]
+          },
+          {
+            "term": "topic.entered",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['offer.accepted']",
+            "missing": [
+              "offer.accepted"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE"
+      },
+      "status_update.written": {
+        "operator": "AND",
+        "quote": "You have to write at least 3 status updates about your internship (every week).",
+        "terms": [
+          {
+            "term": "offer.accepted",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['offer.accepted']",
+            "missing": [
+              "offer.accepted"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE"
+      },
+      "offer.invalidated": {
+        "operator": "AND",
+        "quote": "As soon as an offer is accepted, all other offers become invalid.",
+        "terms": [
+          {
+            "term": "offer.accepted",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['offer.accepted']",
+            "missing": [
+              "offer.accepted"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE"
+      },
+      "internship.finished": {
+        "operator": "AND",
+        "quote": "The company has to write 3 status updates about you.",
+        "terms": [
+          {
+            "term": "offer.accepted",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['offer.accepted']",
+            "missing": [
+              "offer.accepted"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE"
+      },
+      "tweet.sent": {
+        "operator": "AND",
+        "quote": "You can enter a topic that interests you, and how much money you want. You can also enter experience and hobbies.",
+        "terms": [
+          {
+            "term": "topic.entered",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          },
+          {
+            "term": "offer.arrived",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED"
+      }
+    }
+  },
+  "errors": []
+}

@@ -1,0 +1,866 @@
+{
+  "case_name": "M_g01",
+  "text": "Category: Manufacturing\nTitle: Instruct an artist to create a 3D model print it on a 3D printer\n\nWhen craving a custom 3D model, as a first step you have to instruct an artist\nto create a project for you.  First you have to send him several sketches, and\nthen tell him what to change until you are satisfied with the result. After\nthat, you choose a plastic color you want to use for 3D printing. If you have\nthe color at home (in stock), you check how much color you have left. If it's\nunder 100 grams, you put it on your shopping list. If you do not have the color\nat home, you order it. When you have the plastic, you can turn the printer on\nand heat up the bed and the extruder (it continuously sends you back its\nstatus). While doing that, you can generate the gcode file for your printer out\nof the STL sent to you by the artist. After that you print the model.\n",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "llama-3.1-8b",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "llama-3.1-8b",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/text_and_bpmn/bpmn/M_g01/2.bpmn2.xml",
+  "report_model": "llama-3.1-8b",
+  "candidates": {
+    "artist": [
+      "instructed",
+      "satisfied",
+      "chosen"
+    ],
+    "color": [
+      "in_stock",
+      "under_100_grams",
+      "ordered"
+    ],
+    "project": [
+      "created"
+    ],
+    "printer": [
+      "turned_on",
+      "heated_up"
+    ],
+    "gcode_file": [
+      "generated"
+    ],
+    "model": [
+      "printed"
+    ]
+  },
+  "validation_report": {
+    "artist": {
+      "f_lex": "ACTOR",
+      "kept": false
+    },
+    "color": {
+      "f_lex": "INDETERMINATE",
+      "kept": true
+    },
+    "project": {
+      "f_lex": "ENTITY",
+      "kept": true
+    },
+    "printer": {
+      "f_lex": "ACTOR",
+      "kept": false
+    },
+    "gcode_file": {
+      "f_lex": "ENTITY",
+      "kept": true
+    },
+    "model": {
+      "f_lex": "ENTITY",
+      "kept": true
+    }
+  },
+  "state_space": {
+    "color": [
+      "in_stock",
+      "under_100_grams",
+      "ordered"
+    ],
+    "project": [
+      "created"
+    ],
+    "gcode_file": [
+      "generated"
+    ],
+    "model": [
+      "printed"
+    ]
+  },
+  "state_space_dedup": {
+    "merged": {},
+    "ambiguous_not_merged": {}
+  },
+  "raw_preconditions": {
+    "color.in_stock": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "color.under_100_grams": {
+      "precondition": "color.in_stock AND project.created",
+      "quote": "If you have the color at home (in stock), you check how much color you have left."
+    },
+    "color.ordered": {
+      "precondition": "color.in_stock OR color.under_100_grams",
+      "quote": "If you do not have the color at home, you order it."
+    },
+    "project.created": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "gcode_file.generated": {
+      "precondition": "project.created",
+      "quote": "After that you can generate the gcode file for your printer out of the STL sent to you by the artist."
+    },
+    "model.printed": {
+      "precondition": "color.in_stock AND project.created AND gcode_file.generated",
+      "quote": "After that you print the model."
+    }
+  },
+  "validated_preconditions": {
+    "color.in_stock": {
+      "precondition": "INITIAL",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "color.under_100_grams": {
+      "precondition": "color.in_stock AND project.created",
+      "quote": "If you have the color at home (in stock), you check how much color you have left.",
+      "status": "OK",
+      "reason": null
+    },
+    "color.ordered": {
+      "precondition": "color.in_stock OR color.under_100_grams",
+      "quote": "If you do not have the color at home, you order it.",
+      "status": "OK",
+      "reason": null
+    },
+    "project.created": {
+      "precondition": "INITIAL",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "gcode_file.generated": {
+      "precondition": "project.created",
+      "quote": "After that you can generate the gcode file for your printer out of the STL sent to you by the artist.",
+      "status": "OK",
+      "reason": null
+    },
+    "model.printed": {
+      "precondition": "color.in_stock AND project.created AND gcode_file.generated",
+      "quote": "After that you print the model.",
+      "status": "OK",
+      "reason": null
+    }
+  },
+  "precondition_cycles": [],
+  "reference_graph": {
+    "nodes": [
+      {
+        "id": "color.in_stock",
+        "weight": 1.0
+      },
+      {
+        "id": "color.under_100_grams",
+        "weight": 1.0
+      },
+      {
+        "id": "color.ordered",
+        "weight": 0.667
+      },
+      {
+        "id": "project.created",
+        "weight": 1.0
+      },
+      {
+        "id": "gcode_file.generated",
+        "weight": 0.667
+      },
+      {
+        "id": "model.printed",
+        "weight": 1.0
+      }
+    ],
+    "edges": [
+      {
+        "from": "color.in_stock",
+        "to": "color.under_100_grams",
+        "type": "sequence",
+        "operator": "AND",
+        "quote": "If you have the color at home (in stock), you check how much color you have left."
+      },
+      {
+        "from": "project.created",
+        "to": "color.under_100_grams",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "If you have the color at home (in stock), you check how much color you have left."
+      },
+      {
+        "from": "color.in_stock",
+        "to": "color.ordered",
+        "type": "sequence",
+        "operator": "OR",
+        "quote": "If you do not have the color at home, you order it."
+      },
+      {
+        "from": "color.under_100_grams",
+        "to": "color.ordered",
+        "type": "sequence",
+        "operator": "OR",
+        "quote": "If you do not have the color at home, you order it."
+      },
+      {
+        "from": "project.created",
+        "to": "gcode_file.generated",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "After that you can generate the gcode file for your printer out of the STL sent to you by the artist."
+      },
+      {
+        "from": "color.in_stock",
+        "to": "model.printed",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "After that you print the model."
+      },
+      {
+        "from": "project.created",
+        "to": "model.printed",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "After that you print the model."
+      },
+      {
+        "from": "gcode_file.generated",
+        "to": "model.printed",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "After that you print the model."
+      }
+    ],
+    "cycles": []
+  },
+  "dfg_edges": [
+    {
+      "source_id": "sid-F74DEE59-620F-4C71-ABA8-AF5E83C6391B",
+      "source_label": "receive 3D Models",
+      "target_id": "sid-F32B59A1-3E88-4D0B-8CA0-3DC95BEFF154",
+      "target_label": "Check 3D Models",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-A615CEE5-BEFB-431A-B70D-D2C7A898FDC5",
+      "source_label": "order plastic color",
+      "target_id": "sid-C107C22E-263A-4958-AA21-F94535D6A8A2",
+      "target_label": "receive plastic color",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-B0E02D0F-E152-4F27-B686-A3F7D623C4BD",
+      "source_label": "Choose plastic color",
+      "target_id": "sid-0E5EDF58-91C8-4438-9FA0-F5E0D6547C07",
+      "target_label": "Check quantity",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "yes"
+      ]
+    },
+    {
+      "source_id": "sid-B0E02D0F-E152-4F27-B686-A3F7D623C4BD",
+      "source_label": "Choose plastic color",
+      "target_id": "sid-A615CEE5-BEFB-431A-B70D-D2C7A898FDC5",
+      "target_label": "order plastic color",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "no"
+      ]
+    },
+    {
+      "source_id": "sid-C107C22E-263A-4958-AA21-F94535D6A8A2",
+      "source_label": "receive plastic color",
+      "target_id": "sid-67C8C6B7-343E-44F2-AAA2-2BB8091D9978",
+      "target_label": "turn on printer",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-A54558F7-231A-43B9-83E5-3AE891CCB4D6",
+      "source_label": "Send Status",
+      "target_id": "sid-3436691F-01AE-42E4-B94E-764DA742F2B1",
+      "target_label": "Print model",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-D76B5988-8CE8-4740-9D96-1057533D04C3",
+      "source_label": "Send sketches to artist",
+      "target_id": "sid-F74DEE59-620F-4C71-ABA8-AF5E83C6391B",
+      "target_label": "receive 3D Models",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-F32B59A1-3E88-4D0B-8CA0-3DC95BEFF154",
+      "source_label": "Check 3D Models",
+      "target_id": "sid-0F02B8E8-FA82-40B9-8F1E-B4C37FC99837",
+      "target_label": "Tell artist what to change",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "no"
+      ]
+    },
+    {
+      "source_id": "sid-F32B59A1-3E88-4D0B-8CA0-3DC95BEFF154",
+      "source_label": "Check 3D Models",
+      "target_id": "sid-B0E02D0F-E152-4F27-B686-A3F7D623C4BD",
+      "target_label": "Choose plastic color",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "yes"
+      ]
+    },
+    {
+      "source_id": "sid-67C8C6B7-343E-44F2-AAA2-2BB8091D9978",
+      "source_label": "turn on printer",
+      "target_id": "sid-DB176C29-AB0E-4D65-A6BA-8E10284694D8",
+      "target_label": "Generate gcode file",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-67C8C6B7-343E-44F2-AAA2-2BB8091D9978",
+      "source_label": "turn on printer",
+      "target_id": "sid-A54558F7-231A-43B9-83E5-3AE891CCB4D6",
+      "target_label": "Send Status",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-1DDAE162-3464-452C-AA3C-C1E00535B1AB",
+      "source_label": "add to shopping list",
+      "target_id": "sid-67C8C6B7-343E-44F2-AAA2-2BB8091D9978",
+      "target_label": "turn on printer",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-0F02B8E8-FA82-40B9-8F1E-B4C37FC99837",
+      "source_label": "Tell artist what to change",
+      "target_id": "sid-F74DEE59-620F-4C71-ABA8-AF5E83C6391B",
+      "target_label": "receive 3D Models",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-0E5EDF58-91C8-4438-9FA0-F5E0D6547C07",
+      "source_label": "Check quantity",
+      "target_id": "sid-1DDAE162-3464-452C-AA3C-C1E00535B1AB",
+      "target_label": "add to shopping list",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "yes"
+      ]
+    },
+    {
+      "source_id": "sid-0E5EDF58-91C8-4438-9FA0-F5E0D6547C07",
+      "source_label": "Check quantity",
+      "target_id": "sid-67C8C6B7-343E-44F2-AAA2-2BB8091D9978",
+      "target_label": "turn on printer",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "no",
+        "ExclusiveGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-DB176C29-AB0E-4D65-A6BA-8E10284694D8",
+      "source_label": "Generate gcode file",
+      "target_id": "sid-3436691F-01AE-42E4-B94E-764DA742F2B1",
+      "target_label": "Print model",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "receive 3D Models",
+      "subject_id": "sid-F74DEE59-620F-4C71-ABA8-AF5E83C6391B",
+      "predicate": "follows",
+      "object": "Check 3D Models",
+      "object_id": "sid-F32B59A1-3E88-4D0B-8CA0-3DC95BEFF154"
+    },
+    {
+      "subject": "order plastic color",
+      "subject_id": "sid-A615CEE5-BEFB-431A-B70D-D2C7A898FDC5",
+      "predicate": "follows",
+      "object": "receive plastic color",
+      "object_id": "sid-C107C22E-263A-4958-AA21-F94535D6A8A2"
+    },
+    {
+      "subject": "Choose plastic color",
+      "subject_id": "sid-B0E02D0F-E152-4F27-B686-A3F7D623C4BD",
+      "predicate": "follows",
+      "object": "Check quantity",
+      "object_id": "sid-0E5EDF58-91C8-4438-9FA0-F5E0D6547C07"
+    },
+    {
+      "subject": "Choose plastic color",
+      "subject_id": "sid-B0E02D0F-E152-4F27-B686-A3F7D623C4BD",
+      "predicate": "follows",
+      "object": "order plastic color",
+      "object_id": "sid-A615CEE5-BEFB-431A-B70D-D2C7A898FDC5"
+    },
+    {
+      "subject": "receive plastic color",
+      "subject_id": "sid-C107C22E-263A-4958-AA21-F94535D6A8A2",
+      "predicate": "follows",
+      "object": "turn on printer",
+      "object_id": "sid-67C8C6B7-343E-44F2-AAA2-2BB8091D9978"
+    },
+    {
+      "subject": "Send Status",
+      "subject_id": "sid-A54558F7-231A-43B9-83E5-3AE891CCB4D6",
+      "predicate": "follows",
+      "object": "Print model",
+      "object_id": "sid-3436691F-01AE-42E4-B94E-764DA742F2B1"
+    },
+    {
+      "subject": "Send sketches to artist",
+      "subject_id": "sid-D76B5988-8CE8-4740-9D96-1057533D04C3",
+      "predicate": "follows",
+      "object": "receive 3D Models",
+      "object_id": "sid-F74DEE59-620F-4C71-ABA8-AF5E83C6391B"
+    },
+    {
+      "subject": "Check 3D Models",
+      "subject_id": "sid-F32B59A1-3E88-4D0B-8CA0-3DC95BEFF154",
+      "predicate": "follows",
+      "object": "Tell artist what to change",
+      "object_id": "sid-0F02B8E8-FA82-40B9-8F1E-B4C37FC99837"
+    },
+    {
+      "subject": "Check 3D Models",
+      "subject_id": "sid-F32B59A1-3E88-4D0B-8CA0-3DC95BEFF154",
+      "predicate": "follows",
+      "object": "Choose plastic color",
+      "object_id": "sid-B0E02D0F-E152-4F27-B686-A3F7D623C4BD"
+    },
+    {
+      "subject": "turn on printer",
+      "subject_id": "sid-67C8C6B7-343E-44F2-AAA2-2BB8091D9978",
+      "predicate": "follows",
+      "object": "Generate gcode file",
+      "object_id": "sid-DB176C29-AB0E-4D65-A6BA-8E10284694D8"
+    },
+    {
+      "subject": "turn on printer",
+      "subject_id": "sid-67C8C6B7-343E-44F2-AAA2-2BB8091D9978",
+      "predicate": "follows",
+      "object": "Send Status",
+      "object_id": "sid-A54558F7-231A-43B9-83E5-3AE891CCB4D6"
+    },
+    {
+      "subject": "add to shopping list",
+      "subject_id": "sid-1DDAE162-3464-452C-AA3C-C1E00535B1AB",
+      "predicate": "follows",
+      "object": "turn on printer",
+      "object_id": "sid-67C8C6B7-343E-44F2-AAA2-2BB8091D9978"
+    },
+    {
+      "subject": "Tell artist what to change",
+      "subject_id": "sid-0F02B8E8-FA82-40B9-8F1E-B4C37FC99837",
+      "predicate": "follows",
+      "object": "receive 3D Models",
+      "object_id": "sid-F74DEE59-620F-4C71-ABA8-AF5E83C6391B"
+    },
+    {
+      "subject": "Check quantity",
+      "subject_id": "sid-0E5EDF58-91C8-4438-9FA0-F5E0D6547C07",
+      "predicate": "follows",
+      "object": "add to shopping list",
+      "object_id": "sid-1DDAE162-3464-452C-AA3C-C1E00535B1AB"
+    },
+    {
+      "subject": "Check quantity",
+      "subject_id": "sid-0E5EDF58-91C8-4438-9FA0-F5E0D6547C07",
+      "predicate": "follows",
+      "object": "turn on printer",
+      "object_id": "sid-67C8C6B7-343E-44F2-AAA2-2BB8091D9978"
+    },
+    {
+      "subject": "Generate gcode file",
+      "subject_id": "sid-DB176C29-AB0E-4D65-A6BA-8E10284694D8",
+      "predicate": "follows",
+      "object": "Print model",
+      "object_id": "sid-3436691F-01AE-42E4-B94E-764DA742F2B1"
+    }
+  ],
+  "matches": {
+    "Check 3D Models": {
+      "match": "model.printed",
+      "score": 0.3491
+    },
+    "Check quantity": {
+      "match": "color.in_stock",
+      "score": 0.2158
+    },
+    "Choose plastic color": {
+      "match": "color.in_stock",
+      "score": 0.4224
+    },
+    "Generate gcode file": {
+      "match": "gcode_file.generated",
+      "score": 0.8953
+    },
+    "Print model": {
+      "match": "model.printed",
+      "score": 0.811
+    },
+    "Send Status": {
+      "match": "color.in_stock",
+      "score": 0.1688
+    },
+    "Send sketches to artist": {
+      "match": "model.printed",
+      "score": 0.1848
+    },
+    "Tell artist what to change": {
+      "match": "model.printed",
+      "score": 0.1345
+    },
+    "add to shopping list": {
+      "match": "color.in_stock",
+      "score": 0.1633
+    },
+    "order plastic color": {
+      "match": "color.ordered",
+      "score": 0.6119
+    },
+    "receive 3D Models": {
+      "match": "model.printed",
+      "score": 0.3642
+    },
+    "receive plastic color": {
+      "match": "color.ordered",
+      "score": 0.4497
+    },
+    "turn on printer": {
+      "match": "model.printed",
+      "score": 0.3581
+    }
+  },
+  "process_graph": [
+    {
+      "from": "model.printed",
+      "to": "model.printed",
+      "activity_from": "receive 3D Models",
+      "activity_to": "Check 3D Models"
+    },
+    {
+      "from": "color.ordered",
+      "to": "color.ordered",
+      "activity_from": "order plastic color",
+      "activity_to": "receive plastic color"
+    },
+    {
+      "from": "color.in_stock",
+      "to": "color.in_stock",
+      "activity_from": "Choose plastic color",
+      "activity_to": "Check quantity"
+    },
+    {
+      "from": "color.in_stock",
+      "to": "color.ordered",
+      "activity_from": "Choose plastic color",
+      "activity_to": "order plastic color"
+    },
+    {
+      "from": "color.ordered",
+      "to": "model.printed",
+      "activity_from": "receive plastic color",
+      "activity_to": "turn on printer"
+    },
+    {
+      "from": "color.in_stock",
+      "to": "model.printed",
+      "activity_from": "Send Status",
+      "activity_to": "Print model"
+    },
+    {
+      "from": "model.printed",
+      "to": "model.printed",
+      "activity_from": "Send sketches to artist",
+      "activity_to": "receive 3D Models"
+    },
+    {
+      "from": "model.printed",
+      "to": "model.printed",
+      "activity_from": "Check 3D Models",
+      "activity_to": "Tell artist what to change"
+    },
+    {
+      "from": "model.printed",
+      "to": "color.in_stock",
+      "activity_from": "Check 3D Models",
+      "activity_to": "Choose plastic color"
+    },
+    {
+      "from": "model.printed",
+      "to": "gcode_file.generated",
+      "activity_from": "turn on printer",
+      "activity_to": "Generate gcode file"
+    },
+    {
+      "from": "model.printed",
+      "to": "color.in_stock",
+      "activity_from": "turn on printer",
+      "activity_to": "Send Status"
+    },
+    {
+      "from": "color.in_stock",
+      "to": "model.printed",
+      "activity_from": "add to shopping list",
+      "activity_to": "turn on printer"
+    },
+    {
+      "from": "model.printed",
+      "to": "model.printed",
+      "activity_from": "Tell artist what to change",
+      "activity_to": "receive 3D Models"
+    },
+    {
+      "from": "color.in_stock",
+      "to": "color.in_stock",
+      "activity_from": "Check quantity",
+      "activity_to": "add to shopping list"
+    },
+    {
+      "from": "color.in_stock",
+      "to": "model.printed",
+      "activity_from": "Check quantity",
+      "activity_to": "turn on printer"
+    },
+    {
+      "from": "gcode_file.generated",
+      "to": "model.printed",
+      "activity_from": "Generate gcode file",
+      "activity_to": "Print model"
+    }
+  ],
+  "alignment": {
+    "color.under_100_grams": {
+      "operator": "AND",
+      "quote": "If you have the color at home (in stock), you check how much color you have left.",
+      "terms": [
+        {
+          "term": "color.in_stock",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['color.under_100_grams']",
+          "missing": [
+            "color.under_100_grams"
+          ]
+        },
+        {
+          "term": "project.created",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['project.created', 'color.under_100_grams']",
+          "missing": [
+            "project.created",
+            "color.under_100_grams"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE"
+    },
+    "color.ordered": {
+      "operator": "OR",
+      "quote": "If you do not have the color at home, you order it.",
+      "terms": [
+        {
+          "term": "color.in_stock",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        },
+        {
+          "term": "color.under_100_grams",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['color.under_100_grams']",
+          "missing": [
+            "color.under_100_grams"
+          ]
+        }
+      ],
+      "status": "SATISFIED"
+    },
+    "gcode_file.generated": {
+      "operator": "AND",
+      "quote": "After that you can generate the gcode file for your printer out of the STL sent to you by the artist.",
+      "terms": [
+        {
+          "term": "project.created",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['project.created']",
+          "missing": [
+            "project.created"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE"
+    },
+    "model.printed": {
+      "operator": "AND",
+      "quote": "After that you print the model.",
+      "terms": [
+        {
+          "term": "color.in_stock",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        },
+        {
+          "term": "project.created",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['project.created']",
+          "missing": [
+            "project.created"
+          ]
+        },
+        {
+          "term": "gcode_file.generated",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "UNRESOLVABLE"
+    }
+  },
+  "report": {
+    "summary": {
+      "ecarts": 0,
+      "non_verifiable": 1,
+      "conforme": 3
+    },
+    "ecarts": [],
+    "non_verifiable": [
+      {
+        "root_cause": "(aucune activite du processus ne correspond clairement a cela)",
+        "quote": "If you have the color at home (in stock), you check how much color you have left.",
+        "explanation": "Dans ce cas, une condition précise est exigée avant que l'activité \"aucune activité du processus ne correspond clairement à cela\" puisse se produire. Cette condition est liée à la phrase : \"If you have the color at home (in stock), you check how much color you have left.\"\n\nCette citation montre qu'une condition est exigée, mais elle ne décrit pas ce que cette condition signifie précisément. En effet, la phrase ne mentionne pas explicitement la condition qui est requise avant l'activité en question.\n\nIl est impossible de vérifier si l'exigence est respectée ou non, car il n'y a pas d'activité claire du processus qui correspond à cette condition. Cela signifie que nous ne pouvons pas déterminer si la condition est satisfaite ou non avant de passer à l'activité suivante. (Cette meme cause affecte aussi : Generate gcode file, Print model, order plastic color.)",
+        "quote_verbatim": true,
+        "affected_activities": [
+          "(aucune activite du processus ne correspond clairement a cela)",
+          "Generate gcode file",
+          "Print model",
+          "order plastic color"
+        ],
+        "affected_count": 6
+      }
+    ],
+    "conforme": [
+      {
+        "target": "order plastic color",
+        "term": "Choose plastic color"
+      },
+      {
+        "target": "Print model",
+        "term": "Choose plastic color"
+      },
+      {
+        "target": "Print model",
+        "term": "Generate gcode file"
+      }
+    ],
+    "piece_jointe_alignement_brut": {
+      "color.under_100_grams": {
+        "operator": "AND",
+        "quote": "If you have the color at home (in stock), you check how much color you have left.",
+        "terms": [
+          {
+            "term": "color.in_stock",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['color.under_100_grams']",
+            "missing": [
+              "color.under_100_grams"
+            ]
+          },
+          {
+            "term": "project.created",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['project.created', 'color.under_100_grams']",
+            "missing": [
+              "project.created",
+              "color.under_100_grams"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE"
+      },
+      "color.ordered": {
+        "operator": "OR",
+        "quote": "If you do not have the color at home, you order it.",
+        "terms": [
+          {
+            "term": "color.in_stock",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          },
+          {
+            "term": "color.under_100_grams",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['color.under_100_grams']",
+            "missing": [
+              "color.under_100_grams"
+            ]
+          }
+        ],
+        "status": "SATISFIED"
+      },
+      "gcode_file.generated": {
+        "operator": "AND",
+        "quote": "After that you can generate the gcode file for your printer out of the STL sent to you by the artist.",
+        "terms": [
+          {
+            "term": "project.created",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['project.created']",
+            "missing": [
+              "project.created"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE"
+      },
+      "model.printed": {
+        "operator": "AND",
+        "quote": "After that you print the model.",
+        "terms": [
+          {
+            "term": "color.in_stock",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          },
+          {
+            "term": "project.created",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['project.created']",
+            "missing": [
+              "project.created"
+            ]
+          },
+          {
+            "term": "gcode_file.generated",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "UNRESOLVABLE"
+      }
+    }
+  },
+  "errors": []
+}

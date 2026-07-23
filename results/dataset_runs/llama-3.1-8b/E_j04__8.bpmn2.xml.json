@@ -1,0 +1,1301 @@
+{
+  "case_name": "E_j04",
+  "text": "Category: E-Government\nTitle: Internship\n\nYou can enter a topic that interests you, and how much money you want. You can\nalso enter experience and hobbies. Several offers will arrive (at arbitrary\npoints in time). You can accept or deny offers. As soon as an offer is accepted, \nall other offers become invalid. You have to write at least 3 status updates\nabout your internship (every week). The company has to write 3 status updates\nabout you. After the internship is finished you can recommend the company to a\nlist of friends (via twitter). Separate tweets are sent in parallel.\n",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "llama-3.1-8b",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "llama-3.1-8b",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/text_and_bpmn/bpmn/E_j04/8.bpmn2.xml",
+  "candidates": {
+    "topic": [
+      "entered"
+    ],
+    "offer": [
+      "arrived",
+      "accepted",
+      "invalid",
+      "denied"
+    ],
+    "status_update": [
+      "written"
+    ],
+    "internship": [
+      "finished"
+    ],
+    "company": [
+      "wrote"
+    ],
+    "friend": [
+      "recommended"
+    ]
+  },
+  "validation_report": {
+    "topic": {
+      "f_lex": "ENTITY",
+      "kept": true
+    },
+    "offer": {
+      "f_lex": "ENTITY",
+      "kept": true
+    },
+    "status_update": {
+      "f_lex": "ENTITY",
+      "kept": true
+    },
+    "internship": {
+      "f_lex": "ENTITY",
+      "kept": true
+    },
+    "company": {
+      "f_lex": "ACTOR",
+      "kept": false
+    },
+    "friend": {
+      "f_lex": "ACTOR",
+      "kept": false
+    }
+  },
+  "state_space": {
+    "topic": [
+      "entered"
+    ],
+    "offer": [
+      "arrived",
+      "accepted",
+      "invalid",
+      "denied"
+    ],
+    "status_update": [
+      "written"
+    ],
+    "internship": [
+      "finished"
+    ]
+  },
+  "raw_preconditions": {
+    "topic.entered": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "offer.arrived": {
+      "precondition": "topic.entered",
+      "quote": "You can enter a topic that interests you, and how much money you want."
+    },
+    "offer.accepted": {
+      "precondition": "offer.arrived AND topic.entered",
+      "quote": "As soon as an offer is accepted, all other offers become invalid."
+    },
+    "offer.denied": {
+      "precondition": "offer.arrived AND topic.entered",
+      "quote": "As soon as an offer is accepted, all other offers become invalid."
+    },
+    "offer.invalid": {
+      "precondition": "offer.accepted",
+      "quote": "As soon as an offer is accepted, all other offers become invalid."
+    },
+    "status_update.written": {
+      "precondition": "internship.finished",
+      "quote": "You have to write at least 3 status updates about your internship (every week)."
+    },
+    "internship.finished": {
+      "precondition": "company.status_update.written AND company.status_update.written AND company.status_update.written",
+      "quote": "The company has to write 3 status updates about you."
+    },
+    "company.status_update.written": {
+      "precondition": "internship.finished",
+      "quote": "The company has to write 3 status updates about you."
+    },
+    "user.recommend": {
+      "precondition": "internship.finished",
+      "quote": "After the internship is finished you can recommend the company to a list of friends (via twitter)."
+    }
+  },
+  "validated_preconditions": {
+    "topic.entered": {
+      "precondition": "INITIAL",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "offer.arrived": {
+      "precondition": "topic.entered",
+      "quote": "You can enter a topic that interests you, and how much money you want.",
+      "status": "OK",
+      "reason": null
+    },
+    "offer.accepted": {
+      "precondition": "offer.arrived AND topic.entered",
+      "quote": "As soon as an offer is accepted, all other offers become invalid.",
+      "status": "OK",
+      "reason": null
+    },
+    "offer.denied": {
+      "precondition": "offer.arrived AND topic.entered",
+      "quote": "As soon as an offer is accepted, all other offers become invalid.",
+      "status": "OK",
+      "reason": null
+    },
+    "offer.invalid": {
+      "precondition": "offer.accepted",
+      "quote": "As soon as an offer is accepted, all other offers become invalid.",
+      "status": "OK",
+      "reason": null
+    },
+    "status_update.written": {
+      "precondition": "internship.finished",
+      "quote": "You have to write at least 3 status updates about your internship (every week).",
+      "status": "OK",
+      "reason": null
+    },
+    "internship.finished": {
+      "precondition": "topic.entered AND offer.arrived",
+      "quote": "You can enter a topic that interests you, and how much money you want. You can also enter experience and hobbies. Several offers will arrive (at arbitrary points in time).",
+      "status": "OK",
+      "reason": null,
+      "retried": true
+    },
+    "company.status_update.written": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "DOWNGRADED",
+      "reason": "malformed or unknown target key: 'company.status_update.written' is not a valid entity.state of the state space"
+    },
+    "user.recommend": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "DOWNGRADED",
+      "reason": "malformed or unknown target key: 'user.recommend' is not a valid entity.state of the state space"
+    }
+  },
+  "precondition_cycles": [],
+  "reference_graph": {
+    "nodes": [
+      {
+        "id": "topic.entered",
+        "weight": 1.0
+      },
+      {
+        "id": "offer.arrived",
+        "weight": 1.0
+      },
+      {
+        "id": "offer.accepted",
+        "weight": 0.75
+      },
+      {
+        "id": "offer.invalid",
+        "weight": 0.25
+      },
+      {
+        "id": "offer.denied",
+        "weight": 0.5
+      },
+      {
+        "id": "status_update.written",
+        "weight": 0.25
+      },
+      {
+        "id": "internship.finished",
+        "weight": 0.75
+      }
+    ],
+    "edges": [
+      {
+        "from": "topic.entered",
+        "to": "offer.arrived",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "You can enter a topic that interests you, and how much money you want."
+      },
+      {
+        "from": "offer.arrived",
+        "to": "offer.accepted",
+        "type": "sequence",
+        "operator": "AND",
+        "quote": "As soon as an offer is accepted, all other offers become invalid."
+      },
+      {
+        "from": "topic.entered",
+        "to": "offer.accepted",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "As soon as an offer is accepted, all other offers become invalid."
+      },
+      {
+        "from": "offer.arrived",
+        "to": "offer.denied",
+        "type": "sequence",
+        "operator": "AND",
+        "quote": "As soon as an offer is accepted, all other offers become invalid."
+      },
+      {
+        "from": "topic.entered",
+        "to": "offer.denied",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "As soon as an offer is accepted, all other offers become invalid."
+      },
+      {
+        "from": "offer.accepted",
+        "to": "offer.invalid",
+        "type": "sequence",
+        "operator": "AND",
+        "quote": "As soon as an offer is accepted, all other offers become invalid."
+      },
+      {
+        "from": "internship.finished",
+        "to": "status_update.written",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "You have to write at least 3 status updates about your internship (every week)."
+      },
+      {
+        "from": "topic.entered",
+        "to": "internship.finished",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "You can enter a topic that interests you, and how much money you want. You can also enter experience and hobbies. Several offers will arrive (at arbitrary points in time)."
+      },
+      {
+        "from": "offer.arrived",
+        "to": "internship.finished",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "You can enter a topic that interests you, and how much money you want. You can also enter experience and hobbies. Several offers will arrive (at arbitrary points in time)."
+      }
+    ],
+    "cycles": []
+  },
+  "dfg_edges": [
+    {
+      "source_id": "sid-35480E2E-6D04-4CD6-96C9-1BA7DC4368BD",
+      "source_label": "Display tweet",
+      "target_id": "sid-957A1211-777E-4D6C-9C12-74463B4DC6FD",
+      "target_label": "",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-650BA48D-D474-4D87-A7F1-75FD9E7E442A",
+      "source_label": "Enter salary expectacions",
+      "target_id": "sid-66D433CD-B542-4AFA-941B-945F4531ACA3",
+      "target_label": "Search for offers",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-A71ED5BC-0A38-423F-BFA9-DF19E350328D",
+      "source_label": "Enter webpage",
+      "target_id": "sid-66D433CD-B542-4AFA-941B-945F4531ACA3",
+      "target_label": "Search for offers",
+      "gateway_context": [
+        "ParallelGateway",
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-A71ED5BC-0A38-423F-BFA9-DF19E350328D",
+      "source_label": "Enter webpage",
+      "target_id": "sid-E04F3386-BB8D-400F-9C91-1200F42D5A81",
+      "target_label": "Enter previous experience",
+      "gateway_context": [
+        "ParallelGateway",
+        "ExclusiveGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-A71ED5BC-0A38-423F-BFA9-DF19E350328D",
+      "source_label": "Enter webpage",
+      "target_id": "sid-2B5F9411-D2D9-4C7E-8B73-0492FAD46792",
+      "target_label": "Enter hobbies",
+      "gateway_context": [
+        "ParallelGateway",
+        "ExclusiveGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-A71ED5BC-0A38-423F-BFA9-DF19E350328D",
+      "source_label": "Enter webpage",
+      "target_id": "sid-650BA48D-D474-4D87-A7F1-75FD9E7E442A",
+      "target_label": "Enter salary expectacions",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-A71ED5BC-0A38-423F-BFA9-DF19E350328D",
+      "source_label": "Enter webpage",
+      "target_id": "sid-E5558CD1-020E-4D8C-8651-002CD78DF2D9",
+      "target_label": "Enter topic of interest",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-C9F4A4EA-FF9A-48A8-B248-590F077374ED",
+      "source_label": "Enter password",
+      "target_id": "sid-4F996BFC-FFF5-4587-99CB-65000141BC6C",
+      "target_label": "Open account",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-756A2FF4-7D37-4020-B7E2-E638978F0340",
+      "source_label": "Analyze offer",
+      "target_id": "sid-57E6B9CF-33A1-4490-86D6-2DC912C9476A",
+      "target_label": "Display fitted offers",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-756A2FF4-7D37-4020-B7E2-E638978F0340",
+      "source_label": "Analyze offer",
+      "target_id": "sid-02093977-C999-4C37-A946-9B2EEA652CE6",
+      "target_label": "Update candidate profile",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-4E1C4E20-0E5B-477B-B27E-A8D9F9EE1E58",
+      "source_label": "1 week",
+      "target_id": "sid-02093977-C999-4C37-A946-9B2EEA652CE6",
+      "target_label": "Update candidate profile",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-3FF851B6-60A7-4884-A310-D63CDF49E1C0",
+      "source_label": "Open twitter",
+      "target_id": "sid-FB77FA93-9A8B-49BF-B37A-6B1287D6B387",
+      "target_label": "Enter username ",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-3FF851B6-60A7-4884-A310-D63CDF49E1C0",
+      "source_label": "Open twitter",
+      "target_id": "sid-C9F4A4EA-FF9A-48A8-B248-590F077374ED",
+      "target_label": "Enter password",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-57E6B9CF-33A1-4490-86D6-2DC912C9476A",
+      "source_label": "Display fitted offers",
+      "target_id": "sid-756A2FF4-7D37-4020-B7E2-E638978F0340",
+      "target_label": "Analyze offer",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-66D433CD-B542-4AFA-941B-945F4531ACA3",
+      "source_label": "Search for offers",
+      "target_id": "sid-57E6B9CF-33A1-4490-86D6-2DC912C9476A",
+      "target_label": "Display fitted offers",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-02093977-C999-4C37-A946-9B2EEA652CE6",
+      "source_label": "Update candidate profile",
+      "target_id": "sid-0F14AD5D-26A4-43C4-970C-C25277056C88",
+      "target_label": "Enter intern feedback",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-02093977-C999-4C37-A946-9B2EEA652CE6",
+      "source_label": "Update candidate profile",
+      "target_id": "sid-73334C4B-26D2-4B09-B387-B17BDC7F1F51",
+      "target_label": "Write personal status update",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-4F996BFC-FFF5-4587-99CB-65000141BC6C",
+      "source_label": "Open account",
+      "target_id": "sid-0A568326-B293-4F26-A750-1673213576DC",
+      "target_label": "Write tweet",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-73334C4B-26D2-4B09-B387-B17BDC7F1F51",
+      "source_label": "Write personal status update",
+      "target_id": "sid-73334C4B-26D2-4B09-B387-B17BDC7F1F51",
+      "target_label": "Write personal status update",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-73334C4B-26D2-4B09-B387-B17BDC7F1F51",
+      "source_label": "Write personal status update",
+      "target_id": "sid-4E1C4E20-0E5B-477B-B27E-A8D9F9EE1E58",
+      "target_label": "1 week",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ParallelGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-73334C4B-26D2-4B09-B387-B17BDC7F1F51",
+      "source_label": "Write personal status update",
+      "target_id": "sid-524C37C1-C8D7-45D7-9CE1-E792B8D94D46",
+      "target_label": "",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ParallelGateway",
+        "ExclusiveGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-73334C4B-26D2-4B09-B387-B17BDC7F1F51",
+      "source_label": "Write personal status update",
+      "target_id": "sid-3FF851B6-60A7-4884-A310-D63CDF49E1C0",
+      "target_label": "Open twitter",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ParallelGateway",
+        "ExclusiveGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-0A568326-B293-4F26-A750-1673213576DC",
+      "source_label": "Write tweet",
+      "target_id": "sid-35480E2E-6D04-4CD6-96C9-1BA7DC4368BD",
+      "target_label": "Display tweet",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-FB77FA93-9A8B-49BF-B37A-6B1287D6B387",
+      "source_label": "Enter username ",
+      "target_id": "sid-4F996BFC-FFF5-4587-99CB-65000141BC6C",
+      "target_label": "Open account",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-0F14AD5D-26A4-43C4-970C-C25277056C88",
+      "source_label": "Enter intern feedback",
+      "target_id": "sid-4E1C4E20-0E5B-477B-B27E-A8D9F9EE1E58",
+      "target_label": "1 week",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ParallelGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-0F14AD5D-26A4-43C4-970C-C25277056C88",
+      "source_label": "Enter intern feedback",
+      "target_id": "sid-524C37C1-C8D7-45D7-9CE1-E792B8D94D46",
+      "target_label": "",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ParallelGateway",
+        "ExclusiveGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-0F14AD5D-26A4-43C4-970C-C25277056C88",
+      "source_label": "Enter intern feedback",
+      "target_id": "sid-3FF851B6-60A7-4884-A310-D63CDF49E1C0",
+      "target_label": "Open twitter",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ParallelGateway",
+        "ExclusiveGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-0F14AD5D-26A4-43C4-970C-C25277056C88",
+      "source_label": "Enter intern feedback",
+      "target_id": "sid-0F14AD5D-26A4-43C4-970C-C25277056C88",
+      "target_label": "Enter intern feedback",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-E5558CD1-020E-4D8C-8651-002CD78DF2D9",
+      "source_label": "Enter topic of interest",
+      "target_id": "sid-66D433CD-B542-4AFA-941B-945F4531ACA3",
+      "target_label": "Search for offers",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-467CA643-3722-4DF0-9975-C5E70A733BFF",
+      "source_label": "Search for intership",
+      "target_id": "sid-A71ED5BC-0A38-423F-BFA9-DF19E350328D",
+      "target_label": "Enter webpage",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-2B5F9411-D2D9-4C7E-8B73-0492FAD46792",
+      "source_label": "Enter hobbies",
+      "target_id": "sid-66D433CD-B542-4AFA-941B-945F4531ACA3",
+      "target_label": "Search for offers",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-E04F3386-BB8D-400F-9C91-1200F42D5A81",
+      "source_label": "Enter previous experience",
+      "target_id": "sid-2B5F9411-D2D9-4C7E-8B73-0492FAD46792",
+      "target_label": "Enter hobbies",
+      "gateway_context": []
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "Display tweet",
+      "subject_id": "sid-35480E2E-6D04-4CD6-96C9-1BA7DC4368BD",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "sid-957A1211-777E-4D6C-9C12-74463B4DC6FD"
+    },
+    {
+      "subject": "Enter salary expectacions",
+      "subject_id": "sid-650BA48D-D474-4D87-A7F1-75FD9E7E442A",
+      "predicate": "follows",
+      "object": "Search for offers",
+      "object_id": "sid-66D433CD-B542-4AFA-941B-945F4531ACA3"
+    },
+    {
+      "subject": "Enter webpage",
+      "subject_id": "sid-A71ED5BC-0A38-423F-BFA9-DF19E350328D",
+      "predicate": "follows",
+      "object": "Search for offers",
+      "object_id": "sid-66D433CD-B542-4AFA-941B-945F4531ACA3"
+    },
+    {
+      "subject": "Enter webpage",
+      "subject_id": "sid-A71ED5BC-0A38-423F-BFA9-DF19E350328D",
+      "predicate": "follows",
+      "object": "Enter previous experience",
+      "object_id": "sid-E04F3386-BB8D-400F-9C91-1200F42D5A81"
+    },
+    {
+      "subject": "Enter webpage",
+      "subject_id": "sid-A71ED5BC-0A38-423F-BFA9-DF19E350328D",
+      "predicate": "follows",
+      "object": "Enter hobbies",
+      "object_id": "sid-2B5F9411-D2D9-4C7E-8B73-0492FAD46792"
+    },
+    {
+      "subject": "Enter webpage",
+      "subject_id": "sid-A71ED5BC-0A38-423F-BFA9-DF19E350328D",
+      "predicate": "follows",
+      "object": "Enter salary expectacions",
+      "object_id": "sid-650BA48D-D474-4D87-A7F1-75FD9E7E442A"
+    },
+    {
+      "subject": "Enter webpage",
+      "subject_id": "sid-A71ED5BC-0A38-423F-BFA9-DF19E350328D",
+      "predicate": "follows",
+      "object": "Enter topic of interest",
+      "object_id": "sid-E5558CD1-020E-4D8C-8651-002CD78DF2D9"
+    },
+    {
+      "subject": "Enter password",
+      "subject_id": "sid-C9F4A4EA-FF9A-48A8-B248-590F077374ED",
+      "predicate": "follows",
+      "object": "Open account",
+      "object_id": "sid-4F996BFC-FFF5-4587-99CB-65000141BC6C"
+    },
+    {
+      "subject": "Analyze offer",
+      "subject_id": "sid-756A2FF4-7D37-4020-B7E2-E638978F0340",
+      "predicate": "follows",
+      "object": "Display fitted offers",
+      "object_id": "sid-57E6B9CF-33A1-4490-86D6-2DC912C9476A"
+    },
+    {
+      "subject": "Analyze offer",
+      "subject_id": "sid-756A2FF4-7D37-4020-B7E2-E638978F0340",
+      "predicate": "follows",
+      "object": "Update candidate profile",
+      "object_id": "sid-02093977-C999-4C37-A946-9B2EEA652CE6"
+    },
+    {
+      "subject": "1 week",
+      "subject_id": "sid-4E1C4E20-0E5B-477B-B27E-A8D9F9EE1E58",
+      "predicate": "follows",
+      "object": "Update candidate profile",
+      "object_id": "sid-02093977-C999-4C37-A946-9B2EEA652CE6"
+    },
+    {
+      "subject": "Open twitter",
+      "subject_id": "sid-3FF851B6-60A7-4884-A310-D63CDF49E1C0",
+      "predicate": "follows",
+      "object": "Enter username ",
+      "object_id": "sid-FB77FA93-9A8B-49BF-B37A-6B1287D6B387"
+    },
+    {
+      "subject": "Open twitter",
+      "subject_id": "sid-3FF851B6-60A7-4884-A310-D63CDF49E1C0",
+      "predicate": "follows",
+      "object": "Enter password",
+      "object_id": "sid-C9F4A4EA-FF9A-48A8-B248-590F077374ED"
+    },
+    {
+      "subject": "Display fitted offers",
+      "subject_id": "sid-57E6B9CF-33A1-4490-86D6-2DC912C9476A",
+      "predicate": "follows",
+      "object": "Analyze offer",
+      "object_id": "sid-756A2FF4-7D37-4020-B7E2-E638978F0340"
+    },
+    {
+      "subject": "Search for offers",
+      "subject_id": "sid-66D433CD-B542-4AFA-941B-945F4531ACA3",
+      "predicate": "follows",
+      "object": "Display fitted offers",
+      "object_id": "sid-57E6B9CF-33A1-4490-86D6-2DC912C9476A"
+    },
+    {
+      "subject": "Update candidate profile",
+      "subject_id": "sid-02093977-C999-4C37-A946-9B2EEA652CE6",
+      "predicate": "follows",
+      "object": "Enter intern feedback",
+      "object_id": "sid-0F14AD5D-26A4-43C4-970C-C25277056C88"
+    },
+    {
+      "subject": "Update candidate profile",
+      "subject_id": "sid-02093977-C999-4C37-A946-9B2EEA652CE6",
+      "predicate": "follows",
+      "object": "Write personal status update",
+      "object_id": "sid-73334C4B-26D2-4B09-B387-B17BDC7F1F51"
+    },
+    {
+      "subject": "Open account",
+      "subject_id": "sid-4F996BFC-FFF5-4587-99CB-65000141BC6C",
+      "predicate": "follows",
+      "object": "Write tweet",
+      "object_id": "sid-0A568326-B293-4F26-A750-1673213576DC"
+    },
+    {
+      "subject": "Write personal status update",
+      "subject_id": "sid-73334C4B-26D2-4B09-B387-B17BDC7F1F51",
+      "predicate": "follows",
+      "object": "Write personal status update",
+      "object_id": "sid-73334C4B-26D2-4B09-B387-B17BDC7F1F51"
+    },
+    {
+      "subject": "Write personal status update",
+      "subject_id": "sid-73334C4B-26D2-4B09-B387-B17BDC7F1F51",
+      "predicate": "follows",
+      "object": "1 week",
+      "object_id": "sid-4E1C4E20-0E5B-477B-B27E-A8D9F9EE1E58"
+    },
+    {
+      "subject": "Write personal status update",
+      "subject_id": "sid-73334C4B-26D2-4B09-B387-B17BDC7F1F51",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "sid-524C37C1-C8D7-45D7-9CE1-E792B8D94D46"
+    },
+    {
+      "subject": "Write personal status update",
+      "subject_id": "sid-73334C4B-26D2-4B09-B387-B17BDC7F1F51",
+      "predicate": "follows",
+      "object": "Open twitter",
+      "object_id": "sid-3FF851B6-60A7-4884-A310-D63CDF49E1C0"
+    },
+    {
+      "subject": "Write tweet",
+      "subject_id": "sid-0A568326-B293-4F26-A750-1673213576DC",
+      "predicate": "follows",
+      "object": "Display tweet",
+      "object_id": "sid-35480E2E-6D04-4CD6-96C9-1BA7DC4368BD"
+    },
+    {
+      "subject": "Enter username ",
+      "subject_id": "sid-FB77FA93-9A8B-49BF-B37A-6B1287D6B387",
+      "predicate": "follows",
+      "object": "Open account",
+      "object_id": "sid-4F996BFC-FFF5-4587-99CB-65000141BC6C"
+    },
+    {
+      "subject": "Enter intern feedback",
+      "subject_id": "sid-0F14AD5D-26A4-43C4-970C-C25277056C88",
+      "predicate": "follows",
+      "object": "1 week",
+      "object_id": "sid-4E1C4E20-0E5B-477B-B27E-A8D9F9EE1E58"
+    },
+    {
+      "subject": "Enter intern feedback",
+      "subject_id": "sid-0F14AD5D-26A4-43C4-970C-C25277056C88",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "sid-524C37C1-C8D7-45D7-9CE1-E792B8D94D46"
+    },
+    {
+      "subject": "Enter intern feedback",
+      "subject_id": "sid-0F14AD5D-26A4-43C4-970C-C25277056C88",
+      "predicate": "follows",
+      "object": "Open twitter",
+      "object_id": "sid-3FF851B6-60A7-4884-A310-D63CDF49E1C0"
+    },
+    {
+      "subject": "Enter intern feedback",
+      "subject_id": "sid-0F14AD5D-26A4-43C4-970C-C25277056C88",
+      "predicate": "follows",
+      "object": "Enter intern feedback",
+      "object_id": "sid-0F14AD5D-26A4-43C4-970C-C25277056C88"
+    },
+    {
+      "subject": "Enter topic of interest",
+      "subject_id": "sid-E5558CD1-020E-4D8C-8651-002CD78DF2D9",
+      "predicate": "follows",
+      "object": "Search for offers",
+      "object_id": "sid-66D433CD-B542-4AFA-941B-945F4531ACA3"
+    },
+    {
+      "subject": "Search for intership",
+      "subject_id": "sid-467CA643-3722-4DF0-9975-C5E70A733BFF",
+      "predicate": "follows",
+      "object": "Enter webpage",
+      "object_id": "sid-A71ED5BC-0A38-423F-BFA9-DF19E350328D"
+    },
+    {
+      "subject": "Enter hobbies",
+      "subject_id": "sid-2B5F9411-D2D9-4C7E-8B73-0492FAD46792",
+      "predicate": "follows",
+      "object": "Search for offers",
+      "object_id": "sid-66D433CD-B542-4AFA-941B-945F4531ACA3"
+    },
+    {
+      "subject": "Enter previous experience",
+      "subject_id": "sid-E04F3386-BB8D-400F-9C91-1200F42D5A81",
+      "predicate": "follows",
+      "object": "Enter hobbies",
+      "object_id": "sid-2B5F9411-D2D9-4C7E-8B73-0492FAD46792"
+    }
+  ],
+  "matches": {
+    "1 week": {
+      "match": "status_update.written",
+      "score": 0.1539
+    },
+    "Analyze offer": {
+      "match": "offer.accepted",
+      "score": 0.456
+    },
+    "Display fitted offers": {
+      "match": "offer.arrived",
+      "score": 0.2001
+    },
+    "Display tweet": {
+      "match": "status_update.written",
+      "score": 0.212
+    },
+    "Enter hobbies": {
+      "match": "topic.entered",
+      "score": 0.3433
+    },
+    "Enter intern feedback": {
+      "match": "internship.finished",
+      "score": 0.4385
+    },
+    "Enter password": {
+      "match": "topic.entered",
+      "score": 0.2811
+    },
+    "Enter previous experience": {
+      "match": "topic.entered",
+      "score": 0.2968
+    },
+    "Enter salary expectacions": {
+      "match": "topic.entered",
+      "score": 0.2105
+    },
+    "Enter topic of interest": {
+      "match": "topic.entered",
+      "score": 0.6419
+    },
+    "Enter username ": {
+      "match": "topic.entered",
+      "score": 0.2902
+    },
+    "Enter webpage": {
+      "match": "topic.entered",
+      "score": 0.3828
+    },
+    "Open account": {
+      "match": "offer.accepted",
+      "score": 0.2366
+    },
+    "Open twitter": {
+      "match": "offer.invalid",
+      "score": 0.1476
+    },
+    "Search for intership": {
+      "match": "internship.finished",
+      "score": 0.3977
+    },
+    "Search for offers": {
+      "match": "offer.invalid",
+      "score": 0.4466
+    },
+    "Update candidate profile": {
+      "match": "status_update.written",
+      "score": 0.3412
+    },
+    "Write personal status update": {
+      "match": "status_update.written",
+      "score": 0.7625
+    },
+    "Write tweet": {
+      "match": "status_update.written",
+      "score": 0.4298
+    }
+  },
+  "process_graph": [
+    {
+      "from": "topic.entered",
+      "to": "offer.invalid",
+      "activity_from": "Enter salary expectacions",
+      "activity_to": "Search for offers"
+    },
+    {
+      "from": "topic.entered",
+      "to": "offer.invalid",
+      "activity_from": "Enter webpage",
+      "activity_to": "Search for offers"
+    },
+    {
+      "from": "topic.entered",
+      "to": "topic.entered",
+      "activity_from": "Enter webpage",
+      "activity_to": "Enter previous experience"
+    },
+    {
+      "from": "topic.entered",
+      "to": "topic.entered",
+      "activity_from": "Enter webpage",
+      "activity_to": "Enter hobbies"
+    },
+    {
+      "from": "topic.entered",
+      "to": "topic.entered",
+      "activity_from": "Enter webpage",
+      "activity_to": "Enter salary expectacions"
+    },
+    {
+      "from": "topic.entered",
+      "to": "topic.entered",
+      "activity_from": "Enter webpage",
+      "activity_to": "Enter topic of interest"
+    },
+    {
+      "from": "topic.entered",
+      "to": "offer.accepted",
+      "activity_from": "Enter password",
+      "activity_to": "Open account"
+    },
+    {
+      "from": "offer.accepted",
+      "to": "offer.arrived",
+      "activity_from": "Analyze offer",
+      "activity_to": "Display fitted offers"
+    },
+    {
+      "from": "offer.accepted",
+      "to": "status_update.written",
+      "activity_from": "Analyze offer",
+      "activity_to": "Update candidate profile"
+    },
+    {
+      "from": "status_update.written",
+      "to": "status_update.written",
+      "activity_from": "1 week",
+      "activity_to": "Update candidate profile"
+    },
+    {
+      "from": "offer.invalid",
+      "to": "topic.entered",
+      "activity_from": "Open twitter",
+      "activity_to": "Enter username "
+    },
+    {
+      "from": "offer.invalid",
+      "to": "topic.entered",
+      "activity_from": "Open twitter",
+      "activity_to": "Enter password"
+    },
+    {
+      "from": "offer.arrived",
+      "to": "offer.accepted",
+      "activity_from": "Display fitted offers",
+      "activity_to": "Analyze offer"
+    },
+    {
+      "from": "offer.invalid",
+      "to": "offer.arrived",
+      "activity_from": "Search for offers",
+      "activity_to": "Display fitted offers"
+    },
+    {
+      "from": "status_update.written",
+      "to": "internship.finished",
+      "activity_from": "Update candidate profile",
+      "activity_to": "Enter intern feedback"
+    },
+    {
+      "from": "status_update.written",
+      "to": "status_update.written",
+      "activity_from": "Update candidate profile",
+      "activity_to": "Write personal status update"
+    },
+    {
+      "from": "offer.accepted",
+      "to": "status_update.written",
+      "activity_from": "Open account",
+      "activity_to": "Write tweet"
+    },
+    {
+      "from": "status_update.written",
+      "to": "status_update.written",
+      "activity_from": "Write personal status update",
+      "activity_to": "Write personal status update"
+    },
+    {
+      "from": "status_update.written",
+      "to": "status_update.written",
+      "activity_from": "Write personal status update",
+      "activity_to": "1 week"
+    },
+    {
+      "from": "status_update.written",
+      "to": "offer.invalid",
+      "activity_from": "Write personal status update",
+      "activity_to": "Open twitter"
+    },
+    {
+      "from": "status_update.written",
+      "to": "status_update.written",
+      "activity_from": "Write tweet",
+      "activity_to": "Display tweet"
+    },
+    {
+      "from": "topic.entered",
+      "to": "offer.accepted",
+      "activity_from": "Enter username ",
+      "activity_to": "Open account"
+    },
+    {
+      "from": "internship.finished",
+      "to": "status_update.written",
+      "activity_from": "Enter intern feedback",
+      "activity_to": "1 week"
+    },
+    {
+      "from": "internship.finished",
+      "to": "offer.invalid",
+      "activity_from": "Enter intern feedback",
+      "activity_to": "Open twitter"
+    },
+    {
+      "from": "internship.finished",
+      "to": "internship.finished",
+      "activity_from": "Enter intern feedback",
+      "activity_to": "Enter intern feedback"
+    },
+    {
+      "from": "topic.entered",
+      "to": "offer.invalid",
+      "activity_from": "Enter topic of interest",
+      "activity_to": "Search for offers"
+    },
+    {
+      "from": "internship.finished",
+      "to": "topic.entered",
+      "activity_from": "Search for intership",
+      "activity_to": "Enter webpage"
+    },
+    {
+      "from": "topic.entered",
+      "to": "offer.invalid",
+      "activity_from": "Enter hobbies",
+      "activity_to": "Search for offers"
+    },
+    {
+      "from": "topic.entered",
+      "to": "topic.entered",
+      "activity_from": "Enter previous experience",
+      "activity_to": "Enter hobbies"
+    }
+  ],
+  "alignment": {
+    "offer.arrived": {
+      "operator": "AND",
+      "quote": "You can enter a topic that interests you, and how much money you want.",
+      "terms": [
+        {
+          "term": "topic.entered",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED"
+    },
+    "offer.accepted": {
+      "operator": "AND",
+      "quote": "As soon as an offer is accepted, all other offers become invalid.",
+      "terms": [
+        {
+          "term": "offer.arrived",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        },
+        {
+          "term": "topic.entered",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED"
+    },
+    "offer.denied": {
+      "operator": "AND",
+      "quote": "As soon as an offer is accepted, all other offers become invalid.",
+      "terms": [
+        {
+          "term": "offer.arrived",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['offer.denied']",
+          "missing": [
+            "offer.denied"
+          ]
+        },
+        {
+          "term": "topic.entered",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['offer.denied']",
+          "missing": [
+            "offer.denied"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE"
+    },
+    "offer.invalid": {
+      "operator": "AND",
+      "quote": "As soon as an offer is accepted, all other offers become invalid.",
+      "terms": [
+        {
+          "term": "offer.accepted",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED"
+    },
+    "status_update.written": {
+      "operator": "AND",
+      "quote": "You have to write at least 3 status updates about your internship (every week).",
+      "terms": [
+        {
+          "term": "internship.finished",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED"
+    },
+    "internship.finished": {
+      "operator": "AND",
+      "quote": "You can enter a topic that interests you, and how much money you want. You can also enter experience and hobbies. Several offers will arrive (at arbitrary points in time).",
+      "terms": [
+        {
+          "term": "topic.entered",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        },
+        {
+          "term": "offer.arrived",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED"
+    }
+  },
+  "report": {
+    "summary": {
+      "ecarts": 0,
+      "non_verifiable": 1,
+      "conforme": 7
+    },
+    "ecarts": [],
+    "non_verifiable": [
+      {
+        "root_cause": "(aucune activite du processus ne correspond clairement a cela)",
+        "quote": "As soon as an offer is accepted, all other offers become invalid.",
+        "explanation": "L'activité \"aucune activité du processus ne correspond clairement à cela\" se produit lorsque l'offre est refusée. Cependant, avant que cela puisse se produire, une condition précise doit être remplie.\n\nCette condition est mentionnée dans la citation suivante : \"As soon as an offer is accepted, all other offers become invalid.\"\n\nCela signifie que la condition en question est liée à l'acceptation d'une offre. Cependant, dans ce cas précis, il est impossible de savoir si cette condition est respectée ou non, car il n'y a pas d'activité claire du processus qui correspond à cette condition.",
+        "affected_activities": [
+          "(aucune activite du processus ne correspond clairement a cela)"
+        ],
+        "affected_count": 2
+      }
+    ],
+    "conforme": [
+      {
+        "target": "Display fitted offers",
+        "term": "Enter topic of interest"
+      },
+      {
+        "target": "Analyze offer",
+        "term": "Display fitted offers"
+      },
+      {
+        "target": "Analyze offer",
+        "term": "Enter topic of interest"
+      },
+      {
+        "target": "Search for offers",
+        "term": "Analyze offer"
+      },
+      {
+        "target": "Write personal status update",
+        "term": "Enter intern feedback"
+      },
+      {
+        "target": "Enter intern feedback",
+        "term": "Enter topic of interest"
+      },
+      {
+        "target": "Enter intern feedback",
+        "term": "Display fitted offers"
+      }
+    ],
+    "piece_jointe_alignement_brut": {
+      "offer.arrived": {
+        "operator": "AND",
+        "quote": "You can enter a topic that interests you, and how much money you want.",
+        "terms": [
+          {
+            "term": "topic.entered",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED"
+      },
+      "offer.accepted": {
+        "operator": "AND",
+        "quote": "As soon as an offer is accepted, all other offers become invalid.",
+        "terms": [
+          {
+            "term": "offer.arrived",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          },
+          {
+            "term": "topic.entered",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED"
+      },
+      "offer.denied": {
+        "operator": "AND",
+        "quote": "As soon as an offer is accepted, all other offers become invalid.",
+        "terms": [
+          {
+            "term": "offer.arrived",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['offer.denied']",
+            "missing": [
+              "offer.denied"
+            ]
+          },
+          {
+            "term": "topic.entered",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['offer.denied']",
+            "missing": [
+              "offer.denied"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE"
+      },
+      "offer.invalid": {
+        "operator": "AND",
+        "quote": "As soon as an offer is accepted, all other offers become invalid.",
+        "terms": [
+          {
+            "term": "offer.accepted",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED"
+      },
+      "status_update.written": {
+        "operator": "AND",
+        "quote": "You have to write at least 3 status updates about your internship (every week).",
+        "terms": [
+          {
+            "term": "internship.finished",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED"
+      },
+      "internship.finished": {
+        "operator": "AND",
+        "quote": "You can enter a topic that interests you, and how much money you want. You can also enter experience and hobbies. Several offers will arrive (at arbitrary points in time).",
+        "terms": [
+          {
+            "term": "topic.entered",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          },
+          {
+            "term": "offer.arrived",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED"
+      }
+    }
+  },
+  "errors": []
+}

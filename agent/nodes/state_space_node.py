@@ -6,6 +6,8 @@ from agent.models.base_llm import get_llm
 from agent.prompt.state_space_prompt import (
     STATE_SPACE_PROMPT, STATE_SPACE_PROMPT_FEWSHOT, STATE_SPACE_PROMPT_TWOSHOT, STATE_SPACE_PROMPT_COT,
     STATE_SPACE_PROMPT_V2, STATE_SPACE_PROMPT_FEWSHOT_V2, STATE_SPACE_PROMPT_TWOSHOT_V2, STATE_SPACE_PROMPT_COT_V2,
+    STATE_SPACE_PROMPT_V3, STATE_SPACE_PROMPT_FEWSHOT_V3, STATE_SPACE_PROMPT_TWOSHOT_V3, STATE_SPACE_PROMPT_COT_V3,
+    STATE_SPACE_PROMPT_V4, STATE_SPACE_PROMPT_FEWSHOT_V4, STATE_SPACE_PROMPT_TWOSHOT_V4, STATE_SPACE_PROMPT_COT_V4,
 )
 from agent.prompt.reformulation_prompt import REFORMULATION_PROMPT, REFORMULATION_PROMPT_ONESHOT
 from agent.prompt.evidence_prompt import EVIDENCE_PROMPT
@@ -83,10 +85,11 @@ if __name__ == "__main__":
         #"meta/llama-3.3-70b-instruct",
         #"mistralai/mistral-medium-3.5-128b",
         #"mistralai/mistral-nemotron",
-        #"openai/gpt-oss-20b",
-        "openai/gpt-oss-120b",
+        "openai/gpt-oss-20b",
+        #"openai/gpt-oss-120b",
         #"mistralai/mistral-large-3-675b-instruct-2512",
-        #"moonshotai/kimi-k2.6"
+        #"moonshotai/kimi-k2.6",
+        #"thinkingmachines/inkling"
     ]
 
     CASES = {
@@ -173,6 +176,14 @@ if __name__ == "__main__":
         #"one_shot_v2": STATE_SPACE_PROMPT_FEWSHOT_V2,
         #"two_shot_v2": STATE_SPACE_PROMPT_TWOSHOT_V2,
         #"cot_v2": STATE_SPACE_PROMPT_COT_V2,
+        "zero_shot_v3": STATE_SPACE_PROMPT_V3,
+        #"one_shot_v3": STATE_SPACE_PROMPT_FEWSHOT_V3,
+        #"two_shot_v3": STATE_SPACE_PROMPT_TWOSHOT_V3,
+        #"cot_v3": STATE_SPACE_PROMPT_COT_V3,
+        "zero_shot_v4": STATE_SPACE_PROMPT_V4,
+        #"one_shot_v4": STATE_SPACE_PROMPT_FEWSHOT_V4,
+        #"two_shot_v4": STATE_SPACE_PROMPT_TWOSHOT_V4,
+        #"cot_v4": STATE_SPACE_PROMPT_COT_V4,
     }
 
     results = {}

@@ -1,0 +1,626 @@
+{
+  "case_name": "V_k08",
+  "text": "Category: Vending and Shipping\nTitle: Ordering in an Online Shop  \n\nA customer that logs into an E-Shop system and has to wait for its login\nconfirmation (its credentials are checked by the system). If the login was\nsuccessful then the customer can continue to select products, else the shopping\nexperience stops. After selecting a product the customer has to add it to a\nshopping cart, save the product and check if every product was already\nselected. These steps repeat until all products were selected. Then the order\nis finished by the shopping system and simultaneously payment and shipment for the order is prepared.\nFor the payment the customer has to enter its payment data\nand has to wait until the bank confirms the payment.\nWhile waiting for the payment confirmation the customer can enter its\nshipping address (an independent billing address can be entered if the shipping\naddress is not equal to the billing address) . Finally if the address and the\npayment steps are executed then the order will be finished by the system.\n",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "openai/gpt-oss-20b",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "openai/gpt-oss-20b",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/text_and_bpmn/bpmn/V_k08/4.bpmn2.xml",
+  "dfg_edges": [
+    {
+      "source_id": "sid-08C1F327-974F-4091-90B1-2C20760D7BA5",
+      "source_label": "",
+      "target_id": "sid-9FE7C0C6-70C2-4361-B98C-B51D5F4E1D74",
+      "target_label": "",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-B5253B6F-3080-4AB9-BF48-06B48D519B0D",
+      "source_label": "send confirmation",
+      "target_id": "sid-4651B9A6-DEDF-4C6D-B409-2BC789B62073",
+      "target_label": "save products",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-B5253B6F-3080-4AB9-BF48-06B48D519B0D",
+      "source_label": "send confirmation",
+      "target_id": "sid-A743B3E0-F8D6-4F33-BD87-C6B86D8E4C6D",
+      "target_label": "Receive confirmation",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-245A7A83-D8A4-4071-B264-6575BF3E9559",
+      "source_label": "",
+      "target_id": "sid-F36CE50A-1D20-48F8-AAEB-722609DC4DDC",
+      "target_label": "check the credential",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-B159754B-39F3-4A74-BE87-A17AEECCFC2E",
+      "source_label": "request shipping adress",
+      "target_id": "sid-C834040D-AFE9-44BA-9A1A-C0E170BD3618",
+      "target_label": "",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-B159754B-39F3-4A74-BE87-A17AEECCFC2E",
+      "source_label": "request shipping adress",
+      "target_id": "sid-7FD5D1EE-AD7F-49AE-AFB5-BD713F7E7287",
+      "target_label": "receive the shipping address",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-F36CE50A-1D20-48F8-AAEB-722609DC4DDC",
+      "source_label": "check the credential",
+      "target_id": "sid-B5253B6F-3080-4AB9-BF48-06B48D519B0D",
+      "target_label": "send confirmation",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "yes"
+      ]
+    },
+    {
+      "source_id": "sid-F36CE50A-1D20-48F8-AAEB-722609DC4DDC",
+      "source_label": "check the credential",
+      "target_id": "sid-D9208EE9-4DDB-4FBA-A88C-C06C4BC5B400",
+      "target_label": "stop the task",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "no"
+      ]
+    },
+    {
+      "source_id": "sid-9B4BF0EF-027C-4BEF-A812-0C00F472CA43",
+      "source_label": "",
+      "target_id": "sid-97173802-403E-49EA-9831-F2314BF3679E",
+      "target_label": "check the payment data",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-9B4BF0EF-027C-4BEF-A812-0C00F472CA43",
+      "source_label": "",
+      "target_id": "sid-B159754B-39F3-4A74-BE87-A17AEECCFC2E",
+      "target_label": "request shipping adress",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-A17DDC23-8FB4-4DBE-925C-063507FBC27E",
+      "source_label": "",
+      "target_id": "sid-245A7A83-D8A4-4071-B264-6575BF3E9559",
+      "target_label": "",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-4651B9A6-DEDF-4C6D-B409-2BC789B62073",
+      "source_label": "save products",
+      "target_id": "sid-6F7BA7CB-8080-4ED8-8733-B429464055F6",
+      "target_label": "ask for the further products",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-9FE7C0C6-70C2-4361-B98C-B51D5F4E1D74",
+      "source_label": "",
+      "target_id": "sid-245A7A83-D8A4-4071-B264-6575BF3E9559",
+      "target_label": "",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-9FE7C0C6-70C2-4361-B98C-B51D5F4E1D74",
+      "source_label": "",
+      "target_id": "sid-A743B3E0-F8D6-4F33-BD87-C6B86D8E4C6D",
+      "target_label": "Receive confirmation",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-1728FD99-95CC-4FF0-9A39-E22479302517",
+      "source_label": "enter the shipping adress",
+      "target_id": "sid-E9202D10-8326-4115-A3E9-B144862C153A",
+      "target_label": "send the addresses",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-AF72D67C-2A1B-4069-AF41-7E8CB11B2DAF",
+      "source_label": "order confirmation",
+      "target_id": "sid-407DD2C4-4119-4CD9-9B03-59812034AD14",
+      "target_label": "",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-E9202D10-8326-4115-A3E9-B144862C153A",
+      "source_label": "send the addresses",
+      "target_id": "sid-AF72D67C-2A1B-4069-AF41-7E8CB11B2DAF",
+      "target_label": "order confirmation",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-E9202D10-8326-4115-A3E9-B144862C153A",
+      "source_label": "send the addresses",
+      "target_id": "sid-7FD5D1EE-AD7F-49AE-AFB5-BD713F7E7287",
+      "target_label": "receive the shipping address",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-A429EAF9-2530-48C0-945F-774EB89622A4",
+      "source_label": "waiting for confirmation",
+      "target_id": "sid-AF72D67C-2A1B-4069-AF41-7E8CB11B2DAF",
+      "target_label": "order confirmation",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-C834040D-AFE9-44BA-9A1A-C0E170BD3618",
+      "source_label": "",
+      "target_id": "sid-B070D5BE-FF10-4A48-8703-4646847B3FB2",
+      "target_label": "save the billing address as shipping adress",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "yes"
+      ]
+    },
+    {
+      "source_id": "sid-C834040D-AFE9-44BA-9A1A-C0E170BD3618",
+      "source_label": "",
+      "target_id": "sid-1728FD99-95CC-4FF0-9A39-E22479302517",
+      "target_label": "enter the shipping adress",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "no"
+      ]
+    },
+    {
+      "source_id": "sid-75710D1B-10BF-4E20-8C71-5F9E66A4FEC2",
+      "source_label": "request payment info",
+      "target_id": "sid-9B4BF0EF-027C-4BEF-A812-0C00F472CA43",
+      "target_label": "",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-75710D1B-10BF-4E20-8C71-5F9E66A4FEC2",
+      "source_label": "request payment info",
+      "target_id": "sid-1BB79F23-698C-4849-BF80-8424F5EA6DEB",
+      "target_label": "",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-97173802-403E-49EA-9831-F2314BF3679E",
+      "source_label": "check the payment data",
+      "target_id": "sid-3196569F-8583-4142-819D-D4EF729CF092",
+      "target_label": "send order confirmation",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-7FD5D1EE-AD7F-49AE-AFB5-BD713F7E7287",
+      "source_label": "receive the shipping address",
+      "target_id": "sid-3196569F-8583-4142-819D-D4EF729CF092",
+      "target_label": "send order confirmation",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-3196569F-8583-4142-819D-D4EF729CF092",
+      "source_label": "send order confirmation",
+      "target_id": "sid-AF72D67C-2A1B-4069-AF41-7E8CB11B2DAF",
+      "target_label": "order confirmation",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-3196569F-8583-4142-819D-D4EF729CF092",
+      "source_label": "send order confirmation",
+      "target_id": "sid-8B9A46E5-79A0-4E63-A9C7-55AFE9DB8DB9",
+      "target_label": "",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-B070D5BE-FF10-4A48-8703-4646847B3FB2",
+      "source_label": "save the billing address as shipping adress",
+      "target_id": "sid-E9202D10-8326-4115-A3E9-B144862C153A",
+      "target_label": "send the addresses",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-6F7BA7CB-8080-4ED8-8733-B429464055F6",
+      "source_label": "ask for the further products",
+      "target_id": "sid-4651B9A6-DEDF-4C6D-B409-2BC789B62073",
+      "target_label": "save products",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "yes"
+      ]
+    },
+    {
+      "source_id": "sid-6F7BA7CB-8080-4ED8-8733-B429464055F6",
+      "source_label": "ask for the further products",
+      "target_id": "sid-75710D1B-10BF-4E20-8C71-5F9E66A4FEC2",
+      "target_label": "request payment info",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "no",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-1BB79F23-698C-4849-BF80-8424F5EA6DEB",
+      "source_label": "",
+      "target_id": "sid-E0363EF5-75A7-4FAE-B62A-7254F8CDF3F4",
+      "target_label": "enter payment data",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-1D69EA81-3B02-4296-80F5-36CD845D96AF",
+      "source_label": "select product",
+      "target_id": "sid-EC191D15-7152-4D97-8794-3B1CB1D0FCAA",
+      "target_label": "add to the cart",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-EC191D15-7152-4D97-8794-3B1CB1D0FCAA",
+      "source_label": "add to the cart",
+      "target_id": "sid-41BE6AA9-D7D4-4FDB-BD96-07252A8DA077",
+      "target_label": "save the products",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-41BE6AA9-D7D4-4FDB-BD96-07252A8DA077",
+      "source_label": "save the products",
+      "target_id": "sid-4651B9A6-DEDF-4C6D-B409-2BC789B62073",
+      "target_label": "save products",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-41BE6AA9-D7D4-4FDB-BD96-07252A8DA077",
+      "source_label": "save the products",
+      "target_id": "sid-1D69EA81-3B02-4296-80F5-36CD845D96AF",
+      "target_label": "select product",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "yes"
+      ]
+    },
+    {
+      "source_id": "sid-41BE6AA9-D7D4-4FDB-BD96-07252A8DA077",
+      "source_label": "save the products",
+      "target_id": "sid-1BB79F23-698C-4849-BF80-8424F5EA6DEB",
+      "target_label": "",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "no"
+      ]
+    },
+    {
+      "source_id": "sid-A743B3E0-F8D6-4F33-BD87-C6B86D8E4C6D",
+      "source_label": "Receive confirmation",
+      "target_id": "sid-1D69EA81-3B02-4296-80F5-36CD845D96AF",
+      "target_label": "select product",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-E0363EF5-75A7-4FAE-B62A-7254F8CDF3F4",
+      "source_label": "enter payment data",
+      "target_id": "sid-9B4BF0EF-027C-4BEF-A812-0C00F472CA43",
+      "target_label": "",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-E0363EF5-75A7-4FAE-B62A-7254F8CDF3F4",
+      "source_label": "enter payment data",
+      "target_id": "sid-C834040D-AFE9-44BA-9A1A-C0E170BD3618",
+      "target_label": "",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-E0363EF5-75A7-4FAE-B62A-7254F8CDF3F4",
+      "source_label": "enter payment data",
+      "target_id": "sid-A429EAF9-2530-48C0-945F-774EB89622A4",
+      "target_label": "waiting for confirmation",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "",
+      "subject_id": "sid-08C1F327-974F-4091-90B1-2C20760D7BA5",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "sid-9FE7C0C6-70C2-4361-B98C-B51D5F4E1D74"
+    },
+    {
+      "subject": "send confirmation",
+      "subject_id": "sid-B5253B6F-3080-4AB9-BF48-06B48D519B0D",
+      "predicate": "follows",
+      "object": "save products",
+      "object_id": "sid-4651B9A6-DEDF-4C6D-B409-2BC789B62073"
+    },
+    {
+      "subject": "send confirmation",
+      "subject_id": "sid-B5253B6F-3080-4AB9-BF48-06B48D519B0D",
+      "predicate": "follows",
+      "object": "Receive confirmation",
+      "object_id": "sid-A743B3E0-F8D6-4F33-BD87-C6B86D8E4C6D"
+    },
+    {
+      "subject": "",
+      "subject_id": "sid-245A7A83-D8A4-4071-B264-6575BF3E9559",
+      "predicate": "follows",
+      "object": "check the credential",
+      "object_id": "sid-F36CE50A-1D20-48F8-AAEB-722609DC4DDC"
+    },
+    {
+      "subject": "request shipping adress",
+      "subject_id": "sid-B159754B-39F3-4A74-BE87-A17AEECCFC2E",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "sid-C834040D-AFE9-44BA-9A1A-C0E170BD3618"
+    },
+    {
+      "subject": "request shipping adress",
+      "subject_id": "sid-B159754B-39F3-4A74-BE87-A17AEECCFC2E",
+      "predicate": "follows",
+      "object": "receive the shipping address",
+      "object_id": "sid-7FD5D1EE-AD7F-49AE-AFB5-BD713F7E7287"
+    },
+    {
+      "subject": "check the credential",
+      "subject_id": "sid-F36CE50A-1D20-48F8-AAEB-722609DC4DDC",
+      "predicate": "follows",
+      "object": "send confirmation",
+      "object_id": "sid-B5253B6F-3080-4AB9-BF48-06B48D519B0D"
+    },
+    {
+      "subject": "check the credential",
+      "subject_id": "sid-F36CE50A-1D20-48F8-AAEB-722609DC4DDC",
+      "predicate": "follows",
+      "object": "stop the task",
+      "object_id": "sid-D9208EE9-4DDB-4FBA-A88C-C06C4BC5B400"
+    },
+    {
+      "subject": "",
+      "subject_id": "sid-9B4BF0EF-027C-4BEF-A812-0C00F472CA43",
+      "predicate": "follows",
+      "object": "check the payment data",
+      "object_id": "sid-97173802-403E-49EA-9831-F2314BF3679E"
+    },
+    {
+      "subject": "",
+      "subject_id": "sid-9B4BF0EF-027C-4BEF-A812-0C00F472CA43",
+      "predicate": "follows",
+      "object": "request shipping adress",
+      "object_id": "sid-B159754B-39F3-4A74-BE87-A17AEECCFC2E"
+    },
+    {
+      "subject": "",
+      "subject_id": "sid-A17DDC23-8FB4-4DBE-925C-063507FBC27E",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "sid-245A7A83-D8A4-4071-B264-6575BF3E9559"
+    },
+    {
+      "subject": "save products",
+      "subject_id": "sid-4651B9A6-DEDF-4C6D-B409-2BC789B62073",
+      "predicate": "follows",
+      "object": "ask for the further products",
+      "object_id": "sid-6F7BA7CB-8080-4ED8-8733-B429464055F6"
+    },
+    {
+      "subject": "",
+      "subject_id": "sid-9FE7C0C6-70C2-4361-B98C-B51D5F4E1D74",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "sid-245A7A83-D8A4-4071-B264-6575BF3E9559"
+    },
+    {
+      "subject": "",
+      "subject_id": "sid-9FE7C0C6-70C2-4361-B98C-B51D5F4E1D74",
+      "predicate": "follows",
+      "object": "Receive confirmation",
+      "object_id": "sid-A743B3E0-F8D6-4F33-BD87-C6B86D8E4C6D"
+    },
+    {
+      "subject": "enter the shipping adress",
+      "subject_id": "sid-1728FD99-95CC-4FF0-9A39-E22479302517",
+      "predicate": "follows",
+      "object": "send the addresses",
+      "object_id": "sid-E9202D10-8326-4115-A3E9-B144862C153A"
+    },
+    {
+      "subject": "order confirmation",
+      "subject_id": "sid-AF72D67C-2A1B-4069-AF41-7E8CB11B2DAF",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "sid-407DD2C4-4119-4CD9-9B03-59812034AD14"
+    },
+    {
+      "subject": "send the addresses",
+      "subject_id": "sid-E9202D10-8326-4115-A3E9-B144862C153A",
+      "predicate": "follows",
+      "object": "order confirmation",
+      "object_id": "sid-AF72D67C-2A1B-4069-AF41-7E8CB11B2DAF"
+    },
+    {
+      "subject": "send the addresses",
+      "subject_id": "sid-E9202D10-8326-4115-A3E9-B144862C153A",
+      "predicate": "follows",
+      "object": "receive the shipping address",
+      "object_id": "sid-7FD5D1EE-AD7F-49AE-AFB5-BD713F7E7287"
+    },
+    {
+      "subject": "waiting for confirmation",
+      "subject_id": "sid-A429EAF9-2530-48C0-945F-774EB89622A4",
+      "predicate": "follows",
+      "object": "order confirmation",
+      "object_id": "sid-AF72D67C-2A1B-4069-AF41-7E8CB11B2DAF"
+    },
+    {
+      "subject": "",
+      "subject_id": "sid-C834040D-AFE9-44BA-9A1A-C0E170BD3618",
+      "predicate": "follows",
+      "object": "save the billing address as shipping adress",
+      "object_id": "sid-B070D5BE-FF10-4A48-8703-4646847B3FB2"
+    },
+    {
+      "subject": "",
+      "subject_id": "sid-C834040D-AFE9-44BA-9A1A-C0E170BD3618",
+      "predicate": "follows",
+      "object": "enter the shipping adress",
+      "object_id": "sid-1728FD99-95CC-4FF0-9A39-E22479302517"
+    },
+    {
+      "subject": "request payment info",
+      "subject_id": "sid-75710D1B-10BF-4E20-8C71-5F9E66A4FEC2",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "sid-9B4BF0EF-027C-4BEF-A812-0C00F472CA43"
+    },
+    {
+      "subject": "request payment info",
+      "subject_id": "sid-75710D1B-10BF-4E20-8C71-5F9E66A4FEC2",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "sid-1BB79F23-698C-4849-BF80-8424F5EA6DEB"
+    },
+    {
+      "subject": "check the payment data",
+      "subject_id": "sid-97173802-403E-49EA-9831-F2314BF3679E",
+      "predicate": "follows",
+      "object": "send order confirmation",
+      "object_id": "sid-3196569F-8583-4142-819D-D4EF729CF092"
+    },
+    {
+      "subject": "receive the shipping address",
+      "subject_id": "sid-7FD5D1EE-AD7F-49AE-AFB5-BD713F7E7287",
+      "predicate": "follows",
+      "object": "send order confirmation",
+      "object_id": "sid-3196569F-8583-4142-819D-D4EF729CF092"
+    },
+    {
+      "subject": "send order confirmation",
+      "subject_id": "sid-3196569F-8583-4142-819D-D4EF729CF092",
+      "predicate": "follows",
+      "object": "order confirmation",
+      "object_id": "sid-AF72D67C-2A1B-4069-AF41-7E8CB11B2DAF"
+    },
+    {
+      "subject": "send order confirmation",
+      "subject_id": "sid-3196569F-8583-4142-819D-D4EF729CF092",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "sid-8B9A46E5-79A0-4E63-A9C7-55AFE9DB8DB9"
+    },
+    {
+      "subject": "save the billing address as shipping adress",
+      "subject_id": "sid-B070D5BE-FF10-4A48-8703-4646847B3FB2",
+      "predicate": "follows",
+      "object": "send the addresses",
+      "object_id": "sid-E9202D10-8326-4115-A3E9-B144862C153A"
+    },
+    {
+      "subject": "ask for the further products",
+      "subject_id": "sid-6F7BA7CB-8080-4ED8-8733-B429464055F6",
+      "predicate": "follows",
+      "object": "save products",
+      "object_id": "sid-4651B9A6-DEDF-4C6D-B409-2BC789B62073"
+    },
+    {
+      "subject": "ask for the further products",
+      "subject_id": "sid-6F7BA7CB-8080-4ED8-8733-B429464055F6",
+      "predicate": "follows",
+      "object": "request payment info",
+      "object_id": "sid-75710D1B-10BF-4E20-8C71-5F9E66A4FEC2"
+    },
+    {
+      "subject": "",
+      "subject_id": "sid-1BB79F23-698C-4849-BF80-8424F5EA6DEB",
+      "predicate": "follows",
+      "object": "enter payment data",
+      "object_id": "sid-E0363EF5-75A7-4FAE-B62A-7254F8CDF3F4"
+    },
+    {
+      "subject": "select product",
+      "subject_id": "sid-1D69EA81-3B02-4296-80F5-36CD845D96AF",
+      "predicate": "follows",
+      "object": "add to the cart",
+      "object_id": "sid-EC191D15-7152-4D97-8794-3B1CB1D0FCAA"
+    },
+    {
+      "subject": "add to the cart",
+      "subject_id": "sid-EC191D15-7152-4D97-8794-3B1CB1D0FCAA",
+      "predicate": "follows",
+      "object": "save the products",
+      "object_id": "sid-41BE6AA9-D7D4-4FDB-BD96-07252A8DA077"
+    },
+    {
+      "subject": "save the products",
+      "subject_id": "sid-41BE6AA9-D7D4-4FDB-BD96-07252A8DA077",
+      "predicate": "follows",
+      "object": "save products",
+      "object_id": "sid-4651B9A6-DEDF-4C6D-B409-2BC789B62073"
+    },
+    {
+      "subject": "save the products",
+      "subject_id": "sid-41BE6AA9-D7D4-4FDB-BD96-07252A8DA077",
+      "predicate": "follows",
+      "object": "select product",
+      "object_id": "sid-1D69EA81-3B02-4296-80F5-36CD845D96AF"
+    },
+    {
+      "subject": "save the products",
+      "subject_id": "sid-41BE6AA9-D7D4-4FDB-BD96-07252A8DA077",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "sid-1BB79F23-698C-4849-BF80-8424F5EA6DEB"
+    },
+    {
+      "subject": "Receive confirmation",
+      "subject_id": "sid-A743B3E0-F8D6-4F33-BD87-C6B86D8E4C6D",
+      "predicate": "follows",
+      "object": "select product",
+      "object_id": "sid-1D69EA81-3B02-4296-80F5-36CD845D96AF"
+    },
+    {
+      "subject": "enter payment data",
+      "subject_id": "sid-E0363EF5-75A7-4FAE-B62A-7254F8CDF3F4",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "sid-9B4BF0EF-027C-4BEF-A812-0C00F472CA43"
+    },
+    {
+      "subject": "enter payment data",
+      "subject_id": "sid-E0363EF5-75A7-4FAE-B62A-7254F8CDF3F4",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "sid-C834040D-AFE9-44BA-9A1A-C0E170BD3618"
+    },
+    {
+      "subject": "enter payment data",
+      "subject_id": "sid-E0363EF5-75A7-4FAE-B62A-7254F8CDF3F4",
+      "predicate": "follows",
+      "object": "waiting for confirmation",
+      "object_id": "sid-A429EAF9-2530-48C0-945F-774EB89622A4"
+    }
+  ],
+  "errors": [
+    "state_space: parse failed, raw response=''",
+    "precondition: 'state_space'",
+    "state_matching: 'state_space'",
+    "graph_construction: 'state_space'",
+    "alignment: 'reference_graph'",
+    "report: 'alignment'"
+  ]
+}

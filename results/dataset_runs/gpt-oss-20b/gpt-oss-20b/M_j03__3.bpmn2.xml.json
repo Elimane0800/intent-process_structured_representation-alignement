@@ -1,0 +1,1844 @@
+{
+  "case_name": "M_j03",
+  "text": "Category: Manufacturing\nTitle: Contract\n\nFor your contract project you need parts from several web shops. In order to\nfind out which web shop has the right parts, you have to query them all, and\nfind out how much they can deliver, at which price, and how long it will take.\n\nCreate a list of parts that you order from each shop. If one shop has not enough \nparts, order from several shops. Always use the cheapest parts.\n\nThe parts arrive in batches in a random order, typically they are +/- 2 days\nearlier/later.  \n\nWhen the first parts arrive you start building. Sometimes you have to reorder parts.\nIf your stock (for a single part) falls below 5, you reorder (the cheapest), if it\nfalls below 3 you reorder again (the fastest). If it is zero, you write a mail\nto your friends, complaining about the webshops.\n",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "openai/gpt-oss-20b",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "openai/gpt-oss-20b",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/text_and_bpmn/bpmn/M_j03/3.bpmn2.xml",
+  "candidates": {
+    "parts": [
+      "arrived",
+      "earlier",
+      "later",
+      "random",
+      "cheapest",
+      "fastest",
+      "ordered",
+      "selected",
+      "used"
+    ],
+    "web_shop": [
+      "queried"
+    ],
+    "batch": [
+      "arrived"
+    ],
+    "stock": [
+      "low",
+      "very_low",
+      "empty"
+    ],
+    "mail": [
+      "sent"
+    ],
+    "building": [
+      "started"
+    ],
+    "parts_list": [
+      "created",
+      "ordered",
+      "selected",
+      "used"
+    ]
+  },
+  "validation_report": {
+    "parts": {
+      "f_lex": "INDETERMINATE",
+      "kept": true
+    },
+    "web_shop": {
+      "f_lex": "ENTITY",
+      "kept": true
+    },
+    "batch": {
+      "f_lex": "ACTOR",
+      "kept": false
+    },
+    "stock": {
+      "f_lex": "INDETERMINATE",
+      "kept": true
+    },
+    "mail": {
+      "f_lex": "ENTITY",
+      "kept": true
+    },
+    "building": {
+      "f_lex": "ENTITY",
+      "kept": true
+    },
+    "parts_list": {
+      "f_lex": "ENTITY",
+      "kept": true
+    }
+  },
+  "state_space": {
+    "parts": [
+      "arrived",
+      "earlier",
+      "later",
+      "random",
+      "cheapest",
+      "fastest",
+      "ordered",
+      "selected",
+      "used"
+    ],
+    "web_shop": [
+      "queried"
+    ],
+    "stock": [
+      "low",
+      "very_low",
+      "empty"
+    ],
+    "mail": [
+      "sent"
+    ],
+    "building": [
+      "started"
+    ],
+    "parts_list": [
+      "created",
+      "ordered",
+      "selected",
+      "used"
+    ]
+  },
+  "raw_preconditions": {
+    "parts.arrived": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "parts.earlier": {
+      "precondition": "parts.arrived",
+      "quote": "The parts arrive in batches in a random order, typically they are +/- 2 days earlier/later."
+    },
+    "parts.later": {
+      "precondition": "parts.arrived",
+      "quote": "The parts arrive in batches in a random order, typically they are +/- 2 days earlier/later."
+    },
+    "parts.random": {
+      "precondition": "parts.arrived",
+      "quote": "The parts arrive in batches in a random order, typically they are +/- 2 days earlier/later."
+    },
+    "parts.cheapest": {
+      "precondition": "parts_list.selected",
+      "quote": "Always use the cheapest parts."
+    },
+    "parts.fastest": {
+      "precondition": "stock.very_low",
+      "quote": "if it falls below 3 you reorder again (the fastest)."
+    },
+    "parts.ordered": {
+      "precondition": "parts_list.created",
+      "quote": "Create a list of parts that you order from each shop."
+    },
+    "parts.selected": {
+      "precondition": "parts.ordered",
+      "quote": "Always use the cheapest parts."
+    },
+    "parts.used": {
+      "precondition": "building.started",
+      "quote": "When the first parts arrive you start building."
+    },
+    "web_shop.queried": {
+      "precondition": "INITIAL",
+      "quote": "you have to query them all, and find out how much they can deliver, at which price, and how long it will take."
+    },
+    "stock.low": {
+      "precondition": "UNRESOLVED",
+      "quote": null
+    },
+    "stock.very_low": {
+      "precondition": "UNRESOLVED",
+      "quote": null
+    },
+    "stock.empty": {
+      "precondition": "UNRESOLVED",
+      "quote": null
+    },
+    "mail.sent": {
+      "precondition": "stock.empty",
+      "quote": "If it is zero, you write a mail to your friends, complaining about the webshops."
+    },
+    "building.started": {
+      "precondition": "parts.arrived",
+      "quote": "When the first parts arrive you start building."
+    },
+    "parts_list.created": {
+      "precondition": "web_shop.queried",
+      "quote": "you have to query them all, and find out how much they can deliver, at which price, and how long it will take."
+    },
+    "parts_list.ordered": {
+      "precondition": "parts_list.created",
+      "quote": "Create a list of parts that you order from each shop."
+    },
+    "parts_list.selected": {
+      "precondition": "parts_list.ordered",
+      "quote": "Always use the cheapest parts."
+    },
+    "parts_list.used": {
+      "precondition": "building.started",
+      "quote": "When the first parts arrive you start building."
+    }
+  },
+  "validated_preconditions": {
+    "parts.arrived": {
+      "precondition": "INITIAL",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "parts.earlier": {
+      "precondition": "parts.arrived",
+      "quote": "The parts arrive in batches in a random order, typically they are +/- 2 days earlier/later.",
+      "status": "OK",
+      "reason": null
+    },
+    "parts.later": {
+      "precondition": "parts.arrived",
+      "quote": "The parts arrive in batches in a random order, typically they are +/- 2 days earlier/later.",
+      "status": "OK",
+      "reason": null
+    },
+    "parts.random": {
+      "precondition": "parts.arrived",
+      "quote": "The parts arrive in batches in a random order, typically they are +/- 2 days earlier/later.",
+      "status": "OK",
+      "reason": null
+    },
+    "parts.cheapest": {
+      "precondition": "parts_list.selected",
+      "quote": "Always use the cheapest parts.",
+      "status": "OK",
+      "reason": null
+    },
+    "parts.fastest": {
+      "precondition": "stock.very_low",
+      "quote": "if it falls below 3 you reorder again (the fastest).",
+      "status": "OK",
+      "reason": null
+    },
+    "parts.ordered": {
+      "precondition": "parts_list.created",
+      "quote": "Create a list of parts that you order from each shop.",
+      "status": "OK",
+      "reason": null
+    },
+    "parts.selected": {
+      "precondition": "parts.ordered",
+      "quote": "Always use the cheapest parts.",
+      "status": "OK",
+      "reason": null
+    },
+    "parts.used": {
+      "precondition": "building.started",
+      "quote": "When the first parts arrive you start building.",
+      "status": "OK",
+      "reason": null
+    },
+    "web_shop.queried": {
+      "precondition": "INITIAL",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "stock.low": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "stock.very_low": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "stock.empty": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "mail.sent": {
+      "precondition": "stock.empty",
+      "quote": "If it is zero, you write a mail to your friends, complaining about the webshops.",
+      "status": "OK",
+      "reason": null
+    },
+    "building.started": {
+      "precondition": "parts.arrived",
+      "quote": "When the first parts arrive you start building.",
+      "status": "OK",
+      "reason": null
+    },
+    "parts_list.created": {
+      "precondition": "web_shop.queried",
+      "quote": "you have to query them all, and find out how much they can deliver, at which price, and how long it will take.",
+      "status": "OK",
+      "reason": null
+    },
+    "parts_list.ordered": {
+      "precondition": "parts_list.created",
+      "quote": "Create a list of parts that you order from each shop.",
+      "status": "OK",
+      "reason": null
+    },
+    "parts_list.selected": {
+      "precondition": "parts_list.ordered",
+      "quote": "Always use the cheapest parts.",
+      "status": "OK",
+      "reason": null
+    },
+    "parts_list.used": {
+      "precondition": "building.started",
+      "quote": "When the first parts arrive you start building.",
+      "status": "OK",
+      "reason": null
+    }
+  },
+  "precondition_cycles": [],
+  "reference_graph": {
+    "nodes": [
+      {
+        "id": "parts.arrived",
+        "weight": 1.0
+      },
+      {
+        "id": "parts.earlier",
+        "weight": 0.25
+      },
+      {
+        "id": "parts.later",
+        "weight": 0.25
+      },
+      {
+        "id": "parts.random",
+        "weight": 0.25
+      },
+      {
+        "id": "parts.cheapest",
+        "weight": 0.25
+      },
+      {
+        "id": "parts.fastest",
+        "weight": 0.25
+      },
+      {
+        "id": "parts.ordered",
+        "weight": 0.5
+      },
+      {
+        "id": "parts.selected",
+        "weight": 0.25
+      },
+      {
+        "id": "parts.used",
+        "weight": 0.25
+      },
+      {
+        "id": "web_shop.queried",
+        "weight": 0.25
+      },
+      {
+        "id": "stock.low",
+        "weight": 0.0
+      },
+      {
+        "id": "stock.very_low",
+        "weight": 0.25
+      },
+      {
+        "id": "stock.empty",
+        "weight": 0.25
+      },
+      {
+        "id": "mail.sent",
+        "weight": 0.25
+      },
+      {
+        "id": "building.started",
+        "weight": 0.75
+      },
+      {
+        "id": "parts_list.created",
+        "weight": 0.75
+      },
+      {
+        "id": "parts_list.ordered",
+        "weight": 0.5
+      },
+      {
+        "id": "parts_list.selected",
+        "weight": 0.5
+      },
+      {
+        "id": "parts_list.used",
+        "weight": 0.25
+      }
+    ],
+    "edges": [
+      {
+        "from": "parts.arrived",
+        "to": "parts.earlier",
+        "type": "sequence",
+        "operator": "AND",
+        "quote": "The parts arrive in batches in a random order, typically they are +/- 2 days earlier/later."
+      },
+      {
+        "from": "parts.arrived",
+        "to": "parts.later",
+        "type": "sequence",
+        "operator": "AND",
+        "quote": "The parts arrive in batches in a random order, typically they are +/- 2 days earlier/later."
+      },
+      {
+        "from": "parts.arrived",
+        "to": "parts.random",
+        "type": "sequence",
+        "operator": "AND",
+        "quote": "The parts arrive in batches in a random order, typically they are +/- 2 days earlier/later."
+      },
+      {
+        "from": "parts_list.selected",
+        "to": "parts.cheapest",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "Always use the cheapest parts."
+      },
+      {
+        "from": "stock.very_low",
+        "to": "parts.fastest",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "if it falls below 3 you reorder again (the fastest)."
+      },
+      {
+        "from": "parts_list.created",
+        "to": "parts.ordered",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "Create a list of parts that you order from each shop."
+      },
+      {
+        "from": "parts.ordered",
+        "to": "parts.selected",
+        "type": "sequence",
+        "operator": "AND",
+        "quote": "Always use the cheapest parts."
+      },
+      {
+        "from": "building.started",
+        "to": "parts.used",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "When the first parts arrive you start building."
+      },
+      {
+        "from": "stock.empty",
+        "to": "mail.sent",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "If it is zero, you write a mail to your friends, complaining about the webshops."
+      },
+      {
+        "from": "parts.arrived",
+        "to": "building.started",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "When the first parts arrive you start building."
+      },
+      {
+        "from": "web_shop.queried",
+        "to": "parts_list.created",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "you have to query them all, and find out how much they can deliver, at which price, and how long it will take."
+      },
+      {
+        "from": "parts_list.created",
+        "to": "parts_list.ordered",
+        "type": "sequence",
+        "operator": "AND",
+        "quote": "Create a list of parts that you order from each shop."
+      },
+      {
+        "from": "parts_list.ordered",
+        "to": "parts_list.selected",
+        "type": "sequence",
+        "operator": "AND",
+        "quote": "Always use the cheapest parts."
+      },
+      {
+        "from": "building.started",
+        "to": "parts_list.used",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "When the first parts arrive you start building."
+      }
+    ],
+    "cycles": []
+  },
+  "dfg_edges": [
+    {
+      "source_id": "sid-BDB60E87-6685-4363-80FE-96667BA9A0F4",
+      "source_label": "send complaint  email to friends",
+      "target_id": "sid-9945F3C5-A6E7-4C45-B670-D80D1523B209",
+      "target_label": "Objekt fertig gebaut",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-317DD003-0844-4A05-8D91-C7A23C105FF7",
+      "source_label": "batch of  parts arrive",
+      "target_id": "sid-EE915C3D-BF7D-4564-8578-01532E23E57F",
+      "target_label": "start building",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-7FEB6065-8357-4530-9BD1-CEDEC53511C2",
+      "source_label": "check quantity",
+      "target_id": "sid-C473D377-EDA2-4CC1-B426-7BA4183319EE",
+      "target_label": "save result to list",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-EE915C3D-BF7D-4564-8578-01532E23E57F",
+      "source_label": "start building",
+      "target_id": "sid-6CC0346E-914B-4CFE-91FD-58D22A6C8BBF",
+      "target_label": "complete building",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "no"
+      ]
+    },
+    {
+      "source_id": "sid-EE915C3D-BF7D-4564-8578-01532E23E57F",
+      "source_label": "start building",
+      "target_id": "sid-AB0ACB05-A881-4717-82FA-448F3D6C845F",
+      "target_label": "Start webshop crawler",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "yes",
+        "ExclusiveGateway",
+        "no",
+        "ExclusiveGateway",
+        "yes",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-EE915C3D-BF7D-4564-8578-01532E23E57F",
+      "source_label": "start building",
+      "target_id": "sid-BDB60E87-6685-4363-80FE-96667BA9A0F4",
+      "target_label": "send complaint  email to friends",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "yes",
+        "ExclusiveGateway",
+        "no",
+        "ExclusiveGateway",
+        "no"
+      ]
+    },
+    {
+      "source_id": "sid-EE915C3D-BF7D-4564-8578-01532E23E57F",
+      "source_label": "start building",
+      "target_id": "sid-AB0ACB05-A881-4717-82FA-448F3D6C845F",
+      "target_label": "Start webshop crawler",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "yes",
+        "ExclusiveGateway",
+        "yes",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-AB0ACB05-A881-4717-82FA-448F3D6C845F",
+      "source_label": "Start webshop crawler",
+      "target_id": "sid-4EF132EB-CE76-4C86-A376-185D65F95AD2",
+      "target_label": "Startup & Load Interface",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-66C1C415-6537-4CE8-8ADB-41F44EAF129C",
+      "source_label": "Enter needed part into list",
+      "target_id": "sid-4F5F9121-F590-49F4-9D97-0485CB3F57F8",
+      "target_label": "",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-66C1C415-6537-4CE8-8ADB-41F44EAF129C",
+      "source_label": "Enter needed part into list",
+      "target_id": "sid-0ABA0666-E7F1-4672-AC85-AA3B80F81B02",
+      "target_label": "search for part",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-F91873CB-6531-40B4-BFA5-CCCA20665977",
+      "source_label": "add offer to list",
+      "target_id": "sid-F91873CB-6531-40B4-BFA5-CCCA20665977",
+      "target_label": "add offer to list",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "yes",
+        "ExclusiveGateway",
+        "yes",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-F91873CB-6531-40B4-BFA5-CCCA20665977",
+      "source_label": "add offer to list",
+      "target_id": "sid-10D2CB0E-616D-4FBE-9DC5-CF00F0367BAC",
+      "target_label": "create final order list",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "yes",
+        "ExclusiveGateway",
+        "no"
+      ]
+    },
+    {
+      "source_id": "sid-F91873CB-6531-40B4-BFA5-CCCA20665977",
+      "source_label": "add offer to list",
+      "target_id": "sid-DB9CE19D-317D-4A4E-968C-76A77AAA6B16",
+      "target_label": "add next best result to list to statisfy amount",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "no"
+      ]
+    },
+    {
+      "source_id": "sid-02E595D9-E155-40C4-B563-A013BA5A63E2",
+      "source_label": "confirm order",
+      "target_id": "sid-AAF0F129-A8D7-416F-96B0-72AADCE0DB3C",
+      "target_label": "order items",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-0ABA0666-E7F1-4672-AC85-AA3B80F81B02",
+      "source_label": "search for part",
+      "target_id": "sid-42515A3F-B87B-4F3F-AEEF-ADA1F554337E",
+      "target_label": "search for part in webshop",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-C473D377-EDA2-4CC1-B426-7BA4183319EE",
+      "source_label": "save result to list",
+      "target_id": "sid-42515A3F-B87B-4F3F-AEEF-ADA1F554337E",
+      "target_label": "search for part in webshop",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "yes"
+      ]
+    },
+    {
+      "source_id": "sid-C473D377-EDA2-4CC1-B426-7BA4183319EE",
+      "source_label": "save result to list",
+      "target_id": "sid-968D4B91-31E9-4BF0-87B1-E8BB35DA1209",
+      "target_label": "select offer type: cheapest/ fastest",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "no",
+        "ExclusiveGateway",
+        "no"
+      ]
+    },
+    {
+      "source_id": "sid-C473D377-EDA2-4CC1-B426-7BA4183319EE",
+      "source_label": "save result to list",
+      "target_id": "sid-0ABA0666-E7F1-4672-AC85-AA3B80F81B02",
+      "target_label": "search for part",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "no",
+        "ExclusiveGateway",
+        "yes"
+      ]
+    },
+    {
+      "source_id": "sid-0807F3B2-A33D-4D1C-B68A-8467ECF9A70B",
+      "source_label": "check delivery time",
+      "target_id": "sid-C473D377-EDA2-4CC1-B426-7BA4183319EE",
+      "target_label": "save result to list",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-4EF132EB-CE76-4C86-A376-185D65F95AD2",
+      "source_label": "Startup & Load Interface",
+      "target_id": "sid-66C1C415-6537-4CE8-8ADB-41F44EAF129C",
+      "target_label": "Enter needed part into list",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-7F630ED8-893A-473E-A60A-14519A446F6E",
+      "source_label": "Parts Needed",
+      "target_id": "sid-AB0ACB05-A881-4717-82FA-448F3D6C845F",
+      "target_label": "Start webshop crawler",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-968D4B91-31E9-4BF0-87B1-E8BB35DA1209",
+      "source_label": "select offer type: cheapest/ fastest",
+      "target_id": "sid-18001CCB-A71E-44A6-BDE7-FE49E6D1F0AB",
+      "target_label": "select fastest",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "yes"
+      ]
+    },
+    {
+      "source_id": "sid-968D4B91-31E9-4BF0-87B1-E8BB35DA1209",
+      "source_label": "select offer type: cheapest/ fastest",
+      "target_id": "sid-FE8BC1CB-0B0D-4674-95EF-18144A982B54",
+      "target_label": "select cheapest",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "no"
+      ]
+    },
+    {
+      "source_id": "sid-FE8BC1CB-0B0D-4674-95EF-18144A982B54",
+      "source_label": "select cheapest",
+      "target_id": "sid-B3EBF96B-24CB-4966-A52C-7BDAA48D4B1D",
+      "target_label": "refacture list by selected offer type",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-B3EBF96B-24CB-4966-A52C-7BDAA48D4B1D",
+      "source_label": "refacture list by selected offer type",
+      "target_id": "sid-F91873CB-6531-40B4-BFA5-CCCA20665977",
+      "target_label": "add offer to list",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-18001CCB-A71E-44A6-BDE7-FE49E6D1F0AB",
+      "source_label": "select fastest",
+      "target_id": "sid-B3EBF96B-24CB-4966-A52C-7BDAA48D4B1D",
+      "target_label": "refacture list by selected offer type",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-42515A3F-B87B-4F3F-AEEF-ADA1F554337E",
+      "source_label": "search for part in webshop",
+      "target_id": "sid-2800D64C-657A-4D7E-9F39-ED6A3E52CD84",
+      "target_label": "check availability",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-42515A3F-B87B-4F3F-AEEF-ADA1F554337E",
+      "source_label": "search for part in webshop",
+      "target_id": "sid-7FEB6065-8357-4530-9BD1-CEDEC53511C2",
+      "target_label": "check quantity",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-42515A3F-B87B-4F3F-AEEF-ADA1F554337E",
+      "source_label": "search for part in webshop",
+      "target_id": "sid-0807F3B2-A33D-4D1C-B68A-8467ECF9A70B",
+      "target_label": "check delivery time",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-10D2CB0E-616D-4FBE-9DC5-CF00F0367BAC",
+      "source_label": "create final order list",
+      "target_id": "sid-02E595D9-E155-40C4-B563-A013BA5A63E2",
+      "target_label": "confirm order",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-DB9CE19D-317D-4A4E-968C-76A77AAA6B16",
+      "source_label": "add next best result to list to statisfy amount",
+      "target_id": "sid-F91873CB-6531-40B4-BFA5-CCCA20665977",
+      "target_label": "add offer to list",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-6CC0346E-914B-4CFE-91FD-58D22A6C8BBF",
+      "source_label": "complete building",
+      "target_id": "sid-9945F3C5-A6E7-4C45-B670-D80D1523B209",
+      "target_label": "Objekt fertig gebaut",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-C67C3CC8-D689-4753-BB67-F378B4888662",
+      "source_label": "order placed",
+      "target_id": "sid-317DD003-0844-4A05-8D91-C7A23C105FF7",
+      "target_label": "batch of  parts arrive",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-AAF0F129-A8D7-416F-96B0-72AADCE0DB3C",
+      "source_label": "order items",
+      "target_id": "sid-C67C3CC8-D689-4753-BB67-F378B4888662",
+      "target_label": "order placed",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-2800D64C-657A-4D7E-9F39-ED6A3E52CD84",
+      "source_label": "check availability",
+      "target_id": "sid-C473D377-EDA2-4CC1-B426-7BA4183319EE",
+      "target_label": "save result to list",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "send complaint  email to friends",
+      "subject_id": "sid-BDB60E87-6685-4363-80FE-96667BA9A0F4",
+      "predicate": "follows",
+      "object": "Objekt fertig gebaut",
+      "object_id": "sid-9945F3C5-A6E7-4C45-B670-D80D1523B209"
+    },
+    {
+      "subject": "batch of  parts arrive",
+      "subject_id": "sid-317DD003-0844-4A05-8D91-C7A23C105FF7",
+      "predicate": "follows",
+      "object": "start building",
+      "object_id": "sid-EE915C3D-BF7D-4564-8578-01532E23E57F"
+    },
+    {
+      "subject": "check quantity",
+      "subject_id": "sid-7FEB6065-8357-4530-9BD1-CEDEC53511C2",
+      "predicate": "follows",
+      "object": "save result to list",
+      "object_id": "sid-C473D377-EDA2-4CC1-B426-7BA4183319EE"
+    },
+    {
+      "subject": "start building",
+      "subject_id": "sid-EE915C3D-BF7D-4564-8578-01532E23E57F",
+      "predicate": "follows",
+      "object": "complete building",
+      "object_id": "sid-6CC0346E-914B-4CFE-91FD-58D22A6C8BBF"
+    },
+    {
+      "subject": "start building",
+      "subject_id": "sid-EE915C3D-BF7D-4564-8578-01532E23E57F",
+      "predicate": "follows",
+      "object": "Start webshop crawler",
+      "object_id": "sid-AB0ACB05-A881-4717-82FA-448F3D6C845F"
+    },
+    {
+      "subject": "start building",
+      "subject_id": "sid-EE915C3D-BF7D-4564-8578-01532E23E57F",
+      "predicate": "follows",
+      "object": "send complaint  email to friends",
+      "object_id": "sid-BDB60E87-6685-4363-80FE-96667BA9A0F4"
+    },
+    {
+      "subject": "start building",
+      "subject_id": "sid-EE915C3D-BF7D-4564-8578-01532E23E57F",
+      "predicate": "follows",
+      "object": "Start webshop crawler",
+      "object_id": "sid-AB0ACB05-A881-4717-82FA-448F3D6C845F"
+    },
+    {
+      "subject": "Start webshop crawler",
+      "subject_id": "sid-AB0ACB05-A881-4717-82FA-448F3D6C845F",
+      "predicate": "follows",
+      "object": "Startup & Load Interface",
+      "object_id": "sid-4EF132EB-CE76-4C86-A376-185D65F95AD2"
+    },
+    {
+      "subject": "Enter needed part into list",
+      "subject_id": "sid-66C1C415-6537-4CE8-8ADB-41F44EAF129C",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "sid-4F5F9121-F590-49F4-9D97-0485CB3F57F8"
+    },
+    {
+      "subject": "Enter needed part into list",
+      "subject_id": "sid-66C1C415-6537-4CE8-8ADB-41F44EAF129C",
+      "predicate": "follows",
+      "object": "search for part",
+      "object_id": "sid-0ABA0666-E7F1-4672-AC85-AA3B80F81B02"
+    },
+    {
+      "subject": "add offer to list",
+      "subject_id": "sid-F91873CB-6531-40B4-BFA5-CCCA20665977",
+      "predicate": "follows",
+      "object": "add offer to list",
+      "object_id": "sid-F91873CB-6531-40B4-BFA5-CCCA20665977"
+    },
+    {
+      "subject": "add offer to list",
+      "subject_id": "sid-F91873CB-6531-40B4-BFA5-CCCA20665977",
+      "predicate": "follows",
+      "object": "create final order list",
+      "object_id": "sid-10D2CB0E-616D-4FBE-9DC5-CF00F0367BAC"
+    },
+    {
+      "subject": "add offer to list",
+      "subject_id": "sid-F91873CB-6531-40B4-BFA5-CCCA20665977",
+      "predicate": "follows",
+      "object": "add next best result to list to statisfy amount",
+      "object_id": "sid-DB9CE19D-317D-4A4E-968C-76A77AAA6B16"
+    },
+    {
+      "subject": "confirm order",
+      "subject_id": "sid-02E595D9-E155-40C4-B563-A013BA5A63E2",
+      "predicate": "follows",
+      "object": "order items",
+      "object_id": "sid-AAF0F129-A8D7-416F-96B0-72AADCE0DB3C"
+    },
+    {
+      "subject": "search for part",
+      "subject_id": "sid-0ABA0666-E7F1-4672-AC85-AA3B80F81B02",
+      "predicate": "follows",
+      "object": "search for part in webshop",
+      "object_id": "sid-42515A3F-B87B-4F3F-AEEF-ADA1F554337E"
+    },
+    {
+      "subject": "save result to list",
+      "subject_id": "sid-C473D377-EDA2-4CC1-B426-7BA4183319EE",
+      "predicate": "follows",
+      "object": "search for part in webshop",
+      "object_id": "sid-42515A3F-B87B-4F3F-AEEF-ADA1F554337E"
+    },
+    {
+      "subject": "save result to list",
+      "subject_id": "sid-C473D377-EDA2-4CC1-B426-7BA4183319EE",
+      "predicate": "follows",
+      "object": "select offer type: cheapest/ fastest",
+      "object_id": "sid-968D4B91-31E9-4BF0-87B1-E8BB35DA1209"
+    },
+    {
+      "subject": "save result to list",
+      "subject_id": "sid-C473D377-EDA2-4CC1-B426-7BA4183319EE",
+      "predicate": "follows",
+      "object": "search for part",
+      "object_id": "sid-0ABA0666-E7F1-4672-AC85-AA3B80F81B02"
+    },
+    {
+      "subject": "check delivery time",
+      "subject_id": "sid-0807F3B2-A33D-4D1C-B68A-8467ECF9A70B",
+      "predicate": "follows",
+      "object": "save result to list",
+      "object_id": "sid-C473D377-EDA2-4CC1-B426-7BA4183319EE"
+    },
+    {
+      "subject": "Startup & Load Interface",
+      "subject_id": "sid-4EF132EB-CE76-4C86-A376-185D65F95AD2",
+      "predicate": "follows",
+      "object": "Enter needed part into list",
+      "object_id": "sid-66C1C415-6537-4CE8-8ADB-41F44EAF129C"
+    },
+    {
+      "subject": "Parts Needed",
+      "subject_id": "sid-7F630ED8-893A-473E-A60A-14519A446F6E",
+      "predicate": "follows",
+      "object": "Start webshop crawler",
+      "object_id": "sid-AB0ACB05-A881-4717-82FA-448F3D6C845F"
+    },
+    {
+      "subject": "select offer type: cheapest/ fastest",
+      "subject_id": "sid-968D4B91-31E9-4BF0-87B1-E8BB35DA1209",
+      "predicate": "follows",
+      "object": "select fastest",
+      "object_id": "sid-18001CCB-A71E-44A6-BDE7-FE49E6D1F0AB"
+    },
+    {
+      "subject": "select offer type: cheapest/ fastest",
+      "subject_id": "sid-968D4B91-31E9-4BF0-87B1-E8BB35DA1209",
+      "predicate": "follows",
+      "object": "select cheapest",
+      "object_id": "sid-FE8BC1CB-0B0D-4674-95EF-18144A982B54"
+    },
+    {
+      "subject": "select cheapest",
+      "subject_id": "sid-FE8BC1CB-0B0D-4674-95EF-18144A982B54",
+      "predicate": "follows",
+      "object": "refacture list by selected offer type",
+      "object_id": "sid-B3EBF96B-24CB-4966-A52C-7BDAA48D4B1D"
+    },
+    {
+      "subject": "refacture list by selected offer type",
+      "subject_id": "sid-B3EBF96B-24CB-4966-A52C-7BDAA48D4B1D",
+      "predicate": "follows",
+      "object": "add offer to list",
+      "object_id": "sid-F91873CB-6531-40B4-BFA5-CCCA20665977"
+    },
+    {
+      "subject": "select fastest",
+      "subject_id": "sid-18001CCB-A71E-44A6-BDE7-FE49E6D1F0AB",
+      "predicate": "follows",
+      "object": "refacture list by selected offer type",
+      "object_id": "sid-B3EBF96B-24CB-4966-A52C-7BDAA48D4B1D"
+    },
+    {
+      "subject": "search for part in webshop",
+      "subject_id": "sid-42515A3F-B87B-4F3F-AEEF-ADA1F554337E",
+      "predicate": "follows",
+      "object": "check availability",
+      "object_id": "sid-2800D64C-657A-4D7E-9F39-ED6A3E52CD84"
+    },
+    {
+      "subject": "search for part in webshop",
+      "subject_id": "sid-42515A3F-B87B-4F3F-AEEF-ADA1F554337E",
+      "predicate": "follows",
+      "object": "check quantity",
+      "object_id": "sid-7FEB6065-8357-4530-9BD1-CEDEC53511C2"
+    },
+    {
+      "subject": "search for part in webshop",
+      "subject_id": "sid-42515A3F-B87B-4F3F-AEEF-ADA1F554337E",
+      "predicate": "follows",
+      "object": "check delivery time",
+      "object_id": "sid-0807F3B2-A33D-4D1C-B68A-8467ECF9A70B"
+    },
+    {
+      "subject": "create final order list",
+      "subject_id": "sid-10D2CB0E-616D-4FBE-9DC5-CF00F0367BAC",
+      "predicate": "follows",
+      "object": "confirm order",
+      "object_id": "sid-02E595D9-E155-40C4-B563-A013BA5A63E2"
+    },
+    {
+      "subject": "add next best result to list to statisfy amount",
+      "subject_id": "sid-DB9CE19D-317D-4A4E-968C-76A77AAA6B16",
+      "predicate": "follows",
+      "object": "add offer to list",
+      "object_id": "sid-F91873CB-6531-40B4-BFA5-CCCA20665977"
+    },
+    {
+      "subject": "complete building",
+      "subject_id": "sid-6CC0346E-914B-4CFE-91FD-58D22A6C8BBF",
+      "predicate": "follows",
+      "object": "Objekt fertig gebaut",
+      "object_id": "sid-9945F3C5-A6E7-4C45-B670-D80D1523B209"
+    },
+    {
+      "subject": "order placed",
+      "subject_id": "sid-C67C3CC8-D689-4753-BB67-F378B4888662",
+      "predicate": "follows",
+      "object": "batch of  parts arrive",
+      "object_id": "sid-317DD003-0844-4A05-8D91-C7A23C105FF7"
+    },
+    {
+      "subject": "order items",
+      "subject_id": "sid-AAF0F129-A8D7-416F-96B0-72AADCE0DB3C",
+      "predicate": "follows",
+      "object": "order placed",
+      "object_id": "sid-C67C3CC8-D689-4753-BB67-F378B4888662"
+    },
+    {
+      "subject": "check availability",
+      "subject_id": "sid-2800D64C-657A-4D7E-9F39-ED6A3E52CD84",
+      "predicate": "follows",
+      "object": "save result to list",
+      "object_id": "sid-C473D377-EDA2-4CC1-B426-7BA4183319EE"
+    }
+  ],
+  "matches": {
+    "Enter needed part into list": {
+      "match": "parts_list.used",
+      "score": 0.567
+    },
+    "Objekt fertig gebaut": {
+      "match": "building.started",
+      "score": 0.4349
+    },
+    "Parts Needed": {
+      "match": "parts.used",
+      "score": 0.7423
+    },
+    "Start webshop crawler": {
+      "match": "web_shop.queried",
+      "score": 0.6153
+    },
+    "Startup & Load Interface": {
+      "match": "building.started",
+      "score": 0.1809
+    },
+    "add next best result to list to statisfy amount": {
+      "match": "parts_list.ordered",
+      "score": 0.3032
+    },
+    "add offer to list": {
+      "match": "parts_list.selected",
+      "score": 0.3726
+    },
+    "batch of  parts arrive": {
+      "match": "parts.arrived",
+      "score": 0.7206
+    },
+    "check availability": {
+      "match": "stock.empty",
+      "score": 0.2264
+    },
+    "check delivery time": {
+      "match": "parts.arrived",
+      "score": 0.2106
+    },
+    "check quantity": {
+      "match": "web_shop.queried",
+      "score": 0.2559
+    },
+    "complete building": {
+      "match": "building.started",
+      "score": 0.5708
+    },
+    "confirm order": {
+      "match": "parts.ordered",
+      "score": 0.3953
+    },
+    "create final order list": {
+      "match": "parts_list.created",
+      "score": 0.4573
+    },
+    "order items": {
+      "match": "parts.ordered",
+      "score": 0.5845
+    },
+    "order placed": {
+      "match": "parts.ordered",
+      "score": 0.5186
+    },
+    "refacture list by selected offer type": {
+      "match": "parts_list.selected",
+      "score": 0.441
+    },
+    "save result to list": {
+      "match": "parts_list.created",
+      "score": 0.3525
+    },
+    "search for part": {
+      "match": "parts.random",
+      "score": 0.4601
+    },
+    "search for part in webshop": {
+      "match": "web_shop.queried",
+      "score": 0.597
+    },
+    "select cheapest": {
+      "match": "parts.cheapest",
+      "score": 0.6022
+    },
+    "select fastest": {
+      "match": "parts.fastest",
+      "score": 0.6505
+    },
+    "select offer type: cheapest/ fastest": {
+      "match": "parts.fastest",
+      "score": 0.4096
+    },
+    "send complaint  email to friends": {
+      "match": "mail.sent",
+      "score": 0.3747
+    },
+    "start building": {
+      "match": "building.started",
+      "score": 0.7847
+    }
+  },
+  "process_graph": [
+    {
+      "from": "mail.sent",
+      "to": "building.started",
+      "activity_from": "send complaint  email to friends",
+      "activity_to": "Objekt fertig gebaut"
+    },
+    {
+      "from": "parts.arrived",
+      "to": "building.started",
+      "activity_from": "batch of  parts arrive",
+      "activity_to": "start building"
+    },
+    {
+      "from": "web_shop.queried",
+      "to": "parts_list.created",
+      "activity_from": "check quantity",
+      "activity_to": "save result to list"
+    },
+    {
+      "from": "building.started",
+      "to": "building.started",
+      "activity_from": "start building",
+      "activity_to": "complete building"
+    },
+    {
+      "from": "building.started",
+      "to": "web_shop.queried",
+      "activity_from": "start building",
+      "activity_to": "Start webshop crawler"
+    },
+    {
+      "from": "building.started",
+      "to": "mail.sent",
+      "activity_from": "start building",
+      "activity_to": "send complaint  email to friends"
+    },
+    {
+      "from": "building.started",
+      "to": "web_shop.queried",
+      "activity_from": "start building",
+      "activity_to": "Start webshop crawler"
+    },
+    {
+      "from": "web_shop.queried",
+      "to": "building.started",
+      "activity_from": "Start webshop crawler",
+      "activity_to": "Startup & Load Interface"
+    },
+    {
+      "from": "parts_list.used",
+      "to": "parts.random",
+      "activity_from": "Enter needed part into list",
+      "activity_to": "search for part"
+    },
+    {
+      "from": "parts_list.selected",
+      "to": "parts_list.selected",
+      "activity_from": "add offer to list",
+      "activity_to": "add offer to list"
+    },
+    {
+      "from": "parts_list.selected",
+      "to": "parts_list.created",
+      "activity_from": "add offer to list",
+      "activity_to": "create final order list"
+    },
+    {
+      "from": "parts_list.selected",
+      "to": "parts_list.ordered",
+      "activity_from": "add offer to list",
+      "activity_to": "add next best result to list to statisfy amount"
+    },
+    {
+      "from": "parts.ordered",
+      "to": "parts.ordered",
+      "activity_from": "confirm order",
+      "activity_to": "order items"
+    },
+    {
+      "from": "parts.random",
+      "to": "web_shop.queried",
+      "activity_from": "search for part",
+      "activity_to": "search for part in webshop"
+    },
+    {
+      "from": "parts_list.created",
+      "to": "web_shop.queried",
+      "activity_from": "save result to list",
+      "activity_to": "search for part in webshop"
+    },
+    {
+      "from": "parts_list.created",
+      "to": "parts.fastest",
+      "activity_from": "save result to list",
+      "activity_to": "select offer type: cheapest/ fastest"
+    },
+    {
+      "from": "parts_list.created",
+      "to": "parts.random",
+      "activity_from": "save result to list",
+      "activity_to": "search for part"
+    },
+    {
+      "from": "parts.arrived",
+      "to": "parts_list.created",
+      "activity_from": "check delivery time",
+      "activity_to": "save result to list"
+    },
+    {
+      "from": "building.started",
+      "to": "parts_list.used",
+      "activity_from": "Startup & Load Interface",
+      "activity_to": "Enter needed part into list"
+    },
+    {
+      "from": "parts.used",
+      "to": "web_shop.queried",
+      "activity_from": "Parts Needed",
+      "activity_to": "Start webshop crawler"
+    },
+    {
+      "from": "parts.fastest",
+      "to": "parts.fastest",
+      "activity_from": "select offer type: cheapest/ fastest",
+      "activity_to": "select fastest"
+    },
+    {
+      "from": "parts.fastest",
+      "to": "parts.cheapest",
+      "activity_from": "select offer type: cheapest/ fastest",
+      "activity_to": "select cheapest"
+    },
+    {
+      "from": "parts.cheapest",
+      "to": "parts_list.selected",
+      "activity_from": "select cheapest",
+      "activity_to": "refacture list by selected offer type"
+    },
+    {
+      "from": "parts_list.selected",
+      "to": "parts_list.selected",
+      "activity_from": "refacture list by selected offer type",
+      "activity_to": "add offer to list"
+    },
+    {
+      "from": "parts.fastest",
+      "to": "parts_list.selected",
+      "activity_from": "select fastest",
+      "activity_to": "refacture list by selected offer type"
+    },
+    {
+      "from": "web_shop.queried",
+      "to": "stock.empty",
+      "activity_from": "search for part in webshop",
+      "activity_to": "check availability"
+    },
+    {
+      "from": "web_shop.queried",
+      "to": "web_shop.queried",
+      "activity_from": "search for part in webshop",
+      "activity_to": "check quantity"
+    },
+    {
+      "from": "web_shop.queried",
+      "to": "parts.arrived",
+      "activity_from": "search for part in webshop",
+      "activity_to": "check delivery time"
+    },
+    {
+      "from": "parts_list.created",
+      "to": "parts.ordered",
+      "activity_from": "create final order list",
+      "activity_to": "confirm order"
+    },
+    {
+      "from": "parts_list.ordered",
+      "to": "parts_list.selected",
+      "activity_from": "add next best result to list to statisfy amount",
+      "activity_to": "add offer to list"
+    },
+    {
+      "from": "building.started",
+      "to": "building.started",
+      "activity_from": "complete building",
+      "activity_to": "Objekt fertig gebaut"
+    },
+    {
+      "from": "parts.ordered",
+      "to": "parts.arrived",
+      "activity_from": "order placed",
+      "activity_to": "batch of  parts arrive"
+    },
+    {
+      "from": "parts.ordered",
+      "to": "parts.ordered",
+      "activity_from": "order items",
+      "activity_to": "order placed"
+    },
+    {
+      "from": "stock.empty",
+      "to": "parts_list.created",
+      "activity_from": "check availability",
+      "activity_to": "save result to list"
+    }
+  ],
+  "alignment": {
+    "parts.earlier": {
+      "operator": "AND",
+      "quote": "The parts arrive in batches in a random order, typically they are +/- 2 days earlier/later.",
+      "terms": [
+        {
+          "term": "parts.arrived",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['parts.earlier']",
+          "missing": [
+            "parts.earlier"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE"
+    },
+    "parts.later": {
+      "operator": "AND",
+      "quote": "The parts arrive in batches in a random order, typically they are +/- 2 days earlier/later.",
+      "terms": [
+        {
+          "term": "parts.arrived",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['parts.later']",
+          "missing": [
+            "parts.later"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE"
+    },
+    "parts.random": {
+      "operator": "AND",
+      "quote": "The parts arrive in batches in a random order, typically they are +/- 2 days earlier/later.",
+      "terms": [
+        {
+          "term": "parts.arrived",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED"
+    },
+    "parts.cheapest": {
+      "operator": "AND",
+      "quote": "Always use the cheapest parts.",
+      "terms": [
+        {
+          "term": "parts_list.selected",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED"
+    },
+    "parts.fastest": {
+      "operator": "AND",
+      "quote": "if it falls below 3 you reorder again (the fastest).",
+      "terms": [
+        {
+          "term": "stock.very_low",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['stock.very_low']",
+          "missing": [
+            "stock.very_low"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE"
+    },
+    "parts.ordered": {
+      "operator": "AND",
+      "quote": "Create a list of parts that you order from each shop.",
+      "terms": [
+        {
+          "term": "parts_list.created",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED"
+    },
+    "parts.selected": {
+      "operator": "AND",
+      "quote": "Always use the cheapest parts.",
+      "terms": [
+        {
+          "term": "parts.ordered",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['parts.selected']",
+          "missing": [
+            "parts.selected"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE"
+    },
+    "parts.used": {
+      "operator": "AND",
+      "quote": "When the first parts arrive you start building.",
+      "terms": [
+        {
+          "term": "building.started",
+          "status": "VIOLATED",
+          "reason": "both states matched, no path in process",
+          "missing": []
+        }
+      ],
+      "status": "VIOLATED"
+    },
+    "mail.sent": {
+      "operator": "AND",
+      "quote": "If it is zero, you write a mail to your friends, complaining about the webshops.",
+      "terms": [
+        {
+          "term": "stock.empty",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED"
+    },
+    "building.started": {
+      "operator": "AND",
+      "quote": "When the first parts arrive you start building.",
+      "terms": [
+        {
+          "term": "parts.arrived",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED"
+    },
+    "parts_list.created": {
+      "operator": "AND",
+      "quote": "you have to query them all, and find out how much they can deliver, at which price, and how long it will take.",
+      "terms": [
+        {
+          "term": "web_shop.queried",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED"
+    },
+    "parts_list.ordered": {
+      "operator": "AND",
+      "quote": "Create a list of parts that you order from each shop.",
+      "terms": [
+        {
+          "term": "parts_list.created",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED"
+    },
+    "parts_list.selected": {
+      "operator": "AND",
+      "quote": "Always use the cheapest parts.",
+      "terms": [
+        {
+          "term": "parts_list.ordered",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED"
+    },
+    "parts_list.used": {
+      "operator": "AND",
+      "quote": "When the first parts arrive you start building.",
+      "terms": [
+        {
+          "term": "building.started",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED"
+    }
+  },
+  "report": {
+    "summary": {
+      "ecarts": 1,
+      "non_verifiable": 4,
+      "conforme": 9
+    },
+    "ecarts": [
+      {
+        "root_cause": "start building",
+        "quote": "When the first parts arrive you start building.",
+        "explanation": "L'écart se produit entre les activités \"start building\" et \"Parts Needed\". Selon le texte source, \"start building\" doit avoir lieu avant \"Parts Needed\". Cela est justifié par la citation : \"When the first parts arrive you start building.\"\n\nCela signifie que la condition requise avant \"Parts Needed\" est que \"start building\" ait déjà eu lieu. Cependant, dans le processus observé, il n'y a pas d'indication que \"start building\" précède effectivement \"Parts Needed\".",
+        "affected_activities": [
+          "Parts Needed"
+        ],
+        "affected_count": 1
+      }
+    ],
+    "non_verifiable": [
+      {
+        "root_cause": "(aucune activite du processus ne correspond clairement a cela)",
+        "quote": "The parts arrive in batches in a random order, typically they are +/- 2 days earlier/later.",
+        "explanation": "Il est impossible de vérifier si l'exigence est respectée ou non avant que l'activité \"aucune activité du processus ne correspond clairement à cela\" se produise. C'est parce qu'une condition précise doit être déjà remplie avant cette activité.\n\nCette condition n'est pas clairement décrite, mais on sait qu'elle est liée à la citation : \"The parts arrive in batches in a random order, typically they are +/- 2 days earlier/later.\"\n\nEn d'autres termes, il y a une condition qui doit être remplie avant cette activité, mais on ne sait pas exactement ce que c'est.",
+        "affected_activities": [
+          "(aucune activite du processus ne correspond clairement a cela)"
+        ],
+        "affected_count": 1
+      },
+      {
+        "root_cause": "(aucune activite du processus ne correspond clairement a cela)",
+        "quote": "The parts arrive in batches in a random order, typically they are +/- 2 days earlier/later.",
+        "explanation": "La condition précise qui doit être remplie avant que l'activité \"aucune activité du processus ne correspond clairement à cela\" puisse se produire n'est pas clairement décrite. Cependant, il est mentionné que \"The parts arrive in batches in a random order, typically they are +/- 2 days earlier/later.\"\n\nCela signifie qu'une condition est exigée avant cette étape, mais son sens précis n'est pas décrit dans la citation. Il est donc impossible de déterminer si cette condition est respectée ou non.\n\nDans ce cas, il est impossible de vérifier si l'exigence est respectée ou non, dans un sens comme dans l'autre, car l'activité \"aucune activité du processus ne correspond clairement à cela\" ne peut pas être vérifiée.",
+        "affected_activities": [
+          "(aucune activite du processus ne correspond clairement a cela)"
+        ],
+        "affected_count": 1
+      },
+      {
+        "root_cause": "(aucune activite du processus ne correspond clairement a cela)",
+        "quote": "if it falls below 3 you reorder again (the fastest).",
+        "explanation": "Il y a une condition précise qui doit être remplie avant que l'activité \"select fastest\" puisse se produire. Cette condition est mentionnée dans le texte source : \"if it falls below 3 you reorder again (the fastest).\"\n\nCela signifie que la condition est exigée, mais on ne sait pas exactement ce qu'elle signifie. La citation ne décrit pas explicitement cette condition, elle ne nous dit que cette condition est exigée avant l'activité \"select fastest\".\n\nIl est impossible de vérifier si cette condition est respectée ou non, car on ne sait pas ce qu'elle signifie. L'activité \"select fastest\" n'est pas clairement liée à cette condition, et on ne peut pas déduire son sens à partir des informations fournies.",
+        "affected_activities": [
+          "select fastest"
+        ],
+        "affected_count": 1
+      },
+      {
+        "root_cause": "(aucune activite du processus ne correspond clairement a cela)",
+        "quote": "Always use the cheapest parts.",
+        "explanation": "Il est impossible de vérifier si l'exigence \"Always use the cheapest parts\" est respectée ou non, car cette condition n'a pu être associée à aucune activité claire du processus observé. \n\nCette condition est exigée avant que l'activité \"Aucune activité du processus ne correspond clairement à cela\" puisse se produire.",
+        "affected_activities": [
+          "(aucune activite du processus ne correspond clairement a cela)"
+        ],
+        "affected_count": 1
+      }
+    ],
+    "conforme": [
+      {
+        "target": "search for part",
+        "term": "batch of  parts arrive"
+      },
+      {
+        "target": "select cheapest",
+        "term": "refacture list by selected offer type"
+      },
+      {
+        "target": "order items",
+        "term": "create final order list"
+      },
+      {
+        "target": "send complaint  email to friends",
+        "term": "check availability"
+      },
+      {
+        "target": "start building",
+        "term": "batch of  parts arrive"
+      },
+      {
+        "target": "create final order list",
+        "term": "Start webshop crawler"
+      },
+      {
+        "target": "add next best result to list to statisfy amount",
+        "term": "create final order list"
+      },
+      {
+        "target": "refacture list by selected offer type",
+        "term": "add next best result to list to statisfy amount"
+      },
+      {
+        "target": "Enter needed part into list",
+        "term": "start building"
+      }
+    ],
+    "piece_jointe_alignement_brut": {
+      "parts.earlier": {
+        "operator": "AND",
+        "quote": "The parts arrive in batches in a random order, typically they are +/- 2 days earlier/later.",
+        "terms": [
+          {
+            "term": "parts.arrived",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['parts.earlier']",
+            "missing": [
+              "parts.earlier"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE"
+      },
+      "parts.later": {
+        "operator": "AND",
+        "quote": "The parts arrive in batches in a random order, typically they are +/- 2 days earlier/later.",
+        "terms": [
+          {
+            "term": "parts.arrived",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['parts.later']",
+            "missing": [
+              "parts.later"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE"
+      },
+      "parts.random": {
+        "operator": "AND",
+        "quote": "The parts arrive in batches in a random order, typically they are +/- 2 days earlier/later.",
+        "terms": [
+          {
+            "term": "parts.arrived",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED"
+      },
+      "parts.cheapest": {
+        "operator": "AND",
+        "quote": "Always use the cheapest parts.",
+        "terms": [
+          {
+            "term": "parts_list.selected",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED"
+      },
+      "parts.fastest": {
+        "operator": "AND",
+        "quote": "if it falls below 3 you reorder again (the fastest).",
+        "terms": [
+          {
+            "term": "stock.very_low",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['stock.very_low']",
+            "missing": [
+              "stock.very_low"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE"
+      },
+      "parts.ordered": {
+        "operator": "AND",
+        "quote": "Create a list of parts that you order from each shop.",
+        "terms": [
+          {
+            "term": "parts_list.created",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED"
+      },
+      "parts.selected": {
+        "operator": "AND",
+        "quote": "Always use the cheapest parts.",
+        "terms": [
+          {
+            "term": "parts.ordered",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['parts.selected']",
+            "missing": [
+              "parts.selected"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE"
+      },
+      "parts.used": {
+        "operator": "AND",
+        "quote": "When the first parts arrive you start building.",
+        "terms": [
+          {
+            "term": "building.started",
+            "status": "VIOLATED",
+            "reason": "both states matched, no path in process",
+            "missing": []
+          }
+        ],
+        "status": "VIOLATED"
+      },
+      "mail.sent": {
+        "operator": "AND",
+        "quote": "If it is zero, you write a mail to your friends, complaining about the webshops.",
+        "terms": [
+          {
+            "term": "stock.empty",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED"
+      },
+      "building.started": {
+        "operator": "AND",
+        "quote": "When the first parts arrive you start building.",
+        "terms": [
+          {
+            "term": "parts.arrived",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED"
+      },
+      "parts_list.created": {
+        "operator": "AND",
+        "quote": "you have to query them all, and find out how much they can deliver, at which price, and how long it will take.",
+        "terms": [
+          {
+            "term": "web_shop.queried",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED"
+      },
+      "parts_list.ordered": {
+        "operator": "AND",
+        "quote": "Create a list of parts that you order from each shop.",
+        "terms": [
+          {
+            "term": "parts_list.created",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED"
+      },
+      "parts_list.selected": {
+        "operator": "AND",
+        "quote": "Always use the cheapest parts.",
+        "terms": [
+          {
+            "term": "parts_list.ordered",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED"
+      },
+      "parts_list.used": {
+        "operator": "AND",
+        "quote": "When the first parts arrive you start building.",
+        "terms": [
+          {
+            "term": "building.started",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED"
+      }
+    }
+  },
+  "errors": []
+}

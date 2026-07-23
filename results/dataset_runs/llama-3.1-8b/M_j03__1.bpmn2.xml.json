@@ -1,0 +1,1095 @@
+{
+  "case_name": "M_j03",
+  "text": "Category: Manufacturing\nTitle: Contract\n\nFor your contract project you need parts from several web shops. In order to\nfind out which web shop has the right parts, you have to query them all, and\nfind out how much they can deliver, at which price, and how long it will take.\n\nCreate a list of parts that you order from each shop. If one shop has not enough \nparts, order from several shops. Always use the cheapest parts.\n\nThe parts arrive in batches in a random order, typically they are +/- 2 days\nearlier/later.  \n\nWhen the first parts arrive you start building. Sometimes you have to reorder parts.\nIf your stock (for a single part) falls below 5, you reorder (the cheapest), if it\nfalls below 3 you reorder again (the fastest). If it is zero, you write a mail\nto your friends, complaining about the webshops.\n",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "llama-3.1-8b",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "llama-3.1-8b",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/text_and_bpmn/bpmn/M_j03/1.bpmn2.xml",
+  "candidates": {
+    "part": [
+      "ordered",
+      "delivered",
+      "reordered",
+      "in_stock",
+      "low_stock",
+      "out_of_stock"
+    ],
+    "shop": [
+      "queried",
+      "selected"
+    ],
+    "stock": [
+      "low",
+      "critical"
+    ],
+    "mail": [
+      "sent"
+    ]
+  },
+  "validation_report": {
+    "part": {
+      "f_lex": "INDETERMINATE",
+      "kept": true
+    },
+    "shop": {
+      "f_lex": "ENTITY",
+      "kept": true
+    },
+    "stock": {
+      "f_lex": "INDETERMINATE",
+      "kept": true
+    },
+    "mail": {
+      "f_lex": "ENTITY",
+      "kept": true
+    }
+  },
+  "state_space": {
+    "part": [
+      "ordered",
+      "delivered",
+      "reordered",
+      "in_stock",
+      "low_stock",
+      "out_of_stock"
+    ],
+    "shop": [
+      "queried",
+      "selected"
+    ],
+    "stock": [
+      "low",
+      "critical"
+    ],
+    "mail": [
+      "sent"
+    ]
+  },
+  "raw_preconditions": {
+    "part.ordered": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "part.delivered": {
+      "precondition": "part.ordered AND shop.queried AND shop.selected",
+      "quote": "you have to query them all, and find out how much they can deliver, at which price, and how long it will take."
+    },
+    "part.reordered": {
+      "precondition": "part.delivered AND part.in_stock",
+      "quote": "If one shop has not enough parts, order from several shops."
+    },
+    "part.in_stock": {
+      "precondition": "part.delivered",
+      "quote": null
+    },
+    "part.low_stock": {
+      "precondition": "part.in_stock AND stock.low",
+      "quote": "if it falls below 5, you reorder (the cheapest)"
+    },
+    "part.out_of_stock": {
+      "precondition": "part.in_stock AND stock.critical",
+      "quote": null
+    },
+    "shop.queried": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "shop.selected": {
+      "precondition": "shop.queried",
+      "quote": null
+    },
+    "stock.low": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "stock.critical": {
+      "precondition": "stock.low",
+      "quote": null
+    },
+    "mail.sent": {
+      "precondition": "part.out_of_stock",
+      "quote": "If it is zero, you write a mail to your friends, complaining about the webshops."
+    }
+  },
+  "validated_preconditions": {
+    "part.ordered": {
+      "precondition": "INITIAL",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "part.delivered": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "DOWNGRADED",
+      "reason": "mutual exclusivity violation: two states of the same entity in one conjunction",
+      "retried": true
+    },
+    "part.reordered": {
+      "precondition": "part.in_stock OR part.low_stock",
+      "quote": "If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below 3 you reorder again (the fastest).",
+      "status": "OK",
+      "reason": null,
+      "retried": true
+    },
+    "part.in_stock": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "DOWNGRADED",
+      "reason": "mutual exclusivity violation: two states of the same entity in one conjunction",
+      "retried": true
+    },
+    "part.low_stock": {
+      "precondition": "part.in_stock",
+      "quote": "When the first parts arrive you start building.",
+      "status": "OK",
+      "reason": null,
+      "retried": true
+    },
+    "part.out_of_stock": {
+      "precondition": "part.in_stock AND stock.low",
+      "quote": "If it is zero, you write a mail to your friends, complaining about the webshops.",
+      "status": "OK",
+      "reason": null,
+      "retried": true
+    },
+    "shop.queried": {
+      "precondition": "INITIAL",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "shop.selected": {
+      "precondition": "shop.queried AND part.ordered",
+      "quote": "In order to find out which web shop has the right parts, you have to query them all, and find out how much they can deliver, at which price, and how long it will take.",
+      "status": "OK",
+      "reason": null,
+      "retried": true
+    },
+    "stock.low": {
+      "precondition": "INITIAL",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "stock.critical": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "DOWNGRADED",
+      "reason": "references unknown state(s): ['stock.low_stock']",
+      "retried": true
+    },
+    "mail.sent": {
+      "precondition": "part.out_of_stock",
+      "quote": "If it is zero, you write a mail to your friends, complaining about the webshops.",
+      "status": "OK",
+      "reason": null
+    }
+  },
+  "precondition_cycles": [],
+  "reference_graph": {
+    "nodes": [
+      {
+        "id": "part.ordered",
+        "weight": 0.333
+      },
+      {
+        "id": "part.delivered",
+        "weight": 0.0
+      },
+      {
+        "id": "part.reordered",
+        "weight": 0.667
+      },
+      {
+        "id": "part.in_stock",
+        "weight": 1.0
+      },
+      {
+        "id": "part.low_stock",
+        "weight": 0.667
+      },
+      {
+        "id": "part.out_of_stock",
+        "weight": 1.0
+      },
+      {
+        "id": "shop.queried",
+        "weight": 0.333
+      },
+      {
+        "id": "shop.selected",
+        "weight": 0.667
+      },
+      {
+        "id": "stock.low",
+        "weight": 0.333
+      },
+      {
+        "id": "stock.critical",
+        "weight": 0.0
+      },
+      {
+        "id": "mail.sent",
+        "weight": 0.333
+      }
+    ],
+    "edges": [
+      {
+        "from": "part.in_stock",
+        "to": "part.reordered",
+        "type": "sequence",
+        "operator": "OR",
+        "quote": "If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below 3 you reorder again (the fastest)."
+      },
+      {
+        "from": "part.low_stock",
+        "to": "part.reordered",
+        "type": "sequence",
+        "operator": "OR",
+        "quote": "If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below 3 you reorder again (the fastest)."
+      },
+      {
+        "from": "part.in_stock",
+        "to": "part.low_stock",
+        "type": "sequence",
+        "operator": "AND",
+        "quote": "When the first parts arrive you start building."
+      },
+      {
+        "from": "part.in_stock",
+        "to": "part.out_of_stock",
+        "type": "sequence",
+        "operator": "AND",
+        "quote": "If it is zero, you write a mail to your friends, complaining about the webshops."
+      },
+      {
+        "from": "stock.low",
+        "to": "part.out_of_stock",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "If it is zero, you write a mail to your friends, complaining about the webshops."
+      },
+      {
+        "from": "shop.queried",
+        "to": "shop.selected",
+        "type": "sequence",
+        "operator": "AND",
+        "quote": "In order to find out which web shop has the right parts, you have to query them all, and find out how much they can deliver, at which price, and how long it will take."
+      },
+      {
+        "from": "part.ordered",
+        "to": "shop.selected",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "In order to find out which web shop has the right parts, you have to query them all, and find out how much they can deliver, at which price, and how long it will take."
+      },
+      {
+        "from": "part.out_of_stock",
+        "to": "mail.sent",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "If it is zero, you write a mail to your friends, complaining about the webshops."
+      }
+    ],
+    "cycles": []
+  },
+  "dfg_edges": [
+    {
+      "source_id": "sid-AB731B69-BD12-4A09-9484-60A763619F86",
+      "source_label": "reorder fastest",
+      "target_id": "sid-6BD1B85E-1926-462D-95F2-ED447E4D7614",
+      "target_label": "process finished",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-92C6F37D-409E-471C-9C2E-D17730CF4D75",
+      "source_label": "crawling process started",
+      "target_id": "sid-E0A947F8-8B2D-4806-A9EA-FA6D3DA880BE",
+      "target_label": " check quantity/price/delivery time of parts",
+      "gateway_context": [
+        "ParallelGateway",
+        "web shop 3"
+      ]
+    },
+    {
+      "source_id": "sid-92C6F37D-409E-471C-9C2E-D17730CF4D75",
+      "source_label": "crawling process started",
+      "target_id": "sid-CF55D20F-A713-432F-9043-D5D432C82E14",
+      "target_label": " check quantity/price/delivery time of parts",
+      "gateway_context": [
+        "ParallelGateway",
+        "web shop 2"
+      ]
+    },
+    {
+      "source_id": "sid-92C6F37D-409E-471C-9C2E-D17730CF4D75",
+      "source_label": "crawling process started",
+      "target_id": "sid-0C4A917B-62A5-4E35-ADEB-8685C786E95F",
+      "target_label": " check quantity/price/delivery time of parts",
+      "gateway_context": [
+        "ParallelGateway",
+        "web shop 1"
+      ]
+    },
+    {
+      "source_id": "sid-160BAED8-0436-4F90-BA45-C492AD750452",
+      "source_label": "Sub-process web crawling",
+      "target_id": "sid-35D683F2-7B28-4F63-8337-540211FA30B8",
+      "target_label": "search for matching parts",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-5DC31216-967E-4267-B5D0-C68852A6F8D7",
+      "source_label": "Start building",
+      "target_id": "sid-C349B1A6-94CB-4A96-8756-A9C373B911EB",
+      "target_label": "write mail to friends and complain about webshops",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "0"
+      ]
+    },
+    {
+      "source_id": "sid-5DC31216-967E-4267-B5D0-C68852A6F8D7",
+      "source_label": "Start building",
+      "target_id": "sid-AB731B69-BD12-4A09-9484-60A763619F86",
+      "target_label": "reorder fastest",
+      "gateway_context": [
+        "ExclusiveGateway",
+        ">0 && <= 3"
+      ]
+    },
+    {
+      "source_id": "sid-5DC31216-967E-4267-B5D0-C68852A6F8D7",
+      "source_label": "Start building",
+      "target_id": "sid-F14FDCB7-64C1-4484-9FB8-926199D5FB68",
+      "target_label": "reorder cheapest",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "> 3 && <= 5"
+      ]
+    },
+    {
+      "source_id": "sid-61F84AD3-96DB-4C5B-BC8D-C2336885AE8C",
+      "source_label": "Arrival of parts",
+      "target_id": "sid-5DC31216-967E-4267-B5D0-C68852A6F8D7",
+      "target_label": "Start building",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-F14FDCB7-64C1-4484-9FB8-926199D5FB68",
+      "source_label": "reorder cheapest",
+      "target_id": "sid-6BD1B85E-1926-462D-95F2-ED447E4D7614",
+      "target_label": "process finished",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-8AEF7A47-E0B7-49FA-B291-9259EDE67551",
+      "source_label": "Order parts",
+      "target_id": "sid-61F84AD3-96DB-4C5B-BC8D-C2336885AE8C",
+      "target_label": "Arrival of parts",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-A080BE15-320F-45A3-B1E2-90AB3EE32E20",
+      "source_label": "contract project",
+      "target_id": "sid-0DF0A790-609E-4245-A95C-8252954A9783",
+      "target_label": "create a list of parts ",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-0DF0A790-609E-4245-A95C-8252954A9783",
+      "source_label": "create a list of parts ",
+      "target_id": "sid-459A45E2-8C7A-48AA-8A92-5FA38A53B8EA",
+      "target_label": "choose web shops to crawl",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-CF55D20F-A713-432F-9043-D5D432C82E14",
+      "source_label": " check quantity/price/delivery time of parts",
+      "target_id": "sid-53A6AF1E-28AA-4A5C-BCDA-6EB180F31199",
+      "target_label": "create list of parts available in the web shops",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-459A45E2-8C7A-48AA-8A92-5FA38A53B8EA",
+      "source_label": "choose web shops to crawl",
+      "target_id": "sid-6687733D-C6CE-43C9-AD65-2337EE5CE8EB",
+      "target_label": "start crawling web shops for parts",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-35D683F2-7B28-4F63-8337-540211FA30B8",
+      "source_label": "search for matching parts",
+      "target_id": "sid-459A45E2-8C7A-48AA-8A92-5FA38A53B8EA",
+      "target_label": "choose web shops to crawl",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "no"
+      ]
+    },
+    {
+      "source_id": "sid-35D683F2-7B28-4F63-8337-540211FA30B8",
+      "source_label": "search for matching parts",
+      "target_id": "sid-8AEF7A47-E0B7-49FA-B291-9259EDE67551",
+      "target_label": "Order parts",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "yes"
+      ]
+    },
+    {
+      "source_id": "sid-35D683F2-7B28-4F63-8337-540211FA30B8",
+      "source_label": "search for matching parts",
+      "target_id": "sid-B1C06452-D33C-499A-A3C9-A1864F1A4727",
+      "target_label": "",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-0C4A917B-62A5-4E35-ADEB-8685C786E95F",
+      "source_label": " check quantity/price/delivery time of parts",
+      "target_id": "sid-53A6AF1E-28AA-4A5C-BCDA-6EB180F31199",
+      "target_label": "create list of parts available in the web shops",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-6687733D-C6CE-43C9-AD65-2337EE5CE8EB",
+      "source_label": "start crawling web shops for parts",
+      "target_id": "sid-160BAED8-0436-4F90-BA45-C492AD750452",
+      "target_label": "Sub-process web crawling",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-C349B1A6-94CB-4A96-8756-A9C373B911EB",
+      "source_label": "write mail to friends and complain about webshops",
+      "target_id": "sid-6BD1B85E-1926-462D-95F2-ED447E4D7614",
+      "target_label": "process finished",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-E0A947F8-8B2D-4806-A9EA-FA6D3DA880BE",
+      "source_label": " check quantity/price/delivery time of parts",
+      "target_id": "sid-53A6AF1E-28AA-4A5C-BCDA-6EB180F31199",
+      "target_label": "create list of parts available in the web shops",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-53A6AF1E-28AA-4A5C-BCDA-6EB180F31199",
+      "source_label": "create list of parts available in the web shops",
+      "target_id": "sid-3E6107E6-41B9-4F6B-A738-2E3BD2946825",
+      "target_label": "crawling finished",
+      "gateway_context": []
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "reorder fastest",
+      "subject_id": "sid-AB731B69-BD12-4A09-9484-60A763619F86",
+      "predicate": "follows",
+      "object": "process finished",
+      "object_id": "sid-6BD1B85E-1926-462D-95F2-ED447E4D7614"
+    },
+    {
+      "subject": "crawling process started",
+      "subject_id": "sid-92C6F37D-409E-471C-9C2E-D17730CF4D75",
+      "predicate": "follows",
+      "object": " check quantity/price/delivery time of parts",
+      "object_id": "sid-E0A947F8-8B2D-4806-A9EA-FA6D3DA880BE"
+    },
+    {
+      "subject": "crawling process started",
+      "subject_id": "sid-92C6F37D-409E-471C-9C2E-D17730CF4D75",
+      "predicate": "follows",
+      "object": " check quantity/price/delivery time of parts",
+      "object_id": "sid-CF55D20F-A713-432F-9043-D5D432C82E14"
+    },
+    {
+      "subject": "crawling process started",
+      "subject_id": "sid-92C6F37D-409E-471C-9C2E-D17730CF4D75",
+      "predicate": "follows",
+      "object": " check quantity/price/delivery time of parts",
+      "object_id": "sid-0C4A917B-62A5-4E35-ADEB-8685C786E95F"
+    },
+    {
+      "subject": "Sub-process web crawling",
+      "subject_id": "sid-160BAED8-0436-4F90-BA45-C492AD750452",
+      "predicate": "follows",
+      "object": "search for matching parts",
+      "object_id": "sid-35D683F2-7B28-4F63-8337-540211FA30B8"
+    },
+    {
+      "subject": "Start building",
+      "subject_id": "sid-5DC31216-967E-4267-B5D0-C68852A6F8D7",
+      "predicate": "follows",
+      "object": "write mail to friends and complain about webshops",
+      "object_id": "sid-C349B1A6-94CB-4A96-8756-A9C373B911EB"
+    },
+    {
+      "subject": "Start building",
+      "subject_id": "sid-5DC31216-967E-4267-B5D0-C68852A6F8D7",
+      "predicate": "follows",
+      "object": "reorder fastest",
+      "object_id": "sid-AB731B69-BD12-4A09-9484-60A763619F86"
+    },
+    {
+      "subject": "Start building",
+      "subject_id": "sid-5DC31216-967E-4267-B5D0-C68852A6F8D7",
+      "predicate": "follows",
+      "object": "reorder cheapest",
+      "object_id": "sid-F14FDCB7-64C1-4484-9FB8-926199D5FB68"
+    },
+    {
+      "subject": "Arrival of parts",
+      "subject_id": "sid-61F84AD3-96DB-4C5B-BC8D-C2336885AE8C",
+      "predicate": "follows",
+      "object": "Start building",
+      "object_id": "sid-5DC31216-967E-4267-B5D0-C68852A6F8D7"
+    },
+    {
+      "subject": "reorder cheapest",
+      "subject_id": "sid-F14FDCB7-64C1-4484-9FB8-926199D5FB68",
+      "predicate": "follows",
+      "object": "process finished",
+      "object_id": "sid-6BD1B85E-1926-462D-95F2-ED447E4D7614"
+    },
+    {
+      "subject": "Order parts",
+      "subject_id": "sid-8AEF7A47-E0B7-49FA-B291-9259EDE67551",
+      "predicate": "follows",
+      "object": "Arrival of parts",
+      "object_id": "sid-61F84AD3-96DB-4C5B-BC8D-C2336885AE8C"
+    },
+    {
+      "subject": "contract project",
+      "subject_id": "sid-A080BE15-320F-45A3-B1E2-90AB3EE32E20",
+      "predicate": "follows",
+      "object": "create a list of parts ",
+      "object_id": "sid-0DF0A790-609E-4245-A95C-8252954A9783"
+    },
+    {
+      "subject": "create a list of parts ",
+      "subject_id": "sid-0DF0A790-609E-4245-A95C-8252954A9783",
+      "predicate": "follows",
+      "object": "choose web shops to crawl",
+      "object_id": "sid-459A45E2-8C7A-48AA-8A92-5FA38A53B8EA"
+    },
+    {
+      "subject": " check quantity/price/delivery time of parts",
+      "subject_id": "sid-CF55D20F-A713-432F-9043-D5D432C82E14",
+      "predicate": "follows",
+      "object": "create list of parts available in the web shops",
+      "object_id": "sid-53A6AF1E-28AA-4A5C-BCDA-6EB180F31199"
+    },
+    {
+      "subject": "choose web shops to crawl",
+      "subject_id": "sid-459A45E2-8C7A-48AA-8A92-5FA38A53B8EA",
+      "predicate": "follows",
+      "object": "start crawling web shops for parts",
+      "object_id": "sid-6687733D-C6CE-43C9-AD65-2337EE5CE8EB"
+    },
+    {
+      "subject": "search for matching parts",
+      "subject_id": "sid-35D683F2-7B28-4F63-8337-540211FA30B8",
+      "predicate": "follows",
+      "object": "choose web shops to crawl",
+      "object_id": "sid-459A45E2-8C7A-48AA-8A92-5FA38A53B8EA"
+    },
+    {
+      "subject": "search for matching parts",
+      "subject_id": "sid-35D683F2-7B28-4F63-8337-540211FA30B8",
+      "predicate": "follows",
+      "object": "Order parts",
+      "object_id": "sid-8AEF7A47-E0B7-49FA-B291-9259EDE67551"
+    },
+    {
+      "subject": "search for matching parts",
+      "subject_id": "sid-35D683F2-7B28-4F63-8337-540211FA30B8",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "sid-B1C06452-D33C-499A-A3C9-A1864F1A4727"
+    },
+    {
+      "subject": " check quantity/price/delivery time of parts",
+      "subject_id": "sid-0C4A917B-62A5-4E35-ADEB-8685C786E95F",
+      "predicate": "follows",
+      "object": "create list of parts available in the web shops",
+      "object_id": "sid-53A6AF1E-28AA-4A5C-BCDA-6EB180F31199"
+    },
+    {
+      "subject": "start crawling web shops for parts",
+      "subject_id": "sid-6687733D-C6CE-43C9-AD65-2337EE5CE8EB",
+      "predicate": "follows",
+      "object": "Sub-process web crawling",
+      "object_id": "sid-160BAED8-0436-4F90-BA45-C492AD750452"
+    },
+    {
+      "subject": "write mail to friends and complain about webshops",
+      "subject_id": "sid-C349B1A6-94CB-4A96-8756-A9C373B911EB",
+      "predicate": "follows",
+      "object": "process finished",
+      "object_id": "sid-6BD1B85E-1926-462D-95F2-ED447E4D7614"
+    },
+    {
+      "subject": " check quantity/price/delivery time of parts",
+      "subject_id": "sid-E0A947F8-8B2D-4806-A9EA-FA6D3DA880BE",
+      "predicate": "follows",
+      "object": "create list of parts available in the web shops",
+      "object_id": "sid-53A6AF1E-28AA-4A5C-BCDA-6EB180F31199"
+    },
+    {
+      "subject": "create list of parts available in the web shops",
+      "subject_id": "sid-53A6AF1E-28AA-4A5C-BCDA-6EB180F31199",
+      "predicate": "follows",
+      "object": "crawling finished",
+      "object_id": "sid-3E6107E6-41B9-4F6B-A738-2E3BD2946825"
+    }
+  ],
+  "matches": {
+    " check quantity/price/delivery time of parts": {
+      "match": "part.in_stock",
+      "score": 0.3494
+    },
+    "Arrival of parts": {
+      "match": "part.delivered",
+      "score": 0.542
+    },
+    "Order parts": {
+      "match": "part.ordered",
+      "score": 0.8361
+    },
+    "Start building": {
+      "match": "part.ordered",
+      "score": 0.1703
+    },
+    "Sub-process web crawling": {
+      "match": "shop.queried",
+      "score": 0.1644
+    },
+    "choose web shops to crawl": {
+      "match": "shop.selected",
+      "score": 0.4439
+    },
+    "contract project": {
+      "match": "shop.selected",
+      "score": 0.1745
+    },
+    "crawling finished": {
+      "match": "part.delivered",
+      "score": 0.1499
+    },
+    "crawling process started": {
+      "match": "shop.queried",
+      "score": 0.1849
+    },
+    "create a list of parts ": {
+      "match": "part.ordered",
+      "score": 0.4728
+    },
+    "create list of parts available in the web shops": {
+      "match": "part.in_stock",
+      "score": 0.4015
+    },
+    "process finished": {
+      "match": "part.ordered",
+      "score": 0.268
+    },
+    "reorder cheapest": {
+      "match": "part.reordered",
+      "score": 0.512
+    },
+    "reorder fastest": {
+      "match": "part.reordered",
+      "score": 0.5292
+    },
+    "search for matching parts": {
+      "match": "part.ordered",
+      "score": 0.3845
+    },
+    "start crawling web shops for parts": {
+      "match": "shop.queried",
+      "score": 0.3841
+    },
+    "write mail to friends and complain about webshops": {
+      "match": "mail.sent",
+      "score": 0.3438
+    }
+  },
+  "process_graph": [
+    {
+      "from": "part.reordered",
+      "to": "part.ordered",
+      "activity_from": "reorder fastest",
+      "activity_to": "process finished"
+    },
+    {
+      "from": "shop.queried",
+      "to": "part.in_stock",
+      "activity_from": "crawling process started",
+      "activity_to": " check quantity/price/delivery time of parts"
+    },
+    {
+      "from": "shop.queried",
+      "to": "part.in_stock",
+      "activity_from": "crawling process started",
+      "activity_to": " check quantity/price/delivery time of parts"
+    },
+    {
+      "from": "shop.queried",
+      "to": "part.in_stock",
+      "activity_from": "crawling process started",
+      "activity_to": " check quantity/price/delivery time of parts"
+    },
+    {
+      "from": "shop.queried",
+      "to": "part.ordered",
+      "activity_from": "Sub-process web crawling",
+      "activity_to": "search for matching parts"
+    },
+    {
+      "from": "part.ordered",
+      "to": "mail.sent",
+      "activity_from": "Start building",
+      "activity_to": "write mail to friends and complain about webshops"
+    },
+    {
+      "from": "part.ordered",
+      "to": "part.reordered",
+      "activity_from": "Start building",
+      "activity_to": "reorder fastest"
+    },
+    {
+      "from": "part.ordered",
+      "to": "part.reordered",
+      "activity_from": "Start building",
+      "activity_to": "reorder cheapest"
+    },
+    {
+      "from": "part.delivered",
+      "to": "part.ordered",
+      "activity_from": "Arrival of parts",
+      "activity_to": "Start building"
+    },
+    {
+      "from": "part.reordered",
+      "to": "part.ordered",
+      "activity_from": "reorder cheapest",
+      "activity_to": "process finished"
+    },
+    {
+      "from": "part.ordered",
+      "to": "part.delivered",
+      "activity_from": "Order parts",
+      "activity_to": "Arrival of parts"
+    },
+    {
+      "from": "shop.selected",
+      "to": "part.ordered",
+      "activity_from": "contract project",
+      "activity_to": "create a list of parts "
+    },
+    {
+      "from": "part.ordered",
+      "to": "shop.selected",
+      "activity_from": "create a list of parts ",
+      "activity_to": "choose web shops to crawl"
+    },
+    {
+      "from": "part.in_stock",
+      "to": "part.in_stock",
+      "activity_from": " check quantity/price/delivery time of parts",
+      "activity_to": "create list of parts available in the web shops"
+    },
+    {
+      "from": "shop.selected",
+      "to": "shop.queried",
+      "activity_from": "choose web shops to crawl",
+      "activity_to": "start crawling web shops for parts"
+    },
+    {
+      "from": "part.ordered",
+      "to": "shop.selected",
+      "activity_from": "search for matching parts",
+      "activity_to": "choose web shops to crawl"
+    },
+    {
+      "from": "part.ordered",
+      "to": "part.ordered",
+      "activity_from": "search for matching parts",
+      "activity_to": "Order parts"
+    },
+    {
+      "from": "part.in_stock",
+      "to": "part.in_stock",
+      "activity_from": " check quantity/price/delivery time of parts",
+      "activity_to": "create list of parts available in the web shops"
+    },
+    {
+      "from": "shop.queried",
+      "to": "shop.queried",
+      "activity_from": "start crawling web shops for parts",
+      "activity_to": "Sub-process web crawling"
+    },
+    {
+      "from": "mail.sent",
+      "to": "part.ordered",
+      "activity_from": "write mail to friends and complain about webshops",
+      "activity_to": "process finished"
+    },
+    {
+      "from": "part.in_stock",
+      "to": "part.in_stock",
+      "activity_from": " check quantity/price/delivery time of parts",
+      "activity_to": "create list of parts available in the web shops"
+    },
+    {
+      "from": "part.in_stock",
+      "to": "part.delivered",
+      "activity_from": "create list of parts available in the web shops",
+      "activity_to": "crawling finished"
+    }
+  ],
+  "alignment": {
+    "part.reordered": {
+      "operator": "OR",
+      "quote": "If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below 3 you reorder again (the fastest).",
+      "terms": [
+        {
+          "term": "part.in_stock",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        },
+        {
+          "term": "part.low_stock",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['part.low_stock']",
+          "missing": [
+            "part.low_stock"
+          ]
+        }
+      ],
+      "status": "SATISFIED"
+    },
+    "part.low_stock": {
+      "operator": "AND",
+      "quote": "When the first parts arrive you start building.",
+      "terms": [
+        {
+          "term": "part.in_stock",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['part.low_stock']",
+          "missing": [
+            "part.low_stock"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE"
+    },
+    "part.out_of_stock": {
+      "operator": "AND",
+      "quote": "If it is zero, you write a mail to your friends, complaining about the webshops.",
+      "terms": [
+        {
+          "term": "part.in_stock",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['part.out_of_stock']",
+          "missing": [
+            "part.out_of_stock"
+          ]
+        },
+        {
+          "term": "stock.low",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['stock.low', 'part.out_of_stock']",
+          "missing": [
+            "stock.low",
+            "part.out_of_stock"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE"
+    },
+    "shop.selected": {
+      "operator": "AND",
+      "quote": "In order to find out which web shop has the right parts, you have to query them all, and find out how much they can deliver, at which price, and how long it will take.",
+      "terms": [
+        {
+          "term": "shop.queried",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        },
+        {
+          "term": "part.ordered",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED"
+    },
+    "mail.sent": {
+      "operator": "AND",
+      "quote": "If it is zero, you write a mail to your friends, complaining about the webshops.",
+      "terms": [
+        {
+          "term": "part.out_of_stock",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['part.out_of_stock']",
+          "missing": [
+            "part.out_of_stock"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE"
+    }
+  },
+  "report": {
+    "summary": {
+      "ecarts": 0,
+      "non_verifiable": 2,
+      "conforme": 3
+    },
+    "ecarts": [],
+    "non_verifiable": [
+      {
+        "root_cause": "(aucune activite du processus ne correspond clairement a cela)",
+        "quote": "If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below 3 you reorder again (the fastest).",
+        "explanation": "Il est impossible de vérifier si l'exigence \"part low stock\" est respectée ou non avant l'activité \"reorder fastest\" puisque cette condition n'a pas pu être associée à une activité claire du processus observé.\n\nLa citation fournie \"If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below 3 you reorder again (the fastest).\" montre qu'une condition est exigée avant cette étape, mais ne décrit pas explicitement ce que cette condition signifie.\n\nEn d'autres termes, on ne sait pas exactement quand la condition \"part low stock\" est remplie, ce qui rend impossible la vérification de son respect avant l'activité \"reorder fastest\". (Cette meme cause affecte aussi : (aucune activite du processus ne correspond clairement a cela).)",
+        "affected_activities": [
+          "(aucune activite du processus ne correspond clairement a cela)",
+          "reorder fastest"
+        ],
+        "affected_count": 2
+      },
+      {
+        "root_cause": "(aucune activite du processus ne correspond clairement a cela)",
+        "quote": "If it is zero, you write a mail to your friends, complaining about the webshops.",
+        "explanation": "Il est impossible de vérifier si l'exigence \"stock low\" est respectée ou non avant que l'activité \"aucune activité du processus ne correspond clairement à cela\" se produise. En effet, cette exigence n'a pu être associée à aucune activité claire du processus observé.\n\nLa citation \"If it is zero, you write a mail to your friends, complaining about the webshops.\" montre qu'une condition est exigée avant cette étape, mais elle ne décrit pas ce que cette condition signifie précisément. Il est donc impossible de déterminer ce que signifie \"stock low\" dans ce contexte.\n\nEn conséquence, il est impossible de vérifier si l'exigence \"stock low\" est respectée ou non avant que l'activité \"aucune activité du processus ne correspond clairement à cela\" se produise. (Cette meme cause affecte aussi : write mail to friends and complain about webshops.)",
+        "affected_activities": [
+          "(aucune activite du processus ne correspond clairement a cela)",
+          "write mail to friends and complain about webshops"
+        ],
+        "affected_count": 4
+      }
+    ],
+    "conforme": [
+      {
+        "target": "reorder fastest",
+        "term": "create list of parts available in the web shops"
+      },
+      {
+        "target": "choose web shops to crawl",
+        "term": "start crawling web shops for parts"
+      },
+      {
+        "target": "choose web shops to crawl",
+        "term": "Order parts"
+      }
+    ],
+    "piece_jointe_alignement_brut": {
+      "part.reordered": {
+        "operator": "OR",
+        "quote": "If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below 3 you reorder again (the fastest).",
+        "terms": [
+          {
+            "term": "part.in_stock",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          },
+          {
+            "term": "part.low_stock",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['part.low_stock']",
+            "missing": [
+              "part.low_stock"
+            ]
+          }
+        ],
+        "status": "SATISFIED"
+      },
+      "part.low_stock": {
+        "operator": "AND",
+        "quote": "When the first parts arrive you start building.",
+        "terms": [
+          {
+            "term": "part.in_stock",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['part.low_stock']",
+            "missing": [
+              "part.low_stock"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE"
+      },
+      "part.out_of_stock": {
+        "operator": "AND",
+        "quote": "If it is zero, you write a mail to your friends, complaining about the webshops.",
+        "terms": [
+          {
+            "term": "part.in_stock",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['part.out_of_stock']",
+            "missing": [
+              "part.out_of_stock"
+            ]
+          },
+          {
+            "term": "stock.low",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['stock.low', 'part.out_of_stock']",
+            "missing": [
+              "stock.low",
+              "part.out_of_stock"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE"
+      },
+      "shop.selected": {
+        "operator": "AND",
+        "quote": "In order to find out which web shop has the right parts, you have to query them all, and find out how much they can deliver, at which price, and how long it will take.",
+        "terms": [
+          {
+            "term": "shop.queried",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          },
+          {
+            "term": "part.ordered",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED"
+      },
+      "mail.sent": {
+        "operator": "AND",
+        "quote": "If it is zero, you write a mail to your friends, complaining about the webshops.",
+        "terms": [
+          {
+            "term": "part.out_of_stock",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['part.out_of_stock']",
+            "missing": [
+              "part.out_of_stock"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE"
+      }
+    }
+  },
+  "errors": []
+}

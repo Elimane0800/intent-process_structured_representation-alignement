@@ -1,0 +1,410 @@
+{
+  "case_name": "M_g01",
+  "text": "Category: Manufacturing\nTitle: Instruct an artist to create a 3D model print it on a 3D printer\n\nWhen craving a custom 3D model, as a first step you have to instruct an artist\nto create a project for you.  First you have to send him several sketches, and\nthen tell him what to change until you are satisfied with the result. After\nthat, you choose a plastic color you want to use for 3D printing. If you have\nthe color at home (in stock), you check how much color you have left. If it's\nunder 100 grams, you put it on your shopping list. If you do not have the color\nat home, you order it. When you have the plastic, you can turn the printer on\nand heat up the bed and the extruder (it continuously sends you back its\nstatus). While doing that, you can generate the gcode file for your printer out\nof the STL sent to you by the artist. After that you print the model.\n",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "mistral-nemotron",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "mistral-nemotron",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/text_and_bpmn/bpmn/M_g01/10.bpmn2.xml",
+  "dfg_edges": [
+    {
+      "source_id": "sid-C4E811C0-9FB5-46DF-9ACF-8E80B46B9B6E",
+      "source_label": "Choose plastic color",
+      "target_id": "sid-CFA6F4B4-13F6-45B6-AA5D-55459CABAD36",
+      "target_label": "Order color",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "Color not in stock"
+      ]
+    },
+    {
+      "source_id": "sid-C4E811C0-9FB5-46DF-9ACF-8E80B46B9B6E",
+      "source_label": "Choose plastic color",
+      "target_id": "sid-29911FD6-158B-4E34-9F16-2C50E0A144A6",
+      "target_label": "Check  how much color is left",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "Color in stock"
+      ]
+    },
+    {
+      "source_id": "sid-AE38DC80-DC15-461B-94D1-84784094EFFA",
+      "source_label": "Send sketches to the artist",
+      "target_id": "sid-7E2EC646-4B07-4FD7-B232-CADC837DB5C9",
+      "target_label": "Review draft",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-35AF7D49-DCB5-4308-8052-83FAC29502E8",
+      "source_label": "Instruct an artist",
+      "target_id": "sid-AE38DC80-DC15-461B-94D1-84784094EFFA",
+      "target_label": "Send sketches to the artist",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-30799381-1ABB-4A70-BA2F-50450728D21A",
+      "source_label": "Enough color available",
+      "target_id": "sid-B2CF1148-7ED7-4B40-982D-BEDD8A93F374",
+      "target_label": "Get STL File",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-30799381-1ABB-4A70-BA2F-50450728D21A",
+      "source_label": "Enough color available",
+      "target_id": "sid-743A867A-430E-4455-8800-8C5848ADBC0B",
+      "target_label": "Turn on the printer",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-EE91AAAC-0188-4F19-9EB3-DB5F24B18DB0",
+      "source_label": "Discuss changes",
+      "target_id": "sid-7E2EC646-4B07-4FD7-B232-CADC837DB5C9",
+      "target_label": "Review draft",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-274C4D02-2000-4E72-A5BF-F63ADC833D34",
+      "source_label": "Heat up extruder",
+      "target_id": "sid-9D0B2FA4-0547-4B66-AAFB-2218F08A5338",
+      "target_label": "Updating status",
+      "gateway_context": [
+        "ParallelGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-D86F4524-E82F-49BB-BDD2-EC8A6A1967EE",
+      "source_label": "Put color on shopping list",
+      "target_id": "sid-30799381-1ABB-4A70-BA2F-50450728D21A",
+      "target_label": "Enough color available",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-CFA6F4B4-13F6-45B6-AA5D-55459CABAD36",
+      "source_label": "Order color",
+      "target_id": "sid-30799381-1ABB-4A70-BA2F-50450728D21A",
+      "target_label": "Enough color available",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-9D0B2FA4-0547-4B66-AAFB-2218F08A5338",
+      "source_label": "Updating status",
+      "target_id": "sid-D2F48F13-DAD1-43D9-9991-1C096197A93E",
+      "target_label": "Print the model",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "Yes. Heated up",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-9D0B2FA4-0547-4B66-AAFB-2218F08A5338",
+      "source_label": "Updating status",
+      "target_id": "sid-9D0B2FA4-0547-4B66-AAFB-2218F08A5338",
+      "target_label": "Updating status",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "No. Still heating up.",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-29911FD6-158B-4E34-9F16-2C50E0A144A6",
+      "source_label": "Check  how much color is left",
+      "target_id": "sid-D86F4524-E82F-49BB-BDD2-EC8A6A1967EE",
+      "target_label": "Put color on shopping list",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "< 100g"
+      ]
+    },
+    {
+      "source_id": "sid-29911FD6-158B-4E34-9F16-2C50E0A144A6",
+      "source_label": "Check  how much color is left",
+      "target_id": "sid-30799381-1ABB-4A70-BA2F-50450728D21A",
+      "target_label": "Enough color available",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "> 100g",
+        "ExclusiveGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-7E2EC646-4B07-4FD7-B232-CADC837DB5C9",
+      "source_label": "Review draft",
+      "target_id": "sid-C4E811C0-9FB5-46DF-9ACF-8E80B46B9B6E",
+      "target_label": "Choose plastic color",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "Yes"
+      ]
+    },
+    {
+      "source_id": "sid-7E2EC646-4B07-4FD7-B232-CADC837DB5C9",
+      "source_label": "Review draft",
+      "target_id": "sid-EE91AAAC-0188-4F19-9EB3-DB5F24B18DB0",
+      "target_label": "Discuss changes",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "No"
+      ]
+    },
+    {
+      "source_id": "sid-8C5F8CF2-11A9-4CF6-9D56-36F16C2C9BB5",
+      "source_label": "Generate gcode file",
+      "target_id": "sid-D2F48F13-DAD1-43D9-9991-1C096197A93E",
+      "target_label": "Print the model",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-6471C65E-57D8-47D9-93E1-DD1EB282E9DB",
+      "source_label": "Heat up bed",
+      "target_id": "sid-9D0B2FA4-0547-4B66-AAFB-2218F08A5338",
+      "target_label": "Updating status",
+      "gateway_context": [
+        "ParallelGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-743A867A-430E-4455-8800-8C5848ADBC0B",
+      "source_label": "Turn on the printer",
+      "target_id": "sid-6471C65E-57D8-47D9-93E1-DD1EB282E9DB",
+      "target_label": "Heat up bed",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-743A867A-430E-4455-8800-8C5848ADBC0B",
+      "source_label": "Turn on the printer",
+      "target_id": "sid-274C4D02-2000-4E72-A5BF-F63ADC833D34",
+      "target_label": "Heat up extruder",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-B2CF1148-7ED7-4B40-982D-BEDD8A93F374",
+      "source_label": "Get STL File",
+      "target_id": "sid-8C5F8CF2-11A9-4CF6-9D56-36F16C2C9BB5",
+      "target_label": "Generate gcode file",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-B2CF1148-7ED7-4B40-982D-BEDD8A93F374",
+      "source_label": "Get STL File",
+      "target_id": "sid-B0487E58-D3DC-4912-8D03-9465C7727A58",
+      "target_label": "",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-D2F48F13-DAD1-43D9-9991-1C096197A93E",
+      "source_label": "Print the model",
+      "target_id": "sid-8DF27E66-888C-4680-A8B8-9233874D2887",
+      "target_label": "End of 3D  printing process",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-22B4285C-852E-44DC-8B27-ADCE57632A67",
+      "source_label": "Printing a  3D model",
+      "target_id": "sid-35AF7D49-DCB5-4308-8052-83FAC29502E8",
+      "target_label": "Instruct an artist",
+      "gateway_context": []
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "Choose plastic color",
+      "subject_id": "sid-C4E811C0-9FB5-46DF-9ACF-8E80B46B9B6E",
+      "predicate": "follows",
+      "object": "Order color",
+      "object_id": "sid-CFA6F4B4-13F6-45B6-AA5D-55459CABAD36"
+    },
+    {
+      "subject": "Choose plastic color",
+      "subject_id": "sid-C4E811C0-9FB5-46DF-9ACF-8E80B46B9B6E",
+      "predicate": "follows",
+      "object": "Check  how much color is left",
+      "object_id": "sid-29911FD6-158B-4E34-9F16-2C50E0A144A6"
+    },
+    {
+      "subject": "Send sketches to the artist",
+      "subject_id": "sid-AE38DC80-DC15-461B-94D1-84784094EFFA",
+      "predicate": "follows",
+      "object": "Review draft",
+      "object_id": "sid-7E2EC646-4B07-4FD7-B232-CADC837DB5C9"
+    },
+    {
+      "subject": "Instruct an artist",
+      "subject_id": "sid-35AF7D49-DCB5-4308-8052-83FAC29502E8",
+      "predicate": "follows",
+      "object": "Send sketches to the artist",
+      "object_id": "sid-AE38DC80-DC15-461B-94D1-84784094EFFA"
+    },
+    {
+      "subject": "Enough color available",
+      "subject_id": "sid-30799381-1ABB-4A70-BA2F-50450728D21A",
+      "predicate": "follows",
+      "object": "Get STL File",
+      "object_id": "sid-B2CF1148-7ED7-4B40-982D-BEDD8A93F374"
+    },
+    {
+      "subject": "Enough color available",
+      "subject_id": "sid-30799381-1ABB-4A70-BA2F-50450728D21A",
+      "predicate": "follows",
+      "object": "Turn on the printer",
+      "object_id": "sid-743A867A-430E-4455-8800-8C5848ADBC0B"
+    },
+    {
+      "subject": "Discuss changes",
+      "subject_id": "sid-EE91AAAC-0188-4F19-9EB3-DB5F24B18DB0",
+      "predicate": "follows",
+      "object": "Review draft",
+      "object_id": "sid-7E2EC646-4B07-4FD7-B232-CADC837DB5C9"
+    },
+    {
+      "subject": "Heat up extruder",
+      "subject_id": "sid-274C4D02-2000-4E72-A5BF-F63ADC833D34",
+      "predicate": "follows",
+      "object": "Updating status",
+      "object_id": "sid-9D0B2FA4-0547-4B66-AAFB-2218F08A5338"
+    },
+    {
+      "subject": "Put color on shopping list",
+      "subject_id": "sid-D86F4524-E82F-49BB-BDD2-EC8A6A1967EE",
+      "predicate": "follows",
+      "object": "Enough color available",
+      "object_id": "sid-30799381-1ABB-4A70-BA2F-50450728D21A"
+    },
+    {
+      "subject": "Order color",
+      "subject_id": "sid-CFA6F4B4-13F6-45B6-AA5D-55459CABAD36",
+      "predicate": "follows",
+      "object": "Enough color available",
+      "object_id": "sid-30799381-1ABB-4A70-BA2F-50450728D21A"
+    },
+    {
+      "subject": "Updating status",
+      "subject_id": "sid-9D0B2FA4-0547-4B66-AAFB-2218F08A5338",
+      "predicate": "follows",
+      "object": "Print the model",
+      "object_id": "sid-D2F48F13-DAD1-43D9-9991-1C096197A93E"
+    },
+    {
+      "subject": "Updating status",
+      "subject_id": "sid-9D0B2FA4-0547-4B66-AAFB-2218F08A5338",
+      "predicate": "follows",
+      "object": "Updating status",
+      "object_id": "sid-9D0B2FA4-0547-4B66-AAFB-2218F08A5338"
+    },
+    {
+      "subject": "Check  how much color is left",
+      "subject_id": "sid-29911FD6-158B-4E34-9F16-2C50E0A144A6",
+      "predicate": "follows",
+      "object": "Put color on shopping list",
+      "object_id": "sid-D86F4524-E82F-49BB-BDD2-EC8A6A1967EE"
+    },
+    {
+      "subject": "Check  how much color is left",
+      "subject_id": "sid-29911FD6-158B-4E34-9F16-2C50E0A144A6",
+      "predicate": "follows",
+      "object": "Enough color available",
+      "object_id": "sid-30799381-1ABB-4A70-BA2F-50450728D21A"
+    },
+    {
+      "subject": "Review draft",
+      "subject_id": "sid-7E2EC646-4B07-4FD7-B232-CADC837DB5C9",
+      "predicate": "follows",
+      "object": "Choose plastic color",
+      "object_id": "sid-C4E811C0-9FB5-46DF-9ACF-8E80B46B9B6E"
+    },
+    {
+      "subject": "Review draft",
+      "subject_id": "sid-7E2EC646-4B07-4FD7-B232-CADC837DB5C9",
+      "predicate": "follows",
+      "object": "Discuss changes",
+      "object_id": "sid-EE91AAAC-0188-4F19-9EB3-DB5F24B18DB0"
+    },
+    {
+      "subject": "Generate gcode file",
+      "subject_id": "sid-8C5F8CF2-11A9-4CF6-9D56-36F16C2C9BB5",
+      "predicate": "follows",
+      "object": "Print the model",
+      "object_id": "sid-D2F48F13-DAD1-43D9-9991-1C096197A93E"
+    },
+    {
+      "subject": "Heat up bed",
+      "subject_id": "sid-6471C65E-57D8-47D9-93E1-DD1EB282E9DB",
+      "predicate": "follows",
+      "object": "Updating status",
+      "object_id": "sid-9D0B2FA4-0547-4B66-AAFB-2218F08A5338"
+    },
+    {
+      "subject": "Turn on the printer",
+      "subject_id": "sid-743A867A-430E-4455-8800-8C5848ADBC0B",
+      "predicate": "follows",
+      "object": "Heat up bed",
+      "object_id": "sid-6471C65E-57D8-47D9-93E1-DD1EB282E9DB"
+    },
+    {
+      "subject": "Turn on the printer",
+      "subject_id": "sid-743A867A-430E-4455-8800-8C5848ADBC0B",
+      "predicate": "follows",
+      "object": "Heat up extruder",
+      "object_id": "sid-274C4D02-2000-4E72-A5BF-F63ADC833D34"
+    },
+    {
+      "subject": "Get STL File",
+      "subject_id": "sid-B2CF1148-7ED7-4B40-982D-BEDD8A93F374",
+      "predicate": "follows",
+      "object": "Generate gcode file",
+      "object_id": "sid-8C5F8CF2-11A9-4CF6-9D56-36F16C2C9BB5"
+    },
+    {
+      "subject": "Get STL File",
+      "subject_id": "sid-B2CF1148-7ED7-4B40-982D-BEDD8A93F374",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "sid-B0487E58-D3DC-4912-8D03-9465C7727A58"
+    },
+    {
+      "subject": "Print the model",
+      "subject_id": "sid-D2F48F13-DAD1-43D9-9991-1C096197A93E",
+      "predicate": "follows",
+      "object": "End of 3D  printing process",
+      "object_id": "sid-8DF27E66-888C-4680-A8B8-9233874D2887"
+    },
+    {
+      "subject": "Printing a  3D model",
+      "subject_id": "sid-22B4285C-852E-44DC-8B27-ADCE57632A67",
+      "predicate": "follows",
+      "object": "Instruct an artist",
+      "object_id": "sid-35AF7D49-DCB5-4308-8052-83FAC29502E8"
+    }
+  ],
+  "errors": [
+    "state_space: Error code: 429 - {'status': 429, 'title': 'Too Many Requests'}",
+    "precondition: 'state_space'",
+    "state_matching: 'state_space'",
+    "graph_construction: 'state_space'",
+    "alignment: 'reference_graph'",
+    "report: 'alignment'"
+  ]
+}

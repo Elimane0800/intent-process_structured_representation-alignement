@@ -1,0 +1,1221 @@
+{
+  "case_name": "E_j02",
+  "text": "Category: E-Government\nTitle: Becoming A Parent\n\nCreate a process that support in planning, taking and extending a maternity\nleave.\n\n* Fetch information about potential models (months duration, split between parents)\n* Let parent select\n* Collect relevant information\n* Notify Social Security, Company in time\n* Gather information from companies\n* At the end of the period let parent decide about extension.\n",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "mistral-nemotron",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "mistral-nemotron",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/text_and_bpmn/bpmn/E_j02/3.bpmn2.xml",
+  "report_model": "mistral-nemotron",
+  "candidates": {
+    "parent": [
+      "selecting",
+      "notified",
+      "deciding"
+    ],
+    "information": [
+      "fetched",
+      "collected",
+      "gathered"
+    ],
+    "model": [
+      "selected"
+    ],
+    "social_security": [
+      "notified"
+    ],
+    "company": [
+      "notified",
+      "gathered_from"
+    ],
+    "period": [
+      "ended"
+    ]
+  },
+  "validation_report": {
+    "parent": {
+      "f_lex": "ACTOR",
+      "kept": false
+    },
+    "information": {
+      "f_lex": "ENTITY",
+      "kept": true
+    },
+    "model": {
+      "f_lex": "ENTITY",
+      "kept": true
+    },
+    "social_security": {
+      "f_lex": "INDETERMINATE",
+      "kept": true
+    },
+    "company": {
+      "f_lex": "ACTOR",
+      "kept": false
+    },
+    "period": {
+      "f_lex": "INDETERMINATE",
+      "kept": true
+    }
+  },
+  "state_space": {
+    "information": [
+      "fetched",
+      "collected",
+      "gathered"
+    ],
+    "model": [
+      "selected"
+    ],
+    "social_security": [
+      "notified"
+    ],
+    "period": [
+      "ended"
+    ]
+  },
+  "state_space_dedup": {
+    "merged": {},
+    "ambiguous_not_merged": {}
+  },
+  "raw_preconditions": {
+    "information.fetched": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "information.collected": {
+      "precondition": "information.fetched",
+      "quote": "Collect relevant information"
+    },
+    "information.gathered": {
+      "precondition": "period.ended",
+      "quote": "Gather information from companies"
+    },
+    "model.selected": {
+      "precondition": "information.fetched",
+      "quote": "Let parent select"
+    },
+    "social_security.notified": {
+      "precondition": "model.selected AND information.collected",
+      "quote": "Notify Social Security, Company in time"
+    },
+    "period.ended": {
+      "precondition": "UNRESOLVED",
+      "quote": null
+    }
+  },
+  "validated_preconditions": {
+    "information.fetched": {
+      "precondition": "INITIAL",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "information.collected": {
+      "precondition": "information.fetched",
+      "quote": "Collect relevant information",
+      "status": "OK",
+      "reason": null
+    },
+    "information.gathered": {
+      "precondition": "period.ended",
+      "quote": "Gather information from companies",
+      "status": "OK",
+      "reason": null
+    },
+    "model.selected": {
+      "precondition": "information.fetched",
+      "quote": "Let parent select",
+      "status": "OK",
+      "reason": null
+    },
+    "social_security.notified": {
+      "precondition": "model.selected AND information.collected",
+      "quote": "Notify Social Security, Company in time",
+      "status": "OK",
+      "reason": null
+    },
+    "period.ended": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    }
+  },
+  "precondition_cycles": [],
+  "reference_graph": {
+    "nodes": [
+      {
+        "id": "information.fetched",
+        "weight": 1.0
+      },
+      {
+        "id": "information.collected",
+        "weight": 1.0
+      },
+      {
+        "id": "information.gathered",
+        "weight": 0.5
+      },
+      {
+        "id": "model.selected",
+        "weight": 1.0
+      },
+      {
+        "id": "social_security.notified",
+        "weight": 1.0
+      },
+      {
+        "id": "period.ended",
+        "weight": 0.5
+      }
+    ],
+    "edges": [
+      {
+        "from": "information.fetched",
+        "to": "information.collected",
+        "type": "sequence",
+        "operator": "AND",
+        "quote": "Collect relevant information"
+      },
+      {
+        "from": "period.ended",
+        "to": "information.gathered",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "Gather information from companies"
+      },
+      {
+        "from": "information.fetched",
+        "to": "model.selected",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "Let parent select"
+      },
+      {
+        "from": "model.selected",
+        "to": "social_security.notified",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "Notify Social Security, Company in time"
+      },
+      {
+        "from": "information.collected",
+        "to": "social_security.notified",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "Notify Social Security, Company in time"
+      }
+    ],
+    "cycles": []
+  },
+  "dfg_edges": [
+    {
+      "source_id": "sid-85B2E4EF-5CB6-440F-B467-89A0E6294BA2",
+      "source_label": "Check options for parental leave",
+      "target_id": "sid-F88F429D-0F62-4A5A-9CF3-06FFE33F5870",
+      "target_label": "Show\"Take parental leave before the child's 3rd birthday\"",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "yes"
+      ]
+    },
+    {
+      "source_id": "sid-85B2E4EF-5CB6-440F-B467-89A0E6294BA2",
+      "source_label": "Check options for parental leave",
+      "target_id": "sid-8D67742B-4DB6-467B-AA08-373248F346AE",
+      "target_label": "Justify refusal",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "no"
+      ]
+    },
+    {
+      "source_id": "sid-8222AC00-4C1D-46E0-80F9-653A16F261EE",
+      "source_label": "Show\"Only overlap of 1 month allowed with overlap of other parent\"",
+      "target_id": "sid-1A3A7301-68FA-46BB-8BA2-56545495F206",
+      "target_label": "Inform employer",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-02F14056-FF3A-4B56-A50A-9D215756F4D8",
+      "source_label": "Feed baby",
+      "target_id": "sid-725306E5-D14A-4449-A159-A5863C989245",
+      "target_label": "Spent time with baby",
+      "gateway_context": [
+        "ParallelGateway",
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "no",
+        "ExclusiveGateway",
+        "no",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-02F14056-FF3A-4B56-A50A-9D215756F4D8",
+      "source_label": "Feed baby",
+      "target_id": "sid-02F14056-FF3A-4B56-A50A-9D215756F4D8",
+      "target_label": "Feed baby",
+      "gateway_context": [
+        "ParallelGateway",
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "no",
+        "ExclusiveGateway",
+        "no",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-02F14056-FF3A-4B56-A50A-9D215756F4D8",
+      "source_label": "Feed baby",
+      "target_id": "sid-AA41C29A-9989-4F34-8CE5-9DCAC53EF298",
+      "target_label": "Be silent",
+      "gateway_context": [
+        "ParallelGateway",
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "no",
+        "ExclusiveGateway",
+        "yes"
+      ]
+    },
+    {
+      "source_id": "sid-D66156C2-B83F-4661-B0D6-C0A8DF1FE24B",
+      "source_label": "Show\"No overlapping parental leave possible\"",
+      "target_id": "sid-1A3A7301-68FA-46BB-8BA2-56545495F206",
+      "target_label": "Inform employer",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-725306E5-D14A-4449-A159-A5863C989245",
+      "source_label": "Spent time with baby",
+      "target_id": "sid-725306E5-D14A-4449-A159-A5863C989245",
+      "target_label": "Spent time with baby",
+      "gateway_context": [
+        "ParallelGateway",
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "no",
+        "ExclusiveGateway",
+        "no",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-725306E5-D14A-4449-A159-A5863C989245",
+      "source_label": "Spent time with baby",
+      "target_id": "sid-02F14056-FF3A-4B56-A50A-9D215756F4D8",
+      "target_label": "Feed baby",
+      "gateway_context": [
+        "ParallelGateway",
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "no",
+        "ExclusiveGateway",
+        "no",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-725306E5-D14A-4449-A159-A5863C989245",
+      "source_label": "Spent time with baby",
+      "target_id": "sid-AA41C29A-9989-4F34-8CE5-9DCAC53EF298",
+      "target_label": "Be silent",
+      "gateway_context": [
+        "ParallelGateway",
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "no",
+        "ExclusiveGateway",
+        "yes"
+      ]
+    },
+    {
+      "source_id": "sid-BA330DF3-207E-4E6C-86D5-C94826CF20F6",
+      "source_label": "Extend parental leave",
+      "target_id": "sid-2337BE00-79EE-4453-902E-BEB1292B9329",
+      "target_label": "Inform employer",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "yes"
+      ]
+    },
+    {
+      "source_id": "sid-BA330DF3-207E-4E6C-86D5-C94826CF20F6",
+      "source_label": "Extend parental leave",
+      "target_id": "sid-1E5C9866-5008-40A9-BDDD-C2D489102FF5",
+      "target_label": "Request extension",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "no"
+      ]
+    },
+    {
+      "source_id": "sid-1A3A7301-68FA-46BB-8BA2-56545495F206",
+      "source_label": "Inform employer",
+      "target_id": "sid-BA330DF3-207E-4E6C-86D5-C94826CF20F6",
+      "target_label": "Extend parental leave",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "yes"
+      ]
+    },
+    {
+      "source_id": "sid-9E01709C-A2A6-4F61-979E-FDF35AE421AE",
+      "source_label": "Show\"inform your employer within the term of protection\"",
+      "target_id": "sid-8222AC00-4C1D-46E0-80F9-653A16F261EE",
+      "target_label": "Show\"Only overlap of 1 month allowed with overlap of other parent\"",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "yes",
+        "ExclusiveGateway",
+        "yes"
+      ]
+    },
+    {
+      "source_id": "sid-9E01709C-A2A6-4F61-979E-FDF35AE421AE",
+      "source_label": "Show\"inform your employer within the term of protection\"",
+      "target_id": "sid-D66156C2-B83F-4661-B0D6-C0A8DF1FE24B",
+      "target_label": "Show\"No overlapping parental leave possible\"",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "yes",
+        "ExclusiveGateway",
+        "no"
+      ]
+    },
+    {
+      "source_id": "sid-9E01709C-A2A6-4F61-979E-FDF35AE421AE",
+      "source_label": "Show\"inform your employer within the term of protection\"",
+      "target_id": "sid-1A3A7301-68FA-46BB-8BA2-56545495F206",
+      "target_label": "Inform employer",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "no"
+      ]
+    },
+    {
+      "source_id": "sid-AA41C29A-9989-4F34-8CE5-9DCAC53EF298",
+      "source_label": "Be silent",
+      "target_id": "sid-725306E5-D14A-4449-A159-A5863C989245",
+      "target_label": "Spent time with baby",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "no",
+        "ExclusiveGateway",
+        "no",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-AA41C29A-9989-4F34-8CE5-9DCAC53EF298",
+      "source_label": "Be silent",
+      "target_id": "sid-02F14056-FF3A-4B56-A50A-9D215756F4D8",
+      "target_label": "Feed baby",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "no",
+        "ExclusiveGateway",
+        "no",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-AA41C29A-9989-4F34-8CE5-9DCAC53EF298",
+      "source_label": "Be silent",
+      "target_id": "sid-AA41C29A-9989-4F34-8CE5-9DCAC53EF298",
+      "target_label": "Be silent",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "no",
+        "ExclusiveGateway",
+        "yes"
+      ]
+    },
+    {
+      "source_id": "sid-8B93D726-490A-477C-9D65-409C39A03673",
+      "source_label": "Show\"inform your employer 3 months before your maternity leave\"",
+      "target_id": "sid-8222AC00-4C1D-46E0-80F9-653A16F261EE",
+      "target_label": "Show\"Only overlap of 1 month allowed with overlap of other parent\"",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "yes",
+        "ExclusiveGateway",
+        "yes"
+      ]
+    },
+    {
+      "source_id": "sid-8B93D726-490A-477C-9D65-409C39A03673",
+      "source_label": "Show\"inform your employer 3 months before your maternity leave\"",
+      "target_id": "sid-D66156C2-B83F-4661-B0D6-C0A8DF1FE24B",
+      "target_label": "Show\"No overlapping parental leave possible\"",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "yes",
+        "ExclusiveGateway",
+        "no"
+      ]
+    },
+    {
+      "source_id": "sid-8B93D726-490A-477C-9D65-409C39A03673",
+      "source_label": "Show\"inform your employer 3 months before your maternity leave\"",
+      "target_id": "sid-1A3A7301-68FA-46BB-8BA2-56545495F206",
+      "target_label": "Inform employer",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "no"
+      ]
+    },
+    {
+      "source_id": "sid-F88F429D-0F62-4A5A-9CF3-06FFE33F5870",
+      "source_label": "Show\"Take parental leave before the child's 3rd birthday\"",
+      "target_id": "sid-BA330DF3-207E-4E6C-86D5-C94826CF20F6",
+      "target_label": "Extend parental leave",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "yes"
+      ]
+    },
+    {
+      "source_id": "sid-F88F429D-0F62-4A5A-9CF3-06FFE33F5870",
+      "source_label": "Show\"Take parental leave before the child's 3rd birthday\"",
+      "target_id": "sid-1C969A1F-83D8-482F-945C-7D7B4EA33457",
+      "target_label": "Show\"register your maternity leave within the next 8 weeks of your child's birth\"",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "no",
+        "ExclusiveGateway",
+        "father"
+      ]
+    },
+    {
+      "source_id": "sid-F88F429D-0F62-4A5A-9CF3-06FFE33F5870",
+      "source_label": "Show\"Take parental leave before the child's 3rd birthday\"",
+      "target_id": "sid-8B93D726-490A-477C-9D65-409C39A03673",
+      "target_label": "Show\"inform your employer 3 months before your maternity leave\"",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "no",
+        "ExclusiveGateway",
+        "mother",
+        "ExclusiveGateway",
+        "no"
+      ]
+    },
+    {
+      "source_id": "sid-F88F429D-0F62-4A5A-9CF3-06FFE33F5870",
+      "source_label": "Show\"Take parental leave before the child's 3rd birthday\"",
+      "target_id": "sid-9E01709C-A2A6-4F61-979E-FDF35AE421AE",
+      "target_label": "Show\"inform your employer within the term of protection\"",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "no",
+        "ExclusiveGateway",
+        "mother",
+        "ExclusiveGateway",
+        "yes"
+      ]
+    },
+    {
+      "source_id": "sid-8D67742B-4DB6-467B-AA08-373248F346AE",
+      "source_label": "Justify refusal",
+      "target_id": "sid-725306E5-D14A-4449-A159-A5863C989245",
+      "target_label": "Spent time with baby",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "no",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-8D67742B-4DB6-467B-AA08-373248F346AE",
+      "source_label": "Justify refusal",
+      "target_id": "sid-02F14056-FF3A-4B56-A50A-9D215756F4D8",
+      "target_label": "Feed baby",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "no",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-8D67742B-4DB6-467B-AA08-373248F346AE",
+      "source_label": "Justify refusal",
+      "target_id": "sid-AA41C29A-9989-4F34-8CE5-9DCAC53EF298",
+      "target_label": "Be silent",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "yes"
+      ]
+    },
+    {
+      "source_id": "sid-1C969A1F-83D8-482F-945C-7D7B4EA33457",
+      "source_label": "Show\"register your maternity leave within the next 8 weeks of your child's birth\"",
+      "target_id": "sid-8222AC00-4C1D-46E0-80F9-653A16F261EE",
+      "target_label": "Show\"Only overlap of 1 month allowed with overlap of other parent\"",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "yes",
+        "ExclusiveGateway",
+        "yes"
+      ]
+    },
+    {
+      "source_id": "sid-1C969A1F-83D8-482F-945C-7D7B4EA33457",
+      "source_label": "Show\"register your maternity leave within the next 8 weeks of your child's birth\"",
+      "target_id": "sid-D66156C2-B83F-4661-B0D6-C0A8DF1FE24B",
+      "target_label": "Show\"No overlapping parental leave possible\"",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "yes",
+        "ExclusiveGateway",
+        "no"
+      ]
+    },
+    {
+      "source_id": "sid-1C969A1F-83D8-482F-945C-7D7B4EA33457",
+      "source_label": "Show\"register your maternity leave within the next 8 weeks of your child's birth\"",
+      "target_id": "sid-1A3A7301-68FA-46BB-8BA2-56545495F206",
+      "target_label": "Inform employer",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "no"
+      ]
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "Check options for parental leave",
+      "subject_id": "sid-85B2E4EF-5CB6-440F-B467-89A0E6294BA2",
+      "predicate": "follows",
+      "object": "Show\"Take parental leave before the child's 3rd birthday\"",
+      "object_id": "sid-F88F429D-0F62-4A5A-9CF3-06FFE33F5870"
+    },
+    {
+      "subject": "Check options for parental leave",
+      "subject_id": "sid-85B2E4EF-5CB6-440F-B467-89A0E6294BA2",
+      "predicate": "follows",
+      "object": "Justify refusal",
+      "object_id": "sid-8D67742B-4DB6-467B-AA08-373248F346AE"
+    },
+    {
+      "subject": "Show\"Only overlap of 1 month allowed with overlap of other parent\"",
+      "subject_id": "sid-8222AC00-4C1D-46E0-80F9-653A16F261EE",
+      "predicate": "follows",
+      "object": "Inform employer",
+      "object_id": "sid-1A3A7301-68FA-46BB-8BA2-56545495F206"
+    },
+    {
+      "subject": "Feed baby",
+      "subject_id": "sid-02F14056-FF3A-4B56-A50A-9D215756F4D8",
+      "predicate": "follows",
+      "object": "Spent time with baby",
+      "object_id": "sid-725306E5-D14A-4449-A159-A5863C989245"
+    },
+    {
+      "subject": "Feed baby",
+      "subject_id": "sid-02F14056-FF3A-4B56-A50A-9D215756F4D8",
+      "predicate": "follows",
+      "object": "Feed baby",
+      "object_id": "sid-02F14056-FF3A-4B56-A50A-9D215756F4D8"
+    },
+    {
+      "subject": "Feed baby",
+      "subject_id": "sid-02F14056-FF3A-4B56-A50A-9D215756F4D8",
+      "predicate": "follows",
+      "object": "Be silent",
+      "object_id": "sid-AA41C29A-9989-4F34-8CE5-9DCAC53EF298"
+    },
+    {
+      "subject": "Show\"No overlapping parental leave possible\"",
+      "subject_id": "sid-D66156C2-B83F-4661-B0D6-C0A8DF1FE24B",
+      "predicate": "follows",
+      "object": "Inform employer",
+      "object_id": "sid-1A3A7301-68FA-46BB-8BA2-56545495F206"
+    },
+    {
+      "subject": "Spent time with baby",
+      "subject_id": "sid-725306E5-D14A-4449-A159-A5863C989245",
+      "predicate": "follows",
+      "object": "Spent time with baby",
+      "object_id": "sid-725306E5-D14A-4449-A159-A5863C989245"
+    },
+    {
+      "subject": "Spent time with baby",
+      "subject_id": "sid-725306E5-D14A-4449-A159-A5863C989245",
+      "predicate": "follows",
+      "object": "Feed baby",
+      "object_id": "sid-02F14056-FF3A-4B56-A50A-9D215756F4D8"
+    },
+    {
+      "subject": "Spent time with baby",
+      "subject_id": "sid-725306E5-D14A-4449-A159-A5863C989245",
+      "predicate": "follows",
+      "object": "Be silent",
+      "object_id": "sid-AA41C29A-9989-4F34-8CE5-9DCAC53EF298"
+    },
+    {
+      "subject": "Extend parental leave",
+      "subject_id": "sid-BA330DF3-207E-4E6C-86D5-C94826CF20F6",
+      "predicate": "follows",
+      "object": "Inform employer",
+      "object_id": "sid-2337BE00-79EE-4453-902E-BEB1292B9329"
+    },
+    {
+      "subject": "Extend parental leave",
+      "subject_id": "sid-BA330DF3-207E-4E6C-86D5-C94826CF20F6",
+      "predicate": "follows",
+      "object": "Request extension",
+      "object_id": "sid-1E5C9866-5008-40A9-BDDD-C2D489102FF5"
+    },
+    {
+      "subject": "Inform employer",
+      "subject_id": "sid-1A3A7301-68FA-46BB-8BA2-56545495F206",
+      "predicate": "follows",
+      "object": "Extend parental leave",
+      "object_id": "sid-BA330DF3-207E-4E6C-86D5-C94826CF20F6"
+    },
+    {
+      "subject": "Show\"inform your employer within the term of protection\"",
+      "subject_id": "sid-9E01709C-A2A6-4F61-979E-FDF35AE421AE",
+      "predicate": "follows",
+      "object": "Show\"Only overlap of 1 month allowed with overlap of other parent\"",
+      "object_id": "sid-8222AC00-4C1D-46E0-80F9-653A16F261EE"
+    },
+    {
+      "subject": "Show\"inform your employer within the term of protection\"",
+      "subject_id": "sid-9E01709C-A2A6-4F61-979E-FDF35AE421AE",
+      "predicate": "follows",
+      "object": "Show\"No overlapping parental leave possible\"",
+      "object_id": "sid-D66156C2-B83F-4661-B0D6-C0A8DF1FE24B"
+    },
+    {
+      "subject": "Show\"inform your employer within the term of protection\"",
+      "subject_id": "sid-9E01709C-A2A6-4F61-979E-FDF35AE421AE",
+      "predicate": "follows",
+      "object": "Inform employer",
+      "object_id": "sid-1A3A7301-68FA-46BB-8BA2-56545495F206"
+    },
+    {
+      "subject": "Be silent",
+      "subject_id": "sid-AA41C29A-9989-4F34-8CE5-9DCAC53EF298",
+      "predicate": "follows",
+      "object": "Spent time with baby",
+      "object_id": "sid-725306E5-D14A-4449-A159-A5863C989245"
+    },
+    {
+      "subject": "Be silent",
+      "subject_id": "sid-AA41C29A-9989-4F34-8CE5-9DCAC53EF298",
+      "predicate": "follows",
+      "object": "Feed baby",
+      "object_id": "sid-02F14056-FF3A-4B56-A50A-9D215756F4D8"
+    },
+    {
+      "subject": "Be silent",
+      "subject_id": "sid-AA41C29A-9989-4F34-8CE5-9DCAC53EF298",
+      "predicate": "follows",
+      "object": "Be silent",
+      "object_id": "sid-AA41C29A-9989-4F34-8CE5-9DCAC53EF298"
+    },
+    {
+      "subject": "Show\"inform your employer 3 months before your maternity leave\"",
+      "subject_id": "sid-8B93D726-490A-477C-9D65-409C39A03673",
+      "predicate": "follows",
+      "object": "Show\"Only overlap of 1 month allowed with overlap of other parent\"",
+      "object_id": "sid-8222AC00-4C1D-46E0-80F9-653A16F261EE"
+    },
+    {
+      "subject": "Show\"inform your employer 3 months before your maternity leave\"",
+      "subject_id": "sid-8B93D726-490A-477C-9D65-409C39A03673",
+      "predicate": "follows",
+      "object": "Show\"No overlapping parental leave possible\"",
+      "object_id": "sid-D66156C2-B83F-4661-B0D6-C0A8DF1FE24B"
+    },
+    {
+      "subject": "Show\"inform your employer 3 months before your maternity leave\"",
+      "subject_id": "sid-8B93D726-490A-477C-9D65-409C39A03673",
+      "predicate": "follows",
+      "object": "Inform employer",
+      "object_id": "sid-1A3A7301-68FA-46BB-8BA2-56545495F206"
+    },
+    {
+      "subject": "Show\"Take parental leave before the child's 3rd birthday\"",
+      "subject_id": "sid-F88F429D-0F62-4A5A-9CF3-06FFE33F5870",
+      "predicate": "follows",
+      "object": "Extend parental leave",
+      "object_id": "sid-BA330DF3-207E-4E6C-86D5-C94826CF20F6"
+    },
+    {
+      "subject": "Show\"Take parental leave before the child's 3rd birthday\"",
+      "subject_id": "sid-F88F429D-0F62-4A5A-9CF3-06FFE33F5870",
+      "predicate": "follows",
+      "object": "Show\"register your maternity leave within the next 8 weeks of your child's birth\"",
+      "object_id": "sid-1C969A1F-83D8-482F-945C-7D7B4EA33457"
+    },
+    {
+      "subject": "Show\"Take parental leave before the child's 3rd birthday\"",
+      "subject_id": "sid-F88F429D-0F62-4A5A-9CF3-06FFE33F5870",
+      "predicate": "follows",
+      "object": "Show\"inform your employer 3 months before your maternity leave\"",
+      "object_id": "sid-8B93D726-490A-477C-9D65-409C39A03673"
+    },
+    {
+      "subject": "Show\"Take parental leave before the child's 3rd birthday\"",
+      "subject_id": "sid-F88F429D-0F62-4A5A-9CF3-06FFE33F5870",
+      "predicate": "follows",
+      "object": "Show\"inform your employer within the term of protection\"",
+      "object_id": "sid-9E01709C-A2A6-4F61-979E-FDF35AE421AE"
+    },
+    {
+      "subject": "Justify refusal",
+      "subject_id": "sid-8D67742B-4DB6-467B-AA08-373248F346AE",
+      "predicate": "follows",
+      "object": "Spent time with baby",
+      "object_id": "sid-725306E5-D14A-4449-A159-A5863C989245"
+    },
+    {
+      "subject": "Justify refusal",
+      "subject_id": "sid-8D67742B-4DB6-467B-AA08-373248F346AE",
+      "predicate": "follows",
+      "object": "Feed baby",
+      "object_id": "sid-02F14056-FF3A-4B56-A50A-9D215756F4D8"
+    },
+    {
+      "subject": "Justify refusal",
+      "subject_id": "sid-8D67742B-4DB6-467B-AA08-373248F346AE",
+      "predicate": "follows",
+      "object": "Be silent",
+      "object_id": "sid-AA41C29A-9989-4F34-8CE5-9DCAC53EF298"
+    },
+    {
+      "subject": "Show\"register your maternity leave within the next 8 weeks of your child's birth\"",
+      "subject_id": "sid-1C969A1F-83D8-482F-945C-7D7B4EA33457",
+      "predicate": "follows",
+      "object": "Show\"Only overlap of 1 month allowed with overlap of other parent\"",
+      "object_id": "sid-8222AC00-4C1D-46E0-80F9-653A16F261EE"
+    },
+    {
+      "subject": "Show\"register your maternity leave within the next 8 weeks of your child's birth\"",
+      "subject_id": "sid-1C969A1F-83D8-482F-945C-7D7B4EA33457",
+      "predicate": "follows",
+      "object": "Show\"No overlapping parental leave possible\"",
+      "object_id": "sid-D66156C2-B83F-4661-B0D6-C0A8DF1FE24B"
+    },
+    {
+      "subject": "Show\"register your maternity leave within the next 8 weeks of your child's birth\"",
+      "subject_id": "sid-1C969A1F-83D8-482F-945C-7D7B4EA33457",
+      "predicate": "follows",
+      "object": "Inform employer",
+      "object_id": "sid-1A3A7301-68FA-46BB-8BA2-56545495F206"
+    }
+  ],
+  "matches": {
+    "Be silent": {
+      "match": "information.collected",
+      "score": 0.0985
+    },
+    "Check options for parental leave": {
+      "match": "information.gathered",
+      "score": 0.1424
+    },
+    "Extend parental leave": {
+      "match": "period.ended",
+      "score": 0.1166
+    },
+    "Feed baby": {
+      "match": "information.fetched",
+      "score": 0.16
+    },
+    "Inform employer": {
+      "match": "information.gathered",
+      "score": 0.3192
+    },
+    "Justify refusal": {
+      "match": "model.selected",
+      "score": 0.1216
+    },
+    "Request extension": {
+      "match": "information.fetched",
+      "score": 0.1541
+    },
+    "Show\"No overlapping parental leave possible\"": {
+      "match": "period.ended",
+      "score": 0.0972
+    },
+    "Show\"Only overlap of 1 month allowed with overlap of other parent\"": {
+      "match": "period.ended",
+      "score": 0.1447
+    },
+    "Show\"Take parental leave before the child's 3rd birthday\"": {
+      "match": "social_security.notified",
+      "score": 0.1023
+    },
+    "Show\"inform your employer 3 months before your maternity leave\"": {
+      "match": "social_security.notified",
+      "score": 0.2284
+    },
+    "Show\"inform your employer within the term of protection\"": {
+      "match": "social_security.notified",
+      "score": 0.2103
+    },
+    "Show\"register your maternity leave within the next 8 weeks of your child's birth\"": {
+      "match": "social_security.notified",
+      "score": 0.1764
+    },
+    "Spent time with baby": {
+      "match": "period.ended",
+      "score": 0.137
+    }
+  },
+  "process_graph": [
+    {
+      "from": "information.gathered",
+      "to": "social_security.notified",
+      "activity_from": "Check options for parental leave",
+      "activity_to": "Show\"Take parental leave before the child's 3rd birthday\""
+    },
+    {
+      "from": "information.gathered",
+      "to": "model.selected",
+      "activity_from": "Check options for parental leave",
+      "activity_to": "Justify refusal"
+    },
+    {
+      "from": "period.ended",
+      "to": "information.gathered",
+      "activity_from": "Show\"Only overlap of 1 month allowed with overlap of other parent\"",
+      "activity_to": "Inform employer"
+    },
+    {
+      "from": "information.fetched",
+      "to": "period.ended",
+      "activity_from": "Feed baby",
+      "activity_to": "Spent time with baby"
+    },
+    {
+      "from": "information.fetched",
+      "to": "information.fetched",
+      "activity_from": "Feed baby",
+      "activity_to": "Feed baby"
+    },
+    {
+      "from": "information.fetched",
+      "to": "information.collected",
+      "activity_from": "Feed baby",
+      "activity_to": "Be silent"
+    },
+    {
+      "from": "period.ended",
+      "to": "information.gathered",
+      "activity_from": "Show\"No overlapping parental leave possible\"",
+      "activity_to": "Inform employer"
+    },
+    {
+      "from": "period.ended",
+      "to": "period.ended",
+      "activity_from": "Spent time with baby",
+      "activity_to": "Spent time with baby"
+    },
+    {
+      "from": "period.ended",
+      "to": "information.fetched",
+      "activity_from": "Spent time with baby",
+      "activity_to": "Feed baby"
+    },
+    {
+      "from": "period.ended",
+      "to": "information.collected",
+      "activity_from": "Spent time with baby",
+      "activity_to": "Be silent"
+    },
+    {
+      "from": "period.ended",
+      "to": "information.gathered",
+      "activity_from": "Extend parental leave",
+      "activity_to": "Inform employer"
+    },
+    {
+      "from": "period.ended",
+      "to": "information.fetched",
+      "activity_from": "Extend parental leave",
+      "activity_to": "Request extension"
+    },
+    {
+      "from": "information.gathered",
+      "to": "period.ended",
+      "activity_from": "Inform employer",
+      "activity_to": "Extend parental leave"
+    },
+    {
+      "from": "social_security.notified",
+      "to": "period.ended",
+      "activity_from": "Show\"inform your employer within the term of protection\"",
+      "activity_to": "Show\"Only overlap of 1 month allowed with overlap of other parent\""
+    },
+    {
+      "from": "social_security.notified",
+      "to": "period.ended",
+      "activity_from": "Show\"inform your employer within the term of protection\"",
+      "activity_to": "Show\"No overlapping parental leave possible\""
+    },
+    {
+      "from": "social_security.notified",
+      "to": "information.gathered",
+      "activity_from": "Show\"inform your employer within the term of protection\"",
+      "activity_to": "Inform employer"
+    },
+    {
+      "from": "information.collected",
+      "to": "period.ended",
+      "activity_from": "Be silent",
+      "activity_to": "Spent time with baby"
+    },
+    {
+      "from": "information.collected",
+      "to": "information.fetched",
+      "activity_from": "Be silent",
+      "activity_to": "Feed baby"
+    },
+    {
+      "from": "information.collected",
+      "to": "information.collected",
+      "activity_from": "Be silent",
+      "activity_to": "Be silent"
+    },
+    {
+      "from": "social_security.notified",
+      "to": "period.ended",
+      "activity_from": "Show\"inform your employer 3 months before your maternity leave\"",
+      "activity_to": "Show\"Only overlap of 1 month allowed with overlap of other parent\""
+    },
+    {
+      "from": "social_security.notified",
+      "to": "period.ended",
+      "activity_from": "Show\"inform your employer 3 months before your maternity leave\"",
+      "activity_to": "Show\"No overlapping parental leave possible\""
+    },
+    {
+      "from": "social_security.notified",
+      "to": "information.gathered",
+      "activity_from": "Show\"inform your employer 3 months before your maternity leave\"",
+      "activity_to": "Inform employer"
+    },
+    {
+      "from": "social_security.notified",
+      "to": "period.ended",
+      "activity_from": "Show\"Take parental leave before the child's 3rd birthday\"",
+      "activity_to": "Extend parental leave"
+    },
+    {
+      "from": "social_security.notified",
+      "to": "social_security.notified",
+      "activity_from": "Show\"Take parental leave before the child's 3rd birthday\"",
+      "activity_to": "Show\"register your maternity leave within the next 8 weeks of your child's birth\""
+    },
+    {
+      "from": "social_security.notified",
+      "to": "social_security.notified",
+      "activity_from": "Show\"Take parental leave before the child's 3rd birthday\"",
+      "activity_to": "Show\"inform your employer 3 months before your maternity leave\""
+    },
+    {
+      "from": "social_security.notified",
+      "to": "social_security.notified",
+      "activity_from": "Show\"Take parental leave before the child's 3rd birthday\"",
+      "activity_to": "Show\"inform your employer within the term of protection\""
+    },
+    {
+      "from": "model.selected",
+      "to": "period.ended",
+      "activity_from": "Justify refusal",
+      "activity_to": "Spent time with baby"
+    },
+    {
+      "from": "model.selected",
+      "to": "information.fetched",
+      "activity_from": "Justify refusal",
+      "activity_to": "Feed baby"
+    },
+    {
+      "from": "model.selected",
+      "to": "information.collected",
+      "activity_from": "Justify refusal",
+      "activity_to": "Be silent"
+    },
+    {
+      "from": "social_security.notified",
+      "to": "period.ended",
+      "activity_from": "Show\"register your maternity leave within the next 8 weeks of your child's birth\"",
+      "activity_to": "Show\"Only overlap of 1 month allowed with overlap of other parent\""
+    },
+    {
+      "from": "social_security.notified",
+      "to": "period.ended",
+      "activity_from": "Show\"register your maternity leave within the next 8 weeks of your child's birth\"",
+      "activity_to": "Show\"No overlapping parental leave possible\""
+    },
+    {
+      "from": "social_security.notified",
+      "to": "information.gathered",
+      "activity_from": "Show\"register your maternity leave within the next 8 weeks of your child's birth\"",
+      "activity_to": "Inform employer"
+    }
+  ],
+  "alignment": {
+    "information.collected": {
+      "operator": "AND",
+      "quote": "Collect relevant information",
+      "terms": [
+        {
+          "term": "information.fetched",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED"
+    },
+    "information.gathered": {
+      "operator": "AND",
+      "quote": "Gather information from companies",
+      "terms": [
+        {
+          "term": "period.ended",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED"
+    },
+    "model.selected": {
+      "operator": "AND",
+      "quote": "Let parent select",
+      "terms": [
+        {
+          "term": "information.fetched",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED"
+    },
+    "social_security.notified": {
+      "operator": "AND",
+      "quote": "Notify Social Security, Company in time",
+      "terms": [
+        {
+          "term": "model.selected",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        },
+        {
+          "term": "information.collected",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED"
+    }
+  },
+  "report": {
+    "summary": {
+      "ecarts": 0,
+      "non_verifiable": 0,
+      "conforme": 5
+    },
+    "ecarts": [],
+    "non_verifiable": [],
+    "conforme": [
+      {
+        "target": "Be silent",
+        "term": "Feed baby"
+      },
+      {
+        "target": "Inform employer",
+        "term": "Show\"Only overlap of 1 month allowed with overlap of other parent\""
+      },
+      {
+        "target": "Justify refusal",
+        "term": "Feed baby"
+      },
+      {
+        "target": "Show\"inform your employer 3 months before your maternity leave\"",
+        "term": "Justify refusal"
+      },
+      {
+        "target": "Show\"inform your employer 3 months before your maternity leave\"",
+        "term": "Be silent"
+      }
+    ],
+    "piece_jointe_alignement_brut": {
+      "information.collected": {
+        "operator": "AND",
+        "quote": "Collect relevant information",
+        "terms": [
+          {
+            "term": "information.fetched",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED"
+      },
+      "information.gathered": {
+        "operator": "AND",
+        "quote": "Gather information from companies",
+        "terms": [
+          {
+            "term": "period.ended",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED"
+      },
+      "model.selected": {
+        "operator": "AND",
+        "quote": "Let parent select",
+        "terms": [
+          {
+            "term": "information.fetched",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED"
+      },
+      "social_security.notified": {
+        "operator": "AND",
+        "quote": "Notify Social Security, Company in time",
+        "terms": [
+          {
+            "term": "model.selected",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          },
+          {
+            "term": "information.collected",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED"
+      }
+    }
+  },
+  "errors": []
+}

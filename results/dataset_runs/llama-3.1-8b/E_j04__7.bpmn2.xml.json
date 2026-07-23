@@ -1,0 +1,1123 @@
+{
+  "case_name": "E_j04",
+  "text": "Category: E-Government\nTitle: Internship\n\nYou can enter a topic that interests you, and how much money you want. You can\nalso enter experience and hobbies. Several offers will arrive (at arbitrary\npoints in time). You can accept or deny offers. As soon as an offer is accepted, \nall other offers become invalid. You have to write at least 3 status updates\nabout your internship (every week). The company has to write 3 status updates\nabout you. After the internship is finished you can recommend the company to a\nlist of friends (via twitter). Separate tweets are sent in parallel.\n",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "llama-3.1-8b",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "llama-3.1-8b",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/text_and_bpmn/bpmn/E_j04/7.bpmn2.xml",
+  "candidates": {
+    "topic": [
+      "entered"
+    ],
+    "offer": [
+      "arrived",
+      "accepted",
+      "invalid",
+      "denied"
+    ],
+    "status_update": [
+      "written"
+    ],
+    "internship": [
+      "finished"
+    ],
+    "company": [
+      "wrote"
+    ],
+    "friend": [
+      "recommended"
+    ]
+  },
+  "validation_report": {
+    "topic": {
+      "f_lex": "ENTITY",
+      "kept": true
+    },
+    "offer": {
+      "f_lex": "ENTITY",
+      "kept": true
+    },
+    "status_update": {
+      "f_lex": "ENTITY",
+      "kept": true
+    },
+    "internship": {
+      "f_lex": "ENTITY",
+      "kept": true
+    },
+    "company": {
+      "f_lex": "ACTOR",
+      "kept": false
+    },
+    "friend": {
+      "f_lex": "ACTOR",
+      "kept": false
+    }
+  },
+  "state_space": {
+    "topic": [
+      "entered"
+    ],
+    "offer": [
+      "arrived",
+      "accepted",
+      "invalid",
+      "denied"
+    ],
+    "status_update": [
+      "written"
+    ],
+    "internship": [
+      "finished"
+    ]
+  },
+  "raw_preconditions": {
+    "topic.entered": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "offer.arrived": {
+      "precondition": "topic.entered",
+      "quote": "You can enter a topic that interests you, and how much money you want."
+    },
+    "offer.accepted": {
+      "precondition": "offer.arrived AND topic.entered",
+      "quote": "As soon as an offer is accepted, all other offers become invalid."
+    },
+    "offer.denied": {
+      "precondition": "offer.arrived AND topic.entered",
+      "quote": "You can accept or deny offers."
+    },
+    "offer.invalid": {
+      "precondition": "offer.accepted",
+      "quote": "As soon as an offer is accepted, all other offers become invalid."
+    },
+    "status_update.written": {
+      "precondition": "offer.accepted",
+      "quote": "You have to write at least 3 status updates about your internship (every week)."
+    },
+    "internship.finished": {
+      "precondition": "offer.accepted",
+      "quote": "After the internship is finished you can recommend the company to a list of friends (via twitter)."
+    }
+  },
+  "validated_preconditions": {
+    "topic.entered": {
+      "precondition": "INITIAL",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "offer.arrived": {
+      "precondition": "topic.entered",
+      "quote": "You can enter a topic that interests you, and how much money you want.",
+      "status": "OK",
+      "reason": null
+    },
+    "offer.accepted": {
+      "precondition": "offer.arrived AND topic.entered",
+      "quote": "As soon as an offer is accepted, all other offers become invalid.",
+      "status": "OK",
+      "reason": null
+    },
+    "offer.denied": {
+      "precondition": "offer.arrived AND topic.entered",
+      "quote": "You can accept or deny offers.",
+      "status": "OK",
+      "reason": null
+    },
+    "offer.invalid": {
+      "precondition": "offer.accepted",
+      "quote": "As soon as an offer is accepted, all other offers become invalid.",
+      "status": "OK",
+      "reason": null
+    },
+    "status_update.written": {
+      "precondition": "offer.accepted",
+      "quote": "You have to write at least 3 status updates about your internship (every week).",
+      "status": "OK",
+      "reason": null
+    },
+    "internship.finished": {
+      "precondition": "offer.accepted",
+      "quote": "After the internship is finished you can recommend the company to a list of friends (via twitter).",
+      "status": "OK",
+      "reason": null
+    }
+  },
+  "precondition_cycles": [],
+  "reference_graph": {
+    "nodes": [
+      {
+        "id": "topic.entered",
+        "weight": 0.6
+      },
+      {
+        "id": "offer.arrived",
+        "weight": 0.6
+      },
+      {
+        "id": "offer.accepted",
+        "weight": 1.0
+      },
+      {
+        "id": "offer.invalid",
+        "weight": 0.2
+      },
+      {
+        "id": "offer.denied",
+        "weight": 0.4
+      },
+      {
+        "id": "status_update.written",
+        "weight": 0.2
+      },
+      {
+        "id": "internship.finished",
+        "weight": 0.2
+      }
+    ],
+    "edges": [
+      {
+        "from": "topic.entered",
+        "to": "offer.arrived",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "You can enter a topic that interests you, and how much money you want."
+      },
+      {
+        "from": "offer.arrived",
+        "to": "offer.accepted",
+        "type": "sequence",
+        "operator": "AND",
+        "quote": "As soon as an offer is accepted, all other offers become invalid."
+      },
+      {
+        "from": "topic.entered",
+        "to": "offer.accepted",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "As soon as an offer is accepted, all other offers become invalid."
+      },
+      {
+        "from": "offer.arrived",
+        "to": "offer.denied",
+        "type": "sequence",
+        "operator": "AND",
+        "quote": "You can accept or deny offers."
+      },
+      {
+        "from": "topic.entered",
+        "to": "offer.denied",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "You can accept or deny offers."
+      },
+      {
+        "from": "offer.accepted",
+        "to": "offer.invalid",
+        "type": "sequence",
+        "operator": "AND",
+        "quote": "As soon as an offer is accepted, all other offers become invalid."
+      },
+      {
+        "from": "offer.accepted",
+        "to": "status_update.written",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "You have to write at least 3 status updates about your internship (every week)."
+      },
+      {
+        "from": "offer.accepted",
+        "to": "internship.finished",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "After the internship is finished you can recommend the company to a list of friends (via twitter)."
+      }
+    ],
+    "cycles": []
+  },
+  "dfg_edges": [
+    {
+      "source_id": "sid-C1B916C0-663C-4638-B872-FE53721A736A",
+      "source_label": "Publish your application",
+      "target_id": "sid-CAF582CD-D101-48FF-838B-A5E5B88229CD",
+      "target_label": "Recieve offer",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-C1B916C0-663C-4638-B872-FE53721A736A",
+      "source_label": "Publish your application",
+      "target_id": "sid-08B91739-0233-4203-89E3-0D0AB99DB894",
+      "target_label": "",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-6720FEF9-92DC-4369-8510-F4D68AB35078",
+      "source_label": "Accept offer",
+      "target_id": "sid-9FFA6830-0236-4270-AC6D-1B6CA6AA1AA2",
+      "target_label": "Begin internship",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-81B557DF-173B-40BD-8BEB-80EEAEE3DE7C",
+      "source_label": "Enter experience",
+      "target_id": "sid-C1B916C0-663C-4638-B872-FE53721A736A",
+      "target_label": "Publish your application",
+      "gateway_context": [
+        "InclusiveGateway",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-7CA5ED54-B670-4D21-AE68-A19A6B956811",
+      "source_label": "Write at least 3 status updates every week",
+      "target_id": "sid-65A60D92-DC8E-4F16-B3B4-BA1B46514B5E",
+      "target_label": "End internship",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-D42DECDC-31A3-415E-9010-0A380E939F43",
+      "source_label": "Invalidate all other offers",
+      "target_id": "sid-9FFA6830-0236-4270-AC6D-1B6CA6AA1AA2",
+      "target_label": "Begin internship",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-5FA135F7-6CB0-4A1A-8691-BCBD44C3B5E3",
+      "source_label": "Deny offer",
+      "target_id": "sid-CAF582CD-D101-48FF-838B-A5E5B88229CD",
+      "target_label": "Recieve offer",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-7A2BE6E9-2C24-41AE-B385-FDFBBB73268B",
+      "source_label": "Register for internship",
+      "target_id": "sid-76AF7D7C-0962-47D2-AE6A-751A886A7FF7",
+      "target_label": "",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-7A2BE6E9-2C24-41AE-B385-FDFBBB73268B",
+      "source_label": "Register for internship",
+      "target_id": "sid-1F756967-08DA-4CBA-88F4-E7281EB6E4CA",
+      "target_label": "Enter hobbies",
+      "gateway_context": [
+        "ParallelGateway",
+        "InclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-7A2BE6E9-2C24-41AE-B385-FDFBBB73268B",
+      "source_label": "Register for internship",
+      "target_id": "sid-48EBC53E-34A2-4E3E-A39B-4341BF961636",
+      "target_label": "Enter expected income",
+      "gateway_context": [
+        "ParallelGateway",
+        "InclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-7A2BE6E9-2C24-41AE-B385-FDFBBB73268B",
+      "source_label": "Register for internship",
+      "target_id": "sid-81B557DF-173B-40BD-8BEB-80EEAEE3DE7C",
+      "target_label": "Enter experience",
+      "gateway_context": [
+        "ParallelGateway",
+        "InclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-7A2BE6E9-2C24-41AE-B385-FDFBBB73268B",
+      "source_label": "Register for internship",
+      "target_id": "sid-CF5FE08A-7C0B-4FAB-B511-8942557BA049",
+      "target_label": "Enter topic",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-CAF582CD-D101-48FF-838B-A5E5B88229CD",
+      "source_label": "Recieve offer",
+      "target_id": "sid-D42DECDC-31A3-415E-9010-0A380E939F43",
+      "target_label": "Invalidate all other offers",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "Yes",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-CAF582CD-D101-48FF-838B-A5E5B88229CD",
+      "source_label": "Recieve offer",
+      "target_id": "sid-6720FEF9-92DC-4369-8510-F4D68AB35078",
+      "target_label": "Accept offer",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "Yes",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-CAF582CD-D101-48FF-838B-A5E5B88229CD",
+      "source_label": "Recieve offer",
+      "target_id": "sid-5FA135F7-6CB0-4A1A-8691-BCBD44C3B5E3",
+      "target_label": "Deny offer",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "No"
+      ]
+    },
+    {
+      "source_id": "sid-CAF582CD-D101-48FF-838B-A5E5B88229CD",
+      "source_label": "Recieve offer",
+      "target_id": "sid-3B5BA6A8-19CE-4375-8444-69A89476FEEE",
+      "target_label": "",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-CF5FE08A-7C0B-4FAB-B511-8942557BA049",
+      "source_label": "Enter topic",
+      "target_id": "sid-C1B916C0-663C-4638-B872-FE53721A736A",
+      "target_label": "Publish your application",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-1F756967-08DA-4CBA-88F4-E7281EB6E4CA",
+      "source_label": "Enter hobbies",
+      "target_id": "sid-C1B916C0-663C-4638-B872-FE53721A736A",
+      "target_label": "Publish your application",
+      "gateway_context": [
+        "InclusiveGateway",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-48EBC53E-34A2-4E3E-A39B-4341BF961636",
+      "source_label": "Enter expected income",
+      "target_id": "sid-C1B916C0-663C-4638-B872-FE53721A736A",
+      "target_label": "Publish your application",
+      "gateway_context": [
+        "InclusiveGateway",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-5894348A-D277-422D-BE16-E4601B4720C7",
+      "source_label": "Recieve 3 status updates from the company",
+      "target_id": "sid-65A60D92-DC8E-4F16-B3B4-BA1B46514B5E",
+      "target_label": "End internship",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-9FFA6830-0236-4270-AC6D-1B6CA6AA1AA2",
+      "source_label": "Begin internship",
+      "target_id": "sid-7CA5ED54-B670-4D21-AE68-A19A6B956811",
+      "target_label": "Write at least 3 status updates every week",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-9FFA6830-0236-4270-AC6D-1B6CA6AA1AA2",
+      "source_label": "Begin internship",
+      "target_id": "sid-5894348A-D277-422D-BE16-E4601B4720C7",
+      "target_label": "Recieve 3 status updates from the company",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-65A60D92-DC8E-4F16-B3B4-BA1B46514B5E",
+      "source_label": "End internship",
+      "target_id": "sid-6C3CCD12-4C1E-4A6E-986D-F04FBE717A6C",
+      "target_label": "Recommend company to a list of friends via twitter api",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "Yes"
+      ]
+    },
+    {
+      "source_id": "sid-65A60D92-DC8E-4F16-B3B4-BA1B46514B5E",
+      "source_label": "End internship",
+      "target_id": "sid-67EEE961-1A64-41A3-92AD-8B07174167D1",
+      "target_label": "Internship succesful",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "No",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-17DFAA59-780F-4043-B2C8-0D7D75B86587",
+      "source_label": "Internship  process  is started",
+      "target_id": "sid-7A2BE6E9-2C24-41AE-B385-FDFBBB73268B",
+      "target_label": "Register for internship",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-6C3CCD12-4C1E-4A6E-986D-F04FBE717A6C",
+      "source_label": "Recommend company to a list of friends via twitter api",
+      "target_id": "sid-93D69C35-8320-4178-86F1-B965B21C9B80",
+      "target_label": "",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-6C3CCD12-4C1E-4A6E-986D-F04FBE717A6C",
+      "source_label": "Recommend company to a list of friends via twitter api",
+      "target_id": "sid-67EEE961-1A64-41A3-92AD-8B07174167D1",
+      "target_label": "Internship succesful",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "Publish your application",
+      "subject_id": "sid-C1B916C0-663C-4638-B872-FE53721A736A",
+      "predicate": "follows",
+      "object": "Recieve offer",
+      "object_id": "sid-CAF582CD-D101-48FF-838B-A5E5B88229CD"
+    },
+    {
+      "subject": "Publish your application",
+      "subject_id": "sid-C1B916C0-663C-4638-B872-FE53721A736A",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "sid-08B91739-0233-4203-89E3-0D0AB99DB894"
+    },
+    {
+      "subject": "Accept offer",
+      "subject_id": "sid-6720FEF9-92DC-4369-8510-F4D68AB35078",
+      "predicate": "follows",
+      "object": "Begin internship",
+      "object_id": "sid-9FFA6830-0236-4270-AC6D-1B6CA6AA1AA2"
+    },
+    {
+      "subject": "Enter experience",
+      "subject_id": "sid-81B557DF-173B-40BD-8BEB-80EEAEE3DE7C",
+      "predicate": "follows",
+      "object": "Publish your application",
+      "object_id": "sid-C1B916C0-663C-4638-B872-FE53721A736A"
+    },
+    {
+      "subject": "Write at least 3 status updates every week",
+      "subject_id": "sid-7CA5ED54-B670-4D21-AE68-A19A6B956811",
+      "predicate": "follows",
+      "object": "End internship",
+      "object_id": "sid-65A60D92-DC8E-4F16-B3B4-BA1B46514B5E"
+    },
+    {
+      "subject": "Invalidate all other offers",
+      "subject_id": "sid-D42DECDC-31A3-415E-9010-0A380E939F43",
+      "predicate": "follows",
+      "object": "Begin internship",
+      "object_id": "sid-9FFA6830-0236-4270-AC6D-1B6CA6AA1AA2"
+    },
+    {
+      "subject": "Deny offer",
+      "subject_id": "sid-5FA135F7-6CB0-4A1A-8691-BCBD44C3B5E3",
+      "predicate": "follows",
+      "object": "Recieve offer",
+      "object_id": "sid-CAF582CD-D101-48FF-838B-A5E5B88229CD"
+    },
+    {
+      "subject": "Register for internship",
+      "subject_id": "sid-7A2BE6E9-2C24-41AE-B385-FDFBBB73268B",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "sid-76AF7D7C-0962-47D2-AE6A-751A886A7FF7"
+    },
+    {
+      "subject": "Register for internship",
+      "subject_id": "sid-7A2BE6E9-2C24-41AE-B385-FDFBBB73268B",
+      "predicate": "follows",
+      "object": "Enter hobbies",
+      "object_id": "sid-1F756967-08DA-4CBA-88F4-E7281EB6E4CA"
+    },
+    {
+      "subject": "Register for internship",
+      "subject_id": "sid-7A2BE6E9-2C24-41AE-B385-FDFBBB73268B",
+      "predicate": "follows",
+      "object": "Enter expected income",
+      "object_id": "sid-48EBC53E-34A2-4E3E-A39B-4341BF961636"
+    },
+    {
+      "subject": "Register for internship",
+      "subject_id": "sid-7A2BE6E9-2C24-41AE-B385-FDFBBB73268B",
+      "predicate": "follows",
+      "object": "Enter experience",
+      "object_id": "sid-81B557DF-173B-40BD-8BEB-80EEAEE3DE7C"
+    },
+    {
+      "subject": "Register for internship",
+      "subject_id": "sid-7A2BE6E9-2C24-41AE-B385-FDFBBB73268B",
+      "predicate": "follows",
+      "object": "Enter topic",
+      "object_id": "sid-CF5FE08A-7C0B-4FAB-B511-8942557BA049"
+    },
+    {
+      "subject": "Recieve offer",
+      "subject_id": "sid-CAF582CD-D101-48FF-838B-A5E5B88229CD",
+      "predicate": "follows",
+      "object": "Invalidate all other offers",
+      "object_id": "sid-D42DECDC-31A3-415E-9010-0A380E939F43"
+    },
+    {
+      "subject": "Recieve offer",
+      "subject_id": "sid-CAF582CD-D101-48FF-838B-A5E5B88229CD",
+      "predicate": "follows",
+      "object": "Accept offer",
+      "object_id": "sid-6720FEF9-92DC-4369-8510-F4D68AB35078"
+    },
+    {
+      "subject": "Recieve offer",
+      "subject_id": "sid-CAF582CD-D101-48FF-838B-A5E5B88229CD",
+      "predicate": "follows",
+      "object": "Deny offer",
+      "object_id": "sid-5FA135F7-6CB0-4A1A-8691-BCBD44C3B5E3"
+    },
+    {
+      "subject": "Recieve offer",
+      "subject_id": "sid-CAF582CD-D101-48FF-838B-A5E5B88229CD",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "sid-3B5BA6A8-19CE-4375-8444-69A89476FEEE"
+    },
+    {
+      "subject": "Enter topic",
+      "subject_id": "sid-CF5FE08A-7C0B-4FAB-B511-8942557BA049",
+      "predicate": "follows",
+      "object": "Publish your application",
+      "object_id": "sid-C1B916C0-663C-4638-B872-FE53721A736A"
+    },
+    {
+      "subject": "Enter hobbies",
+      "subject_id": "sid-1F756967-08DA-4CBA-88F4-E7281EB6E4CA",
+      "predicate": "follows",
+      "object": "Publish your application",
+      "object_id": "sid-C1B916C0-663C-4638-B872-FE53721A736A"
+    },
+    {
+      "subject": "Enter expected income",
+      "subject_id": "sid-48EBC53E-34A2-4E3E-A39B-4341BF961636",
+      "predicate": "follows",
+      "object": "Publish your application",
+      "object_id": "sid-C1B916C0-663C-4638-B872-FE53721A736A"
+    },
+    {
+      "subject": "Recieve 3 status updates from the company",
+      "subject_id": "sid-5894348A-D277-422D-BE16-E4601B4720C7",
+      "predicate": "follows",
+      "object": "End internship",
+      "object_id": "sid-65A60D92-DC8E-4F16-B3B4-BA1B46514B5E"
+    },
+    {
+      "subject": "Begin internship",
+      "subject_id": "sid-9FFA6830-0236-4270-AC6D-1B6CA6AA1AA2",
+      "predicate": "follows",
+      "object": "Write at least 3 status updates every week",
+      "object_id": "sid-7CA5ED54-B670-4D21-AE68-A19A6B956811"
+    },
+    {
+      "subject": "Begin internship",
+      "subject_id": "sid-9FFA6830-0236-4270-AC6D-1B6CA6AA1AA2",
+      "predicate": "follows",
+      "object": "Recieve 3 status updates from the company",
+      "object_id": "sid-5894348A-D277-422D-BE16-E4601B4720C7"
+    },
+    {
+      "subject": "End internship",
+      "subject_id": "sid-65A60D92-DC8E-4F16-B3B4-BA1B46514B5E",
+      "predicate": "follows",
+      "object": "Recommend company to a list of friends via twitter api",
+      "object_id": "sid-6C3CCD12-4C1E-4A6E-986D-F04FBE717A6C"
+    },
+    {
+      "subject": "End internship",
+      "subject_id": "sid-65A60D92-DC8E-4F16-B3B4-BA1B46514B5E",
+      "predicate": "follows",
+      "object": "Internship succesful",
+      "object_id": "sid-67EEE961-1A64-41A3-92AD-8B07174167D1"
+    },
+    {
+      "subject": "Internship  process  is started",
+      "subject_id": "sid-17DFAA59-780F-4043-B2C8-0D7D75B86587",
+      "predicate": "follows",
+      "object": "Register for internship",
+      "object_id": "sid-7A2BE6E9-2C24-41AE-B385-FDFBBB73268B"
+    },
+    {
+      "subject": "Recommend company to a list of friends via twitter api",
+      "subject_id": "sid-6C3CCD12-4C1E-4A6E-986D-F04FBE717A6C",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "sid-93D69C35-8320-4178-86F1-B965B21C9B80"
+    },
+    {
+      "subject": "Recommend company to a list of friends via twitter api",
+      "subject_id": "sid-6C3CCD12-4C1E-4A6E-986D-F04FBE717A6C",
+      "predicate": "follows",
+      "object": "Internship succesful",
+      "object_id": "sid-67EEE961-1A64-41A3-92AD-8B07174167D1"
+    }
+  ],
+  "matches": {
+    "Accept offer": {
+      "match": "offer.accepted",
+      "score": 0.8366
+    },
+    "Begin internship": {
+      "match": "internship.finished",
+      "score": 0.6733
+    },
+    "Deny offer": {
+      "match": "offer.denied",
+      "score": 0.7259
+    },
+    "End internship": {
+      "match": "internship.finished",
+      "score": 0.7719
+    },
+    "Enter expected income": {
+      "match": "topic.entered",
+      "score": 0.2313
+    },
+    "Enter experience": {
+      "match": "topic.entered",
+      "score": 0.3734
+    },
+    "Enter hobbies": {
+      "match": "topic.entered",
+      "score": 0.3433
+    },
+    "Enter topic": {
+      "match": "topic.entered",
+      "score": 0.8077
+    },
+    "Internship  process  is started": {
+      "match": "internship.finished",
+      "score": 0.5262
+    },
+    "Internship succesful": {
+      "match": "internship.finished",
+      "score": 0.7445
+    },
+    "Invalidate all other offers": {
+      "match": "offer.invalid",
+      "score": 0.6191
+    },
+    "Publish your application": {
+      "match": "status_update.written",
+      "score": 0.1857
+    },
+    "Recieve 3 status updates from the company": {
+      "match": "status_update.written",
+      "score": 0.3548
+    },
+    "Recieve offer": {
+      "match": "offer.arrived",
+      "score": 0.6505
+    },
+    "Recommend company to a list of friends via twitter api": {
+      "match": "internship.finished",
+      "score": 0.1399
+    },
+    "Register for internship": {
+      "match": "internship.finished",
+      "score": 0.4999
+    },
+    "Write at least 3 status updates every week": {
+      "match": "status_update.written",
+      "score": 0.4621
+    }
+  },
+  "process_graph": [
+    {
+      "from": "status_update.written",
+      "to": "offer.arrived",
+      "activity_from": "Publish your application",
+      "activity_to": "Recieve offer"
+    },
+    {
+      "from": "offer.accepted",
+      "to": "internship.finished",
+      "activity_from": "Accept offer",
+      "activity_to": "Begin internship"
+    },
+    {
+      "from": "topic.entered",
+      "to": "status_update.written",
+      "activity_from": "Enter experience",
+      "activity_to": "Publish your application"
+    },
+    {
+      "from": "status_update.written",
+      "to": "internship.finished",
+      "activity_from": "Write at least 3 status updates every week",
+      "activity_to": "End internship"
+    },
+    {
+      "from": "offer.invalid",
+      "to": "internship.finished",
+      "activity_from": "Invalidate all other offers",
+      "activity_to": "Begin internship"
+    },
+    {
+      "from": "offer.denied",
+      "to": "offer.arrived",
+      "activity_from": "Deny offer",
+      "activity_to": "Recieve offer"
+    },
+    {
+      "from": "internship.finished",
+      "to": "topic.entered",
+      "activity_from": "Register for internship",
+      "activity_to": "Enter hobbies"
+    },
+    {
+      "from": "internship.finished",
+      "to": "topic.entered",
+      "activity_from": "Register for internship",
+      "activity_to": "Enter expected income"
+    },
+    {
+      "from": "internship.finished",
+      "to": "topic.entered",
+      "activity_from": "Register for internship",
+      "activity_to": "Enter experience"
+    },
+    {
+      "from": "internship.finished",
+      "to": "topic.entered",
+      "activity_from": "Register for internship",
+      "activity_to": "Enter topic"
+    },
+    {
+      "from": "offer.arrived",
+      "to": "offer.invalid",
+      "activity_from": "Recieve offer",
+      "activity_to": "Invalidate all other offers"
+    },
+    {
+      "from": "offer.arrived",
+      "to": "offer.accepted",
+      "activity_from": "Recieve offer",
+      "activity_to": "Accept offer"
+    },
+    {
+      "from": "offer.arrived",
+      "to": "offer.denied",
+      "activity_from": "Recieve offer",
+      "activity_to": "Deny offer"
+    },
+    {
+      "from": "topic.entered",
+      "to": "status_update.written",
+      "activity_from": "Enter topic",
+      "activity_to": "Publish your application"
+    },
+    {
+      "from": "topic.entered",
+      "to": "status_update.written",
+      "activity_from": "Enter hobbies",
+      "activity_to": "Publish your application"
+    },
+    {
+      "from": "topic.entered",
+      "to": "status_update.written",
+      "activity_from": "Enter expected income",
+      "activity_to": "Publish your application"
+    },
+    {
+      "from": "status_update.written",
+      "to": "internship.finished",
+      "activity_from": "Recieve 3 status updates from the company",
+      "activity_to": "End internship"
+    },
+    {
+      "from": "internship.finished",
+      "to": "status_update.written",
+      "activity_from": "Begin internship",
+      "activity_to": "Write at least 3 status updates every week"
+    },
+    {
+      "from": "internship.finished",
+      "to": "status_update.written",
+      "activity_from": "Begin internship",
+      "activity_to": "Recieve 3 status updates from the company"
+    },
+    {
+      "from": "internship.finished",
+      "to": "internship.finished",
+      "activity_from": "End internship",
+      "activity_to": "Recommend company to a list of friends via twitter api"
+    },
+    {
+      "from": "internship.finished",
+      "to": "internship.finished",
+      "activity_from": "End internship",
+      "activity_to": "Internship succesful"
+    },
+    {
+      "from": "internship.finished",
+      "to": "internship.finished",
+      "activity_from": "Internship  process  is started",
+      "activity_to": "Register for internship"
+    },
+    {
+      "from": "internship.finished",
+      "to": "internship.finished",
+      "activity_from": "Recommend company to a list of friends via twitter api",
+      "activity_to": "Internship succesful"
+    }
+  ],
+  "alignment": {
+    "offer.arrived": {
+      "operator": "AND",
+      "quote": "You can enter a topic that interests you, and how much money you want.",
+      "terms": [
+        {
+          "term": "topic.entered",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED"
+    },
+    "offer.accepted": {
+      "operator": "AND",
+      "quote": "As soon as an offer is accepted, all other offers become invalid.",
+      "terms": [
+        {
+          "term": "offer.arrived",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        },
+        {
+          "term": "topic.entered",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED"
+    },
+    "offer.denied": {
+      "operator": "AND",
+      "quote": "You can accept or deny offers.",
+      "terms": [
+        {
+          "term": "offer.arrived",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        },
+        {
+          "term": "topic.entered",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED"
+    },
+    "offer.invalid": {
+      "operator": "AND",
+      "quote": "As soon as an offer is accepted, all other offers become invalid.",
+      "terms": [
+        {
+          "term": "offer.accepted",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED"
+    },
+    "status_update.written": {
+      "operator": "AND",
+      "quote": "You have to write at least 3 status updates about your internship (every week).",
+      "terms": [
+        {
+          "term": "offer.accepted",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED"
+    },
+    "internship.finished": {
+      "operator": "AND",
+      "quote": "After the internship is finished you can recommend the company to a list of friends (via twitter).",
+      "terms": [
+        {
+          "term": "offer.accepted",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED"
+    }
+  },
+  "report": {
+    "summary": {
+      "ecarts": 0,
+      "non_verifiable": 0,
+      "conforme": 8
+    },
+    "ecarts": [],
+    "non_verifiable": [],
+    "conforme": [
+      {
+        "target": "Recieve offer",
+        "term": "Enter topic"
+      },
+      {
+        "target": "Accept offer",
+        "term": "Recieve offer"
+      },
+      {
+        "target": "Accept offer",
+        "term": "Enter topic"
+      },
+      {
+        "target": "Deny offer",
+        "term": "Recieve offer"
+      },
+      {
+        "target": "Deny offer",
+        "term": "Enter topic"
+      },
+      {
+        "target": "Invalidate all other offers",
+        "term": "Accept offer"
+      },
+      {
+        "target": "Write at least 3 status updates every week",
+        "term": "Accept offer"
+      },
+      {
+        "target": "End internship",
+        "term": "Accept offer"
+      }
+    ],
+    "piece_jointe_alignement_brut": {
+      "offer.arrived": {
+        "operator": "AND",
+        "quote": "You can enter a topic that interests you, and how much money you want.",
+        "terms": [
+          {
+            "term": "topic.entered",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED"
+      },
+      "offer.accepted": {
+        "operator": "AND",
+        "quote": "As soon as an offer is accepted, all other offers become invalid.",
+        "terms": [
+          {
+            "term": "offer.arrived",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          },
+          {
+            "term": "topic.entered",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED"
+      },
+      "offer.denied": {
+        "operator": "AND",
+        "quote": "You can accept or deny offers.",
+        "terms": [
+          {
+            "term": "offer.arrived",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          },
+          {
+            "term": "topic.entered",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED"
+      },
+      "offer.invalid": {
+        "operator": "AND",
+        "quote": "As soon as an offer is accepted, all other offers become invalid.",
+        "terms": [
+          {
+            "term": "offer.accepted",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED"
+      },
+      "status_update.written": {
+        "operator": "AND",
+        "quote": "You have to write at least 3 status updates about your internship (every week).",
+        "terms": [
+          {
+            "term": "offer.accepted",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED"
+      },
+      "internship.finished": {
+        "operator": "AND",
+        "quote": "After the internship is finished you can recommend the company to a list of friends (via twitter).",
+        "terms": [
+          {
+            "term": "offer.accepted",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED"
+      }
+    }
+  },
+  "errors": []
+}

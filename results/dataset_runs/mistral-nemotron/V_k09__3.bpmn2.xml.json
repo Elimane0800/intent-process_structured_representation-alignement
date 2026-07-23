@@ -1,0 +1,339 @@
+{
+  "case_name": "V_k09",
+  "text": "Category: Vending and Shipping\nTitle: Storage management\n\nFirst, the order is read from the automatic order management system. \nThen, it's checked if the first product from the order is in stock. \nIf it's in stock then it's withdrawn from the warehouse.\nHowever, if it's not in stock then it's reordered from the wholesaler.\nNote, that if it was necessary to wait more then 10 days for the\narrival of the  product then a delivery delay penalty is automatically demanded\nfrom the wholesaler. \nAfter the ordered product has arrived it's registered in the stock management system. \nFinally, it's checked if the whole order is ready for shipment. \nIf the order is ready for shipment, a courier is requested and the products are packed\nsimultaneously and finally shipped. If it isn't then the next product from\nthe order is selected and the process starts again with checking if this\norder is in stock or not. \n",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "mistral-nemotron",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "mistral-nemotron",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/text_and_bpmn/bpmn/V_k09/3.bpmn2.xml",
+  "dfg_edges": [
+    {
+      "source_id": "sid-0279A28B-D262-492A-B80C-209A5C4C16E5",
+      "source_label": "pack the products",
+      "target_id": "sid-9B45DE59-1999-4340-9857-86BB6425C5CA",
+      "target_label": "ship the order",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-27CE7892-E97D-42FC-9CF0-C9AB12D0D928",
+      "source_label": "needs to ship the order",
+      "target_id": "sid-6EEA6DAA-4165-4DD8-A7DB-E7A0CE982C26",
+      "target_label": "read the next available order",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-979AD8FD-6C15-44F6-9530-06B389DC06E9",
+      "source_label": "enter ordering (start) date",
+      "target_id": "sid-0F043FB0-149C-4980-ADC2-63483C86363C",
+      "target_label": "receive the product",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-05FCB250-D08D-4F4B-B841-B1070A6BA1B1",
+      "source_label": "select the next product from the order",
+      "target_id": "sid-8D496E6E-D574-4868-99AB-DA2B5AACB5CD",
+      "target_label": "check if this product is in stock",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-8D496E6E-D574-4868-99AB-DA2B5AACB5CD",
+      "source_label": "check if this product is in stock",
+      "target_id": "sid-FDDE85DD-3CCE-42A4-B5A1-773C45579F3A",
+      "target_label": "order the product ",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "no"
+      ]
+    },
+    {
+      "source_id": "sid-8D496E6E-D574-4868-99AB-DA2B5AACB5CD",
+      "source_label": "check if this product is in stock",
+      "target_id": "sid-CB90D3F8-2A03-4F2B-8560-E082B1B34B88",
+      "target_label": "take product form the warehouse",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "yes"
+      ]
+    },
+    {
+      "source_id": "sid-1587CB83-9744-4C36-91D6-C69AB5B3B52A",
+      "source_label": "register product",
+      "target_id": "sid-728A01AE-DE13-4590-8558-CC22929F9B98",
+      "target_label": "check if the whole order is ready for shipment",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-C805CA54-3E88-4222-96F9-5134CD5581D7",
+      "source_label": "check the date",
+      "target_id": "sid-1587CB83-9744-4C36-91D6-C69AB5B3B52A",
+      "target_label": "register product",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "no",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-C805CA54-3E88-4222-96F9-5134CD5581D7",
+      "source_label": "check the date",
+      "target_id": "sid-165B29E2-C0A6-4F08-B9EB-65CB9202DCB7",
+      "target_label": "demand delivery delay penalty ",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "yes"
+      ]
+    },
+    {
+      "source_id": "sid-9B45DE59-1999-4340-9857-86BB6425C5CA",
+      "source_label": "ship the order",
+      "target_id": "sid-A09BB36F-F32C-48FA-8B01-4A0498C44ECD",
+      "target_label": "order is shipped ",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-B50F9F9D-C5A7-45A4-8F62-3436961D08BF",
+      "source_label": "select first product from the order",
+      "target_id": "sid-8D496E6E-D574-4868-99AB-DA2B5AACB5CD",
+      "target_label": "check if this product is in stock",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-FDDE85DD-3CCE-42A4-B5A1-773C45579F3A",
+      "source_label": "order the product ",
+      "target_id": "sid-979AD8FD-6C15-44F6-9530-06B389DC06E9",
+      "target_label": "enter ordering (start) date",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-0F043FB0-149C-4980-ADC2-63483C86363C",
+      "source_label": "receive the product",
+      "target_id": "sid-C805CA54-3E88-4222-96F9-5134CD5581D7",
+      "target_label": "check the date",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-165B29E2-C0A6-4F08-B9EB-65CB9202DCB7",
+      "source_label": "demand delivery delay penalty ",
+      "target_id": "sid-1587CB83-9744-4C36-91D6-C69AB5B3B52A",
+      "target_label": "register product",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-BC169ECA-9C8D-4C79-8B07-C58C61B77586",
+      "source_label": "request courier",
+      "target_id": "sid-9B45DE59-1999-4340-9857-86BB6425C5CA",
+      "target_label": "ship the order",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-CB90D3F8-2A03-4F2B-8560-E082B1B34B88",
+      "source_label": "take product form the warehouse",
+      "target_id": "sid-728A01AE-DE13-4590-8558-CC22929F9B98",
+      "target_label": "check if the whole order is ready for shipment",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-6EEA6DAA-4165-4DD8-A7DB-E7A0CE982C26",
+      "source_label": "read the next available order",
+      "target_id": "sid-B50F9F9D-C5A7-45A4-8F62-3436961D08BF",
+      "target_label": "select first product from the order",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-728A01AE-DE13-4590-8558-CC22929F9B98",
+      "source_label": "check if the whole order is ready for shipment",
+      "target_id": "sid-05FCB250-D08D-4F4B-B841-B1070A6BA1B1",
+      "target_label": "select the next product from the order",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "no"
+      ]
+    },
+    {
+      "source_id": "sid-728A01AE-DE13-4590-8558-CC22929F9B98",
+      "source_label": "check if the whole order is ready for shipment",
+      "target_id": "sid-0279A28B-D262-492A-B80C-209A5C4C16E5",
+      "target_label": "pack the products",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "yes",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-728A01AE-DE13-4590-8558-CC22929F9B98",
+      "source_label": "check if the whole order is ready for shipment",
+      "target_id": "sid-BC169ECA-9C8D-4C79-8B07-C58C61B77586",
+      "target_label": "request courier",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "yes",
+        "ParallelGateway"
+      ]
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "pack the products",
+      "subject_id": "sid-0279A28B-D262-492A-B80C-209A5C4C16E5",
+      "predicate": "follows",
+      "object": "ship the order",
+      "object_id": "sid-9B45DE59-1999-4340-9857-86BB6425C5CA"
+    },
+    {
+      "subject": "needs to ship the order",
+      "subject_id": "sid-27CE7892-E97D-42FC-9CF0-C9AB12D0D928",
+      "predicate": "follows",
+      "object": "read the next available order",
+      "object_id": "sid-6EEA6DAA-4165-4DD8-A7DB-E7A0CE982C26"
+    },
+    {
+      "subject": "enter ordering (start) date",
+      "subject_id": "sid-979AD8FD-6C15-44F6-9530-06B389DC06E9",
+      "predicate": "follows",
+      "object": "receive the product",
+      "object_id": "sid-0F043FB0-149C-4980-ADC2-63483C86363C"
+    },
+    {
+      "subject": "select the next product from the order",
+      "subject_id": "sid-05FCB250-D08D-4F4B-B841-B1070A6BA1B1",
+      "predicate": "follows",
+      "object": "check if this product is in stock",
+      "object_id": "sid-8D496E6E-D574-4868-99AB-DA2B5AACB5CD"
+    },
+    {
+      "subject": "check if this product is in stock",
+      "subject_id": "sid-8D496E6E-D574-4868-99AB-DA2B5AACB5CD",
+      "predicate": "follows",
+      "object": "order the product ",
+      "object_id": "sid-FDDE85DD-3CCE-42A4-B5A1-773C45579F3A"
+    },
+    {
+      "subject": "check if this product is in stock",
+      "subject_id": "sid-8D496E6E-D574-4868-99AB-DA2B5AACB5CD",
+      "predicate": "follows",
+      "object": "take product form the warehouse",
+      "object_id": "sid-CB90D3F8-2A03-4F2B-8560-E082B1B34B88"
+    },
+    {
+      "subject": "register product",
+      "subject_id": "sid-1587CB83-9744-4C36-91D6-C69AB5B3B52A",
+      "predicate": "follows",
+      "object": "check if the whole order is ready for shipment",
+      "object_id": "sid-728A01AE-DE13-4590-8558-CC22929F9B98"
+    },
+    {
+      "subject": "check the date",
+      "subject_id": "sid-C805CA54-3E88-4222-96F9-5134CD5581D7",
+      "predicate": "follows",
+      "object": "register product",
+      "object_id": "sid-1587CB83-9744-4C36-91D6-C69AB5B3B52A"
+    },
+    {
+      "subject": "check the date",
+      "subject_id": "sid-C805CA54-3E88-4222-96F9-5134CD5581D7",
+      "predicate": "follows",
+      "object": "demand delivery delay penalty ",
+      "object_id": "sid-165B29E2-C0A6-4F08-B9EB-65CB9202DCB7"
+    },
+    {
+      "subject": "ship the order",
+      "subject_id": "sid-9B45DE59-1999-4340-9857-86BB6425C5CA",
+      "predicate": "follows",
+      "object": "order is shipped ",
+      "object_id": "sid-A09BB36F-F32C-48FA-8B01-4A0498C44ECD"
+    },
+    {
+      "subject": "select first product from the order",
+      "subject_id": "sid-B50F9F9D-C5A7-45A4-8F62-3436961D08BF",
+      "predicate": "follows",
+      "object": "check if this product is in stock",
+      "object_id": "sid-8D496E6E-D574-4868-99AB-DA2B5AACB5CD"
+    },
+    {
+      "subject": "order the product ",
+      "subject_id": "sid-FDDE85DD-3CCE-42A4-B5A1-773C45579F3A",
+      "predicate": "follows",
+      "object": "enter ordering (start) date",
+      "object_id": "sid-979AD8FD-6C15-44F6-9530-06B389DC06E9"
+    },
+    {
+      "subject": "receive the product",
+      "subject_id": "sid-0F043FB0-149C-4980-ADC2-63483C86363C",
+      "predicate": "follows",
+      "object": "check the date",
+      "object_id": "sid-C805CA54-3E88-4222-96F9-5134CD5581D7"
+    },
+    {
+      "subject": "demand delivery delay penalty ",
+      "subject_id": "sid-165B29E2-C0A6-4F08-B9EB-65CB9202DCB7",
+      "predicate": "follows",
+      "object": "register product",
+      "object_id": "sid-1587CB83-9744-4C36-91D6-C69AB5B3B52A"
+    },
+    {
+      "subject": "request courier",
+      "subject_id": "sid-BC169ECA-9C8D-4C79-8B07-C58C61B77586",
+      "predicate": "follows",
+      "object": "ship the order",
+      "object_id": "sid-9B45DE59-1999-4340-9857-86BB6425C5CA"
+    },
+    {
+      "subject": "take product form the warehouse",
+      "subject_id": "sid-CB90D3F8-2A03-4F2B-8560-E082B1B34B88",
+      "predicate": "follows",
+      "object": "check if the whole order is ready for shipment",
+      "object_id": "sid-728A01AE-DE13-4590-8558-CC22929F9B98"
+    },
+    {
+      "subject": "read the next available order",
+      "subject_id": "sid-6EEA6DAA-4165-4DD8-A7DB-E7A0CE982C26",
+      "predicate": "follows",
+      "object": "select first product from the order",
+      "object_id": "sid-B50F9F9D-C5A7-45A4-8F62-3436961D08BF"
+    },
+    {
+      "subject": "check if the whole order is ready for shipment",
+      "subject_id": "sid-728A01AE-DE13-4590-8558-CC22929F9B98",
+      "predicate": "follows",
+      "object": "select the next product from the order",
+      "object_id": "sid-05FCB250-D08D-4F4B-B841-B1070A6BA1B1"
+    },
+    {
+      "subject": "check if the whole order is ready for shipment",
+      "subject_id": "sid-728A01AE-DE13-4590-8558-CC22929F9B98",
+      "predicate": "follows",
+      "object": "pack the products",
+      "object_id": "sid-0279A28B-D262-492A-B80C-209A5C4C16E5"
+    },
+    {
+      "subject": "check if the whole order is ready for shipment",
+      "subject_id": "sid-728A01AE-DE13-4590-8558-CC22929F9B98",
+      "predicate": "follows",
+      "object": "request courier",
+      "object_id": "sid-BC169ECA-9C8D-4C79-8B07-C58C61B77586"
+    }
+  ],
+  "errors": [
+    "state_space: Error code: 429 - {'status': 429, 'title': 'Too Many Requests'}",
+    "precondition: 'state_space'",
+    "state_matching: 'state_space'",
+    "graph_construction: 'state_space'",
+    "alignment: 'reference_graph'",
+    "report: 'alignment'"
+  ]
+}

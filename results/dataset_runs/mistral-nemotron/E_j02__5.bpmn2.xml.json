@@ -1,0 +1,213 @@
+{
+  "case_name": "E_j02",
+  "text": "Category: E-Government\nTitle: Becoming A Parent\n\nCreate a process that support in planning, taking and extending a maternity\nleave.\n\n* Fetch information about potential models (months duration, split between parents)\n* Let parent select\n* Collect relevant information\n* Notify Social Security, Company in time\n* Gather information from companies\n* At the end of the period let parent decide about extension.\n",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "mistral-nemotron",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "mistral-nemotron",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/text_and_bpmn/bpmn/E_j02/5.bpmn2.xml",
+  "candidates": {
+    "parent": [
+      "selecting",
+      "notified",
+      "deciding"
+    ],
+    "information": [
+      "fetched",
+      "collected",
+      "gathered"
+    ],
+    "model": [
+      "selected"
+    ],
+    "social_security": [
+      "notified"
+    ],
+    "company": [
+      "notified",
+      "gathered_from"
+    ],
+    "period": [
+      "ended"
+    ]
+  },
+  "validation_report": {
+    "parent": {
+      "f_lex": "ACTOR",
+      "kept": false
+    },
+    "information": {
+      "f_lex": "ENTITY",
+      "kept": true
+    },
+    "model": {
+      "f_lex": "ENTITY",
+      "kept": true
+    },
+    "social_security": {
+      "f_lex": "INDETERMINATE",
+      "kept": true
+    },
+    "company": {
+      "f_lex": "ACTOR",
+      "kept": false
+    },
+    "period": {
+      "f_lex": "INDETERMINATE",
+      "kept": true
+    }
+  },
+  "state_space": {
+    "information": [
+      "fetched",
+      "collected",
+      "gathered"
+    ],
+    "model": [
+      "selected"
+    ],
+    "social_security": [
+      "notified"
+    ],
+    "period": [
+      "ended"
+    ]
+  },
+  "raw_preconditions": {
+    "information.fetched": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "information.collected": {
+      "precondition": "model.selected",
+      "quote": "Collect relevant information"
+    },
+    "information.gathered": {
+      "precondition": "period.ended",
+      "quote": "At the end of the period let parent decide about extension."
+    },
+    "model.selected": {
+      "precondition": "information.fetched",
+      "quote": "Let parent select"
+    },
+    "social_security.notified": {
+      "precondition": "model.selected AND information.collected",
+      "quote": "Notify Social Security, Company in time"
+    },
+    "period.ended": {
+      "precondition": "UNRESOLVED",
+      "quote": null
+    }
+  },
+  "validated_preconditions": {
+    "information.fetched": {
+      "precondition": "INITIAL",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "information.collected": {
+      "precondition": "model.selected",
+      "quote": "Collect relevant information",
+      "status": "OK",
+      "reason": null
+    },
+    "information.gathered": {
+      "precondition": "period.ended",
+      "quote": "At the end of the period let parent decide about extension.",
+      "status": "OK",
+      "reason": null
+    },
+    "model.selected": {
+      "precondition": "information.fetched",
+      "quote": "Let parent select",
+      "status": "OK",
+      "reason": null
+    },
+    "social_security.notified": {
+      "precondition": "model.selected AND information.collected",
+      "quote": "Notify Social Security, Company in time",
+      "status": "OK",
+      "reason": null
+    },
+    "period.ended": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    }
+  },
+  "precondition_cycles": [],
+  "reference_graph": {
+    "nodes": [
+      {
+        "id": "information.fetched",
+        "weight": 0.333
+      },
+      {
+        "id": "information.collected",
+        "weight": 0.667
+      },
+      {
+        "id": "information.gathered",
+        "weight": 0.333
+      },
+      {
+        "id": "model.selected",
+        "weight": 1.0
+      },
+      {
+        "id": "social_security.notified",
+        "weight": 0.667
+      },
+      {
+        "id": "period.ended",
+        "weight": 0.333
+      }
+    ],
+    "edges": [
+      {
+        "from": "model.selected",
+        "to": "information.collected",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "Collect relevant information"
+      },
+      {
+        "from": "period.ended",
+        "to": "information.gathered",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "At the end of the period let parent decide about extension."
+      },
+      {
+        "from": "information.fetched",
+        "to": "model.selected",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "Let parent select"
+      },
+      {
+        "from": "model.selected",
+        "to": "social_security.notified",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "Notify Social Security, Company in time"
+      },
+      {
+        "from": "information.collected",
+        "to": "social_security.notified",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "Notify Social Security, Company in time"
+      }
+    ],
+    "cycles": []
+  },
+  "errors": [
+    "bpmn_to_spo: 'str' object has no attribute 'add_out_arc'",
+    "state_matching: 'spo_triples'",
+    "alignment: 'process_graph'",
+    "report: 'alignment'"
+  ]
+}

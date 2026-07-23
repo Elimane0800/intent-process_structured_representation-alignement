@@ -1,0 +1,824 @@
+{
+  "case_name": "V_g01",
+  "text": "Category: Vending and Shipping\nTitle: Robotic Burger Seller near the University of Vienna\n\nThe robot receives an order. It asks whether the customer wants a menu or just\nthe burger. If he wants a menu, the robot starts preparing the drink, which\ndepending on the size can take a variable amount of time. While doing so, he\nasks if you want fries or wedges. If you want fries, he prepares the fries; if\nyou want wedges, he prepares wedges. Again the duration varies depending on the\nsize fries/wedges order. After that, he prepares the burger, and gives you\nenthusiastic status updates every 30 seconds. Depending on the number of\ningredients, the duration for creating the burger varies. Your order is delivered\nvia a conveyor belt.\n",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "openai/gpt-oss-20b",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "openai/gpt-oss-20b",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/text_and_bpmn/bpmn/V_g01/0.bpmn2.xml",
+  "candidates": {
+    "order": [
+      "received",
+      "prepared",
+      "delivered"
+    ],
+    "drink": [
+      "prepared"
+    ],
+    "fries": [
+      "prepared"
+    ],
+    "wedges": [
+      "prepared"
+    ],
+    "burger": [
+      "prepared"
+    ],
+    "status_updates": [
+      "given"
+    ]
+  },
+  "validation_report": {
+    "order": {
+      "f_lex": "ENTITY",
+      "kept": true
+    },
+    "drink": {
+      "f_lex": "INDETERMINATE",
+      "kept": true
+    },
+    "fries": {
+      "f_lex": "INDETERMINATE",
+      "kept": true
+    },
+    "wedges": {
+      "f_lex": "INDETERMINATE",
+      "kept": true
+    },
+    "burger": {
+      "f_lex": "ACTOR",
+      "kept": false
+    },
+    "status_updates": {
+      "f_lex": "ENTITY",
+      "kept": true
+    }
+  },
+  "state_space": {
+    "order": [
+      "received",
+      "prepared",
+      "delivered"
+    ],
+    "drink": [
+      "prepared"
+    ],
+    "fries": [
+      "prepared"
+    ],
+    "wedges": [
+      "prepared"
+    ],
+    "status_updates": [
+      "given"
+    ]
+  },
+  "raw_preconditions": {
+    "order.received": {
+      "precondition": "INITIAL",
+      "quote": "The robot receives an order."
+    },
+    "order.prepared": {
+      "precondition": "UNRESOLVED",
+      "quote": null
+    },
+    "order.delivered": {
+      "precondition": "order.prepared",
+      "quote": "Your order is delivered via a conveyor belt."
+    },
+    "drink.prepared": {
+      "precondition": "order.received",
+      "quote": "If he wants a menu, the robot starts preparing the drink"
+    },
+    "fries.prepared": {
+      "precondition": "drink.prepared",
+      "quote": "If you want fries, he prepares the fries"
+    },
+    "wedges.prepared": {
+      "precondition": "drink.prepared",
+      "quote": "If you want wedges, he prepares wedges"
+    },
+    "status_updates.given": {
+      "precondition": "UNRESOLVED",
+      "quote": null
+    }
+  },
+  "validated_preconditions": {
+    "order.received": {
+      "precondition": "INITIAL",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "order.prepared": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "order.delivered": {
+      "precondition": "order.prepared",
+      "quote": "Your order is delivered via a conveyor belt.",
+      "status": "OK",
+      "reason": null
+    },
+    "drink.prepared": {
+      "precondition": "order.received",
+      "quote": "If he wants a menu, the robot starts preparing the drink",
+      "status": "OK",
+      "reason": null
+    },
+    "fries.prepared": {
+      "precondition": "drink.prepared",
+      "quote": "If you want fries, he prepares the fries",
+      "status": "OK",
+      "reason": null
+    },
+    "wedges.prepared": {
+      "precondition": "order.received",
+      "quote": "The robot receives an order.",
+      "status": "OK",
+      "reason": null,
+      "retried": true
+    },
+    "status_updates.given": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    }
+  },
+  "precondition_cycles": [],
+  "reference_graph": {
+    "nodes": [
+      {
+        "id": "order.received",
+        "weight": 1.0
+      },
+      {
+        "id": "order.prepared",
+        "weight": 0.5
+      },
+      {
+        "id": "order.delivered",
+        "weight": 0.5
+      },
+      {
+        "id": "drink.prepared",
+        "weight": 1.0
+      },
+      {
+        "id": "fries.prepared",
+        "weight": 0.5
+      },
+      {
+        "id": "wedges.prepared",
+        "weight": 0.5
+      },
+      {
+        "id": "status_updates.given",
+        "weight": 0.0
+      }
+    ],
+    "edges": [
+      {
+        "from": "order.prepared",
+        "to": "order.delivered",
+        "type": "sequence",
+        "operator": "AND",
+        "quote": "Your order is delivered via a conveyor belt."
+      },
+      {
+        "from": "order.received",
+        "to": "drink.prepared",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "If he wants a menu, the robot starts preparing the drink"
+      },
+      {
+        "from": "drink.prepared",
+        "to": "fries.prepared",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "If you want fries, he prepares the fries"
+      },
+      {
+        "from": "order.received",
+        "to": "wedges.prepared",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "The robot receives an order."
+      }
+    ],
+    "cycles": []
+  },
+  "dfg_edges": [
+    {
+      "source_id": "sid-3E3ECE7E-1218-4ABF-A325-3903F1A9ABFF",
+      "source_label": "Ask which side dish was selected",
+      "target_id": "sid-2D38932C-CC2A-401B-8AEA-242A283B4609",
+      "target_label": "Process chosen side dish",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-32039D99-F9F9-4EE4-B272-CDE5907767E5",
+      "source_label": "Prepare fries",
+      "target_id": "sid-9A72BB69-9FF7-4DCE-B106-7DFCB5D0A2FB",
+      "target_label": "Prepare burger",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-37AB28ED-DB89-4CA8-B11B-3522889D9D01",
+      "source_label": "Prepare wedges",
+      "target_id": "sid-9A72BB69-9FF7-4DCE-B106-7DFCB5D0A2FB",
+      "target_label": "Prepare burger",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-FFF34E30-5EA4-4A53-8625-28EF0A4C0B2F",
+      "source_label": "Process chosen burger",
+      "target_id": "sid-9A72BB69-9FF7-4DCE-B106-7DFCB5D0A2FB",
+      "target_label": "Prepare burger",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-103A3C54-F857-4FBA-9F3C-4E12B351167C",
+      "source_label": "Give status update",
+      "target_id": "sid-C8310EF0-35C2-4484-AE77-404D965B56E7",
+      "target_label": "Deliver oder",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "Yes"
+      ]
+    },
+    {
+      "source_id": "sid-103A3C54-F857-4FBA-9F3C-4E12B351167C",
+      "source_label": "Give status update",
+      "target_id": "sid-EF862ECA-6EBC-4D62-B4FC-C2FAEDFC5DF4",
+      "target_label": "after 30 seconds",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "No"
+      ]
+    },
+    {
+      "source_id": "sid-EF862ECA-6EBC-4D62-B4FC-C2FAEDFC5DF4",
+      "source_label": "after 30 seconds",
+      "target_id": "sid-103A3C54-F857-4FBA-9F3C-4E12B351167C",
+      "target_label": "Give status update",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-2D38932C-CC2A-401B-8AEA-242A283B4609",
+      "source_label": "Process chosen side dish",
+      "target_id": "sid-DFEE13B6-52C0-493B-B1FF-A2180D7CF001",
+      "target_label": "Select suitable portion size",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-DFEE13B6-52C0-493B-B1FF-A2180D7CF001",
+      "source_label": "Select suitable portion size",
+      "target_id": "sid-32039D99-F9F9-4EE4-B272-CDE5907767E5",
+      "target_label": "Prepare fries",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "Yes"
+      ]
+    },
+    {
+      "source_id": "sid-DFEE13B6-52C0-493B-B1FF-A2180D7CF001",
+      "source_label": "Select suitable portion size",
+      "target_id": "sid-37AB28ED-DB89-4CA8-B11B-3522889D9D01",
+      "target_label": "Prepare wedges",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "No"
+      ]
+    },
+    {
+      "source_id": "sid-4A18402C-FB58-4350-9BA3-8D4B10423B2F",
+      "source_label": "Select suitable cup size",
+      "target_id": "sid-5E2D09DE-4BF6-4DF0-949C-EC85ACACCEDD",
+      "target_label": "Prepare drink",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-5E2D09DE-4BF6-4DF0-949C-EC85ACACCEDD",
+      "source_label": "Prepare drink",
+      "target_id": "sid-2D38932C-CC2A-401B-8AEA-242A283B4609",
+      "target_label": "Process chosen side dish",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-9A72BB69-9FF7-4DCE-B106-7DFCB5D0A2FB",
+      "source_label": "Prepare burger",
+      "target_id": "sid-103A3C54-F857-4FBA-9F3C-4E12B351167C",
+      "target_label": "Give status update",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-C8310EF0-35C2-4484-AE77-404D965B56E7",
+      "source_label": "Deliver oder",
+      "target_id": "sid-866E34F6-741D-4176-90FD-1AED2F396952",
+      "target_label": "Order finished",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-862FF7FE-C617-4D80-8EE5-50A463CD2D0C",
+      "source_label": "Process order information",
+      "target_id": "sid-FFF34E30-5EA4-4A53-8625-28EF0A4C0B2F",
+      "target_label": "Process chosen burger",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "No"
+      ]
+    },
+    {
+      "source_id": "sid-862FF7FE-C617-4D80-8EE5-50A463CD2D0C",
+      "source_label": "Process order information",
+      "target_id": "sid-3E3ECE7E-1218-4ABF-A325-3903F1A9ABFF",
+      "target_label": "Ask which side dish was selected",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "Yes",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-862FF7FE-C617-4D80-8EE5-50A463CD2D0C",
+      "source_label": "Process order information",
+      "target_id": "sid-4A18402C-FB58-4350-9BA3-8D4B10423B2F",
+      "target_label": "Select suitable cup size",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "Yes",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-304B0561-A3A0-40A2-B396-462352DA8CA8",
+      "source_label": "Receive order",
+      "target_id": "sid-862FF7FE-C617-4D80-8EE5-50A463CD2D0C",
+      "target_label": "Process order information",
+      "gateway_context": []
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "Ask which side dish was selected",
+      "subject_id": "sid-3E3ECE7E-1218-4ABF-A325-3903F1A9ABFF",
+      "predicate": "follows",
+      "object": "Process chosen side dish",
+      "object_id": "sid-2D38932C-CC2A-401B-8AEA-242A283B4609"
+    },
+    {
+      "subject": "Prepare fries",
+      "subject_id": "sid-32039D99-F9F9-4EE4-B272-CDE5907767E5",
+      "predicate": "follows",
+      "object": "Prepare burger",
+      "object_id": "sid-9A72BB69-9FF7-4DCE-B106-7DFCB5D0A2FB"
+    },
+    {
+      "subject": "Prepare wedges",
+      "subject_id": "sid-37AB28ED-DB89-4CA8-B11B-3522889D9D01",
+      "predicate": "follows",
+      "object": "Prepare burger",
+      "object_id": "sid-9A72BB69-9FF7-4DCE-B106-7DFCB5D0A2FB"
+    },
+    {
+      "subject": "Process chosen burger",
+      "subject_id": "sid-FFF34E30-5EA4-4A53-8625-28EF0A4C0B2F",
+      "predicate": "follows",
+      "object": "Prepare burger",
+      "object_id": "sid-9A72BB69-9FF7-4DCE-B106-7DFCB5D0A2FB"
+    },
+    {
+      "subject": "Give status update",
+      "subject_id": "sid-103A3C54-F857-4FBA-9F3C-4E12B351167C",
+      "predicate": "follows",
+      "object": "Deliver oder",
+      "object_id": "sid-C8310EF0-35C2-4484-AE77-404D965B56E7"
+    },
+    {
+      "subject": "Give status update",
+      "subject_id": "sid-103A3C54-F857-4FBA-9F3C-4E12B351167C",
+      "predicate": "follows",
+      "object": "after 30 seconds",
+      "object_id": "sid-EF862ECA-6EBC-4D62-B4FC-C2FAEDFC5DF4"
+    },
+    {
+      "subject": "after 30 seconds",
+      "subject_id": "sid-EF862ECA-6EBC-4D62-B4FC-C2FAEDFC5DF4",
+      "predicate": "follows",
+      "object": "Give status update",
+      "object_id": "sid-103A3C54-F857-4FBA-9F3C-4E12B351167C"
+    },
+    {
+      "subject": "Process chosen side dish",
+      "subject_id": "sid-2D38932C-CC2A-401B-8AEA-242A283B4609",
+      "predicate": "follows",
+      "object": "Select suitable portion size",
+      "object_id": "sid-DFEE13B6-52C0-493B-B1FF-A2180D7CF001"
+    },
+    {
+      "subject": "Select suitable portion size",
+      "subject_id": "sid-DFEE13B6-52C0-493B-B1FF-A2180D7CF001",
+      "predicate": "follows",
+      "object": "Prepare fries",
+      "object_id": "sid-32039D99-F9F9-4EE4-B272-CDE5907767E5"
+    },
+    {
+      "subject": "Select suitable portion size",
+      "subject_id": "sid-DFEE13B6-52C0-493B-B1FF-A2180D7CF001",
+      "predicate": "follows",
+      "object": "Prepare wedges",
+      "object_id": "sid-37AB28ED-DB89-4CA8-B11B-3522889D9D01"
+    },
+    {
+      "subject": "Select suitable cup size",
+      "subject_id": "sid-4A18402C-FB58-4350-9BA3-8D4B10423B2F",
+      "predicate": "follows",
+      "object": "Prepare drink",
+      "object_id": "sid-5E2D09DE-4BF6-4DF0-949C-EC85ACACCEDD"
+    },
+    {
+      "subject": "Prepare drink",
+      "subject_id": "sid-5E2D09DE-4BF6-4DF0-949C-EC85ACACCEDD",
+      "predicate": "follows",
+      "object": "Process chosen side dish",
+      "object_id": "sid-2D38932C-CC2A-401B-8AEA-242A283B4609"
+    },
+    {
+      "subject": "Prepare burger",
+      "subject_id": "sid-9A72BB69-9FF7-4DCE-B106-7DFCB5D0A2FB",
+      "predicate": "follows",
+      "object": "Give status update",
+      "object_id": "sid-103A3C54-F857-4FBA-9F3C-4E12B351167C"
+    },
+    {
+      "subject": "Deliver oder",
+      "subject_id": "sid-C8310EF0-35C2-4484-AE77-404D965B56E7",
+      "predicate": "follows",
+      "object": "Order finished",
+      "object_id": "sid-866E34F6-741D-4176-90FD-1AED2F396952"
+    },
+    {
+      "subject": "Process order information",
+      "subject_id": "sid-862FF7FE-C617-4D80-8EE5-50A463CD2D0C",
+      "predicate": "follows",
+      "object": "Process chosen burger",
+      "object_id": "sid-FFF34E30-5EA4-4A53-8625-28EF0A4C0B2F"
+    },
+    {
+      "subject": "Process order information",
+      "subject_id": "sid-862FF7FE-C617-4D80-8EE5-50A463CD2D0C",
+      "predicate": "follows",
+      "object": "Ask which side dish was selected",
+      "object_id": "sid-3E3ECE7E-1218-4ABF-A325-3903F1A9ABFF"
+    },
+    {
+      "subject": "Process order information",
+      "subject_id": "sid-862FF7FE-C617-4D80-8EE5-50A463CD2D0C",
+      "predicate": "follows",
+      "object": "Select suitable cup size",
+      "object_id": "sid-4A18402C-FB58-4350-9BA3-8D4B10423B2F"
+    },
+    {
+      "subject": "Receive order",
+      "subject_id": "sid-304B0561-A3A0-40A2-B396-462352DA8CA8",
+      "predicate": "follows",
+      "object": "Process order information",
+      "object_id": "sid-862FF7FE-C617-4D80-8EE5-50A463CD2D0C"
+    }
+  ],
+  "matches": {
+    "Ask which side dish was selected": {
+      "match": "fries.prepared",
+      "score": 0.2181
+    },
+    "Deliver oder": {
+      "match": "order.delivered",
+      "score": 0.5003
+    },
+    "Give status update": {
+      "match": "status_updates.given",
+      "score": 0.7666
+    },
+    "Order finished": {
+      "match": "order.prepared",
+      "score": 0.5956
+    },
+    "Prepare burger": {
+      "match": "fries.prepared",
+      "score": 0.4125
+    },
+    "Prepare drink": {
+      "match": "drink.prepared",
+      "score": 0.8299
+    },
+    "Prepare fries": {
+      "match": "fries.prepared",
+      "score": 0.8502
+    },
+    "Prepare wedges": {
+      "match": "wedges.prepared",
+      "score": 0.8722
+    },
+    "Process chosen burger": {
+      "match": "fries.prepared",
+      "score": 0.2932
+    },
+    "Process chosen side dish": {
+      "match": "fries.prepared",
+      "score": 0.2663
+    },
+    "Process order information": {
+      "match": "order.received",
+      "score": 0.4914
+    },
+    "Receive order": {
+      "match": "order.received",
+      "score": 0.7889
+    },
+    "Select suitable cup size": {
+      "match": "drink.prepared",
+      "score": 0.2232
+    },
+    "Select suitable portion size": {
+      "match": "wedges.prepared",
+      "score": 0.2065
+    },
+    "after 30 seconds": {
+      "match": "order.delivered",
+      "score": 0.1056
+    }
+  },
+  "process_graph": [
+    {
+      "from": "fries.prepared",
+      "to": "fries.prepared",
+      "activity_from": "Ask which side dish was selected",
+      "activity_to": "Process chosen side dish"
+    },
+    {
+      "from": "fries.prepared",
+      "to": "fries.prepared",
+      "activity_from": "Prepare fries",
+      "activity_to": "Prepare burger"
+    },
+    {
+      "from": "wedges.prepared",
+      "to": "fries.prepared",
+      "activity_from": "Prepare wedges",
+      "activity_to": "Prepare burger"
+    },
+    {
+      "from": "fries.prepared",
+      "to": "fries.prepared",
+      "activity_from": "Process chosen burger",
+      "activity_to": "Prepare burger"
+    },
+    {
+      "from": "status_updates.given",
+      "to": "order.delivered",
+      "activity_from": "Give status update",
+      "activity_to": "Deliver oder"
+    },
+    {
+      "from": "status_updates.given",
+      "to": "order.delivered",
+      "activity_from": "Give status update",
+      "activity_to": "after 30 seconds"
+    },
+    {
+      "from": "order.delivered",
+      "to": "status_updates.given",
+      "activity_from": "after 30 seconds",
+      "activity_to": "Give status update"
+    },
+    {
+      "from": "fries.prepared",
+      "to": "wedges.prepared",
+      "activity_from": "Process chosen side dish",
+      "activity_to": "Select suitable portion size"
+    },
+    {
+      "from": "wedges.prepared",
+      "to": "fries.prepared",
+      "activity_from": "Select suitable portion size",
+      "activity_to": "Prepare fries"
+    },
+    {
+      "from": "wedges.prepared",
+      "to": "wedges.prepared",
+      "activity_from": "Select suitable portion size",
+      "activity_to": "Prepare wedges"
+    },
+    {
+      "from": "drink.prepared",
+      "to": "drink.prepared",
+      "activity_from": "Select suitable cup size",
+      "activity_to": "Prepare drink"
+    },
+    {
+      "from": "drink.prepared",
+      "to": "fries.prepared",
+      "activity_from": "Prepare drink",
+      "activity_to": "Process chosen side dish"
+    },
+    {
+      "from": "fries.prepared",
+      "to": "status_updates.given",
+      "activity_from": "Prepare burger",
+      "activity_to": "Give status update"
+    },
+    {
+      "from": "order.delivered",
+      "to": "order.prepared",
+      "activity_from": "Deliver oder",
+      "activity_to": "Order finished"
+    },
+    {
+      "from": "order.received",
+      "to": "fries.prepared",
+      "activity_from": "Process order information",
+      "activity_to": "Process chosen burger"
+    },
+    {
+      "from": "order.received",
+      "to": "fries.prepared",
+      "activity_from": "Process order information",
+      "activity_to": "Ask which side dish was selected"
+    },
+    {
+      "from": "order.received",
+      "to": "drink.prepared",
+      "activity_from": "Process order information",
+      "activity_to": "Select suitable cup size"
+    },
+    {
+      "from": "order.received",
+      "to": "order.received",
+      "activity_from": "Receive order",
+      "activity_to": "Process order information"
+    }
+  ],
+  "alignment": {
+    "order.delivered": {
+      "operator": "AND",
+      "quote": "Your order is delivered via a conveyor belt.",
+      "terms": [
+        {
+          "term": "order.prepared",
+          "status": "VIOLATED",
+          "reason": "both states matched, no path in process",
+          "missing": []
+        }
+      ],
+      "status": "VIOLATED"
+    },
+    "drink.prepared": {
+      "operator": "AND",
+      "quote": "If he wants a menu, the robot starts preparing the drink",
+      "terms": [
+        {
+          "term": "order.received",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED"
+    },
+    "fries.prepared": {
+      "operator": "AND",
+      "quote": "If you want fries, he prepares the fries",
+      "terms": [
+        {
+          "term": "drink.prepared",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED"
+    },
+    "wedges.prepared": {
+      "operator": "AND",
+      "quote": "The robot receives an order.",
+      "terms": [
+        {
+          "term": "order.received",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED"
+    }
+  },
+  "report": {
+    "summary": {
+      "ecarts": 1,
+      "non_verifiable": 0,
+      "conforme": 3
+    },
+    "ecarts": [
+      {
+        "root_cause": "Order finished",
+        "quote": "Your order is delivered via a conveyor belt.",
+        "explanation": "La citation fournie \"Your order is delivered via a conveyor belt\" montre qu'une condition est exigée avant l'activité \"Deliver order\". \n\nCependant, il n'y a pas d'information qui indique que l'activité \"Order finished\" doit précéder l'activité \"Deliver order\". En fait, le processus observé ne montre pas d'ordre spécifique entre ces deux activités.",
+        "affected_activities": [
+          "Deliver oder"
+        ],
+        "affected_count": 1
+      }
+    ],
+    "non_verifiable": [],
+    "conforme": [
+      {
+        "target": "Prepare drink",
+        "term": "Receive order"
+      },
+      {
+        "target": "Prepare fries",
+        "term": "Prepare drink"
+      },
+      {
+        "target": "Prepare wedges",
+        "term": "Receive order"
+      }
+    ],
+    "piece_jointe_alignement_brut": {
+      "order.delivered": {
+        "operator": "AND",
+        "quote": "Your order is delivered via a conveyor belt.",
+        "terms": [
+          {
+            "term": "order.prepared",
+            "status": "VIOLATED",
+            "reason": "both states matched, no path in process",
+            "missing": []
+          }
+        ],
+        "status": "VIOLATED"
+      },
+      "drink.prepared": {
+        "operator": "AND",
+        "quote": "If he wants a menu, the robot starts preparing the drink",
+        "terms": [
+          {
+            "term": "order.received",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED"
+      },
+      "fries.prepared": {
+        "operator": "AND",
+        "quote": "If you want fries, he prepares the fries",
+        "terms": [
+          {
+            "term": "drink.prepared",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED"
+      },
+      "wedges.prepared": {
+        "operator": "AND",
+        "quote": "The robot receives an order.",
+        "terms": [
+          {
+            "term": "order.received",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED"
+      }
+    }
+  },
+  "errors": []
+}

@@ -1,0 +1,643 @@
+{
+  "case_name": "X_g01",
+  "text": "Category: Miscellaneous\nTitle: New Application for Registering for an USI course\n\nIf you want to register for a course at the sports institute, you need to\nselect a course. If slots are free, the system tells you the courses, and\ndates. Select one. Next, you need to check if you already have an account at\nthe sports institute. If not, you need to check whether you are registered at\nan eligible university. If you are, register your account. If you are not,\nrequest an activation and wait for a response. As soon as you have an account,\nlog into it. The application is also connected to your twitter account, and\nlets you tweet to friends who might want to join you, you can complete the\nregistration for the course and provide the payment information. In the end, you\nwill receive a course ticket.\n",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "gpt-oss-20b",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "gpt-oss-20b",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/text_and_bpmn/bpmn/X_g01/0.bpmn2.xml",
+  "report_model": "gpt-oss-20b",
+  "candidates": {
+    "course": [
+      "selected",
+      "available"
+    ],
+    "account": [
+      "registered",
+      "activated"
+    ],
+    "university": [
+      "eligible"
+    ],
+    "activation": [
+      "requested",
+      "pending"
+    ],
+    "twitter_account": [
+      "connected"
+    ],
+    "payment_information": [
+      "provided"
+    ],
+    "course_ticket": [
+      "received"
+    ],
+    "eligible_university": [
+      "eligible"
+    ]
+  },
+  "validation_report": {
+    "course": {
+      "f_lex": "ENTITY",
+      "kept": true
+    },
+    "account": {
+      "f_lex": "ENTITY",
+      "kept": true
+    },
+    "university": {
+      "f_lex": "ACTOR",
+      "kept": false
+    },
+    "activation": {
+      "f_lex": "INDETERMINATE",
+      "kept": true
+    },
+    "twitter_account": {
+      "f_lex": "ENTITY",
+      "kept": true
+    },
+    "payment_information": {
+      "f_lex": "ENTITY",
+      "kept": true
+    },
+    "course_ticket": {
+      "f_lex": "ENTITY",
+      "kept": true
+    },
+    "eligible_university": {
+      "f_lex": "ACTOR",
+      "kept": false
+    }
+  },
+  "state_space": {
+    "course": [
+      "selected",
+      "available"
+    ],
+    "activation": [
+      "requested",
+      "pending"
+    ],
+    "twitter_account": [
+      "connected",
+      "registered",
+      "activated"
+    ],
+    "payment_information": [
+      "provided"
+    ],
+    "course_ticket": [
+      "received"
+    ]
+  },
+  "state_space_dedup": {
+    "merged": {
+      "twitter_account": {
+        "absorbed": [
+          "account"
+        ],
+        "rule": "anaphoric_containment",
+        "states": [
+          "connected",
+          "registered",
+          "activated"
+        ]
+      }
+    },
+    "ambiguous_not_merged": {}
+  },
+  "raw_preconditions": {
+    "course.selected": "course.available",
+    "quote": "If slots are free, the system tells you the courses, and dates. Select one."
+  },
+  "validated_preconditions": {
+    "course.selected": {
+      "precondition": "course.available",
+      "quote": "If slots are free, the system tells you the courses, and dates.",
+      "status": "OK",
+      "reason": null,
+      "retried": true
+    },
+    "quote": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "DOWNGRADED",
+      "reason": "malformed or unknown target key: 'quote' is not a valid entity.state of the state space"
+    }
+  },
+  "precondition_cycles": [],
+  "reference_graph": {
+    "nodes": [
+      {
+        "id": "course.selected",
+        "weight": 1.0
+      },
+      {
+        "id": "course.available",
+        "weight": 1.0
+      },
+      {
+        "id": "activation.requested",
+        "weight": 0.0
+      },
+      {
+        "id": "activation.pending",
+        "weight": 0.0
+      },
+      {
+        "id": "twitter_account.connected",
+        "weight": 0.0
+      },
+      {
+        "id": "twitter_account.registered",
+        "weight": 0.0
+      },
+      {
+        "id": "twitter_account.activated",
+        "weight": 0.0
+      },
+      {
+        "id": "payment_information.provided",
+        "weight": 0.0
+      },
+      {
+        "id": "course_ticket.received",
+        "weight": 0.0
+      }
+    ],
+    "edges": [
+      {
+        "from": "course.available",
+        "to": "course.selected",
+        "type": "sequence",
+        "operator": "AND",
+        "quote": "If slots are free, the system tells you the courses, and dates."
+      }
+    ],
+    "cycles": []
+  },
+  "dfg_edges": [
+    {
+      "source_id": "sid-9B42F3D7-8190-4347-922E-16439F005533",
+      "source_label": "select course",
+      "target_id": "sid-11C0F4BF-F5A5-46FF-AFA5-251BED7E3CB2",
+      "target_label": "system shows parallel courses and dates",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "yes"
+      ]
+    },
+    {
+      "source_id": "sid-9B42F3D7-8190-4347-922E-16439F005533",
+      "source_label": "select course",
+      "target_id": "sid-A43FB7B0-4BED-4A4A-9956-54D59404054D",
+      "target_label": "check if another course is interesting",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "no"
+      ]
+    },
+    {
+      "source_id": "sid-A14115C3-E3B1-4AF0-A4F4-CE1E5317A9CB",
+      "source_label": "connect to twitter account",
+      "target_id": "sid-54780F1F-F935-4CC4-8E1B-A743A0EB152D",
+      "target_label": "invite friends to course",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-91B7DE72-E39F-4D96-A445-78CF6CB78CAE",
+      "source_label": "request activation",
+      "target_id": "sid-4D721AED-E91D-46E6-92C4-8E10BEBEFEDB",
+      "target_label": "system checks eligibility",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-73EB77F5-54A9-465A-8462-37C54D5B8558",
+      "source_label": "provide payment info",
+      "target_id": "sid-45F531FD-FD07-41E2-B4B6-7AFCC6F278F0",
+      "target_label": "system issues course tickets ",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-CF58A60F-A8F4-4765-9E87-092A24D5D813",
+      "source_label": "select specific course",
+      "target_id": "sid-297D2302-C280-45D3-BE91-F5CE4B73F27C",
+      "target_label": "check if registered at eligible university",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "no"
+      ]
+    },
+    {
+      "source_id": "sid-CF58A60F-A8F4-4765-9E87-092A24D5D813",
+      "source_label": "select specific course",
+      "target_id": "sid-D4C0CE97-B504-43F0-83BA-B89A5721234B",
+      "target_label": "log into account",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-A43FB7B0-4BED-4A4A-9956-54D59404054D",
+      "source_label": "check if another course is interesting",
+      "target_id": "sid-9B42F3D7-8190-4347-922E-16439F005533",
+      "target_label": "select course",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "yes",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-297D2302-C280-45D3-BE91-F5CE4B73F27C",
+      "source_label": "check if registered at eligible university",
+      "target_id": "sid-2A743C17-6ECB-4C50-96FD-B5D0AE1CA7D9",
+      "target_label": "register account",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "yes",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-297D2302-C280-45D3-BE91-F5CE4B73F27C",
+      "source_label": "check if registered at eligible university",
+      "target_id": "sid-91B7DE72-E39F-4D96-A445-78CF6CB78CAE",
+      "target_label": "request activation",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "no"
+      ]
+    },
+    {
+      "source_id": "sid-D4C0CE97-B504-43F0-83BA-B89A5721234B",
+      "source_label": "log into account",
+      "target_id": "sid-A14115C3-E3B1-4AF0-A4F4-CE1E5317A9CB",
+      "target_label": "connect to twitter account",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-D4C0CE97-B504-43F0-83BA-B89A5721234B",
+      "source_label": "log into account",
+      "target_id": "sid-73EB77F5-54A9-465A-8462-37C54D5B8558",
+      "target_label": "provide payment info",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-2A743C17-6ECB-4C50-96FD-B5D0AE1CA7D9",
+      "source_label": "register account",
+      "target_id": "sid-D4C0CE97-B504-43F0-83BA-B89A5721234B",
+      "target_label": "log into account",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-11C0F4BF-F5A5-46FF-AFA5-251BED7E3CB2",
+      "source_label": "system shows parallel courses and dates",
+      "target_id": "sid-CF58A60F-A8F4-4765-9E87-092A24D5D813",
+      "target_label": "select specific course",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-54780F1F-F935-4CC4-8E1B-A743A0EB152D",
+      "source_label": "invite friends to course",
+      "target_id": "sid-45F531FD-FD07-41E2-B4B6-7AFCC6F278F0",
+      "target_label": "system issues course tickets ",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-4D721AED-E91D-46E6-92C4-8E10BEBEFEDB",
+      "source_label": "system checks eligibility",
+      "target_id": "sid-2A743C17-6ECB-4C50-96FD-B5D0AE1CA7D9",
+      "target_label": "register account",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "yes",
+        "ExclusiveGateway"
+      ]
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "select course",
+      "subject_id": "sid-9B42F3D7-8190-4347-922E-16439F005533",
+      "predicate": "follows",
+      "object": "system shows parallel courses and dates",
+      "object_id": "sid-11C0F4BF-F5A5-46FF-AFA5-251BED7E3CB2"
+    },
+    {
+      "subject": "select course",
+      "subject_id": "sid-9B42F3D7-8190-4347-922E-16439F005533",
+      "predicate": "follows",
+      "object": "check if another course is interesting",
+      "object_id": "sid-A43FB7B0-4BED-4A4A-9956-54D59404054D"
+    },
+    {
+      "subject": "connect to twitter account",
+      "subject_id": "sid-A14115C3-E3B1-4AF0-A4F4-CE1E5317A9CB",
+      "predicate": "follows",
+      "object": "invite friends to course",
+      "object_id": "sid-54780F1F-F935-4CC4-8E1B-A743A0EB152D"
+    },
+    {
+      "subject": "request activation",
+      "subject_id": "sid-91B7DE72-E39F-4D96-A445-78CF6CB78CAE",
+      "predicate": "follows",
+      "object": "system checks eligibility",
+      "object_id": "sid-4D721AED-E91D-46E6-92C4-8E10BEBEFEDB"
+    },
+    {
+      "subject": "provide payment info",
+      "subject_id": "sid-73EB77F5-54A9-465A-8462-37C54D5B8558",
+      "predicate": "follows",
+      "object": "system issues course tickets ",
+      "object_id": "sid-45F531FD-FD07-41E2-B4B6-7AFCC6F278F0"
+    },
+    {
+      "subject": "select specific course",
+      "subject_id": "sid-CF58A60F-A8F4-4765-9E87-092A24D5D813",
+      "predicate": "follows",
+      "object": "check if registered at eligible university",
+      "object_id": "sid-297D2302-C280-45D3-BE91-F5CE4B73F27C"
+    },
+    {
+      "subject": "select specific course",
+      "subject_id": "sid-CF58A60F-A8F4-4765-9E87-092A24D5D813",
+      "predicate": "follows",
+      "object": "log into account",
+      "object_id": "sid-D4C0CE97-B504-43F0-83BA-B89A5721234B"
+    },
+    {
+      "subject": "check if another course is interesting",
+      "subject_id": "sid-A43FB7B0-4BED-4A4A-9956-54D59404054D",
+      "predicate": "follows",
+      "object": "select course",
+      "object_id": "sid-9B42F3D7-8190-4347-922E-16439F005533"
+    },
+    {
+      "subject": "check if registered at eligible university",
+      "subject_id": "sid-297D2302-C280-45D3-BE91-F5CE4B73F27C",
+      "predicate": "follows",
+      "object": "register account",
+      "object_id": "sid-2A743C17-6ECB-4C50-96FD-B5D0AE1CA7D9"
+    },
+    {
+      "subject": "check if registered at eligible university",
+      "subject_id": "sid-297D2302-C280-45D3-BE91-F5CE4B73F27C",
+      "predicate": "follows",
+      "object": "request activation",
+      "object_id": "sid-91B7DE72-E39F-4D96-A445-78CF6CB78CAE"
+    },
+    {
+      "subject": "log into account",
+      "subject_id": "sid-D4C0CE97-B504-43F0-83BA-B89A5721234B",
+      "predicate": "follows",
+      "object": "connect to twitter account",
+      "object_id": "sid-A14115C3-E3B1-4AF0-A4F4-CE1E5317A9CB"
+    },
+    {
+      "subject": "log into account",
+      "subject_id": "sid-D4C0CE97-B504-43F0-83BA-B89A5721234B",
+      "predicate": "follows",
+      "object": "provide payment info",
+      "object_id": "sid-73EB77F5-54A9-465A-8462-37C54D5B8558"
+    },
+    {
+      "subject": "register account",
+      "subject_id": "sid-2A743C17-6ECB-4C50-96FD-B5D0AE1CA7D9",
+      "predicate": "follows",
+      "object": "log into account",
+      "object_id": "sid-D4C0CE97-B504-43F0-83BA-B89A5721234B"
+    },
+    {
+      "subject": "system shows parallel courses and dates",
+      "subject_id": "sid-11C0F4BF-F5A5-46FF-AFA5-251BED7E3CB2",
+      "predicate": "follows",
+      "object": "select specific course",
+      "object_id": "sid-CF58A60F-A8F4-4765-9E87-092A24D5D813"
+    },
+    {
+      "subject": "invite friends to course",
+      "subject_id": "sid-54780F1F-F935-4CC4-8E1B-A743A0EB152D",
+      "predicate": "follows",
+      "object": "system issues course tickets ",
+      "object_id": "sid-45F531FD-FD07-41E2-B4B6-7AFCC6F278F0"
+    },
+    {
+      "subject": "system checks eligibility",
+      "subject_id": "sid-4D721AED-E91D-46E6-92C4-8E10BEBEFEDB",
+      "predicate": "follows",
+      "object": "register account",
+      "object_id": "sid-2A743C17-6ECB-4C50-96FD-B5D0AE1CA7D9"
+    }
+  ],
+  "matches": {
+    "check if another course is interesting": {
+      "match": "course.available",
+      "score": 0.4536
+    },
+    "check if registered at eligible university": {
+      "match": "twitter_account.registered",
+      "score": 0.2593
+    },
+    "connect to twitter account": {
+      "match": "twitter_account.connected",
+      "score": 0.7886
+    },
+    "invite friends to course": {
+      "match": "course.available",
+      "score": 0.4045
+    },
+    "log into account": {
+      "match": "twitter_account.registered",
+      "score": 0.3148
+    },
+    "provide payment info": {
+      "match": "payment_information.provided",
+      "score": 0.8709
+    },
+    "register account": {
+      "match": "twitter_account.registered",
+      "score": 0.571
+    },
+    "request activation": {
+      "match": "activation.requested",
+      "score": 0.8623
+    },
+    "select course": {
+      "match": "course.selected",
+      "score": 0.8174
+    },
+    "select specific course": {
+      "match": "course.selected",
+      "score": 0.7455
+    },
+    "system checks eligibility": {
+      "match": "payment_information.provided",
+      "score": 0.1965
+    },
+    "system issues course tickets ": {
+      "match": "course_ticket.received",
+      "score": 0.5213
+    },
+    "system shows parallel courses and dates": {
+      "match": "course.available",
+      "score": 0.3395
+    }
+  },
+  "process_graph": [
+    {
+      "from": "course.selected",
+      "to": "course.available",
+      "activity_from": "select course",
+      "activity_to": "system shows parallel courses and dates"
+    },
+    {
+      "from": "course.selected",
+      "to": "course.available",
+      "activity_from": "select course",
+      "activity_to": "check if another course is interesting"
+    },
+    {
+      "from": "twitter_account.connected",
+      "to": "course.available",
+      "activity_from": "connect to twitter account",
+      "activity_to": "invite friends to course"
+    },
+    {
+      "from": "activation.requested",
+      "to": "payment_information.provided",
+      "activity_from": "request activation",
+      "activity_to": "system checks eligibility"
+    },
+    {
+      "from": "payment_information.provided",
+      "to": "course_ticket.received",
+      "activity_from": "provide payment info",
+      "activity_to": "system issues course tickets "
+    },
+    {
+      "from": "course.selected",
+      "to": "twitter_account.registered",
+      "activity_from": "select specific course",
+      "activity_to": "check if registered at eligible university"
+    },
+    {
+      "from": "course.selected",
+      "to": "twitter_account.registered",
+      "activity_from": "select specific course",
+      "activity_to": "log into account"
+    },
+    {
+      "from": "course.available",
+      "to": "course.selected",
+      "activity_from": "check if another course is interesting",
+      "activity_to": "select course"
+    },
+    {
+      "from": "twitter_account.registered",
+      "to": "twitter_account.registered",
+      "activity_from": "check if registered at eligible university",
+      "activity_to": "register account"
+    },
+    {
+      "from": "twitter_account.registered",
+      "to": "activation.requested",
+      "activity_from": "check if registered at eligible university",
+      "activity_to": "request activation"
+    },
+    {
+      "from": "twitter_account.registered",
+      "to": "twitter_account.connected",
+      "activity_from": "log into account",
+      "activity_to": "connect to twitter account"
+    },
+    {
+      "from": "twitter_account.registered",
+      "to": "payment_information.provided",
+      "activity_from": "log into account",
+      "activity_to": "provide payment info"
+    },
+    {
+      "from": "twitter_account.registered",
+      "to": "twitter_account.registered",
+      "activity_from": "register account",
+      "activity_to": "log into account"
+    },
+    {
+      "from": "course.available",
+      "to": "course.selected",
+      "activity_from": "system shows parallel courses and dates",
+      "activity_to": "select specific course"
+    },
+    {
+      "from": "course.available",
+      "to": "course_ticket.received",
+      "activity_from": "invite friends to course",
+      "activity_to": "system issues course tickets "
+    },
+    {
+      "from": "payment_information.provided",
+      "to": "twitter_account.registered",
+      "activity_from": "system checks eligibility",
+      "activity_to": "register account"
+    }
+  ],
+  "alignment": {
+    "course.selected": {
+      "operator": "AND",
+      "quote": "If slots are free, the system tells you the courses, and dates.",
+      "terms": [
+        {
+          "term": "course.available",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED"
+    }
+  },
+  "report": {
+    "summary": {
+      "ecarts": 0,
+      "non_verifiable": 0,
+      "conforme": 1
+    },
+    "ecarts": [],
+    "non_verifiable": [],
+    "conforme": [
+      {
+        "target": "select course",
+        "term": "check if another course is interesting"
+      }
+    ],
+    "piece_jointe_alignement_brut": {
+      "course.selected": {
+        "operator": "AND",
+        "quote": "If slots are free, the system tells you the courses, and dates.",
+        "terms": [
+          {
+            "term": "course.available",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED"
+      }
+    }
+  },
+  "errors": []
+}

@@ -1,0 +1,246 @@
+{
+  "case_name": "R_j01",
+  "text": "Category: Repair and Service\nTitle: OEE\n\nWrite a process, that collects relevant information from a machine, and\ncalculated the Overall Equipment Efficiency (OEE). If the OEE falls below a\ncertain value/percentage, stop the machine and send an email to an engineer.\nWhen the machine is restarted, continue measuring. When the machine is\ndisconnected, stop the process.\n",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "mistral-nemotron",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "mistral-nemotron",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/text_and_bpmn/bpmn/R_j01/0.bpmn2.xml",
+  "dfg_edges": [
+    {
+      "source_id": "sid-94794E1A-6D59-419E-A9FE-910948EECD27",
+      "source_label": "Calculate new OEE",
+      "target_id": "sid-AFD102C1-8F88-43D1-A179-D80A543B91DC",
+      "target_label": "Continue machine process",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "No"
+      ]
+    },
+    {
+      "source_id": "sid-94794E1A-6D59-419E-A9FE-910948EECD27",
+      "source_label": "Calculate new OEE",
+      "target_id": "sid-A471BB2A-D39B-4AD8-90D5-4C1D46846563",
+      "target_label": "Stop Process",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "Yes"
+      ]
+    },
+    {
+      "source_id": "sid-E4A10307-BA11-4D8B-B774-36DC7F40ED6B",
+      "source_label": "Restart machine",
+      "target_id": "sid-94794E1A-6D59-419E-A9FE-910948EECD27",
+      "target_label": "Calculate new OEE",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-A471BB2A-D39B-4AD8-90D5-4C1D46846563",
+      "source_label": "Stop Process",
+      "target_id": "sid-4B630A42-C56A-40A5-BBC8-2D677EEB5216",
+      "target_label": "Process finished",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-0FF9DE20-E306-4818-887B-1FA4BE3210EC",
+      "source_label": "Calculate OEE",
+      "target_id": "sid-E09F43C4-FD31-4029-8129-C63645AB8E43",
+      "target_label": "Keep the machine running",
+      "gateway_context": [
+        "ExclusiveGateway",
+        ">50%"
+      ]
+    },
+    {
+      "source_id": "sid-0FF9DE20-E306-4818-887B-1FA4BE3210EC",
+      "source_label": "Calculate OEE",
+      "target_id": "sid-DB781EB4-5FE7-4F5E-B358-CAF18EEE0D3A",
+      "target_label": "Stop machine",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "<50%",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-0FF9DE20-E306-4818-887B-1FA4BE3210EC",
+      "source_label": "Calculate OEE",
+      "target_id": "sid-1A8F9A88-E020-44EA-A228-689CF5962716",
+      "target_label": "Send email",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "<50%",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-D84B8FC8-A0C3-431A-934C-1FB43C94AD5D",
+      "source_label": "Collect information",
+      "target_id": "sid-EF6B3CEF-9218-4299-B3FE-7BC1E47D74CD",
+      "target_label": "Process data",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-EF6B3CEF-9218-4299-B3FE-7BC1E47D74CD",
+      "source_label": "Process data",
+      "target_id": "sid-0FF9DE20-E306-4818-887B-1FA4BE3210EC",
+      "target_label": "Calculate OEE",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-1A8F9A88-E020-44EA-A228-689CF5962716",
+      "source_label": "Send email",
+      "target_id": "sid-E4A10307-BA11-4D8B-B774-36DC7F40ED6B",
+      "target_label": "Restart machine",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-AFD102C1-8F88-43D1-A179-D80A543B91DC",
+      "source_label": "Continue machine process",
+      "target_id": "sid-0FF9DE20-E306-4818-887B-1FA4BE3210EC",
+      "target_label": "Calculate OEE",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-E09F43C4-FD31-4029-8129-C63645AB8E43",
+      "source_label": "Keep the machine running",
+      "target_id": "sid-94794E1A-6D59-419E-A9FE-910948EECD27",
+      "target_label": "Calculate new OEE",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-DB781EB4-5FE7-4F5E-B358-CAF18EEE0D3A",
+      "source_label": "Stop machine",
+      "target_id": "sid-E4A10307-BA11-4D8B-B774-36DC7F40ED6B",
+      "target_label": "Restart machine",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-C1F618B4-0309-4F1F-BE0A-2BDBD231887B",
+      "source_label": "Receive information",
+      "target_id": "sid-D84B8FC8-A0C3-431A-934C-1FB43C94AD5D",
+      "target_label": "Collect information",
+      "gateway_context": []
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "Calculate new OEE",
+      "subject_id": "sid-94794E1A-6D59-419E-A9FE-910948EECD27",
+      "predicate": "follows",
+      "object": "Continue machine process",
+      "object_id": "sid-AFD102C1-8F88-43D1-A179-D80A543B91DC"
+    },
+    {
+      "subject": "Calculate new OEE",
+      "subject_id": "sid-94794E1A-6D59-419E-A9FE-910948EECD27",
+      "predicate": "follows",
+      "object": "Stop Process",
+      "object_id": "sid-A471BB2A-D39B-4AD8-90D5-4C1D46846563"
+    },
+    {
+      "subject": "Restart machine",
+      "subject_id": "sid-E4A10307-BA11-4D8B-B774-36DC7F40ED6B",
+      "predicate": "follows",
+      "object": "Calculate new OEE",
+      "object_id": "sid-94794E1A-6D59-419E-A9FE-910948EECD27"
+    },
+    {
+      "subject": "Stop Process",
+      "subject_id": "sid-A471BB2A-D39B-4AD8-90D5-4C1D46846563",
+      "predicate": "follows",
+      "object": "Process finished",
+      "object_id": "sid-4B630A42-C56A-40A5-BBC8-2D677EEB5216"
+    },
+    {
+      "subject": "Calculate OEE",
+      "subject_id": "sid-0FF9DE20-E306-4818-887B-1FA4BE3210EC",
+      "predicate": "follows",
+      "object": "Keep the machine running",
+      "object_id": "sid-E09F43C4-FD31-4029-8129-C63645AB8E43"
+    },
+    {
+      "subject": "Calculate OEE",
+      "subject_id": "sid-0FF9DE20-E306-4818-887B-1FA4BE3210EC",
+      "predicate": "follows",
+      "object": "Stop machine",
+      "object_id": "sid-DB781EB4-5FE7-4F5E-B358-CAF18EEE0D3A"
+    },
+    {
+      "subject": "Calculate OEE",
+      "subject_id": "sid-0FF9DE20-E306-4818-887B-1FA4BE3210EC",
+      "predicate": "follows",
+      "object": "Send email",
+      "object_id": "sid-1A8F9A88-E020-44EA-A228-689CF5962716"
+    },
+    {
+      "subject": "Collect information",
+      "subject_id": "sid-D84B8FC8-A0C3-431A-934C-1FB43C94AD5D",
+      "predicate": "follows",
+      "object": "Process data",
+      "object_id": "sid-EF6B3CEF-9218-4299-B3FE-7BC1E47D74CD"
+    },
+    {
+      "subject": "Process data",
+      "subject_id": "sid-EF6B3CEF-9218-4299-B3FE-7BC1E47D74CD",
+      "predicate": "follows",
+      "object": "Calculate OEE",
+      "object_id": "sid-0FF9DE20-E306-4818-887B-1FA4BE3210EC"
+    },
+    {
+      "subject": "Send email",
+      "subject_id": "sid-1A8F9A88-E020-44EA-A228-689CF5962716",
+      "predicate": "follows",
+      "object": "Restart machine",
+      "object_id": "sid-E4A10307-BA11-4D8B-B774-36DC7F40ED6B"
+    },
+    {
+      "subject": "Continue machine process",
+      "subject_id": "sid-AFD102C1-8F88-43D1-A179-D80A543B91DC",
+      "predicate": "follows",
+      "object": "Calculate OEE",
+      "object_id": "sid-0FF9DE20-E306-4818-887B-1FA4BE3210EC"
+    },
+    {
+      "subject": "Keep the machine running",
+      "subject_id": "sid-E09F43C4-FD31-4029-8129-C63645AB8E43",
+      "predicate": "follows",
+      "object": "Calculate new OEE",
+      "object_id": "sid-94794E1A-6D59-419E-A9FE-910948EECD27"
+    },
+    {
+      "subject": "Stop machine",
+      "subject_id": "sid-DB781EB4-5FE7-4F5E-B358-CAF18EEE0D3A",
+      "predicate": "follows",
+      "object": "Restart machine",
+      "object_id": "sid-E4A10307-BA11-4D8B-B774-36DC7F40ED6B"
+    },
+    {
+      "subject": "Receive information",
+      "subject_id": "sid-C1F618B4-0309-4F1F-BE0A-2BDBD231887B",
+      "predicate": "follows",
+      "object": "Collect information",
+      "object_id": "sid-D84B8FC8-A0C3-431A-934C-1FB43C94AD5D"
+    }
+  ],
+  "errors": [
+    "state_space: Error code: 429 - {'status': 429, 'title': 'Too Many Requests'}",
+    "precondition: 'state_space'",
+    "state_matching: 'state_space'",
+    "graph_construction: 'state_space'",
+    "alignment: 'reference_graph'",
+    "report: 'alignment'"
+  ]
+}

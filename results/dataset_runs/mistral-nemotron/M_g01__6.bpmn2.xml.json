@@ -1,0 +1,608 @@
+{
+  "case_name": "M_g01",
+  "text": "Category: Manufacturing\nTitle: Instruct an artist to create a 3D model print it on a 3D printer\n\nWhen craving a custom 3D model, as a first step you have to instruct an artist\nto create a project for you.  First you have to send him several sketches, and\nthen tell him what to change until you are satisfied with the result. After\nthat, you choose a plastic color you want to use for 3D printing. If you have\nthe color at home (in stock), you check how much color you have left. If it's\nunder 100 grams, you put it on your shopping list. If you do not have the color\nat home, you order it. When you have the plastic, you can turn the printer on\nand heat up the bed and the extruder (it continuously sends you back its\nstatus). While doing that, you can generate the gcode file for your printer out\nof the STL sent to you by the artist. After that you print the model.\n",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "mistral-nemotron",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "mistral-nemotron",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/text_and_bpmn/bpmn/M_g01/6.bpmn2.xml",
+  "dfg_edges": [
+    {
+      "source_id": "sid-9AB1EE86-D687-4CE9-93A9-357D5BC4871D",
+      "source_label": "turn on printer",
+      "target_id": "sid-78AC724A-C3D6-4AF9-987E-541D67510C74",
+      "target_label": "heating up",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-50AF2BAA-BBE6-47EF-956E-B0E61A38B746",
+      "source_label": "check quantity",
+      "target_id": "sid-9AB1EE86-D687-4CE9-93A9-357D5BC4871D",
+      "target_label": "turn on printer",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "over 100g",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-50AF2BAA-BBE6-47EF-956E-B0E61A38B746",
+      "source_label": "check quantity",
+      "target_id": "sid-AE286577-2C20-4F43-A8B5-221A58B23B9B",
+      "target_label": "ask for STL",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "over 100g",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-50AF2BAA-BBE6-47EF-956E-B0E61A38B746",
+      "source_label": "check quantity",
+      "target_id": "sid-60E9550A-8EF4-4106-858F-75CCD797D1C8",
+      "target_label": "add to shopping list",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "under 100g"
+      ]
+    },
+    {
+      "source_id": "sid-18D47E26-C4BA-4EC7-96F2-D30162AEAAB7",
+      "source_label": "model received",
+      "target_id": "sid-FEB1A134-2D7E-4939-9808-4D80C2F439A1",
+      "target_label": "choose color",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "model ok"
+      ]
+    },
+    {
+      "source_id": "sid-18D47E26-C4BA-4EC7-96F2-D30162AEAAB7",
+      "source_label": "model received",
+      "target_id": "sid-F32CFCD6-57ED-4472-BC77-AE916F8D946D",
+      "target_label": "make changes",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "not ok"
+      ]
+    },
+    {
+      "source_id": "sid-F32CFCD6-57ED-4472-BC77-AE916F8D946D",
+      "source_label": "make changes",
+      "target_id": "sid-C079A26B-F0B5-4F85-8922-BB70CED1D1B7",
+      "target_label": "",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-F32CFCD6-57ED-4472-BC77-AE916F8D946D",
+      "source_label": "make changes",
+      "target_id": "sid-51D2132A-C568-4F00-8A55-19C91D30F43E",
+      "target_label": "send sketches to artist",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-D99AAD48-ADF5-4F30-856D-1F59511FCAC9",
+      "source_label": "get status",
+      "target_id": "sid-02241DE9-8FA3-43B2-8BBA-38952725FBAD",
+      "target_label": "start printing",
+      "gateway_context": [
+        "EventBasedGateway"
+      ]
+    },
+    {
+      "source_id": "sid-06925618-0A73-47DE-A11F-7C72E3D75916",
+      "source_label": "1day",
+      "target_id": "sid-FEB1A134-2D7E-4939-9808-4D80C2F439A1",
+      "target_label": "choose color",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-B3DC4485-D918-404F-A9B1-DDF0A3ECF97E",
+      "source_label": "create STL",
+      "target_id": "sid-EDF4D7FF-F19A-4442-8748-F1DBCCA5244B",
+      "target_label": "",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-B3DC4485-D918-404F-A9B1-DDF0A3ECF97E",
+      "source_label": "create STL",
+      "target_id": "sid-BD8EBC99-1440-46D1-943A-4ECF0E0BE6EF",
+      "target_label": "send to manufacturer",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-BD8EBC99-1440-46D1-943A-4ECF0E0BE6EF",
+      "source_label": "send to manufacturer",
+      "target_id": "sid-ECE831BD-CA99-4D02-A548-030493040602",
+      "target_label": "receive STL",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-BD8EBC99-1440-46D1-943A-4ECF0E0BE6EF",
+      "source_label": "send to manufacturer",
+      "target_id": "sid-826B2AA2-8088-4EEE-9B9A-4426106FFF1D",
+      "target_label": "",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-51D2132A-C568-4F00-8A55-19C91D30F43E",
+      "source_label": "send sketches to artist",
+      "target_id": "sid-92F77AD3-7820-4A1F-A721-E9D32CDBE3DA",
+      "target_label": "receive sketches",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-51D2132A-C568-4F00-8A55-19C91D30F43E",
+      "source_label": "send sketches to artist",
+      "target_id": "sid-A78860AA-A9D5-4B6F-ADD3-F74E6336721E",
+      "target_label": "",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-51D2132A-C568-4F00-8A55-19C91D30F43E",
+      "source_label": "send sketches to artist",
+      "target_id": "sid-0151B374-4754-47C2-9B9A-49CEFC10F16C",
+      "target_label": "wait for model",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-3517CFFF-52EC-49E1-ADD0-69CD8F5080E8",
+      "source_label": "send to manufacturer",
+      "target_id": "sid-B3DC4485-D918-404F-A9B1-DDF0A3ECF97E",
+      "target_label": "create STL",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-3517CFFF-52EC-49E1-ADD0-69CD8F5080E8",
+      "source_label": "send to manufacturer",
+      "target_id": "sid-18D47E26-C4BA-4EC7-96F2-D30162AEAAB7",
+      "target_label": "model received",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-AE286577-2C20-4F43-A8B5-221A58B23B9B",
+      "source_label": "ask for STL",
+      "target_id": "sid-B3DC4485-D918-404F-A9B1-DDF0A3ECF97E",
+      "target_label": "create STL",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-FEB1A134-2D7E-4939-9808-4D80C2F439A1",
+      "source_label": "choose color",
+      "target_id": "sid-50AF2BAA-BBE6-47EF-956E-B0E61A38B746",
+      "target_label": "check quantity",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "in stock"
+      ]
+    },
+    {
+      "source_id": "sid-FEB1A134-2D7E-4939-9808-4D80C2F439A1",
+      "source_label": "choose color",
+      "target_id": "sid-6E1A8DA1-59B7-41EF-AC01-3EDA00FE6BC7",
+      "target_label": "order",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "not in stock"
+      ]
+    },
+    {
+      "source_id": "sid-02241DE9-8FA3-43B2-8BBA-38952725FBAD",
+      "source_label": "start printing",
+      "target_id": "sid-DD5165B0-70B8-4965-A770-E69A8EA9FFDE",
+      "target_label": "",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-02241DE9-8FA3-43B2-8BBA-38952725FBAD",
+      "source_label": "start printing",
+      "target_id": "sid-A0BC7650-A6A4-496F-8EBD-91F90CA083A3",
+      "target_label": "print",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-228F33CE-F663-4871-BB11-826F0F0AF1A0",
+      "source_label": "2 days",
+      "target_id": "sid-50AF2BAA-BBE6-47EF-956E-B0E61A38B746",
+      "target_label": "check quantity",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-78AC724A-C3D6-4AF9-987E-541D67510C74",
+      "source_label": "heating up",
+      "target_id": "sid-E156C4B5-F00A-4402-B697-09F95C1B12BC",
+      "target_label": "send status",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-ECE831BD-CA99-4D02-A548-030493040602",
+      "source_label": "receive STL",
+      "target_id": "sid-C3623B8C-8E06-4AC8-B2E7-91F819711A15",
+      "target_label": "create gcode",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-3C499ABB-D5B4-46D3-A8AF-D57A8F1AE82F",
+      "source_label": "",
+      "target_id": "sid-51D2132A-C568-4F00-8A55-19C91D30F43E",
+      "target_label": "send sketches to artist",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-E156C4B5-F00A-4402-B697-09F95C1B12BC",
+      "source_label": "send status",
+      "target_id": "sid-A0BC7650-A6A4-496F-8EBD-91F90CA083A3",
+      "target_label": "print",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-E156C4B5-F00A-4402-B697-09F95C1B12BC",
+      "source_label": "send status",
+      "target_id": "sid-B66D6608-6B19-49C4-A491-F1D259EDD522",
+      "target_label": "",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-E156C4B5-F00A-4402-B697-09F95C1B12BC",
+      "source_label": "send status",
+      "target_id": "sid-D99AAD48-ADF5-4F30-856D-1F59511FCAC9",
+      "target_label": "get status",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-0151B374-4754-47C2-9B9A-49CEFC10F16C",
+      "source_label": "wait for model",
+      "target_id": "sid-18D47E26-C4BA-4EC7-96F2-D30162AEAAB7",
+      "target_label": "model received",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-A0BC7650-A6A4-496F-8EBD-91F90CA083A3",
+      "source_label": "print",
+      "target_id": "sid-14742C90-FB60-4152-A5DC-B337EFF9381B",
+      "target_label": "",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-C3623B8C-8E06-4AC8-B2E7-91F819711A15",
+      "source_label": "create gcode",
+      "target_id": "sid-A52588F3-D671-4290-A49F-EC409DC9FD04",
+      "target_label": "",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-C3623B8C-8E06-4AC8-B2E7-91F819711A15",
+      "source_label": "create gcode",
+      "target_id": "sid-02241DE9-8FA3-43B2-8BBA-38952725FBAD",
+      "target_label": "start printing",
+      "gateway_context": [
+        "EventBasedGateway"
+      ]
+    },
+    {
+      "source_id": "sid-DE882C51-A915-4EDB-BADE-054FA004DAF0",
+      "source_label": "create model",
+      "target_id": "sid-3517CFFF-52EC-49E1-ADD0-69CD8F5080E8",
+      "target_label": "send to manufacturer",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-60E9550A-8EF4-4106-858F-75CCD797D1C8",
+      "source_label": "add to shopping list",
+      "target_id": "sid-228F33CE-F663-4871-BB11-826F0F0AF1A0",
+      "target_label": "2 days",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-6E1A8DA1-59B7-41EF-AC01-3EDA00FE6BC7",
+      "source_label": "order",
+      "target_id": "sid-06925618-0A73-47DE-A11F-7C72E3D75916",
+      "target_label": "1day",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-92F77AD3-7820-4A1F-A721-E9D32CDBE3DA",
+      "source_label": "receive sketches",
+      "target_id": "sid-A9DF8F0C-2C69-479D-812C-2F9B64935806",
+      "target_label": "",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-92F77AD3-7820-4A1F-A721-E9D32CDBE3DA",
+      "source_label": "receive sketches",
+      "target_id": "sid-DE882C51-A915-4EDB-BADE-054FA004DAF0",
+      "target_label": "create model",
+      "gateway_context": []
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "turn on printer",
+      "subject_id": "sid-9AB1EE86-D687-4CE9-93A9-357D5BC4871D",
+      "predicate": "follows",
+      "object": "heating up",
+      "object_id": "sid-78AC724A-C3D6-4AF9-987E-541D67510C74"
+    },
+    {
+      "subject": "check quantity",
+      "subject_id": "sid-50AF2BAA-BBE6-47EF-956E-B0E61A38B746",
+      "predicate": "follows",
+      "object": "turn on printer",
+      "object_id": "sid-9AB1EE86-D687-4CE9-93A9-357D5BC4871D"
+    },
+    {
+      "subject": "check quantity",
+      "subject_id": "sid-50AF2BAA-BBE6-47EF-956E-B0E61A38B746",
+      "predicate": "follows",
+      "object": "ask for STL",
+      "object_id": "sid-AE286577-2C20-4F43-A8B5-221A58B23B9B"
+    },
+    {
+      "subject": "check quantity",
+      "subject_id": "sid-50AF2BAA-BBE6-47EF-956E-B0E61A38B746",
+      "predicate": "follows",
+      "object": "add to shopping list",
+      "object_id": "sid-60E9550A-8EF4-4106-858F-75CCD797D1C8"
+    },
+    {
+      "subject": "model received",
+      "subject_id": "sid-18D47E26-C4BA-4EC7-96F2-D30162AEAAB7",
+      "predicate": "follows",
+      "object": "choose color",
+      "object_id": "sid-FEB1A134-2D7E-4939-9808-4D80C2F439A1"
+    },
+    {
+      "subject": "model received",
+      "subject_id": "sid-18D47E26-C4BA-4EC7-96F2-D30162AEAAB7",
+      "predicate": "follows",
+      "object": "make changes",
+      "object_id": "sid-F32CFCD6-57ED-4472-BC77-AE916F8D946D"
+    },
+    {
+      "subject": "make changes",
+      "subject_id": "sid-F32CFCD6-57ED-4472-BC77-AE916F8D946D",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "sid-C079A26B-F0B5-4F85-8922-BB70CED1D1B7"
+    },
+    {
+      "subject": "make changes",
+      "subject_id": "sid-F32CFCD6-57ED-4472-BC77-AE916F8D946D",
+      "predicate": "follows",
+      "object": "send sketches to artist",
+      "object_id": "sid-51D2132A-C568-4F00-8A55-19C91D30F43E"
+    },
+    {
+      "subject": "get status",
+      "subject_id": "sid-D99AAD48-ADF5-4F30-856D-1F59511FCAC9",
+      "predicate": "follows",
+      "object": "start printing",
+      "object_id": "sid-02241DE9-8FA3-43B2-8BBA-38952725FBAD"
+    },
+    {
+      "subject": "1day",
+      "subject_id": "sid-06925618-0A73-47DE-A11F-7C72E3D75916",
+      "predicate": "follows",
+      "object": "choose color",
+      "object_id": "sid-FEB1A134-2D7E-4939-9808-4D80C2F439A1"
+    },
+    {
+      "subject": "create STL",
+      "subject_id": "sid-B3DC4485-D918-404F-A9B1-DDF0A3ECF97E",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "sid-EDF4D7FF-F19A-4442-8748-F1DBCCA5244B"
+    },
+    {
+      "subject": "create STL",
+      "subject_id": "sid-B3DC4485-D918-404F-A9B1-DDF0A3ECF97E",
+      "predicate": "follows",
+      "object": "send to manufacturer",
+      "object_id": "sid-BD8EBC99-1440-46D1-943A-4ECF0E0BE6EF"
+    },
+    {
+      "subject": "send to manufacturer",
+      "subject_id": "sid-BD8EBC99-1440-46D1-943A-4ECF0E0BE6EF",
+      "predicate": "follows",
+      "object": "receive STL",
+      "object_id": "sid-ECE831BD-CA99-4D02-A548-030493040602"
+    },
+    {
+      "subject": "send to manufacturer",
+      "subject_id": "sid-BD8EBC99-1440-46D1-943A-4ECF0E0BE6EF",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "sid-826B2AA2-8088-4EEE-9B9A-4426106FFF1D"
+    },
+    {
+      "subject": "send sketches to artist",
+      "subject_id": "sid-51D2132A-C568-4F00-8A55-19C91D30F43E",
+      "predicate": "follows",
+      "object": "receive sketches",
+      "object_id": "sid-92F77AD3-7820-4A1F-A721-E9D32CDBE3DA"
+    },
+    {
+      "subject": "send sketches to artist",
+      "subject_id": "sid-51D2132A-C568-4F00-8A55-19C91D30F43E",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "sid-A78860AA-A9D5-4B6F-ADD3-F74E6336721E"
+    },
+    {
+      "subject": "send sketches to artist",
+      "subject_id": "sid-51D2132A-C568-4F00-8A55-19C91D30F43E",
+      "predicate": "follows",
+      "object": "wait for model",
+      "object_id": "sid-0151B374-4754-47C2-9B9A-49CEFC10F16C"
+    },
+    {
+      "subject": "send to manufacturer",
+      "subject_id": "sid-3517CFFF-52EC-49E1-ADD0-69CD8F5080E8",
+      "predicate": "follows",
+      "object": "create STL",
+      "object_id": "sid-B3DC4485-D918-404F-A9B1-DDF0A3ECF97E"
+    },
+    {
+      "subject": "send to manufacturer",
+      "subject_id": "sid-3517CFFF-52EC-49E1-ADD0-69CD8F5080E8",
+      "predicate": "follows",
+      "object": "model received",
+      "object_id": "sid-18D47E26-C4BA-4EC7-96F2-D30162AEAAB7"
+    },
+    {
+      "subject": "ask for STL",
+      "subject_id": "sid-AE286577-2C20-4F43-A8B5-221A58B23B9B",
+      "predicate": "follows",
+      "object": "create STL",
+      "object_id": "sid-B3DC4485-D918-404F-A9B1-DDF0A3ECF97E"
+    },
+    {
+      "subject": "choose color",
+      "subject_id": "sid-FEB1A134-2D7E-4939-9808-4D80C2F439A1",
+      "predicate": "follows",
+      "object": "check quantity",
+      "object_id": "sid-50AF2BAA-BBE6-47EF-956E-B0E61A38B746"
+    },
+    {
+      "subject": "choose color",
+      "subject_id": "sid-FEB1A134-2D7E-4939-9808-4D80C2F439A1",
+      "predicate": "follows",
+      "object": "order",
+      "object_id": "sid-6E1A8DA1-59B7-41EF-AC01-3EDA00FE6BC7"
+    },
+    {
+      "subject": "start printing",
+      "subject_id": "sid-02241DE9-8FA3-43B2-8BBA-38952725FBAD",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "sid-DD5165B0-70B8-4965-A770-E69A8EA9FFDE"
+    },
+    {
+      "subject": "start printing",
+      "subject_id": "sid-02241DE9-8FA3-43B2-8BBA-38952725FBAD",
+      "predicate": "follows",
+      "object": "print",
+      "object_id": "sid-A0BC7650-A6A4-496F-8EBD-91F90CA083A3"
+    },
+    {
+      "subject": "2 days",
+      "subject_id": "sid-228F33CE-F663-4871-BB11-826F0F0AF1A0",
+      "predicate": "follows",
+      "object": "check quantity",
+      "object_id": "sid-50AF2BAA-BBE6-47EF-956E-B0E61A38B746"
+    },
+    {
+      "subject": "heating up",
+      "subject_id": "sid-78AC724A-C3D6-4AF9-987E-541D67510C74",
+      "predicate": "follows",
+      "object": "send status",
+      "object_id": "sid-E156C4B5-F00A-4402-B697-09F95C1B12BC"
+    },
+    {
+      "subject": "receive STL",
+      "subject_id": "sid-ECE831BD-CA99-4D02-A548-030493040602",
+      "predicate": "follows",
+      "object": "create gcode",
+      "object_id": "sid-C3623B8C-8E06-4AC8-B2E7-91F819711A15"
+    },
+    {
+      "subject": "",
+      "subject_id": "sid-3C499ABB-D5B4-46D3-A8AF-D57A8F1AE82F",
+      "predicate": "follows",
+      "object": "send sketches to artist",
+      "object_id": "sid-51D2132A-C568-4F00-8A55-19C91D30F43E"
+    },
+    {
+      "subject": "send status",
+      "subject_id": "sid-E156C4B5-F00A-4402-B697-09F95C1B12BC",
+      "predicate": "follows",
+      "object": "print",
+      "object_id": "sid-A0BC7650-A6A4-496F-8EBD-91F90CA083A3"
+    },
+    {
+      "subject": "send status",
+      "subject_id": "sid-E156C4B5-F00A-4402-B697-09F95C1B12BC",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "sid-B66D6608-6B19-49C4-A491-F1D259EDD522"
+    },
+    {
+      "subject": "send status",
+      "subject_id": "sid-E156C4B5-F00A-4402-B697-09F95C1B12BC",
+      "predicate": "follows",
+      "object": "get status",
+      "object_id": "sid-D99AAD48-ADF5-4F30-856D-1F59511FCAC9"
+    },
+    {
+      "subject": "wait for model",
+      "subject_id": "sid-0151B374-4754-47C2-9B9A-49CEFC10F16C",
+      "predicate": "follows",
+      "object": "model received",
+      "object_id": "sid-18D47E26-C4BA-4EC7-96F2-D30162AEAAB7"
+    },
+    {
+      "subject": "print",
+      "subject_id": "sid-A0BC7650-A6A4-496F-8EBD-91F90CA083A3",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "sid-14742C90-FB60-4152-A5DC-B337EFF9381B"
+    },
+    {
+      "subject": "create gcode",
+      "subject_id": "sid-C3623B8C-8E06-4AC8-B2E7-91F819711A15",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "sid-A52588F3-D671-4290-A49F-EC409DC9FD04"
+    },
+    {
+      "subject": "create gcode",
+      "subject_id": "sid-C3623B8C-8E06-4AC8-B2E7-91F819711A15",
+      "predicate": "follows",
+      "object": "start printing",
+      "object_id": "sid-02241DE9-8FA3-43B2-8BBA-38952725FBAD"
+    },
+    {
+      "subject": "create model",
+      "subject_id": "sid-DE882C51-A915-4EDB-BADE-054FA004DAF0",
+      "predicate": "follows",
+      "object": "send to manufacturer",
+      "object_id": "sid-3517CFFF-52EC-49E1-ADD0-69CD8F5080E8"
+    },
+    {
+      "subject": "add to shopping list",
+      "subject_id": "sid-60E9550A-8EF4-4106-858F-75CCD797D1C8",
+      "predicate": "follows",
+      "object": "2 days",
+      "object_id": "sid-228F33CE-F663-4871-BB11-826F0F0AF1A0"
+    },
+    {
+      "subject": "order",
+      "subject_id": "sid-6E1A8DA1-59B7-41EF-AC01-3EDA00FE6BC7",
+      "predicate": "follows",
+      "object": "1day",
+      "object_id": "sid-06925618-0A73-47DE-A11F-7C72E3D75916"
+    },
+    {
+      "subject": "receive sketches",
+      "subject_id": "sid-92F77AD3-7820-4A1F-A721-E9D32CDBE3DA",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "sid-A9DF8F0C-2C69-479D-812C-2F9B64935806"
+    },
+    {
+      "subject": "receive sketches",
+      "subject_id": "sid-92F77AD3-7820-4A1F-A721-E9D32CDBE3DA",
+      "predicate": "follows",
+      "object": "create model",
+      "object_id": "sid-DE882C51-A915-4EDB-BADE-054FA004DAF0"
+    }
+  ],
+  "errors": [
+    "state_space: Error code: 429 - {'status': 429, 'title': 'Too Many Requests'}",
+    "precondition: 'state_space'",
+    "state_matching: 'state_space'",
+    "graph_construction: 'state_space'",
+    "alignment: 'reference_graph'",
+    "report: 'alignment'"
+  ]
+}

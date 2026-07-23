@@ -1,0 +1,1490 @@
+{
+  "case_name": "E_j02",
+  "text": "Category: E-Government\nTitle: Becoming A Parent\n\nCreate a process that support in planning, taking and extending a maternity\nleave.\n\n* Fetch information about potential models (months duration, split between parents)\n* Let parent select\n* Collect relevant information\n* Notify Social Security, Company in time\n* Gather information from companies\n* At the end of the period let parent decide about extension.\n",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "gpt-oss-20b",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "gpt-oss-20b",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/text_and_bpmn/bpmn/E_j02/8.bpmn2.xml",
+  "report_model": "gpt-oss-20b",
+  "candidates": {
+    "maternity_leave": [
+      "planned",
+      "extended"
+    ],
+    "parent": [
+      "selected",
+      "decided"
+    ],
+    "information": [
+      "collected"
+    ],
+    "social_security": [
+      "notified"
+    ],
+    "company": [
+      "notified"
+    ],
+    "process": [
+      "completed"
+    ]
+  },
+  "validation_report": {
+    "maternity_leave": {
+      "f_lex": "INDETERMINATE",
+      "kept": true
+    },
+    "parent": {
+      "f_lex": "ACTOR",
+      "kept": false
+    },
+    "information": {
+      "f_lex": "ENTITY",
+      "kept": true
+    },
+    "social_security": {
+      "f_lex": "INDETERMINATE",
+      "kept": true
+    },
+    "company": {
+      "f_lex": "ACTOR",
+      "kept": false
+    },
+    "process": {
+      "f_lex": "ENTITY",
+      "kept": true
+    }
+  },
+  "state_space": {
+    "maternity_leave": [
+      "planned",
+      "extended"
+    ],
+    "information": [
+      "collected"
+    ],
+    "social_security": [
+      "notified"
+    ],
+    "process": [
+      "completed"
+    ]
+  },
+  "state_space_dedup": {
+    "merged": {},
+    "ambiguous_not_merged": {}
+  },
+  "raw_preconditions": {
+    "maternity_leave.planned": {
+      "precondition": "information.collected AND social_security.notified",
+      "quote": "Create a process that support in planning, taking and extending a maternity leave."
+    },
+    "maternity_leave.extended": {
+      "precondition": "maternity_leave.planned",
+      "quote": "At the end of the period let parent decide about extension."
+    },
+    "information.collected": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "social_security.notified": {
+      "precondition": "information.collected",
+      "quote": "Notify Social Security, Company in time"
+    },
+    "process.completed": {
+      "precondition": "UNRESOLVED",
+      "quote": null
+    }
+  },
+  "validated_preconditions": {
+    "maternity_leave.planned": {
+      "precondition": "information.collected AND social_security.notified",
+      "quote": "Create a process that support in planning, taking and extending a maternity leave.",
+      "status": "OK",
+      "reason": null
+    },
+    "maternity_leave.extended": {
+      "precondition": "maternity_leave.planned",
+      "quote": "At the end of the period let parent decide about extension.",
+      "status": "OK",
+      "reason": null
+    },
+    "information.collected": {
+      "precondition": "INITIAL",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "social_security.notified": {
+      "precondition": "information.collected",
+      "quote": "Notify Social Security, Company in time",
+      "status": "OK",
+      "reason": null
+    },
+    "process.completed": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    }
+  },
+  "precondition_cycles": [],
+  "reference_graph": {
+    "nodes": [
+      {
+        "id": "maternity_leave.planned",
+        "weight": 1.0
+      },
+      {
+        "id": "maternity_leave.extended",
+        "weight": 0.333
+      },
+      {
+        "id": "information.collected",
+        "weight": 0.667
+      },
+      {
+        "id": "social_security.notified",
+        "weight": 0.667
+      },
+      {
+        "id": "process.completed",
+        "weight": 0.0
+      }
+    ],
+    "edges": [
+      {
+        "from": "information.collected",
+        "to": "maternity_leave.planned",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "Create a process that support in planning, taking and extending a maternity leave."
+      },
+      {
+        "from": "social_security.notified",
+        "to": "maternity_leave.planned",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "Create a process that support in planning, taking and extending a maternity leave."
+      },
+      {
+        "from": "maternity_leave.planned",
+        "to": "maternity_leave.extended",
+        "type": "sequence",
+        "operator": "AND",
+        "quote": "At the end of the period let parent decide about extension."
+      },
+      {
+        "from": "information.collected",
+        "to": "social_security.notified",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "Notify Social Security, Company in time"
+      }
+    ],
+    "cycles": []
+  },
+  "dfg_edges": [
+    {
+      "source_id": "sid-907C7B1E-6D5C-4E00-A0E3-0B34F79BB9C5",
+      "source_label": "Begin ofmaternity leave",
+      "target_id": "sid-8CE8D631-E4F9-4FF7-A1EF-A9A2A03E7A25",
+      "target_label": "Ask for maternityleave confirmation from company",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-D1E4F455-61D2-424B-BE28-8DE97A0DACDB",
+      "source_label": "Re-chose lengthof maternity leave",
+      "target_id": "sid-AACF4617-7303-43CE-99B9-B18DC86D63D5",
+      "target_label": "Reportchosen length of maternity leave to company",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-D1E4F455-61D2-424B-BE28-8DE97A0DACDB",
+      "source_label": "Re-chose lengthof maternity leave",
+      "target_id": "sid-7DF41A47-2D08-47D1-BAF6-6CF1F33139AE",
+      "target_label": "Reportchosen length of maternity leave to Social Security",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-6D273EA9-DB2F-4DAC-9001-825FD649F889",
+      "source_label": "Timespan: statutory maternity leave",
+      "target_id": "sid-AACF4617-7303-43CE-99B9-B18DC86D63D5",
+      "target_label": "Reportchosen length of maternity leave to company",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "Yes",
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-6D273EA9-DB2F-4DAC-9001-825FD649F889",
+      "source_label": "Timespan: statutory maternity leave",
+      "target_id": "sid-7DF41A47-2D08-47D1-BAF6-6CF1F33139AE",
+      "target_label": "Reportchosen length of maternity leave to Social Security",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "Yes",
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-6D273EA9-DB2F-4DAC-9001-825FD649F889",
+      "source_label": "Timespan: statutory maternity leave",
+      "target_id": "sid-6741120E-12BB-4604-8193-44AA68B22BC7",
+      "target_label": "(at least) 3 months before maternity leave",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "No",
+        "ExclusiveGateway",
+        "Yes"
+      ]
+    },
+    {
+      "source_id": "sid-FCEFB511-B4EB-4B57-B247-4A597574765B",
+      "source_label": "End of statutory maternity leave",
+      "target_id": "sid-907C7B1E-6D5C-4E00-A0E3-0B34F79BB9C5",
+      "target_label": "Begin ofmaternity leave",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-15FD7264-AAFD-4EAB-BAC3-F2F115A127C4",
+      "source_label": "Start date of  planned maternity leave reached",
+      "target_id": "sid-907C7B1E-6D5C-4E00-A0E3-0B34F79BB9C5",
+      "target_label": "Begin ofmaternity leave",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-C4D3BA4B-262D-4C2A-B91B-C1B19DA511A0",
+      "source_label": "Choose extention ofmaternity leave:2 to 24 monthsminus already takenmaternity leave",
+      "target_id": "sid-AACF4617-7303-43CE-99B9-B18DC86D63D5",
+      "target_label": "Reportchosen length of maternity leave to company",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "Yes",
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-C4D3BA4B-262D-4C2A-B91B-C1B19DA511A0",
+      "source_label": "Choose extention ofmaternity leave:2 to 24 monthsminus already takenmaternity leave",
+      "target_id": "sid-7DF41A47-2D08-47D1-BAF6-6CF1F33139AE",
+      "target_label": "Reportchosen length of maternity leave to Social Security",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "Yes",
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-C4D3BA4B-262D-4C2A-B91B-C1B19DA511A0",
+      "source_label": "Choose extention ofmaternity leave:2 to 24 monthsminus already takenmaternity leave",
+      "target_id": "sid-6741120E-12BB-4604-8193-44AA68B22BC7",
+      "target_label": "(at least) 3 months before maternity leave",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "No",
+        "ExclusiveGateway",
+        "Yes"
+      ]
+    },
+    {
+      "source_id": "sid-6741120E-12BB-4604-8193-44AA68B22BC7",
+      "source_label": "(at least) 3 months before maternity leave",
+      "target_id": "sid-AACF4617-7303-43CE-99B9-B18DC86D63D5",
+      "target_label": "Reportchosen length of maternity leave to company",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-6741120E-12BB-4604-8193-44AA68B22BC7",
+      "source_label": "(at least) 3 months before maternity leave",
+      "target_id": "sid-7DF41A47-2D08-47D1-BAF6-6CF1F33139AE",
+      "target_label": "Reportchosen length of maternity leave to Social Security",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-1E3240D9-B8F2-4AE1-BFC1-6FB4BA778CA7",
+      "source_label": "Send answer to parent",
+      "target_id": "sid-15FD7264-AAFD-4EAB-BAC3-F2F115A127C4",
+      "target_label": "Start date of  planned maternity leave reached",
+      "gateway_context": [
+        "ParallelGateway",
+        "ExclusiveGateway",
+        "Yes",
+        "ExclusiveGateway",
+        "No"
+      ]
+    },
+    {
+      "source_id": "sid-1E3240D9-B8F2-4AE1-BFC1-6FB4BA778CA7",
+      "source_label": "Send answer to parent",
+      "target_id": "sid-FCEFB511-B4EB-4B57-B247-4A597574765B",
+      "target_label": "End of statutory maternity leave",
+      "gateway_context": [
+        "ParallelGateway",
+        "ExclusiveGateway",
+        "Yes",
+        "ExclusiveGateway",
+        "Yes"
+      ]
+    },
+    {
+      "source_id": "sid-1E3240D9-B8F2-4AE1-BFC1-6FB4BA778CA7",
+      "source_label": "Send answer to parent",
+      "target_id": "sid-D1E4F455-61D2-424B-BE28-8DE97A0DACDB",
+      "target_label": "Re-chose lengthof maternity leave",
+      "gateway_context": [
+        "ParallelGateway",
+        "ExclusiveGateway",
+        "No"
+      ]
+    },
+    {
+      "source_id": "sid-EE724FB2-8962-4B35-ABAE-B22FBF6132BE",
+      "source_label": "Timespan: Birth -  8wks after birth",
+      "target_id": "sid-AACF4617-7303-43CE-99B9-B18DC86D63D5",
+      "target_label": "Reportchosen length of maternity leave to company",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "Yes",
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-EE724FB2-8962-4B35-ABAE-B22FBF6132BE",
+      "source_label": "Timespan: Birth -  8wks after birth",
+      "target_id": "sid-7DF41A47-2D08-47D1-BAF6-6CF1F33139AE",
+      "target_label": "Reportchosen length of maternity leave to Social Security",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "Yes",
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-EE724FB2-8962-4B35-ABAE-B22FBF6132BE",
+      "source_label": "Timespan: Birth -  8wks after birth",
+      "target_id": "sid-6741120E-12BB-4604-8193-44AA68B22BC7",
+      "target_label": "(at least) 3 months before maternity leave",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "No",
+        "ExclusiveGateway",
+        "Yes"
+      ]
+    },
+    {
+      "source_id": "sid-6ABDF1F0-6707-44BA-85DA-1242A634D9C1",
+      "source_label": "Choose next part ofmaternity leavefor other parent:2 to 24 monthsminus already takenmaternity leave",
+      "target_id": "sid-AACF4617-7303-43CE-99B9-B18DC86D63D5",
+      "target_label": "Reportchosen length of maternity leave to company",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "Yes",
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-6ABDF1F0-6707-44BA-85DA-1242A634D9C1",
+      "source_label": "Choose next part ofmaternity leavefor other parent:2 to 24 monthsminus already takenmaternity leave",
+      "target_id": "sid-7DF41A47-2D08-47D1-BAF6-6CF1F33139AE",
+      "target_label": "Reportchosen length of maternity leave to Social Security",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "Yes",
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-6ABDF1F0-6707-44BA-85DA-1242A634D9C1",
+      "source_label": "Choose next part ofmaternity leavefor other parent:2 to 24 monthsminus already takenmaternity leave",
+      "target_id": "sid-6741120E-12BB-4604-8193-44AA68B22BC7",
+      "target_label": "(at least) 3 months before maternity leave",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "No",
+        "ExclusiveGateway",
+        "Yes"
+      ]
+    },
+    {
+      "source_id": "sid-8198CE3C-10C0-4663-A1C7-BEB2CA6FED8E",
+      "source_label": "Calculate if chosen length fits",
+      "target_id": "sid-1E3240D9-B8F2-4AE1-BFC1-6FB4BA778CA7",
+      "target_label": "Send answer to parent",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-5B89A307-0186-4498-AE84-54CBC306EF5C",
+      "source_label": "(at least) 2 months before end of chosen maternity leave",
+      "target_id": "sid-B6F3AE3E-80DE-49A4-996E-39245AC82304",
+      "target_label": "End ofmaternity leave",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "No",
+        "ExclusiveGateway",
+        "No",
+        "ExclusiveGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-5B89A307-0186-4498-AE84-54CBC306EF5C",
+      "source_label": "(at least) 2 months before end of chosen maternity leave",
+      "target_id": "sid-6ABDF1F0-6707-44BA-85DA-1242A634D9C1",
+      "target_label": "Choose next part ofmaternity leavefor other parent:2 to 24 monthsminus already takenmaternity leave",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "No",
+        "ExclusiveGateway",
+        "Yes",
+        "ExclusiveGateway",
+        "Yes",
+        "ExclusiveGateway",
+        "Yes"
+      ]
+    },
+    {
+      "source_id": "sid-5B89A307-0186-4498-AE84-54CBC306EF5C",
+      "source_label": "(at least) 2 months before end of chosen maternity leave",
+      "target_id": "sid-B6F3AE3E-80DE-49A4-996E-39245AC82304",
+      "target_label": "End ofmaternity leave",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "No",
+        "ExclusiveGateway",
+        "Yes",
+        "ExclusiveGateway",
+        "Yes",
+        "ExclusiveGateway",
+        "No",
+        "ExclusiveGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-5B89A307-0186-4498-AE84-54CBC306EF5C",
+      "source_label": "(at least) 2 months before end of chosen maternity leave",
+      "target_id": "sid-B6F3AE3E-80DE-49A4-996E-39245AC82304",
+      "target_label": "End ofmaternity leave",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "No",
+        "ExclusiveGateway",
+        "Yes",
+        "ExclusiveGateway",
+        "No",
+        "ExclusiveGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-5B89A307-0186-4498-AE84-54CBC306EF5C",
+      "source_label": "(at least) 2 months before end of chosen maternity leave",
+      "target_id": "sid-C4D3BA4B-262D-4C2A-B91B-C1B19DA511A0",
+      "target_label": "Choose extention ofmaternity leave:2 to 24 monthsminus already takenmaternity leave",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "Yes"
+      ]
+    },
+    {
+      "source_id": "sid-ABD9C735-A976-47F7-9D3C-656748F21E2B",
+      "source_label": "(at least) 3 months before  end of chosen  maternity leave",
+      "target_id": "sid-B6F3AE3E-80DE-49A4-996E-39245AC82304",
+      "target_label": "End ofmaternity leave",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "No",
+        "ExclusiveGateway",
+        "No",
+        "ExclusiveGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-ABD9C735-A976-47F7-9D3C-656748F21E2B",
+      "source_label": "(at least) 3 months before  end of chosen  maternity leave",
+      "target_id": "sid-6ABDF1F0-6707-44BA-85DA-1242A634D9C1",
+      "target_label": "Choose next part ofmaternity leavefor other parent:2 to 24 monthsminus already takenmaternity leave",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "No",
+        "ExclusiveGateway",
+        "Yes",
+        "ExclusiveGateway",
+        "Yes",
+        "ExclusiveGateway",
+        "Yes"
+      ]
+    },
+    {
+      "source_id": "sid-ABD9C735-A976-47F7-9D3C-656748F21E2B",
+      "source_label": "(at least) 3 months before  end of chosen  maternity leave",
+      "target_id": "sid-B6F3AE3E-80DE-49A4-996E-39245AC82304",
+      "target_label": "End ofmaternity leave",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "No",
+        "ExclusiveGateway",
+        "Yes",
+        "ExclusiveGateway",
+        "Yes",
+        "ExclusiveGateway",
+        "No",
+        "ExclusiveGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-ABD9C735-A976-47F7-9D3C-656748F21E2B",
+      "source_label": "(at least) 3 months before  end of chosen  maternity leave",
+      "target_id": "sid-B6F3AE3E-80DE-49A4-996E-39245AC82304",
+      "target_label": "End ofmaternity leave",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "No",
+        "ExclusiveGateway",
+        "Yes",
+        "ExclusiveGateway",
+        "No",
+        "ExclusiveGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-ABD9C735-A976-47F7-9D3C-656748F21E2B",
+      "source_label": "(at least) 3 months before  end of chosen  maternity leave",
+      "target_id": "sid-C4D3BA4B-262D-4C2A-B91B-C1B19DA511A0",
+      "target_label": "Choose extention ofmaternity leave:2 to 24 monthsminus already takenmaternity leave",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "Yes"
+      ]
+    },
+    {
+      "source_id": "sid-F6B3262E-AA5A-4F6C-929B-37FE0A99A09A",
+      "source_label": "Choose length ofmaternity leave for parent taking maternity leave first and living in same household",
+      "target_id": "sid-EE724FB2-8962-4B35-ABAE-B22FBF6132BE",
+      "target_label": "Timespan: Birth -  8wks after birth",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "Father"
+      ]
+    },
+    {
+      "source_id": "sid-F6B3262E-AA5A-4F6C-929B-37FE0A99A09A",
+      "source_label": "Choose length ofmaternity leave for parent taking maternity leave first and living in same household",
+      "target_id": "sid-6D273EA9-DB2F-4DAC-9001-825FD649F889",
+      "target_label": "Timespan: statutory maternity leave",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "Mother"
+      ]
+    },
+    {
+      "source_id": "sid-8CE8D631-E4F9-4FF7-A1EF-A9A2A03E7A25",
+      "source_label": "Ask for maternityleave confirmation from company",
+      "target_id": "sid-ABD9C735-A976-47F7-9D3C-656748F21E2B",
+      "target_label": "(at least) 3 months before  end of chosen  maternity leave",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "No",
+        "ExclusiveGateway",
+        "Yes"
+      ]
+    },
+    {
+      "source_id": "sid-8CE8D631-E4F9-4FF7-A1EF-A9A2A03E7A25",
+      "source_label": "Ask for maternityleave confirmation from company",
+      "target_id": "sid-B6F3AE3E-80DE-49A4-996E-39245AC82304",
+      "target_label": "End ofmaternity leave",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "No",
+        "ExclusiveGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-8CE8D631-E4F9-4FF7-A1EF-A9A2A03E7A25",
+      "source_label": "Ask for maternityleave confirmation from company",
+      "target_id": "sid-5B89A307-0186-4498-AE84-54CBC306EF5C",
+      "target_label": "(at least) 2 months before end of chosen maternity leave",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "Yes"
+      ]
+    },
+    {
+      "source_id": "sid-AACF4617-7303-43CE-99B9-B18DC86D63D5",
+      "source_label": "Reportchosen length of maternity leave to company",
+      "target_id": "sid-15FD7264-AAFD-4EAB-BAC3-F2F115A127C4",
+      "target_label": "Start date of  planned maternity leave reached",
+      "gateway_context": [
+        "ParallelGateway",
+        "ExclusiveGateway",
+        "Yes",
+        "ExclusiveGateway",
+        "No"
+      ]
+    },
+    {
+      "source_id": "sid-AACF4617-7303-43CE-99B9-B18DC86D63D5",
+      "source_label": "Reportchosen length of maternity leave to company",
+      "target_id": "sid-FCEFB511-B4EB-4B57-B247-4A597574765B",
+      "target_label": "End of statutory maternity leave",
+      "gateway_context": [
+        "ParallelGateway",
+        "ExclusiveGateway",
+        "Yes",
+        "ExclusiveGateway",
+        "Yes"
+      ]
+    },
+    {
+      "source_id": "sid-AACF4617-7303-43CE-99B9-B18DC86D63D5",
+      "source_label": "Reportchosen length of maternity leave to company",
+      "target_id": "sid-D1E4F455-61D2-424B-BE28-8DE97A0DACDB",
+      "target_label": "Re-chose lengthof maternity leave",
+      "gateway_context": [
+        "ParallelGateway",
+        "ExclusiveGateway",
+        "No"
+      ]
+    },
+    {
+      "source_id": "sid-7DF41A47-2D08-47D1-BAF6-6CF1F33139AE",
+      "source_label": "Reportchosen length of maternity leave to Social Security",
+      "target_id": "sid-8198CE3C-10C0-4663-A1C7-BEB2CA6FED8E",
+      "target_label": "Calculate if chosen length fits",
+      "gateway_context": []
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "Begin ofmaternity leave",
+      "subject_id": "sid-907C7B1E-6D5C-4E00-A0E3-0B34F79BB9C5",
+      "predicate": "follows",
+      "object": "Ask for maternityleave confirmation from company",
+      "object_id": "sid-8CE8D631-E4F9-4FF7-A1EF-A9A2A03E7A25"
+    },
+    {
+      "subject": "Re-chose lengthof maternity leave",
+      "subject_id": "sid-D1E4F455-61D2-424B-BE28-8DE97A0DACDB",
+      "predicate": "follows",
+      "object": "Reportchosen length of maternity leave to company",
+      "object_id": "sid-AACF4617-7303-43CE-99B9-B18DC86D63D5"
+    },
+    {
+      "subject": "Re-chose lengthof maternity leave",
+      "subject_id": "sid-D1E4F455-61D2-424B-BE28-8DE97A0DACDB",
+      "predicate": "follows",
+      "object": "Reportchosen length of maternity leave to Social Security",
+      "object_id": "sid-7DF41A47-2D08-47D1-BAF6-6CF1F33139AE"
+    },
+    {
+      "subject": "Timespan: statutory maternity leave",
+      "subject_id": "sid-6D273EA9-DB2F-4DAC-9001-825FD649F889",
+      "predicate": "follows",
+      "object": "Reportchosen length of maternity leave to company",
+      "object_id": "sid-AACF4617-7303-43CE-99B9-B18DC86D63D5"
+    },
+    {
+      "subject": "Timespan: statutory maternity leave",
+      "subject_id": "sid-6D273EA9-DB2F-4DAC-9001-825FD649F889",
+      "predicate": "follows",
+      "object": "Reportchosen length of maternity leave to Social Security",
+      "object_id": "sid-7DF41A47-2D08-47D1-BAF6-6CF1F33139AE"
+    },
+    {
+      "subject": "Timespan: statutory maternity leave",
+      "subject_id": "sid-6D273EA9-DB2F-4DAC-9001-825FD649F889",
+      "predicate": "follows",
+      "object": "(at least) 3 months before maternity leave",
+      "object_id": "sid-6741120E-12BB-4604-8193-44AA68B22BC7"
+    },
+    {
+      "subject": "End of statutory maternity leave",
+      "subject_id": "sid-FCEFB511-B4EB-4B57-B247-4A597574765B",
+      "predicate": "follows",
+      "object": "Begin ofmaternity leave",
+      "object_id": "sid-907C7B1E-6D5C-4E00-A0E3-0B34F79BB9C5"
+    },
+    {
+      "subject": "Start date of  planned maternity leave reached",
+      "subject_id": "sid-15FD7264-AAFD-4EAB-BAC3-F2F115A127C4",
+      "predicate": "follows",
+      "object": "Begin ofmaternity leave",
+      "object_id": "sid-907C7B1E-6D5C-4E00-A0E3-0B34F79BB9C5"
+    },
+    {
+      "subject": "Choose extention ofmaternity leave:2 to 24 monthsminus already takenmaternity leave",
+      "subject_id": "sid-C4D3BA4B-262D-4C2A-B91B-C1B19DA511A0",
+      "predicate": "follows",
+      "object": "Reportchosen length of maternity leave to company",
+      "object_id": "sid-AACF4617-7303-43CE-99B9-B18DC86D63D5"
+    },
+    {
+      "subject": "Choose extention ofmaternity leave:2 to 24 monthsminus already takenmaternity leave",
+      "subject_id": "sid-C4D3BA4B-262D-4C2A-B91B-C1B19DA511A0",
+      "predicate": "follows",
+      "object": "Reportchosen length of maternity leave to Social Security",
+      "object_id": "sid-7DF41A47-2D08-47D1-BAF6-6CF1F33139AE"
+    },
+    {
+      "subject": "Choose extention ofmaternity leave:2 to 24 monthsminus already takenmaternity leave",
+      "subject_id": "sid-C4D3BA4B-262D-4C2A-B91B-C1B19DA511A0",
+      "predicate": "follows",
+      "object": "(at least) 3 months before maternity leave",
+      "object_id": "sid-6741120E-12BB-4604-8193-44AA68B22BC7"
+    },
+    {
+      "subject": "(at least) 3 months before maternity leave",
+      "subject_id": "sid-6741120E-12BB-4604-8193-44AA68B22BC7",
+      "predicate": "follows",
+      "object": "Reportchosen length of maternity leave to company",
+      "object_id": "sid-AACF4617-7303-43CE-99B9-B18DC86D63D5"
+    },
+    {
+      "subject": "(at least) 3 months before maternity leave",
+      "subject_id": "sid-6741120E-12BB-4604-8193-44AA68B22BC7",
+      "predicate": "follows",
+      "object": "Reportchosen length of maternity leave to Social Security",
+      "object_id": "sid-7DF41A47-2D08-47D1-BAF6-6CF1F33139AE"
+    },
+    {
+      "subject": "Send answer to parent",
+      "subject_id": "sid-1E3240D9-B8F2-4AE1-BFC1-6FB4BA778CA7",
+      "predicate": "follows",
+      "object": "Start date of  planned maternity leave reached",
+      "object_id": "sid-15FD7264-AAFD-4EAB-BAC3-F2F115A127C4"
+    },
+    {
+      "subject": "Send answer to parent",
+      "subject_id": "sid-1E3240D9-B8F2-4AE1-BFC1-6FB4BA778CA7",
+      "predicate": "follows",
+      "object": "End of statutory maternity leave",
+      "object_id": "sid-FCEFB511-B4EB-4B57-B247-4A597574765B"
+    },
+    {
+      "subject": "Send answer to parent",
+      "subject_id": "sid-1E3240D9-B8F2-4AE1-BFC1-6FB4BA778CA7",
+      "predicate": "follows",
+      "object": "Re-chose lengthof maternity leave",
+      "object_id": "sid-D1E4F455-61D2-424B-BE28-8DE97A0DACDB"
+    },
+    {
+      "subject": "Timespan: Birth -  8wks after birth",
+      "subject_id": "sid-EE724FB2-8962-4B35-ABAE-B22FBF6132BE",
+      "predicate": "follows",
+      "object": "Reportchosen length of maternity leave to company",
+      "object_id": "sid-AACF4617-7303-43CE-99B9-B18DC86D63D5"
+    },
+    {
+      "subject": "Timespan: Birth -  8wks after birth",
+      "subject_id": "sid-EE724FB2-8962-4B35-ABAE-B22FBF6132BE",
+      "predicate": "follows",
+      "object": "Reportchosen length of maternity leave to Social Security",
+      "object_id": "sid-7DF41A47-2D08-47D1-BAF6-6CF1F33139AE"
+    },
+    {
+      "subject": "Timespan: Birth -  8wks after birth",
+      "subject_id": "sid-EE724FB2-8962-4B35-ABAE-B22FBF6132BE",
+      "predicate": "follows",
+      "object": "(at least) 3 months before maternity leave",
+      "object_id": "sid-6741120E-12BB-4604-8193-44AA68B22BC7"
+    },
+    {
+      "subject": "Choose next part ofmaternity leavefor other parent:2 to 24 monthsminus already takenmaternity leave",
+      "subject_id": "sid-6ABDF1F0-6707-44BA-85DA-1242A634D9C1",
+      "predicate": "follows",
+      "object": "Reportchosen length of maternity leave to company",
+      "object_id": "sid-AACF4617-7303-43CE-99B9-B18DC86D63D5"
+    },
+    {
+      "subject": "Choose next part ofmaternity leavefor other parent:2 to 24 monthsminus already takenmaternity leave",
+      "subject_id": "sid-6ABDF1F0-6707-44BA-85DA-1242A634D9C1",
+      "predicate": "follows",
+      "object": "Reportchosen length of maternity leave to Social Security",
+      "object_id": "sid-7DF41A47-2D08-47D1-BAF6-6CF1F33139AE"
+    },
+    {
+      "subject": "Choose next part ofmaternity leavefor other parent:2 to 24 monthsminus already takenmaternity leave",
+      "subject_id": "sid-6ABDF1F0-6707-44BA-85DA-1242A634D9C1",
+      "predicate": "follows",
+      "object": "(at least) 3 months before maternity leave",
+      "object_id": "sid-6741120E-12BB-4604-8193-44AA68B22BC7"
+    },
+    {
+      "subject": "Calculate if chosen length fits",
+      "subject_id": "sid-8198CE3C-10C0-4663-A1C7-BEB2CA6FED8E",
+      "predicate": "follows",
+      "object": "Send answer to parent",
+      "object_id": "sid-1E3240D9-B8F2-4AE1-BFC1-6FB4BA778CA7"
+    },
+    {
+      "subject": "(at least) 2 months before end of chosen maternity leave",
+      "subject_id": "sid-5B89A307-0186-4498-AE84-54CBC306EF5C",
+      "predicate": "follows",
+      "object": "End ofmaternity leave",
+      "object_id": "sid-B6F3AE3E-80DE-49A4-996E-39245AC82304"
+    },
+    {
+      "subject": "(at least) 2 months before end of chosen maternity leave",
+      "subject_id": "sid-5B89A307-0186-4498-AE84-54CBC306EF5C",
+      "predicate": "follows",
+      "object": "Choose next part ofmaternity leavefor other parent:2 to 24 monthsminus already takenmaternity leave",
+      "object_id": "sid-6ABDF1F0-6707-44BA-85DA-1242A634D9C1"
+    },
+    {
+      "subject": "(at least) 2 months before end of chosen maternity leave",
+      "subject_id": "sid-5B89A307-0186-4498-AE84-54CBC306EF5C",
+      "predicate": "follows",
+      "object": "End ofmaternity leave",
+      "object_id": "sid-B6F3AE3E-80DE-49A4-996E-39245AC82304"
+    },
+    {
+      "subject": "(at least) 2 months before end of chosen maternity leave",
+      "subject_id": "sid-5B89A307-0186-4498-AE84-54CBC306EF5C",
+      "predicate": "follows",
+      "object": "End ofmaternity leave",
+      "object_id": "sid-B6F3AE3E-80DE-49A4-996E-39245AC82304"
+    },
+    {
+      "subject": "(at least) 2 months before end of chosen maternity leave",
+      "subject_id": "sid-5B89A307-0186-4498-AE84-54CBC306EF5C",
+      "predicate": "follows",
+      "object": "Choose extention ofmaternity leave:2 to 24 monthsminus already takenmaternity leave",
+      "object_id": "sid-C4D3BA4B-262D-4C2A-B91B-C1B19DA511A0"
+    },
+    {
+      "subject": "(at least) 3 months before  end of chosen  maternity leave",
+      "subject_id": "sid-ABD9C735-A976-47F7-9D3C-656748F21E2B",
+      "predicate": "follows",
+      "object": "End ofmaternity leave",
+      "object_id": "sid-B6F3AE3E-80DE-49A4-996E-39245AC82304"
+    },
+    {
+      "subject": "(at least) 3 months before  end of chosen  maternity leave",
+      "subject_id": "sid-ABD9C735-A976-47F7-9D3C-656748F21E2B",
+      "predicate": "follows",
+      "object": "Choose next part ofmaternity leavefor other parent:2 to 24 monthsminus already takenmaternity leave",
+      "object_id": "sid-6ABDF1F0-6707-44BA-85DA-1242A634D9C1"
+    },
+    {
+      "subject": "(at least) 3 months before  end of chosen  maternity leave",
+      "subject_id": "sid-ABD9C735-A976-47F7-9D3C-656748F21E2B",
+      "predicate": "follows",
+      "object": "End ofmaternity leave",
+      "object_id": "sid-B6F3AE3E-80DE-49A4-996E-39245AC82304"
+    },
+    {
+      "subject": "(at least) 3 months before  end of chosen  maternity leave",
+      "subject_id": "sid-ABD9C735-A976-47F7-9D3C-656748F21E2B",
+      "predicate": "follows",
+      "object": "End ofmaternity leave",
+      "object_id": "sid-B6F3AE3E-80DE-49A4-996E-39245AC82304"
+    },
+    {
+      "subject": "(at least) 3 months before  end of chosen  maternity leave",
+      "subject_id": "sid-ABD9C735-A976-47F7-9D3C-656748F21E2B",
+      "predicate": "follows",
+      "object": "Choose extention ofmaternity leave:2 to 24 monthsminus already takenmaternity leave",
+      "object_id": "sid-C4D3BA4B-262D-4C2A-B91B-C1B19DA511A0"
+    },
+    {
+      "subject": "Choose length ofmaternity leave for parent taking maternity leave first and living in same household",
+      "subject_id": "sid-F6B3262E-AA5A-4F6C-929B-37FE0A99A09A",
+      "predicate": "follows",
+      "object": "Timespan: Birth -  8wks after birth",
+      "object_id": "sid-EE724FB2-8962-4B35-ABAE-B22FBF6132BE"
+    },
+    {
+      "subject": "Choose length ofmaternity leave for parent taking maternity leave first and living in same household",
+      "subject_id": "sid-F6B3262E-AA5A-4F6C-929B-37FE0A99A09A",
+      "predicate": "follows",
+      "object": "Timespan: statutory maternity leave",
+      "object_id": "sid-6D273EA9-DB2F-4DAC-9001-825FD649F889"
+    },
+    {
+      "subject": "Ask for maternityleave confirmation from company",
+      "subject_id": "sid-8CE8D631-E4F9-4FF7-A1EF-A9A2A03E7A25",
+      "predicate": "follows",
+      "object": "(at least) 3 months before  end of chosen  maternity leave",
+      "object_id": "sid-ABD9C735-A976-47F7-9D3C-656748F21E2B"
+    },
+    {
+      "subject": "Ask for maternityleave confirmation from company",
+      "subject_id": "sid-8CE8D631-E4F9-4FF7-A1EF-A9A2A03E7A25",
+      "predicate": "follows",
+      "object": "End ofmaternity leave",
+      "object_id": "sid-B6F3AE3E-80DE-49A4-996E-39245AC82304"
+    },
+    {
+      "subject": "Ask for maternityleave confirmation from company",
+      "subject_id": "sid-8CE8D631-E4F9-4FF7-A1EF-A9A2A03E7A25",
+      "predicate": "follows",
+      "object": "(at least) 2 months before end of chosen maternity leave",
+      "object_id": "sid-5B89A307-0186-4498-AE84-54CBC306EF5C"
+    },
+    {
+      "subject": "Reportchosen length of maternity leave to company",
+      "subject_id": "sid-AACF4617-7303-43CE-99B9-B18DC86D63D5",
+      "predicate": "follows",
+      "object": "Start date of  planned maternity leave reached",
+      "object_id": "sid-15FD7264-AAFD-4EAB-BAC3-F2F115A127C4"
+    },
+    {
+      "subject": "Reportchosen length of maternity leave to company",
+      "subject_id": "sid-AACF4617-7303-43CE-99B9-B18DC86D63D5",
+      "predicate": "follows",
+      "object": "End of statutory maternity leave",
+      "object_id": "sid-FCEFB511-B4EB-4B57-B247-4A597574765B"
+    },
+    {
+      "subject": "Reportchosen length of maternity leave to company",
+      "subject_id": "sid-AACF4617-7303-43CE-99B9-B18DC86D63D5",
+      "predicate": "follows",
+      "object": "Re-chose lengthof maternity leave",
+      "object_id": "sid-D1E4F455-61D2-424B-BE28-8DE97A0DACDB"
+    },
+    {
+      "subject": "Reportchosen length of maternity leave to Social Security",
+      "subject_id": "sid-7DF41A47-2D08-47D1-BAF6-6CF1F33139AE",
+      "predicate": "follows",
+      "object": "Calculate if chosen length fits",
+      "object_id": "sid-8198CE3C-10C0-4663-A1C7-BEB2CA6FED8E"
+    }
+  ],
+  "matches": {
+    "(at least) 2 months before end of chosen maternity leave": {
+      "match": "maternity_leave.planned",
+      "score": 0.5582
+    },
+    "(at least) 3 months before  end of chosen  maternity leave": {
+      "match": "maternity_leave.planned",
+      "score": 0.5327
+    },
+    "(at least) 3 months before maternity leave": {
+      "match": "maternity_leave.planned",
+      "score": 0.5666
+    },
+    "Ask for maternityleave confirmation from company": {
+      "match": "maternity_leave.planned",
+      "score": 0.5207
+    },
+    "Begin ofmaternity leave": {
+      "match": "maternity_leave.planned",
+      "score": 0.6541
+    },
+    "Calculate if chosen length fits": {
+      "match": "maternity_leave.planned",
+      "score": 0.1563
+    },
+    "Choose extention ofmaternity leave:2 to 24 monthsminus already takenmaternity leave": {
+      "match": "maternity_leave.extended",
+      "score": 0.6073
+    },
+    "Choose length ofmaternity leave for parent taking maternity leave first and living in same household": {
+      "match": "maternity_leave.extended",
+      "score": 0.5084
+    },
+    "Choose next part ofmaternity leavefor other parent:2 to 24 monthsminus already takenmaternity leave": {
+      "match": "maternity_leave.extended",
+      "score": 0.4602
+    },
+    "End of statutory maternity leave": {
+      "match": "maternity_leave.extended",
+      "score": 0.524
+    },
+    "End ofmaternity leave": {
+      "match": "maternity_leave.planned",
+      "score": 0.5635
+    },
+    "Re-chose lengthof maternity leave": {
+      "match": "maternity_leave.extended",
+      "score": 0.5442
+    },
+    "Reportchosen length of maternity leave to Social Security": {
+      "match": "maternity_leave.extended",
+      "score": 0.4616
+    },
+    "Reportchosen length of maternity leave to company": {
+      "match": "maternity_leave.planned",
+      "score": 0.4725
+    },
+    "Send answer to parent": {
+      "match": "social_security.notified",
+      "score": 0.1677
+    },
+    "Start date of  planned maternity leave reached": {
+      "match": "maternity_leave.planned",
+      "score": 0.7155
+    },
+    "Timespan: Birth -  8wks after birth": {
+      "match": "maternity_leave.extended",
+      "score": 0.2962
+    },
+    "Timespan: statutory maternity leave": {
+      "match": "maternity_leave.extended",
+      "score": 0.5944
+    }
+  },
+  "process_graph": [
+    {
+      "from": "maternity_leave.planned",
+      "to": "maternity_leave.planned",
+      "activity_from": "Begin ofmaternity leave",
+      "activity_to": "Ask for maternityleave confirmation from company"
+    },
+    {
+      "from": "maternity_leave.extended",
+      "to": "maternity_leave.planned",
+      "activity_from": "Re-chose lengthof maternity leave",
+      "activity_to": "Reportchosen length of maternity leave to company"
+    },
+    {
+      "from": "maternity_leave.extended",
+      "to": "maternity_leave.extended",
+      "activity_from": "Re-chose lengthof maternity leave",
+      "activity_to": "Reportchosen length of maternity leave to Social Security"
+    },
+    {
+      "from": "maternity_leave.extended",
+      "to": "maternity_leave.planned",
+      "activity_from": "Timespan: statutory maternity leave",
+      "activity_to": "Reportchosen length of maternity leave to company"
+    },
+    {
+      "from": "maternity_leave.extended",
+      "to": "maternity_leave.extended",
+      "activity_from": "Timespan: statutory maternity leave",
+      "activity_to": "Reportchosen length of maternity leave to Social Security"
+    },
+    {
+      "from": "maternity_leave.extended",
+      "to": "maternity_leave.planned",
+      "activity_from": "Timespan: statutory maternity leave",
+      "activity_to": "(at least) 3 months before maternity leave"
+    },
+    {
+      "from": "maternity_leave.extended",
+      "to": "maternity_leave.planned",
+      "activity_from": "End of statutory maternity leave",
+      "activity_to": "Begin ofmaternity leave"
+    },
+    {
+      "from": "maternity_leave.planned",
+      "to": "maternity_leave.planned",
+      "activity_from": "Start date of  planned maternity leave reached",
+      "activity_to": "Begin ofmaternity leave"
+    },
+    {
+      "from": "maternity_leave.extended",
+      "to": "maternity_leave.planned",
+      "activity_from": "Choose extention ofmaternity leave:2 to 24 monthsminus already takenmaternity leave",
+      "activity_to": "Reportchosen length of maternity leave to company"
+    },
+    {
+      "from": "maternity_leave.extended",
+      "to": "maternity_leave.extended",
+      "activity_from": "Choose extention ofmaternity leave:2 to 24 monthsminus already takenmaternity leave",
+      "activity_to": "Reportchosen length of maternity leave to Social Security"
+    },
+    {
+      "from": "maternity_leave.extended",
+      "to": "maternity_leave.planned",
+      "activity_from": "Choose extention ofmaternity leave:2 to 24 monthsminus already takenmaternity leave",
+      "activity_to": "(at least) 3 months before maternity leave"
+    },
+    {
+      "from": "maternity_leave.planned",
+      "to": "maternity_leave.planned",
+      "activity_from": "(at least) 3 months before maternity leave",
+      "activity_to": "Reportchosen length of maternity leave to company"
+    },
+    {
+      "from": "maternity_leave.planned",
+      "to": "maternity_leave.extended",
+      "activity_from": "(at least) 3 months before maternity leave",
+      "activity_to": "Reportchosen length of maternity leave to Social Security"
+    },
+    {
+      "from": "social_security.notified",
+      "to": "maternity_leave.planned",
+      "activity_from": "Send answer to parent",
+      "activity_to": "Start date of  planned maternity leave reached"
+    },
+    {
+      "from": "social_security.notified",
+      "to": "maternity_leave.extended",
+      "activity_from": "Send answer to parent",
+      "activity_to": "End of statutory maternity leave"
+    },
+    {
+      "from": "social_security.notified",
+      "to": "maternity_leave.extended",
+      "activity_from": "Send answer to parent",
+      "activity_to": "Re-chose lengthof maternity leave"
+    },
+    {
+      "from": "maternity_leave.extended",
+      "to": "maternity_leave.planned",
+      "activity_from": "Timespan: Birth -  8wks after birth",
+      "activity_to": "Reportchosen length of maternity leave to company"
+    },
+    {
+      "from": "maternity_leave.extended",
+      "to": "maternity_leave.extended",
+      "activity_from": "Timespan: Birth -  8wks after birth",
+      "activity_to": "Reportchosen length of maternity leave to Social Security"
+    },
+    {
+      "from": "maternity_leave.extended",
+      "to": "maternity_leave.planned",
+      "activity_from": "Timespan: Birth -  8wks after birth",
+      "activity_to": "(at least) 3 months before maternity leave"
+    },
+    {
+      "from": "maternity_leave.extended",
+      "to": "maternity_leave.planned",
+      "activity_from": "Choose next part ofmaternity leavefor other parent:2 to 24 monthsminus already takenmaternity leave",
+      "activity_to": "Reportchosen length of maternity leave to company"
+    },
+    {
+      "from": "maternity_leave.extended",
+      "to": "maternity_leave.extended",
+      "activity_from": "Choose next part ofmaternity leavefor other parent:2 to 24 monthsminus already takenmaternity leave",
+      "activity_to": "Reportchosen length of maternity leave to Social Security"
+    },
+    {
+      "from": "maternity_leave.extended",
+      "to": "maternity_leave.planned",
+      "activity_from": "Choose next part ofmaternity leavefor other parent:2 to 24 monthsminus already takenmaternity leave",
+      "activity_to": "(at least) 3 months before maternity leave"
+    },
+    {
+      "from": "maternity_leave.planned",
+      "to": "social_security.notified",
+      "activity_from": "Calculate if chosen length fits",
+      "activity_to": "Send answer to parent"
+    },
+    {
+      "from": "maternity_leave.planned",
+      "to": "maternity_leave.planned",
+      "activity_from": "(at least) 2 months before end of chosen maternity leave",
+      "activity_to": "End ofmaternity leave"
+    },
+    {
+      "from": "maternity_leave.planned",
+      "to": "maternity_leave.extended",
+      "activity_from": "(at least) 2 months before end of chosen maternity leave",
+      "activity_to": "Choose next part ofmaternity leavefor other parent:2 to 24 monthsminus already takenmaternity leave"
+    },
+    {
+      "from": "maternity_leave.planned",
+      "to": "maternity_leave.planned",
+      "activity_from": "(at least) 2 months before end of chosen maternity leave",
+      "activity_to": "End ofmaternity leave"
+    },
+    {
+      "from": "maternity_leave.planned",
+      "to": "maternity_leave.planned",
+      "activity_from": "(at least) 2 months before end of chosen maternity leave",
+      "activity_to": "End ofmaternity leave"
+    },
+    {
+      "from": "maternity_leave.planned",
+      "to": "maternity_leave.extended",
+      "activity_from": "(at least) 2 months before end of chosen maternity leave",
+      "activity_to": "Choose extention ofmaternity leave:2 to 24 monthsminus already takenmaternity leave"
+    },
+    {
+      "from": "maternity_leave.planned",
+      "to": "maternity_leave.planned",
+      "activity_from": "(at least) 3 months before  end of chosen  maternity leave",
+      "activity_to": "End ofmaternity leave"
+    },
+    {
+      "from": "maternity_leave.planned",
+      "to": "maternity_leave.extended",
+      "activity_from": "(at least) 3 months before  end of chosen  maternity leave",
+      "activity_to": "Choose next part ofmaternity leavefor other parent:2 to 24 monthsminus already takenmaternity leave"
+    },
+    {
+      "from": "maternity_leave.planned",
+      "to": "maternity_leave.planned",
+      "activity_from": "(at least) 3 months before  end of chosen  maternity leave",
+      "activity_to": "End ofmaternity leave"
+    },
+    {
+      "from": "maternity_leave.planned",
+      "to": "maternity_leave.planned",
+      "activity_from": "(at least) 3 months before  end of chosen  maternity leave",
+      "activity_to": "End ofmaternity leave"
+    },
+    {
+      "from": "maternity_leave.planned",
+      "to": "maternity_leave.extended",
+      "activity_from": "(at least) 3 months before  end of chosen  maternity leave",
+      "activity_to": "Choose extention ofmaternity leave:2 to 24 monthsminus already takenmaternity leave"
+    },
+    {
+      "from": "maternity_leave.extended",
+      "to": "maternity_leave.extended",
+      "activity_from": "Choose length ofmaternity leave for parent taking maternity leave first and living in same household",
+      "activity_to": "Timespan: Birth -  8wks after birth"
+    },
+    {
+      "from": "maternity_leave.extended",
+      "to": "maternity_leave.extended",
+      "activity_from": "Choose length ofmaternity leave for parent taking maternity leave first and living in same household",
+      "activity_to": "Timespan: statutory maternity leave"
+    },
+    {
+      "from": "maternity_leave.planned",
+      "to": "maternity_leave.planned",
+      "activity_from": "Ask for maternityleave confirmation from company",
+      "activity_to": "(at least) 3 months before  end of chosen  maternity leave"
+    },
+    {
+      "from": "maternity_leave.planned",
+      "to": "maternity_leave.planned",
+      "activity_from": "Ask for maternityleave confirmation from company",
+      "activity_to": "End ofmaternity leave"
+    },
+    {
+      "from": "maternity_leave.planned",
+      "to": "maternity_leave.planned",
+      "activity_from": "Ask for maternityleave confirmation from company",
+      "activity_to": "(at least) 2 months before end of chosen maternity leave"
+    },
+    {
+      "from": "maternity_leave.planned",
+      "to": "maternity_leave.planned",
+      "activity_from": "Reportchosen length of maternity leave to company",
+      "activity_to": "Start date of  planned maternity leave reached"
+    },
+    {
+      "from": "maternity_leave.planned",
+      "to": "maternity_leave.extended",
+      "activity_from": "Reportchosen length of maternity leave to company",
+      "activity_to": "End of statutory maternity leave"
+    },
+    {
+      "from": "maternity_leave.planned",
+      "to": "maternity_leave.extended",
+      "activity_from": "Reportchosen length of maternity leave to company",
+      "activity_to": "Re-chose lengthof maternity leave"
+    },
+    {
+      "from": "maternity_leave.extended",
+      "to": "maternity_leave.planned",
+      "activity_from": "Reportchosen length of maternity leave to Social Security",
+      "activity_to": "Calculate if chosen length fits"
+    }
+  ],
+  "alignment": {
+    "maternity_leave.planned": {
+      "operator": "AND",
+      "quote": "Create a process that support in planning, taking and extending a maternity leave.",
+      "terms": [
+        {
+          "term": "information.collected",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['information.collected']",
+          "missing": [
+            "information.collected"
+          ]
+        },
+        {
+          "term": "social_security.notified",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "UNRESOLVABLE"
+    },
+    "maternity_leave.extended": {
+      "operator": "AND",
+      "quote": "At the end of the period let parent decide about extension.",
+      "terms": [
+        {
+          "term": "maternity_leave.planned",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED"
+    },
+    "social_security.notified": {
+      "operator": "AND",
+      "quote": "Notify Social Security, Company in time",
+      "terms": [
+        {
+          "term": "information.collected",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['information.collected']",
+          "missing": [
+            "information.collected"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE"
+    }
+  },
+  "report": {
+    "summary": {
+      "ecarts": 0,
+      "non_verifiable": 1,
+      "conforme": 2
+    },
+    "ecarts": [],
+    "non_verifiable": [
+      {
+        "root_cause": "(aucune activite du processus ne correspond clairement a cela)",
+        "quote": "Create a process that support in planning, taking and extending a maternity leave.",
+        "explanation": "Le texte source indique qu’une condition précise doit être remplie avant que l’activité « Start date of planned maternity leave reached » puisse se produire.  \n« Create a process that support in planning, taking and extending a maternity leave. »  \n\nCette condition n’est associée à aucune activité clairement identifiée dans le processus observé, ce qui rend impossible de vérifier si l’exigence est respectée ou non. (Cette meme cause affecte aussi : Send answer to parent.)",
+        "quote_verbatim": true,
+        "affected_activities": [
+          "Send answer to parent",
+          "Start date of  planned maternity leave reached"
+        ],
+        "affected_count": 2
+      }
+    ],
+    "conforme": [
+      {
+        "target": "Start date of  planned maternity leave reached",
+        "term": "Send answer to parent"
+      },
+      {
+        "target": "Choose extention ofmaternity leave:2 to 24 monthsminus already takenmaternity leave",
+        "term": "Start date of  planned maternity leave reached"
+      }
+    ],
+    "piece_jointe_alignement_brut": {
+      "maternity_leave.planned": {
+        "operator": "AND",
+        "quote": "Create a process that support in planning, taking and extending a maternity leave.",
+        "terms": [
+          {
+            "term": "information.collected",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['information.collected']",
+            "missing": [
+              "information.collected"
+            ]
+          },
+          {
+            "term": "social_security.notified",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "UNRESOLVABLE"
+      },
+      "maternity_leave.extended": {
+        "operator": "AND",
+        "quote": "At the end of the period let parent decide about extension.",
+        "terms": [
+          {
+            "term": "maternity_leave.planned",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED"
+      },
+      "social_security.notified": {
+        "operator": "AND",
+        "quote": "Notify Social Security, Company in time",
+        "terms": [
+          {
+            "term": "information.collected",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['information.collected']",
+            "missing": [
+              "information.collected"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE"
+      }
+    }
+  },
+  "errors": []
+}

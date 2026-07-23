@@ -1,0 +1,261 @@
+{
+  "case_name": "G_g01",
+  "text": "Category: Gaming\nName: LAN Party\n\nYou are planning a LAN party for 10 friends, so the first thing you have to do\nis to send invitations to these 10 friends. Next, you have to find out which\ngames they want to play. As soon as you have received a list of games, you can\nappoint a date when the LAN party is going to happen. If 8 or more people agree\non this date, you are good to continue. Else, you have to appoint another date,\nuntil 8 people are free to join you. While you find a date, you can find out if\nyou have all the games your guests want to play. If some are missing, download\nthem. Next, you should find out how much beer your friends will require. If you\ndo not have enough, buy what's missing. After that, you can enjoy the LAN\nparty.\n",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "llama-3.1-8b",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "llama-3.1-8b",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/text_and_bpmn/bpmn/G_g01/1.bpmn2.xml",
+  "candidates": {
+    "lan_party": [
+      "enjoyed"
+    ],
+    "invitations": [
+      "sent"
+    ],
+    "games": [
+      "chosen",
+      "downloaded"
+    ],
+    "date": [
+      "chosen",
+      "changed"
+    ],
+    "beer": [
+      "ordered",
+      "bought"
+    ]
+  },
+  "validation_report": {
+    "lan_party": {
+      "f_lex": "ACTOR",
+      "kept": false
+    },
+    "invitations": {
+      "f_lex": "ENTITY",
+      "kept": true
+    },
+    "games": {
+      "f_lex": "ENTITY",
+      "kept": true
+    },
+    "date": {
+      "f_lex": "INDETERMINATE",
+      "kept": true
+    },
+    "beer": {
+      "f_lex": "INDETERMINATE",
+      "kept": true
+    }
+  },
+  "state_space": {
+    "invitations": [
+      "sent"
+    ],
+    "games": [
+      "chosen",
+      "downloaded"
+    ],
+    "date": [
+      "chosen",
+      "changed"
+    ],
+    "beer": [
+      "ordered",
+      "bought"
+    ]
+  },
+  "raw_preconditions": {
+    "invitations": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "games": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "date": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "beer": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "invitations.sent": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "games.chosen": {
+      "precondition": "invitations.sent",
+      "quote": "As soon as you have received a list of games,"
+    },
+    "games.downloaded": {
+      "precondition": "games.chosen AND (date.chosen OR date.changed)",
+      "quote": "If some are missing, download them."
+    },
+    "date.chosen": {
+      "precondition": "games.chosen AND invitations.sent",
+      "quote": "As soon as you have received a list of games, you can appoint a date when the LAN party is going to happen."
+    },
+    "date.changed": {
+      "precondition": "date.chosen AND (invitations.sent AND (8 OR 9 OR 10 OR 7 OR 6 OR 5 OR 4 OR 3 OR 2 OR 1))",
+      "quote": "If 8 or more people agree on this date, you are good to continue. Else, you have to appoint another date, until 8 people are free to join you."
+    },
+    "beer.ordered": {
+      "precondition": "date.chosen",
+      "quote": "If you do not have enough, buy what's missing."
+    },
+    "beer.bought": {
+      "precondition": "beer.ordered",
+      "quote": "If you do not have enough, buy what's missing."
+    }
+  },
+  "validated_preconditions": {
+    "invitations": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "DOWNGRADED",
+      "reason": "malformed or unknown target key: 'invitations' is not a valid entity.state of the state space"
+    },
+    "games": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "DOWNGRADED",
+      "reason": "malformed or unknown target key: 'games' is not a valid entity.state of the state space"
+    },
+    "date": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "DOWNGRADED",
+      "reason": "malformed or unknown target key: 'date' is not a valid entity.state of the state space"
+    },
+    "beer": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "DOWNGRADED",
+      "reason": "malformed or unknown target key: 'beer' is not a valid entity.state of the state space"
+    },
+    "invitations.sent": {
+      "precondition": "INITIAL",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "games.chosen": {
+      "precondition": "invitations.sent",
+      "quote": "As soon as you have received a list of games,",
+      "status": "OK",
+      "reason": null
+    },
+    "games.downloaded": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "DOWNGRADED",
+      "reason": "references unknown state(s): ['(invitations.sent', 'games.chosen)']",
+      "retried": true
+    },
+    "date.chosen": {
+      "precondition": "games.chosen AND invitations.sent",
+      "quote": "As soon as you have received a list of games, you can appoint a date when the LAN party is going to happen.",
+      "status": "OK",
+      "reason": null
+    },
+    "date.changed": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "DOWNGRADED",
+      "reason": "mixed AND/OR not supported in a single precondition",
+      "retried": true
+    },
+    "beer.ordered": {
+      "precondition": "date.chosen",
+      "quote": "If you do not have enough, buy what's missing.",
+      "status": "OK",
+      "reason": null
+    },
+    "beer.bought": {
+      "precondition": "beer.ordered",
+      "quote": "If you do not have enough, buy what's missing.",
+      "status": "OK",
+      "reason": null
+    }
+  },
+  "precondition_cycles": [],
+  "reference_graph": {
+    "nodes": [
+      {
+        "id": "invitations.sent",
+        "weight": 0.667
+      },
+      {
+        "id": "games.chosen",
+        "weight": 0.667
+      },
+      {
+        "id": "games.downloaded",
+        "weight": 0.0
+      },
+      {
+        "id": "date.chosen",
+        "weight": 1.0
+      },
+      {
+        "id": "date.changed",
+        "weight": 0.0
+      },
+      {
+        "id": "beer.ordered",
+        "weight": 0.667
+      },
+      {
+        "id": "beer.bought",
+        "weight": 0.333
+      }
+    ],
+    "edges": [
+      {
+        "from": "invitations.sent",
+        "to": "games.chosen",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "As soon as you have received a list of games,"
+      },
+      {
+        "from": "games.chosen",
+        "to": "date.chosen",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "As soon as you have received a list of games, you can appoint a date when the LAN party is going to happen."
+      },
+      {
+        "from": "invitations.sent",
+        "to": "date.chosen",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "As soon as you have received a list of games, you can appoint a date when the LAN party is going to happen."
+      },
+      {
+        "from": "date.chosen",
+        "to": "beer.ordered",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "If you do not have enough, buy what's missing."
+      },
+      {
+        "from": "beer.ordered",
+        "to": "beer.bought",
+        "type": "sequence",
+        "operator": "AND",
+        "quote": "If you do not have enough, buy what's missing."
+      }
+    ],
+    "cycles": []
+  },
+  "errors": [
+    "bpmn_to_spo: 'str' object has no attribute 'add_out_arc'",
+    "state_matching: 'spo_triples'",
+    "alignment: 'process_graph'",
+    "report: 'alignment'"
+  ]
+}

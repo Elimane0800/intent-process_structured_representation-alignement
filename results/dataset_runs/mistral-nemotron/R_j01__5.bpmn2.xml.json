@@ -1,0 +1,280 @@
+{
+  "case_name": "R_j01",
+  "text": "Category: Repair and Service\nTitle: OEE\n\nWrite a process, that collects relevant information from a machine, and\ncalculated the Overall Equipment Efficiency (OEE). If the OEE falls below a\ncertain value/percentage, stop the machine and send an email to an engineer.\nWhen the machine is restarted, continue measuring. When the machine is\ndisconnected, stop the process.\n",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "mistral-nemotron",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "mistral-nemotron",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/text_and_bpmn/bpmn/R_j01/5.bpmn2.xml",
+  "dfg_edges": [
+    {
+      "source_id": "sid-57BCB262-6A49-458A-921F-4CB33C15081C",
+      "source_label": "Calculate OEE",
+      "target_id": "sid-10029590-6A3B-4F2F-ADA4-E341B5B5A725",
+      "target_label": "Stop machine",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "OEE too low",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-57BCB262-6A49-458A-921F-4CB33C15081C",
+      "source_label": "Calculate OEE",
+      "target_id": "sid-5516EDED-4841-4D2D-83DA-9220257BEF5F",
+      "target_label": "E-Mail engineer",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "OEE too low",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-57BCB262-6A49-458A-921F-4CB33C15081C",
+      "source_label": "Calculate OEE",
+      "target_id": "sid-5FCAFE44-3394-4F36-99E0-CBEEEAE80F99",
+      "target_label": "Collect information/measuring",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "OEE good"
+      ]
+    },
+    {
+      "source_id": "sid-9EDF2464-67D0-4F55-B089-A848328452CE",
+      "source_label": "Start",
+      "target_id": "sid-9DA3E309-AA37-4BAC-9B03-174164C02A11",
+      "target_label": "Check mails",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-9DA3E309-AA37-4BAC-9B03-174164C02A11",
+      "source_label": "Check mails",
+      "target_id": "sid-CC43F4D3-185A-42FB-B223-FDE4453F3860",
+      "target_label": "Find inefficient equipment",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-D6FB9030-5583-476D-B7D3-40C9EA56FA43",
+      "source_label": "Start machine",
+      "target_id": "sid-2BD95D7A-8D05-41FE-A73A-8260866ED4FE",
+      "target_label": "Run machine",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-D6FB9030-5583-476D-B7D3-40C9EA56FA43",
+      "source_label": "Start machine",
+      "target_id": "sid-06E00356-4076-4075-BA21-2EA06CC9703F",
+      "target_label": "End",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-CC43F4D3-185A-42FB-B223-FDE4453F3860",
+      "source_label": "Find inefficient equipment",
+      "target_id": "sid-DD4678BA-31C3-40AE-8A10-3211CDAF33E0",
+      "target_label": "Fix equipment",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-10029590-6A3B-4F2F-ADA4-E341B5B5A725",
+      "source_label": "Stop machine",
+      "target_id": "sid-B33AC4B6-4812-4DF1-BAE1-A7805553C7D0",
+      "target_label": "End",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-5516EDED-4841-4D2D-83DA-9220257BEF5F",
+      "source_label": "E-Mail engineer",
+      "target_id": "sid-B33AC4B6-4812-4DF1-BAE1-A7805553C7D0",
+      "target_label": "End",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-5516EDED-4841-4D2D-83DA-9220257BEF5F",
+      "source_label": "E-Mail engineer",
+      "target_id": "sid-9DA3E309-AA37-4BAC-9B03-174164C02A11",
+      "target_label": "Check mails",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-4EB14B52-AA49-449E-96EC-DFF6338FFFF3",
+      "source_label": "Start",
+      "target_id": "sid-2BD95D7A-8D05-41FE-A73A-8260866ED4FE",
+      "target_label": "Run machine",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-5FCAFE44-3394-4F36-99E0-CBEEEAE80F99",
+      "source_label": "Collect information/measuring",
+      "target_id": "sid-57BCB262-6A49-458A-921F-4CB33C15081C",
+      "target_label": "Calculate OEE",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-2BD95D7A-8D05-41FE-A73A-8260866ED4FE",
+      "source_label": "Run machine",
+      "target_id": "sid-B81EBE50-5B83-4FF5-8325-85AD3E793AFA",
+      "target_label": "Check connection",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-B81EBE50-5B83-4FF5-8325-85AD3E793AFA",
+      "source_label": "Check connection",
+      "target_id": "sid-ECFDE1AD-E983-4891-9904-FC471B280ACD",
+      "target_label": "End",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "disconnected"
+      ]
+    },
+    {
+      "source_id": "sid-B81EBE50-5B83-4FF5-8325-85AD3E793AFA",
+      "source_label": "Check connection",
+      "target_id": "sid-5FCAFE44-3394-4F36-99E0-CBEEEAE80F99",
+      "target_label": "Collect information/measuring",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "connected"
+      ]
+    },
+    {
+      "source_id": "sid-DD4678BA-31C3-40AE-8A10-3211CDAF33E0",
+      "source_label": "Fix equipment",
+      "target_id": "sid-D6FB9030-5583-476D-B7D3-40C9EA56FA43",
+      "target_label": "Start machine",
+      "gateway_context": []
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "Calculate OEE",
+      "subject_id": "sid-57BCB262-6A49-458A-921F-4CB33C15081C",
+      "predicate": "follows",
+      "object": "Stop machine",
+      "object_id": "sid-10029590-6A3B-4F2F-ADA4-E341B5B5A725"
+    },
+    {
+      "subject": "Calculate OEE",
+      "subject_id": "sid-57BCB262-6A49-458A-921F-4CB33C15081C",
+      "predicate": "follows",
+      "object": "E-Mail engineer",
+      "object_id": "sid-5516EDED-4841-4D2D-83DA-9220257BEF5F"
+    },
+    {
+      "subject": "Calculate OEE",
+      "subject_id": "sid-57BCB262-6A49-458A-921F-4CB33C15081C",
+      "predicate": "follows",
+      "object": "Collect information/measuring",
+      "object_id": "sid-5FCAFE44-3394-4F36-99E0-CBEEEAE80F99"
+    },
+    {
+      "subject": "Start",
+      "subject_id": "sid-9EDF2464-67D0-4F55-B089-A848328452CE",
+      "predicate": "follows",
+      "object": "Check mails",
+      "object_id": "sid-9DA3E309-AA37-4BAC-9B03-174164C02A11"
+    },
+    {
+      "subject": "Check mails",
+      "subject_id": "sid-9DA3E309-AA37-4BAC-9B03-174164C02A11",
+      "predicate": "follows",
+      "object": "Find inefficient equipment",
+      "object_id": "sid-CC43F4D3-185A-42FB-B223-FDE4453F3860"
+    },
+    {
+      "subject": "Start machine",
+      "subject_id": "sid-D6FB9030-5583-476D-B7D3-40C9EA56FA43",
+      "predicate": "follows",
+      "object": "Run machine",
+      "object_id": "sid-2BD95D7A-8D05-41FE-A73A-8260866ED4FE"
+    },
+    {
+      "subject": "Start machine",
+      "subject_id": "sid-D6FB9030-5583-476D-B7D3-40C9EA56FA43",
+      "predicate": "follows",
+      "object": "End",
+      "object_id": "sid-06E00356-4076-4075-BA21-2EA06CC9703F"
+    },
+    {
+      "subject": "Find inefficient equipment",
+      "subject_id": "sid-CC43F4D3-185A-42FB-B223-FDE4453F3860",
+      "predicate": "follows",
+      "object": "Fix equipment",
+      "object_id": "sid-DD4678BA-31C3-40AE-8A10-3211CDAF33E0"
+    },
+    {
+      "subject": "Stop machine",
+      "subject_id": "sid-10029590-6A3B-4F2F-ADA4-E341B5B5A725",
+      "predicate": "follows",
+      "object": "End",
+      "object_id": "sid-B33AC4B6-4812-4DF1-BAE1-A7805553C7D0"
+    },
+    {
+      "subject": "E-Mail engineer",
+      "subject_id": "sid-5516EDED-4841-4D2D-83DA-9220257BEF5F",
+      "predicate": "follows",
+      "object": "End",
+      "object_id": "sid-B33AC4B6-4812-4DF1-BAE1-A7805553C7D0"
+    },
+    {
+      "subject": "E-Mail engineer",
+      "subject_id": "sid-5516EDED-4841-4D2D-83DA-9220257BEF5F",
+      "predicate": "follows",
+      "object": "Check mails",
+      "object_id": "sid-9DA3E309-AA37-4BAC-9B03-174164C02A11"
+    },
+    {
+      "subject": "Start",
+      "subject_id": "sid-4EB14B52-AA49-449E-96EC-DFF6338FFFF3",
+      "predicate": "follows",
+      "object": "Run machine",
+      "object_id": "sid-2BD95D7A-8D05-41FE-A73A-8260866ED4FE"
+    },
+    {
+      "subject": "Collect information/measuring",
+      "subject_id": "sid-5FCAFE44-3394-4F36-99E0-CBEEEAE80F99",
+      "predicate": "follows",
+      "object": "Calculate OEE",
+      "object_id": "sid-57BCB262-6A49-458A-921F-4CB33C15081C"
+    },
+    {
+      "subject": "Run machine",
+      "subject_id": "sid-2BD95D7A-8D05-41FE-A73A-8260866ED4FE",
+      "predicate": "follows",
+      "object": "Check connection",
+      "object_id": "sid-B81EBE50-5B83-4FF5-8325-85AD3E793AFA"
+    },
+    {
+      "subject": "Check connection",
+      "subject_id": "sid-B81EBE50-5B83-4FF5-8325-85AD3E793AFA",
+      "predicate": "follows",
+      "object": "End",
+      "object_id": "sid-ECFDE1AD-E983-4891-9904-FC471B280ACD"
+    },
+    {
+      "subject": "Check connection",
+      "subject_id": "sid-B81EBE50-5B83-4FF5-8325-85AD3E793AFA",
+      "predicate": "follows",
+      "object": "Collect information/measuring",
+      "object_id": "sid-5FCAFE44-3394-4F36-99E0-CBEEEAE80F99"
+    },
+    {
+      "subject": "Fix equipment",
+      "subject_id": "sid-DD4678BA-31C3-40AE-8A10-3211CDAF33E0",
+      "predicate": "follows",
+      "object": "Start machine",
+      "object_id": "sid-D6FB9030-5583-476D-B7D3-40C9EA56FA43"
+    }
+  ],
+  "errors": [
+    "state_space: Error code: 429 - {'status': 429, 'title': 'Too Many Requests'}",
+    "precondition: 'state_space'",
+    "state_matching: 'state_space'",
+    "graph_construction: 'state_space'",
+    "alignment: 'reference_graph'",
+    "report: 'alignment'"
+  ]
+}

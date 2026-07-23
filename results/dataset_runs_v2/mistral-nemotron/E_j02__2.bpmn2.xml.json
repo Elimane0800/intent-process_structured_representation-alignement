@@ -1,0 +1,710 @@
+{
+  "case_name": "E_j02",
+  "text": "Category: E-Government\nTitle: Becoming A Parent\n\nCreate a process that support in planning, taking and extending a maternity\nleave.\n\n* Fetch information about potential models (months duration, split between parents)\n* Let parent select\n* Collect relevant information\n* Notify Social Security, Company in time\n* Gather information from companies\n* At the end of the period let parent decide about extension.\n",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "mistral-nemotron",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "mistral-nemotron",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/text_and_bpmn/bpmn/E_j02/2.bpmn2.xml",
+  "report_model": "mistral-nemotron",
+  "candidates": {
+    "parent": [
+      "selecting",
+      "notified",
+      "deciding"
+    ],
+    "information": [
+      "fetched",
+      "collected",
+      "gathered"
+    ],
+    "model": [
+      "selected"
+    ],
+    "social_security": [
+      "notified"
+    ],
+    "company": [
+      "notified",
+      "gathered_from"
+    ],
+    "period": [
+      "ended"
+    ]
+  },
+  "validation_report": {
+    "parent": {
+      "f_lex": "ACTOR",
+      "kept": false
+    },
+    "information": {
+      "f_lex": "ENTITY",
+      "kept": true
+    },
+    "model": {
+      "f_lex": "ENTITY",
+      "kept": true
+    },
+    "social_security": {
+      "f_lex": "INDETERMINATE",
+      "kept": true
+    },
+    "company": {
+      "f_lex": "ACTOR",
+      "kept": false
+    },
+    "period": {
+      "f_lex": "INDETERMINATE",
+      "kept": true
+    }
+  },
+  "state_space": {
+    "information": [
+      "fetched",
+      "collected",
+      "gathered"
+    ],
+    "model": [
+      "selected"
+    ],
+    "social_security": [
+      "notified"
+    ],
+    "period": [
+      "ended"
+    ]
+  },
+  "state_space_dedup": {
+    "merged": {},
+    "ambiguous_not_merged": {}
+  },
+  "raw_preconditions": {
+    "information.fetched": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "information.collected": {
+      "precondition": "information.fetched",
+      "quote": "Collect relevant information"
+    },
+    "information.gathered": {
+      "precondition": "period.ended",
+      "quote": "Gather information from companies"
+    },
+    "model.selected": {
+      "precondition": "information.fetched",
+      "quote": "Let parent select"
+    },
+    "social_security.notified": {
+      "precondition": "model.selected AND information.collected",
+      "quote": "Notify Social Security, Company in time"
+    },
+    "period.ended": {
+      "precondition": "UNRESOLVED",
+      "quote": null
+    }
+  },
+  "validated_preconditions": {
+    "information.fetched": {
+      "precondition": "INITIAL",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "information.collected": {
+      "precondition": "information.fetched",
+      "quote": "Collect relevant information",
+      "status": "OK",
+      "reason": null
+    },
+    "information.gathered": {
+      "precondition": "period.ended",
+      "quote": "Gather information from companies",
+      "status": "OK",
+      "reason": null
+    },
+    "model.selected": {
+      "precondition": "information.fetched",
+      "quote": "Let parent select",
+      "status": "OK",
+      "reason": null
+    },
+    "social_security.notified": {
+      "precondition": "model.selected AND information.collected",
+      "quote": "Notify Social Security, Company in time",
+      "status": "OK",
+      "reason": null
+    },
+    "period.ended": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    }
+  },
+  "precondition_cycles": [],
+  "reference_graph": {
+    "nodes": [
+      {
+        "id": "information.fetched",
+        "weight": 1.0
+      },
+      {
+        "id": "information.collected",
+        "weight": 1.0
+      },
+      {
+        "id": "information.gathered",
+        "weight": 0.5
+      },
+      {
+        "id": "model.selected",
+        "weight": 1.0
+      },
+      {
+        "id": "social_security.notified",
+        "weight": 1.0
+      },
+      {
+        "id": "period.ended",
+        "weight": 0.5
+      }
+    ],
+    "edges": [
+      {
+        "from": "information.fetched",
+        "to": "information.collected",
+        "type": "sequence",
+        "operator": "AND",
+        "quote": "Collect relevant information"
+      },
+      {
+        "from": "period.ended",
+        "to": "information.gathered",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "Gather information from companies"
+      },
+      {
+        "from": "information.fetched",
+        "to": "model.selected",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "Let parent select"
+      },
+      {
+        "from": "model.selected",
+        "to": "social_security.notified",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "Notify Social Security, Company in time"
+      },
+      {
+        "from": "information.collected",
+        "to": "social_security.notified",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "Notify Social Security, Company in time"
+      }
+    ],
+    "cycles": []
+  },
+  "dfg_edges": [
+    {
+      "source_id": "sid-7D29E2A3-1387-438C-9620-8C3AFEC8B477",
+      "source_label": "Send selected information",
+      "target_id": "sid-CDE6CF08-C965-4AF8-BDEE-20C3FBE0F912",
+      "target_label": "Notify company",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-7D29E2A3-1387-438C-9620-8C3AFEC8B477",
+      "source_label": "Send selected information",
+      "target_id": "sid-D490F26A-D6E2-4FC4-9F17-D5C878493C42",
+      "target_label": "Notify social security",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-D490F26A-D6E2-4FC4-9F17-D5C878493C42",
+      "source_label": "Notify social security",
+      "target_id": "sid-BD3C5934-C33E-433D-84FE-95462A3857A3",
+      "target_label": "Gather information from company",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-11461C3F-16F2-4A9D-B1B7-1BEE8F55F2DC",
+      "source_label": "Set additional information",
+      "target_id": "sid-7D29E2A3-1387-438C-9620-8C3AFEC8B477",
+      "target_label": "Send selected information",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "Yes"
+      ]
+    },
+    {
+      "source_id": "sid-11461C3F-16F2-4A9D-B1B7-1BEE8F55F2DC",
+      "source_label": "Set additional information",
+      "target_id": "sid-72EB59D6-7793-4F63-A0F5-30DE7D2E4358",
+      "target_label": "Show information about maternity leave and its options",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "No"
+      ]
+    },
+    {
+      "source_id": "sid-72EB59D6-7793-4F63-A0F5-30DE7D2E4358",
+      "source_label": "Show information about maternity leave and its options",
+      "target_id": "sid-41262184-8850-4395-BBBC-31867A2248F9",
+      "target_label": "Set options about shared maternity leave",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "No"
+      ]
+    },
+    {
+      "source_id": "sid-72EB59D6-7793-4F63-A0F5-30DE7D2E4358",
+      "source_label": "Show information about maternity leave and its options",
+      "target_id": "sid-728061CD-44EC-45DE-A9F0-86A25D18FA7C",
+      "target_label": "Set length of maternity leave",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "Yes"
+      ]
+    },
+    {
+      "source_id": "sid-BD3C5934-C33E-433D-84FE-95462A3857A3",
+      "source_label": "Gather information from company",
+      "target_id": "sid-F2C0DE42-050A-4830-BF63-D2A9610C1D0B",
+      "target_label": "Send extension information to company and social security",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "Yes"
+      ]
+    },
+    {
+      "source_id": "sid-BD3C5934-C33E-433D-84FE-95462A3857A3",
+      "source_label": "Gather information from company",
+      "target_id": "sid-6AAB8EA6-8AFD-4F33-9608-71AF8E5D8ECE",
+      "target_label": "Set maternity leave end date",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "No"
+      ]
+    },
+    {
+      "source_id": "sid-728061CD-44EC-45DE-A9F0-86A25D18FA7C",
+      "source_label": "Set length of maternity leave",
+      "target_id": "sid-11461C3F-16F2-4A9D-B1B7-1BEE8F55F2DC",
+      "target_label": "Set additional information",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-41262184-8850-4395-BBBC-31867A2248F9",
+      "source_label": "Set options about shared maternity leave",
+      "target_id": "sid-728061CD-44EC-45DE-A9F0-86A25D18FA7C",
+      "target_label": "Set length of maternity leave",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-F2C0DE42-050A-4830-BF63-D2A9610C1D0B",
+      "source_label": "Send extension information to company and social security",
+      "target_id": "sid-6AAB8EA6-8AFD-4F33-9608-71AF8E5D8ECE",
+      "target_label": "Set maternity leave end date",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-CDE6CF08-C965-4AF8-BDEE-20C3FBE0F912",
+      "source_label": "Notify company",
+      "target_id": "sid-BD3C5934-C33E-433D-84FE-95462A3857A3",
+      "target_label": "Gather information from company",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "Send selected information",
+      "subject_id": "sid-7D29E2A3-1387-438C-9620-8C3AFEC8B477",
+      "predicate": "follows",
+      "object": "Notify company",
+      "object_id": "sid-CDE6CF08-C965-4AF8-BDEE-20C3FBE0F912"
+    },
+    {
+      "subject": "Send selected information",
+      "subject_id": "sid-7D29E2A3-1387-438C-9620-8C3AFEC8B477",
+      "predicate": "follows",
+      "object": "Notify social security",
+      "object_id": "sid-D490F26A-D6E2-4FC4-9F17-D5C878493C42"
+    },
+    {
+      "subject": "Notify social security",
+      "subject_id": "sid-D490F26A-D6E2-4FC4-9F17-D5C878493C42",
+      "predicate": "follows",
+      "object": "Gather information from company",
+      "object_id": "sid-BD3C5934-C33E-433D-84FE-95462A3857A3"
+    },
+    {
+      "subject": "Set additional information",
+      "subject_id": "sid-11461C3F-16F2-4A9D-B1B7-1BEE8F55F2DC",
+      "predicate": "follows",
+      "object": "Send selected information",
+      "object_id": "sid-7D29E2A3-1387-438C-9620-8C3AFEC8B477"
+    },
+    {
+      "subject": "Set additional information",
+      "subject_id": "sid-11461C3F-16F2-4A9D-B1B7-1BEE8F55F2DC",
+      "predicate": "follows",
+      "object": "Show information about maternity leave and its options",
+      "object_id": "sid-72EB59D6-7793-4F63-A0F5-30DE7D2E4358"
+    },
+    {
+      "subject": "Show information about maternity leave and its options",
+      "subject_id": "sid-72EB59D6-7793-4F63-A0F5-30DE7D2E4358",
+      "predicate": "follows",
+      "object": "Set options about shared maternity leave",
+      "object_id": "sid-41262184-8850-4395-BBBC-31867A2248F9"
+    },
+    {
+      "subject": "Show information about maternity leave and its options",
+      "subject_id": "sid-72EB59D6-7793-4F63-A0F5-30DE7D2E4358",
+      "predicate": "follows",
+      "object": "Set length of maternity leave",
+      "object_id": "sid-728061CD-44EC-45DE-A9F0-86A25D18FA7C"
+    },
+    {
+      "subject": "Gather information from company",
+      "subject_id": "sid-BD3C5934-C33E-433D-84FE-95462A3857A3",
+      "predicate": "follows",
+      "object": "Send extension information to company and social security",
+      "object_id": "sid-F2C0DE42-050A-4830-BF63-D2A9610C1D0B"
+    },
+    {
+      "subject": "Gather information from company",
+      "subject_id": "sid-BD3C5934-C33E-433D-84FE-95462A3857A3",
+      "predicate": "follows",
+      "object": "Set maternity leave end date",
+      "object_id": "sid-6AAB8EA6-8AFD-4F33-9608-71AF8E5D8ECE"
+    },
+    {
+      "subject": "Set length of maternity leave",
+      "subject_id": "sid-728061CD-44EC-45DE-A9F0-86A25D18FA7C",
+      "predicate": "follows",
+      "object": "Set additional information",
+      "object_id": "sid-11461C3F-16F2-4A9D-B1B7-1BEE8F55F2DC"
+    },
+    {
+      "subject": "Set options about shared maternity leave",
+      "subject_id": "sid-41262184-8850-4395-BBBC-31867A2248F9",
+      "predicate": "follows",
+      "object": "Set length of maternity leave",
+      "object_id": "sid-728061CD-44EC-45DE-A9F0-86A25D18FA7C"
+    },
+    {
+      "subject": "Send extension information to company and social security",
+      "subject_id": "sid-F2C0DE42-050A-4830-BF63-D2A9610C1D0B",
+      "predicate": "follows",
+      "object": "Set maternity leave end date",
+      "object_id": "sid-6AAB8EA6-8AFD-4F33-9608-71AF8E5D8ECE"
+    },
+    {
+      "subject": "Notify company",
+      "subject_id": "sid-CDE6CF08-C965-4AF8-BDEE-20C3FBE0F912",
+      "predicate": "follows",
+      "object": "Gather information from company",
+      "object_id": "sid-BD3C5934-C33E-433D-84FE-95462A3857A3"
+    }
+  ],
+  "matches": {
+    "Gather information from company": {
+      "match": "information.gathered",
+      "score": 0.6645
+    },
+    "Notify company": {
+      "match": "social_security.notified",
+      "score": 0.4663
+    },
+    "Notify social security": {
+      "match": "social_security.notified",
+      "score": 0.8855
+    },
+    "Send extension information to company and social security": {
+      "match": "social_security.notified",
+      "score": 0.4603
+    },
+    "Send selected information": {
+      "match": "information.collected",
+      "score": 0.4501
+    },
+    "Set additional information": {
+      "match": "information.collected",
+      "score": 0.4362
+    },
+    "Set length of maternity leave": {
+      "match": "period.ended",
+      "score": 0.1468
+    },
+    "Set maternity leave end date": {
+      "match": "period.ended",
+      "score": 0.3401
+    },
+    "Set options about shared maternity leave": {
+      "match": "model.selected",
+      "score": 0.1609
+    },
+    "Show information about maternity leave and its options": {
+      "match": "information.collected",
+      "score": 0.2235
+    }
+  },
+  "process_graph": [
+    {
+      "from": "information.collected",
+      "to": "social_security.notified",
+      "activity_from": "Send selected information",
+      "activity_to": "Notify company"
+    },
+    {
+      "from": "information.collected",
+      "to": "social_security.notified",
+      "activity_from": "Send selected information",
+      "activity_to": "Notify social security"
+    },
+    {
+      "from": "social_security.notified",
+      "to": "information.gathered",
+      "activity_from": "Notify social security",
+      "activity_to": "Gather information from company"
+    },
+    {
+      "from": "information.collected",
+      "to": "information.collected",
+      "activity_from": "Set additional information",
+      "activity_to": "Send selected information"
+    },
+    {
+      "from": "information.collected",
+      "to": "information.collected",
+      "activity_from": "Set additional information",
+      "activity_to": "Show information about maternity leave and its options"
+    },
+    {
+      "from": "information.collected",
+      "to": "model.selected",
+      "activity_from": "Show information about maternity leave and its options",
+      "activity_to": "Set options about shared maternity leave"
+    },
+    {
+      "from": "information.collected",
+      "to": "period.ended",
+      "activity_from": "Show information about maternity leave and its options",
+      "activity_to": "Set length of maternity leave"
+    },
+    {
+      "from": "information.gathered",
+      "to": "social_security.notified",
+      "activity_from": "Gather information from company",
+      "activity_to": "Send extension information to company and social security"
+    },
+    {
+      "from": "information.gathered",
+      "to": "period.ended",
+      "activity_from": "Gather information from company",
+      "activity_to": "Set maternity leave end date"
+    },
+    {
+      "from": "period.ended",
+      "to": "information.collected",
+      "activity_from": "Set length of maternity leave",
+      "activity_to": "Set additional information"
+    },
+    {
+      "from": "model.selected",
+      "to": "period.ended",
+      "activity_from": "Set options about shared maternity leave",
+      "activity_to": "Set length of maternity leave"
+    },
+    {
+      "from": "social_security.notified",
+      "to": "period.ended",
+      "activity_from": "Send extension information to company and social security",
+      "activity_to": "Set maternity leave end date"
+    },
+    {
+      "from": "social_security.notified",
+      "to": "information.gathered",
+      "activity_from": "Notify company",
+      "activity_to": "Gather information from company"
+    }
+  ],
+  "alignment": {
+    "information.collected": {
+      "operator": "AND",
+      "quote": "Collect relevant information",
+      "terms": [
+        {
+          "term": "information.fetched",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['information.fetched']",
+          "missing": [
+            "information.fetched"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE"
+    },
+    "information.gathered": {
+      "operator": "AND",
+      "quote": "Gather information from companies",
+      "terms": [
+        {
+          "term": "period.ended",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED"
+    },
+    "model.selected": {
+      "operator": "AND",
+      "quote": "Let parent select",
+      "terms": [
+        {
+          "term": "information.fetched",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['information.fetched']",
+          "missing": [
+            "information.fetched"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE"
+    },
+    "social_security.notified": {
+      "operator": "AND",
+      "quote": "Notify Social Security, Company in time",
+      "terms": [
+        {
+          "term": "model.selected",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        },
+        {
+          "term": "information.collected",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED"
+    }
+  },
+  "report": {
+    "summary": {
+      "ecarts": 0,
+      "non_verifiable": 1,
+      "conforme": 3
+    },
+    "ecarts": [],
+    "non_verifiable": [
+      {
+        "root_cause": "(aucune activite du processus ne correspond clairement a cela)",
+        "quote": "Collect relevant information",
+        "explanation": "Le texte source indique qu'une condition est exigée avant l'activité *\"Send selected information\"* : *\"Collect relevant information\"*. Cependant, cette condition n'est associée à aucune activité claire dans le processus observé. Il est donc impossible de vérifier si cette exigence est respectée ou non. (Cette meme cause affecte aussi : Set options about shared maternity leave.)",
+        "quote_verbatim": true,
+        "affected_activities": [
+          "Send selected information",
+          "Set options about shared maternity leave"
+        ],
+        "affected_count": 2
+      }
+    ],
+    "conforme": [
+      {
+        "target": "Gather information from company",
+        "term": "Set maternity leave end date"
+      },
+      {
+        "target": "Notify social security",
+        "term": "Set options about shared maternity leave"
+      },
+      {
+        "target": "Notify social security",
+        "term": "Send selected information"
+      }
+    ],
+    "piece_jointe_alignement_brut": {
+      "information.collected": {
+        "operator": "AND",
+        "quote": "Collect relevant information",
+        "terms": [
+          {
+            "term": "information.fetched",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['information.fetched']",
+            "missing": [
+              "information.fetched"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE"
+      },
+      "information.gathered": {
+        "operator": "AND",
+        "quote": "Gather information from companies",
+        "terms": [
+          {
+            "term": "period.ended",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED"
+      },
+      "model.selected": {
+        "operator": "AND",
+        "quote": "Let parent select",
+        "terms": [
+          {
+            "term": "information.fetched",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['information.fetched']",
+            "missing": [
+              "information.fetched"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE"
+      },
+      "social_security.notified": {
+        "operator": "AND",
+        "quote": "Notify Social Security, Company in time",
+        "terms": [
+          {
+            "term": "model.selected",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          },
+          {
+            "term": "information.collected",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED"
+      }
+    }
+  },
+  "errors": []
+}

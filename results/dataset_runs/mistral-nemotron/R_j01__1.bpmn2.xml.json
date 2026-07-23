@@ -1,0 +1,337 @@
+{
+  "case_name": "R_j01",
+  "text": "Category: Repair and Service\nTitle: OEE\n\nWrite a process, that collects relevant information from a machine, and\ncalculated the Overall Equipment Efficiency (OEE). If the OEE falls below a\ncertain value/percentage, stop the machine and send an email to an engineer.\nWhen the machine is restarted, continue measuring. When the machine is\ndisconnected, stop the process.\n",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "mistral-nemotron",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "mistral-nemotron",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/text_and_bpmn/bpmn/R_j01/1.bpmn2.xml",
+  "dfg_edges": [
+    {
+      "source_id": "sid-78CE059E-A3EB-4528-A654-C73F9DCD33EF",
+      "source_label": "Calculate Performance",
+      "target_id": "sid-F5B8F8DD-9BCA-4640-A1D8-D026F9EE8168",
+      "target_label": "Receive OEE result",
+      "gateway_context": [
+        "ParallelGateway",
+        "ExclusiveGateway",
+        "No"
+      ]
+    },
+    {
+      "source_id": "sid-78CE059E-A3EB-4528-A654-C73F9DCD33EF",
+      "source_label": "Calculate Performance",
+      "target_id": "sid-DD49C7B8-9DC0-45FF-8FAA-52BB897A41C0",
+      "target_label": "Stop machine",
+      "gateway_context": [
+        "ParallelGateway",
+        "ExclusiveGateway",
+        "Yes"
+      ]
+    },
+    {
+      "source_id": "sid-FFBEA862-B81F-4C60-B65A-CFDF585C9FD1",
+      "source_label": "Start computer",
+      "target_id": "sid-BF7C8F19-47A3-4FF2-A8ED-746930B0302F",
+      "target_label": "Retrieve relevant information",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-C6A8F73B-CB71-4C8C-9217-82B9071EA250",
+      "source_label": "",
+      "target_id": "sid-1DA8DB63-8189-4E01-9A24-049AF63EFD8D",
+      "target_label": "Calculate OEE",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-FC39A79B-1C1F-4A75-B120-E27FE5A246B9",
+      "source_label": "Send email to engineer",
+      "target_id": "sid-29F19D6F-AD8A-426A-B005-63196CE4F800",
+      "target_label": "Reply from engineer received",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-BF7C8F19-47A3-4FF2-A8ED-746930B0302F",
+      "source_label": "Retrieve relevant information",
+      "target_id": "sid-1DA8DB63-8189-4E01-9A24-049AF63EFD8D",
+      "target_label": "Calculate OEE",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-F35562CC-814E-41A3-B99D-153673570950",
+      "source_label": "Calculate Quality",
+      "target_id": "sid-F5B8F8DD-9BCA-4640-A1D8-D026F9EE8168",
+      "target_label": "Receive OEE result",
+      "gateway_context": [
+        "ParallelGateway",
+        "ExclusiveGateway",
+        "No"
+      ]
+    },
+    {
+      "source_id": "sid-F35562CC-814E-41A3-B99D-153673570950",
+      "source_label": "Calculate Quality",
+      "target_id": "sid-DD49C7B8-9DC0-45FF-8FAA-52BB897A41C0",
+      "target_label": "Stop machine",
+      "gateway_context": [
+        "ParallelGateway",
+        "ExclusiveGateway",
+        "Yes"
+      ]
+    },
+    {
+      "source_id": "sid-0AA2AC4C-48A7-445E-82BE-AE55B6E9CCB9",
+      "source_label": "Restart machine",
+      "target_id": "sid-1DA8DB63-8189-4E01-9A24-049AF63EFD8D",
+      "target_label": "Calculate OEE",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-F5B8F8DD-9BCA-4640-A1D8-D026F9EE8168",
+      "source_label": "Receive OEE result",
+      "target_id": "sid-A637F992-3523-413D-ABBB-3C56ADF33CD3",
+      "target_label": "End OEE calculation",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-DD49C7B8-9DC0-45FF-8FAA-52BB897A41C0",
+      "source_label": "Stop machine",
+      "target_id": "sid-FC39A79B-1C1F-4A75-B120-E27FE5A246B9",
+      "target_label": "Send email to engineer",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-29F19D6F-AD8A-426A-B005-63196CE4F800",
+      "source_label": "Reply from engineer received",
+      "target_id": "sid-0AA2AC4C-48A7-445E-82BE-AE55B6E9CCB9",
+      "target_label": "Restart machine",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "Yes"
+      ]
+    },
+    {
+      "source_id": "sid-29F19D6F-AD8A-426A-B005-63196CE4F800",
+      "source_label": "Reply from engineer received",
+      "target_id": "sid-4F165361-8C43-4EBF-B779-AE8DEB5617CE",
+      "target_label": "Disconnect machine",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "No"
+      ]
+    },
+    {
+      "source_id": "sid-1DA8DB63-8189-4E01-9A24-049AF63EFD8D",
+      "source_label": "Calculate OEE",
+      "target_id": "sid-78CE059E-A3EB-4528-A654-C73F9DCD33EF",
+      "target_label": "Calculate Performance",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-1DA8DB63-8189-4E01-9A24-049AF63EFD8D",
+      "source_label": "Calculate OEE",
+      "target_id": "sid-F35562CC-814E-41A3-B99D-153673570950",
+      "target_label": "Calculate Quality",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-1DA8DB63-8189-4E01-9A24-049AF63EFD8D",
+      "source_label": "Calculate OEE",
+      "target_id": "sid-181C761F-BC65-48C0-9C9C-47BAD574CE45",
+      "target_label": "Calculate Availability",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-3179211F-36AF-4F90-8104-1574EBC18FB0",
+      "source_label": "Request for OEE received",
+      "target_id": "sid-FFBEA862-B81F-4C60-B65A-CFDF585C9FD1",
+      "target_label": "Start computer",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-181C761F-BC65-48C0-9C9C-47BAD574CE45",
+      "source_label": "Calculate Availability",
+      "target_id": "sid-F5B8F8DD-9BCA-4640-A1D8-D026F9EE8168",
+      "target_label": "Receive OEE result",
+      "gateway_context": [
+        "ParallelGateway",
+        "ExclusiveGateway",
+        "No"
+      ]
+    },
+    {
+      "source_id": "sid-181C761F-BC65-48C0-9C9C-47BAD574CE45",
+      "source_label": "Calculate Availability",
+      "target_id": "sid-DD49C7B8-9DC0-45FF-8FAA-52BB897A41C0",
+      "target_label": "Stop machine",
+      "gateway_context": [
+        "ParallelGateway",
+        "ExclusiveGateway",
+        "Yes"
+      ]
+    },
+    {
+      "source_id": "sid-4F165361-8C43-4EBF-B779-AE8DEB5617CE",
+      "source_label": "Disconnect machine",
+      "target_id": "sid-A637F992-3523-413D-ABBB-3C56ADF33CD3",
+      "target_label": "End OEE calculation",
+      "gateway_context": []
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "Calculate Performance",
+      "subject_id": "sid-78CE059E-A3EB-4528-A654-C73F9DCD33EF",
+      "predicate": "follows",
+      "object": "Receive OEE result",
+      "object_id": "sid-F5B8F8DD-9BCA-4640-A1D8-D026F9EE8168"
+    },
+    {
+      "subject": "Calculate Performance",
+      "subject_id": "sid-78CE059E-A3EB-4528-A654-C73F9DCD33EF",
+      "predicate": "follows",
+      "object": "Stop machine",
+      "object_id": "sid-DD49C7B8-9DC0-45FF-8FAA-52BB897A41C0"
+    },
+    {
+      "subject": "Start computer",
+      "subject_id": "sid-FFBEA862-B81F-4C60-B65A-CFDF585C9FD1",
+      "predicate": "follows",
+      "object": "Retrieve relevant information",
+      "object_id": "sid-BF7C8F19-47A3-4FF2-A8ED-746930B0302F"
+    },
+    {
+      "subject": "",
+      "subject_id": "sid-C6A8F73B-CB71-4C8C-9217-82B9071EA250",
+      "predicate": "follows",
+      "object": "Calculate OEE",
+      "object_id": "sid-1DA8DB63-8189-4E01-9A24-049AF63EFD8D"
+    },
+    {
+      "subject": "Send email to engineer",
+      "subject_id": "sid-FC39A79B-1C1F-4A75-B120-E27FE5A246B9",
+      "predicate": "follows",
+      "object": "Reply from engineer received",
+      "object_id": "sid-29F19D6F-AD8A-426A-B005-63196CE4F800"
+    },
+    {
+      "subject": "Retrieve relevant information",
+      "subject_id": "sid-BF7C8F19-47A3-4FF2-A8ED-746930B0302F",
+      "predicate": "follows",
+      "object": "Calculate OEE",
+      "object_id": "sid-1DA8DB63-8189-4E01-9A24-049AF63EFD8D"
+    },
+    {
+      "subject": "Calculate Quality",
+      "subject_id": "sid-F35562CC-814E-41A3-B99D-153673570950",
+      "predicate": "follows",
+      "object": "Receive OEE result",
+      "object_id": "sid-F5B8F8DD-9BCA-4640-A1D8-D026F9EE8168"
+    },
+    {
+      "subject": "Calculate Quality",
+      "subject_id": "sid-F35562CC-814E-41A3-B99D-153673570950",
+      "predicate": "follows",
+      "object": "Stop machine",
+      "object_id": "sid-DD49C7B8-9DC0-45FF-8FAA-52BB897A41C0"
+    },
+    {
+      "subject": "Restart machine",
+      "subject_id": "sid-0AA2AC4C-48A7-445E-82BE-AE55B6E9CCB9",
+      "predicate": "follows",
+      "object": "Calculate OEE",
+      "object_id": "sid-1DA8DB63-8189-4E01-9A24-049AF63EFD8D"
+    },
+    {
+      "subject": "Receive OEE result",
+      "subject_id": "sid-F5B8F8DD-9BCA-4640-A1D8-D026F9EE8168",
+      "predicate": "follows",
+      "object": "End OEE calculation",
+      "object_id": "sid-A637F992-3523-413D-ABBB-3C56ADF33CD3"
+    },
+    {
+      "subject": "Stop machine",
+      "subject_id": "sid-DD49C7B8-9DC0-45FF-8FAA-52BB897A41C0",
+      "predicate": "follows",
+      "object": "Send email to engineer",
+      "object_id": "sid-FC39A79B-1C1F-4A75-B120-E27FE5A246B9"
+    },
+    {
+      "subject": "Reply from engineer received",
+      "subject_id": "sid-29F19D6F-AD8A-426A-B005-63196CE4F800",
+      "predicate": "follows",
+      "object": "Restart machine",
+      "object_id": "sid-0AA2AC4C-48A7-445E-82BE-AE55B6E9CCB9"
+    },
+    {
+      "subject": "Reply from engineer received",
+      "subject_id": "sid-29F19D6F-AD8A-426A-B005-63196CE4F800",
+      "predicate": "follows",
+      "object": "Disconnect machine",
+      "object_id": "sid-4F165361-8C43-4EBF-B779-AE8DEB5617CE"
+    },
+    {
+      "subject": "Calculate OEE",
+      "subject_id": "sid-1DA8DB63-8189-4E01-9A24-049AF63EFD8D",
+      "predicate": "follows",
+      "object": "Calculate Performance",
+      "object_id": "sid-78CE059E-A3EB-4528-A654-C73F9DCD33EF"
+    },
+    {
+      "subject": "Calculate OEE",
+      "subject_id": "sid-1DA8DB63-8189-4E01-9A24-049AF63EFD8D",
+      "predicate": "follows",
+      "object": "Calculate Quality",
+      "object_id": "sid-F35562CC-814E-41A3-B99D-153673570950"
+    },
+    {
+      "subject": "Calculate OEE",
+      "subject_id": "sid-1DA8DB63-8189-4E01-9A24-049AF63EFD8D",
+      "predicate": "follows",
+      "object": "Calculate Availability",
+      "object_id": "sid-181C761F-BC65-48C0-9C9C-47BAD574CE45"
+    },
+    {
+      "subject": "Request for OEE received",
+      "subject_id": "sid-3179211F-36AF-4F90-8104-1574EBC18FB0",
+      "predicate": "follows",
+      "object": "Start computer",
+      "object_id": "sid-FFBEA862-B81F-4C60-B65A-CFDF585C9FD1"
+    },
+    {
+      "subject": "Calculate Availability",
+      "subject_id": "sid-181C761F-BC65-48C0-9C9C-47BAD574CE45",
+      "predicate": "follows",
+      "object": "Receive OEE result",
+      "object_id": "sid-F5B8F8DD-9BCA-4640-A1D8-D026F9EE8168"
+    },
+    {
+      "subject": "Calculate Availability",
+      "subject_id": "sid-181C761F-BC65-48C0-9C9C-47BAD574CE45",
+      "predicate": "follows",
+      "object": "Stop machine",
+      "object_id": "sid-DD49C7B8-9DC0-45FF-8FAA-52BB897A41C0"
+    },
+    {
+      "subject": "Disconnect machine",
+      "subject_id": "sid-4F165361-8C43-4EBF-B779-AE8DEB5617CE",
+      "predicate": "follows",
+      "object": "End OEE calculation",
+      "object_id": "sid-A637F992-3523-413D-ABBB-3C56ADF33CD3"
+    }
+  ],
+  "errors": [
+    "state_space: Error code: 429 - {'status': 429, 'title': 'Too Many Requests'}",
+    "precondition: 'state_space'",
+    "state_matching: 'state_space'",
+    "graph_construction: 'state_space'",
+    "alignment: 'reference_graph'",
+    "report: 'alignment'"
+  ]
+}

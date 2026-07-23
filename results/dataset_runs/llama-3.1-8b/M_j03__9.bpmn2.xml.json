@@ -1,0 +1,1200 @@
+{
+  "case_name": "M_j03",
+  "text": "Category: Manufacturing\nTitle: Contract\n\nFor your contract project you need parts from several web shops. In order to\nfind out which web shop has the right parts, you have to query them all, and\nfind out how much they can deliver, at which price, and how long it will take.\n\nCreate a list of parts that you order from each shop. If one shop has not enough \nparts, order from several shops. Always use the cheapest parts.\n\nThe parts arrive in batches in a random order, typically they are +/- 2 days\nearlier/later.  \n\nWhen the first parts arrive you start building. Sometimes you have to reorder parts.\nIf your stock (for a single part) falls below 5, you reorder (the cheapest), if it\nfalls below 3 you reorder again (the fastest). If it is zero, you write a mail\nto your friends, complaining about the webshops.\n",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "llama-3.1-8b",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "llama-3.1-8b",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/text_and_bpmn/bpmn/M_j03/9.bpmn2.xml",
+  "candidates": {
+    "part": [
+      "ordered",
+      "delivered",
+      "arrived",
+      "in_stock",
+      "reordered",
+      "low_stock",
+      "out_of_stock",
+      "zero_stock"
+    ],
+    "shop": [
+      "queried",
+      "selected",
+      "used",
+      "cheapest"
+    ],
+    "stock": [
+      "low",
+      "reordered",
+      "zero"
+    ],
+    "mail": [
+      "sent"
+    ]
+  },
+  "validation_report": {
+    "part": {
+      "f_lex": "INDETERMINATE",
+      "kept": true
+    },
+    "shop": {
+      "f_lex": "ENTITY",
+      "kept": true
+    },
+    "stock": {
+      "f_lex": "INDETERMINATE",
+      "kept": true
+    },
+    "mail": {
+      "f_lex": "ENTITY",
+      "kept": true
+    }
+  },
+  "state_space": {
+    "part": [
+      "ordered",
+      "delivered",
+      "arrived",
+      "in_stock",
+      "reordered",
+      "low_stock",
+      "out_of_stock",
+      "zero_stock"
+    ],
+    "shop": [
+      "queried",
+      "selected",
+      "used",
+      "cheapest"
+    ],
+    "stock": [
+      "low",
+      "reordered",
+      "zero"
+    ],
+    "mail": [
+      "sent"
+    ]
+  },
+  "raw_preconditions": {
+    "part.ordered": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "part.delivered": {
+      "precondition": "part.ordered",
+      "quote": null
+    },
+    "part.arrived": {
+      "precondition": "part.delivered",
+      "quote": null
+    },
+    "part.in_stock": {
+      "precondition": "part.arrived",
+      "quote": null
+    },
+    "part.reordered": {
+      "precondition": "part.in_stock AND shop.used AND shop.cheapest",
+      "quote": "If your stock (for a single part) falls below 5, you reorder (the cheapest)"
+    },
+    "part.low_stock": {
+      "precondition": "part.in_stock AND stock.low",
+      "quote": "If it falls below 3 you reorder again (the fastest)"
+    },
+    "part.out_of_stock": {
+      "precondition": "part.low_stock",
+      "quote": null
+    },
+    "part.zero_stock": {
+      "precondition": "part.out_of_stock",
+      "quote": "If it is zero, you write a mail to your friends, complaining about the webshops."
+    },
+    "shop.queried": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "shop.selected": {
+      "precondition": "shop.queried",
+      "quote": null
+    },
+    "shop.used": {
+      "precondition": "shop.selected",
+      "quote": null
+    },
+    "shop.cheapest": {
+      "precondition": "shop.used",
+      "quote": "Always use the cheapest parts."
+    },
+    "stock.low": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "stock.reordered": {
+      "precondition": "stock.low",
+      "quote": null
+    },
+    "stock.zero": {
+      "precondition": "stock.reordered",
+      "quote": null
+    },
+    "mail.sent": {
+      "precondition": "stock.zero",
+      "quote": "If it is zero, you write a mail to your friends, complaining about the webshops."
+    }
+  },
+  "validated_preconditions": {
+    "part.ordered": {
+      "precondition": "INITIAL",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "part.delivered": {
+      "precondition": "part.arrived AND shop.queried",
+      "quote": "When the first parts arrive you start building.",
+      "status": "OK",
+      "reason": null,
+      "retried": true
+    },
+    "part.arrived": {
+      "precondition": "shop.queried",
+      "quote": "find out which web shop has the right parts, you have to query them all",
+      "status": "OK",
+      "reason": null,
+      "retried": true
+    },
+    "part.in_stock": {
+      "precondition": "part.arrived AND shop.queried",
+      "quote": "In order to find out which web shop has the right parts, you have to query them all, and find out how much they can deliver, at which price, and how long it will take.",
+      "status": "OK",
+      "reason": null,
+      "retried": true
+    },
+    "part.reordered": {
+      "precondition": "part.in_stock OR shop.used",
+      "quote": "If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below 3 you reorder again (the fastest).",
+      "status": "OK",
+      "reason": null,
+      "retried": true
+    },
+    "part.low_stock": {
+      "precondition": "part.in_stock OR part.arrived",
+      "quote": "When the first parts arrive you start building.",
+      "status": "OK",
+      "reason": null,
+      "retried": true
+    },
+    "part.out_of_stock": {
+      "precondition": "part.zero_stock",
+      "quote": "If it is zero, you write a mail to your friends, complaining about the webshops.",
+      "status": "OK",
+      "reason": null,
+      "retried": true
+    },
+    "part.zero_stock": {
+      "precondition": "part.out_of_stock",
+      "quote": "If it is zero, you write a mail to your friends, complaining about the webshops.",
+      "status": "OK",
+      "reason": null
+    },
+    "shop.queried": {
+      "precondition": "INITIAL",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "shop.selected": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "DOWNGRADED",
+      "reason": "mutual exclusivity violation: two states of the same entity in one conjunction",
+      "retried": true
+    },
+    "shop.used": {
+      "precondition": "shop.queried",
+      "quote": "In order to find out which web shop has the right parts, you have to query them all,",
+      "status": "OK",
+      "reason": null,
+      "retried": true
+    },
+    "shop.cheapest": {
+      "precondition": "shop.used",
+      "quote": "Always use the cheapest parts.",
+      "status": "OK",
+      "reason": null
+    },
+    "stock.low": {
+      "precondition": "INITIAL",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "stock.reordered": {
+      "precondition": "part.arrived AND shop.queried",
+      "quote": "In order to find out which web shop has the right parts, you have to query them all, and find out how much they can deliver, at which price, and how long it will take.",
+      "status": "OK",
+      "reason": null,
+      "retried": true
+    },
+    "stock.zero": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "DOWNGRADED",
+      "reason": "mutual exclusivity violation: two states of the same entity in one conjunction",
+      "retried": true
+    },
+    "mail.sent": {
+      "precondition": "stock.zero",
+      "quote": "If it is zero, you write a mail to your friends, complaining about the webshops.",
+      "status": "OK",
+      "reason": null
+    }
+  },
+  "precondition_cycles": [
+    [
+      "part.zero_stock",
+      "part.out_of_stock",
+      "part.zero_stock"
+    ]
+  ],
+  "reference_graph": {
+    "nodes": [
+      {
+        "id": "part.ordered",
+        "weight": 0.0
+      },
+      {
+        "id": "part.delivered",
+        "weight": 0.4
+      },
+      {
+        "id": "part.arrived",
+        "weight": 1.0
+      },
+      {
+        "id": "part.in_stock",
+        "weight": 0.8
+      },
+      {
+        "id": "part.reordered",
+        "weight": 0.4
+      },
+      {
+        "id": "part.low_stock",
+        "weight": 0.4
+      },
+      {
+        "id": "part.out_of_stock",
+        "weight": 0.4
+      },
+      {
+        "id": "part.zero_stock",
+        "weight": 0.4
+      },
+      {
+        "id": "shop.queried",
+        "weight": 1.0
+      },
+      {
+        "id": "shop.selected",
+        "weight": 0.0
+      },
+      {
+        "id": "shop.used",
+        "weight": 0.6
+      },
+      {
+        "id": "shop.cheapest",
+        "weight": 0.2
+      },
+      {
+        "id": "stock.low",
+        "weight": 0.0
+      },
+      {
+        "id": "stock.reordered",
+        "weight": 0.4
+      },
+      {
+        "id": "stock.zero",
+        "weight": 0.2
+      },
+      {
+        "id": "mail.sent",
+        "weight": 0.2
+      }
+    ],
+    "edges": [
+      {
+        "from": "part.arrived",
+        "to": "part.delivered",
+        "type": "sequence",
+        "operator": "AND",
+        "quote": "When the first parts arrive you start building."
+      },
+      {
+        "from": "shop.queried",
+        "to": "part.delivered",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "When the first parts arrive you start building."
+      },
+      {
+        "from": "shop.queried",
+        "to": "part.arrived",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "find out which web shop has the right parts, you have to query them all"
+      },
+      {
+        "from": "part.arrived",
+        "to": "part.in_stock",
+        "type": "sequence",
+        "operator": "AND",
+        "quote": "In order to find out which web shop has the right parts, you have to query them all, and find out how much they can deliver, at which price, and how long it will take."
+      },
+      {
+        "from": "shop.queried",
+        "to": "part.in_stock",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "In order to find out which web shop has the right parts, you have to query them all, and find out how much they can deliver, at which price, and how long it will take."
+      },
+      {
+        "from": "part.in_stock",
+        "to": "part.reordered",
+        "type": "sequence",
+        "operator": "OR",
+        "quote": "If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below 3 you reorder again (the fastest)."
+      },
+      {
+        "from": "shop.used",
+        "to": "part.reordered",
+        "type": "cross_entity_guard",
+        "operator": "OR",
+        "quote": "If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below 3 you reorder again (the fastest)."
+      },
+      {
+        "from": "part.in_stock",
+        "to": "part.low_stock",
+        "type": "sequence",
+        "operator": "OR",
+        "quote": "When the first parts arrive you start building."
+      },
+      {
+        "from": "part.arrived",
+        "to": "part.low_stock",
+        "type": "sequence",
+        "operator": "OR",
+        "quote": "When the first parts arrive you start building."
+      },
+      {
+        "from": "part.zero_stock",
+        "to": "part.out_of_stock",
+        "type": "sequence",
+        "operator": "AND",
+        "quote": "If it is zero, you write a mail to your friends, complaining about the webshops."
+      },
+      {
+        "from": "part.out_of_stock",
+        "to": "part.zero_stock",
+        "type": "sequence",
+        "operator": "AND",
+        "quote": "If it is zero, you write a mail to your friends, complaining about the webshops."
+      },
+      {
+        "from": "shop.queried",
+        "to": "shop.used",
+        "type": "sequence",
+        "operator": "AND",
+        "quote": "In order to find out which web shop has the right parts, you have to query them all,"
+      },
+      {
+        "from": "shop.used",
+        "to": "shop.cheapest",
+        "type": "sequence",
+        "operator": "AND",
+        "quote": "Always use the cheapest parts."
+      },
+      {
+        "from": "part.arrived",
+        "to": "stock.reordered",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "In order to find out which web shop has the right parts, you have to query them all, and find out how much they can deliver, at which price, and how long it will take."
+      },
+      {
+        "from": "shop.queried",
+        "to": "stock.reordered",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "In order to find out which web shop has the right parts, you have to query them all, and find out how much they can deliver, at which price, and how long it will take."
+      },
+      {
+        "from": "stock.zero",
+        "to": "mail.sent",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "If it is zero, you write a mail to your friends, complaining about the webshops."
+      }
+    ],
+    "cycles": [
+      [
+        "part.zero_stock",
+        "part.out_of_stock",
+        "part.zero_stock"
+      ]
+    ]
+  },
+  "dfg_edges": [
+    {
+      "source_id": "sid-D1912FCC-8710-425D-A0F8-8A6FA6E66DB1",
+      "source_label": "+/- 2 days delivery  time ",
+      "target_id": "sid-185559DA-F352-474B-B65F-07E958BAB9D5",
+      "target_label": "first parts arrived",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-F380878D-03AF-41C3-8D28-ACD14B6283AD",
+      "source_label": "order the cheapest parts from available web shops",
+      "target_id": "sid-D1912FCC-8710-425D-A0F8-8A6FA6E66DB1",
+      "target_label": "+/- 2 days delivery  time ",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-D39B8AEF-1157-4695-A447-A5F5C8784BAD",
+      "source_label": "query web shops about delivery, price and quantity",
+      "target_id": "sid-8BBE1875-FC79-46D8-8E40-B3772D770E51",
+      "target_label": "make a list of parts needed for each shop",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-F14A0593-77E9-41B3-8A7D-36F5FB406E8E",
+      "source_label": "reorder the fastest",
+      "target_id": "sid-7BEBF233-0069-4BCA-8AA0-1F8191B624E8",
+      "target_label": "",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-577D37E7-EE93-4682-90E8-5D82BDD7B79D",
+      "source_label": "",
+      "target_id": "sid-D39B8AEF-1157-4695-A447-A5F5C8784BAD",
+      "target_label": "query web shops about delivery, price and quantity",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-C5EC7D21-A293-4D79-9530-182C3CF42E6F",
+      "source_label": "write an email  as a complain  to a friend",
+      "target_id": "sid-7BEBF233-0069-4BCA-8AA0-1F8191B624E8",
+      "target_label": "",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-A95D5DCC-4E60-4414-935B-FA495581ADD4",
+      "source_label": "start building",
+      "target_id": "sid-F14A0593-77E9-41B3-8A7D-36F5FB406E8E",
+      "target_label": "reorder the fastest",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "stock falls below 3"
+      ]
+    },
+    {
+      "source_id": "sid-A95D5DCC-4E60-4414-935B-FA495581ADD4",
+      "source_label": "start building",
+      "target_id": "sid-2A3570EF-4B4E-4AFD-B5C6-69F4C427B11E",
+      "target_label": "reorder the cheapest",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "stock falls below 5"
+      ]
+    },
+    {
+      "source_id": "sid-A95D5DCC-4E60-4414-935B-FA495581ADD4",
+      "source_label": "start building",
+      "target_id": "sid-C5EC7D21-A293-4D79-9530-182C3CF42E6F",
+      "target_label": "write an email  as a complain  to a friend",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "if its zero"
+      ]
+    },
+    {
+      "source_id": "sid-2A3570EF-4B4E-4AFD-B5C6-69F4C427B11E",
+      "source_label": "reorder the cheapest",
+      "target_id": "sid-7BEBF233-0069-4BCA-8AA0-1F8191B624E8",
+      "target_label": "",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-8BBE1875-FC79-46D8-8E40-B3772D770E51",
+      "source_label": "make a list of parts needed for each shop",
+      "target_id": "sid-F380878D-03AF-41C3-8D28-ACD14B6283AD",
+      "target_label": "order the cheapest parts from available web shops",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-185559DA-F352-474B-B65F-07E958BAB9D5",
+      "source_label": "first parts arrived",
+      "target_id": "sid-A95D5DCC-4E60-4414-935B-FA495581ADD4",
+      "target_label": "start building",
+      "gateway_context": []
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "+/- 2 days delivery  time ",
+      "subject_id": "sid-D1912FCC-8710-425D-A0F8-8A6FA6E66DB1",
+      "predicate": "follows",
+      "object": "first parts arrived",
+      "object_id": "sid-185559DA-F352-474B-B65F-07E958BAB9D5"
+    },
+    {
+      "subject": "order the cheapest parts from available web shops",
+      "subject_id": "sid-F380878D-03AF-41C3-8D28-ACD14B6283AD",
+      "predicate": "follows",
+      "object": "+/- 2 days delivery  time ",
+      "object_id": "sid-D1912FCC-8710-425D-A0F8-8A6FA6E66DB1"
+    },
+    {
+      "subject": "query web shops about delivery, price and quantity",
+      "subject_id": "sid-D39B8AEF-1157-4695-A447-A5F5C8784BAD",
+      "predicate": "follows",
+      "object": "make a list of parts needed for each shop",
+      "object_id": "sid-8BBE1875-FC79-46D8-8E40-B3772D770E51"
+    },
+    {
+      "subject": "reorder the fastest",
+      "subject_id": "sid-F14A0593-77E9-41B3-8A7D-36F5FB406E8E",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "sid-7BEBF233-0069-4BCA-8AA0-1F8191B624E8"
+    },
+    {
+      "subject": "",
+      "subject_id": "sid-577D37E7-EE93-4682-90E8-5D82BDD7B79D",
+      "predicate": "follows",
+      "object": "query web shops about delivery, price and quantity",
+      "object_id": "sid-D39B8AEF-1157-4695-A447-A5F5C8784BAD"
+    },
+    {
+      "subject": "write an email  as a complain  to a friend",
+      "subject_id": "sid-C5EC7D21-A293-4D79-9530-182C3CF42E6F",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "sid-7BEBF233-0069-4BCA-8AA0-1F8191B624E8"
+    },
+    {
+      "subject": "start building",
+      "subject_id": "sid-A95D5DCC-4E60-4414-935B-FA495581ADD4",
+      "predicate": "follows",
+      "object": "reorder the fastest",
+      "object_id": "sid-F14A0593-77E9-41B3-8A7D-36F5FB406E8E"
+    },
+    {
+      "subject": "start building",
+      "subject_id": "sid-A95D5DCC-4E60-4414-935B-FA495581ADD4",
+      "predicate": "follows",
+      "object": "reorder the cheapest",
+      "object_id": "sid-2A3570EF-4B4E-4AFD-B5C6-69F4C427B11E"
+    },
+    {
+      "subject": "start building",
+      "subject_id": "sid-A95D5DCC-4E60-4414-935B-FA495581ADD4",
+      "predicate": "follows",
+      "object": "write an email  as a complain  to a friend",
+      "object_id": "sid-C5EC7D21-A293-4D79-9530-182C3CF42E6F"
+    },
+    {
+      "subject": "reorder the cheapest",
+      "subject_id": "sid-2A3570EF-4B4E-4AFD-B5C6-69F4C427B11E",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "sid-7BEBF233-0069-4BCA-8AA0-1F8191B624E8"
+    },
+    {
+      "subject": "make a list of parts needed for each shop",
+      "subject_id": "sid-8BBE1875-FC79-46D8-8E40-B3772D770E51",
+      "predicate": "follows",
+      "object": "order the cheapest parts from available web shops",
+      "object_id": "sid-F380878D-03AF-41C3-8D28-ACD14B6283AD"
+    },
+    {
+      "subject": "first parts arrived",
+      "subject_id": "sid-185559DA-F352-474B-B65F-07E958BAB9D5",
+      "predicate": "follows",
+      "object": "start building",
+      "object_id": "sid-A95D5DCC-4E60-4414-935B-FA495581ADD4"
+    }
+  ],
+  "matches": {
+    "+/- 2 days delivery  time ": {
+      "match": "part.delivered",
+      "score": 0.2458
+    },
+    "first parts arrived": {
+      "match": "part.arrived",
+      "score": 0.703
+    },
+    "make a list of parts needed for each shop": {
+      "match": "shop.used",
+      "score": 0.4759
+    },
+    "order the cheapest parts from available web shops": {
+      "match": "shop.cheapest",
+      "score": 0.6067
+    },
+    "query web shops about delivery, price and quantity": {
+      "match": "shop.queried",
+      "score": 0.4596
+    },
+    "reorder the cheapest": {
+      "match": "stock.reordered",
+      "score": 0.5559
+    },
+    "reorder the fastest": {
+      "match": "part.reordered",
+      "score": 0.5326
+    },
+    "start building": {
+      "match": "part.ordered",
+      "score": 0.1803
+    },
+    "write an email  as a complain  to a friend": {
+      "match": "mail.sent",
+      "score": 0.3018
+    }
+  },
+  "process_graph": [
+    {
+      "from": "part.delivered",
+      "to": "part.arrived",
+      "activity_from": "+/- 2 days delivery  time ",
+      "activity_to": "first parts arrived"
+    },
+    {
+      "from": "shop.cheapest",
+      "to": "part.delivered",
+      "activity_from": "order the cheapest parts from available web shops",
+      "activity_to": "+/- 2 days delivery  time "
+    },
+    {
+      "from": "shop.queried",
+      "to": "shop.used",
+      "activity_from": "query web shops about delivery, price and quantity",
+      "activity_to": "make a list of parts needed for each shop"
+    },
+    {
+      "from": "part.ordered",
+      "to": "part.reordered",
+      "activity_from": "start building",
+      "activity_to": "reorder the fastest"
+    },
+    {
+      "from": "part.ordered",
+      "to": "stock.reordered",
+      "activity_from": "start building",
+      "activity_to": "reorder the cheapest"
+    },
+    {
+      "from": "part.ordered",
+      "to": "mail.sent",
+      "activity_from": "start building",
+      "activity_to": "write an email  as a complain  to a friend"
+    },
+    {
+      "from": "shop.used",
+      "to": "shop.cheapest",
+      "activity_from": "make a list of parts needed for each shop",
+      "activity_to": "order the cheapest parts from available web shops"
+    },
+    {
+      "from": "part.arrived",
+      "to": "part.ordered",
+      "activity_from": "first parts arrived",
+      "activity_to": "start building"
+    }
+  ],
+  "alignment": {
+    "part.delivered": {
+      "operator": "AND",
+      "quote": "When the first parts arrive you start building.",
+      "terms": [
+        {
+          "term": "part.arrived",
+          "status": "VIOLATED",
+          "reason": "both states matched, no path in process",
+          "missing": []
+        },
+        {
+          "term": "shop.queried",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "VIOLATED"
+    },
+    "part.arrived": {
+      "operator": "AND",
+      "quote": "find out which web shop has the right parts, you have to query them all",
+      "terms": [
+        {
+          "term": "shop.queried",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED"
+    },
+    "part.in_stock": {
+      "operator": "AND",
+      "quote": "In order to find out which web shop has the right parts, you have to query them all, and find out how much they can deliver, at which price, and how long it will take.",
+      "terms": [
+        {
+          "term": "part.arrived",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['part.in_stock']",
+          "missing": [
+            "part.in_stock"
+          ]
+        },
+        {
+          "term": "shop.queried",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['part.in_stock']",
+          "missing": [
+            "part.in_stock"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE"
+    },
+    "part.reordered": {
+      "operator": "OR",
+      "quote": "If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below 3 you reorder again (the fastest).",
+      "terms": [
+        {
+          "term": "part.in_stock",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['part.in_stock']",
+          "missing": [
+            "part.in_stock"
+          ]
+        },
+        {
+          "term": "shop.used",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED"
+    },
+    "part.low_stock": {
+      "operator": "OR",
+      "quote": "When the first parts arrive you start building.",
+      "terms": [
+        {
+          "term": "part.in_stock",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['part.in_stock', 'part.low_stock']",
+          "missing": [
+            "part.in_stock",
+            "part.low_stock"
+          ]
+        },
+        {
+          "term": "part.arrived",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['part.low_stock']",
+          "missing": [
+            "part.low_stock"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE"
+    },
+    "part.out_of_stock": {
+      "operator": "AND",
+      "quote": "If it is zero, you write a mail to your friends, complaining about the webshops.",
+      "terms": [
+        {
+          "term": "part.zero_stock",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['part.zero_stock', 'part.out_of_stock']",
+          "missing": [
+            "part.zero_stock",
+            "part.out_of_stock"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE"
+    },
+    "part.zero_stock": {
+      "operator": "AND",
+      "quote": "If it is zero, you write a mail to your friends, complaining about the webshops.",
+      "terms": [
+        {
+          "term": "part.out_of_stock",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['part.out_of_stock', 'part.zero_stock']",
+          "missing": [
+            "part.out_of_stock",
+            "part.zero_stock"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE"
+    },
+    "shop.used": {
+      "operator": "AND",
+      "quote": "In order to find out which web shop has the right parts, you have to query them all,",
+      "terms": [
+        {
+          "term": "shop.queried",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED"
+    },
+    "shop.cheapest": {
+      "operator": "AND",
+      "quote": "Always use the cheapest parts.",
+      "terms": [
+        {
+          "term": "shop.used",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED"
+    },
+    "stock.reordered": {
+      "operator": "AND",
+      "quote": "In order to find out which web shop has the right parts, you have to query them all, and find out how much they can deliver, at which price, and how long it will take.",
+      "terms": [
+        {
+          "term": "part.arrived",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        },
+        {
+          "term": "shop.queried",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED"
+    },
+    "mail.sent": {
+      "operator": "AND",
+      "quote": "If it is zero, you write a mail to your friends, complaining about the webshops.",
+      "terms": [
+        {
+          "term": "stock.zero",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['stock.zero']",
+          "missing": [
+            "stock.zero"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE"
+    }
+  },
+  "report": {
+    "summary": {
+      "ecarts": 1,
+      "non_verifiable": 4,
+      "conforme": 7
+    },
+    "ecarts": [
+      {
+        "root_cause": "first parts arrived",
+        "quote": "When the first parts arrive you start building.",
+        "explanation": "Le processus observe ne respecte pas la condition selon laquelle \"first parts arrived\" doit avoir lieu avant \"+/- 2 days delivery time\". \n\nLa citation fournie \"When the first parts arrive you start building.\" montre que la condition existe, mais ne décrit pas ce que cela signifie précisément.\n\nDans le processus observe, les deux activités existent bien, mais rien ne garantit que \"first parts arrived\" précède effectivement \"+/- 2 days delivery time\".",
+        "affected_activities": [
+          "+/- 2 days delivery  time "
+        ],
+        "affected_count": 1
+      }
+    ],
+    "non_verifiable": [
+      {
+        "root_cause": "(aucune activite du processus ne correspond clairement a cela)",
+        "quote": "In order to find out which web shop has the right parts, you have to query them all, and find out how much they can deliver, at which price, and how long it will take.",
+        "explanation": "Il est impossible de vérifier si l'exigence est respectée ou non dans ce cas précis. En effet, la condition précise qui doit être remplie avant que l'activité \"aucune activité du processus ne correspond clairement à cela\" puisse se produire n'est pas clairement décrite.\n\nLa citation fournie, \"In order to find out which web shop has the right parts, you have to query them all, and find out how much they can deliver, at which price, and how long it will take.\", montre qu'une condition est exigée avant cette étape, mais ne décrit pas ce que cette condition signifie précisément.\n\nIl est donc impossible de déterminer si cette condition est respectée ou non, car il n'y a pas d'activité claire du processus qui correspond à cette condition. (Cette meme cause affecte aussi : reorder the fastest.)",
+        "affected_activities": [
+          "(aucune activite du processus ne correspond clairement a cela)",
+          "reorder the fastest"
+        ],
+        "affected_count": 6
+      },
+      {
+        "root_cause": "(aucune activite du processus ne correspond clairement a cela)",
+        "quote": "If it is zero, you write a mail to your friends, complaining about the webshops.",
+        "explanation": "Dans ce cas, il est impossible de vérifier si la condition \"part zero stock\" est respectée ou non avant que l'activité \"aucune activité du processus ne correspond clairement à cela\" puisse se produire. Cela est dû au fait que cette condition n'a pu être associée à aucune activité claire du processus observé.\n\nLa citation \"If it is zero, you write a mail to your friends, complaining about the webshops.\" montre que la condition \"part zero stock\" est exigée avant cette étape, mais elle ne décrit pas ce que cela signifie précisément.\n\nEn d'autres termes, nous ne savons pas si la condition \"part zero stock\" est respectée ou non avant que l'activité \"aucune activité du processus ne correspond clairement à cela\" puisse se produire, car cette condition n'a pas été associée à une activité claire du processus observé.",
+        "affected_activities": [
+          "(aucune activite du processus ne correspond clairement a cela)"
+        ],
+        "affected_count": 2
+      },
+      {
+        "root_cause": "(aucune activite du processus ne correspond clairement a cela)",
+        "quote": "If it is zero, you write a mail to your friends, complaining about the webshops.",
+        "explanation": "Il est impossible de vérifier si la condition précise est respectée avant que l'activité \"aucune activité du processus ne correspond clairement à cela\" puisse se produire. Cette condition est liée à la phrase : \"If it is zero, you write a mail to your friends, complaining about the webshops.\"\n\nCette condition n'a pu être associée à aucune activité claire du processus observé, ce qui signifie qu'il est impossible de vérifier si l'exigence est respectée ou non.",
+        "affected_activities": [
+          "(aucune activite du processus ne correspond clairement a cela)"
+        ],
+        "affected_count": 2
+      },
+      {
+        "root_cause": "(aucune activite du processus ne correspond clairement a cela)",
+        "quote": "If it is zero, you write a mail to your friends, complaining about the webshops.",
+        "explanation": "Le processus observe comporte une activité \"write an email as a complain to a friend\" qui nécessite que la condition \"stock zero\" soit remplie avant de pouvoir se produire. Cependant, la citation fournie \"If it is zero, you write a mail to your friends, complaining about the webshops.\" ne décrit pas explicitement ce que signifie \"stock zero\".\n\nLa citation fournie montre qu'une condition est exigée avant cette étape, mais elle ne décrit pas ce que cette condition signifie précisément. Il est donc impossible de savoir si l'exigence est respectée ou non.\n\nDans ce cas, il est impossible de vérifier si l'exigence est respectée ou non, car la condition \"stock zero\" n'est pas clairement associée à une activité du processus.",
+        "affected_activities": [
+          "write an email  as a complain  to a friend"
+        ],
+        "affected_count": 1
+      }
+    ],
+    "conforme": [
+      {
+        "target": "+/- 2 days delivery  time ",
+        "term": "query web shops about delivery, price and quantity"
+      },
+      {
+        "target": "first parts arrived",
+        "term": "query web shops about delivery, price and quantity"
+      },
+      {
+        "target": "reorder the fastest",
+        "term": "make a list of parts needed for each shop"
+      },
+      {
+        "target": "make a list of parts needed for each shop",
+        "term": "query web shops about delivery, price and quantity"
+      },
+      {
+        "target": "order the cheapest parts from available web shops",
+        "term": "make a list of parts needed for each shop"
+      },
+      {
+        "target": "reorder the cheapest",
+        "term": "first parts arrived"
+      },
+      {
+        "target": "reorder the cheapest",
+        "term": "query web shops about delivery, price and quantity"
+      }
+    ],
+    "piece_jointe_alignement_brut": {
+      "part.delivered": {
+        "operator": "AND",
+        "quote": "When the first parts arrive you start building.",
+        "terms": [
+          {
+            "term": "part.arrived",
+            "status": "VIOLATED",
+            "reason": "both states matched, no path in process",
+            "missing": []
+          },
+          {
+            "term": "shop.queried",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "VIOLATED"
+      },
+      "part.arrived": {
+        "operator": "AND",
+        "quote": "find out which web shop has the right parts, you have to query them all",
+        "terms": [
+          {
+            "term": "shop.queried",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED"
+      },
+      "part.in_stock": {
+        "operator": "AND",
+        "quote": "In order to find out which web shop has the right parts, you have to query them all, and find out how much they can deliver, at which price, and how long it will take.",
+        "terms": [
+          {
+            "term": "part.arrived",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['part.in_stock']",
+            "missing": [
+              "part.in_stock"
+            ]
+          },
+          {
+            "term": "shop.queried",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['part.in_stock']",
+            "missing": [
+              "part.in_stock"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE"
+      },
+      "part.reordered": {
+        "operator": "OR",
+        "quote": "If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below 3 you reorder again (the fastest).",
+        "terms": [
+          {
+            "term": "part.in_stock",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['part.in_stock']",
+            "missing": [
+              "part.in_stock"
+            ]
+          },
+          {
+            "term": "shop.used",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED"
+      },
+      "part.low_stock": {
+        "operator": "OR",
+        "quote": "When the first parts arrive you start building.",
+        "terms": [
+          {
+            "term": "part.in_stock",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['part.in_stock', 'part.low_stock']",
+            "missing": [
+              "part.in_stock",
+              "part.low_stock"
+            ]
+          },
+          {
+            "term": "part.arrived",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['part.low_stock']",
+            "missing": [
+              "part.low_stock"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE"
+      },
+      "part.out_of_stock": {
+        "operator": "AND",
+        "quote": "If it is zero, you write a mail to your friends, complaining about the webshops.",
+        "terms": [
+          {
+            "term": "part.zero_stock",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['part.zero_stock', 'part.out_of_stock']",
+            "missing": [
+              "part.zero_stock",
+              "part.out_of_stock"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE"
+      },
+      "part.zero_stock": {
+        "operator": "AND",
+        "quote": "If it is zero, you write a mail to your friends, complaining about the webshops.",
+        "terms": [
+          {
+            "term": "part.out_of_stock",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['part.out_of_stock', 'part.zero_stock']",
+            "missing": [
+              "part.out_of_stock",
+              "part.zero_stock"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE"
+      },
+      "shop.used": {
+        "operator": "AND",
+        "quote": "In order to find out which web shop has the right parts, you have to query them all,",
+        "terms": [
+          {
+            "term": "shop.queried",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED"
+      },
+      "shop.cheapest": {
+        "operator": "AND",
+        "quote": "Always use the cheapest parts.",
+        "terms": [
+          {
+            "term": "shop.used",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED"
+      },
+      "stock.reordered": {
+        "operator": "AND",
+        "quote": "In order to find out which web shop has the right parts, you have to query them all, and find out how much they can deliver, at which price, and how long it will take.",
+        "terms": [
+          {
+            "term": "part.arrived",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          },
+          {
+            "term": "shop.queried",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED"
+      },
+      "mail.sent": {
+        "operator": "AND",
+        "quote": "If it is zero, you write a mail to your friends, complaining about the webshops.",
+        "terms": [
+          {
+            "term": "stock.zero",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['stock.zero']",
+            "missing": [
+              "stock.zero"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE"
+      }
+    }
+  },
+  "errors": []
+}

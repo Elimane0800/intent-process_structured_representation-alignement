@@ -1,0 +1,1878 @@
+{
+  "case_name": "E_j01",
+  "text": "Category: E-Government\nTitle: Find a Job\n\nYou have to regularly report, to which companies you wrote job applications.\nBased on your job applications, new potential job offers are sent to you.\nCompanies have to confirm that they received job applications and rate the\napplication. A job interview can be negotiated. When a company wants you to\nwork for them, you enter the probation phase. After probation phase, you can\nrate the company and the company can rate you. Reviews for a company can only\nbe seen (by job applicants) after 1 year. If a job becomes permanent, the\nprocess ends, unless you rated the company C or less, then you continue to\nreceive job offers, but no longer have to report. \n",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "llama-3.1-8b",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "llama-3.1-8b",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/text_and_bpmn/bpmn/E_j01/9.bpmn2.xml",
+  "candidates": {
+    "job_application": [
+      "confirmed",
+      "rated",
+      "negotiated",
+      "seen",
+      "permanent",
+      "probation"
+    ],
+    "job_offer": [
+      "sent"
+    ],
+    "company": [
+      "rated",
+      "reviewed"
+    ],
+    "job_interview": [
+      "negotiated"
+    ],
+    "probation_phase": [
+      "entered"
+    ],
+    "job_review": [
+      "seen"
+    ],
+    "process": [
+      "ended",
+      "continued"
+    ],
+    "job": [
+      "permanent"
+    ],
+    "review": [
+      "seen"
+    ]
+  },
+  "validation_report": {
+    "job_application": {
+      "f_lex": "ENTITY",
+      "kept": true
+    },
+    "job_offer": {
+      "f_lex": "ENTITY",
+      "kept": true
+    },
+    "company": {
+      "f_lex": "ACTOR",
+      "kept": false
+    },
+    "job_interview": {
+      "f_lex": "ENTITY",
+      "kept": true
+    },
+    "probation_phase": {
+      "f_lex": "INDETERMINATE",
+      "kept": true
+    },
+    "job_review": {
+      "f_lex": "ENTITY",
+      "kept": true
+    },
+    "process": {
+      "f_lex": "ENTITY",
+      "kept": true
+    },
+    "job": {
+      "f_lex": "ENTITY",
+      "kept": true
+    },
+    "review": {
+      "f_lex": "ENTITY",
+      "kept": true
+    }
+  },
+  "state_space": {
+    "job_application": [
+      "confirmed",
+      "rated",
+      "negotiated",
+      "seen",
+      "permanent",
+      "probation"
+    ],
+    "job_offer": [
+      "sent"
+    ],
+    "job_interview": [
+      "negotiated"
+    ],
+    "probation_phase": [
+      "entered"
+    ],
+    "job_review": [
+      "seen"
+    ],
+    "process": [
+      "ended",
+      "continued"
+    ],
+    "job": [
+      "permanent"
+    ],
+    "review": [
+      "seen"
+    ]
+  },
+  "raw_preconditions": {
+    "job_application.confirmed": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "job_application.rated": {
+      "precondition": "job_application.confirmed AND job_application.seen",
+      "quote": "Companies have to confirm that they received job applications and rate the application."
+    },
+    "job_application.negotiated": {
+      "precondition": "job_application.confirmed AND job_offer.sent",
+      "quote": "Based on your job applications, new potential job offers are sent to you. A job interview can be negotiated."
+    },
+    "job_offer.sent": {
+      "precondition": "job_application.confirmed",
+      "quote": "Based on your job applications, new potential job offers are sent to you."
+    },
+    "job_interview.negotiated": {
+      "precondition": "job_application.confirmed AND job_offer.sent",
+      "quote": "A job interview can be negotiated."
+    },
+    "probation_phase.entered": {
+      "precondition": "job_application.confirmed AND job_offer.sent AND job_interview.negotiated",
+      "quote": "When a company wants you to work for them, you enter the probation phase."
+    },
+    "job_review.seen": {
+      "precondition": "job_application.confirmed AND job_offer.sent AND job_interview.negotiated AND probation_phase.entered AND process.ended",
+      "quote": "After probation phase, you can rate the company and the company can rate you. Reviews for a company can only be seen (by job applicants) after 1 year."
+    },
+    "process.ended": {
+      "precondition": "job_application.confirmed AND job_offer.sent AND job_interview.negotiated AND probation_phase.entered AND job_review.seen",
+      "quote": "If a job becomes permanent, the process ends, unless you rated the company C or less, then you continue to receive job offers, but no longer have to report."
+    },
+    "process.continued": {
+      "precondition": "job_application.confirmed AND job_offer.sent AND job_interview.negotiated AND probation_phase.entered AND job_review.seen AND job_application.rated AND job_application.rated == 'C' OR job_application.rated == 'less'",
+      "quote": "If a job becomes permanent, the process ends, unless you rated the company C or less, then you continue to receive job offers, but no longer have to report."
+    },
+    "job.permanent": {
+      "precondition": "job_application.confirmed AND job_offer.sent AND job_interview.negotiated AND probation_phase.entered AND job_review.seen AND process.ended",
+      "quote": "If a job becomes permanent, the process ends, unless you rated the company C or less, then you continue to receive job offers, but no longer have to report."
+    },
+    "job_review.seen OR job_review.seen": {
+      "precondition": "UNRESOLVED",
+      "quote": "Reviews for a company can only be seen (by job applicants) after 1 year."
+    }
+  },
+  "validated_preconditions": {
+    "job_application.confirmed": {
+      "precondition": "INITIAL",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "job_application.rated": {
+      "precondition": "job_application.seen",
+      "quote": "Reviews for a company can only be seen (by job applicants) after 1 year.",
+      "status": "OK",
+      "reason": null,
+      "retried": true
+    },
+    "job_application.negotiated": {
+      "precondition": "job_application.confirmed AND job_offer.sent",
+      "quote": "Based on your job applications, new potential job offers are sent to you.",
+      "status": "OK",
+      "reason": null,
+      "retried": true
+    },
+    "job_offer.sent": {
+      "precondition": "job_application.confirmed",
+      "quote": "Based on your job applications, new potential job offers are sent to you.",
+      "status": "OK",
+      "reason": null
+    },
+    "job_interview.negotiated": {
+      "precondition": "job_application.confirmed AND job_offer.sent",
+      "quote": "A job interview can be negotiated.",
+      "status": "OK",
+      "reason": null
+    },
+    "probation_phase.entered": {
+      "precondition": "job_application.confirmed AND job_offer.sent AND job_interview.negotiated",
+      "quote": "When a company wants you to work for them, you enter the probation phase.",
+      "status": "OK",
+      "reason": null
+    },
+    "job_review.seen": {
+      "precondition": "job_application.confirmed AND job_offer.sent AND job_interview.negotiated AND probation_phase.entered AND process.ended",
+      "quote": "After probation phase, you can rate the company and the company can rate you. Reviews for a company can only be seen (by job applicants) after 1 year.",
+      "status": "OK",
+      "reason": null
+    },
+    "process.ended": {
+      "precondition": "job_application.confirmed AND job_offer.sent AND job_interview.negotiated AND probation_phase.entered AND job_review.seen",
+      "quote": "If a job becomes permanent, the process ends, unless you rated the company C or less, then you continue to receive job offers, but no longer have to report.",
+      "status": "OK",
+      "reason": null
+    },
+    "process.continued": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "DOWNGRADED",
+      "reason": "mutual exclusivity violation: two states of the same entity in one conjunction",
+      "retried": true
+    },
+    "job.permanent": {
+      "precondition": "job_application.confirmed AND job_offer.sent AND job_interview.negotiated AND probation_phase.entered AND job_review.seen AND process.ended",
+      "quote": "If a job becomes permanent, the process ends, unless you rated the company C or less, then you continue to receive job offers, but no longer have to report.",
+      "status": "OK",
+      "reason": null
+    },
+    "job_review.seen OR job_review.seen": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "DOWNGRADED",
+      "reason": "malformed or unknown target key: 'job_review.seen OR job_review.seen' is not a valid entity.state of the state space"
+    }
+  },
+  "precondition_cycles": [
+    [
+      "job_review.seen",
+      "process.ended",
+      "job_review.seen"
+    ]
+  ],
+  "reference_graph": {
+    "nodes": [
+      {
+        "id": "job_application.confirmed",
+        "weight": 1.0
+      },
+      {
+        "id": "job_application.rated",
+        "weight": 0.143
+      },
+      {
+        "id": "job_application.negotiated",
+        "weight": 0.286
+      },
+      {
+        "id": "job_application.seen",
+        "weight": 0.143
+      },
+      {
+        "id": "job_application.permanent",
+        "weight": 0.0
+      },
+      {
+        "id": "job_application.probation",
+        "weight": 0.0
+      },
+      {
+        "id": "job_offer.sent",
+        "weight": 1.0
+      },
+      {
+        "id": "job_interview.negotiated",
+        "weight": 0.857
+      },
+      {
+        "id": "probation_phase.entered",
+        "weight": 0.857
+      },
+      {
+        "id": "job_review.seen",
+        "weight": 1.0
+      },
+      {
+        "id": "process.ended",
+        "weight": 1.0
+      },
+      {
+        "id": "process.continued",
+        "weight": 0.0
+      },
+      {
+        "id": "job.permanent",
+        "weight": 0.857
+      },
+      {
+        "id": "review.seen",
+        "weight": 0.0
+      }
+    ],
+    "edges": [
+      {
+        "from": "job_application.seen",
+        "to": "job_application.rated",
+        "type": "sequence",
+        "operator": "AND",
+        "quote": "Reviews for a company can only be seen (by job applicants) after 1 year."
+      },
+      {
+        "from": "job_application.confirmed",
+        "to": "job_application.negotiated",
+        "type": "sequence",
+        "operator": "AND",
+        "quote": "Based on your job applications, new potential job offers are sent to you."
+      },
+      {
+        "from": "job_offer.sent",
+        "to": "job_application.negotiated",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "Based on your job applications, new potential job offers are sent to you."
+      },
+      {
+        "from": "job_application.confirmed",
+        "to": "job_offer.sent",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "Based on your job applications, new potential job offers are sent to you."
+      },
+      {
+        "from": "job_application.confirmed",
+        "to": "job_interview.negotiated",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "A job interview can be negotiated."
+      },
+      {
+        "from": "job_offer.sent",
+        "to": "job_interview.negotiated",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "A job interview can be negotiated."
+      },
+      {
+        "from": "job_application.confirmed",
+        "to": "probation_phase.entered",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "When a company wants you to work for them, you enter the probation phase."
+      },
+      {
+        "from": "job_offer.sent",
+        "to": "probation_phase.entered",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "When a company wants you to work for them, you enter the probation phase."
+      },
+      {
+        "from": "job_interview.negotiated",
+        "to": "probation_phase.entered",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "When a company wants you to work for them, you enter the probation phase."
+      },
+      {
+        "from": "job_application.confirmed",
+        "to": "job_review.seen",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "After probation phase, you can rate the company and the company can rate you. Reviews for a company can only be seen (by job applicants) after 1 year."
+      },
+      {
+        "from": "job_offer.sent",
+        "to": "job_review.seen",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "After probation phase, you can rate the company and the company can rate you. Reviews for a company can only be seen (by job applicants) after 1 year."
+      },
+      {
+        "from": "job_interview.negotiated",
+        "to": "job_review.seen",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "After probation phase, you can rate the company and the company can rate you. Reviews for a company can only be seen (by job applicants) after 1 year."
+      },
+      {
+        "from": "probation_phase.entered",
+        "to": "job_review.seen",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "After probation phase, you can rate the company and the company can rate you. Reviews for a company can only be seen (by job applicants) after 1 year."
+      },
+      {
+        "from": "process.ended",
+        "to": "job_review.seen",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "After probation phase, you can rate the company and the company can rate you. Reviews for a company can only be seen (by job applicants) after 1 year."
+      },
+      {
+        "from": "job_application.confirmed",
+        "to": "process.ended",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "If a job becomes permanent, the process ends, unless you rated the company C or less, then you continue to receive job offers, but no longer have to report."
+      },
+      {
+        "from": "job_offer.sent",
+        "to": "process.ended",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "If a job becomes permanent, the process ends, unless you rated the company C or less, then you continue to receive job offers, but no longer have to report."
+      },
+      {
+        "from": "job_interview.negotiated",
+        "to": "process.ended",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "If a job becomes permanent, the process ends, unless you rated the company C or less, then you continue to receive job offers, but no longer have to report."
+      },
+      {
+        "from": "probation_phase.entered",
+        "to": "process.ended",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "If a job becomes permanent, the process ends, unless you rated the company C or less, then you continue to receive job offers, but no longer have to report."
+      },
+      {
+        "from": "job_review.seen",
+        "to": "process.ended",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "If a job becomes permanent, the process ends, unless you rated the company C or less, then you continue to receive job offers, but no longer have to report."
+      },
+      {
+        "from": "job_application.confirmed",
+        "to": "job.permanent",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "If a job becomes permanent, the process ends, unless you rated the company C or less, then you continue to receive job offers, but no longer have to report."
+      },
+      {
+        "from": "job_offer.sent",
+        "to": "job.permanent",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "If a job becomes permanent, the process ends, unless you rated the company C or less, then you continue to receive job offers, but no longer have to report."
+      },
+      {
+        "from": "job_interview.negotiated",
+        "to": "job.permanent",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "If a job becomes permanent, the process ends, unless you rated the company C or less, then you continue to receive job offers, but no longer have to report."
+      },
+      {
+        "from": "probation_phase.entered",
+        "to": "job.permanent",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "If a job becomes permanent, the process ends, unless you rated the company C or less, then you continue to receive job offers, but no longer have to report."
+      },
+      {
+        "from": "job_review.seen",
+        "to": "job.permanent",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "If a job becomes permanent, the process ends, unless you rated the company C or less, then you continue to receive job offers, but no longer have to report."
+      },
+      {
+        "from": "process.ended",
+        "to": "job.permanent",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "If a job becomes permanent, the process ends, unless you rated the company C or less, then you continue to receive job offers, but no longer have to report."
+      }
+    ],
+    "cycles": [
+      [
+        "job_review.seen",
+        "process.ended",
+        "job_review.seen"
+      ]
+    ]
+  },
+  "dfg_edges": [
+    {
+      "source_id": "sid-69C2E33A-7ED1-49A8-8F35-D5BEC725D47D",
+      "source_label": "Send autogenerated rejection Email",
+      "target_id": "sid-9A1CFEA3-F299-497A-B48D-19824CA50D6A",
+      "target_label": "Submit job application",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "No"
+      ]
+    },
+    {
+      "source_id": "sid-69C2E33A-7ED1-49A8-8F35-D5BEC725D47D",
+      "source_label": "Send autogenerated rejection Email",
+      "target_id": "sid-A86EF3F6-9958-4501-B7D2-B283D2776DD8",
+      "target_label": "Interview candidate ",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "Yes",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-21657A1A-89F2-4D1A-84B8-1EEA6557A22F",
+      "source_label": "Enter probation phase",
+      "target_id": "sid-83656EE3-0A02-4E93-9A3D-B95ADB7EF027",
+      "target_label": "Evaluate employee",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-21657A1A-89F2-4D1A-84B8-1EEA6557A22F",
+      "source_label": "Enter probation phase",
+      "target_id": "sid-1A28AABF-6A3F-4F4D-873D-C95FF19E77E2",
+      "target_label": "Evaluate company",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-1A28AABF-6A3F-4F4D-873D-C95FF19E77E2",
+      "source_label": "Evaluate company",
+      "target_id": "sid-D526749A-246E-4B57-A902-9302B4EB6367",
+      "target_label": "Do temp-to-perm",
+      "gateway_context": [
+        "ParallelGateway",
+        "ExclusiveGateway",
+        "No"
+      ]
+    },
+    {
+      "source_id": "sid-1A28AABF-6A3F-4F4D-873D-C95FF19E77E2",
+      "source_label": "Evaluate company",
+      "target_id": "sid-9A1CFEA3-F299-497A-B48D-19824CA50D6A",
+      "target_label": "Submit job application",
+      "gateway_context": [
+        "ParallelGateway",
+        "ExclusiveGateway",
+        "Yes",
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "No"
+      ]
+    },
+    {
+      "source_id": "sid-1A28AABF-6A3F-4F4D-873D-C95FF19E77E2",
+      "source_label": "Evaluate company",
+      "target_id": "sid-A86EF3F6-9958-4501-B7D2-B283D2776DD8",
+      "target_label": "Interview candidate ",
+      "gateway_context": [
+        "ParallelGateway",
+        "ExclusiveGateway",
+        "Yes",
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "Yes",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-4B33F2FE-A0F7-42EC-AF70-9C73DF627C2D",
+      "source_label": "Evaluate job application ",
+      "target_id": "sid-208750E5-A20D-4449-9B0A-2FBFE3CD6185",
+      "target_label": "Send rejection Email",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "No"
+      ]
+    },
+    {
+      "source_id": "sid-4B33F2FE-A0F7-42EC-AF70-9C73DF627C2D",
+      "source_label": "Evaluate job application ",
+      "target_id": "sid-A86EF3F6-9958-4501-B7D2-B283D2776DD8",
+      "target_label": "Interview candidate ",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "Yes",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-CD763093-1CE5-4661-A1B7-16E242217FEF",
+      "source_label": "Publish applicant's review",
+      "target_id": "sid-6979FA35-69E8-4253-B3DC-143DF017949A",
+      "target_label": "Job found ",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-D526749A-246E-4B57-A902-9302B4EB6367",
+      "source_label": "Do temp-to-perm",
+      "target_id": "sid-5F68AD91-AAC2-482C-84CA-807ADFA0C12D",
+      "target_label": "One year",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-D1A27210-5F14-4BD5-97C8-0C4D85D5F249",
+      "source_label": "Process job application",
+      "target_id": "sid-4B33F2FE-A0F7-42EC-AF70-9C73DF627C2D",
+      "target_label": "Evaluate job application ",
+      "gateway_context": [
+        "ParallelGateway",
+        "ExclusiveGateway",
+        "Yes"
+      ]
+    },
+    {
+      "source_id": "sid-D1A27210-5F14-4BD5-97C8-0C4D85D5F249",
+      "source_label": "Process job application",
+      "target_id": "sid-69C2E33A-7ED1-49A8-8F35-D5BEC725D47D",
+      "target_label": "Send autogenerated rejection Email",
+      "gateway_context": [
+        "ParallelGateway",
+        "ExclusiveGateway",
+        "No"
+      ]
+    },
+    {
+      "source_id": "sid-83656EE3-0A02-4E93-9A3D-B95ADB7EF027",
+      "source_label": "Evaluate employee",
+      "target_id": "sid-D526749A-246E-4B57-A902-9302B4EB6367",
+      "target_label": "Do temp-to-perm",
+      "gateway_context": [
+        "ParallelGateway",
+        "ExclusiveGateway",
+        "No"
+      ]
+    },
+    {
+      "source_id": "sid-83656EE3-0A02-4E93-9A3D-B95ADB7EF027",
+      "source_label": "Evaluate employee",
+      "target_id": "sid-9A1CFEA3-F299-497A-B48D-19824CA50D6A",
+      "target_label": "Submit job application",
+      "gateway_context": [
+        "ParallelGateway",
+        "ExclusiveGateway",
+        "Yes",
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "No"
+      ]
+    },
+    {
+      "source_id": "sid-83656EE3-0A02-4E93-9A3D-B95ADB7EF027",
+      "source_label": "Evaluate employee",
+      "target_id": "sid-A86EF3F6-9958-4501-B7D2-B283D2776DD8",
+      "target_label": "Interview candidate ",
+      "gateway_context": [
+        "ParallelGateway",
+        "ExclusiveGateway",
+        "Yes",
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "Yes",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-EE804180-5FAF-419B-8420-706C1CD7648A",
+      "source_label": "Job needed ",
+      "target_id": "sid-9A1CFEA3-F299-497A-B48D-19824CA50D6A",
+      "target_label": "Submit job application",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "No"
+      ]
+    },
+    {
+      "source_id": "sid-EE804180-5FAF-419B-8420-706C1CD7648A",
+      "source_label": "Job needed ",
+      "target_id": "sid-A86EF3F6-9958-4501-B7D2-B283D2776DD8",
+      "target_label": "Interview candidate ",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "Yes",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-9A1CFEA3-F299-497A-B48D-19824CA50D6A",
+      "source_label": "Submit job application",
+      "target_id": "sid-A25493EC-5961-4C49-955C-C705D308F3A3",
+      "target_label": "Report",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "Yes"
+      ]
+    },
+    {
+      "source_id": "sid-9A1CFEA3-F299-497A-B48D-19824CA50D6A",
+      "source_label": "Submit job application",
+      "target_id": "sid-B0B9E6F2-28DB-4668-92CF-8DB043372B0D",
+      "target_label": "Confirm job application",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "No",
+        "ExclusiveGateway",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-9A1CFEA3-F299-497A-B48D-19824CA50D6A",
+      "source_label": "Submit job application",
+      "target_id": "sid-D1A27210-5F14-4BD5-97C8-0C4D85D5F249",
+      "target_label": "Process job application",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "No",
+        "ExclusiveGateway",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-A86EF3F6-9958-4501-B7D2-B283D2776DD8",
+      "source_label": "Interview candidate ",
+      "target_id": "sid-9A1CFEA3-F299-497A-B48D-19824CA50D6A",
+      "target_label": "Submit job application",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "No",
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "No"
+      ]
+    },
+    {
+      "source_id": "sid-A86EF3F6-9958-4501-B7D2-B283D2776DD8",
+      "source_label": "Interview candidate ",
+      "target_id": "sid-A86EF3F6-9958-4501-B7D2-B283D2776DD8",
+      "target_label": "Interview candidate ",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "No",
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "Yes",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-A86EF3F6-9958-4501-B7D2-B283D2776DD8",
+      "source_label": "Interview candidate ",
+      "target_id": "sid-21657A1A-89F2-4D1A-84B8-1EEA6557A22F",
+      "target_label": "Enter probation phase",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "Yes"
+      ]
+    },
+    {
+      "source_id": "sid-A25493EC-5961-4C49-955C-C705D308F3A3",
+      "source_label": "Report",
+      "target_id": "sid-B0B9E6F2-28DB-4668-92CF-8DB043372B0D",
+      "target_label": "Confirm job application",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-A25493EC-5961-4C49-955C-C705D308F3A3",
+      "source_label": "Report",
+      "target_id": "sid-D1A27210-5F14-4BD5-97C8-0C4D85D5F249",
+      "target_label": "Process job application",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-B0B9E6F2-28DB-4668-92CF-8DB043372B0D",
+      "source_label": "Confirm job application",
+      "target_id": "sid-4B33F2FE-A0F7-42EC-AF70-9C73DF627C2D",
+      "target_label": "Evaluate job application ",
+      "gateway_context": [
+        "ParallelGateway",
+        "ExclusiveGateway",
+        "Yes"
+      ]
+    },
+    {
+      "source_id": "sid-B0B9E6F2-28DB-4668-92CF-8DB043372B0D",
+      "source_label": "Confirm job application",
+      "target_id": "sid-69C2E33A-7ED1-49A8-8F35-D5BEC725D47D",
+      "target_label": "Send autogenerated rejection Email",
+      "gateway_context": [
+        "ParallelGateway",
+        "ExclusiveGateway",
+        "No"
+      ]
+    },
+    {
+      "source_id": "sid-208750E5-A20D-4449-9B0A-2FBFE3CD6185",
+      "source_label": "Send rejection Email",
+      "target_id": "sid-9A1CFEA3-F299-497A-B48D-19824CA50D6A",
+      "target_label": "Submit job application",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "No"
+      ]
+    },
+    {
+      "source_id": "sid-208750E5-A20D-4449-9B0A-2FBFE3CD6185",
+      "source_label": "Send rejection Email",
+      "target_id": "sid-A86EF3F6-9958-4501-B7D2-B283D2776DD8",
+      "target_label": "Interview candidate ",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "Yes",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-5F68AD91-AAC2-482C-84CA-807ADFA0C12D",
+      "source_label": "One year",
+      "target_id": "sid-CD763093-1CE5-4661-A1B7-16E242217FEF",
+      "target_label": "Publish applicant's review",
+      "gateway_context": []
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "Send autogenerated rejection Email",
+      "subject_id": "sid-69C2E33A-7ED1-49A8-8F35-D5BEC725D47D",
+      "predicate": "follows",
+      "object": "Submit job application",
+      "object_id": "sid-9A1CFEA3-F299-497A-B48D-19824CA50D6A"
+    },
+    {
+      "subject": "Send autogenerated rejection Email",
+      "subject_id": "sid-69C2E33A-7ED1-49A8-8F35-D5BEC725D47D",
+      "predicate": "follows",
+      "object": "Interview candidate ",
+      "object_id": "sid-A86EF3F6-9958-4501-B7D2-B283D2776DD8"
+    },
+    {
+      "subject": "Enter probation phase",
+      "subject_id": "sid-21657A1A-89F2-4D1A-84B8-1EEA6557A22F",
+      "predicate": "follows",
+      "object": "Evaluate employee",
+      "object_id": "sid-83656EE3-0A02-4E93-9A3D-B95ADB7EF027"
+    },
+    {
+      "subject": "Enter probation phase",
+      "subject_id": "sid-21657A1A-89F2-4D1A-84B8-1EEA6557A22F",
+      "predicate": "follows",
+      "object": "Evaluate company",
+      "object_id": "sid-1A28AABF-6A3F-4F4D-873D-C95FF19E77E2"
+    },
+    {
+      "subject": "Evaluate company",
+      "subject_id": "sid-1A28AABF-6A3F-4F4D-873D-C95FF19E77E2",
+      "predicate": "follows",
+      "object": "Do temp-to-perm",
+      "object_id": "sid-D526749A-246E-4B57-A902-9302B4EB6367"
+    },
+    {
+      "subject": "Evaluate company",
+      "subject_id": "sid-1A28AABF-6A3F-4F4D-873D-C95FF19E77E2",
+      "predicate": "follows",
+      "object": "Submit job application",
+      "object_id": "sid-9A1CFEA3-F299-497A-B48D-19824CA50D6A"
+    },
+    {
+      "subject": "Evaluate company",
+      "subject_id": "sid-1A28AABF-6A3F-4F4D-873D-C95FF19E77E2",
+      "predicate": "follows",
+      "object": "Interview candidate ",
+      "object_id": "sid-A86EF3F6-9958-4501-B7D2-B283D2776DD8"
+    },
+    {
+      "subject": "Evaluate job application ",
+      "subject_id": "sid-4B33F2FE-A0F7-42EC-AF70-9C73DF627C2D",
+      "predicate": "follows",
+      "object": "Send rejection Email",
+      "object_id": "sid-208750E5-A20D-4449-9B0A-2FBFE3CD6185"
+    },
+    {
+      "subject": "Evaluate job application ",
+      "subject_id": "sid-4B33F2FE-A0F7-42EC-AF70-9C73DF627C2D",
+      "predicate": "follows",
+      "object": "Interview candidate ",
+      "object_id": "sid-A86EF3F6-9958-4501-B7D2-B283D2776DD8"
+    },
+    {
+      "subject": "Publish applicant's review",
+      "subject_id": "sid-CD763093-1CE5-4661-A1B7-16E242217FEF",
+      "predicate": "follows",
+      "object": "Job found ",
+      "object_id": "sid-6979FA35-69E8-4253-B3DC-143DF017949A"
+    },
+    {
+      "subject": "Do temp-to-perm",
+      "subject_id": "sid-D526749A-246E-4B57-A902-9302B4EB6367",
+      "predicate": "follows",
+      "object": "One year",
+      "object_id": "sid-5F68AD91-AAC2-482C-84CA-807ADFA0C12D"
+    },
+    {
+      "subject": "Process job application",
+      "subject_id": "sid-D1A27210-5F14-4BD5-97C8-0C4D85D5F249",
+      "predicate": "follows",
+      "object": "Evaluate job application ",
+      "object_id": "sid-4B33F2FE-A0F7-42EC-AF70-9C73DF627C2D"
+    },
+    {
+      "subject": "Process job application",
+      "subject_id": "sid-D1A27210-5F14-4BD5-97C8-0C4D85D5F249",
+      "predicate": "follows",
+      "object": "Send autogenerated rejection Email",
+      "object_id": "sid-69C2E33A-7ED1-49A8-8F35-D5BEC725D47D"
+    },
+    {
+      "subject": "Evaluate employee",
+      "subject_id": "sid-83656EE3-0A02-4E93-9A3D-B95ADB7EF027",
+      "predicate": "follows",
+      "object": "Do temp-to-perm",
+      "object_id": "sid-D526749A-246E-4B57-A902-9302B4EB6367"
+    },
+    {
+      "subject": "Evaluate employee",
+      "subject_id": "sid-83656EE3-0A02-4E93-9A3D-B95ADB7EF027",
+      "predicate": "follows",
+      "object": "Submit job application",
+      "object_id": "sid-9A1CFEA3-F299-497A-B48D-19824CA50D6A"
+    },
+    {
+      "subject": "Evaluate employee",
+      "subject_id": "sid-83656EE3-0A02-4E93-9A3D-B95ADB7EF027",
+      "predicate": "follows",
+      "object": "Interview candidate ",
+      "object_id": "sid-A86EF3F6-9958-4501-B7D2-B283D2776DD8"
+    },
+    {
+      "subject": "Job needed ",
+      "subject_id": "sid-EE804180-5FAF-419B-8420-706C1CD7648A",
+      "predicate": "follows",
+      "object": "Submit job application",
+      "object_id": "sid-9A1CFEA3-F299-497A-B48D-19824CA50D6A"
+    },
+    {
+      "subject": "Job needed ",
+      "subject_id": "sid-EE804180-5FAF-419B-8420-706C1CD7648A",
+      "predicate": "follows",
+      "object": "Interview candidate ",
+      "object_id": "sid-A86EF3F6-9958-4501-B7D2-B283D2776DD8"
+    },
+    {
+      "subject": "Submit job application",
+      "subject_id": "sid-9A1CFEA3-F299-497A-B48D-19824CA50D6A",
+      "predicate": "follows",
+      "object": "Report",
+      "object_id": "sid-A25493EC-5961-4C49-955C-C705D308F3A3"
+    },
+    {
+      "subject": "Submit job application",
+      "subject_id": "sid-9A1CFEA3-F299-497A-B48D-19824CA50D6A",
+      "predicate": "follows",
+      "object": "Confirm job application",
+      "object_id": "sid-B0B9E6F2-28DB-4668-92CF-8DB043372B0D"
+    },
+    {
+      "subject": "Submit job application",
+      "subject_id": "sid-9A1CFEA3-F299-497A-B48D-19824CA50D6A",
+      "predicate": "follows",
+      "object": "Process job application",
+      "object_id": "sid-D1A27210-5F14-4BD5-97C8-0C4D85D5F249"
+    },
+    {
+      "subject": "Interview candidate ",
+      "subject_id": "sid-A86EF3F6-9958-4501-B7D2-B283D2776DD8",
+      "predicate": "follows",
+      "object": "Submit job application",
+      "object_id": "sid-9A1CFEA3-F299-497A-B48D-19824CA50D6A"
+    },
+    {
+      "subject": "Interview candidate ",
+      "subject_id": "sid-A86EF3F6-9958-4501-B7D2-B283D2776DD8",
+      "predicate": "follows",
+      "object": "Interview candidate ",
+      "object_id": "sid-A86EF3F6-9958-4501-B7D2-B283D2776DD8"
+    },
+    {
+      "subject": "Interview candidate ",
+      "subject_id": "sid-A86EF3F6-9958-4501-B7D2-B283D2776DD8",
+      "predicate": "follows",
+      "object": "Enter probation phase",
+      "object_id": "sid-21657A1A-89F2-4D1A-84B8-1EEA6557A22F"
+    },
+    {
+      "subject": "Report",
+      "subject_id": "sid-A25493EC-5961-4C49-955C-C705D308F3A3",
+      "predicate": "follows",
+      "object": "Confirm job application",
+      "object_id": "sid-B0B9E6F2-28DB-4668-92CF-8DB043372B0D"
+    },
+    {
+      "subject": "Report",
+      "subject_id": "sid-A25493EC-5961-4C49-955C-C705D308F3A3",
+      "predicate": "follows",
+      "object": "Process job application",
+      "object_id": "sid-D1A27210-5F14-4BD5-97C8-0C4D85D5F249"
+    },
+    {
+      "subject": "Confirm job application",
+      "subject_id": "sid-B0B9E6F2-28DB-4668-92CF-8DB043372B0D",
+      "predicate": "follows",
+      "object": "Evaluate job application ",
+      "object_id": "sid-4B33F2FE-A0F7-42EC-AF70-9C73DF627C2D"
+    },
+    {
+      "subject": "Confirm job application",
+      "subject_id": "sid-B0B9E6F2-28DB-4668-92CF-8DB043372B0D",
+      "predicate": "follows",
+      "object": "Send autogenerated rejection Email",
+      "object_id": "sid-69C2E33A-7ED1-49A8-8F35-D5BEC725D47D"
+    },
+    {
+      "subject": "Send rejection Email",
+      "subject_id": "sid-208750E5-A20D-4449-9B0A-2FBFE3CD6185",
+      "predicate": "follows",
+      "object": "Submit job application",
+      "object_id": "sid-9A1CFEA3-F299-497A-B48D-19824CA50D6A"
+    },
+    {
+      "subject": "Send rejection Email",
+      "subject_id": "sid-208750E5-A20D-4449-9B0A-2FBFE3CD6185",
+      "predicate": "follows",
+      "object": "Interview candidate ",
+      "object_id": "sid-A86EF3F6-9958-4501-B7D2-B283D2776DD8"
+    },
+    {
+      "subject": "One year",
+      "subject_id": "sid-5F68AD91-AAC2-482C-84CA-807ADFA0C12D",
+      "predicate": "follows",
+      "object": "Publish applicant's review",
+      "object_id": "sid-CD763093-1CE5-4661-A1B7-16E242217FEF"
+    }
+  ],
+  "matches": {
+    "Confirm job application": {
+      "match": "job_application.confirmed",
+      "score": 0.859
+    },
+    "Do temp-to-perm": {
+      "match": "job.permanent",
+      "score": 0.3253
+    },
+    "Enter probation phase": {
+      "match": "probation_phase.entered",
+      "score": 0.9029
+    },
+    "Evaluate company": {
+      "match": "review.seen",
+      "score": 0.3234
+    },
+    "Evaluate employee": {
+      "match": "job_review.seen",
+      "score": 0.4503
+    },
+    "Evaluate job application ": {
+      "match": "job_application.rated",
+      "score": 0.7032
+    },
+    "Interview candidate ": {
+      "match": "job_application.seen",
+      "score": 0.4251
+    },
+    "Job found ": {
+      "match": "job.permanent",
+      "score": 0.5388
+    },
+    "Job needed ": {
+      "match": "job.permanent",
+      "score": 0.5206
+    },
+    "One year": {
+      "match": "job.permanent",
+      "score": 0.1541
+    },
+    "Process job application": {
+      "match": "job_application.seen",
+      "score": 0.6845
+    },
+    "Publish applicant's review": {
+      "match": "job_application.rated",
+      "score": 0.4342
+    },
+    "Report": {
+      "match": "review.seen",
+      "score": 0.2537
+    },
+    "Send autogenerated rejection Email": {
+      "match": "job_offer.sent",
+      "score": 0.3081
+    },
+    "Send rejection Email": {
+      "match": "job_offer.sent",
+      "score": 0.3589
+    },
+    "Submit job application": {
+      "match": "job_application.seen",
+      "score": 0.7146
+    }
+  },
+  "process_graph": [
+    {
+      "from": "job_offer.sent",
+      "to": "job_application.seen",
+      "activity_from": "Send autogenerated rejection Email",
+      "activity_to": "Submit job application"
+    },
+    {
+      "from": "job_offer.sent",
+      "to": "job_application.seen",
+      "activity_from": "Send autogenerated rejection Email",
+      "activity_to": "Interview candidate "
+    },
+    {
+      "from": "probation_phase.entered",
+      "to": "job_review.seen",
+      "activity_from": "Enter probation phase",
+      "activity_to": "Evaluate employee"
+    },
+    {
+      "from": "probation_phase.entered",
+      "to": "review.seen",
+      "activity_from": "Enter probation phase",
+      "activity_to": "Evaluate company"
+    },
+    {
+      "from": "review.seen",
+      "to": "job.permanent",
+      "activity_from": "Evaluate company",
+      "activity_to": "Do temp-to-perm"
+    },
+    {
+      "from": "review.seen",
+      "to": "job_application.seen",
+      "activity_from": "Evaluate company",
+      "activity_to": "Submit job application"
+    },
+    {
+      "from": "review.seen",
+      "to": "job_application.seen",
+      "activity_from": "Evaluate company",
+      "activity_to": "Interview candidate "
+    },
+    {
+      "from": "job_application.rated",
+      "to": "job_offer.sent",
+      "activity_from": "Evaluate job application ",
+      "activity_to": "Send rejection Email"
+    },
+    {
+      "from": "job_application.rated",
+      "to": "job_application.seen",
+      "activity_from": "Evaluate job application ",
+      "activity_to": "Interview candidate "
+    },
+    {
+      "from": "job_application.rated",
+      "to": "job.permanent",
+      "activity_from": "Publish applicant's review",
+      "activity_to": "Job found "
+    },
+    {
+      "from": "job.permanent",
+      "to": "job.permanent",
+      "activity_from": "Do temp-to-perm",
+      "activity_to": "One year"
+    },
+    {
+      "from": "job_application.seen",
+      "to": "job_application.rated",
+      "activity_from": "Process job application",
+      "activity_to": "Evaluate job application "
+    },
+    {
+      "from": "job_application.seen",
+      "to": "job_offer.sent",
+      "activity_from": "Process job application",
+      "activity_to": "Send autogenerated rejection Email"
+    },
+    {
+      "from": "job_review.seen",
+      "to": "job.permanent",
+      "activity_from": "Evaluate employee",
+      "activity_to": "Do temp-to-perm"
+    },
+    {
+      "from": "job_review.seen",
+      "to": "job_application.seen",
+      "activity_from": "Evaluate employee",
+      "activity_to": "Submit job application"
+    },
+    {
+      "from": "job_review.seen",
+      "to": "job_application.seen",
+      "activity_from": "Evaluate employee",
+      "activity_to": "Interview candidate "
+    },
+    {
+      "from": "job.permanent",
+      "to": "job_application.seen",
+      "activity_from": "Job needed ",
+      "activity_to": "Submit job application"
+    },
+    {
+      "from": "job.permanent",
+      "to": "job_application.seen",
+      "activity_from": "Job needed ",
+      "activity_to": "Interview candidate "
+    },
+    {
+      "from": "job_application.seen",
+      "to": "review.seen",
+      "activity_from": "Submit job application",
+      "activity_to": "Report"
+    },
+    {
+      "from": "job_application.seen",
+      "to": "job_application.confirmed",
+      "activity_from": "Submit job application",
+      "activity_to": "Confirm job application"
+    },
+    {
+      "from": "job_application.seen",
+      "to": "job_application.seen",
+      "activity_from": "Submit job application",
+      "activity_to": "Process job application"
+    },
+    {
+      "from": "job_application.seen",
+      "to": "job_application.seen",
+      "activity_from": "Interview candidate ",
+      "activity_to": "Submit job application"
+    },
+    {
+      "from": "job_application.seen",
+      "to": "job_application.seen",
+      "activity_from": "Interview candidate ",
+      "activity_to": "Interview candidate "
+    },
+    {
+      "from": "job_application.seen",
+      "to": "probation_phase.entered",
+      "activity_from": "Interview candidate ",
+      "activity_to": "Enter probation phase"
+    },
+    {
+      "from": "review.seen",
+      "to": "job_application.confirmed",
+      "activity_from": "Report",
+      "activity_to": "Confirm job application"
+    },
+    {
+      "from": "review.seen",
+      "to": "job_application.seen",
+      "activity_from": "Report",
+      "activity_to": "Process job application"
+    },
+    {
+      "from": "job_application.confirmed",
+      "to": "job_application.rated",
+      "activity_from": "Confirm job application",
+      "activity_to": "Evaluate job application "
+    },
+    {
+      "from": "job_application.confirmed",
+      "to": "job_offer.sent",
+      "activity_from": "Confirm job application",
+      "activity_to": "Send autogenerated rejection Email"
+    },
+    {
+      "from": "job_offer.sent",
+      "to": "job_application.seen",
+      "activity_from": "Send rejection Email",
+      "activity_to": "Submit job application"
+    },
+    {
+      "from": "job_offer.sent",
+      "to": "job_application.seen",
+      "activity_from": "Send rejection Email",
+      "activity_to": "Interview candidate "
+    },
+    {
+      "from": "job.permanent",
+      "to": "job_application.rated",
+      "activity_from": "One year",
+      "activity_to": "Publish applicant's review"
+    }
+  ],
+  "alignment": {
+    "job_application.rated": {
+      "operator": "AND",
+      "quote": "Reviews for a company can only be seen (by job applicants) after 1 year.",
+      "terms": [
+        {
+          "term": "job_application.seen",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED"
+    },
+    "job_application.negotiated": {
+      "operator": "AND",
+      "quote": "Based on your job applications, new potential job offers are sent to you.",
+      "terms": [
+        {
+          "term": "job_application.confirmed",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['job_application.negotiated']",
+          "missing": [
+            "job_application.negotiated"
+          ]
+        },
+        {
+          "term": "job_offer.sent",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['job_application.negotiated']",
+          "missing": [
+            "job_application.negotiated"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE"
+    },
+    "job_offer.sent": {
+      "operator": "AND",
+      "quote": "Based on your job applications, new potential job offers are sent to you.",
+      "terms": [
+        {
+          "term": "job_application.confirmed",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED"
+    },
+    "job_interview.negotiated": {
+      "operator": "AND",
+      "quote": "A job interview can be negotiated.",
+      "terms": [
+        {
+          "term": "job_application.confirmed",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['job_interview.negotiated']",
+          "missing": [
+            "job_interview.negotiated"
+          ]
+        },
+        {
+          "term": "job_offer.sent",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['job_interview.negotiated']",
+          "missing": [
+            "job_interview.negotiated"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE"
+    },
+    "probation_phase.entered": {
+      "operator": "AND",
+      "quote": "When a company wants you to work for them, you enter the probation phase.",
+      "terms": [
+        {
+          "term": "job_application.confirmed",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        },
+        {
+          "term": "job_offer.sent",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        },
+        {
+          "term": "job_interview.negotiated",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['job_interview.negotiated']",
+          "missing": [
+            "job_interview.negotiated"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE"
+    },
+    "job_review.seen": {
+      "operator": "AND",
+      "quote": "After probation phase, you can rate the company and the company can rate you. Reviews for a company can only be seen (by job applicants) after 1 year.",
+      "terms": [
+        {
+          "term": "job_application.confirmed",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        },
+        {
+          "term": "job_offer.sent",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        },
+        {
+          "term": "job_interview.negotiated",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['job_interview.negotiated']",
+          "missing": [
+            "job_interview.negotiated"
+          ]
+        },
+        {
+          "term": "probation_phase.entered",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        },
+        {
+          "term": "process.ended",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['process.ended']",
+          "missing": [
+            "process.ended"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE"
+    },
+    "process.ended": {
+      "operator": "AND",
+      "quote": "If a job becomes permanent, the process ends, unless you rated the company C or less, then you continue to receive job offers, but no longer have to report.",
+      "terms": [
+        {
+          "term": "job_application.confirmed",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['process.ended']",
+          "missing": [
+            "process.ended"
+          ]
+        },
+        {
+          "term": "job_offer.sent",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['process.ended']",
+          "missing": [
+            "process.ended"
+          ]
+        },
+        {
+          "term": "job_interview.negotiated",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['job_interview.negotiated', 'process.ended']",
+          "missing": [
+            "job_interview.negotiated",
+            "process.ended"
+          ]
+        },
+        {
+          "term": "probation_phase.entered",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['process.ended']",
+          "missing": [
+            "process.ended"
+          ]
+        },
+        {
+          "term": "job_review.seen",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['process.ended']",
+          "missing": [
+            "process.ended"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE"
+    },
+    "job.permanent": {
+      "operator": "AND",
+      "quote": "If a job becomes permanent, the process ends, unless you rated the company C or less, then you continue to receive job offers, but no longer have to report.",
+      "terms": [
+        {
+          "term": "job_application.confirmed",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        },
+        {
+          "term": "job_offer.sent",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        },
+        {
+          "term": "job_interview.negotiated",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['job_interview.negotiated']",
+          "missing": [
+            "job_interview.negotiated"
+          ]
+        },
+        {
+          "term": "probation_phase.entered",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        },
+        {
+          "term": "job_review.seen",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        },
+        {
+          "term": "process.ended",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['process.ended']",
+          "missing": [
+            "process.ended"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE"
+    }
+  },
+  "report": {
+    "summary": {
+      "ecarts": 0,
+      "non_verifiable": 2,
+      "conforme": 11
+    },
+    "ecarts": [],
+    "non_verifiable": [
+      {
+        "root_cause": "(aucune activite du processus ne correspond clairement a cela)",
+        "quote": "Based on your job applications, new potential job offers are sent to you.",
+        "explanation": "Il est impossible de vérifier si l'exigence est respectée ou non avant que l'activité \"aucune activité du processus ne correspond clairement à cela\" puisse se produire. En effet, cette exigence est liée à la condition que \"d'après vos demandes d'emploi, de nouvelles offres d'emploi potentielles vous sont envoyées.\"\n\nCette citation ne décrit pas explicitement la condition manquante, elle ne nous dit que cette condition existe. Il est donc impossible de savoir si cette condition est respectée ou non avant que l'activité spécifiée se produise.",
+        "affected_activities": [
+          "(aucune activite du processus ne correspond clairement a cela)"
+        ],
+        "affected_count": 2
+      },
+      {
+        "root_cause": "(aucune activite du processus ne correspond clairement a cela)",
+        "quote": "A job interview can be negotiated.",
+        "explanation": "Il est impossible de vérifier si l'exigence est respectée ou non avant que l'activité \"aucune activité du processus ne correspond clairement à cela\" puisse se produire. En effet, une condition précise doit être remplie avant cette activité, mais cette condition n'est pas clairement décrite.\n\nLa citation fournie est : \"A job interview can be negotiated.\" Cela montre que l'exigence d'une condition précise existe, mais ne décrit pas ce que cette condition signifie précisément.\n\nDans ce cas, il est impossible de vérifier si l'exigence est respectée ou non, car il n'y a pas d'activité claire du processus qui corresponde à cette condition. (Cette meme cause affecte aussi : Enter probation phase, Evaluate employee, Job found .)",
+        "affected_activities": [
+          "(aucune activite du processus ne correspond clairement a cela)",
+          "Enter probation phase",
+          "Evaluate employee",
+          "Job found "
+        ],
+        "affected_count": 13
+      }
+    ],
+    "conforme": [
+      {
+        "target": "Evaluate job application ",
+        "term": "Submit job application"
+      },
+      {
+        "target": "Send rejection Email",
+        "term": "Confirm job application"
+      },
+      {
+        "target": "Enter probation phase",
+        "term": "Confirm job application"
+      },
+      {
+        "target": "Enter probation phase",
+        "term": "Send rejection Email"
+      },
+      {
+        "target": "Evaluate employee",
+        "term": "Confirm job application"
+      },
+      {
+        "target": "Evaluate employee",
+        "term": "Send rejection Email"
+      },
+      {
+        "target": "Evaluate employee",
+        "term": "Enter probation phase"
+      },
+      {
+        "target": "Job found ",
+        "term": "Confirm job application"
+      },
+      {
+        "target": "Job found ",
+        "term": "Send rejection Email"
+      },
+      {
+        "target": "Job found ",
+        "term": "Enter probation phase"
+      },
+      {
+        "target": "Job found ",
+        "term": "Evaluate employee"
+      }
+    ],
+    "piece_jointe_alignement_brut": {
+      "job_application.rated": {
+        "operator": "AND",
+        "quote": "Reviews for a company can only be seen (by job applicants) after 1 year.",
+        "terms": [
+          {
+            "term": "job_application.seen",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED"
+      },
+      "job_application.negotiated": {
+        "operator": "AND",
+        "quote": "Based on your job applications, new potential job offers are sent to you.",
+        "terms": [
+          {
+            "term": "job_application.confirmed",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['job_application.negotiated']",
+            "missing": [
+              "job_application.negotiated"
+            ]
+          },
+          {
+            "term": "job_offer.sent",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['job_application.negotiated']",
+            "missing": [
+              "job_application.negotiated"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE"
+      },
+      "job_offer.sent": {
+        "operator": "AND",
+        "quote": "Based on your job applications, new potential job offers are sent to you.",
+        "terms": [
+          {
+            "term": "job_application.confirmed",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED"
+      },
+      "job_interview.negotiated": {
+        "operator": "AND",
+        "quote": "A job interview can be negotiated.",
+        "terms": [
+          {
+            "term": "job_application.confirmed",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['job_interview.negotiated']",
+            "missing": [
+              "job_interview.negotiated"
+            ]
+          },
+          {
+            "term": "job_offer.sent",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['job_interview.negotiated']",
+            "missing": [
+              "job_interview.negotiated"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE"
+      },
+      "probation_phase.entered": {
+        "operator": "AND",
+        "quote": "When a company wants you to work for them, you enter the probation phase.",
+        "terms": [
+          {
+            "term": "job_application.confirmed",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          },
+          {
+            "term": "job_offer.sent",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          },
+          {
+            "term": "job_interview.negotiated",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['job_interview.negotiated']",
+            "missing": [
+              "job_interview.negotiated"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE"
+      },
+      "job_review.seen": {
+        "operator": "AND",
+        "quote": "After probation phase, you can rate the company and the company can rate you. Reviews for a company can only be seen (by job applicants) after 1 year.",
+        "terms": [
+          {
+            "term": "job_application.confirmed",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          },
+          {
+            "term": "job_offer.sent",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          },
+          {
+            "term": "job_interview.negotiated",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['job_interview.negotiated']",
+            "missing": [
+              "job_interview.negotiated"
+            ]
+          },
+          {
+            "term": "probation_phase.entered",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          },
+          {
+            "term": "process.ended",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['process.ended']",
+            "missing": [
+              "process.ended"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE"
+      },
+      "process.ended": {
+        "operator": "AND",
+        "quote": "If a job becomes permanent, the process ends, unless you rated the company C or less, then you continue to receive job offers, but no longer have to report.",
+        "terms": [
+          {
+            "term": "job_application.confirmed",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['process.ended']",
+            "missing": [
+              "process.ended"
+            ]
+          },
+          {
+            "term": "job_offer.sent",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['process.ended']",
+            "missing": [
+              "process.ended"
+            ]
+          },
+          {
+            "term": "job_interview.negotiated",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['job_interview.negotiated', 'process.ended']",
+            "missing": [
+              "job_interview.negotiated",
+              "process.ended"
+            ]
+          },
+          {
+            "term": "probation_phase.entered",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['process.ended']",
+            "missing": [
+              "process.ended"
+            ]
+          },
+          {
+            "term": "job_review.seen",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['process.ended']",
+            "missing": [
+              "process.ended"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE"
+      },
+      "job.permanent": {
+        "operator": "AND",
+        "quote": "If a job becomes permanent, the process ends, unless you rated the company C or less, then you continue to receive job offers, but no longer have to report.",
+        "terms": [
+          {
+            "term": "job_application.confirmed",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          },
+          {
+            "term": "job_offer.sent",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          },
+          {
+            "term": "job_interview.negotiated",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['job_interview.negotiated']",
+            "missing": [
+              "job_interview.negotiated"
+            ]
+          },
+          {
+            "term": "probation_phase.entered",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          },
+          {
+            "term": "job_review.seen",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          },
+          {
+            "term": "process.ended",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['process.ended']",
+            "missing": [
+              "process.ended"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE"
+      }
+    }
+  },
+  "errors": []
+}

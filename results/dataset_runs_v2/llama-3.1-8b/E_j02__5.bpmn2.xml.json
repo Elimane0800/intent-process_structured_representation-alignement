@@ -1,0 +1,712 @@
+{
+  "case_name": "E_j02",
+  "text": "Category: E-Government\nTitle: Becoming A Parent\n\nCreate a process that support in planning, taking and extending a maternity\nleave.\n\n* Fetch information about potential models (months duration, split between parents)\n* Let parent select\n* Collect relevant information\n* Notify Social Security, Company in time\n* Gather information from companies\n* At the end of the period let parent decide about extension.\n",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "llama-3.1-8b",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "llama-3.1-8b",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/text_and_bpmn/bpmn/E_j02/5.bpmn2.xml",
+  "report_model": "llama-3.1-8b",
+  "candidates": {
+    "maternity_leave": [
+      "planned",
+      "taken",
+      "extended"
+    ],
+    "parent": [
+      "selected"
+    ],
+    "information": [
+      "collected"
+    ],
+    "social_security": [
+      "notified"
+    ],
+    "company": [
+      "notified"
+    ],
+    "companies": [
+      "gathered_from"
+    ]
+  },
+  "validation_report": {
+    "maternity_leave": {
+      "f_lex": "INDETERMINATE",
+      "kept": true
+    },
+    "parent": {
+      "f_lex": "ACTOR",
+      "kept": false
+    },
+    "information": {
+      "f_lex": "ENTITY",
+      "kept": true
+    },
+    "social_security": {
+      "f_lex": "INDETERMINATE",
+      "kept": true
+    },
+    "company": {
+      "f_lex": "ACTOR",
+      "kept": false
+    },
+    "companies": {
+      "f_lex": "ACTOR",
+      "kept": false
+    }
+  },
+  "state_space": {
+    "maternity_leave": [
+      "planned",
+      "taken",
+      "extended"
+    ],
+    "information": [
+      "collected"
+    ],
+    "social_security": [
+      "notified"
+    ]
+  },
+  "state_space_dedup": {
+    "merged": {},
+    "ambiguous_not_merged": {}
+  },
+  "raw_preconditions": {
+    "maternity_leave.planned": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "maternity_leave.taken": {
+      "precondition": "maternity_leave.planned",
+      "quote": "Let parent select"
+    },
+    "maternity_leave.extended": {
+      "precondition": "maternity_leave.taken",
+      "quote": "At the end of the period let parent decide about extension."
+    },
+    "information.collected": {
+      "precondition": "maternity_leave.planned",
+      "quote": "Collect relevant information"
+    },
+    "social_security.notified": {
+      "precondition": "maternity_leave.planned",
+      "quote": "Notify Social Security, Company in time"
+    },
+    "information.collected AND social_security.notified": {
+      "precondition": "maternity_leave.planned",
+      "quote": "Collect relevant information\nNotify Social Security, Company in time"
+    }
+  },
+  "validated_preconditions": {
+    "maternity_leave.planned": {
+      "precondition": "INITIAL",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "maternity_leave.taken": {
+      "precondition": "maternity_leave.planned",
+      "quote": "Let parent select",
+      "status": "OK",
+      "reason": null
+    },
+    "maternity_leave.extended": {
+      "precondition": "maternity_leave.taken",
+      "quote": "At the end of the period let parent decide about extension.",
+      "status": "OK",
+      "reason": null
+    },
+    "information.collected": {
+      "precondition": "maternity_leave.planned",
+      "quote": "Collect relevant information",
+      "status": "OK",
+      "reason": null
+    },
+    "social_security.notified": {
+      "precondition": "maternity_leave.planned",
+      "quote": "Notify Social Security, Company in time",
+      "status": "OK",
+      "reason": null
+    },
+    "information.collected AND social_security.notified": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "DOWNGRADED",
+      "reason": "malformed or unknown target key: 'information.collected AND social_security.notified' is not a valid entity.state of the state space"
+    }
+  },
+  "precondition_cycles": [],
+  "reference_graph": {
+    "nodes": [
+      {
+        "id": "maternity_leave.planned",
+        "weight": 1.0
+      },
+      {
+        "id": "maternity_leave.taken",
+        "weight": 0.667
+      },
+      {
+        "id": "maternity_leave.extended",
+        "weight": 0.333
+      },
+      {
+        "id": "information.collected",
+        "weight": 0.333
+      },
+      {
+        "id": "social_security.notified",
+        "weight": 0.333
+      }
+    ],
+    "edges": [
+      {
+        "from": "maternity_leave.planned",
+        "to": "maternity_leave.taken",
+        "type": "sequence",
+        "operator": "AND",
+        "quote": "Let parent select"
+      },
+      {
+        "from": "maternity_leave.taken",
+        "to": "maternity_leave.extended",
+        "type": "sequence",
+        "operator": "AND",
+        "quote": "At the end of the period let parent decide about extension."
+      },
+      {
+        "from": "maternity_leave.planned",
+        "to": "information.collected",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "Collect relevant information"
+      },
+      {
+        "from": "maternity_leave.planned",
+        "to": "social_security.notified",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "Notify Social Security, Company in time"
+      }
+    ],
+    "cycles": []
+  },
+  "dfg_edges": [
+    {
+      "source_id": "sid-020C23CA-60CD-4EDF-92D5-53CE0008C91D",
+      "source_label": "receive confirmation from employer",
+      "target_id": "sid-BD7B392B-775D-4B94-9247-7C36FAB13D05",
+      "target_label": "check if all necessary documents gathered",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-11F6F91C-0E29-468D-BCF7-8BE9ADE24D9E",
+      "source_label": "select appropriate model",
+      "target_id": "sid-79E83EBA-CF6C-4847-AAA7-57DB6CAA252E",
+      "target_label": "decide if apply for financial support",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-258D162B-1CC4-458F-8204-3749CA22A414",
+      "source_label": "apply for financial support",
+      "target_id": "sid-1185F6FC-F020-41D9-970A-BCC3A8F9511D",
+      "target_label": "prepare necessary documents for leave",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-1185F6FC-F020-41D9-970A-BCC3A8F9511D",
+      "source_label": "prepare necessary documents for leave",
+      "target_id": "sid-6B40219B-E2CA-4095-BE04-4B4EFC8685BA",
+      "target_label": "notify employer",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-1185F6FC-F020-41D9-970A-BCC3A8F9511D",
+      "source_label": "prepare necessary documents for leave",
+      "target_id": "sid-0EF84E1C-0187-4AA1-A5CE-4D7B07C6727C",
+      "target_label": "notify social security",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-BD7B392B-775D-4B94-9247-7C36FAB13D05",
+      "source_label": "check if all necessary documents gathered",
+      "target_id": "sid-9F3EA96E-87B6-4744-A0D2-81D1877D4551",
+      "target_label": "do maternity/paternity leave",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-BD7B392B-775D-4B94-9247-7C36FAB13D05",
+      "source_label": "check if all necessary documents gathered",
+      "target_id": "sid-1185F6FC-F020-41D9-970A-BCC3A8F9511D",
+      "target_label": "prepare necessary documents for leave",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-79E83EBA-CF6C-4847-AAA7-57DB6CAA252E",
+      "source_label": "decide if apply for financial support",
+      "target_id": "sid-1185F6FC-F020-41D9-970A-BCC3A8F9511D",
+      "target_label": "prepare necessary documents for leave",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-79E83EBA-CF6C-4847-AAA7-57DB6CAA252E",
+      "source_label": "decide if apply for financial support",
+      "target_id": "sid-258D162B-1CC4-458F-8204-3749CA22A414",
+      "target_label": "apply for financial support",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-D4148F72-03B8-48BE-B466-742F1229B31E",
+      "source_label": "fetch information about leave models",
+      "target_id": "sid-11F6F91C-0E29-468D-BCF7-8BE9ADE24D9E",
+      "target_label": "select appropriate model",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-6B40219B-E2CA-4095-BE04-4B4EFC8685BA",
+      "source_label": "notify employer",
+      "target_id": "sid-020C23CA-60CD-4EDF-92D5-53CE0008C91D",
+      "target_label": "receive confirmation from employer",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-0EF84E1C-0187-4AA1-A5CE-4D7B07C6727C",
+      "source_label": "notify social security",
+      "target_id": "sid-020C23CA-60CD-4EDF-92D5-53CE0008C91D",
+      "target_label": "receive confirmation from employer",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-1C5DD7C6-77B7-4AE4-AD32-811987282568",
+      "source_label": "fetch information about financial support",
+      "target_id": "sid-11F6F91C-0E29-468D-BCF7-8BE9ADE24D9E",
+      "target_label": "select appropriate model",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-771407B0-A035-4300-8688-DCE594ECEEC8",
+      "source_label": "decide if extend leave or return to work",
+      "target_id": "sid-1185F6FC-F020-41D9-970A-BCC3A8F9511D",
+      "target_label": "prepare necessary documents for leave",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-9F3EA96E-87B6-4744-A0D2-81D1877D4551",
+      "source_label": "do maternity/paternity leave",
+      "target_id": "sid-771407B0-A035-4300-8688-DCE594ECEEC8",
+      "target_label": "decide if extend leave or return to work",
+      "gateway_context": []
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "receive confirmation from employer",
+      "subject_id": "sid-020C23CA-60CD-4EDF-92D5-53CE0008C91D",
+      "predicate": "follows",
+      "object": "check if all necessary documents gathered",
+      "object_id": "sid-BD7B392B-775D-4B94-9247-7C36FAB13D05"
+    },
+    {
+      "subject": "select appropriate model",
+      "subject_id": "sid-11F6F91C-0E29-468D-BCF7-8BE9ADE24D9E",
+      "predicate": "follows",
+      "object": "decide if apply for financial support",
+      "object_id": "sid-79E83EBA-CF6C-4847-AAA7-57DB6CAA252E"
+    },
+    {
+      "subject": "apply for financial support",
+      "subject_id": "sid-258D162B-1CC4-458F-8204-3749CA22A414",
+      "predicate": "follows",
+      "object": "prepare necessary documents for leave",
+      "object_id": "sid-1185F6FC-F020-41D9-970A-BCC3A8F9511D"
+    },
+    {
+      "subject": "prepare necessary documents for leave",
+      "subject_id": "sid-1185F6FC-F020-41D9-970A-BCC3A8F9511D",
+      "predicate": "follows",
+      "object": "notify employer",
+      "object_id": "sid-6B40219B-E2CA-4095-BE04-4B4EFC8685BA"
+    },
+    {
+      "subject": "prepare necessary documents for leave",
+      "subject_id": "sid-1185F6FC-F020-41D9-970A-BCC3A8F9511D",
+      "predicate": "follows",
+      "object": "notify social security",
+      "object_id": "sid-0EF84E1C-0187-4AA1-A5CE-4D7B07C6727C"
+    },
+    {
+      "subject": "check if all necessary documents gathered",
+      "subject_id": "sid-BD7B392B-775D-4B94-9247-7C36FAB13D05",
+      "predicate": "follows",
+      "object": "do maternity/paternity leave",
+      "object_id": "sid-9F3EA96E-87B6-4744-A0D2-81D1877D4551"
+    },
+    {
+      "subject": "check if all necessary documents gathered",
+      "subject_id": "sid-BD7B392B-775D-4B94-9247-7C36FAB13D05",
+      "predicate": "follows",
+      "object": "prepare necessary documents for leave",
+      "object_id": "sid-1185F6FC-F020-41D9-970A-BCC3A8F9511D"
+    },
+    {
+      "subject": "decide if apply for financial support",
+      "subject_id": "sid-79E83EBA-CF6C-4847-AAA7-57DB6CAA252E",
+      "predicate": "follows",
+      "object": "prepare necessary documents for leave",
+      "object_id": "sid-1185F6FC-F020-41D9-970A-BCC3A8F9511D"
+    },
+    {
+      "subject": "decide if apply for financial support",
+      "subject_id": "sid-79E83EBA-CF6C-4847-AAA7-57DB6CAA252E",
+      "predicate": "follows",
+      "object": "apply for financial support",
+      "object_id": "sid-258D162B-1CC4-458F-8204-3749CA22A414"
+    },
+    {
+      "subject": "fetch information about leave models",
+      "subject_id": "sid-D4148F72-03B8-48BE-B466-742F1229B31E",
+      "predicate": "follows",
+      "object": "select appropriate model",
+      "object_id": "sid-11F6F91C-0E29-468D-BCF7-8BE9ADE24D9E"
+    },
+    {
+      "subject": "notify employer",
+      "subject_id": "sid-6B40219B-E2CA-4095-BE04-4B4EFC8685BA",
+      "predicate": "follows",
+      "object": "receive confirmation from employer",
+      "object_id": "sid-020C23CA-60CD-4EDF-92D5-53CE0008C91D"
+    },
+    {
+      "subject": "notify social security",
+      "subject_id": "sid-0EF84E1C-0187-4AA1-A5CE-4D7B07C6727C",
+      "predicate": "follows",
+      "object": "receive confirmation from employer",
+      "object_id": "sid-020C23CA-60CD-4EDF-92D5-53CE0008C91D"
+    },
+    {
+      "subject": "fetch information about financial support",
+      "subject_id": "sid-1C5DD7C6-77B7-4AE4-AD32-811987282568",
+      "predicate": "follows",
+      "object": "select appropriate model",
+      "object_id": "sid-11F6F91C-0E29-468D-BCF7-8BE9ADE24D9E"
+    },
+    {
+      "subject": "decide if extend leave or return to work",
+      "subject_id": "sid-771407B0-A035-4300-8688-DCE594ECEEC8",
+      "predicate": "follows",
+      "object": "prepare necessary documents for leave",
+      "object_id": "sid-1185F6FC-F020-41D9-970A-BCC3A8F9511D"
+    },
+    {
+      "subject": "do maternity/paternity leave",
+      "subject_id": "sid-9F3EA96E-87B6-4744-A0D2-81D1877D4551",
+      "predicate": "follows",
+      "object": "decide if extend leave or return to work",
+      "object_id": "sid-771407B0-A035-4300-8688-DCE594ECEEC8"
+    }
+  ],
+  "matches": {
+    "apply for financial support": {
+      "match": "information.collected",
+      "score": 0.1422
+    },
+    "check if all necessary documents gathered": {
+      "match": "information.collected",
+      "score": 0.299
+    },
+    "decide if apply for financial support": {
+      "match": "information.collected",
+      "score": 0.134
+    },
+    "decide if extend leave or return to work": {
+      "match": "maternity_leave.extended",
+      "score": 0.4125
+    },
+    "do maternity/paternity leave": {
+      "match": "maternity_leave.taken",
+      "score": 0.6673
+    },
+    "fetch information about financial support": {
+      "match": "information.collected",
+      "score": 0.3981
+    },
+    "fetch information about leave models": {
+      "match": "information.collected",
+      "score": 0.3183
+    },
+    "notify employer": {
+      "match": "social_security.notified",
+      "score": 0.4525
+    },
+    "notify social security": {
+      "match": "social_security.notified",
+      "score": 0.9034
+    },
+    "prepare necessary documents for leave": {
+      "match": "maternity_leave.planned",
+      "score": 0.3394
+    },
+    "receive confirmation from employer": {
+      "match": "social_security.notified",
+      "score": 0.2677
+    },
+    "select appropriate model": {
+      "match": "information.collected",
+      "score": 0.1544
+    }
+  },
+  "process_graph": [
+    {
+      "from": "social_security.notified",
+      "to": "information.collected",
+      "activity_from": "receive confirmation from employer",
+      "activity_to": "check if all necessary documents gathered"
+    },
+    {
+      "from": "information.collected",
+      "to": "information.collected",
+      "activity_from": "select appropriate model",
+      "activity_to": "decide if apply for financial support"
+    },
+    {
+      "from": "information.collected",
+      "to": "maternity_leave.planned",
+      "activity_from": "apply for financial support",
+      "activity_to": "prepare necessary documents for leave"
+    },
+    {
+      "from": "maternity_leave.planned",
+      "to": "social_security.notified",
+      "activity_from": "prepare necessary documents for leave",
+      "activity_to": "notify employer"
+    },
+    {
+      "from": "maternity_leave.planned",
+      "to": "social_security.notified",
+      "activity_from": "prepare necessary documents for leave",
+      "activity_to": "notify social security"
+    },
+    {
+      "from": "information.collected",
+      "to": "maternity_leave.taken",
+      "activity_from": "check if all necessary documents gathered",
+      "activity_to": "do maternity/paternity leave"
+    },
+    {
+      "from": "information.collected",
+      "to": "maternity_leave.planned",
+      "activity_from": "check if all necessary documents gathered",
+      "activity_to": "prepare necessary documents for leave"
+    },
+    {
+      "from": "information.collected",
+      "to": "maternity_leave.planned",
+      "activity_from": "decide if apply for financial support",
+      "activity_to": "prepare necessary documents for leave"
+    },
+    {
+      "from": "information.collected",
+      "to": "information.collected",
+      "activity_from": "decide if apply for financial support",
+      "activity_to": "apply for financial support"
+    },
+    {
+      "from": "information.collected",
+      "to": "information.collected",
+      "activity_from": "fetch information about leave models",
+      "activity_to": "select appropriate model"
+    },
+    {
+      "from": "social_security.notified",
+      "to": "social_security.notified",
+      "activity_from": "notify employer",
+      "activity_to": "receive confirmation from employer"
+    },
+    {
+      "from": "social_security.notified",
+      "to": "social_security.notified",
+      "activity_from": "notify social security",
+      "activity_to": "receive confirmation from employer"
+    },
+    {
+      "from": "information.collected",
+      "to": "information.collected",
+      "activity_from": "fetch information about financial support",
+      "activity_to": "select appropriate model"
+    },
+    {
+      "from": "maternity_leave.extended",
+      "to": "maternity_leave.planned",
+      "activity_from": "decide if extend leave or return to work",
+      "activity_to": "prepare necessary documents for leave"
+    },
+    {
+      "from": "maternity_leave.taken",
+      "to": "maternity_leave.extended",
+      "activity_from": "do maternity/paternity leave",
+      "activity_to": "decide if extend leave or return to work"
+    }
+  ],
+  "alignment": {
+    "maternity_leave.taken": {
+      "operator": "AND",
+      "quote": "Let parent select",
+      "terms": [
+        {
+          "term": "maternity_leave.planned",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED"
+    },
+    "maternity_leave.extended": {
+      "operator": "AND",
+      "quote": "At the end of the period let parent decide about extension.",
+      "terms": [
+        {
+          "term": "maternity_leave.taken",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED"
+    },
+    "information.collected": {
+      "operator": "AND",
+      "quote": "Collect relevant information",
+      "terms": [
+        {
+          "term": "maternity_leave.planned",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED"
+    },
+    "social_security.notified": {
+      "operator": "AND",
+      "quote": "Notify Social Security, Company in time",
+      "terms": [
+        {
+          "term": "maternity_leave.planned",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED"
+    }
+  },
+  "report": {
+    "summary": {
+      "ecarts": 0,
+      "non_verifiable": 0,
+      "conforme": 4
+    },
+    "ecarts": [],
+    "non_verifiable": [],
+    "conforme": [
+      {
+        "target": "do maternity/paternity leave",
+        "term": "prepare necessary documents for leave"
+      },
+      {
+        "target": "decide if extend leave or return to work",
+        "term": "do maternity/paternity leave"
+      },
+      {
+        "target": "fetch information about financial support",
+        "term": "prepare necessary documents for leave"
+      },
+      {
+        "target": "notify social security",
+        "term": "prepare necessary documents for leave"
+      }
+    ],
+    "piece_jointe_alignement_brut": {
+      "maternity_leave.taken": {
+        "operator": "AND",
+        "quote": "Let parent select",
+        "terms": [
+          {
+            "term": "maternity_leave.planned",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED"
+      },
+      "maternity_leave.extended": {
+        "operator": "AND",
+        "quote": "At the end of the period let parent decide about extension.",
+        "terms": [
+          {
+            "term": "maternity_leave.taken",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED"
+      },
+      "information.collected": {
+        "operator": "AND",
+        "quote": "Collect relevant information",
+        "terms": [
+          {
+            "term": "maternity_leave.planned",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED"
+      },
+      "social_security.notified": {
+        "operator": "AND",
+        "quote": "Notify Social Security, Company in time",
+        "terms": [
+          {
+            "term": "maternity_leave.planned",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED"
+      }
+    }
+  },
+  "errors": []
+}

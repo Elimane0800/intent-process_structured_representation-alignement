@@ -1,0 +1,327 @@
+{
+  "case_name": "M_j03",
+  "text": "Category: Manufacturing\nTitle: Contract\n\nFor your contract project you need parts from several web shops. In order to\nfind out which web shop has the right parts, you have to query them all, and\nfind out how much they can deliver, at which price, and how long it will take.\n\nCreate a list of parts that you order from each shop. If one shop has not enough \nparts, order from several shops. Always use the cheapest parts.\n\nThe parts arrive in batches in a random order, typically they are +/- 2 days\nearlier/later.  \n\nWhen the first parts arrive you start building. Sometimes you have to reorder parts.\nIf your stock (for a single part) falls below 5, you reorder (the cheapest), if it\nfalls below 3 you reorder again (the fastest). If it is zero, you write a mail\nto your friends, complaining about the webshops.\n",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "mistral-nemotron",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "mistral-nemotron",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/text_and_bpmn/bpmn/M_j03/6.bpmn2.xml",
+  "dfg_edges": [
+    {
+      "source_id": "sid-DBA30B5F-DAA8-4913-84A9-1320E8AC1485",
+      "source_label": "building",
+      "target_id": "sid-2050D2A8-A209-480E-BDC4-E7CFBE60403A",
+      "target_label": "Manufacturing finished",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-5881A798-C8EE-48A6-B4E7-EAED7C100759",
+      "source_label": "check stock",
+      "target_id": "sid-64B40851-62E4-43F1-BDC7-900A44F4286D",
+      "target_label": "Order the cheapest",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "stock <5"
+      ]
+    },
+    {
+      "source_id": "sid-5881A798-C8EE-48A6-B4E7-EAED7C100759",
+      "source_label": "check stock",
+      "target_id": "sid-DAC86EDE-8053-4BF4-A8F0-56FF0044A8F0",
+      "target_label": "Order the fastest",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "stock <3"
+      ]
+    },
+    {
+      "source_id": "sid-5881A798-C8EE-48A6-B4E7-EAED7C100759",
+      "source_label": "check stock",
+      "target_id": "sid-928A1970-E72A-41BE-BD6A-91D6729B60EE",
+      "target_label": "sufficient amount in stock ",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-D5AFC9F6-69D3-4E91-A6C6-2A2B0EB8E686",
+      "source_label": "Receive parts",
+      "target_id": "sid-85C5083B-85DB-4A63-A4DE-AEE8B80A0931",
+      "target_label": "start buiding",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-D0F04626-AF12-4A7C-A552-861CF2D207A4",
+      "source_label": "create order list",
+      "target_id": "sid-4598538D-AB6F-47A6-8CBD-E87A9AC647B1",
+      "target_label": "Order from one shop",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "all parts are availabe from one shop"
+      ]
+    },
+    {
+      "source_id": "sid-D0F04626-AF12-4A7C-A552-861CF2D207A4",
+      "source_label": "create order list",
+      "target_id": "sid-0A0525CF-AC00-4B18-8A36-4E5CADDD8C95",
+      "target_label": "Order from several shop",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "all parts are not all allavailable from one shop"
+      ]
+    },
+    {
+      "source_id": "sid-85C5083B-85DB-4A63-A4DE-AEE8B80A0931",
+      "source_label": "start buiding",
+      "target_id": "sid-5881A798-C8EE-48A6-B4E7-EAED7C100759",
+      "target_label": "check stock",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-85C5083B-85DB-4A63-A4DE-AEE8B80A0931",
+      "source_label": "start buiding",
+      "target_id": "sid-DBA30B5F-DAA8-4913-84A9-1320E8AC1485",
+      "target_label": "building",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-C2A664EE-E003-402D-99FB-E5B7E9ED9C0C",
+      "source_label": "Query webshops",
+      "target_id": "sid-D0F04626-AF12-4A7C-A552-861CF2D207A4",
+      "target_label": "create order list",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-928A1970-E72A-41BE-BD6A-91D6729B60EE",
+      "source_label": "sufficient amount in stock ",
+      "target_id": "sid-2050D2A8-A209-480E-BDC4-E7CFBE60403A",
+      "target_label": "Manufacturing finished",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-4598538D-AB6F-47A6-8CBD-E87A9AC647B1",
+      "source_label": "Order from one shop",
+      "target_id": "sid-D5AFC9F6-69D3-4E91-A6C6-2A2B0EB8E686",
+      "target_label": "Receive parts",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-6638F3FC-CAD8-4471-96AF-BCA8F557DFB3",
+      "source_label": "Manufacturing  starts",
+      "target_id": "sid-C2A664EE-E003-402D-99FB-E5B7E9ED9C0C",
+      "target_label": "Query webshops",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-64B40851-62E4-43F1-BDC7-900A44F4286D",
+      "source_label": "Order the cheapest",
+      "target_id": "sid-D0F04626-AF12-4A7C-A552-861CF2D207A4",
+      "target_label": "create order list",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-DAC86EDE-8053-4BF4-A8F0-56FF0044A8F0",
+      "source_label": "Order the fastest",
+      "target_id": "sid-C9578F27-3EB1-4635-A06E-8CACFA2B27A2",
+      "target_label": "continue normal order",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "stock >0"
+      ]
+    },
+    {
+      "source_id": "sid-DAC86EDE-8053-4BF4-A8F0-56FF0044A8F0",
+      "source_label": "Order the fastest",
+      "target_id": "sid-DE8CD276-4294-41C9-8B6F-E0BDB8A9CA9A",
+      "target_label": "complaining about webshop",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "stock = 0"
+      ]
+    },
+    {
+      "source_id": "sid-0A0525CF-AC00-4B18-8A36-4E5CADDD8C95",
+      "source_label": "Order from several shop",
+      "target_id": "sid-D5AFC9F6-69D3-4E91-A6C6-2A2B0EB8E686",
+      "target_label": "Receive parts",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-DE8CD276-4294-41C9-8B6F-E0BDB8A9CA9A",
+      "source_label": "complaining about webshop",
+      "target_id": "sid-D0F04626-AF12-4A7C-A552-861CF2D207A4",
+      "target_label": "create order list",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-C9578F27-3EB1-4635-A06E-8CACFA2B27A2",
+      "source_label": "continue normal order",
+      "target_id": "sid-D0F04626-AF12-4A7C-A552-861CF2D207A4",
+      "target_label": "create order list",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway"
+      ]
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "building",
+      "subject_id": "sid-DBA30B5F-DAA8-4913-84A9-1320E8AC1485",
+      "predicate": "follows",
+      "object": "Manufacturing finished",
+      "object_id": "sid-2050D2A8-A209-480E-BDC4-E7CFBE60403A"
+    },
+    {
+      "subject": "check stock",
+      "subject_id": "sid-5881A798-C8EE-48A6-B4E7-EAED7C100759",
+      "predicate": "follows",
+      "object": "Order the cheapest",
+      "object_id": "sid-64B40851-62E4-43F1-BDC7-900A44F4286D"
+    },
+    {
+      "subject": "check stock",
+      "subject_id": "sid-5881A798-C8EE-48A6-B4E7-EAED7C100759",
+      "predicate": "follows",
+      "object": "Order the fastest",
+      "object_id": "sid-DAC86EDE-8053-4BF4-A8F0-56FF0044A8F0"
+    },
+    {
+      "subject": "check stock",
+      "subject_id": "sid-5881A798-C8EE-48A6-B4E7-EAED7C100759",
+      "predicate": "follows",
+      "object": "sufficient amount in stock ",
+      "object_id": "sid-928A1970-E72A-41BE-BD6A-91D6729B60EE"
+    },
+    {
+      "subject": "Receive parts",
+      "subject_id": "sid-D5AFC9F6-69D3-4E91-A6C6-2A2B0EB8E686",
+      "predicate": "follows",
+      "object": "start buiding",
+      "object_id": "sid-85C5083B-85DB-4A63-A4DE-AEE8B80A0931"
+    },
+    {
+      "subject": "create order list",
+      "subject_id": "sid-D0F04626-AF12-4A7C-A552-861CF2D207A4",
+      "predicate": "follows",
+      "object": "Order from one shop",
+      "object_id": "sid-4598538D-AB6F-47A6-8CBD-E87A9AC647B1"
+    },
+    {
+      "subject": "create order list",
+      "subject_id": "sid-D0F04626-AF12-4A7C-A552-861CF2D207A4",
+      "predicate": "follows",
+      "object": "Order from several shop",
+      "object_id": "sid-0A0525CF-AC00-4B18-8A36-4E5CADDD8C95"
+    },
+    {
+      "subject": "start buiding",
+      "subject_id": "sid-85C5083B-85DB-4A63-A4DE-AEE8B80A0931",
+      "predicate": "follows",
+      "object": "check stock",
+      "object_id": "sid-5881A798-C8EE-48A6-B4E7-EAED7C100759"
+    },
+    {
+      "subject": "start buiding",
+      "subject_id": "sid-85C5083B-85DB-4A63-A4DE-AEE8B80A0931",
+      "predicate": "follows",
+      "object": "building",
+      "object_id": "sid-DBA30B5F-DAA8-4913-84A9-1320E8AC1485"
+    },
+    {
+      "subject": "Query webshops",
+      "subject_id": "sid-C2A664EE-E003-402D-99FB-E5B7E9ED9C0C",
+      "predicate": "follows",
+      "object": "create order list",
+      "object_id": "sid-D0F04626-AF12-4A7C-A552-861CF2D207A4"
+    },
+    {
+      "subject": "sufficient amount in stock ",
+      "subject_id": "sid-928A1970-E72A-41BE-BD6A-91D6729B60EE",
+      "predicate": "follows",
+      "object": "Manufacturing finished",
+      "object_id": "sid-2050D2A8-A209-480E-BDC4-E7CFBE60403A"
+    },
+    {
+      "subject": "Order from one shop",
+      "subject_id": "sid-4598538D-AB6F-47A6-8CBD-E87A9AC647B1",
+      "predicate": "follows",
+      "object": "Receive parts",
+      "object_id": "sid-D5AFC9F6-69D3-4E91-A6C6-2A2B0EB8E686"
+    },
+    {
+      "subject": "Manufacturing  starts",
+      "subject_id": "sid-6638F3FC-CAD8-4471-96AF-BCA8F557DFB3",
+      "predicate": "follows",
+      "object": "Query webshops",
+      "object_id": "sid-C2A664EE-E003-402D-99FB-E5B7E9ED9C0C"
+    },
+    {
+      "subject": "Order the cheapest",
+      "subject_id": "sid-64B40851-62E4-43F1-BDC7-900A44F4286D",
+      "predicate": "follows",
+      "object": "create order list",
+      "object_id": "sid-D0F04626-AF12-4A7C-A552-861CF2D207A4"
+    },
+    {
+      "subject": "Order the fastest",
+      "subject_id": "sid-DAC86EDE-8053-4BF4-A8F0-56FF0044A8F0",
+      "predicate": "follows",
+      "object": "continue normal order",
+      "object_id": "sid-C9578F27-3EB1-4635-A06E-8CACFA2B27A2"
+    },
+    {
+      "subject": "Order the fastest",
+      "subject_id": "sid-DAC86EDE-8053-4BF4-A8F0-56FF0044A8F0",
+      "predicate": "follows",
+      "object": "complaining about webshop",
+      "object_id": "sid-DE8CD276-4294-41C9-8B6F-E0BDB8A9CA9A"
+    },
+    {
+      "subject": "Order from several shop",
+      "subject_id": "sid-0A0525CF-AC00-4B18-8A36-4E5CADDD8C95",
+      "predicate": "follows",
+      "object": "Receive parts",
+      "object_id": "sid-D5AFC9F6-69D3-4E91-A6C6-2A2B0EB8E686"
+    },
+    {
+      "subject": "complaining about webshop",
+      "subject_id": "sid-DE8CD276-4294-41C9-8B6F-E0BDB8A9CA9A",
+      "predicate": "follows",
+      "object": "create order list",
+      "object_id": "sid-D0F04626-AF12-4A7C-A552-861CF2D207A4"
+    },
+    {
+      "subject": "continue normal order",
+      "subject_id": "sid-C9578F27-3EB1-4635-A06E-8CACFA2B27A2",
+      "predicate": "follows",
+      "object": "create order list",
+      "object_id": "sid-D0F04626-AF12-4A7C-A552-861CF2D207A4"
+    }
+  ],
+  "errors": [
+    "state_space: Error code: 429 - {'status': 429, 'title': 'Too Many Requests'}",
+    "precondition: 'state_space'",
+    "state_matching: 'state_space'",
+    "graph_construction: 'state_space'",
+    "alignment: 'reference_graph'",
+    "report: 'alignment'"
+  ]
+}

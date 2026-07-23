@@ -1,0 +1,817 @@
+{
+  "case_name": "R_j01",
+  "text": "Category: Repair and Service\nTitle: OEE\n\nWrite a process, that collects relevant information from a machine, and\ncalculated the Overall Equipment Efficiency (OEE). If the OEE falls below a\ncertain value/percentage, stop the machine and send an email to an engineer.\nWhen the machine is restarted, continue measuring. When the machine is\ndisconnected, stop the process.\n",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "llama-3.1-8b",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "llama-3.1-8b",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/text_and_bpmn/bpmn/R_j01/7.bpmn2.xml",
+  "candidates": {
+    "machine": [
+      "disconnected",
+      "restarted"
+    ],
+    "process": [
+      "stopped",
+      "continued"
+    ],
+    "information": [
+      "collected"
+    ],
+    "OEE": [
+      "calculated",
+      "below_threshold"
+    ]
+  },
+  "validation_report": {
+    "machine": {
+      "f_lex": "ENTITY",
+      "kept": true
+    },
+    "process": {
+      "f_lex": "ENTITY",
+      "kept": true
+    },
+    "information": {
+      "f_lex": "ENTITY",
+      "kept": true
+    },
+    "OEE": {
+      "f_lex": "INDETERMINATE",
+      "kept": true
+    }
+  },
+  "state_space": {
+    "machine": [
+      "disconnected",
+      "restarted"
+    ],
+    "process": [
+      "stopped",
+      "continued"
+    ],
+    "information": [
+      "collected"
+    ],
+    "OEE": [
+      "calculated",
+      "below_threshold"
+    ]
+  },
+  "dfg_edges": [
+    {
+      "source_id": "sid-64A23664-376E-43CC-ADF0-04905AA26312",
+      "source_label": "Restart Machine",
+      "target_id": "sid-A09B2DDE-53BD-4684-8CFC-0B375614BA56",
+      "target_label": "Collect unplanned Stops",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-64A23664-376E-43CC-ADF0-04905AA26312",
+      "source_label": "Restart Machine",
+      "target_id": "sid-EE6D7AC5-591D-4A1B-823D-5594E2AA4D5E",
+      "target_label": "Collect planned Stops",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-FD8F8FA4-86C3-4615-84B8-46B901E38696",
+      "source_label": "Calculate Net Run Time",
+      "target_id": "sid-081D308A-73D1-402C-B385-2F83A75EB387",
+      "target_label": "Capture Production Rejects",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "no",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-FD8F8FA4-86C3-4615-84B8-46B901E38696",
+      "source_label": "Calculate Net Run Time",
+      "target_id": "sid-DFB278B8-DA31-427C-BD34-0EBCB1D30CCD",
+      "target_label": "Capture Startup Rejects",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "no",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-FD8F8FA4-86C3-4615-84B8-46B901E38696",
+      "source_label": "Calculate Net Run Time",
+      "target_id": "sid-427A2D8C-4876-4FF0-8C5F-4F7DF8DBAAED",
+      "target_label": "Calculate Fully Productive Time  (OEE)",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "yes"
+      ]
+    },
+    {
+      "source_id": "sid-427A2D8C-4876-4FF0-8C5F-4F7DF8DBAAED",
+      "source_label": "Calculate Fully Productive Time  (OEE)",
+      "target_id": "sid-BFFDF9F3-B638-4527-8EED-A0E25CEC995D",
+      "target_label": "",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-427A2D8C-4876-4FF0-8C5F-4F7DF8DBAAED",
+      "source_label": "Calculate Fully Productive Time  (OEE)",
+      "target_id": "sid-08FF3A43-C4D6-4721-8366-D14E2CF85800",
+      "target_label": "End measuring process",
+      "gateway_context": [
+        "ExclusiveGateway",
+        ">= 60%"
+      ]
+    },
+    {
+      "source_id": "sid-427A2D8C-4876-4FF0-8C5F-4F7DF8DBAAED",
+      "source_label": "Calculate Fully Productive Time  (OEE)",
+      "target_id": "sid-4DBD1D3D-9683-4A97-87F9-361A089A9951",
+      "target_label": "Stop the Machine",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "< 60%"
+      ]
+    },
+    {
+      "source_id": "sid-E992F339-E3E2-4C7D-96A5-1C5DCA1480B7",
+      "source_label": "Pick  machine",
+      "target_id": "sid-A09B2DDE-53BD-4684-8CFC-0B375614BA56",
+      "target_label": "Collect unplanned Stops",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-E992F339-E3E2-4C7D-96A5-1C5DCA1480B7",
+      "source_label": "Pick  machine",
+      "target_id": "sid-EE6D7AC5-591D-4A1B-823D-5594E2AA4D5E",
+      "target_label": "Collect planned Stops",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-081D308A-73D1-402C-B385-2F83A75EB387",
+      "source_label": "Capture Production Rejects",
+      "target_id": "sid-43506D2F-5046-4008-85DC-4E045B06F8C7",
+      "target_label": "Summarize Quality Loss Indicators",
+      "gateway_context": [
+        "InclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-7DC6032A-347E-4E86-9FBA-E6262A741BFA",
+      "source_label": "",
+      "target_id": "sid-894C4886-016F-40B1-A51F-816DC50C5306",
+      "target_label": "Calculate Run Time",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-EE6D7AC5-591D-4A1B-823D-5594E2AA4D5E",
+      "source_label": "Collect planned Stops",
+      "target_id": "sid-C0B5BEB8-17B7-498A-A965-30BAB275B7F8",
+      "target_label": "Summarize availability Loss",
+      "gateway_context": [
+        "InclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-4984BECB-1B59-42E9-8592-327F7E026212",
+      "source_label": "Capture Slow Cycles",
+      "target_id": "sid-7E7F0C74-4C5A-4C04-8B63-4C1CE1F8EB89",
+      "target_label": "Summarize Perfomance Loss Indicators",
+      "gateway_context": [
+        "InclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-9E80C014-9D14-4FCA-99FB-4935719B2C76",
+      "source_label": "Write Email",
+      "target_id": "sid-64A23664-376E-43CC-ADF0-04905AA26312",
+      "target_label": "Restart Machine",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "yes"
+      ]
+    },
+    {
+      "source_id": "sid-9E80C014-9D14-4FCA-99FB-4935719B2C76",
+      "source_label": "Write Email",
+      "target_id": "sid-DB7E6E05-3476-45E1-9147-554EB557F491",
+      "target_label": "Disconnect Machine",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "no"
+      ]
+    },
+    {
+      "source_id": "sid-4F90FD08-92D4-46CE-A963-4747094FADE6",
+      "source_label": "Capture Small Stops",
+      "target_id": "sid-7E7F0C74-4C5A-4C04-8B63-4C1CE1F8EB89",
+      "target_label": "Summarize Perfomance Loss Indicators",
+      "gateway_context": [
+        "InclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-A26C3378-E5F8-4AD9-BF47-078E2E64E546",
+      "source_label": "Start measuring process",
+      "target_id": "sid-E992F339-E3E2-4C7D-96A5-1C5DCA1480B7",
+      "target_label": "Pick  machine",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-A09B2DDE-53BD-4684-8CFC-0B375614BA56",
+      "source_label": "Collect unplanned Stops",
+      "target_id": "sid-C0B5BEB8-17B7-498A-A965-30BAB275B7F8",
+      "target_label": "Summarize availability Loss",
+      "gateway_context": [
+        "InclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-BFFDF9F3-B638-4527-8EED-A0E25CEC995D",
+      "source_label": "",
+      "target_id": "sid-4DBD1D3D-9683-4A97-87F9-361A089A9951",
+      "target_label": "Stop the Machine",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-BFFDF9F3-B638-4527-8EED-A0E25CEC995D",
+      "source_label": "",
+      "target_id": "sid-9AF3803F-9747-46BE-926B-1157D5502812",
+      "target_label": "",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-73C86D73-E520-481A-863D-DCC1A4199210",
+      "source_label": "",
+      "target_id": "sid-A26C3378-E5F8-4AD9-BF47-078E2E64E546",
+      "target_label": "Start measuring process",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-894C4886-016F-40B1-A51F-816DC50C5306",
+      "source_label": "Calculate Run Time",
+      "target_id": "sid-4F90FD08-92D4-46CE-A963-4747094FADE6",
+      "target_label": "Capture Small Stops",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "= max Speed",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-894C4886-016F-40B1-A51F-816DC50C5306",
+      "source_label": "Calculate Run Time",
+      "target_id": "sid-4984BECB-1B59-42E9-8592-327F7E026212",
+      "target_label": "Capture Slow Cycles",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "= max Speed",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-894C4886-016F-40B1-A51F-816DC50C5306",
+      "source_label": "Calculate Run Time",
+      "target_id": "sid-FD8F8FA4-86C3-4615-84B8-46B901E38696",
+      "target_label": "Calculate Net Run Time",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "< max Speed"
+      ]
+    },
+    {
+      "source_id": "sid-4DBD1D3D-9683-4A97-87F9-361A089A9951",
+      "source_label": "Stop the Machine",
+      "target_id": "sid-9E80C014-9D14-4FCA-99FB-4935719B2C76",
+      "target_label": "Write Email",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-C0B5BEB8-17B7-498A-A965-30BAB275B7F8",
+      "source_label": "Summarize availability Loss",
+      "target_id": "sid-894C4886-016F-40B1-A51F-816DC50C5306",
+      "target_label": "Calculate Run Time",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-C0B5BEB8-17B7-498A-A965-30BAB275B7F8",
+      "source_label": "Summarize availability Loss",
+      "target_id": "sid-7DC6032A-347E-4E86-9FBA-E6262A741BFA",
+      "target_label": "",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-DFB278B8-DA31-427C-BD34-0EBCB1D30CCD",
+      "source_label": "Capture Startup Rejects",
+      "target_id": "sid-43506D2F-5046-4008-85DC-4E045B06F8C7",
+      "target_label": "Summarize Quality Loss Indicators",
+      "gateway_context": [
+        "InclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-DB7E6E05-3476-45E1-9147-554EB557F491",
+      "source_label": "Disconnect Machine",
+      "target_id": "sid-731C2152-6D1E-43B8-8ED3-A88B77041CC2",
+      "target_label": "End of measuring process",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-7E7F0C74-4C5A-4C04-8B63-4C1CE1F8EB89",
+      "source_label": "Summarize Perfomance Loss Indicators",
+      "target_id": "sid-FD8F8FA4-86C3-4615-84B8-46B901E38696",
+      "target_label": "Calculate Net Run Time",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-43506D2F-5046-4008-85DC-4E045B06F8C7",
+      "source_label": "Summarize Quality Loss Indicators",
+      "target_id": "sid-427A2D8C-4876-4FF0-8C5F-4F7DF8DBAAED",
+      "target_label": "Calculate Fully Productive Time  (OEE)",
+      "gateway_context": []
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "Restart Machine",
+      "subject_id": "sid-64A23664-376E-43CC-ADF0-04905AA26312",
+      "predicate": "follows",
+      "object": "Collect unplanned Stops",
+      "object_id": "sid-A09B2DDE-53BD-4684-8CFC-0B375614BA56"
+    },
+    {
+      "subject": "Restart Machine",
+      "subject_id": "sid-64A23664-376E-43CC-ADF0-04905AA26312",
+      "predicate": "follows",
+      "object": "Collect planned Stops",
+      "object_id": "sid-EE6D7AC5-591D-4A1B-823D-5594E2AA4D5E"
+    },
+    {
+      "subject": "Calculate Net Run Time",
+      "subject_id": "sid-FD8F8FA4-86C3-4615-84B8-46B901E38696",
+      "predicate": "follows",
+      "object": "Capture Production Rejects",
+      "object_id": "sid-081D308A-73D1-402C-B385-2F83A75EB387"
+    },
+    {
+      "subject": "Calculate Net Run Time",
+      "subject_id": "sid-FD8F8FA4-86C3-4615-84B8-46B901E38696",
+      "predicate": "follows",
+      "object": "Capture Startup Rejects",
+      "object_id": "sid-DFB278B8-DA31-427C-BD34-0EBCB1D30CCD"
+    },
+    {
+      "subject": "Calculate Net Run Time",
+      "subject_id": "sid-FD8F8FA4-86C3-4615-84B8-46B901E38696",
+      "predicate": "follows",
+      "object": "Calculate Fully Productive Time  (OEE)",
+      "object_id": "sid-427A2D8C-4876-4FF0-8C5F-4F7DF8DBAAED"
+    },
+    {
+      "subject": "Calculate Fully Productive Time  (OEE)",
+      "subject_id": "sid-427A2D8C-4876-4FF0-8C5F-4F7DF8DBAAED",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "sid-BFFDF9F3-B638-4527-8EED-A0E25CEC995D"
+    },
+    {
+      "subject": "Calculate Fully Productive Time  (OEE)",
+      "subject_id": "sid-427A2D8C-4876-4FF0-8C5F-4F7DF8DBAAED",
+      "predicate": "follows",
+      "object": "End measuring process",
+      "object_id": "sid-08FF3A43-C4D6-4721-8366-D14E2CF85800"
+    },
+    {
+      "subject": "Calculate Fully Productive Time  (OEE)",
+      "subject_id": "sid-427A2D8C-4876-4FF0-8C5F-4F7DF8DBAAED",
+      "predicate": "follows",
+      "object": "Stop the Machine",
+      "object_id": "sid-4DBD1D3D-9683-4A97-87F9-361A089A9951"
+    },
+    {
+      "subject": "Pick  machine",
+      "subject_id": "sid-E992F339-E3E2-4C7D-96A5-1C5DCA1480B7",
+      "predicate": "follows",
+      "object": "Collect unplanned Stops",
+      "object_id": "sid-A09B2DDE-53BD-4684-8CFC-0B375614BA56"
+    },
+    {
+      "subject": "Pick  machine",
+      "subject_id": "sid-E992F339-E3E2-4C7D-96A5-1C5DCA1480B7",
+      "predicate": "follows",
+      "object": "Collect planned Stops",
+      "object_id": "sid-EE6D7AC5-591D-4A1B-823D-5594E2AA4D5E"
+    },
+    {
+      "subject": "Capture Production Rejects",
+      "subject_id": "sid-081D308A-73D1-402C-B385-2F83A75EB387",
+      "predicate": "follows",
+      "object": "Summarize Quality Loss Indicators",
+      "object_id": "sid-43506D2F-5046-4008-85DC-4E045B06F8C7"
+    },
+    {
+      "subject": "",
+      "subject_id": "sid-7DC6032A-347E-4E86-9FBA-E6262A741BFA",
+      "predicate": "follows",
+      "object": "Calculate Run Time",
+      "object_id": "sid-894C4886-016F-40B1-A51F-816DC50C5306"
+    },
+    {
+      "subject": "Collect planned Stops",
+      "subject_id": "sid-EE6D7AC5-591D-4A1B-823D-5594E2AA4D5E",
+      "predicate": "follows",
+      "object": "Summarize availability Loss",
+      "object_id": "sid-C0B5BEB8-17B7-498A-A965-30BAB275B7F8"
+    },
+    {
+      "subject": "Capture Slow Cycles",
+      "subject_id": "sid-4984BECB-1B59-42E9-8592-327F7E026212",
+      "predicate": "follows",
+      "object": "Summarize Perfomance Loss Indicators",
+      "object_id": "sid-7E7F0C74-4C5A-4C04-8B63-4C1CE1F8EB89"
+    },
+    {
+      "subject": "Write Email",
+      "subject_id": "sid-9E80C014-9D14-4FCA-99FB-4935719B2C76",
+      "predicate": "follows",
+      "object": "Restart Machine",
+      "object_id": "sid-64A23664-376E-43CC-ADF0-04905AA26312"
+    },
+    {
+      "subject": "Write Email",
+      "subject_id": "sid-9E80C014-9D14-4FCA-99FB-4935719B2C76",
+      "predicate": "follows",
+      "object": "Disconnect Machine",
+      "object_id": "sid-DB7E6E05-3476-45E1-9147-554EB557F491"
+    },
+    {
+      "subject": "Capture Small Stops",
+      "subject_id": "sid-4F90FD08-92D4-46CE-A963-4747094FADE6",
+      "predicate": "follows",
+      "object": "Summarize Perfomance Loss Indicators",
+      "object_id": "sid-7E7F0C74-4C5A-4C04-8B63-4C1CE1F8EB89"
+    },
+    {
+      "subject": "Start measuring process",
+      "subject_id": "sid-A26C3378-E5F8-4AD9-BF47-078E2E64E546",
+      "predicate": "follows",
+      "object": "Pick  machine",
+      "object_id": "sid-E992F339-E3E2-4C7D-96A5-1C5DCA1480B7"
+    },
+    {
+      "subject": "Collect unplanned Stops",
+      "subject_id": "sid-A09B2DDE-53BD-4684-8CFC-0B375614BA56",
+      "predicate": "follows",
+      "object": "Summarize availability Loss",
+      "object_id": "sid-C0B5BEB8-17B7-498A-A965-30BAB275B7F8"
+    },
+    {
+      "subject": "",
+      "subject_id": "sid-BFFDF9F3-B638-4527-8EED-A0E25CEC995D",
+      "predicate": "follows",
+      "object": "Stop the Machine",
+      "object_id": "sid-4DBD1D3D-9683-4A97-87F9-361A089A9951"
+    },
+    {
+      "subject": "",
+      "subject_id": "sid-BFFDF9F3-B638-4527-8EED-A0E25CEC995D",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "sid-9AF3803F-9747-46BE-926B-1157D5502812"
+    },
+    {
+      "subject": "",
+      "subject_id": "sid-73C86D73-E520-481A-863D-DCC1A4199210",
+      "predicate": "follows",
+      "object": "Start measuring process",
+      "object_id": "sid-A26C3378-E5F8-4AD9-BF47-078E2E64E546"
+    },
+    {
+      "subject": "Calculate Run Time",
+      "subject_id": "sid-894C4886-016F-40B1-A51F-816DC50C5306",
+      "predicate": "follows",
+      "object": "Capture Small Stops",
+      "object_id": "sid-4F90FD08-92D4-46CE-A963-4747094FADE6"
+    },
+    {
+      "subject": "Calculate Run Time",
+      "subject_id": "sid-894C4886-016F-40B1-A51F-816DC50C5306",
+      "predicate": "follows",
+      "object": "Capture Slow Cycles",
+      "object_id": "sid-4984BECB-1B59-42E9-8592-327F7E026212"
+    },
+    {
+      "subject": "Calculate Run Time",
+      "subject_id": "sid-894C4886-016F-40B1-A51F-816DC50C5306",
+      "predicate": "follows",
+      "object": "Calculate Net Run Time",
+      "object_id": "sid-FD8F8FA4-86C3-4615-84B8-46B901E38696"
+    },
+    {
+      "subject": "Stop the Machine",
+      "subject_id": "sid-4DBD1D3D-9683-4A97-87F9-361A089A9951",
+      "predicate": "follows",
+      "object": "Write Email",
+      "object_id": "sid-9E80C014-9D14-4FCA-99FB-4935719B2C76"
+    },
+    {
+      "subject": "Summarize availability Loss",
+      "subject_id": "sid-C0B5BEB8-17B7-498A-A965-30BAB275B7F8",
+      "predicate": "follows",
+      "object": "Calculate Run Time",
+      "object_id": "sid-894C4886-016F-40B1-A51F-816DC50C5306"
+    },
+    {
+      "subject": "Summarize availability Loss",
+      "subject_id": "sid-C0B5BEB8-17B7-498A-A965-30BAB275B7F8",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "sid-7DC6032A-347E-4E86-9FBA-E6262A741BFA"
+    },
+    {
+      "subject": "Capture Startup Rejects",
+      "subject_id": "sid-DFB278B8-DA31-427C-BD34-0EBCB1D30CCD",
+      "predicate": "follows",
+      "object": "Summarize Quality Loss Indicators",
+      "object_id": "sid-43506D2F-5046-4008-85DC-4E045B06F8C7"
+    },
+    {
+      "subject": "Disconnect Machine",
+      "subject_id": "sid-DB7E6E05-3476-45E1-9147-554EB557F491",
+      "predicate": "follows",
+      "object": "End of measuring process",
+      "object_id": "sid-731C2152-6D1E-43B8-8ED3-A88B77041CC2"
+    },
+    {
+      "subject": "Summarize Perfomance Loss Indicators",
+      "subject_id": "sid-7E7F0C74-4C5A-4C04-8B63-4C1CE1F8EB89",
+      "predicate": "follows",
+      "object": "Calculate Net Run Time",
+      "object_id": "sid-FD8F8FA4-86C3-4615-84B8-46B901E38696"
+    },
+    {
+      "subject": "Summarize Quality Loss Indicators",
+      "subject_id": "sid-43506D2F-5046-4008-85DC-4E045B06F8C7",
+      "predicate": "follows",
+      "object": "Calculate Fully Productive Time  (OEE)",
+      "object_id": "sid-427A2D8C-4876-4FF0-8C5F-4F7DF8DBAAED"
+    }
+  ],
+  "matches": {
+    "Calculate Fully Productive Time  (OEE)": {
+      "match": "OEE.calculated",
+      "score": 0.6226
+    },
+    "Calculate Net Run Time": {
+      "match": "OEE.calculated",
+      "score": 0.2854
+    },
+    "Calculate Run Time": {
+      "match": "OEE.calculated",
+      "score": 0.3157
+    },
+    "Capture Production Rejects": {
+      "match": "machine.restarted",
+      "score": 0.1462
+    },
+    "Capture Slow Cycles": {
+      "match": "process.stopped",
+      "score": 0.1635
+    },
+    "Capture Small Stops": {
+      "match": "process.stopped",
+      "score": 0.2265
+    },
+    "Capture Startup Rejects": {
+      "match": "machine.restarted",
+      "score": 0.264
+    },
+    "Collect planned Stops": {
+      "match": "information.collected",
+      "score": 0.3813
+    },
+    "Collect unplanned Stops": {
+      "match": "information.collected",
+      "score": 0.3725
+    },
+    "Disconnect Machine": {
+      "match": "machine.disconnected",
+      "score": 0.7045
+    },
+    "End measuring process": {
+      "match": "process.stopped",
+      "score": 0.4115
+    },
+    "End of measuring process": {
+      "match": "process.continued",
+      "score": 0.3701
+    },
+    "Pick  machine": {
+      "match": "machine.disconnected",
+      "score": 0.3367
+    },
+    "Restart Machine": {
+      "match": "machine.restarted",
+      "score": 0.8105
+    },
+    "Start measuring process": {
+      "match": "process.stopped",
+      "score": 0.3668
+    },
+    "Stop the Machine": {
+      "match": "machine.disconnected",
+      "score": 0.4661
+    },
+    "Summarize Perfomance Loss Indicators": {
+      "match": "OEE.below_threshold",
+      "score": 0.2405
+    },
+    "Summarize Quality Loss Indicators": {
+      "match": "OEE.calculated",
+      "score": 0.2308
+    },
+    "Summarize availability Loss": {
+      "match": "information.collected",
+      "score": 0.1699
+    },
+    "Write Email": {
+      "match": "process.stopped",
+      "score": 0.1235
+    }
+  },
+  "process_graph": [
+    {
+      "from": "machine.restarted",
+      "to": "information.collected",
+      "activity_from": "Restart Machine",
+      "activity_to": "Collect unplanned Stops"
+    },
+    {
+      "from": "machine.restarted",
+      "to": "information.collected",
+      "activity_from": "Restart Machine",
+      "activity_to": "Collect planned Stops"
+    },
+    {
+      "from": "OEE.calculated",
+      "to": "machine.restarted",
+      "activity_from": "Calculate Net Run Time",
+      "activity_to": "Capture Production Rejects"
+    },
+    {
+      "from": "OEE.calculated",
+      "to": "machine.restarted",
+      "activity_from": "Calculate Net Run Time",
+      "activity_to": "Capture Startup Rejects"
+    },
+    {
+      "from": "OEE.calculated",
+      "to": "OEE.calculated",
+      "activity_from": "Calculate Net Run Time",
+      "activity_to": "Calculate Fully Productive Time  (OEE)"
+    },
+    {
+      "from": "OEE.calculated",
+      "to": "process.stopped",
+      "activity_from": "Calculate Fully Productive Time  (OEE)",
+      "activity_to": "End measuring process"
+    },
+    {
+      "from": "OEE.calculated",
+      "to": "machine.disconnected",
+      "activity_from": "Calculate Fully Productive Time  (OEE)",
+      "activity_to": "Stop the Machine"
+    },
+    {
+      "from": "machine.disconnected",
+      "to": "information.collected",
+      "activity_from": "Pick  machine",
+      "activity_to": "Collect unplanned Stops"
+    },
+    {
+      "from": "machine.disconnected",
+      "to": "information.collected",
+      "activity_from": "Pick  machine",
+      "activity_to": "Collect planned Stops"
+    },
+    {
+      "from": "machine.restarted",
+      "to": "OEE.calculated",
+      "activity_from": "Capture Production Rejects",
+      "activity_to": "Summarize Quality Loss Indicators"
+    },
+    {
+      "from": "information.collected",
+      "to": "information.collected",
+      "activity_from": "Collect planned Stops",
+      "activity_to": "Summarize availability Loss"
+    },
+    {
+      "from": "process.stopped",
+      "to": "OEE.below_threshold",
+      "activity_from": "Capture Slow Cycles",
+      "activity_to": "Summarize Perfomance Loss Indicators"
+    },
+    {
+      "from": "process.stopped",
+      "to": "machine.restarted",
+      "activity_from": "Write Email",
+      "activity_to": "Restart Machine"
+    },
+    {
+      "from": "process.stopped",
+      "to": "machine.disconnected",
+      "activity_from": "Write Email",
+      "activity_to": "Disconnect Machine"
+    },
+    {
+      "from": "process.stopped",
+      "to": "OEE.below_threshold",
+      "activity_from": "Capture Small Stops",
+      "activity_to": "Summarize Perfomance Loss Indicators"
+    },
+    {
+      "from": "process.stopped",
+      "to": "machine.disconnected",
+      "activity_from": "Start measuring process",
+      "activity_to": "Pick  machine"
+    },
+    {
+      "from": "information.collected",
+      "to": "information.collected",
+      "activity_from": "Collect unplanned Stops",
+      "activity_to": "Summarize availability Loss"
+    },
+    {
+      "from": "OEE.calculated",
+      "to": "process.stopped",
+      "activity_from": "Calculate Run Time",
+      "activity_to": "Capture Small Stops"
+    },
+    {
+      "from": "OEE.calculated",
+      "to": "process.stopped",
+      "activity_from": "Calculate Run Time",
+      "activity_to": "Capture Slow Cycles"
+    },
+    {
+      "from": "OEE.calculated",
+      "to": "OEE.calculated",
+      "activity_from": "Calculate Run Time",
+      "activity_to": "Calculate Net Run Time"
+    },
+    {
+      "from": "machine.disconnected",
+      "to": "process.stopped",
+      "activity_from": "Stop the Machine",
+      "activity_to": "Write Email"
+    },
+    {
+      "from": "information.collected",
+      "to": "OEE.calculated",
+      "activity_from": "Summarize availability Loss",
+      "activity_to": "Calculate Run Time"
+    },
+    {
+      "from": "machine.restarted",
+      "to": "OEE.calculated",
+      "activity_from": "Capture Startup Rejects",
+      "activity_to": "Summarize Quality Loss Indicators"
+    },
+    {
+      "from": "machine.disconnected",
+      "to": "process.continued",
+      "activity_from": "Disconnect Machine",
+      "activity_to": "End of measuring process"
+    },
+    {
+      "from": "OEE.below_threshold",
+      "to": "OEE.calculated",
+      "activity_from": "Summarize Perfomance Loss Indicators",
+      "activity_to": "Calculate Net Run Time"
+    },
+    {
+      "from": "OEE.calculated",
+      "to": "OEE.calculated",
+      "activity_from": "Summarize Quality Loss Indicators",
+      "activity_to": "Calculate Fully Productive Time  (OEE)"
+    }
+  ],
+  "errors": [
+    "precondition: Error code: 429 - {'status': 429, 'title': 'Too Many Requests'}",
+    "graph_construction: 'validated_preconditions'",
+    "alignment: 'reference_graph'",
+    "report: 'alignment'"
+  ]
+}

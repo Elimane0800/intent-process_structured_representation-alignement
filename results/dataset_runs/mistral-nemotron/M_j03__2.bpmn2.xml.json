@@ -1,0 +1,359 @@
+{
+  "case_name": "M_j03",
+  "text": "Category: Manufacturing\nTitle: Contract\n\nFor your contract project you need parts from several web shops. In order to\nfind out which web shop has the right parts, you have to query them all, and\nfind out how much they can deliver, at which price, and how long it will take.\n\nCreate a list of parts that you order from each shop. If one shop has not enough \nparts, order from several shops. Always use the cheapest parts.\n\nThe parts arrive in batches in a random order, typically they are +/- 2 days\nearlier/later.  \n\nWhen the first parts arrive you start building. Sometimes you have to reorder parts.\nIf your stock (for a single part) falls below 5, you reorder (the cheapest), if it\nfalls below 3 you reorder again (the fastest). If it is zero, you write a mail\nto your friends, complaining about the webshops.\n",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "mistral-nemotron",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "mistral-nemotron",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/text_and_bpmn/bpmn/M_j03/2.bpmn2.xml",
+  "dfg_edges": [
+    {
+      "source_id": "sid-681DAA33-5B5C-4EBA-BBAC-48AAC5E84230",
+      "source_label": "Make an order to the Webshop",
+      "target_id": "sid-720D9034-B8D1-4F69-B40D-919EEFB83B7A",
+      "target_label": "The webshop receives an order",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-88F68906-999B-4258-A738-0C284FFBF71E",
+      "source_label": "order the part with faster delivery",
+      "target_id": "sid-720D9034-B8D1-4F69-B40D-919EEFB83B7A",
+      "target_label": "The webshop receives an order",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-2D642952-9047-48AF-834E-9DA5900DB197",
+      "source_label": "The Manufacturer receives an order and starts buiding",
+      "target_id": "sid-88F68906-999B-4258-A738-0C284FFBF71E",
+      "target_label": "order the part with faster delivery",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "no",
+        "ExclusiveGateway",
+        "no",
+        "ExclusiveGateway",
+        "yes"
+      ]
+    },
+    {
+      "source_id": "sid-2D642952-9047-48AF-834E-9DA5900DB197",
+      "source_label": "The Manufacturer receives an order and starts buiding",
+      "target_id": "sid-59319315-3C6E-482B-9EE3-750FD0E1D75B",
+      "target_label": "finish the project",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "no",
+        "ExclusiveGateway",
+        "no",
+        "ExclusiveGateway",
+        "no",
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-2D642952-9047-48AF-834E-9DA5900DB197",
+      "source_label": "The Manufacturer receives an order and starts buiding",
+      "target_id": "sid-D369D967-16D8-4C30-B33D-DF33CB0A539A",
+      "target_label": "order the cheapest part",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "no",
+        "ExclusiveGateway",
+        "no",
+        "ExclusiveGateway",
+        "no",
+        "ExclusiveGateway",
+        "yes"
+      ]
+    },
+    {
+      "source_id": "sid-2D642952-9047-48AF-834E-9DA5900DB197",
+      "source_label": "The Manufacturer receives an order and starts buiding",
+      "target_id": "sid-58A2563E-BDA4-4375-91C9-12FF15686B98",
+      "target_label": "write an compliament email",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "no",
+        "ExclusiveGateway",
+        "yes"
+      ]
+    },
+    {
+      "source_id": "sid-2D642952-9047-48AF-834E-9DA5900DB197",
+      "source_label": "The Manufacturer receives an order and starts buiding",
+      "target_id": "sid-59319315-3C6E-482B-9EE3-750FD0E1D75B",
+      "target_label": "finish the project",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "yes",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-53EA0737-1ABF-4AB4-AA88-221F97574BB1",
+      "source_label": "",
+      "target_id": "sid-445595DA-4924-4455-A3E8-2ACE8E11A866",
+      "target_label": "Create list of necessary parts",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-720D9034-B8D1-4F69-B40D-919EEFB83B7A",
+      "source_label": "The webshop receives an order",
+      "target_id": "sid-E8238EDF-DBEF-4E60-B9F3-941E2AD3FFD5",
+      "target_label": "The webshop updates Inventory",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-720D9034-B8D1-4F69-B40D-919EEFB83B7A",
+      "source_label": "The webshop receives an order",
+      "target_id": "sid-E80DC7FE-F009-4CEE-987D-0AD57E76BA78",
+      "target_label": "The webshop sends an invoice",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-720D9034-B8D1-4F69-B40D-919EEFB83B7A",
+      "source_label": "The webshop receives an order",
+      "target_id": "sid-66565908-F2D8-4EB3-A47A-7C7790F34A7B",
+      "target_label": "The webshop delivers an order",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-E8238EDF-DBEF-4E60-B9F3-941E2AD3FFD5",
+      "source_label": "The webshop updates Inventory",
+      "target_id": "sid-2D642952-9047-48AF-834E-9DA5900DB197",
+      "target_label": "The Manufacturer receives an order and starts buiding",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-58A2563E-BDA4-4375-91C9-12FF15686B98",
+      "source_label": "write an compliament email",
+      "target_id": "sid-59319315-3C6E-482B-9EE3-750FD0E1D75B",
+      "target_label": "finish the project",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-E80DC7FE-F009-4CEE-987D-0AD57E76BA78",
+      "source_label": "The webshop sends an invoice",
+      "target_id": "sid-2D642952-9047-48AF-834E-9DA5900DB197",
+      "target_label": "The Manufacturer receives an order and starts buiding",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-D369D967-16D8-4C30-B33D-DF33CB0A539A",
+      "source_label": "order the cheapest part",
+      "target_id": "sid-720D9034-B8D1-4F69-B40D-919EEFB83B7A",
+      "target_label": "The webshop receives an order",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-66565908-F2D8-4EB3-A47A-7C7790F34A7B",
+      "source_label": "The webshop delivers an order",
+      "target_id": "sid-2D642952-9047-48AF-834E-9DA5900DB197",
+      "target_label": "The Manufacturer receives an order and starts buiding",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-452BD26B-040D-4E69-8570-8942B562D593",
+      "source_label": "Choose the shop wiht cheapest parts",
+      "target_id": "sid-681DAA33-5B5C-4EBA-BBAC-48AAC5E84230",
+      "target_label": "Make an order to the Webshop",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-445595DA-4924-4455-A3E8-2ACE8E11A866",
+      "source_label": "Create list of necessary parts",
+      "target_id": "sid-E94F1862-3F2D-4DE0-B17D-482FD70EC0DC",
+      "target_label": "Query Webshops for  necessary parts",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-59319315-3C6E-482B-9EE3-750FD0E1D75B",
+      "source_label": "finish the project",
+      "target_id": "sid-5AC13B8F-B585-4707-B3BA-EB53E5E16D6E",
+      "target_label": "",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-E94F1862-3F2D-4DE0-B17D-482FD70EC0DC",
+      "source_label": "Query Webshops for  necessary parts",
+      "target_id": "sid-452BD26B-040D-4E69-8570-8942B562D593",
+      "target_label": "Choose the shop wiht cheapest parts",
+      "gateway_context": []
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "Make an order to the Webshop",
+      "subject_id": "sid-681DAA33-5B5C-4EBA-BBAC-48AAC5E84230",
+      "predicate": "follows",
+      "object": "The webshop receives an order",
+      "object_id": "sid-720D9034-B8D1-4F69-B40D-919EEFB83B7A"
+    },
+    {
+      "subject": "order the part with faster delivery",
+      "subject_id": "sid-88F68906-999B-4258-A738-0C284FFBF71E",
+      "predicate": "follows",
+      "object": "The webshop receives an order",
+      "object_id": "sid-720D9034-B8D1-4F69-B40D-919EEFB83B7A"
+    },
+    {
+      "subject": "The Manufacturer receives an order and starts buiding",
+      "subject_id": "sid-2D642952-9047-48AF-834E-9DA5900DB197",
+      "predicate": "follows",
+      "object": "order the part with faster delivery",
+      "object_id": "sid-88F68906-999B-4258-A738-0C284FFBF71E"
+    },
+    {
+      "subject": "The Manufacturer receives an order and starts buiding",
+      "subject_id": "sid-2D642952-9047-48AF-834E-9DA5900DB197",
+      "predicate": "follows",
+      "object": "finish the project",
+      "object_id": "sid-59319315-3C6E-482B-9EE3-750FD0E1D75B"
+    },
+    {
+      "subject": "The Manufacturer receives an order and starts buiding",
+      "subject_id": "sid-2D642952-9047-48AF-834E-9DA5900DB197",
+      "predicate": "follows",
+      "object": "order the cheapest part",
+      "object_id": "sid-D369D967-16D8-4C30-B33D-DF33CB0A539A"
+    },
+    {
+      "subject": "The Manufacturer receives an order and starts buiding",
+      "subject_id": "sid-2D642952-9047-48AF-834E-9DA5900DB197",
+      "predicate": "follows",
+      "object": "write an compliament email",
+      "object_id": "sid-58A2563E-BDA4-4375-91C9-12FF15686B98"
+    },
+    {
+      "subject": "The Manufacturer receives an order and starts buiding",
+      "subject_id": "sid-2D642952-9047-48AF-834E-9DA5900DB197",
+      "predicate": "follows",
+      "object": "finish the project",
+      "object_id": "sid-59319315-3C6E-482B-9EE3-750FD0E1D75B"
+    },
+    {
+      "subject": "",
+      "subject_id": "sid-53EA0737-1ABF-4AB4-AA88-221F97574BB1",
+      "predicate": "follows",
+      "object": "Create list of necessary parts",
+      "object_id": "sid-445595DA-4924-4455-A3E8-2ACE8E11A866"
+    },
+    {
+      "subject": "The webshop receives an order",
+      "subject_id": "sid-720D9034-B8D1-4F69-B40D-919EEFB83B7A",
+      "predicate": "follows",
+      "object": "The webshop updates Inventory",
+      "object_id": "sid-E8238EDF-DBEF-4E60-B9F3-941E2AD3FFD5"
+    },
+    {
+      "subject": "The webshop receives an order",
+      "subject_id": "sid-720D9034-B8D1-4F69-B40D-919EEFB83B7A",
+      "predicate": "follows",
+      "object": "The webshop sends an invoice",
+      "object_id": "sid-E80DC7FE-F009-4CEE-987D-0AD57E76BA78"
+    },
+    {
+      "subject": "The webshop receives an order",
+      "subject_id": "sid-720D9034-B8D1-4F69-B40D-919EEFB83B7A",
+      "predicate": "follows",
+      "object": "The webshop delivers an order",
+      "object_id": "sid-66565908-F2D8-4EB3-A47A-7C7790F34A7B"
+    },
+    {
+      "subject": "The webshop updates Inventory",
+      "subject_id": "sid-E8238EDF-DBEF-4E60-B9F3-941E2AD3FFD5",
+      "predicate": "follows",
+      "object": "The Manufacturer receives an order and starts buiding",
+      "object_id": "sid-2D642952-9047-48AF-834E-9DA5900DB197"
+    },
+    {
+      "subject": "write an compliament email",
+      "subject_id": "sid-58A2563E-BDA4-4375-91C9-12FF15686B98",
+      "predicate": "follows",
+      "object": "finish the project",
+      "object_id": "sid-59319315-3C6E-482B-9EE3-750FD0E1D75B"
+    },
+    {
+      "subject": "The webshop sends an invoice",
+      "subject_id": "sid-E80DC7FE-F009-4CEE-987D-0AD57E76BA78",
+      "predicate": "follows",
+      "object": "The Manufacturer receives an order and starts buiding",
+      "object_id": "sid-2D642952-9047-48AF-834E-9DA5900DB197"
+    },
+    {
+      "subject": "order the cheapest part",
+      "subject_id": "sid-D369D967-16D8-4C30-B33D-DF33CB0A539A",
+      "predicate": "follows",
+      "object": "The webshop receives an order",
+      "object_id": "sid-720D9034-B8D1-4F69-B40D-919EEFB83B7A"
+    },
+    {
+      "subject": "The webshop delivers an order",
+      "subject_id": "sid-66565908-F2D8-4EB3-A47A-7C7790F34A7B",
+      "predicate": "follows",
+      "object": "The Manufacturer receives an order and starts buiding",
+      "object_id": "sid-2D642952-9047-48AF-834E-9DA5900DB197"
+    },
+    {
+      "subject": "Choose the shop wiht cheapest parts",
+      "subject_id": "sid-452BD26B-040D-4E69-8570-8942B562D593",
+      "predicate": "follows",
+      "object": "Make an order to the Webshop",
+      "object_id": "sid-681DAA33-5B5C-4EBA-BBAC-48AAC5E84230"
+    },
+    {
+      "subject": "Create list of necessary parts",
+      "subject_id": "sid-445595DA-4924-4455-A3E8-2ACE8E11A866",
+      "predicate": "follows",
+      "object": "Query Webshops for  necessary parts",
+      "object_id": "sid-E94F1862-3F2D-4DE0-B17D-482FD70EC0DC"
+    },
+    {
+      "subject": "finish the project",
+      "subject_id": "sid-59319315-3C6E-482B-9EE3-750FD0E1D75B",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "sid-5AC13B8F-B585-4707-B3BA-EB53E5E16D6E"
+    },
+    {
+      "subject": "Query Webshops for  necessary parts",
+      "subject_id": "sid-E94F1862-3F2D-4DE0-B17D-482FD70EC0DC",
+      "predicate": "follows",
+      "object": "Choose the shop wiht cheapest parts",
+      "object_id": "sid-452BD26B-040D-4E69-8570-8942B562D593"
+    }
+  ],
+  "errors": [
+    "state_space: Error code: 429 - {'status': 429, 'title': 'Too Many Requests'}",
+    "precondition: 'state_space'",
+    "state_matching: 'state_space'",
+    "graph_construction: 'state_space'",
+    "alignment: 'reference_graph'",
+    "report: 'alignment'"
+  ]
+}

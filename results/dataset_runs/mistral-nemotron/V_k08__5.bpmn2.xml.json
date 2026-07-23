@@ -1,0 +1,330 @@
+{
+  "case_name": "V_k08",
+  "text": "Category: Vending and Shipping\nTitle: Ordering in an Online Shop  \n\nA customer that logs into an E-Shop system and has to wait for its login\nconfirmation (its credentials are checked by the system). If the login was\nsuccessful then the customer can continue to select products, else the shopping\nexperience stops. After selecting a product the customer has to add it to a\nshopping cart, save the product and check if every product was already\nselected. These steps repeat until all products were selected. Then the order\nis finished by the shopping system and simultaneously payment and shipment for the order is prepared.\nFor the payment the customer has to enter its payment data\nand has to wait until the bank confirms the payment.\nWhile waiting for the payment confirmation the customer can enter its\nshipping address (an independent billing address can be entered if the shipping\naddress is not equal to the billing address) . Finally if the address and the\npayment steps are executed then the order will be finished by the system.\n",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "mistral-nemotron",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "mistral-nemotron",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/text_and_bpmn/bpmn/V_k08/5.bpmn2.xml",
+  "dfg_edges": [
+    {
+      "source_id": "sid-9F40211C-C70B-40C6-B6B6-5C0793EFF670",
+      "source_label": "customer credentials being checked by system",
+      "target_id": "sid-3DF8D0AE-78C5-4D9F-B3A9-B208CF9182B5",
+      "target_label": "customer selects a product",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "Yes",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-9F40211C-C70B-40C6-B6B6-5C0793EFF670",
+      "source_label": "customer credentials being checked by system",
+      "target_id": "sid-5EF7054E-A8CC-4BF8-BE78-2BF1284ED7E1",
+      "target_label": "Close E-Shop Homepage",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "No",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-44A2D10B-D888-489C-80A5-39F502D370C9",
+      "source_label": "customer waits until bank confirms payment",
+      "target_id": "sid-0ACC63E0-B127-43B8-889B-B2D2F4559DF1",
+      "target_label": "order is being finished by system",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-C4F2D969-9A2B-4F0A-BCA9-EAE835B4B6D8",
+      "source_label": "customer enters payment data",
+      "target_id": "sid-44A2D10B-D888-489C-80A5-39F502D370C9",
+      "target_label": "customer waits until bank confirms payment",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-C4F2D969-9A2B-4F0A-BCA9-EAE835B4B6D8",
+      "source_label": "customer enters payment data",
+      "target_id": "sid-74DE8C28-C0FA-4C8A-8267-C671E792A84D",
+      "target_label": "customer enters shipping address",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-3DF8D0AE-78C5-4D9F-B3A9-B208CF9182B5",
+      "source_label": "customer selects a product",
+      "target_id": "sid-3E14D1C8-41C0-4FAA-9E0C-B3AAD9C76631",
+      "target_label": "customer adds product to shopping cart",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-3E14D1C8-41C0-4FAA-9E0C-B3AAD9C76631",
+      "source_label": "customer adds product to shopping cart",
+      "target_id": "sid-53B4F9E8-7078-41A1-9CE1-E0A6042BD3F3",
+      "target_label": "customer saves product",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-D7442C0D-7340-476A-80F5-B48418199FE5",
+      "source_label": "Open E-Shop Homepage",
+      "target_id": "sid-7071756F-7827-4BD8-A21B-D7AE5FC83CA2",
+      "target_label": "customer logs into E-Shop",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-B2A104EC-3637-4FDB-BBD7-CF204B67B523",
+      "source_label": "customer checks if product was already selected",
+      "target_id": "sid-411FF6D7-5D59-433E-850A-CAB6DA4CFDD1",
+      "target_label": "Shipment is prepared by system",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "Yes",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-B2A104EC-3637-4FDB-BBD7-CF204B67B523",
+      "source_label": "customer checks if product was already selected",
+      "target_id": "sid-E28C40EE-FC28-4BAB-BF15-90CE19B3D846",
+      "target_label": "Payment is prepared by system",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "Yes",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-B2A104EC-3637-4FDB-BBD7-CF204B67B523",
+      "source_label": "customer checks if product was already selected",
+      "target_id": "sid-3DF8D0AE-78C5-4D9F-B3A9-B208CF9182B5",
+      "target_label": "customer selects a product",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "No",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-E28C40EE-FC28-4BAB-BF15-90CE19B3D846",
+      "source_label": "Payment is prepared by system",
+      "target_id": "sid-C4F2D969-9A2B-4F0A-BCA9-EAE835B4B6D8",
+      "target_label": "customer enters payment data",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-411FF6D7-5D59-433E-850A-CAB6DA4CFDD1",
+      "source_label": "Shipment is prepared by system",
+      "target_id": "sid-C4F2D969-9A2B-4F0A-BCA9-EAE835B4B6D8",
+      "target_label": "customer enters payment data",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-0ACC63E0-B127-43B8-889B-B2D2F4559DF1",
+      "source_label": "order is being finished by system",
+      "target_id": "sid-5EF7054E-A8CC-4BF8-BE78-2BF1284ED7E1",
+      "target_label": "Close E-Shop Homepage",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-74DE8C28-C0FA-4C8A-8267-C671E792A84D",
+      "source_label": "customer enters shipping address",
+      "target_id": "sid-0ACC63E0-B127-43B8-889B-B2D2F4559DF1",
+      "target_label": "order is being finished by system",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "Yes",
+        "ExclusiveGateway",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-74DE8C28-C0FA-4C8A-8267-C671E792A84D",
+      "source_label": "customer enters shipping address",
+      "target_id": "sid-6477662D-9C7E-4C26-888B-25C692D7B435",
+      "target_label": "customer enters an independent billing adress",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "No"
+      ]
+    },
+    {
+      "source_id": "sid-7071756F-7827-4BD8-A21B-D7AE5FC83CA2",
+      "source_label": "customer logs into E-Shop",
+      "target_id": "sid-9F40211C-C70B-40C6-B6B6-5C0793EFF670",
+      "target_label": "customer credentials being checked by system",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-53B4F9E8-7078-41A1-9CE1-E0A6042BD3F3",
+      "source_label": "customer saves product",
+      "target_id": "sid-B2A104EC-3637-4FDB-BBD7-CF204B67B523",
+      "target_label": "customer checks if product was already selected",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-6477662D-9C7E-4C26-888B-25C692D7B435",
+      "source_label": "customer enters an independent billing adress",
+      "target_id": "sid-0ACC63E0-B127-43B8-889B-B2D2F4559DF1",
+      "target_label": "order is being finished by system",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ParallelGateway"
+      ]
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "customer credentials being checked by system",
+      "subject_id": "sid-9F40211C-C70B-40C6-B6B6-5C0793EFF670",
+      "predicate": "follows",
+      "object": "customer selects a product",
+      "object_id": "sid-3DF8D0AE-78C5-4D9F-B3A9-B208CF9182B5"
+    },
+    {
+      "subject": "customer credentials being checked by system",
+      "subject_id": "sid-9F40211C-C70B-40C6-B6B6-5C0793EFF670",
+      "predicate": "follows",
+      "object": "Close E-Shop Homepage",
+      "object_id": "sid-5EF7054E-A8CC-4BF8-BE78-2BF1284ED7E1"
+    },
+    {
+      "subject": "customer waits until bank confirms payment",
+      "subject_id": "sid-44A2D10B-D888-489C-80A5-39F502D370C9",
+      "predicate": "follows",
+      "object": "order is being finished by system",
+      "object_id": "sid-0ACC63E0-B127-43B8-889B-B2D2F4559DF1"
+    },
+    {
+      "subject": "customer enters payment data",
+      "subject_id": "sid-C4F2D969-9A2B-4F0A-BCA9-EAE835B4B6D8",
+      "predicate": "follows",
+      "object": "customer waits until bank confirms payment",
+      "object_id": "sid-44A2D10B-D888-489C-80A5-39F502D370C9"
+    },
+    {
+      "subject": "customer enters payment data",
+      "subject_id": "sid-C4F2D969-9A2B-4F0A-BCA9-EAE835B4B6D8",
+      "predicate": "follows",
+      "object": "customer enters shipping address",
+      "object_id": "sid-74DE8C28-C0FA-4C8A-8267-C671E792A84D"
+    },
+    {
+      "subject": "customer selects a product",
+      "subject_id": "sid-3DF8D0AE-78C5-4D9F-B3A9-B208CF9182B5",
+      "predicate": "follows",
+      "object": "customer adds product to shopping cart",
+      "object_id": "sid-3E14D1C8-41C0-4FAA-9E0C-B3AAD9C76631"
+    },
+    {
+      "subject": "customer adds product to shopping cart",
+      "subject_id": "sid-3E14D1C8-41C0-4FAA-9E0C-B3AAD9C76631",
+      "predicate": "follows",
+      "object": "customer saves product",
+      "object_id": "sid-53B4F9E8-7078-41A1-9CE1-E0A6042BD3F3"
+    },
+    {
+      "subject": "Open E-Shop Homepage",
+      "subject_id": "sid-D7442C0D-7340-476A-80F5-B48418199FE5",
+      "predicate": "follows",
+      "object": "customer logs into E-Shop",
+      "object_id": "sid-7071756F-7827-4BD8-A21B-D7AE5FC83CA2"
+    },
+    {
+      "subject": "customer checks if product was already selected",
+      "subject_id": "sid-B2A104EC-3637-4FDB-BBD7-CF204B67B523",
+      "predicate": "follows",
+      "object": "Shipment is prepared by system",
+      "object_id": "sid-411FF6D7-5D59-433E-850A-CAB6DA4CFDD1"
+    },
+    {
+      "subject": "customer checks if product was already selected",
+      "subject_id": "sid-B2A104EC-3637-4FDB-BBD7-CF204B67B523",
+      "predicate": "follows",
+      "object": "Payment is prepared by system",
+      "object_id": "sid-E28C40EE-FC28-4BAB-BF15-90CE19B3D846"
+    },
+    {
+      "subject": "customer checks if product was already selected",
+      "subject_id": "sid-B2A104EC-3637-4FDB-BBD7-CF204B67B523",
+      "predicate": "follows",
+      "object": "customer selects a product",
+      "object_id": "sid-3DF8D0AE-78C5-4D9F-B3A9-B208CF9182B5"
+    },
+    {
+      "subject": "Payment is prepared by system",
+      "subject_id": "sid-E28C40EE-FC28-4BAB-BF15-90CE19B3D846",
+      "predicate": "follows",
+      "object": "customer enters payment data",
+      "object_id": "sid-C4F2D969-9A2B-4F0A-BCA9-EAE835B4B6D8"
+    },
+    {
+      "subject": "Shipment is prepared by system",
+      "subject_id": "sid-411FF6D7-5D59-433E-850A-CAB6DA4CFDD1",
+      "predicate": "follows",
+      "object": "customer enters payment data",
+      "object_id": "sid-C4F2D969-9A2B-4F0A-BCA9-EAE835B4B6D8"
+    },
+    {
+      "subject": "order is being finished by system",
+      "subject_id": "sid-0ACC63E0-B127-43B8-889B-B2D2F4559DF1",
+      "predicate": "follows",
+      "object": "Close E-Shop Homepage",
+      "object_id": "sid-5EF7054E-A8CC-4BF8-BE78-2BF1284ED7E1"
+    },
+    {
+      "subject": "customer enters shipping address",
+      "subject_id": "sid-74DE8C28-C0FA-4C8A-8267-C671E792A84D",
+      "predicate": "follows",
+      "object": "order is being finished by system",
+      "object_id": "sid-0ACC63E0-B127-43B8-889B-B2D2F4559DF1"
+    },
+    {
+      "subject": "customer enters shipping address",
+      "subject_id": "sid-74DE8C28-C0FA-4C8A-8267-C671E792A84D",
+      "predicate": "follows",
+      "object": "customer enters an independent billing adress",
+      "object_id": "sid-6477662D-9C7E-4C26-888B-25C692D7B435"
+    },
+    {
+      "subject": "customer logs into E-Shop",
+      "subject_id": "sid-7071756F-7827-4BD8-A21B-D7AE5FC83CA2",
+      "predicate": "follows",
+      "object": "customer credentials being checked by system",
+      "object_id": "sid-9F40211C-C70B-40C6-B6B6-5C0793EFF670"
+    },
+    {
+      "subject": "customer saves product",
+      "subject_id": "sid-53B4F9E8-7078-41A1-9CE1-E0A6042BD3F3",
+      "predicate": "follows",
+      "object": "customer checks if product was already selected",
+      "object_id": "sid-B2A104EC-3637-4FDB-BBD7-CF204B67B523"
+    },
+    {
+      "subject": "customer enters an independent billing adress",
+      "subject_id": "sid-6477662D-9C7E-4C26-888B-25C692D7B435",
+      "predicate": "follows",
+      "object": "order is being finished by system",
+      "object_id": "sid-0ACC63E0-B127-43B8-889B-B2D2F4559DF1"
+    }
+  ],
+  "errors": [
+    "state_space: Error code: 429 - {'status': 429, 'title': 'Too Many Requests'}",
+    "precondition: 'state_space'",
+    "state_matching: 'state_space'",
+    "graph_construction: 'state_space'",
+    "alignment: 'reference_graph'",
+    "report: 'alignment'"
+  ]
+}

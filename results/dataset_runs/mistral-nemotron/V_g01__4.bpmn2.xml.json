@@ -1,0 +1,330 @@
+{
+  "case_name": "V_g01",
+  "text": "Category: Vending and Shipping\nTitle: Robotic Burger Seller near the University of Vienna\n\nThe robot receives an order. It asks whether the customer wants a menu or just\nthe burger. If he wants a menu, the robot starts preparing the drink, which\ndepending on the size can take a variable amount of time. While doing so, he\nasks if you want fries or wedges. If you want fries, he prepares the fries; if\nyou want wedges, he prepares wedges. Again the duration varies depending on the\nsize fries/wedges order. After that, he prepares the burger, and gives you\nenthusiastic status updates every 30 seconds. Depending on the number of\ningredients, the duration for creating the burger varies. Your order is delivered\nvia a conveyor belt.\n",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "mistral-nemotron",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "mistral-nemotron",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/text_and_bpmn/bpmn/V_g01/4.bpmn2.xml",
+  "dfg_edges": [
+    {
+      "source_id": "sid-EB95933A-D34A-4FBC-9777-E6DF8FB5BE1B",
+      "source_label": "Wedges selected",
+      "target_id": "sid-7E34690E-7CB0-416B-8988-FAE6F8CA683C",
+      "target_label": "prepare the wedges",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-58FD7721-0B29-431D-9338-96B5CA0E2D76",
+      "source_label": "Status Update",
+      "target_id": "sid-DCCC8F28-9E81-454B-8C45-7CCD804B69D3",
+      "target_label": "30 Seconds ",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "no"
+      ]
+    },
+    {
+      "source_id": "sid-58FD7721-0B29-431D-9338-96B5CA0E2D76",
+      "source_label": "Status Update",
+      "target_id": "sid-6418C387-BC16-4BE4-918A-DCECD34E8F3A",
+      "target_label": "Order Delivered",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "yes",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-DCCC8F28-9E81-454B-8C45-7CCD804B69D3",
+      "source_label": "30 Seconds ",
+      "target_id": "sid-58FD7721-0B29-431D-9338-96B5CA0E2D76",
+      "target_label": "Status Update",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-28B71C7E-D7FE-418C-8C6C-7A52C094EB49",
+      "source_label": "prepare the fries",
+      "target_id": "sid-58FD7721-0B29-431D-9338-96B5CA0E2D76",
+      "target_label": "Status Update",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-28B71C7E-D7FE-418C-8C6C-7A52C094EB49",
+      "source_label": "prepare the fries",
+      "target_id": "sid-EA6CC5FC-492D-4B08-B4BB-2B0DE960FF21",
+      "target_label": "Prepare the Burger",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-0A7311D7-87AA-4876-A1EF-9FFFB4750ED7",
+      "source_label": "Fries selected",
+      "target_id": "sid-28B71C7E-D7FE-418C-8C6C-7A52C094EB49",
+      "target_label": "prepare the fries",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-EA6CC5FC-492D-4B08-B4BB-2B0DE960FF21",
+      "source_label": "Prepare the Burger",
+      "target_id": "sid-6418C387-BC16-4BE4-918A-DCECD34E8F3A",
+      "target_label": "Order Delivered",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-025ADDE3-2116-44A3-9EE2-E06B2CAC7912",
+      "source_label": "Receive the Order",
+      "target_id": "sid-1C245AB8-F214-478F-A0DC-B67487F23D4E",
+      "target_label": "Menu Choosed",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "Menu"
+      ]
+    },
+    {
+      "source_id": "sid-025ADDE3-2116-44A3-9EE2-E06B2CAC7912",
+      "source_label": "Receive the Order",
+      "target_id": "sid-0E5B7AF3-A02F-430D-9A00-2FE9009F8F93",
+      "target_label": "Burger Choosed",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "Burger"
+      ]
+    },
+    {
+      "source_id": "sid-0E5B7AF3-A02F-430D-9A00-2FE9009F8F93",
+      "source_label": "Burger Choosed",
+      "target_id": "sid-58FD7721-0B29-431D-9338-96B5CA0E2D76",
+      "target_label": "Status Update",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-0E5B7AF3-A02F-430D-9A00-2FE9009F8F93",
+      "source_label": "Burger Choosed",
+      "target_id": "sid-EA6CC5FC-492D-4B08-B4BB-2B0DE960FF21",
+      "target_label": "Prepare the Burger",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-7E34690E-7CB0-416B-8988-FAE6F8CA683C",
+      "source_label": "prepare the wedges",
+      "target_id": "sid-58FD7721-0B29-431D-9338-96B5CA0E2D76",
+      "target_label": "Status Update",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-7E34690E-7CB0-416B-8988-FAE6F8CA683C",
+      "source_label": "prepare the wedges",
+      "target_id": "sid-EA6CC5FC-492D-4B08-B4BB-2B0DE960FF21",
+      "target_label": "Prepare the Burger",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-1C245AB8-F214-478F-A0DC-B67487F23D4E",
+      "source_label": "Menu Choosed",
+      "target_id": "sid-62EB169F-F691-42E0-B340-2EF86084E2A9",
+      "target_label": "Prepare the drink",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-62EB169F-F691-42E0-B340-2EF86084E2A9",
+      "source_label": "Prepare the drink",
+      "target_id": "sid-0A7311D7-87AA-4876-A1EF-9FFFB4750ED7",
+      "target_label": "Fries selected",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "fries"
+      ]
+    },
+    {
+      "source_id": "sid-62EB169F-F691-42E0-B340-2EF86084E2A9",
+      "source_label": "Prepare the drink",
+      "target_id": "sid-EB95933A-D34A-4FBC-9777-E6DF8FB5BE1B",
+      "target_label": "Wedges selected",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "wedges"
+      ]
+    },
+    {
+      "source_id": "sid-E729B505-C01C-4694-9762-B989F7DE5827",
+      "source_label": "Start the Order",
+      "target_id": "sid-025ADDE3-2116-44A3-9EE2-E06B2CAC7912",
+      "target_label": "Receive the Order",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-6418C387-BC16-4BE4-918A-DCECD34E8F3A",
+      "source_label": "Order Delivered",
+      "target_id": "sid-D8D35557-7F26-4A3C-831B-2E3B3E441A64",
+      "target_label": "Order Delivered",
+      "gateway_context": []
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "Wedges selected",
+      "subject_id": "sid-EB95933A-D34A-4FBC-9777-E6DF8FB5BE1B",
+      "predicate": "follows",
+      "object": "prepare the wedges",
+      "object_id": "sid-7E34690E-7CB0-416B-8988-FAE6F8CA683C"
+    },
+    {
+      "subject": "Status Update",
+      "subject_id": "sid-58FD7721-0B29-431D-9338-96B5CA0E2D76",
+      "predicate": "follows",
+      "object": "30 Seconds ",
+      "object_id": "sid-DCCC8F28-9E81-454B-8C45-7CCD804B69D3"
+    },
+    {
+      "subject": "Status Update",
+      "subject_id": "sid-58FD7721-0B29-431D-9338-96B5CA0E2D76",
+      "predicate": "follows",
+      "object": "Order Delivered",
+      "object_id": "sid-6418C387-BC16-4BE4-918A-DCECD34E8F3A"
+    },
+    {
+      "subject": "30 Seconds ",
+      "subject_id": "sid-DCCC8F28-9E81-454B-8C45-7CCD804B69D3",
+      "predicate": "follows",
+      "object": "Status Update",
+      "object_id": "sid-58FD7721-0B29-431D-9338-96B5CA0E2D76"
+    },
+    {
+      "subject": "prepare the fries",
+      "subject_id": "sid-28B71C7E-D7FE-418C-8C6C-7A52C094EB49",
+      "predicate": "follows",
+      "object": "Status Update",
+      "object_id": "sid-58FD7721-0B29-431D-9338-96B5CA0E2D76"
+    },
+    {
+      "subject": "prepare the fries",
+      "subject_id": "sid-28B71C7E-D7FE-418C-8C6C-7A52C094EB49",
+      "predicate": "follows",
+      "object": "Prepare the Burger",
+      "object_id": "sid-EA6CC5FC-492D-4B08-B4BB-2B0DE960FF21"
+    },
+    {
+      "subject": "Fries selected",
+      "subject_id": "sid-0A7311D7-87AA-4876-A1EF-9FFFB4750ED7",
+      "predicate": "follows",
+      "object": "prepare the fries",
+      "object_id": "sid-28B71C7E-D7FE-418C-8C6C-7A52C094EB49"
+    },
+    {
+      "subject": "Prepare the Burger",
+      "subject_id": "sid-EA6CC5FC-492D-4B08-B4BB-2B0DE960FF21",
+      "predicate": "follows",
+      "object": "Order Delivered",
+      "object_id": "sid-6418C387-BC16-4BE4-918A-DCECD34E8F3A"
+    },
+    {
+      "subject": "Receive the Order",
+      "subject_id": "sid-025ADDE3-2116-44A3-9EE2-E06B2CAC7912",
+      "predicate": "follows",
+      "object": "Menu Choosed",
+      "object_id": "sid-1C245AB8-F214-478F-A0DC-B67487F23D4E"
+    },
+    {
+      "subject": "Receive the Order",
+      "subject_id": "sid-025ADDE3-2116-44A3-9EE2-E06B2CAC7912",
+      "predicate": "follows",
+      "object": "Burger Choosed",
+      "object_id": "sid-0E5B7AF3-A02F-430D-9A00-2FE9009F8F93"
+    },
+    {
+      "subject": "Burger Choosed",
+      "subject_id": "sid-0E5B7AF3-A02F-430D-9A00-2FE9009F8F93",
+      "predicate": "follows",
+      "object": "Status Update",
+      "object_id": "sid-58FD7721-0B29-431D-9338-96B5CA0E2D76"
+    },
+    {
+      "subject": "Burger Choosed",
+      "subject_id": "sid-0E5B7AF3-A02F-430D-9A00-2FE9009F8F93",
+      "predicate": "follows",
+      "object": "Prepare the Burger",
+      "object_id": "sid-EA6CC5FC-492D-4B08-B4BB-2B0DE960FF21"
+    },
+    {
+      "subject": "prepare the wedges",
+      "subject_id": "sid-7E34690E-7CB0-416B-8988-FAE6F8CA683C",
+      "predicate": "follows",
+      "object": "Status Update",
+      "object_id": "sid-58FD7721-0B29-431D-9338-96B5CA0E2D76"
+    },
+    {
+      "subject": "prepare the wedges",
+      "subject_id": "sid-7E34690E-7CB0-416B-8988-FAE6F8CA683C",
+      "predicate": "follows",
+      "object": "Prepare the Burger",
+      "object_id": "sid-EA6CC5FC-492D-4B08-B4BB-2B0DE960FF21"
+    },
+    {
+      "subject": "Menu Choosed",
+      "subject_id": "sid-1C245AB8-F214-478F-A0DC-B67487F23D4E",
+      "predicate": "follows",
+      "object": "Prepare the drink",
+      "object_id": "sid-62EB169F-F691-42E0-B340-2EF86084E2A9"
+    },
+    {
+      "subject": "Prepare the drink",
+      "subject_id": "sid-62EB169F-F691-42E0-B340-2EF86084E2A9",
+      "predicate": "follows",
+      "object": "Fries selected",
+      "object_id": "sid-0A7311D7-87AA-4876-A1EF-9FFFB4750ED7"
+    },
+    {
+      "subject": "Prepare the drink",
+      "subject_id": "sid-62EB169F-F691-42E0-B340-2EF86084E2A9",
+      "predicate": "follows",
+      "object": "Wedges selected",
+      "object_id": "sid-EB95933A-D34A-4FBC-9777-E6DF8FB5BE1B"
+    },
+    {
+      "subject": "Start the Order",
+      "subject_id": "sid-E729B505-C01C-4694-9762-B989F7DE5827",
+      "predicate": "follows",
+      "object": "Receive the Order",
+      "object_id": "sid-025ADDE3-2116-44A3-9EE2-E06B2CAC7912"
+    },
+    {
+      "subject": "Order Delivered",
+      "subject_id": "sid-6418C387-BC16-4BE4-918A-DCECD34E8F3A",
+      "predicate": "follows",
+      "object": "Order Delivered",
+      "object_id": "sid-D8D35557-7F26-4A3C-831B-2E3B3E441A64"
+    }
+  ],
+  "errors": [
+    "state_space: Error code: 429 - {'status': 429, 'title': 'Too Many Requests'}",
+    "precondition: 'state_space'",
+    "state_matching: 'state_space'",
+    "graph_construction: 'state_space'",
+    "alignment: 'reference_graph'",
+    "report: 'alignment'"
+  ]
+}

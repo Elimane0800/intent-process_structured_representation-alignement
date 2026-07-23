@@ -1,0 +1,273 @@
+{
+  "case_name": "X_g03",
+  "text": "Category: Miscellaneous\nTitle: App For Participating at the Vienna Night Run\n\nIf you want to participate at the Vienna Night Run, you need to select a\nstarting block first. After that, you run for 5km and measure the time. If you\ncan do it in less than 25 minutes, you are good. If not, you need to train and\ncheck until you have achieved this goal. After that, you can get your starting\nnumber. Depending on when your work day ends, you have to find out whether you\ncan go there from home, or need to leave directly from work. If more than one\nhour is left between your starting time and the end of your workday, you can go\nthere from home. Else, you need to leave directly from work. While running at\nthe Night Run, you run and drink at the same time. In the end, you receive your\nfinal running time.\n\nSome of the above information you have to enter into the app, some of the\ninformation is collected by fitness gadgets.\n",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "mistral-nemotron",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "mistral-nemotron",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/text_and_bpmn/bpmn/X_g03/8.bpmn2.xml",
+  "dfg_edges": [
+    {
+      "source_id": "sid-165F0DF3-F0FB-4AC3-BCBF-C3CC9C6E2C91",
+      "source_label": "Start running",
+      "target_id": "sid-20605600-4655-4084-93EB-6A39AB2482BB",
+      "target_label": "Run",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-165F0DF3-F0FB-4AC3-BCBF-C3CC9C6E2C91",
+      "source_label": "Start running",
+      "target_id": "sid-A2793EAA-4941-44C4-9FD1-ED5819ED00B0",
+      "target_label": "Drink",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-089AD6BC-27AB-4C05-B2C5-E8448564F6CC",
+      "source_label": "Get starting number",
+      "target_id": "sid-80F090C3-CDF4-402D-B091-8938CD8BFE65",
+      "target_label": "Check time between work day's end and starting time",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-0029F023-4A03-48C9-9805-6EE719ED1A9E",
+      "source_label": "Measure run time",
+      "target_id": "sid-089AD6BC-27AB-4C05-B2C5-E8448564F6CC",
+      "target_label": "Get starting number",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "Less than 25 min"
+      ]
+    },
+    {
+      "source_id": "sid-0029F023-4A03-48C9-9805-6EE719ED1A9E",
+      "source_label": "Measure run time",
+      "target_id": "sid-B72D035B-8AEA-4C5B-91D6-C1C0F73B02D1",
+      "target_label": "Train",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "More than 25 min"
+      ]
+    },
+    {
+      "source_id": "sid-2862F42C-B3AA-4820-98FB-20069150AAE2",
+      "source_label": "Receive running time",
+      "target_id": "sid-0BD84A28-12BF-4BB2-9419-AB31C468524F",
+      "target_label": "Run finished",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-945795B1-22CE-46A7-8DFA-508B7AED081A",
+      "source_label": "Go from home",
+      "target_id": "sid-165F0DF3-F0FB-4AC3-BCBF-C3CC9C6E2C91",
+      "target_label": "Start running",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-20605600-4655-4084-93EB-6A39AB2482BB",
+      "source_label": "Run",
+      "target_id": "sid-2862F42C-B3AA-4820-98FB-20069150AAE2",
+      "target_label": "Receive running time",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-740BDE6A-D1A2-4A9B-9AC6-5901E6795DAA",
+      "source_label": "Want to participate in a Night Run ",
+      "target_id": "sid-C5A4D6E3-12A2-42F7-87A8-FFBF6BBD4354",
+      "target_label": "Select a starting block",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-80F090C3-CDF4-402D-B091-8938CD8BFE65",
+      "source_label": "Check time between work day's end and starting time",
+      "target_id": "sid-D769EAD1-1073-4B6A-A073-89380A1154F0",
+      "target_label": "Go from work",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "Less than 1 hour"
+      ]
+    },
+    {
+      "source_id": "sid-80F090C3-CDF4-402D-B091-8938CD8BFE65",
+      "source_label": "Check time between work day's end and starting time",
+      "target_id": "sid-945795B1-22CE-46A7-8DFA-508B7AED081A",
+      "target_label": "Go from home",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "More than 1 hour"
+      ]
+    },
+    {
+      "source_id": "sid-B72D035B-8AEA-4C5B-91D6-C1C0F73B02D1",
+      "source_label": "Train",
+      "target_id": "sid-4B5F21C9-9406-45F4-A278-0CEF2F088A17",
+      "target_label": "Run 5km",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-4B5F21C9-9406-45F4-A278-0CEF2F088A17",
+      "source_label": "Run 5km",
+      "target_id": "sid-0029F023-4A03-48C9-9805-6EE719ED1A9E",
+      "target_label": "Measure run time",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-D769EAD1-1073-4B6A-A073-89380A1154F0",
+      "source_label": "Go from work",
+      "target_id": "sid-165F0DF3-F0FB-4AC3-BCBF-C3CC9C6E2C91",
+      "target_label": "Start running",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-C5A4D6E3-12A2-42F7-87A8-FFBF6BBD4354",
+      "source_label": "Select a starting block",
+      "target_id": "sid-4B5F21C9-9406-45F4-A278-0CEF2F088A17",
+      "target_label": "Run 5km",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-A2793EAA-4941-44C4-9FD1-ED5819ED00B0",
+      "source_label": "Drink",
+      "target_id": "sid-2862F42C-B3AA-4820-98FB-20069150AAE2",
+      "target_label": "Receive running time",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "Start running",
+      "subject_id": "sid-165F0DF3-F0FB-4AC3-BCBF-C3CC9C6E2C91",
+      "predicate": "follows",
+      "object": "Run",
+      "object_id": "sid-20605600-4655-4084-93EB-6A39AB2482BB"
+    },
+    {
+      "subject": "Start running",
+      "subject_id": "sid-165F0DF3-F0FB-4AC3-BCBF-C3CC9C6E2C91",
+      "predicate": "follows",
+      "object": "Drink",
+      "object_id": "sid-A2793EAA-4941-44C4-9FD1-ED5819ED00B0"
+    },
+    {
+      "subject": "Get starting number",
+      "subject_id": "sid-089AD6BC-27AB-4C05-B2C5-E8448564F6CC",
+      "predicate": "follows",
+      "object": "Check time between work day's end and starting time",
+      "object_id": "sid-80F090C3-CDF4-402D-B091-8938CD8BFE65"
+    },
+    {
+      "subject": "Measure run time",
+      "subject_id": "sid-0029F023-4A03-48C9-9805-6EE719ED1A9E",
+      "predicate": "follows",
+      "object": "Get starting number",
+      "object_id": "sid-089AD6BC-27AB-4C05-B2C5-E8448564F6CC"
+    },
+    {
+      "subject": "Measure run time",
+      "subject_id": "sid-0029F023-4A03-48C9-9805-6EE719ED1A9E",
+      "predicate": "follows",
+      "object": "Train",
+      "object_id": "sid-B72D035B-8AEA-4C5B-91D6-C1C0F73B02D1"
+    },
+    {
+      "subject": "Receive running time",
+      "subject_id": "sid-2862F42C-B3AA-4820-98FB-20069150AAE2",
+      "predicate": "follows",
+      "object": "Run finished",
+      "object_id": "sid-0BD84A28-12BF-4BB2-9419-AB31C468524F"
+    },
+    {
+      "subject": "Go from home",
+      "subject_id": "sid-945795B1-22CE-46A7-8DFA-508B7AED081A",
+      "predicate": "follows",
+      "object": "Start running",
+      "object_id": "sid-165F0DF3-F0FB-4AC3-BCBF-C3CC9C6E2C91"
+    },
+    {
+      "subject": "Run",
+      "subject_id": "sid-20605600-4655-4084-93EB-6A39AB2482BB",
+      "predicate": "follows",
+      "object": "Receive running time",
+      "object_id": "sid-2862F42C-B3AA-4820-98FB-20069150AAE2"
+    },
+    {
+      "subject": "Want to participate in a Night Run ",
+      "subject_id": "sid-740BDE6A-D1A2-4A9B-9AC6-5901E6795DAA",
+      "predicate": "follows",
+      "object": "Select a starting block",
+      "object_id": "sid-C5A4D6E3-12A2-42F7-87A8-FFBF6BBD4354"
+    },
+    {
+      "subject": "Check time between work day's end and starting time",
+      "subject_id": "sid-80F090C3-CDF4-402D-B091-8938CD8BFE65",
+      "predicate": "follows",
+      "object": "Go from work",
+      "object_id": "sid-D769EAD1-1073-4B6A-A073-89380A1154F0"
+    },
+    {
+      "subject": "Check time between work day's end and starting time",
+      "subject_id": "sid-80F090C3-CDF4-402D-B091-8938CD8BFE65",
+      "predicate": "follows",
+      "object": "Go from home",
+      "object_id": "sid-945795B1-22CE-46A7-8DFA-508B7AED081A"
+    },
+    {
+      "subject": "Train",
+      "subject_id": "sid-B72D035B-8AEA-4C5B-91D6-C1C0F73B02D1",
+      "predicate": "follows",
+      "object": "Run 5km",
+      "object_id": "sid-4B5F21C9-9406-45F4-A278-0CEF2F088A17"
+    },
+    {
+      "subject": "Run 5km",
+      "subject_id": "sid-4B5F21C9-9406-45F4-A278-0CEF2F088A17",
+      "predicate": "follows",
+      "object": "Measure run time",
+      "object_id": "sid-0029F023-4A03-48C9-9805-6EE719ED1A9E"
+    },
+    {
+      "subject": "Go from work",
+      "subject_id": "sid-D769EAD1-1073-4B6A-A073-89380A1154F0",
+      "predicate": "follows",
+      "object": "Start running",
+      "object_id": "sid-165F0DF3-F0FB-4AC3-BCBF-C3CC9C6E2C91"
+    },
+    {
+      "subject": "Select a starting block",
+      "subject_id": "sid-C5A4D6E3-12A2-42F7-87A8-FFBF6BBD4354",
+      "predicate": "follows",
+      "object": "Run 5km",
+      "object_id": "sid-4B5F21C9-9406-45F4-A278-0CEF2F088A17"
+    },
+    {
+      "subject": "Drink",
+      "subject_id": "sid-A2793EAA-4941-44C4-9FD1-ED5819ED00B0",
+      "predicate": "follows",
+      "object": "Receive running time",
+      "object_id": "sid-2862F42C-B3AA-4820-98FB-20069150AAE2"
+    }
+  ],
+  "errors": [
+    "state_space: Error code: 429 - {'status': 429, 'title': 'Too Many Requests'}",
+    "precondition: 'state_space'",
+    "state_matching: 'state_space'",
+    "graph_construction: 'state_space'",
+    "alignment: 'reference_graph'",
+    "report: 'alignment'"
+  ]
+}

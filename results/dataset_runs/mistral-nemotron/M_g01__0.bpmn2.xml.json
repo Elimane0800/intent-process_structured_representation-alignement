@@ -1,0 +1,396 @@
+{
+  "case_name": "M_g01",
+  "text": "Category: Manufacturing\nTitle: Instruct an artist to create a 3D model print it on a 3D printer\n\nWhen craving a custom 3D model, as a first step you have to instruct an artist\nto create a project for you.  First you have to send him several sketches, and\nthen tell him what to change until you are satisfied with the result. After\nthat, you choose a plastic color you want to use for 3D printing. If you have\nthe color at home (in stock), you check how much color you have left. If it's\nunder 100 grams, you put it on your shopping list. If you do not have the color\nat home, you order it. When you have the plastic, you can turn the printer on\nand heat up the bed and the extruder (it continuously sends you back its\nstatus). While doing that, you can generate the gcode file for your printer out\nof the STL sent to you by the artist. After that you print the model.\n",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "mistral-nemotron",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "mistral-nemotron",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/text_and_bpmn/bpmn/M_g01/0.bpmn2.xml",
+  "dfg_edges": [
+    {
+      "source_id": "sid-DD6F736D-BC3C-44FA-8304-57823E69E9AB",
+      "source_label": "Order color",
+      "target_id": "sid-67203B00-F0B4-447A-A6CB-E72CF93FB7B5",
+      "target_label": "Check how much color is left",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-EFF5622E-03BE-4FCE-A798-63AEF7208646",
+      "source_label": "Print object",
+      "target_id": "sid-1737892C-6446-4096-B882-263EEF0ABBF1",
+      "target_label": "Object printed",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-6403760F-0C80-4269-B02D-4CDA3CFC2997",
+      "source_label": "Start",
+      "target_id": "sid-BC49D87D-2869-4AC7-8D38-94AE2A3F040C",
+      "target_label": "Send sketches and further information",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-67203B00-F0B4-447A-A6CB-E72CF93FB7B5",
+      "source_label": "Check how much color is left",
+      "target_id": "sid-DD6F736D-BC3C-44FA-8304-57823E69E9AB",
+      "target_label": "Order color",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "<100g"
+      ]
+    },
+    {
+      "source_id": "sid-67203B00-F0B4-447A-A6CB-E72CF93FB7B5",
+      "source_label": "Check how much color is left",
+      "target_id": "sid-2F186FC4-A5CF-4436-A064-3C345281E85B",
+      "target_label": "Send file to printer",
+      "gateway_context": [
+        "ExclusiveGateway",
+        ">100g",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-D88E3B4A-C855-4E37-A5AF-338B34DCA61A",
+      "source_label": "Generate gcode file",
+      "target_id": "sid-2F186FC4-A5CF-4436-A064-3C345281E85B",
+      "target_label": "Send file to printer",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-39661BBA-8887-42BB-979A-1C0343EAE5F7",
+      "source_label": "Receive File ",
+      "target_id": "sid-6DF901DF-9B7A-4C65-B393-8FFDEE5354E8",
+      "target_label": "Heat up bed and extruder",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-6DF901DF-9B7A-4C65-B393-8FFDEE5354E8",
+      "source_label": "Heat up bed and extruder",
+      "target_id": "sid-5B956E18-FA7D-419A-92E2-7AD901990B36",
+      "target_label": "Send status",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-5B956E18-FA7D-419A-92E2-7AD901990B36",
+      "source_label": "Send status",
+      "target_id": "sid-BAB77DD5-329D-4279-B2E4-61A42F9C0D65",
+      "target_label": "Manufacturer",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-5B956E18-FA7D-419A-92E2-7AD901990B36",
+      "source_label": "Send status",
+      "target_id": "sid-6DF901DF-9B7A-4C65-B393-8FFDEE5354E8",
+      "target_label": "Heat up bed and extruder",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "not heated Up"
+      ]
+    },
+    {
+      "source_id": "sid-5B956E18-FA7D-419A-92E2-7AD901990B36",
+      "source_label": "Send status",
+      "target_id": "sid-EFF5622E-03BE-4FCE-A798-63AEF7208646",
+      "target_label": "Print object",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "heated up"
+      ]
+    },
+    {
+      "source_id": "sid-7934C06B-3011-4290-B1FB-46B668B35C9F",
+      "source_label": "Received  Information",
+      "target_id": "sid-3DE19DA5-A915-4EF3-A4B7-6110D2893F13",
+      "target_label": "Create Project",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-971EA705-3861-41F8-A3EA-52B9A492E9D9",
+      "source_label": "Generate STL",
+      "target_id": "sid-B8D5EF9D-C67E-47EC-953F-08E25C8480E8",
+      "target_label": "Send STL",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-FB77021C-A8A3-4FBE-9E57-E06FAA369FEC",
+      "source_label": "Choose plastic color",
+      "target_id": "sid-67203B00-F0B4-447A-A6CB-E72CF93FB7B5",
+      "target_label": "Check how much color is left",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "Color in stock"
+      ]
+    },
+    {
+      "source_id": "sid-FB77021C-A8A3-4FBE-9E57-E06FAA369FEC",
+      "source_label": "Choose plastic color",
+      "target_id": "sid-DD6F736D-BC3C-44FA-8304-57823E69E9AB",
+      "target_label": "Order color",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "Color not in stock"
+      ]
+    },
+    {
+      "source_id": "sid-63238EF3-3E70-49A1-97E2-7881B0990957",
+      "source_label": "Start",
+      "target_id": "sid-39661BBA-8887-42BB-979A-1C0343EAE5F7",
+      "target_label": "Receive File ",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-BC49D87D-2869-4AC7-8D38-94AE2A3F040C",
+      "source_label": "Send sketches and further information",
+      "target_id": "sid-FB77021C-A8A3-4FBE-9E57-E06FAA369FEC",
+      "target_label": "Choose plastic color",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-BC49D87D-2869-4AC7-8D38-94AE2A3F040C",
+      "source_label": "Send sketches and further information",
+      "target_id": "sid-C063E256-4766-4D1E-82B4-1136C8AFA764",
+      "target_label": "Receive STL File",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-BC49D87D-2869-4AC7-8D38-94AE2A3F040C",
+      "source_label": "Send sketches and further information",
+      "target_id": "sid-3DE19DA5-A915-4EF3-A4B7-6110D2893F13",
+      "target_label": "Create Project",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-2F186FC4-A5CF-4436-A064-3C345281E85B",
+      "source_label": "Send file to printer",
+      "target_id": "sid-018A34B6-D851-4D20-9DF2-F22035442F6E",
+      "target_label": "End",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-2F186FC4-A5CF-4436-A064-3C345281E85B",
+      "source_label": "Send file to printer",
+      "target_id": "sid-39661BBA-8887-42BB-979A-1C0343EAE5F7",
+      "target_label": "Receive File ",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-B8D5EF9D-C67E-47EC-953F-08E25C8480E8",
+      "source_label": "Send STL",
+      "target_id": "sid-C063E256-4766-4D1E-82B4-1136C8AFA764",
+      "target_label": "Receive STL File",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-B8D5EF9D-C67E-47EC-953F-08E25C8480E8",
+      "source_label": "Send STL",
+      "target_id": "sid-5B2F5D42-CC60-4CAC-8BA6-C6B9107EAE11",
+      "target_label": "End",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-3DE19DA5-A915-4EF3-A4B7-6110D2893F13",
+      "source_label": "Create Project",
+      "target_id": "sid-971EA705-3861-41F8-A3EA-52B9A492E9D9",
+      "target_label": "Generate STL",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-C063E256-4766-4D1E-82B4-1136C8AFA764",
+      "source_label": "Receive STL File",
+      "target_id": "sid-D88E3B4A-C855-4E37-A5AF-338B34DCA61A",
+      "target_label": "Generate gcode file",
+      "gateway_context": []
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "Order color",
+      "subject_id": "sid-DD6F736D-BC3C-44FA-8304-57823E69E9AB",
+      "predicate": "follows",
+      "object": "Check how much color is left",
+      "object_id": "sid-67203B00-F0B4-447A-A6CB-E72CF93FB7B5"
+    },
+    {
+      "subject": "Print object",
+      "subject_id": "sid-EFF5622E-03BE-4FCE-A798-63AEF7208646",
+      "predicate": "follows",
+      "object": "Object printed",
+      "object_id": "sid-1737892C-6446-4096-B882-263EEF0ABBF1"
+    },
+    {
+      "subject": "Start",
+      "subject_id": "sid-6403760F-0C80-4269-B02D-4CDA3CFC2997",
+      "predicate": "follows",
+      "object": "Send sketches and further information",
+      "object_id": "sid-BC49D87D-2869-4AC7-8D38-94AE2A3F040C"
+    },
+    {
+      "subject": "Check how much color is left",
+      "subject_id": "sid-67203B00-F0B4-447A-A6CB-E72CF93FB7B5",
+      "predicate": "follows",
+      "object": "Order color",
+      "object_id": "sid-DD6F736D-BC3C-44FA-8304-57823E69E9AB"
+    },
+    {
+      "subject": "Check how much color is left",
+      "subject_id": "sid-67203B00-F0B4-447A-A6CB-E72CF93FB7B5",
+      "predicate": "follows",
+      "object": "Send file to printer",
+      "object_id": "sid-2F186FC4-A5CF-4436-A064-3C345281E85B"
+    },
+    {
+      "subject": "Generate gcode file",
+      "subject_id": "sid-D88E3B4A-C855-4E37-A5AF-338B34DCA61A",
+      "predicate": "follows",
+      "object": "Send file to printer",
+      "object_id": "sid-2F186FC4-A5CF-4436-A064-3C345281E85B"
+    },
+    {
+      "subject": "Receive File ",
+      "subject_id": "sid-39661BBA-8887-42BB-979A-1C0343EAE5F7",
+      "predicate": "follows",
+      "object": "Heat up bed and extruder",
+      "object_id": "sid-6DF901DF-9B7A-4C65-B393-8FFDEE5354E8"
+    },
+    {
+      "subject": "Heat up bed and extruder",
+      "subject_id": "sid-6DF901DF-9B7A-4C65-B393-8FFDEE5354E8",
+      "predicate": "follows",
+      "object": "Send status",
+      "object_id": "sid-5B956E18-FA7D-419A-92E2-7AD901990B36"
+    },
+    {
+      "subject": "Send status",
+      "subject_id": "sid-5B956E18-FA7D-419A-92E2-7AD901990B36",
+      "predicate": "follows",
+      "object": "Manufacturer",
+      "object_id": "sid-BAB77DD5-329D-4279-B2E4-61A42F9C0D65"
+    },
+    {
+      "subject": "Send status",
+      "subject_id": "sid-5B956E18-FA7D-419A-92E2-7AD901990B36",
+      "predicate": "follows",
+      "object": "Heat up bed and extruder",
+      "object_id": "sid-6DF901DF-9B7A-4C65-B393-8FFDEE5354E8"
+    },
+    {
+      "subject": "Send status",
+      "subject_id": "sid-5B956E18-FA7D-419A-92E2-7AD901990B36",
+      "predicate": "follows",
+      "object": "Print object",
+      "object_id": "sid-EFF5622E-03BE-4FCE-A798-63AEF7208646"
+    },
+    {
+      "subject": "Received  Information",
+      "subject_id": "sid-7934C06B-3011-4290-B1FB-46B668B35C9F",
+      "predicate": "follows",
+      "object": "Create Project",
+      "object_id": "sid-3DE19DA5-A915-4EF3-A4B7-6110D2893F13"
+    },
+    {
+      "subject": "Generate STL",
+      "subject_id": "sid-971EA705-3861-41F8-A3EA-52B9A492E9D9",
+      "predicate": "follows",
+      "object": "Send STL",
+      "object_id": "sid-B8D5EF9D-C67E-47EC-953F-08E25C8480E8"
+    },
+    {
+      "subject": "Choose plastic color",
+      "subject_id": "sid-FB77021C-A8A3-4FBE-9E57-E06FAA369FEC",
+      "predicate": "follows",
+      "object": "Check how much color is left",
+      "object_id": "sid-67203B00-F0B4-447A-A6CB-E72CF93FB7B5"
+    },
+    {
+      "subject": "Choose plastic color",
+      "subject_id": "sid-FB77021C-A8A3-4FBE-9E57-E06FAA369FEC",
+      "predicate": "follows",
+      "object": "Order color",
+      "object_id": "sid-DD6F736D-BC3C-44FA-8304-57823E69E9AB"
+    },
+    {
+      "subject": "Start",
+      "subject_id": "sid-63238EF3-3E70-49A1-97E2-7881B0990957",
+      "predicate": "follows",
+      "object": "Receive File ",
+      "object_id": "sid-39661BBA-8887-42BB-979A-1C0343EAE5F7"
+    },
+    {
+      "subject": "Send sketches and further information",
+      "subject_id": "sid-BC49D87D-2869-4AC7-8D38-94AE2A3F040C",
+      "predicate": "follows",
+      "object": "Choose plastic color",
+      "object_id": "sid-FB77021C-A8A3-4FBE-9E57-E06FAA369FEC"
+    },
+    {
+      "subject": "Send sketches and further information",
+      "subject_id": "sid-BC49D87D-2869-4AC7-8D38-94AE2A3F040C",
+      "predicate": "follows",
+      "object": "Receive STL File",
+      "object_id": "sid-C063E256-4766-4D1E-82B4-1136C8AFA764"
+    },
+    {
+      "subject": "Send sketches and further information",
+      "subject_id": "sid-BC49D87D-2869-4AC7-8D38-94AE2A3F040C",
+      "predicate": "follows",
+      "object": "Create Project",
+      "object_id": "sid-3DE19DA5-A915-4EF3-A4B7-6110D2893F13"
+    },
+    {
+      "subject": "Send file to printer",
+      "subject_id": "sid-2F186FC4-A5CF-4436-A064-3C345281E85B",
+      "predicate": "follows",
+      "object": "End",
+      "object_id": "sid-018A34B6-D851-4D20-9DF2-F22035442F6E"
+    },
+    {
+      "subject": "Send file to printer",
+      "subject_id": "sid-2F186FC4-A5CF-4436-A064-3C345281E85B",
+      "predicate": "follows",
+      "object": "Receive File ",
+      "object_id": "sid-39661BBA-8887-42BB-979A-1C0343EAE5F7"
+    },
+    {
+      "subject": "Send STL",
+      "subject_id": "sid-B8D5EF9D-C67E-47EC-953F-08E25C8480E8",
+      "predicate": "follows",
+      "object": "Receive STL File",
+      "object_id": "sid-C063E256-4766-4D1E-82B4-1136C8AFA764"
+    },
+    {
+      "subject": "Send STL",
+      "subject_id": "sid-B8D5EF9D-C67E-47EC-953F-08E25C8480E8",
+      "predicate": "follows",
+      "object": "End",
+      "object_id": "sid-5B2F5D42-CC60-4CAC-8BA6-C6B9107EAE11"
+    },
+    {
+      "subject": "Create Project",
+      "subject_id": "sid-3DE19DA5-A915-4EF3-A4B7-6110D2893F13",
+      "predicate": "follows",
+      "object": "Generate STL",
+      "object_id": "sid-971EA705-3861-41F8-A3EA-52B9A492E9D9"
+    },
+    {
+      "subject": "Receive STL File",
+      "subject_id": "sid-C063E256-4766-4D1E-82B4-1136C8AFA764",
+      "predicate": "follows",
+      "object": "Generate gcode file",
+      "object_id": "sid-D88E3B4A-C855-4E37-A5AF-338B34DCA61A"
+    }
+  ],
+  "errors": [
+    "state_space: Error code: 429 - {'status': 429, 'title': 'Too Many Requests'}",
+    "precondition: 'state_space'",
+    "state_matching: 'state_space'",
+    "graph_construction: 'state_space'",
+    "alignment: 'reference_graph'",
+    "report: 'alignment'"
+  ]
+}

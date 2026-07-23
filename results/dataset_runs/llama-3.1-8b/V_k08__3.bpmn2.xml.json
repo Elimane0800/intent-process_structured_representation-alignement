@@ -1,0 +1,312 @@
+{
+  "case_name": "V_k08",
+  "text": "Category: Vending and Shipping\nTitle: Ordering in an Online Shop  \n\nA customer that logs into an E-Shop system and has to wait for its login\nconfirmation (its credentials are checked by the system). If the login was\nsuccessful then the customer can continue to select products, else the shopping\nexperience stops. After selecting a product the customer has to add it to a\nshopping cart, save the product and check if every product was already\nselected. These steps repeat until all products were selected. Then the order\nis finished by the shopping system and simultaneously payment and shipment for the order is prepared.\nFor the payment the customer has to enter its payment data\nand has to wait until the bank confirms the payment.\nWhile waiting for the payment confirmation the customer can enter its\nshipping address (an independent billing address can be entered if the shipping\naddress is not equal to the billing address) . Finally if the address and the\npayment steps are executed then the order will be finished by the system.\n",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "llama-3.1-8b",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "llama-3.1-8b",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/text_and_bpmn/bpmn/V_k08/3.bpmn2.xml",
+  "dfg_edges": [
+    {
+      "source_id": "sid-BB85B2F2-7B71-4E33-A6D9-054946AF4687",
+      "source_label": "Start",
+      "target_id": "sid-38A3E494-484C-4319-A7F8-D66B65723D4A",
+      "target_label": "Log in",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-CE077360-B6BF-485D-8179-63B6BFEB3D59",
+      "source_label": "Enter Payment Data",
+      "target_id": "sid-95F18DA2-68D6-46F8-989E-28CBB3B66F61",
+      "target_label": "Confirmation of Payment Data",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "yes"
+      ]
+    },
+    {
+      "source_id": "sid-CE077360-B6BF-485D-8179-63B6BFEB3D59",
+      "source_label": "Enter Payment Data",
+      "target_id": "sid-CE077360-B6BF-485D-8179-63B6BFEB3D59",
+      "target_label": "Enter Payment Data",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "no",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-95F18DA2-68D6-46F8-989E-28CBB3B66F61",
+      "source_label": "Confirmation of Payment Data",
+      "target_id": "sid-5B91F8CF-5D12-49FE-B241-3613A6DBF010",
+      "target_label": "Finish Order",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-5B91F8CF-5D12-49FE-B241-3613A6DBF010",
+      "source_label": "Finish Order",
+      "target_id": "sid-4259C476-7692-43E3-B9EF-73CCCCC166FE",
+      "target_label": "End",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-FF846E2A-14BD-4DB9-A080-D0C9260DE654",
+      "source_label": "Check Shopping Cart",
+      "target_id": "sid-3C8C48B3-4EFC-4763-821F-434517136E1B",
+      "target_label": "Save Order",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "yes"
+      ]
+    },
+    {
+      "source_id": "sid-FF846E2A-14BD-4DB9-A080-D0C9260DE654",
+      "source_label": "Check Shopping Cart",
+      "target_id": "sid-3CA3C0F1-A9E9-4DED-A898-04F83AA4C5FD",
+      "target_label": "Select Product",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "no",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-3CA3C0F1-A9E9-4DED-A898-04F83AA4C5FD",
+      "source_label": "Select Product",
+      "target_id": "sid-3EB05091-2523-4819-A78D-5BADE2111F3E",
+      "target_label": "Add Product to Shopping Cart",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-38A3E494-484C-4319-A7F8-D66B65723D4A",
+      "source_label": "Log in",
+      "target_id": "sid-4686850F-DFF8-4CA4-8D1E-AF31C5D34F1F",
+      "target_label": "End",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "no"
+      ]
+    },
+    {
+      "source_id": "sid-38A3E494-484C-4319-A7F8-D66B65723D4A",
+      "source_label": "Log in",
+      "target_id": "sid-3CA3C0F1-A9E9-4DED-A898-04F83AA4C5FD",
+      "target_label": "Select Product",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "yes",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-FFCA8E42-7860-4E3F-B03F-BC3AC3B26F35",
+      "source_label": "Save Product",
+      "target_id": "sid-FF846E2A-14BD-4DB9-A080-D0C9260DE654",
+      "target_label": "Check Shopping Cart",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-3EB05091-2523-4819-A78D-5BADE2111F3E",
+      "source_label": "Add Product to Shopping Cart",
+      "target_id": "sid-FFCA8E42-7860-4E3F-B03F-BC3AC3B26F35",
+      "target_label": "Save Product",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-6CEC671B-9AFF-445B-89AD-C91FBC6F7125",
+      "source_label": "Confirmation of Shipment Data",
+      "target_id": "sid-5B91F8CF-5D12-49FE-B241-3613A6DBF010",
+      "target_label": "Finish Order",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-1D060450-091D-4A16-8147-14AAC3C87D15",
+      "source_label": "Enter Shipment Data",
+      "target_id": "sid-6CEC671B-9AFF-445B-89AD-C91FBC6F7125",
+      "target_label": "Confirmation of Shipment Data",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "no",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-1D060450-091D-4A16-8147-14AAC3C87D15",
+      "source_label": "Enter Shipment Data",
+      "target_id": "sid-F5CCB97C-4BB8-4D20-8B0C-4C78BE582E6D",
+      "target_label": "Enter Billing Address",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "yes"
+      ]
+    },
+    {
+      "source_id": "sid-3C8C48B3-4EFC-4763-821F-434517136E1B",
+      "source_label": "Save Order",
+      "target_id": "sid-CE077360-B6BF-485D-8179-63B6BFEB3D59",
+      "target_label": "Enter Payment Data",
+      "gateway_context": [
+        "ParallelGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-3C8C48B3-4EFC-4763-821F-434517136E1B",
+      "source_label": "Save Order",
+      "target_id": "sid-1D060450-091D-4A16-8147-14AAC3C87D15",
+      "target_label": "Enter Shipment Data",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-F5CCB97C-4BB8-4D20-8B0C-4C78BE582E6D",
+      "source_label": "Enter Billing Address",
+      "target_id": "sid-6CEC671B-9AFF-445B-89AD-C91FBC6F7125",
+      "target_label": "Confirmation of Shipment Data",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "Start",
+      "subject_id": "sid-BB85B2F2-7B71-4E33-A6D9-054946AF4687",
+      "predicate": "follows",
+      "object": "Log in",
+      "object_id": "sid-38A3E494-484C-4319-A7F8-D66B65723D4A"
+    },
+    {
+      "subject": "Enter Payment Data",
+      "subject_id": "sid-CE077360-B6BF-485D-8179-63B6BFEB3D59",
+      "predicate": "follows",
+      "object": "Confirmation of Payment Data",
+      "object_id": "sid-95F18DA2-68D6-46F8-989E-28CBB3B66F61"
+    },
+    {
+      "subject": "Enter Payment Data",
+      "subject_id": "sid-CE077360-B6BF-485D-8179-63B6BFEB3D59",
+      "predicate": "follows",
+      "object": "Enter Payment Data",
+      "object_id": "sid-CE077360-B6BF-485D-8179-63B6BFEB3D59"
+    },
+    {
+      "subject": "Confirmation of Payment Data",
+      "subject_id": "sid-95F18DA2-68D6-46F8-989E-28CBB3B66F61",
+      "predicate": "follows",
+      "object": "Finish Order",
+      "object_id": "sid-5B91F8CF-5D12-49FE-B241-3613A6DBF010"
+    },
+    {
+      "subject": "Finish Order",
+      "subject_id": "sid-5B91F8CF-5D12-49FE-B241-3613A6DBF010",
+      "predicate": "follows",
+      "object": "End",
+      "object_id": "sid-4259C476-7692-43E3-B9EF-73CCCCC166FE"
+    },
+    {
+      "subject": "Check Shopping Cart",
+      "subject_id": "sid-FF846E2A-14BD-4DB9-A080-D0C9260DE654",
+      "predicate": "follows",
+      "object": "Save Order",
+      "object_id": "sid-3C8C48B3-4EFC-4763-821F-434517136E1B"
+    },
+    {
+      "subject": "Check Shopping Cart",
+      "subject_id": "sid-FF846E2A-14BD-4DB9-A080-D0C9260DE654",
+      "predicate": "follows",
+      "object": "Select Product",
+      "object_id": "sid-3CA3C0F1-A9E9-4DED-A898-04F83AA4C5FD"
+    },
+    {
+      "subject": "Select Product",
+      "subject_id": "sid-3CA3C0F1-A9E9-4DED-A898-04F83AA4C5FD",
+      "predicate": "follows",
+      "object": "Add Product to Shopping Cart",
+      "object_id": "sid-3EB05091-2523-4819-A78D-5BADE2111F3E"
+    },
+    {
+      "subject": "Log in",
+      "subject_id": "sid-38A3E494-484C-4319-A7F8-D66B65723D4A",
+      "predicate": "follows",
+      "object": "End",
+      "object_id": "sid-4686850F-DFF8-4CA4-8D1E-AF31C5D34F1F"
+    },
+    {
+      "subject": "Log in",
+      "subject_id": "sid-38A3E494-484C-4319-A7F8-D66B65723D4A",
+      "predicate": "follows",
+      "object": "Select Product",
+      "object_id": "sid-3CA3C0F1-A9E9-4DED-A898-04F83AA4C5FD"
+    },
+    {
+      "subject": "Save Product",
+      "subject_id": "sid-FFCA8E42-7860-4E3F-B03F-BC3AC3B26F35",
+      "predicate": "follows",
+      "object": "Check Shopping Cart",
+      "object_id": "sid-FF846E2A-14BD-4DB9-A080-D0C9260DE654"
+    },
+    {
+      "subject": "Add Product to Shopping Cart",
+      "subject_id": "sid-3EB05091-2523-4819-A78D-5BADE2111F3E",
+      "predicate": "follows",
+      "object": "Save Product",
+      "object_id": "sid-FFCA8E42-7860-4E3F-B03F-BC3AC3B26F35"
+    },
+    {
+      "subject": "Confirmation of Shipment Data",
+      "subject_id": "sid-6CEC671B-9AFF-445B-89AD-C91FBC6F7125",
+      "predicate": "follows",
+      "object": "Finish Order",
+      "object_id": "sid-5B91F8CF-5D12-49FE-B241-3613A6DBF010"
+    },
+    {
+      "subject": "Enter Shipment Data",
+      "subject_id": "sid-1D060450-091D-4A16-8147-14AAC3C87D15",
+      "predicate": "follows",
+      "object": "Confirmation of Shipment Data",
+      "object_id": "sid-6CEC671B-9AFF-445B-89AD-C91FBC6F7125"
+    },
+    {
+      "subject": "Enter Shipment Data",
+      "subject_id": "sid-1D060450-091D-4A16-8147-14AAC3C87D15",
+      "predicate": "follows",
+      "object": "Enter Billing Address",
+      "object_id": "sid-F5CCB97C-4BB8-4D20-8B0C-4C78BE582E6D"
+    },
+    {
+      "subject": "Save Order",
+      "subject_id": "sid-3C8C48B3-4EFC-4763-821F-434517136E1B",
+      "predicate": "follows",
+      "object": "Enter Payment Data",
+      "object_id": "sid-CE077360-B6BF-485D-8179-63B6BFEB3D59"
+    },
+    {
+      "subject": "Save Order",
+      "subject_id": "sid-3C8C48B3-4EFC-4763-821F-434517136E1B",
+      "predicate": "follows",
+      "object": "Enter Shipment Data",
+      "object_id": "sid-1D060450-091D-4A16-8147-14AAC3C87D15"
+    },
+    {
+      "subject": "Enter Billing Address",
+      "subject_id": "sid-F5CCB97C-4BB8-4D20-8B0C-4C78BE582E6D",
+      "predicate": "follows",
+      "object": "Confirmation of Shipment Data",
+      "object_id": "sid-6CEC671B-9AFF-445B-89AD-C91FBC6F7125"
+    }
+  ],
+  "errors": [
+    "state_space: parse failed, raw response='{\"customer\": [\"logged_in\", \"waiting_for_login_confirmation\", \"logged_in_successfully\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for_payment_confirmation\", \"logged_in\", \"waiting_for'",
+    "precondition: 'state_space'",
+    "state_matching: 'state_space'",
+    "graph_construction: 'state_space'",
+    "alignment: 'reference_graph'",
+    "report: 'alignment'"
+  ]
+}

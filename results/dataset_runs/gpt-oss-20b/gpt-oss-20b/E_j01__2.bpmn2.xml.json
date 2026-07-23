@@ -1,0 +1,709 @@
+{
+  "case_name": "E_j01",
+  "text": "Category: E-Government\nTitle: Find a Job\n\nYou have to regularly report, to which companies you wrote job applications.\nBased on your job applications, new potential job offers are sent to you.\nCompanies have to confirm that they received job applications and rate the\napplication. A job interview can be negotiated. When a company wants you to\nwork for them, you enter the probation phase. After probation phase, you can\nrate the company and the company can rate you. Reviews for a company can only\nbe seen (by job applicants) after 1 year. If a job becomes permanent, the\nprocess ends, unless you rated the company C or less, then you continue to\nreceive job offers, but no longer have to report. \n",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "openai/gpt-oss-20b",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "openai/gpt-oss-20b",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/text_and_bpmn/bpmn/E_j01/2.bpmn2.xml",
+  "dfg_edges": [
+    {
+      "source_id": "sid-FA1D878D-AB14-496E-A641-BA075067797E",
+      "source_label": "Start",
+      "target_id": "sid-9E7C8E2F-A68F-4351-891D-3C45470903FF",
+      "target_label": "Receive job application",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-350B578F-F175-476C-9CC1-FE94974FD840",
+      "source_label": "Confirm job application",
+      "target_id": "sid-9AC20A16-D0A9-419C-B68C-9FC19A55D73D",
+      "target_label": "Found no employee",
+      "gateway_context": [
+        "ParallelGateway",
+        "ExclusiveGateway",
+        "declined"
+      ]
+    },
+    {
+      "source_id": "sid-350B578F-F175-476C-9CC1-FE94974FD840",
+      "source_label": "Confirm job application",
+      "target_id": "sid-0F87869F-89E2-408C-98F3-B43DE795B9BA",
+      "target_label": "Negotiate interview",
+      "gateway_context": [
+        "ParallelGateway",
+        "ExclusiveGateway",
+        "accepted"
+      ]
+    },
+    {
+      "source_id": "sid-350B578F-F175-476C-9CC1-FE94974FD840",
+      "source_label": "Confirm job application",
+      "target_id": "sid-B1A964A4-4707-45A5-82D1-6DBB38434EC0",
+      "target_label": "Receive job confirmation",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-6A793323-1C04-446E-AD84-C63F5DFAFEB8",
+      "source_label": "Receive company rating",
+      "target_id": "sid-90D03106-8243-41E1-AC20-986113815710",
+      "target_label": "Conveyed job",
+      "gateway_context": [
+        "ParallelGateway",
+        "ExclusiveGateway",
+        "Company rating >C and seeker accepted"
+      ]
+    },
+    {
+      "source_id": "sid-6A793323-1C04-446E-AD84-C63F5DFAFEB8",
+      "source_label": "Receive company rating",
+      "target_id": "sid-9DCDFBED-FACF-4E2B-A30C-179C7F1C4912",
+      "target_label": "Send job offers",
+      "gateway_context": [
+        "ParallelGateway",
+        "ExclusiveGateway",
+        "declined"
+      ]
+    },
+    {
+      "source_id": "sid-010A5045-FC21-4DA0-A4B6-310BDB290C02",
+      "source_label": "Start",
+      "target_id": "sid-30206376-F0FF-43DB-B6B5-030E3A4EC11C",
+      "target_label": "Report application status",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-0F87869F-89E2-408C-98F3-B43DE795B9BA",
+      "source_label": "Negotiate interview",
+      "target_id": "sid-542FF37F-6958-4503-A554-C804186DD434",
+      "target_label": "Rate job seeker",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-943EFDDF-0703-4980-BFB8-858678122F78",
+      "source_label": "go through job offers",
+      "target_id": "sid-73BEEB9D-463A-413F-B539-12D55D066478",
+      "target_label": "Apply",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-2BB19EEC-556B-4BBB-8CA3-308F540008C7",
+      "source_label": "Receive seeker rating",
+      "target_id": "sid-90D03106-8243-41E1-AC20-986113815710",
+      "target_label": "Conveyed job",
+      "gateway_context": [
+        "ParallelGateway",
+        "ExclusiveGateway",
+        "Company rating >C and seeker accepted"
+      ]
+    },
+    {
+      "source_id": "sid-2BB19EEC-556B-4BBB-8CA3-308F540008C7",
+      "source_label": "Receive seeker rating",
+      "target_id": "sid-9DCDFBED-FACF-4E2B-A30C-179C7F1C4912",
+      "target_label": "Send job offers",
+      "gateway_context": [
+        "ParallelGateway",
+        "ExclusiveGateway",
+        "declined"
+      ]
+    },
+    {
+      "source_id": "sid-B9FE75F5-C11A-4FB9-8714-0098FA491EAB",
+      "source_label": "Enter probation phase",
+      "target_id": "sid-E98382E8-8139-4BB3-99FF-2589862B8718",
+      "target_label": "Rate company",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-9DCDFBED-FACF-4E2B-A30C-179C7F1C4912",
+      "source_label": "Send job offers",
+      "target_id": "sid-943EFDDF-0703-4980-BFB8-858678122F78",
+      "target_label": "go through job offers",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-9DCDFBED-FACF-4E2B-A30C-179C7F1C4912",
+      "source_label": "Send job offers",
+      "target_id": "sid-5B0089ED-27E1-4524-B49A-A9E7F113A576",
+      "target_label": "Analyse reports",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-5B0089ED-27E1-4524-B49A-A9E7F113A576",
+      "source_label": "Analyse reports",
+      "target_id": "sid-FE26FF0B-F9DE-40A5-B572-2538ED8F75F4",
+      "target_label": "Forward apply",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-4A095501-FD40-47DA-A623-B8058745F057",
+      "source_label": "Rate job application",
+      "target_id": "sid-9AC20A16-D0A9-419C-B68C-9FC19A55D73D",
+      "target_label": "Found no employee",
+      "gateway_context": [
+        "ParallelGateway",
+        "ExclusiveGateway",
+        "declined"
+      ]
+    },
+    {
+      "source_id": "sid-4A095501-FD40-47DA-A623-B8058745F057",
+      "source_label": "Rate job application",
+      "target_id": "sid-0F87869F-89E2-408C-98F3-B43DE795B9BA",
+      "target_label": "Negotiate interview",
+      "gateway_context": [
+        "ParallelGateway",
+        "ExclusiveGateway",
+        "accepted"
+      ]
+    },
+    {
+      "source_id": "sid-4A095501-FD40-47DA-A623-B8058745F057",
+      "source_label": "Rate job application",
+      "target_id": "sid-76F1BEEE-2077-4193-AD35-56FFE3D3804A",
+      "target_label": "Receive application rating",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-76F1BEEE-2077-4193-AD35-56FFE3D3804A",
+      "source_label": "Receive application rating",
+      "target_id": "sid-6A793323-1C04-446E-AD84-C63F5DFAFEB8",
+      "target_label": "Receive company rating",
+      "gateway_context": [
+        "ParallelGateway",
+        "ExclusiveGateway",
+        "accepted",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-76F1BEEE-2077-4193-AD35-56FFE3D3804A",
+      "source_label": "Receive application rating",
+      "target_id": "sid-2BB19EEC-556B-4BBB-8CA3-308F540008C7",
+      "target_label": "Receive seeker rating",
+      "gateway_context": [
+        "ParallelGateway",
+        "ExclusiveGateway",
+        "accepted",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-76F1BEEE-2077-4193-AD35-56FFE3D3804A",
+      "source_label": "Receive application rating",
+      "target_id": "sid-9DCDFBED-FACF-4E2B-A30C-179C7F1C4912",
+      "target_label": "Send job offers",
+      "gateway_context": [
+        "ParallelGateway",
+        "ExclusiveGateway",
+        "declined"
+      ]
+    },
+    {
+      "source_id": "sid-FE26FF0B-F9DE-40A5-B572-2538ED8F75F4",
+      "source_label": "Forward apply",
+      "target_id": "sid-9E7C8E2F-A68F-4351-891D-3C45470903FF",
+      "target_label": "Receive job application",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-FE26FF0B-F9DE-40A5-B572-2538ED8F75F4",
+      "source_label": "Forward apply",
+      "target_id": "sid-B1A964A4-4707-45A5-82D1-6DBB38434EC0",
+      "target_label": "Receive job confirmation",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-FE26FF0B-F9DE-40A5-B572-2538ED8F75F4",
+      "source_label": "Forward apply",
+      "target_id": "sid-76F1BEEE-2077-4193-AD35-56FFE3D3804A",
+      "target_label": "Receive application rating",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-9E7C8E2F-A68F-4351-891D-3C45470903FF",
+      "source_label": "Receive job application",
+      "target_id": "sid-350B578F-F175-476C-9CC1-FE94974FD840",
+      "target_label": "Confirm job application",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-9E7C8E2F-A68F-4351-891D-3C45470903FF",
+      "source_label": "Receive job application",
+      "target_id": "sid-4A095501-FD40-47DA-A623-B8058745F057",
+      "target_label": "Rate job application",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-73BEEB9D-463A-413F-B539-12D55D066478",
+      "source_label": "Apply",
+      "target_id": "sid-B9FE75F5-C11A-4FB9-8714-0098FA491EAB",
+      "target_label": "Enter probation phase",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "accepted"
+      ]
+    },
+    {
+      "source_id": "sid-73BEEB9D-463A-413F-B539-12D55D066478",
+      "source_label": "Apply",
+      "target_id": "sid-30206376-F0FF-43DB-B6B5-030E3A4EC11C",
+      "target_label": "Report application status",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "declined"
+      ]
+    },
+    {
+      "source_id": "sid-73BEEB9D-463A-413F-B539-12D55D066478",
+      "source_label": "Apply",
+      "target_id": "sid-FE26FF0B-F9DE-40A5-B572-2538ED8F75F4",
+      "target_label": "Forward apply",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-23233582-838B-4A1C-BE8B-EDF27840176F",
+      "source_label": "Permanent Job",
+      "target_id": "sid-E0E3E9CD-FB72-4853-BEC0-DF62BA239365",
+      "target_label": "Found job",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-B1A964A4-4707-45A5-82D1-6DBB38434EC0",
+      "source_label": "Receive job confirmation",
+      "target_id": "sid-6A793323-1C04-446E-AD84-C63F5DFAFEB8",
+      "target_label": "Receive company rating",
+      "gateway_context": [
+        "ParallelGateway",
+        "ExclusiveGateway",
+        "accepted",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-B1A964A4-4707-45A5-82D1-6DBB38434EC0",
+      "source_label": "Receive job confirmation",
+      "target_id": "sid-2BB19EEC-556B-4BBB-8CA3-308F540008C7",
+      "target_label": "Receive seeker rating",
+      "gateway_context": [
+        "ParallelGateway",
+        "ExclusiveGateway",
+        "accepted",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-B1A964A4-4707-45A5-82D1-6DBB38434EC0",
+      "source_label": "Receive job confirmation",
+      "target_id": "sid-9DCDFBED-FACF-4E2B-A30C-179C7F1C4912",
+      "target_label": "Send job offers",
+      "gateway_context": [
+        "ParallelGateway",
+        "ExclusiveGateway",
+        "declined"
+      ]
+    },
+    {
+      "source_id": "sid-E98382E8-8139-4BB3-99FF-2589862B8718",
+      "source_label": "Rate company",
+      "target_id": "sid-6A793323-1C04-446E-AD84-C63F5DFAFEB8",
+      "target_label": "Receive company rating",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-E98382E8-8139-4BB3-99FF-2589862B8718",
+      "source_label": "Rate company",
+      "target_id": "sid-23233582-838B-4A1C-BE8B-EDF27840176F",
+      "target_label": "Permanent Job",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "Company rated >C"
+      ]
+    },
+    {
+      "source_id": "sid-E98382E8-8139-4BB3-99FF-2589862B8718",
+      "source_label": "Rate company",
+      "target_id": "sid-943EFDDF-0703-4980-BFB8-858678122F78",
+      "target_label": "go through job offers",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "Company rated C or less"
+      ]
+    },
+    {
+      "source_id": "sid-D8E45F1D-2A7C-416C-A044-3DE16D7DE888",
+      "source_label": "Hire prospective customers",
+      "target_id": "sid-5C9265DD-F553-4953-8E55-0AAFD3E1CC63",
+      "target_label": "Found employee",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-30206376-F0FF-43DB-B6B5-030E3A4EC11C",
+      "source_label": "Report application status",
+      "target_id": "sid-943EFDDF-0703-4980-BFB8-858678122F78",
+      "target_label": "go through job offers",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-30206376-F0FF-43DB-B6B5-030E3A4EC11C",
+      "source_label": "Report application status",
+      "target_id": "sid-5B0089ED-27E1-4524-B49A-A9E7F113A576",
+      "target_label": "Analyse reports",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-542FF37F-6958-4503-A554-C804186DD434",
+      "source_label": "Rate job seeker",
+      "target_id": "sid-D8E45F1D-2A7C-416C-A044-3DE16D7DE888",
+      "target_label": "Hire prospective customers",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "accepted"
+      ]
+    },
+    {
+      "source_id": "sid-542FF37F-6958-4503-A554-C804186DD434",
+      "source_label": "Rate job seeker",
+      "target_id": "sid-8CD52321-8A8A-445F-8DDF-E49948CEB5D9",
+      "target_label": "Found no employee",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "declined"
+      ]
+    },
+    {
+      "source_id": "sid-542FF37F-6958-4503-A554-C804186DD434",
+      "source_label": "Rate job seeker",
+      "target_id": "sid-2BB19EEC-556B-4BBB-8CA3-308F540008C7",
+      "target_label": "Receive seeker rating",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-4DED3E6F-B9A8-4217-9EAB-2883D033C87E",
+      "source_label": "Start",
+      "target_id": "sid-9DCDFBED-FACF-4E2B-A30C-179C7F1C4912",
+      "target_label": "Send job offers",
+      "gateway_context": []
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "Start",
+      "subject_id": "sid-FA1D878D-AB14-496E-A641-BA075067797E",
+      "predicate": "follows",
+      "object": "Receive job application",
+      "object_id": "sid-9E7C8E2F-A68F-4351-891D-3C45470903FF"
+    },
+    {
+      "subject": "Confirm job application",
+      "subject_id": "sid-350B578F-F175-476C-9CC1-FE94974FD840",
+      "predicate": "follows",
+      "object": "Found no employee",
+      "object_id": "sid-9AC20A16-D0A9-419C-B68C-9FC19A55D73D"
+    },
+    {
+      "subject": "Confirm job application",
+      "subject_id": "sid-350B578F-F175-476C-9CC1-FE94974FD840",
+      "predicate": "follows",
+      "object": "Negotiate interview",
+      "object_id": "sid-0F87869F-89E2-408C-98F3-B43DE795B9BA"
+    },
+    {
+      "subject": "Confirm job application",
+      "subject_id": "sid-350B578F-F175-476C-9CC1-FE94974FD840",
+      "predicate": "follows",
+      "object": "Receive job confirmation",
+      "object_id": "sid-B1A964A4-4707-45A5-82D1-6DBB38434EC0"
+    },
+    {
+      "subject": "Receive company rating",
+      "subject_id": "sid-6A793323-1C04-446E-AD84-C63F5DFAFEB8",
+      "predicate": "follows",
+      "object": "Conveyed job",
+      "object_id": "sid-90D03106-8243-41E1-AC20-986113815710"
+    },
+    {
+      "subject": "Receive company rating",
+      "subject_id": "sid-6A793323-1C04-446E-AD84-C63F5DFAFEB8",
+      "predicate": "follows",
+      "object": "Send job offers",
+      "object_id": "sid-9DCDFBED-FACF-4E2B-A30C-179C7F1C4912"
+    },
+    {
+      "subject": "Start",
+      "subject_id": "sid-010A5045-FC21-4DA0-A4B6-310BDB290C02",
+      "predicate": "follows",
+      "object": "Report application status",
+      "object_id": "sid-30206376-F0FF-43DB-B6B5-030E3A4EC11C"
+    },
+    {
+      "subject": "Negotiate interview",
+      "subject_id": "sid-0F87869F-89E2-408C-98F3-B43DE795B9BA",
+      "predicate": "follows",
+      "object": "Rate job seeker",
+      "object_id": "sid-542FF37F-6958-4503-A554-C804186DD434"
+    },
+    {
+      "subject": "go through job offers",
+      "subject_id": "sid-943EFDDF-0703-4980-BFB8-858678122F78",
+      "predicate": "follows",
+      "object": "Apply",
+      "object_id": "sid-73BEEB9D-463A-413F-B539-12D55D066478"
+    },
+    {
+      "subject": "Receive seeker rating",
+      "subject_id": "sid-2BB19EEC-556B-4BBB-8CA3-308F540008C7",
+      "predicate": "follows",
+      "object": "Conveyed job",
+      "object_id": "sid-90D03106-8243-41E1-AC20-986113815710"
+    },
+    {
+      "subject": "Receive seeker rating",
+      "subject_id": "sid-2BB19EEC-556B-4BBB-8CA3-308F540008C7",
+      "predicate": "follows",
+      "object": "Send job offers",
+      "object_id": "sid-9DCDFBED-FACF-4E2B-A30C-179C7F1C4912"
+    },
+    {
+      "subject": "Enter probation phase",
+      "subject_id": "sid-B9FE75F5-C11A-4FB9-8714-0098FA491EAB",
+      "predicate": "follows",
+      "object": "Rate company",
+      "object_id": "sid-E98382E8-8139-4BB3-99FF-2589862B8718"
+    },
+    {
+      "subject": "Send job offers",
+      "subject_id": "sid-9DCDFBED-FACF-4E2B-A30C-179C7F1C4912",
+      "predicate": "follows",
+      "object": "go through job offers",
+      "object_id": "sid-943EFDDF-0703-4980-BFB8-858678122F78"
+    },
+    {
+      "subject": "Send job offers",
+      "subject_id": "sid-9DCDFBED-FACF-4E2B-A30C-179C7F1C4912",
+      "predicate": "follows",
+      "object": "Analyse reports",
+      "object_id": "sid-5B0089ED-27E1-4524-B49A-A9E7F113A576"
+    },
+    {
+      "subject": "Analyse reports",
+      "subject_id": "sid-5B0089ED-27E1-4524-B49A-A9E7F113A576",
+      "predicate": "follows",
+      "object": "Forward apply",
+      "object_id": "sid-FE26FF0B-F9DE-40A5-B572-2538ED8F75F4"
+    },
+    {
+      "subject": "Rate job application",
+      "subject_id": "sid-4A095501-FD40-47DA-A623-B8058745F057",
+      "predicate": "follows",
+      "object": "Found no employee",
+      "object_id": "sid-9AC20A16-D0A9-419C-B68C-9FC19A55D73D"
+    },
+    {
+      "subject": "Rate job application",
+      "subject_id": "sid-4A095501-FD40-47DA-A623-B8058745F057",
+      "predicate": "follows",
+      "object": "Negotiate interview",
+      "object_id": "sid-0F87869F-89E2-408C-98F3-B43DE795B9BA"
+    },
+    {
+      "subject": "Rate job application",
+      "subject_id": "sid-4A095501-FD40-47DA-A623-B8058745F057",
+      "predicate": "follows",
+      "object": "Receive application rating",
+      "object_id": "sid-76F1BEEE-2077-4193-AD35-56FFE3D3804A"
+    },
+    {
+      "subject": "Receive application rating",
+      "subject_id": "sid-76F1BEEE-2077-4193-AD35-56FFE3D3804A",
+      "predicate": "follows",
+      "object": "Receive company rating",
+      "object_id": "sid-6A793323-1C04-446E-AD84-C63F5DFAFEB8"
+    },
+    {
+      "subject": "Receive application rating",
+      "subject_id": "sid-76F1BEEE-2077-4193-AD35-56FFE3D3804A",
+      "predicate": "follows",
+      "object": "Receive seeker rating",
+      "object_id": "sid-2BB19EEC-556B-4BBB-8CA3-308F540008C7"
+    },
+    {
+      "subject": "Receive application rating",
+      "subject_id": "sid-76F1BEEE-2077-4193-AD35-56FFE3D3804A",
+      "predicate": "follows",
+      "object": "Send job offers",
+      "object_id": "sid-9DCDFBED-FACF-4E2B-A30C-179C7F1C4912"
+    },
+    {
+      "subject": "Forward apply",
+      "subject_id": "sid-FE26FF0B-F9DE-40A5-B572-2538ED8F75F4",
+      "predicate": "follows",
+      "object": "Receive job application",
+      "object_id": "sid-9E7C8E2F-A68F-4351-891D-3C45470903FF"
+    },
+    {
+      "subject": "Forward apply",
+      "subject_id": "sid-FE26FF0B-F9DE-40A5-B572-2538ED8F75F4",
+      "predicate": "follows",
+      "object": "Receive job confirmation",
+      "object_id": "sid-B1A964A4-4707-45A5-82D1-6DBB38434EC0"
+    },
+    {
+      "subject": "Forward apply",
+      "subject_id": "sid-FE26FF0B-F9DE-40A5-B572-2538ED8F75F4",
+      "predicate": "follows",
+      "object": "Receive application rating",
+      "object_id": "sid-76F1BEEE-2077-4193-AD35-56FFE3D3804A"
+    },
+    {
+      "subject": "Receive job application",
+      "subject_id": "sid-9E7C8E2F-A68F-4351-891D-3C45470903FF",
+      "predicate": "follows",
+      "object": "Confirm job application",
+      "object_id": "sid-350B578F-F175-476C-9CC1-FE94974FD840"
+    },
+    {
+      "subject": "Receive job application",
+      "subject_id": "sid-9E7C8E2F-A68F-4351-891D-3C45470903FF",
+      "predicate": "follows",
+      "object": "Rate job application",
+      "object_id": "sid-4A095501-FD40-47DA-A623-B8058745F057"
+    },
+    {
+      "subject": "Apply",
+      "subject_id": "sid-73BEEB9D-463A-413F-B539-12D55D066478",
+      "predicate": "follows",
+      "object": "Enter probation phase",
+      "object_id": "sid-B9FE75F5-C11A-4FB9-8714-0098FA491EAB"
+    },
+    {
+      "subject": "Apply",
+      "subject_id": "sid-73BEEB9D-463A-413F-B539-12D55D066478",
+      "predicate": "follows",
+      "object": "Report application status",
+      "object_id": "sid-30206376-F0FF-43DB-B6B5-030E3A4EC11C"
+    },
+    {
+      "subject": "Apply",
+      "subject_id": "sid-73BEEB9D-463A-413F-B539-12D55D066478",
+      "predicate": "follows",
+      "object": "Forward apply",
+      "object_id": "sid-FE26FF0B-F9DE-40A5-B572-2538ED8F75F4"
+    },
+    {
+      "subject": "Permanent Job",
+      "subject_id": "sid-23233582-838B-4A1C-BE8B-EDF27840176F",
+      "predicate": "follows",
+      "object": "Found job",
+      "object_id": "sid-E0E3E9CD-FB72-4853-BEC0-DF62BA239365"
+    },
+    {
+      "subject": "Receive job confirmation",
+      "subject_id": "sid-B1A964A4-4707-45A5-82D1-6DBB38434EC0",
+      "predicate": "follows",
+      "object": "Receive company rating",
+      "object_id": "sid-6A793323-1C04-446E-AD84-C63F5DFAFEB8"
+    },
+    {
+      "subject": "Receive job confirmation",
+      "subject_id": "sid-B1A964A4-4707-45A5-82D1-6DBB38434EC0",
+      "predicate": "follows",
+      "object": "Receive seeker rating",
+      "object_id": "sid-2BB19EEC-556B-4BBB-8CA3-308F540008C7"
+    },
+    {
+      "subject": "Receive job confirmation",
+      "subject_id": "sid-B1A964A4-4707-45A5-82D1-6DBB38434EC0",
+      "predicate": "follows",
+      "object": "Send job offers",
+      "object_id": "sid-9DCDFBED-FACF-4E2B-A30C-179C7F1C4912"
+    },
+    {
+      "subject": "Rate company",
+      "subject_id": "sid-E98382E8-8139-4BB3-99FF-2589862B8718",
+      "predicate": "follows",
+      "object": "Receive company rating",
+      "object_id": "sid-6A793323-1C04-446E-AD84-C63F5DFAFEB8"
+    },
+    {
+      "subject": "Rate company",
+      "subject_id": "sid-E98382E8-8139-4BB3-99FF-2589862B8718",
+      "predicate": "follows",
+      "object": "Permanent Job",
+      "object_id": "sid-23233582-838B-4A1C-BE8B-EDF27840176F"
+    },
+    {
+      "subject": "Rate company",
+      "subject_id": "sid-E98382E8-8139-4BB3-99FF-2589862B8718",
+      "predicate": "follows",
+      "object": "go through job offers",
+      "object_id": "sid-943EFDDF-0703-4980-BFB8-858678122F78"
+    },
+    {
+      "subject": "Hire prospective customers",
+      "subject_id": "sid-D8E45F1D-2A7C-416C-A044-3DE16D7DE888",
+      "predicate": "follows",
+      "object": "Found employee",
+      "object_id": "sid-5C9265DD-F553-4953-8E55-0AAFD3E1CC63"
+    },
+    {
+      "subject": "Report application status",
+      "subject_id": "sid-30206376-F0FF-43DB-B6B5-030E3A4EC11C",
+      "predicate": "follows",
+      "object": "go through job offers",
+      "object_id": "sid-943EFDDF-0703-4980-BFB8-858678122F78"
+    },
+    {
+      "subject": "Report application status",
+      "subject_id": "sid-30206376-F0FF-43DB-B6B5-030E3A4EC11C",
+      "predicate": "follows",
+      "object": "Analyse reports",
+      "object_id": "sid-5B0089ED-27E1-4524-B49A-A9E7F113A576"
+    },
+    {
+      "subject": "Rate job seeker",
+      "subject_id": "sid-542FF37F-6958-4503-A554-C804186DD434",
+      "predicate": "follows",
+      "object": "Hire prospective customers",
+      "object_id": "sid-D8E45F1D-2A7C-416C-A044-3DE16D7DE888"
+    },
+    {
+      "subject": "Rate job seeker",
+      "subject_id": "sid-542FF37F-6958-4503-A554-C804186DD434",
+      "predicate": "follows",
+      "object": "Found no employee",
+      "object_id": "sid-8CD52321-8A8A-445F-8DDF-E49948CEB5D9"
+    },
+    {
+      "subject": "Rate job seeker",
+      "subject_id": "sid-542FF37F-6958-4503-A554-C804186DD434",
+      "predicate": "follows",
+      "object": "Receive seeker rating",
+      "object_id": "sid-2BB19EEC-556B-4BBB-8CA3-308F540008C7"
+    },
+    {
+      "subject": "Start",
+      "subject_id": "sid-4DED3E6F-B9A8-4217-9EAB-2883D033C87E",
+      "predicate": "follows",
+      "object": "Send job offers",
+      "object_id": "sid-9DCDFBED-FACF-4E2B-A30C-179C7F1C4912"
+    }
+  ],
+  "errors": [
+    "state_space: parse failed, raw response=''",
+    "precondition: 'state_space'",
+    "state_matching: 'state_space'",
+    "graph_construction: 'state_space'",
+    "alignment: 'reference_graph'",
+    "report: 'alignment'"
+  ]
+}

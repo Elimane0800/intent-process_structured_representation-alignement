@@ -1,0 +1,539 @@
+{
+  "zero_shot": {
+    "meta/llama-3.1-8b-instruct": {
+      "job_application": {
+        "nodes": [
+          {
+            "id": "job_application.confirmed",
+            "weight": 0.25
+          },
+          {
+            "id": "job_application.rated",
+            "weight": 1.0
+          },
+          {
+            "id": "job_application.reported",
+            "weight": 0.5
+          },
+          {
+            "id": "job_offer.sent",
+            "weight": 0.5
+          },
+          {
+            "id": "job_offer.received",
+            "weight": 1.0
+          },
+          {
+            "id": "job_interview.negotiated",
+            "weight": 0.5
+          },
+          {
+            "id": "probation_phase.entered",
+            "weight": 0.25
+          },
+          {
+            "id": "review.visible",
+            "weight": 0.0
+          },
+          {
+            "id": "job.permanent",
+            "weight": 0.25
+          },
+          {
+            "id": "process.ended",
+            "weight": 0.25
+          }
+        ],
+        "edges": [
+          {
+            "from": "job_application.reported",
+            "to": "job_application.rated",
+            "type": "sequence",
+            "operator": "AND",
+            "quote": "A job interview can be negotiated."
+          },
+          {
+            "from": "job_interview.negotiated",
+            "to": "job_application.rated",
+            "type": "cross_entity_guard",
+            "operator": "AND",
+            "quote": "A job interview can be negotiated."
+          },
+          {
+            "from": "job_application.confirmed",
+            "to": "job_application.reported",
+            "type": "sequence",
+            "operator": "AND",
+            "quote": "You have to regularly report, to which companies you wrote job applications."
+          },
+          {
+            "from": "job_application.rated",
+            "to": "job_offer.sent",
+            "type": "cross_entity_guard",
+            "operator": "AND",
+            "quote": "Based on your job applications, new potential job offers are sent to you."
+          },
+          {
+            "from": "job_offer.sent",
+            "to": "job_offer.received",
+            "type": "sequence",
+            "operator": "AND",
+            "quote": "Based on your job applications, new potential job offers are sent to you."
+          },
+          {
+            "from": "job_application.rated",
+            "to": "job_offer.received",
+            "type": "cross_entity_guard",
+            "operator": "AND",
+            "quote": "Based on your job applications, new potential job offers are sent to you."
+          },
+          {
+            "from": "job_offer.received",
+            "to": "job_interview.negotiated",
+            "type": "cross_entity_guard",
+            "operator": "AND",
+            "quote": "Companies have to confirm that they received job applications and rate the application. A job interview can be negotiated."
+          },
+          {
+            "from": "job_offer.received",
+            "to": "probation_phase.entered",
+            "type": "cross_entity_guard",
+            "operator": "AND",
+            "quote": "When a company wants you to work for them, you enter the probation phase."
+          },
+          {
+            "from": "job.permanent",
+            "to": "process.ended",
+            "type": "cross_entity_guard",
+            "operator": "AND",
+            "quote": "If a job becomes permanent, the process ends, unless you rated the company C or less, then you continue to receive job offers, but no longer have to report."
+          }
+        ],
+        "cycles": [
+          [
+            "job_application.rated",
+            "job_offer.sent",
+            "job_offer.received",
+            "job_interview.negotiated",
+            "job_application.rated"
+          ]
+        ]
+      },
+      "maternity_leave": {
+        "nodes": [
+          {
+            "id": "maternity_leave.planned",
+            "weight": 0.167
+          },
+          {
+            "id": "maternity_leave.taken",
+            "weight": 1.0
+          },
+          {
+            "id": "maternity_leave.extended",
+            "weight": 0.333
+          },
+          {
+            "id": "potential_models.fetched",
+            "weight": 0.167
+          },
+          {
+            "id": "relevant_information.collected",
+            "weight": 0.167
+          },
+          {
+            "id": "information.fetched",
+            "weight": 0.333
+          },
+          {
+            "id": "information.collected",
+            "weight": 0.333
+          },
+          {
+            "id": "information.gathered",
+            "weight": 0.167
+          },
+          {
+            "id": "social_security.notified",
+            "weight": 0.167
+          },
+          {
+            "id": "company_information.gathered",
+            "weight": 0.167
+          }
+        ],
+        "edges": [
+          {
+            "from": "maternity_leave.planned",
+            "to": "maternity_leave.taken",
+            "type": "sequence",
+            "operator": "AND",
+            "quote": "Create a process that support in planning, taking and extending a maternity leave."
+          },
+          {
+            "from": "potential_models.fetched",
+            "to": "maternity_leave.taken",
+            "type": "cross_entity_guard",
+            "operator": "AND",
+            "quote": "Create a process that support in planning, taking and extending a maternity leave."
+          },
+          {
+            "from": "relevant_information.collected",
+            "to": "maternity_leave.taken",
+            "type": "cross_entity_guard",
+            "operator": "AND",
+            "quote": "Create a process that support in planning, taking and extending a maternity leave."
+          },
+          {
+            "from": "social_security.notified",
+            "to": "maternity_leave.taken",
+            "type": "cross_entity_guard",
+            "operator": "AND",
+            "quote": "Create a process that support in planning, taking and extending a maternity leave."
+          },
+          {
+            "from": "company_information.gathered",
+            "to": "maternity_leave.taken",
+            "type": "cross_entity_guard",
+            "operator": "AND",
+            "quote": "Create a process that support in planning, taking and extending a maternity leave."
+          },
+          {
+            "from": "maternity_leave.taken",
+            "to": "maternity_leave.extended",
+            "type": "sequence",
+            "operator": "AND",
+            "quote": "At the end of the period let parent decide about extension."
+          },
+          {
+            "from": "information.collected",
+            "to": "maternity_leave.extended",
+            "type": "cross_entity_guard",
+            "operator": "AND",
+            "quote": "At the end of the period let parent decide about extension."
+          },
+          {
+            "from": "information.fetched",
+            "to": "information.collected",
+            "type": "sequence",
+            "operator": "AND",
+            "quote": "Fetch information about potential models (months duration, split between parents)"
+          },
+          {
+            "from": "information.fetched",
+            "to": "information.gathered",
+            "type": "sequence",
+            "operator": "AND",
+            "quote": "Fetch information about potential models (months duration, split between parents)"
+          }
+        ],
+        "cycles": []
+      },
+      "work_accident": {
+        "error": "parse failed, raw response='{\\n  \"work_accident.considered\": {\"precondition\": \"INITIAL\", \"quote\": null},\\n  \"self_employed_person.reported\": {\"precondition\": \"INITIAL\", \"quote\": null},\\n  \"person_with_accident_insurance.killed\": {\"precondition\": \"INITIAL\", \"quote\": null},\\n  \"person_with_accident_insurance.injured\": {\"precondition\": \"INITIAL\", \"quote\": null},\\n  \"person_with_accident_insurance.unable_to_work\": {\"precondition\": \"INITIAL\", \"quote\": null},\\n  \"incident.almost_occurred\": {\"precondition\": \"INITIAL\", \"quote\": null},\\n  \"defect.discovered\": {\"precondition\": \"INITIAL\", \"quote\": null},\\n  \"serious_risk.discovered\": {\"precondition\": \"INITIAL\", \"quote\": null},\\n  \"doctor_visit.notified\": {\"precondition\": \"INITIAL\", \"quote\": null},\\n  \"educational_facility.obliged_to_report\": {\"precondition\": \"INITIAL\", \"quote\": null},\\n  \"work_accident.reported\": {\"precondition\": \"work_accident.considered AND self_employed_person.reported OR person_with_accident_insurance.killed OR person_with_accident_insurance.injured OR person_with_accident_insurance.unable_to_work\", \"quote\": \"The employees must inform the employer immediately of: any work accident, any incident that would almost have led to an accident, any serious and immediate risk to safety and health that they discover, any defect discovered in protection systems.\"},\\n  \"work_accident.fatal\": {\"precondition\": \"work_accident.reported AND work_accident.considered\", \"quote\": \"The employer must immediately report any work accident that leads to a fatality or serious injury to the Labour Inspectorate, if it has not been reported to the emergency services.\"},\\n  \"work_accident.serious_injury\": {\"precondition\": \"work_accident.reported AND work_accident.considered\", \"quote\": \"The employer must immediately report any work accident that leads to a fatality or serious injury to the Labour Inspectorate, if it has not been reported to the emergency services.\"},\\n  \"work_accident.killed\": {\"precondition\": \"work_accident.reported AND work_accident.considered\", \"quote\": \"Independent of this, every work accident in which a person with accident insurance has been killed, or injured in such a way that they are unable to work for three days, in full or in part, must be reported to the responsible accident insurance provider within five days.\"},\\n  \"work_accident.injured\": {\"precondition\": \"work_accident.reported AND work_accident.considered\", \"quote\": \"Independent of this, every work accident in which a person with accident insurance has been killed, or injured in such a way that they are unable to work for three days, in full or in part, must be reported to the responsible accident insurance provider within five days.\"},\\n  \"work_accident.unable_to_work\": {\"precondition\": \"work_accident.reported AND work_accident.considered\", \"quote\": \"Independent of this, every work accident in which a person with accident insurance has been killed, or injured in such a way that they are unable to work for three days, in full or in part, must be reported to the responsible accident insurance provider within five days.\"},\\n  \"work_accident.almost_occurred\": {\"precondition\": \"UNRESOLVED\", \"quote\": \"For insured gainful employment, a work accident is considered to be an accident that occurs in the following circumstances, by way of example: - the accident occurs in a location, at a time and with a cause that correlates to the insured employment - when working from home - on the direct route from the permanent place of residence to work, to lunch or on the way home, whereby carpools are also protected - for training sessions that serve to provide specific professional knowledge, whereby an accident on the way to or from the training centre is considered a work accident - on the direct route from home, or from the workplace or training centre to a doctor and back, if this interrupts the direct route from the permanent place of residence to work or the route home (the doctor\\'s visit must be notified to the employer in advance) - on the way to or from the workplace or training centre with the purpose of taking a child to or collecting them from a childcare facility, a daycare facility, external care or a school, insofar as they have a supervisory responsibility for the child - when making use of advocacy groups or professional associations (e.g. Chamber of Labour, trade union federation, guild etc.)\"},\\n  \"work_accident.reported_to_inspectorate\": {\"precondition\": \"work_accident.fatal OR work_accident.serious_injury\", \"quote\": \"The employer must immediately report any work accident that leads to a fatality or serious injury to the Labour Inspectorate, if it has not been reported to the emergency services.\"},\\n  \"work_accident.reported_to_insurance\": {\"precondition\": \"work_accident.killed OR work_accident.injured OR work_accident.unable_to_work\", \"quote\": \"Independent of this, every work accident in which a person with accident insurance has been killed, or injured in such a way that they are unable to work for three days, in full or in part, must be reported to the responsible accident insurance provider within five days.\"},\\n  \"work_accident.reported_to_employer\": {\"precondition\": \"work_accident.considered AND incident.almost_occurred OR person_with_accident_insurance.killed OR person_with_accident_insurance.injured OR person_with_accident_insurance.unable_to_work\", \"quote\": \"The employees must inform the employer immediately of: any work accident, any incident that would almost have led to an accident, any serious and immediate risk to safety and health that they discover, any defect discovered in protection systems.\"},\\n  \"work_accident.reported_immediately\": {\"precondition\": \"work_accident.considered AND incident.almost_occurred OR person_with_accident_insurance.killed OR person_with_accident_insurance.injured OR person_with_accident_insurance.unable_to_work\", \"quote\": \"The employees must inform the employer immediately of: any work accident, any incident that would almost have led to an accident, any serious and immediate risk to safety and health that they discover, any defect discovered in protection systems.\"},\\n  \"work_accident.reported_within_five_days\": {\"precondition\": \"work_accident.killed OR work_accident.injured OR work_accident.unable_to_work\", \"quote\": \"Independent of this, every work accident in which a person with accident insurance has been killed, or injured in such a way that they are unable to work for three days, in full or in part, must be reported to the responsible accident insurance provider within five days.\"},\\n  \"self_employed_person.reported\": {\"precondition\": \"work_accident.considered AND (work_accident.almost_occurred OR person_with_accident_insurance.killed OR person_with_accident_insurance.injured OR person_with_accident_insurance.unable_to_work)\", \"quote\": \"As a self-employed person, accidents involving people you employ and those that involve you must be reported to the accident insurance provider in good time.\"},\\n  \"person_with_accident_insurance.physically_injured\": {\"precondition\": \"work_accident.considered AND (work_accident.fatal OR work_accident.serious_injury)\", \"quote\": \"Schools, educational facilities and universities are obliged to report every work accident through which a person with accident insurance is physically injured or killed within a maximum of five days to the responsible accident insurance provider in triplicate.\"},\\n  \"educational_facility.obliged_to_report\": {\"precondition\": \"work_accident.considered AND (work_accident.fatal OR work_accident.serious_injury)\", \"quote\": \"Schools, educational facilities and universities are obliged to report every work accident through which a person with accident insurance is physically injured or killed within a maximum of five days to the responsible accident insurance provider in triplicate.\"},\\n  \"incident.almost_occurred\": {\"precondition\": \"work_accident.considered\", \"quote\": \"For insured gainful employment, a work accident is considered to be an accident that occurs in the following circumstances, by way of example: - the accident occurs in a location, at a time and with a cause that correlates to the insured employment - when working from home - on the direct route from the permanent place of residence to work, to lunch or on the way home, whereby carpools are also protected - for training sessions that serve to provide specific professional knowledge, whereby an accident on the way to or from the training centre is considered a work accident - on the direct route from home, or from the workplace or training centre to a doctor and back, if this interrupts the direct route from the permanent place of residence to work or the route home (the doctor\\'s visit must be notified to the employer in advance) - on the way to or from the workplace or training centre with the purpose of taking a child to or collecting them from a childcare facility, a daycare facility, external care or a school, insofar as they have a supervisory responsibility for the child - when making use of advocacy groups or professional associations (e.g. Chamber of Labour, trade union federation, guild etc.)\"},\\n  \"defect.discovered\": {\"precondition\": \"work_accident.considered\", \"quote\": \"The employees must inform the employer immediately of: any work accident, any incident that would almost have led to an accident, any serious and immediate risk to safety and health that they discover, any defect discovered in protection systems.\"},\\n  \"serious_risk.discovered\": {\"precondition\": \"work_accident.considered\", \"quote\": \"The employees must inform the employer immediately of: any work accident, any incident that would almost have led to an accident, any serious and immediate risk to safety and health that they discover, any defect discovered in protection systems.\"},\\n  \"doctor_visit.notified\": {\"precondition\": \"work_accident.considered\", \"quote\": \"For insured gainful employment, a work accident is considered to be an accident that occurs in the following circumstances, by way of example: - the accident occurs in a location, at a time and with a cause that correlates to the insured employment - when working from home - on the direct route from the permanent place of residence to work, to lunch or on the way home, whereby carpools are also protected - for training sessions that serve to provide specific professional knowledge, whereby an accident on the way to or from the training centre is considered a work accident - on the direct route from home, or from the workplace or training centre to a doctor and back, if this interrupts the direct route from the permanent place of residence to work or the route home (the doctor\\'s visit must be notified to the employer in advance) - on the way to or from the workplace or training centre with the purpose of taking a child to or collecting them from a childcare facility, a daycare facility, external care or a school, insofar as they have a supervisory responsibility for the child - when making use of advocacy groups or professional associations (e.g. Chamber of Labour, trade union federation, guild etc.)\"},\\n  \"educational_facility.obliged_to_report\": {\"precondition\": \"work_accident.considered\", \"quote\": \"Schools, educational facilities and universities are obliged to report every work accident through which a person with accident insurance is physically injured or killed within a maximum of five days to the responsible accident insurance provider in triplicate.\"}'"
+      }
+    }
+  },
+  "one_shot": {
+    "meta/llama-3.1-8b-instruct": {
+      "job_application": {
+        "nodes": [
+          {
+            "id": "job_application.confirmed",
+            "weight": 0.2
+          },
+          {
+            "id": "job_application.rated",
+            "weight": 1.0
+          },
+          {
+            "id": "job_application.reported",
+            "weight": 0.4
+          },
+          {
+            "id": "job_offer.sent",
+            "weight": 0.0
+          },
+          {
+            "id": "job_offer.received",
+            "weight": 0.8
+          },
+          {
+            "id": "job_interview.negotiated",
+            "weight": 0.2
+          },
+          {
+            "id": "probation_phase.entered",
+            "weight": 0.8
+          },
+          {
+            "id": "review.visible",
+            "weight": 0.6
+          },
+          {
+            "id": "job.permanent",
+            "weight": 0.6
+          },
+          {
+            "id": "process.ended",
+            "weight": 0.2
+          }
+        ],
+        "edges": [
+          {
+            "from": "job_interview.negotiated",
+            "to": "probation_phase.entered",
+            "type": "cross_entity_guard",
+            "operator": "AND",
+            "quote": "When a company wants you to work for them, you enter the probation phase"
+          },
+          {
+            "from": "job_application.rated",
+            "to": "probation_phase.entered",
+            "type": "cross_entity_guard",
+            "operator": "AND",
+            "quote": "When a company wants you to work for them, you enter the probation phase"
+          },
+          {
+            "from": "job_offer.received",
+            "to": "probation_phase.entered",
+            "type": "cross_entity_guard",
+            "operator": "AND",
+            "quote": "When a company wants you to work for them, you enter the probation phase"
+          },
+          {
+            "from": "probation_phase.entered",
+            "to": "review.visible",
+            "type": "cross_entity_guard",
+            "operator": "AND",
+            "quote": "Reviews for a company can only be seen (by job applicants) after 1 year"
+          },
+          {
+            "from": "job_application.rated",
+            "to": "review.visible",
+            "type": "cross_entity_guard",
+            "operator": "AND",
+            "quote": "Reviews for a company can only be seen (by job applicants) after 1 year"
+          },
+          {
+            "from": "job_offer.received",
+            "to": "review.visible",
+            "type": "cross_entity_guard",
+            "operator": "AND",
+            "quote": "Reviews for a company can only be seen (by job applicants) after 1 year"
+          },
+          {
+            "from": "job_application.rated",
+            "to": "job.permanent",
+            "type": "cross_entity_guard",
+            "operator": "AND",
+            "quote": "If a job becomes permanent, the process ends, unless you rated the company C or less, then you continue to receive job offers, but no longer have to report"
+          },
+          {
+            "from": "job_offer.received",
+            "to": "job.permanent",
+            "type": "cross_entity_guard",
+            "operator": "AND",
+            "quote": "If a job becomes permanent, the process ends, unless you rated the company C or less, then you continue to receive job offers, but no longer have to report"
+          },
+          {
+            "from": "job.permanent",
+            "to": "process.ended",
+            "type": "cross_entity_guard",
+            "operator": "AND",
+            "quote": "If a job becomes permanent, the process ends, unless you rated the company C or less, then you continue to receive job offers, but no longer have to report"
+          },
+          {
+            "from": "job_application.confirmed",
+            "to": "job_application.rated",
+            "type": "sequence",
+            "operator": "AND",
+            "quote": "Companies have to confirm that they received job applications and rate the application"
+          },
+          {
+            "from": "job_application.rated",
+            "to": "job_application.reported",
+            "type": "sequence",
+            "operator": "AND",
+            "quote": "You have to regularly report, to which companies you wrote job applications"
+          },
+          {
+            "from": "job_application.reported",
+            "to": "job_offer.received",
+            "type": "cross_entity_guard",
+            "operator": "AND",
+            "quote": "Based on your job applications, new potential job offers are sent to you"
+          }
+        ],
+        "cycles": []
+      },
+      "maternity_leave": {
+        "nodes": [
+          {
+            "id": "maternity_leave.planned",
+            "weight": 0.5
+          },
+          {
+            "id": "maternity_leave.taken",
+            "weight": 1.0
+          },
+          {
+            "id": "maternity_leave.extended",
+            "weight": 0.5
+          },
+          {
+            "id": "potential_models.fetched",
+            "weight": 0.0
+          },
+          {
+            "id": "relevant_information.collected",
+            "weight": 0.0
+          },
+          {
+            "id": "information.fetched",
+            "weight": 0.0
+          },
+          {
+            "id": "information.collected",
+            "weight": 0.0
+          },
+          {
+            "id": "information.gathered",
+            "weight": 0.0
+          },
+          {
+            "id": "social_security.notified",
+            "weight": 0.0
+          },
+          {
+            "id": "company_information.gathered",
+            "weight": 0.0
+          }
+        ],
+        "edges": [
+          {
+            "from": "maternity_leave.planned",
+            "to": "maternity_leave.taken",
+            "type": "sequence",
+            "operator": "AND",
+            "quote": "Create a process that support in planning, taking and extending a maternity leave."
+          },
+          {
+            "from": "maternity_leave.taken",
+            "to": "maternity_leave.extended",
+            "type": "sequence",
+            "operator": "AND",
+            "quote": "At the end of the period let parent decide about extension."
+          }
+        ],
+        "cycles": []
+      },
+      "work_accident": {
+        "nodes": [
+          {
+            "id": "work_accident.considered",
+            "weight": 0.0
+          },
+          {
+            "id": "work_accident.reported",
+            "weight": 0.0
+          },
+          {
+            "id": "work_accident.fatal",
+            "weight": 0.0
+          },
+          {
+            "id": "work_accident.serious_injury",
+            "weight": 0.0
+          },
+          {
+            "id": "work_accident.killed",
+            "weight": 0.0
+          },
+          {
+            "id": "work_accident.injured",
+            "weight": 0.0
+          },
+          {
+            "id": "work_accident.unable_to_work",
+            "weight": 0.0
+          },
+          {
+            "id": "work_accident.almost_occurred",
+            "weight": 1.0
+          },
+          {
+            "id": "work_accident.reported_to_inspectorate",
+            "weight": 0.0
+          },
+          {
+            "id": "work_accident.reported_to_insurance",
+            "weight": 0.0
+          },
+          {
+            "id": "work_accident.reported_to_employer",
+            "weight": 0.0
+          },
+          {
+            "id": "work_accident.reported_immediately",
+            "weight": 0.0
+          },
+          {
+            "id": "work_accident.reported_within_five_days",
+            "weight": 0.0
+          },
+          {
+            "id": "self_employed_person.reported",
+            "weight": 0.0
+          },
+          {
+            "id": "person_with_accident_insurance.killed",
+            "weight": 0.0
+          },
+          {
+            "id": "person_with_accident_insurance.injured",
+            "weight": 0.0
+          },
+          {
+            "id": "person_with_accident_insurance.unable_to_work",
+            "weight": 0.0
+          },
+          {
+            "id": "person_with_accident_insurance.physically_injured",
+            "weight": 0.0
+          },
+          {
+            "id": "educational_facility.obliged_to_report",
+            "weight": 0.0
+          },
+          {
+            "id": "incident.almost_occurred",
+            "weight": 1.0
+          },
+          {
+            "id": "defect.discovered",
+            "weight": 0.0
+          },
+          {
+            "id": "serious_risk.discovered",
+            "weight": 0.0
+          },
+          {
+            "id": "doctor_visit.notified",
+            "weight": 0.0
+          }
+        ],
+        "edges": [
+          {
+            "from": "incident.almost_occurred",
+            "to": "work_accident.almost_occurred",
+            "type": "cross_entity_guard",
+            "operator": "AND",
+            "quote": "any incident that would almost have led to an accident"
+          }
+        ],
+        "cycles": []
+      }
+    }
+  }
+}

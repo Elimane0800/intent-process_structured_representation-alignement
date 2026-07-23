@@ -1,0 +1,1542 @@
+{
+  "case_name": "M_j01",
+  "text": "Category: Manufacturing\nTitle: Chainsaw\n\nYou produce custom chainsaws on demand. Your chainsaws have at least 5\nproperties such as length of the \"guide bar\" (Schwertlaenge), chain width,\nelectric or motor chainsaw. After your customer told you the properties, you\ncan start ordering the parts from various online sources (in parallel). After\nthe parts arrive you have to do a manual inspection of all parts, and then\nassemble the parts. During production, you regularly send updates to your\ncustomer. After producing the first saw you send it to your customer. If he\nlikes it, the rest of his order are produced.\n\n",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "llama-3.1-8b",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "llama-3.1-8b",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/text_and_bpmn/bpmn/M_j01/3.bpmn2.xml",
+  "candidates": {
+    "chainsaw": [
+      "custom",
+      "produced",
+      "ordered",
+      "inspected",
+      "assembled",
+      "sent",
+      "produced_first",
+      "produced_rest"
+    ]
+  },
+  "validation_report": {
+    "chainsaw": {
+      "f_lex": "ENTITY",
+      "kept": true
+    }
+  },
+  "state_space": {
+    "chainsaw": [
+      "custom",
+      "produced",
+      "ordered",
+      "inspected",
+      "assembled",
+      "sent",
+      "produced_first",
+      "produced_rest"
+    ]
+  },
+  "raw_preconditions": {
+    "chainsaw.custom": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "chainsaw.produced": {
+      "precondition": "chainsaw.custom AND chainsaw.ordered AND chainsaw.inspected AND chainsaw.assembled",
+      "quote": "After your customer told you the properties, you can start ordering the parts from various online sources (in parallel). After the parts arrive you have to do a manual inspection of all parts, and then assemble the parts."
+    },
+    "chainsaw.ordered": {
+      "precondition": "chainsaw.custom",
+      "quote": "After your customer told you the properties, you can start ordering the parts from various online sources (in parallel)"
+    },
+    "chainsaw.inspected": {
+      "precondition": "chainsaw.ordered",
+      "quote": "After the parts arrive you have to do a manual inspection of all parts, and then assemble the parts."
+    },
+    "chainsaw.assembled": {
+      "precondition": "chainsaw.inspected",
+      "quote": "After the parts arrive you have to do a manual inspection of all parts, and then assemble the parts."
+    },
+    "chainsaw.sent": {
+      "precondition": "chainsaw.assembled AND chainsaw.produced_first",
+      "quote": "After producing the first saw you send it to your customer."
+    },
+    "chainsaw.produced_first": {
+      "precondition": "chainsaw.assembled AND chainsaw.sent",
+      "quote": "After producing the first saw you send it to your customer."
+    },
+    "chainsaw.produced_rest": {
+      "precondition": "chainsaw.produced_first AND chainsaw.sent",
+      "quote": "If he likes it, the rest of his order are produced."
+    }
+  },
+  "validated_preconditions": {
+    "chainsaw.custom": {
+      "precondition": "INITIAL",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "chainsaw.produced": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "DOWNGRADED",
+      "reason": "mutual exclusivity violation: two states of the same entity in one conjunction",
+      "retried": true
+    },
+    "chainsaw.ordered": {
+      "precondition": "chainsaw.custom",
+      "quote": "After your customer told you the properties, you can start ordering the parts from various online sources (in parallel)",
+      "status": "OK",
+      "reason": null
+    },
+    "chainsaw.inspected": {
+      "precondition": "chainsaw.ordered",
+      "quote": "After the parts arrive you have to do a manual inspection of all parts, and then assemble the parts.",
+      "status": "OK",
+      "reason": null
+    },
+    "chainsaw.assembled": {
+      "precondition": "chainsaw.inspected",
+      "quote": "After the parts arrive you have to do a manual inspection of all parts, and then assemble the parts.",
+      "status": "OK",
+      "reason": null
+    },
+    "chainsaw.sent": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "DOWNGRADED",
+      "reason": "mutual exclusivity violation: two states of the same entity in one conjunction",
+      "retried": true
+    },
+    "chainsaw.produced_first": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "DOWNGRADED",
+      "reason": "mutual exclusivity violation: two states of the same entity in one conjunction",
+      "retried": true
+    },
+    "chainsaw.produced_rest": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "DOWNGRADED",
+      "reason": "mutual exclusivity violation: two states of the same entity in one conjunction",
+      "retried": true
+    }
+  },
+  "precondition_cycles": [],
+  "reference_graph": {
+    "nodes": [
+      {
+        "id": "chainsaw.custom",
+        "weight": 0.5
+      },
+      {
+        "id": "chainsaw.produced",
+        "weight": 0.0
+      },
+      {
+        "id": "chainsaw.ordered",
+        "weight": 1.0
+      },
+      {
+        "id": "chainsaw.inspected",
+        "weight": 1.0
+      },
+      {
+        "id": "chainsaw.assembled",
+        "weight": 0.5
+      },
+      {
+        "id": "chainsaw.sent",
+        "weight": 0.0
+      },
+      {
+        "id": "chainsaw.produced_first",
+        "weight": 0.0
+      },
+      {
+        "id": "chainsaw.produced_rest",
+        "weight": 0.0
+      }
+    ],
+    "edges": [
+      {
+        "from": "chainsaw.custom",
+        "to": "chainsaw.ordered",
+        "type": "sequence",
+        "operator": "AND",
+        "quote": "After your customer told you the properties, you can start ordering the parts from various online sources (in parallel)"
+      },
+      {
+        "from": "chainsaw.ordered",
+        "to": "chainsaw.inspected",
+        "type": "sequence",
+        "operator": "AND",
+        "quote": "After the parts arrive you have to do a manual inspection of all parts, and then assemble the parts."
+      },
+      {
+        "from": "chainsaw.inspected",
+        "to": "chainsaw.assembled",
+        "type": "sequence",
+        "operator": "AND",
+        "quote": "After the parts arrive you have to do a manual inspection of all parts, and then assemble the parts."
+      }
+    ],
+    "cycles": []
+  },
+  "dfg_edges": [
+    {
+      "source_id": "sid-3B57E671-7106-4A59-8FC6-C408211B48B1",
+      "source_label": "Order protective shield",
+      "target_id": "sid-ECD0E09B-F9F5-44E5-B669-19A3CFDF2CA0",
+      "target_label": "24 hours passed",
+      "gateway_context": [
+        "ParallelGateway",
+        "EventBasedGateway"
+      ]
+    },
+    {
+      "source_id": "sid-3B57E671-7106-4A59-8FC6-C408211B48B1",
+      "source_label": "Order protective shield",
+      "target_id": "sid-F166AA61-1A7A-4C88-BF23-8197225D942A",
+      "target_label": "All parts recieved",
+      "gateway_context": [
+        "ParallelGateway",
+        "EventBasedGateway"
+      ]
+    },
+    {
+      "source_id": "sid-D3F86C15-47F3-4DCA-BC5E-8ADE6D9C83D7",
+      "source_label": "Order color",
+      "target_id": "sid-ECD0E09B-F9F5-44E5-B669-19A3CFDF2CA0",
+      "target_label": "24 hours passed",
+      "gateway_context": [
+        "ParallelGateway",
+        "EventBasedGateway"
+      ]
+    },
+    {
+      "source_id": "sid-D3F86C15-47F3-4DCA-BC5E-8ADE6D9C83D7",
+      "source_label": "Order color",
+      "target_id": "sid-F166AA61-1A7A-4C88-BF23-8197225D942A",
+      "target_label": "All parts recieved",
+      "gateway_context": [
+        "ParallelGateway",
+        "EventBasedGateway"
+      ]
+    },
+    {
+      "source_id": "sid-2161B974-BC2F-4DC9-9E5C-940E961D91E3",
+      "source_label": "Request porperties",
+      "target_id": "sid-D4769557-53A7-4038-975B-88AA6E7625EB",
+      "target_label": "Recieve properties",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-2161B974-BC2F-4DC9-9E5C-940E961D91E3",
+      "source_label": "Request porperties",
+      "target_id": "sid-79B6F3C5-FD1B-4AD0-8DF9-D5D138066C07",
+      "target_label": "Customer",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-ECD0E09B-F9F5-44E5-B669-19A3CFDF2CA0",
+      "source_label": "24 hours passed",
+      "target_id": "sid-90AAA3FC-27E2-4EDF-BD6C-BFBFA00344E0",
+      "target_label": "Send update",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-CC09F342-3641-4ED8-A097-15CABAAB07F2",
+      "source_label": "Set number",
+      "target_id": "sid-D7D3ED30-544D-485C-9625-FB0E6D42EA07",
+      "target_label": "Order guide bar",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-CC09F342-3641-4ED8-A097-15CABAAB07F2",
+      "source_label": "Set number",
+      "target_id": "sid-E330E9C8-0EEA-45D6-8349-461949AA869A",
+      "target_label": "Order chain",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-CC09F342-3641-4ED8-A097-15CABAAB07F2",
+      "source_label": "Set number",
+      "target_id": "sid-3B57E671-7106-4A59-8FC6-C408211B48B1",
+      "target_label": "Order protective shield",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-CC09F342-3641-4ED8-A097-15CABAAB07F2",
+      "source_label": "Set number",
+      "target_id": "sid-2067B835-255C-4866-B909-7E47AF8D8F70",
+      "target_label": "Order motor",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-CC09F342-3641-4ED8-A097-15CABAAB07F2",
+      "source_label": "Set number",
+      "target_id": "sid-D3F86C15-47F3-4DCA-BC5E-8ADE6D9C83D7",
+      "target_label": "Order color",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-F7E83D45-11AB-4B67-B988-5ADACA774A1E",
+      "source_label": "Send order to customer",
+      "target_id": "sid-8062B2CD-EDA7-48A0-8850-ADF30248DE61",
+      "target_label": "Chainsaw order completed",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-F7E83D45-11AB-4B67-B988-5ADACA774A1E",
+      "source_label": "Send order to customer",
+      "target_id": "sid-79B6F3C5-FD1B-4AD0-8DF9-D5D138066C07",
+      "target_label": "Customer",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-AA868DB3-BE97-4EF3-ACC6-093152B7D2FC",
+      "source_label": "Request number of chainsaws needed",
+      "target_id": "sid-79B6F3C5-FD1B-4AD0-8DF9-D5D138066C07",
+      "target_label": "Customer",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-AA868DB3-BE97-4EF3-ACC6-093152B7D2FC",
+      "source_label": "Request number of chainsaws needed",
+      "target_id": "sid-BA24100B-9DB8-4C34-9262-473B65AABD93",
+      "target_label": "Receive number of chainsaws needed",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-F166AA61-1A7A-4C88-BF23-8197225D942A",
+      "source_label": "All parts recieved",
+      "target_id": "sid-FADC1D16-6820-4A6F-B2BD-62FEDFC008C0",
+      "target_label": "Inspect parts",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-2067B835-255C-4866-B909-7E47AF8D8F70",
+      "source_label": "Order motor",
+      "target_id": "sid-ECD0E09B-F9F5-44E5-B669-19A3CFDF2CA0",
+      "target_label": "24 hours passed",
+      "gateway_context": [
+        "ParallelGateway",
+        "EventBasedGateway"
+      ]
+    },
+    {
+      "source_id": "sid-2067B835-255C-4866-B909-7E47AF8D8F70",
+      "source_label": "Order motor",
+      "target_id": "sid-F166AA61-1A7A-4C88-BF23-8197225D942A",
+      "target_label": "All parts recieved",
+      "gateway_context": [
+        "ParallelGateway",
+        "EventBasedGateway"
+      ]
+    },
+    {
+      "source_id": "sid-D8948F0A-7F54-4804-9FEA-4B31BB5C1B84",
+      "source_label": "Assemble parts",
+      "target_id": "sid-8E6B807F-1D93-469D-AEED-C57ECBC67795",
+      "target_label": "Send chainsaw to customer",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "yes",
+        "ExclusiveGateway",
+        "no"
+      ]
+    },
+    {
+      "source_id": "sid-D8948F0A-7F54-4804-9FEA-4B31BB5C1B84",
+      "source_label": "Assemble parts",
+      "target_id": "sid-2161B974-BC2F-4DC9-9E5C-940E961D91E3",
+      "target_label": "Request porperties",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "yes",
+        "ExclusiveGateway",
+        "yes",
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "no"
+      ]
+    },
+    {
+      "source_id": "sid-D8948F0A-7F54-4804-9FEA-4B31BB5C1B84",
+      "source_label": "Assemble parts",
+      "target_id": "sid-AA868DB3-BE97-4EF3-ACC6-093152B7D2FC",
+      "target_label": "Request number of chainsaws needed",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "yes",
+        "ExclusiveGateway",
+        "yes",
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "yes"
+      ]
+    },
+    {
+      "source_id": "sid-D8948F0A-7F54-4804-9FEA-4B31BB5C1B84",
+      "source_label": "Assemble parts",
+      "target_id": "sid-ECD0E09B-F9F5-44E5-B669-19A3CFDF2CA0",
+      "target_label": "24 hours passed",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "no",
+        "EventBasedGateway"
+      ]
+    },
+    {
+      "source_id": "sid-D8948F0A-7F54-4804-9FEA-4B31BB5C1B84",
+      "source_label": "Assemble parts",
+      "target_id": "sid-F166AA61-1A7A-4C88-BF23-8197225D942A",
+      "target_label": "All parts recieved",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "no",
+        "EventBasedGateway"
+      ]
+    },
+    {
+      "source_id": "sid-8E6B807F-1D93-469D-AEED-C57ECBC67795",
+      "source_label": "Send chainsaw to customer",
+      "target_id": "sid-79B6F3C5-FD1B-4AD0-8DF9-D5D138066C07",
+      "target_label": "Customer",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-8E6B807F-1D93-469D-AEED-C57ECBC67795",
+      "source_label": "Send chainsaw to customer",
+      "target_id": "sid-0C4F4515-22C2-4118-AD25-842B182C4707",
+      "target_label": "Recieve feedback",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-BA24100B-9DB8-4C34-9262-473B65AABD93",
+      "source_label": "Receive number of chainsaws needed",
+      "target_id": "sid-CC09F342-3641-4ED8-A097-15CABAAB07F2",
+      "target_label": "Set number",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "no"
+      ]
+    },
+    {
+      "source_id": "sid-BA24100B-9DB8-4C34-9262-473B65AABD93",
+      "source_label": "Receive number of chainsaws needed",
+      "target_id": "sid-F7E83D45-11AB-4B67-B988-5ADACA774A1E",
+      "target_label": "Send order to customer",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "yes"
+      ]
+    },
+    {
+      "source_id": "sid-FA364043-B765-4DCF-B3B9-5728EBEABA86",
+      "source_label": "Chainsaw order request",
+      "target_id": "sid-2161B974-BC2F-4DC9-9E5C-940E961D91E3",
+      "target_label": "Request porperties",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-0C4F4515-22C2-4118-AD25-842B182C4707",
+      "source_label": "Recieve feedback",
+      "target_id": "sid-2161B974-BC2F-4DC9-9E5C-940E961D91E3",
+      "target_label": "Request porperties",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "no"
+      ]
+    },
+    {
+      "source_id": "sid-0C4F4515-22C2-4118-AD25-842B182C4707",
+      "source_label": "Recieve feedback",
+      "target_id": "sid-AA868DB3-BE97-4EF3-ACC6-093152B7D2FC",
+      "target_label": "Request number of chainsaws needed",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "yes"
+      ]
+    },
+    {
+      "source_id": "sid-FADC1D16-6820-4A6F-B2BD-62FEDFC008C0",
+      "source_label": "Inspect parts",
+      "target_id": "sid-D8948F0A-7F54-4804-9FEA-4B31BB5C1B84",
+      "target_label": "Assemble parts",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-79B6F3C5-FD1B-4AD0-8DF9-D5D138066C07",
+      "source_label": "Customer",
+      "target_id": "sid-D4769557-53A7-4038-975B-88AA6E7625EB",
+      "target_label": "Recieve properties",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-79B6F3C5-FD1B-4AD0-8DF9-D5D138066C07",
+      "source_label": "Customer",
+      "target_id": "sid-0C4F4515-22C2-4118-AD25-842B182C4707",
+      "target_label": "Recieve feedback",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-79B6F3C5-FD1B-4AD0-8DF9-D5D138066C07",
+      "source_label": "Customer",
+      "target_id": "sid-BA24100B-9DB8-4C34-9262-473B65AABD93",
+      "target_label": "Receive number of chainsaws needed",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-D7D3ED30-544D-485C-9625-FB0E6D42EA07",
+      "source_label": "Order guide bar",
+      "target_id": "sid-ECD0E09B-F9F5-44E5-B669-19A3CFDF2CA0",
+      "target_label": "24 hours passed",
+      "gateway_context": [
+        "ParallelGateway",
+        "EventBasedGateway"
+      ]
+    },
+    {
+      "source_id": "sid-D7D3ED30-544D-485C-9625-FB0E6D42EA07",
+      "source_label": "Order guide bar",
+      "target_id": "sid-F166AA61-1A7A-4C88-BF23-8197225D942A",
+      "target_label": "All parts recieved",
+      "gateway_context": [
+        "ParallelGateway",
+        "EventBasedGateway"
+      ]
+    },
+    {
+      "source_id": "sid-E330E9C8-0EEA-45D6-8349-461949AA869A",
+      "source_label": "Order chain",
+      "target_id": "sid-ECD0E09B-F9F5-44E5-B669-19A3CFDF2CA0",
+      "target_label": "24 hours passed",
+      "gateway_context": [
+        "ParallelGateway",
+        "EventBasedGateway"
+      ]
+    },
+    {
+      "source_id": "sid-E330E9C8-0EEA-45D6-8349-461949AA869A",
+      "source_label": "Order chain",
+      "target_id": "sid-F166AA61-1A7A-4C88-BF23-8197225D942A",
+      "target_label": "All parts recieved",
+      "gateway_context": [
+        "ParallelGateway",
+        "EventBasedGateway"
+      ]
+    },
+    {
+      "source_id": "sid-D4769557-53A7-4038-975B-88AA6E7625EB",
+      "source_label": "Recieve properties",
+      "target_id": "sid-26B658F9-5486-4EB6-A980-AF59F0C4D23F",
+      "target_label": "Set properties",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-26B658F9-5486-4EB6-A980-AF59F0C4D23F",
+      "source_label": "Set properties",
+      "target_id": "sid-D7D3ED30-544D-485C-9625-FB0E6D42EA07",
+      "target_label": "Order guide bar",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-26B658F9-5486-4EB6-A980-AF59F0C4D23F",
+      "source_label": "Set properties",
+      "target_id": "sid-E330E9C8-0EEA-45D6-8349-461949AA869A",
+      "target_label": "Order chain",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-26B658F9-5486-4EB6-A980-AF59F0C4D23F",
+      "source_label": "Set properties",
+      "target_id": "sid-3B57E671-7106-4A59-8FC6-C408211B48B1",
+      "target_label": "Order protective shield",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-26B658F9-5486-4EB6-A980-AF59F0C4D23F",
+      "source_label": "Set properties",
+      "target_id": "sid-2067B835-255C-4866-B909-7E47AF8D8F70",
+      "target_label": "Order motor",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-26B658F9-5486-4EB6-A980-AF59F0C4D23F",
+      "source_label": "Set properties",
+      "target_id": "sid-D3F86C15-47F3-4DCA-BC5E-8ADE6D9C83D7",
+      "target_label": "Order color",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-90AAA3FC-27E2-4EDF-BD6C-BFBFA00344E0",
+      "source_label": "Send update",
+      "target_id": "sid-8E6B807F-1D93-469D-AEED-C57ECBC67795",
+      "target_label": "Send chainsaw to customer",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "yes",
+        "ExclusiveGateway",
+        "no"
+      ]
+    },
+    {
+      "source_id": "sid-90AAA3FC-27E2-4EDF-BD6C-BFBFA00344E0",
+      "source_label": "Send update",
+      "target_id": "sid-2161B974-BC2F-4DC9-9E5C-940E961D91E3",
+      "target_label": "Request porperties",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "yes",
+        "ExclusiveGateway",
+        "yes",
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "no"
+      ]
+    },
+    {
+      "source_id": "sid-90AAA3FC-27E2-4EDF-BD6C-BFBFA00344E0",
+      "source_label": "Send update",
+      "target_id": "sid-AA868DB3-BE97-4EF3-ACC6-093152B7D2FC",
+      "target_label": "Request number of chainsaws needed",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "yes",
+        "ExclusiveGateway",
+        "yes",
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "yes"
+      ]
+    },
+    {
+      "source_id": "sid-90AAA3FC-27E2-4EDF-BD6C-BFBFA00344E0",
+      "source_label": "Send update",
+      "target_id": "sid-ECD0E09B-F9F5-44E5-B669-19A3CFDF2CA0",
+      "target_label": "24 hours passed",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "no",
+        "EventBasedGateway"
+      ]
+    },
+    {
+      "source_id": "sid-90AAA3FC-27E2-4EDF-BD6C-BFBFA00344E0",
+      "source_label": "Send update",
+      "target_id": "sid-F166AA61-1A7A-4C88-BF23-8197225D942A",
+      "target_label": "All parts recieved",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "no",
+        "EventBasedGateway"
+      ]
+    },
+    {
+      "source_id": "sid-90AAA3FC-27E2-4EDF-BD6C-BFBFA00344E0",
+      "source_label": "Send update",
+      "target_id": "sid-79B6F3C5-FD1B-4AD0-8DF9-D5D138066C07",
+      "target_label": "Customer",
+      "gateway_context": []
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "Order protective shield",
+      "subject_id": "sid-3B57E671-7106-4A59-8FC6-C408211B48B1",
+      "predicate": "follows",
+      "object": "24 hours passed",
+      "object_id": "sid-ECD0E09B-F9F5-44E5-B669-19A3CFDF2CA0"
+    },
+    {
+      "subject": "Order protective shield",
+      "subject_id": "sid-3B57E671-7106-4A59-8FC6-C408211B48B1",
+      "predicate": "follows",
+      "object": "All parts recieved",
+      "object_id": "sid-F166AA61-1A7A-4C88-BF23-8197225D942A"
+    },
+    {
+      "subject": "Order color",
+      "subject_id": "sid-D3F86C15-47F3-4DCA-BC5E-8ADE6D9C83D7",
+      "predicate": "follows",
+      "object": "24 hours passed",
+      "object_id": "sid-ECD0E09B-F9F5-44E5-B669-19A3CFDF2CA0"
+    },
+    {
+      "subject": "Order color",
+      "subject_id": "sid-D3F86C15-47F3-4DCA-BC5E-8ADE6D9C83D7",
+      "predicate": "follows",
+      "object": "All parts recieved",
+      "object_id": "sid-F166AA61-1A7A-4C88-BF23-8197225D942A"
+    },
+    {
+      "subject": "Request porperties",
+      "subject_id": "sid-2161B974-BC2F-4DC9-9E5C-940E961D91E3",
+      "predicate": "follows",
+      "object": "Recieve properties",
+      "object_id": "sid-D4769557-53A7-4038-975B-88AA6E7625EB"
+    },
+    {
+      "subject": "Request porperties",
+      "subject_id": "sid-2161B974-BC2F-4DC9-9E5C-940E961D91E3",
+      "predicate": "follows",
+      "object": "Customer",
+      "object_id": "sid-79B6F3C5-FD1B-4AD0-8DF9-D5D138066C07"
+    },
+    {
+      "subject": "24 hours passed",
+      "subject_id": "sid-ECD0E09B-F9F5-44E5-B669-19A3CFDF2CA0",
+      "predicate": "follows",
+      "object": "Send update",
+      "object_id": "sid-90AAA3FC-27E2-4EDF-BD6C-BFBFA00344E0"
+    },
+    {
+      "subject": "Set number",
+      "subject_id": "sid-CC09F342-3641-4ED8-A097-15CABAAB07F2",
+      "predicate": "follows",
+      "object": "Order guide bar",
+      "object_id": "sid-D7D3ED30-544D-485C-9625-FB0E6D42EA07"
+    },
+    {
+      "subject": "Set number",
+      "subject_id": "sid-CC09F342-3641-4ED8-A097-15CABAAB07F2",
+      "predicate": "follows",
+      "object": "Order chain",
+      "object_id": "sid-E330E9C8-0EEA-45D6-8349-461949AA869A"
+    },
+    {
+      "subject": "Set number",
+      "subject_id": "sid-CC09F342-3641-4ED8-A097-15CABAAB07F2",
+      "predicate": "follows",
+      "object": "Order protective shield",
+      "object_id": "sid-3B57E671-7106-4A59-8FC6-C408211B48B1"
+    },
+    {
+      "subject": "Set number",
+      "subject_id": "sid-CC09F342-3641-4ED8-A097-15CABAAB07F2",
+      "predicate": "follows",
+      "object": "Order motor",
+      "object_id": "sid-2067B835-255C-4866-B909-7E47AF8D8F70"
+    },
+    {
+      "subject": "Set number",
+      "subject_id": "sid-CC09F342-3641-4ED8-A097-15CABAAB07F2",
+      "predicate": "follows",
+      "object": "Order color",
+      "object_id": "sid-D3F86C15-47F3-4DCA-BC5E-8ADE6D9C83D7"
+    },
+    {
+      "subject": "Send order to customer",
+      "subject_id": "sid-F7E83D45-11AB-4B67-B988-5ADACA774A1E",
+      "predicate": "follows",
+      "object": "Chainsaw order completed",
+      "object_id": "sid-8062B2CD-EDA7-48A0-8850-ADF30248DE61"
+    },
+    {
+      "subject": "Send order to customer",
+      "subject_id": "sid-F7E83D45-11AB-4B67-B988-5ADACA774A1E",
+      "predicate": "follows",
+      "object": "Customer",
+      "object_id": "sid-79B6F3C5-FD1B-4AD0-8DF9-D5D138066C07"
+    },
+    {
+      "subject": "Request number of chainsaws needed",
+      "subject_id": "sid-AA868DB3-BE97-4EF3-ACC6-093152B7D2FC",
+      "predicate": "follows",
+      "object": "Customer",
+      "object_id": "sid-79B6F3C5-FD1B-4AD0-8DF9-D5D138066C07"
+    },
+    {
+      "subject": "Request number of chainsaws needed",
+      "subject_id": "sid-AA868DB3-BE97-4EF3-ACC6-093152B7D2FC",
+      "predicate": "follows",
+      "object": "Receive number of chainsaws needed",
+      "object_id": "sid-BA24100B-9DB8-4C34-9262-473B65AABD93"
+    },
+    {
+      "subject": "All parts recieved",
+      "subject_id": "sid-F166AA61-1A7A-4C88-BF23-8197225D942A",
+      "predicate": "follows",
+      "object": "Inspect parts",
+      "object_id": "sid-FADC1D16-6820-4A6F-B2BD-62FEDFC008C0"
+    },
+    {
+      "subject": "Order motor",
+      "subject_id": "sid-2067B835-255C-4866-B909-7E47AF8D8F70",
+      "predicate": "follows",
+      "object": "24 hours passed",
+      "object_id": "sid-ECD0E09B-F9F5-44E5-B669-19A3CFDF2CA0"
+    },
+    {
+      "subject": "Order motor",
+      "subject_id": "sid-2067B835-255C-4866-B909-7E47AF8D8F70",
+      "predicate": "follows",
+      "object": "All parts recieved",
+      "object_id": "sid-F166AA61-1A7A-4C88-BF23-8197225D942A"
+    },
+    {
+      "subject": "Assemble parts",
+      "subject_id": "sid-D8948F0A-7F54-4804-9FEA-4B31BB5C1B84",
+      "predicate": "follows",
+      "object": "Send chainsaw to customer",
+      "object_id": "sid-8E6B807F-1D93-469D-AEED-C57ECBC67795"
+    },
+    {
+      "subject": "Assemble parts",
+      "subject_id": "sid-D8948F0A-7F54-4804-9FEA-4B31BB5C1B84",
+      "predicate": "follows",
+      "object": "Request porperties",
+      "object_id": "sid-2161B974-BC2F-4DC9-9E5C-940E961D91E3"
+    },
+    {
+      "subject": "Assemble parts",
+      "subject_id": "sid-D8948F0A-7F54-4804-9FEA-4B31BB5C1B84",
+      "predicate": "follows",
+      "object": "Request number of chainsaws needed",
+      "object_id": "sid-AA868DB3-BE97-4EF3-ACC6-093152B7D2FC"
+    },
+    {
+      "subject": "Assemble parts",
+      "subject_id": "sid-D8948F0A-7F54-4804-9FEA-4B31BB5C1B84",
+      "predicate": "follows",
+      "object": "24 hours passed",
+      "object_id": "sid-ECD0E09B-F9F5-44E5-B669-19A3CFDF2CA0"
+    },
+    {
+      "subject": "Assemble parts",
+      "subject_id": "sid-D8948F0A-7F54-4804-9FEA-4B31BB5C1B84",
+      "predicate": "follows",
+      "object": "All parts recieved",
+      "object_id": "sid-F166AA61-1A7A-4C88-BF23-8197225D942A"
+    },
+    {
+      "subject": "Send chainsaw to customer",
+      "subject_id": "sid-8E6B807F-1D93-469D-AEED-C57ECBC67795",
+      "predicate": "follows",
+      "object": "Customer",
+      "object_id": "sid-79B6F3C5-FD1B-4AD0-8DF9-D5D138066C07"
+    },
+    {
+      "subject": "Send chainsaw to customer",
+      "subject_id": "sid-8E6B807F-1D93-469D-AEED-C57ECBC67795",
+      "predicate": "follows",
+      "object": "Recieve feedback",
+      "object_id": "sid-0C4F4515-22C2-4118-AD25-842B182C4707"
+    },
+    {
+      "subject": "Receive number of chainsaws needed",
+      "subject_id": "sid-BA24100B-9DB8-4C34-9262-473B65AABD93",
+      "predicate": "follows",
+      "object": "Set number",
+      "object_id": "sid-CC09F342-3641-4ED8-A097-15CABAAB07F2"
+    },
+    {
+      "subject": "Receive number of chainsaws needed",
+      "subject_id": "sid-BA24100B-9DB8-4C34-9262-473B65AABD93",
+      "predicate": "follows",
+      "object": "Send order to customer",
+      "object_id": "sid-F7E83D45-11AB-4B67-B988-5ADACA774A1E"
+    },
+    {
+      "subject": "Chainsaw order request",
+      "subject_id": "sid-FA364043-B765-4DCF-B3B9-5728EBEABA86",
+      "predicate": "follows",
+      "object": "Request porperties",
+      "object_id": "sid-2161B974-BC2F-4DC9-9E5C-940E961D91E3"
+    },
+    {
+      "subject": "Recieve feedback",
+      "subject_id": "sid-0C4F4515-22C2-4118-AD25-842B182C4707",
+      "predicate": "follows",
+      "object": "Request porperties",
+      "object_id": "sid-2161B974-BC2F-4DC9-9E5C-940E961D91E3"
+    },
+    {
+      "subject": "Recieve feedback",
+      "subject_id": "sid-0C4F4515-22C2-4118-AD25-842B182C4707",
+      "predicate": "follows",
+      "object": "Request number of chainsaws needed",
+      "object_id": "sid-AA868DB3-BE97-4EF3-ACC6-093152B7D2FC"
+    },
+    {
+      "subject": "Inspect parts",
+      "subject_id": "sid-FADC1D16-6820-4A6F-B2BD-62FEDFC008C0",
+      "predicate": "follows",
+      "object": "Assemble parts",
+      "object_id": "sid-D8948F0A-7F54-4804-9FEA-4B31BB5C1B84"
+    },
+    {
+      "subject": "Customer",
+      "subject_id": "sid-79B6F3C5-FD1B-4AD0-8DF9-D5D138066C07",
+      "predicate": "follows",
+      "object": "Recieve properties",
+      "object_id": "sid-D4769557-53A7-4038-975B-88AA6E7625EB"
+    },
+    {
+      "subject": "Customer",
+      "subject_id": "sid-79B6F3C5-FD1B-4AD0-8DF9-D5D138066C07",
+      "predicate": "follows",
+      "object": "Recieve feedback",
+      "object_id": "sid-0C4F4515-22C2-4118-AD25-842B182C4707"
+    },
+    {
+      "subject": "Customer",
+      "subject_id": "sid-79B6F3C5-FD1B-4AD0-8DF9-D5D138066C07",
+      "predicate": "follows",
+      "object": "Receive number of chainsaws needed",
+      "object_id": "sid-BA24100B-9DB8-4C34-9262-473B65AABD93"
+    },
+    {
+      "subject": "Order guide bar",
+      "subject_id": "sid-D7D3ED30-544D-485C-9625-FB0E6D42EA07",
+      "predicate": "follows",
+      "object": "24 hours passed",
+      "object_id": "sid-ECD0E09B-F9F5-44E5-B669-19A3CFDF2CA0"
+    },
+    {
+      "subject": "Order guide bar",
+      "subject_id": "sid-D7D3ED30-544D-485C-9625-FB0E6D42EA07",
+      "predicate": "follows",
+      "object": "All parts recieved",
+      "object_id": "sid-F166AA61-1A7A-4C88-BF23-8197225D942A"
+    },
+    {
+      "subject": "Order chain",
+      "subject_id": "sid-E330E9C8-0EEA-45D6-8349-461949AA869A",
+      "predicate": "follows",
+      "object": "24 hours passed",
+      "object_id": "sid-ECD0E09B-F9F5-44E5-B669-19A3CFDF2CA0"
+    },
+    {
+      "subject": "Order chain",
+      "subject_id": "sid-E330E9C8-0EEA-45D6-8349-461949AA869A",
+      "predicate": "follows",
+      "object": "All parts recieved",
+      "object_id": "sid-F166AA61-1A7A-4C88-BF23-8197225D942A"
+    },
+    {
+      "subject": "Recieve properties",
+      "subject_id": "sid-D4769557-53A7-4038-975B-88AA6E7625EB",
+      "predicate": "follows",
+      "object": "Set properties",
+      "object_id": "sid-26B658F9-5486-4EB6-A980-AF59F0C4D23F"
+    },
+    {
+      "subject": "Set properties",
+      "subject_id": "sid-26B658F9-5486-4EB6-A980-AF59F0C4D23F",
+      "predicate": "follows",
+      "object": "Order guide bar",
+      "object_id": "sid-D7D3ED30-544D-485C-9625-FB0E6D42EA07"
+    },
+    {
+      "subject": "Set properties",
+      "subject_id": "sid-26B658F9-5486-4EB6-A980-AF59F0C4D23F",
+      "predicate": "follows",
+      "object": "Order chain",
+      "object_id": "sid-E330E9C8-0EEA-45D6-8349-461949AA869A"
+    },
+    {
+      "subject": "Set properties",
+      "subject_id": "sid-26B658F9-5486-4EB6-A980-AF59F0C4D23F",
+      "predicate": "follows",
+      "object": "Order protective shield",
+      "object_id": "sid-3B57E671-7106-4A59-8FC6-C408211B48B1"
+    },
+    {
+      "subject": "Set properties",
+      "subject_id": "sid-26B658F9-5486-4EB6-A980-AF59F0C4D23F",
+      "predicate": "follows",
+      "object": "Order motor",
+      "object_id": "sid-2067B835-255C-4866-B909-7E47AF8D8F70"
+    },
+    {
+      "subject": "Set properties",
+      "subject_id": "sid-26B658F9-5486-4EB6-A980-AF59F0C4D23F",
+      "predicate": "follows",
+      "object": "Order color",
+      "object_id": "sid-D3F86C15-47F3-4DCA-BC5E-8ADE6D9C83D7"
+    },
+    {
+      "subject": "Send update",
+      "subject_id": "sid-90AAA3FC-27E2-4EDF-BD6C-BFBFA00344E0",
+      "predicate": "follows",
+      "object": "Send chainsaw to customer",
+      "object_id": "sid-8E6B807F-1D93-469D-AEED-C57ECBC67795"
+    },
+    {
+      "subject": "Send update",
+      "subject_id": "sid-90AAA3FC-27E2-4EDF-BD6C-BFBFA00344E0",
+      "predicate": "follows",
+      "object": "Request porperties",
+      "object_id": "sid-2161B974-BC2F-4DC9-9E5C-940E961D91E3"
+    },
+    {
+      "subject": "Send update",
+      "subject_id": "sid-90AAA3FC-27E2-4EDF-BD6C-BFBFA00344E0",
+      "predicate": "follows",
+      "object": "Request number of chainsaws needed",
+      "object_id": "sid-AA868DB3-BE97-4EF3-ACC6-093152B7D2FC"
+    },
+    {
+      "subject": "Send update",
+      "subject_id": "sid-90AAA3FC-27E2-4EDF-BD6C-BFBFA00344E0",
+      "predicate": "follows",
+      "object": "24 hours passed",
+      "object_id": "sid-ECD0E09B-F9F5-44E5-B669-19A3CFDF2CA0"
+    },
+    {
+      "subject": "Send update",
+      "subject_id": "sid-90AAA3FC-27E2-4EDF-BD6C-BFBFA00344E0",
+      "predicate": "follows",
+      "object": "All parts recieved",
+      "object_id": "sid-F166AA61-1A7A-4C88-BF23-8197225D942A"
+    },
+    {
+      "subject": "Send update",
+      "subject_id": "sid-90AAA3FC-27E2-4EDF-BD6C-BFBFA00344E0",
+      "predicate": "follows",
+      "object": "Customer",
+      "object_id": "sid-79B6F3C5-FD1B-4AD0-8DF9-D5D138066C07"
+    }
+  ],
+  "matches": {
+    "24 hours passed": {
+      "match": "chainsaw.produced_rest",
+      "score": 0.0678
+    },
+    "All parts recieved": {
+      "match": "chainsaw.assembled",
+      "score": 0.2479
+    },
+    "Assemble parts": {
+      "match": "chainsaw.assembled",
+      "score": 0.4834
+    },
+    "Chainsaw order completed": {
+      "match": "chainsaw.ordered",
+      "score": 0.8335
+    },
+    "Chainsaw order request": {
+      "match": "chainsaw.ordered",
+      "score": 0.8065
+    },
+    "Customer": {
+      "match": "chainsaw.custom",
+      "score": 0.1563
+    },
+    "Inspect parts": {
+      "match": "chainsaw.inspected",
+      "score": 0.4264
+    },
+    "Order chain": {
+      "match": "chainsaw.ordered",
+      "score": 0.4171
+    },
+    "Order color": {
+      "match": "chainsaw.ordered",
+      "score": 0.2451
+    },
+    "Order guide bar": {
+      "match": "chainsaw.ordered",
+      "score": 0.2354
+    },
+    "Order motor": {
+      "match": "chainsaw.ordered",
+      "score": 0.327
+    },
+    "Order protective shield": {
+      "match": "chainsaw.ordered",
+      "score": 0.2542
+    },
+    "Receive number of chainsaws needed": {
+      "match": "chainsaw.ordered",
+      "score": 0.5622
+    },
+    "Recieve feedback": {
+      "match": "chainsaw.sent",
+      "score": 0.0893
+    },
+    "Recieve properties": {
+      "match": "chainsaw.sent",
+      "score": 0.1152
+    },
+    "Request number of chainsaws needed": {
+      "match": "chainsaw.ordered",
+      "score": 0.5671
+    },
+    "Request porperties": {
+      "match": "chainsaw.ordered",
+      "score": 0.0919
+    },
+    "Send chainsaw to customer": {
+      "match": "chainsaw.sent",
+      "score": 0.6862
+    },
+    "Send order to customer": {
+      "match": "chainsaw.ordered",
+      "score": 0.248
+    },
+    "Send update": {
+      "match": "chainsaw.sent",
+      "score": 0.238
+    },
+    "Set number": {
+      "match": "chainsaw.assembled",
+      "score": 0.0901
+    },
+    "Set properties": {
+      "match": "chainsaw.assembled",
+      "score": 0.1052
+    }
+  },
+  "process_graph": [
+    {
+      "from": "chainsaw.ordered",
+      "to": "chainsaw.produced_rest",
+      "activity_from": "Order protective shield",
+      "activity_to": "24 hours passed"
+    },
+    {
+      "from": "chainsaw.ordered",
+      "to": "chainsaw.assembled",
+      "activity_from": "Order protective shield",
+      "activity_to": "All parts recieved"
+    },
+    {
+      "from": "chainsaw.ordered",
+      "to": "chainsaw.produced_rest",
+      "activity_from": "Order color",
+      "activity_to": "24 hours passed"
+    },
+    {
+      "from": "chainsaw.ordered",
+      "to": "chainsaw.assembled",
+      "activity_from": "Order color",
+      "activity_to": "All parts recieved"
+    },
+    {
+      "from": "chainsaw.ordered",
+      "to": "chainsaw.sent",
+      "activity_from": "Request porperties",
+      "activity_to": "Recieve properties"
+    },
+    {
+      "from": "chainsaw.ordered",
+      "to": "chainsaw.custom",
+      "activity_from": "Request porperties",
+      "activity_to": "Customer"
+    },
+    {
+      "from": "chainsaw.produced_rest",
+      "to": "chainsaw.sent",
+      "activity_from": "24 hours passed",
+      "activity_to": "Send update"
+    },
+    {
+      "from": "chainsaw.assembled",
+      "to": "chainsaw.ordered",
+      "activity_from": "Set number",
+      "activity_to": "Order guide bar"
+    },
+    {
+      "from": "chainsaw.assembled",
+      "to": "chainsaw.ordered",
+      "activity_from": "Set number",
+      "activity_to": "Order chain"
+    },
+    {
+      "from": "chainsaw.assembled",
+      "to": "chainsaw.ordered",
+      "activity_from": "Set number",
+      "activity_to": "Order protective shield"
+    },
+    {
+      "from": "chainsaw.assembled",
+      "to": "chainsaw.ordered",
+      "activity_from": "Set number",
+      "activity_to": "Order motor"
+    },
+    {
+      "from": "chainsaw.assembled",
+      "to": "chainsaw.ordered",
+      "activity_from": "Set number",
+      "activity_to": "Order color"
+    },
+    {
+      "from": "chainsaw.ordered",
+      "to": "chainsaw.ordered",
+      "activity_from": "Send order to customer",
+      "activity_to": "Chainsaw order completed"
+    },
+    {
+      "from": "chainsaw.ordered",
+      "to": "chainsaw.custom",
+      "activity_from": "Send order to customer",
+      "activity_to": "Customer"
+    },
+    {
+      "from": "chainsaw.ordered",
+      "to": "chainsaw.custom",
+      "activity_from": "Request number of chainsaws needed",
+      "activity_to": "Customer"
+    },
+    {
+      "from": "chainsaw.ordered",
+      "to": "chainsaw.ordered",
+      "activity_from": "Request number of chainsaws needed",
+      "activity_to": "Receive number of chainsaws needed"
+    },
+    {
+      "from": "chainsaw.assembled",
+      "to": "chainsaw.inspected",
+      "activity_from": "All parts recieved",
+      "activity_to": "Inspect parts"
+    },
+    {
+      "from": "chainsaw.ordered",
+      "to": "chainsaw.produced_rest",
+      "activity_from": "Order motor",
+      "activity_to": "24 hours passed"
+    },
+    {
+      "from": "chainsaw.ordered",
+      "to": "chainsaw.assembled",
+      "activity_from": "Order motor",
+      "activity_to": "All parts recieved"
+    },
+    {
+      "from": "chainsaw.assembled",
+      "to": "chainsaw.sent",
+      "activity_from": "Assemble parts",
+      "activity_to": "Send chainsaw to customer"
+    },
+    {
+      "from": "chainsaw.assembled",
+      "to": "chainsaw.ordered",
+      "activity_from": "Assemble parts",
+      "activity_to": "Request porperties"
+    },
+    {
+      "from": "chainsaw.assembled",
+      "to": "chainsaw.ordered",
+      "activity_from": "Assemble parts",
+      "activity_to": "Request number of chainsaws needed"
+    },
+    {
+      "from": "chainsaw.assembled",
+      "to": "chainsaw.produced_rest",
+      "activity_from": "Assemble parts",
+      "activity_to": "24 hours passed"
+    },
+    {
+      "from": "chainsaw.assembled",
+      "to": "chainsaw.assembled",
+      "activity_from": "Assemble parts",
+      "activity_to": "All parts recieved"
+    },
+    {
+      "from": "chainsaw.sent",
+      "to": "chainsaw.custom",
+      "activity_from": "Send chainsaw to customer",
+      "activity_to": "Customer"
+    },
+    {
+      "from": "chainsaw.sent",
+      "to": "chainsaw.sent",
+      "activity_from": "Send chainsaw to customer",
+      "activity_to": "Recieve feedback"
+    },
+    {
+      "from": "chainsaw.ordered",
+      "to": "chainsaw.assembled",
+      "activity_from": "Receive number of chainsaws needed",
+      "activity_to": "Set number"
+    },
+    {
+      "from": "chainsaw.ordered",
+      "to": "chainsaw.ordered",
+      "activity_from": "Receive number of chainsaws needed",
+      "activity_to": "Send order to customer"
+    },
+    {
+      "from": "chainsaw.ordered",
+      "to": "chainsaw.ordered",
+      "activity_from": "Chainsaw order request",
+      "activity_to": "Request porperties"
+    },
+    {
+      "from": "chainsaw.sent",
+      "to": "chainsaw.ordered",
+      "activity_from": "Recieve feedback",
+      "activity_to": "Request porperties"
+    },
+    {
+      "from": "chainsaw.sent",
+      "to": "chainsaw.ordered",
+      "activity_from": "Recieve feedback",
+      "activity_to": "Request number of chainsaws needed"
+    },
+    {
+      "from": "chainsaw.inspected",
+      "to": "chainsaw.assembled",
+      "activity_from": "Inspect parts",
+      "activity_to": "Assemble parts"
+    },
+    {
+      "from": "chainsaw.custom",
+      "to": "chainsaw.sent",
+      "activity_from": "Customer",
+      "activity_to": "Recieve properties"
+    },
+    {
+      "from": "chainsaw.custom",
+      "to": "chainsaw.sent",
+      "activity_from": "Customer",
+      "activity_to": "Recieve feedback"
+    },
+    {
+      "from": "chainsaw.custom",
+      "to": "chainsaw.ordered",
+      "activity_from": "Customer",
+      "activity_to": "Receive number of chainsaws needed"
+    },
+    {
+      "from": "chainsaw.ordered",
+      "to": "chainsaw.produced_rest",
+      "activity_from": "Order guide bar",
+      "activity_to": "24 hours passed"
+    },
+    {
+      "from": "chainsaw.ordered",
+      "to": "chainsaw.assembled",
+      "activity_from": "Order guide bar",
+      "activity_to": "All parts recieved"
+    },
+    {
+      "from": "chainsaw.ordered",
+      "to": "chainsaw.produced_rest",
+      "activity_from": "Order chain",
+      "activity_to": "24 hours passed"
+    },
+    {
+      "from": "chainsaw.ordered",
+      "to": "chainsaw.assembled",
+      "activity_from": "Order chain",
+      "activity_to": "All parts recieved"
+    },
+    {
+      "from": "chainsaw.sent",
+      "to": "chainsaw.assembled",
+      "activity_from": "Recieve properties",
+      "activity_to": "Set properties"
+    },
+    {
+      "from": "chainsaw.assembled",
+      "to": "chainsaw.ordered",
+      "activity_from": "Set properties",
+      "activity_to": "Order guide bar"
+    },
+    {
+      "from": "chainsaw.assembled",
+      "to": "chainsaw.ordered",
+      "activity_from": "Set properties",
+      "activity_to": "Order chain"
+    },
+    {
+      "from": "chainsaw.assembled",
+      "to": "chainsaw.ordered",
+      "activity_from": "Set properties",
+      "activity_to": "Order protective shield"
+    },
+    {
+      "from": "chainsaw.assembled",
+      "to": "chainsaw.ordered",
+      "activity_from": "Set properties",
+      "activity_to": "Order motor"
+    },
+    {
+      "from": "chainsaw.assembled",
+      "to": "chainsaw.ordered",
+      "activity_from": "Set properties",
+      "activity_to": "Order color"
+    },
+    {
+      "from": "chainsaw.sent",
+      "to": "chainsaw.sent",
+      "activity_from": "Send update",
+      "activity_to": "Send chainsaw to customer"
+    },
+    {
+      "from": "chainsaw.sent",
+      "to": "chainsaw.ordered",
+      "activity_from": "Send update",
+      "activity_to": "Request porperties"
+    },
+    {
+      "from": "chainsaw.sent",
+      "to": "chainsaw.ordered",
+      "activity_from": "Send update",
+      "activity_to": "Request number of chainsaws needed"
+    },
+    {
+      "from": "chainsaw.sent",
+      "to": "chainsaw.produced_rest",
+      "activity_from": "Send update",
+      "activity_to": "24 hours passed"
+    },
+    {
+      "from": "chainsaw.sent",
+      "to": "chainsaw.assembled",
+      "activity_from": "Send update",
+      "activity_to": "All parts recieved"
+    },
+    {
+      "from": "chainsaw.sent",
+      "to": "chainsaw.custom",
+      "activity_from": "Send update",
+      "activity_to": "Customer"
+    }
+  ],
+  "alignment": {
+    "chainsaw.ordered": {
+      "operator": "AND",
+      "quote": "After your customer told you the properties, you can start ordering the parts from various online sources (in parallel)",
+      "terms": [
+        {
+          "term": "chainsaw.custom",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED"
+    },
+    "chainsaw.inspected": {
+      "operator": "AND",
+      "quote": "After the parts arrive you have to do a manual inspection of all parts, and then assemble the parts.",
+      "terms": [
+        {
+          "term": "chainsaw.ordered",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED"
+    },
+    "chainsaw.assembled": {
+      "operator": "AND",
+      "quote": "After the parts arrive you have to do a manual inspection of all parts, and then assemble the parts.",
+      "terms": [
+        {
+          "term": "chainsaw.inspected",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED"
+    }
+  },
+  "report": {
+    "summary": {
+      "ecarts": 0,
+      "non_verifiable": 0,
+      "conforme": 3
+    },
+    "ecarts": [],
+    "non_verifiable": [],
+    "conforme": [
+      {
+        "target": "Chainsaw order completed",
+        "term": "Customer"
+      },
+      {
+        "target": "Inspect parts",
+        "term": "Chainsaw order completed"
+      },
+      {
+        "target": "Assemble parts",
+        "term": "Inspect parts"
+      }
+    ],
+    "piece_jointe_alignement_brut": {
+      "chainsaw.ordered": {
+        "operator": "AND",
+        "quote": "After your customer told you the properties, you can start ordering the parts from various online sources (in parallel)",
+        "terms": [
+          {
+            "term": "chainsaw.custom",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED"
+      },
+      "chainsaw.inspected": {
+        "operator": "AND",
+        "quote": "After the parts arrive you have to do a manual inspection of all parts, and then assemble the parts.",
+        "terms": [
+          {
+            "term": "chainsaw.ordered",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED"
+      },
+      "chainsaw.assembled": {
+        "operator": "AND",
+        "quote": "After the parts arrive you have to do a manual inspection of all parts, and then assemble the parts.",
+        "terms": [
+          {
+            "term": "chainsaw.inspected",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED"
+      }
+    }
+  },
+  "errors": []
+}

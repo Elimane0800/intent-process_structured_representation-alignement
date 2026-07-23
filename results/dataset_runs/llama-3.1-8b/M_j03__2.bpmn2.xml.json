@@ -1,0 +1,1273 @@
+{
+  "case_name": "M_j03",
+  "text": "Category: Manufacturing\nTitle: Contract\n\nFor your contract project you need parts from several web shops. In order to\nfind out which web shop has the right parts, you have to query them all, and\nfind out how much they can deliver, at which price, and how long it will take.\n\nCreate a list of parts that you order from each shop. If one shop has not enough \nparts, order from several shops. Always use the cheapest parts.\n\nThe parts arrive in batches in a random order, typically they are +/- 2 days\nearlier/later.  \n\nWhen the first parts arrive you start building. Sometimes you have to reorder parts.\nIf your stock (for a single part) falls below 5, you reorder (the cheapest), if it\nfalls below 3 you reorder again (the fastest). If it is zero, you write a mail\nto your friends, complaining about the webshops.\n",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "llama-3.1-8b",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "llama-3.1-8b",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/text_and_bpmn/bpmn/M_j03/2.bpmn2.xml",
+  "candidates": {
+    "part": [
+      "ordered",
+      "cheapest",
+      "fastest",
+      "reordered",
+      "arrived",
+      "in_stock",
+      "low_stock",
+      "out_of_stock"
+    ],
+    "shop": [
+      "queried",
+      "selected"
+    ],
+    "stock": [
+      "low",
+      "zero"
+    ],
+    "mail": [
+      "sent"
+    ],
+    "webshop": [
+      "queried",
+      "selected"
+    ]
+  },
+  "validation_report": {
+    "part": {
+      "f_lex": "INDETERMINATE",
+      "kept": true
+    },
+    "shop": {
+      "f_lex": "ENTITY",
+      "kept": true
+    },
+    "stock": {
+      "f_lex": "INDETERMINATE",
+      "kept": true
+    },
+    "mail": {
+      "f_lex": "ENTITY",
+      "kept": true
+    },
+    "webshop": {
+      "f_lex": "INDETERMINATE",
+      "kept": true
+    }
+  },
+  "state_space": {
+    "part": [
+      "ordered",
+      "cheapest",
+      "fastest",
+      "reordered",
+      "arrived",
+      "in_stock",
+      "low_stock",
+      "out_of_stock"
+    ],
+    "shop": [
+      "queried",
+      "selected"
+    ],
+    "stock": [
+      "low",
+      "zero"
+    ],
+    "mail": [
+      "sent"
+    ],
+    "webshop": [
+      "queried",
+      "selected"
+    ]
+  },
+  "raw_preconditions": {
+    "part.ordered": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "part.cheapest": {
+      "precondition": "part.ordered",
+      "quote": "Always use the cheapest parts."
+    },
+    "part.fastest": {
+      "precondition": "part.ordered",
+      "quote": "Always use the cheapest parts."
+    },
+    "part.reordered": {
+      "precondition": "part.cheapest AND part.fastest",
+      "quote": "If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below 3 you reorder again (the fastest)."
+    },
+    "part.arrived": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "part.in_stock": {
+      "precondition": "part.arrived",
+      "quote": null
+    },
+    "part.low_stock": {
+      "precondition": "part.in_stock AND shop.selected",
+      "quote": null
+    },
+    "part.out_of_stock": {
+      "precondition": "part.in_stock AND stock.low",
+      "quote": "If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below 3 you reorder again (the fastest)."
+    },
+    "shop.queried": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "shop.selected": {
+      "precondition": "shop.queried",
+      "quote": null
+    },
+    "stock.low": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "stock.zero": {
+      "precondition": "part.in_stock AND part.out_of_stock",
+      "quote": "If it is zero, you write a mail to your friends, complaining about the webshops."
+    },
+    "mail.sent": {
+      "precondition": "stock.zero",
+      "quote": "If it is zero, you write a mail to your friends, complaining about the webshops."
+    },
+    "webshop.queried": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "webshop.selected": {
+      "precondition": "webshop.queried",
+      "quote": null
+    }
+  },
+  "validated_preconditions": {
+    "part.ordered": {
+      "precondition": "INITIAL",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "part.cheapest": {
+      "precondition": "part.ordered",
+      "quote": "Always use the cheapest parts.",
+      "status": "OK",
+      "reason": null
+    },
+    "part.fastest": {
+      "precondition": "part.ordered",
+      "quote": "Always use the cheapest parts.",
+      "status": "OK",
+      "reason": null
+    },
+    "part.reordered": {
+      "precondition": "part.cheapest",
+      "quote": "Always use the cheapest parts.",
+      "status": "OK",
+      "reason": null,
+      "retried": true
+    },
+    "part.arrived": {
+      "precondition": "INITIAL",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "part.in_stock": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "DOWNGRADED",
+      "reason": "mutual exclusivity violation: two states of the same entity in one conjunction",
+      "retried": true
+    },
+    "part.low_stock": {
+      "precondition": "part.in_stock",
+      "quote": "If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below 3 you reorder again (the fastest).",
+      "status": "OK",
+      "reason": null,
+      "retried": true
+    },
+    "part.out_of_stock": {
+      "precondition": "part.in_stock AND stock.low",
+      "quote": "If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below 3 you reorder again (the fastest).",
+      "status": "OK",
+      "reason": null
+    },
+    "shop.queried": {
+      "precondition": "INITIAL",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "shop.selected": {
+      "precondition": "webshop.queried AND shop.queried",
+      "quote": "In order to find out which web shop has the right parts, you have to query them all, and find out how much they can deliver, at which price, and how long it will take.",
+      "status": "OK",
+      "reason": null,
+      "retried": true
+    },
+    "stock.low": {
+      "precondition": "INITIAL",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "stock.zero": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "DOWNGRADED",
+      "reason": "quote not found verbatim in text",
+      "retried": true
+    },
+    "mail.sent": {
+      "precondition": "stock.zero",
+      "quote": "If it is zero, you write a mail to your friends, complaining about the webshops.",
+      "status": "OK",
+      "reason": null
+    },
+    "webshop.queried": {
+      "precondition": "INITIAL",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "webshop.selected": {
+      "precondition": "webshop.queried AND shop.queried",
+      "quote": "In order to find out which web shop has the right parts, you have to query them all,",
+      "status": "OK",
+      "reason": null,
+      "retried": true
+    }
+  },
+  "precondition_cycles": [],
+  "reference_graph": {
+    "nodes": [
+      {
+        "id": "part.ordered",
+        "weight": 1.0
+      },
+      {
+        "id": "part.cheapest",
+        "weight": 1.0
+      },
+      {
+        "id": "part.fastest",
+        "weight": 0.5
+      },
+      {
+        "id": "part.reordered",
+        "weight": 0.5
+      },
+      {
+        "id": "part.arrived",
+        "weight": 0.0
+      },
+      {
+        "id": "part.in_stock",
+        "weight": 1.0
+      },
+      {
+        "id": "part.low_stock",
+        "weight": 0.5
+      },
+      {
+        "id": "part.out_of_stock",
+        "weight": 1.0
+      },
+      {
+        "id": "shop.queried",
+        "weight": 1.0
+      },
+      {
+        "id": "shop.selected",
+        "weight": 1.0
+      },
+      {
+        "id": "stock.low",
+        "weight": 0.5
+      },
+      {
+        "id": "stock.zero",
+        "weight": 0.5
+      },
+      {
+        "id": "mail.sent",
+        "weight": 0.5
+      },
+      {
+        "id": "webshop.queried",
+        "weight": 1.0
+      },
+      {
+        "id": "webshop.selected",
+        "weight": 1.0
+      }
+    ],
+    "edges": [
+      {
+        "from": "part.ordered",
+        "to": "part.cheapest",
+        "type": "sequence",
+        "operator": "AND",
+        "quote": "Always use the cheapest parts."
+      },
+      {
+        "from": "part.ordered",
+        "to": "part.fastest",
+        "type": "sequence",
+        "operator": "AND",
+        "quote": "Always use the cheapest parts."
+      },
+      {
+        "from": "part.cheapest",
+        "to": "part.reordered",
+        "type": "sequence",
+        "operator": "AND",
+        "quote": "Always use the cheapest parts."
+      },
+      {
+        "from": "part.in_stock",
+        "to": "part.low_stock",
+        "type": "sequence",
+        "operator": "AND",
+        "quote": "If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below 3 you reorder again (the fastest)."
+      },
+      {
+        "from": "part.in_stock",
+        "to": "part.out_of_stock",
+        "type": "sequence",
+        "operator": "AND",
+        "quote": "If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below 3 you reorder again (the fastest)."
+      },
+      {
+        "from": "stock.low",
+        "to": "part.out_of_stock",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below 3 you reorder again (the fastest)."
+      },
+      {
+        "from": "webshop.queried",
+        "to": "shop.selected",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "In order to find out which web shop has the right parts, you have to query them all, and find out how much they can deliver, at which price, and how long it will take."
+      },
+      {
+        "from": "shop.queried",
+        "to": "shop.selected",
+        "type": "sequence",
+        "operator": "AND",
+        "quote": "In order to find out which web shop has the right parts, you have to query them all, and find out how much they can deliver, at which price, and how long it will take."
+      },
+      {
+        "from": "stock.zero",
+        "to": "mail.sent",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "If it is zero, you write a mail to your friends, complaining about the webshops."
+      },
+      {
+        "from": "webshop.queried",
+        "to": "webshop.selected",
+        "type": "sequence",
+        "operator": "AND",
+        "quote": "In order to find out which web shop has the right parts, you have to query them all,"
+      },
+      {
+        "from": "shop.queried",
+        "to": "webshop.selected",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "In order to find out which web shop has the right parts, you have to query them all,"
+      }
+    ],
+    "cycles": []
+  },
+  "dfg_edges": [
+    {
+      "source_id": "sid-681DAA33-5B5C-4EBA-BBAC-48AAC5E84230",
+      "source_label": "Make an order to the Webshop",
+      "target_id": "sid-720D9034-B8D1-4F69-B40D-919EEFB83B7A",
+      "target_label": "The webshop receives an order",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-88F68906-999B-4258-A738-0C284FFBF71E",
+      "source_label": "order the part with faster delivery",
+      "target_id": "sid-720D9034-B8D1-4F69-B40D-919EEFB83B7A",
+      "target_label": "The webshop receives an order",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-2D642952-9047-48AF-834E-9DA5900DB197",
+      "source_label": "The Manufacturer receives an order and starts buiding",
+      "target_id": "sid-58A2563E-BDA4-4375-91C9-12FF15686B98",
+      "target_label": "write an compliament email",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "no",
+        "ExclusiveGateway",
+        "yes"
+      ]
+    },
+    {
+      "source_id": "sid-2D642952-9047-48AF-834E-9DA5900DB197",
+      "source_label": "The Manufacturer receives an order and starts buiding",
+      "target_id": "sid-88F68906-999B-4258-A738-0C284FFBF71E",
+      "target_label": "order the part with faster delivery",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "no",
+        "ExclusiveGateway",
+        "no",
+        "ExclusiveGateway",
+        "yes"
+      ]
+    },
+    {
+      "source_id": "sid-2D642952-9047-48AF-834E-9DA5900DB197",
+      "source_label": "The Manufacturer receives an order and starts buiding",
+      "target_id": "sid-59319315-3C6E-482B-9EE3-750FD0E1D75B",
+      "target_label": "finish the project",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "no",
+        "ExclusiveGateway",
+        "no",
+        "ExclusiveGateway",
+        "no",
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-2D642952-9047-48AF-834E-9DA5900DB197",
+      "source_label": "The Manufacturer receives an order and starts buiding",
+      "target_id": "sid-D369D967-16D8-4C30-B33D-DF33CB0A539A",
+      "target_label": "order the cheapest part",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "no",
+        "ExclusiveGateway",
+        "no",
+        "ExclusiveGateway",
+        "no",
+        "ExclusiveGateway",
+        "yes"
+      ]
+    },
+    {
+      "source_id": "sid-2D642952-9047-48AF-834E-9DA5900DB197",
+      "source_label": "The Manufacturer receives an order and starts buiding",
+      "target_id": "sid-59319315-3C6E-482B-9EE3-750FD0E1D75B",
+      "target_label": "finish the project",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "yes",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-53EA0737-1ABF-4AB4-AA88-221F97574BB1",
+      "source_label": "",
+      "target_id": "sid-445595DA-4924-4455-A3E8-2ACE8E11A866",
+      "target_label": "Create list of necessary parts",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-720D9034-B8D1-4F69-B40D-919EEFB83B7A",
+      "source_label": "The webshop receives an order",
+      "target_id": "sid-66565908-F2D8-4EB3-A47A-7C7790F34A7B",
+      "target_label": "The webshop delivers an order",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-720D9034-B8D1-4F69-B40D-919EEFB83B7A",
+      "source_label": "The webshop receives an order",
+      "target_id": "sid-E80DC7FE-F009-4CEE-987D-0AD57E76BA78",
+      "target_label": "The webshop sends an invoice",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-720D9034-B8D1-4F69-B40D-919EEFB83B7A",
+      "source_label": "The webshop receives an order",
+      "target_id": "sid-E8238EDF-DBEF-4E60-B9F3-941E2AD3FFD5",
+      "target_label": "The webshop updates Inventory",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-E8238EDF-DBEF-4E60-B9F3-941E2AD3FFD5",
+      "source_label": "The webshop updates Inventory",
+      "target_id": "sid-2D642952-9047-48AF-834E-9DA5900DB197",
+      "target_label": "The Manufacturer receives an order and starts buiding",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-58A2563E-BDA4-4375-91C9-12FF15686B98",
+      "source_label": "write an compliament email",
+      "target_id": "sid-59319315-3C6E-482B-9EE3-750FD0E1D75B",
+      "target_label": "finish the project",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-E80DC7FE-F009-4CEE-987D-0AD57E76BA78",
+      "source_label": "The webshop sends an invoice",
+      "target_id": "sid-2D642952-9047-48AF-834E-9DA5900DB197",
+      "target_label": "The Manufacturer receives an order and starts buiding",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-D369D967-16D8-4C30-B33D-DF33CB0A539A",
+      "source_label": "order the cheapest part",
+      "target_id": "sid-720D9034-B8D1-4F69-B40D-919EEFB83B7A",
+      "target_label": "The webshop receives an order",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-66565908-F2D8-4EB3-A47A-7C7790F34A7B",
+      "source_label": "The webshop delivers an order",
+      "target_id": "sid-2D642952-9047-48AF-834E-9DA5900DB197",
+      "target_label": "The Manufacturer receives an order and starts buiding",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-452BD26B-040D-4E69-8570-8942B562D593",
+      "source_label": "Choose the shop wiht cheapest parts",
+      "target_id": "sid-681DAA33-5B5C-4EBA-BBAC-48AAC5E84230",
+      "target_label": "Make an order to the Webshop",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-445595DA-4924-4455-A3E8-2ACE8E11A866",
+      "source_label": "Create list of necessary parts",
+      "target_id": "sid-E94F1862-3F2D-4DE0-B17D-482FD70EC0DC",
+      "target_label": "Query Webshops for  necessary parts",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-59319315-3C6E-482B-9EE3-750FD0E1D75B",
+      "source_label": "finish the project",
+      "target_id": "sid-5AC13B8F-B585-4707-B3BA-EB53E5E16D6E",
+      "target_label": "",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-E94F1862-3F2D-4DE0-B17D-482FD70EC0DC",
+      "source_label": "Query Webshops for  necessary parts",
+      "target_id": "sid-452BD26B-040D-4E69-8570-8942B562D593",
+      "target_label": "Choose the shop wiht cheapest parts",
+      "gateway_context": []
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "Make an order to the Webshop",
+      "subject_id": "sid-681DAA33-5B5C-4EBA-BBAC-48AAC5E84230",
+      "predicate": "follows",
+      "object": "The webshop receives an order",
+      "object_id": "sid-720D9034-B8D1-4F69-B40D-919EEFB83B7A"
+    },
+    {
+      "subject": "order the part with faster delivery",
+      "subject_id": "sid-88F68906-999B-4258-A738-0C284FFBF71E",
+      "predicate": "follows",
+      "object": "The webshop receives an order",
+      "object_id": "sid-720D9034-B8D1-4F69-B40D-919EEFB83B7A"
+    },
+    {
+      "subject": "The Manufacturer receives an order and starts buiding",
+      "subject_id": "sid-2D642952-9047-48AF-834E-9DA5900DB197",
+      "predicate": "follows",
+      "object": "write an compliament email",
+      "object_id": "sid-58A2563E-BDA4-4375-91C9-12FF15686B98"
+    },
+    {
+      "subject": "The Manufacturer receives an order and starts buiding",
+      "subject_id": "sid-2D642952-9047-48AF-834E-9DA5900DB197",
+      "predicate": "follows",
+      "object": "order the part with faster delivery",
+      "object_id": "sid-88F68906-999B-4258-A738-0C284FFBF71E"
+    },
+    {
+      "subject": "The Manufacturer receives an order and starts buiding",
+      "subject_id": "sid-2D642952-9047-48AF-834E-9DA5900DB197",
+      "predicate": "follows",
+      "object": "finish the project",
+      "object_id": "sid-59319315-3C6E-482B-9EE3-750FD0E1D75B"
+    },
+    {
+      "subject": "The Manufacturer receives an order and starts buiding",
+      "subject_id": "sid-2D642952-9047-48AF-834E-9DA5900DB197",
+      "predicate": "follows",
+      "object": "order the cheapest part",
+      "object_id": "sid-D369D967-16D8-4C30-B33D-DF33CB0A539A"
+    },
+    {
+      "subject": "The Manufacturer receives an order and starts buiding",
+      "subject_id": "sid-2D642952-9047-48AF-834E-9DA5900DB197",
+      "predicate": "follows",
+      "object": "finish the project",
+      "object_id": "sid-59319315-3C6E-482B-9EE3-750FD0E1D75B"
+    },
+    {
+      "subject": "",
+      "subject_id": "sid-53EA0737-1ABF-4AB4-AA88-221F97574BB1",
+      "predicate": "follows",
+      "object": "Create list of necessary parts",
+      "object_id": "sid-445595DA-4924-4455-A3E8-2ACE8E11A866"
+    },
+    {
+      "subject": "The webshop receives an order",
+      "subject_id": "sid-720D9034-B8D1-4F69-B40D-919EEFB83B7A",
+      "predicate": "follows",
+      "object": "The webshop delivers an order",
+      "object_id": "sid-66565908-F2D8-4EB3-A47A-7C7790F34A7B"
+    },
+    {
+      "subject": "The webshop receives an order",
+      "subject_id": "sid-720D9034-B8D1-4F69-B40D-919EEFB83B7A",
+      "predicate": "follows",
+      "object": "The webshop sends an invoice",
+      "object_id": "sid-E80DC7FE-F009-4CEE-987D-0AD57E76BA78"
+    },
+    {
+      "subject": "The webshop receives an order",
+      "subject_id": "sid-720D9034-B8D1-4F69-B40D-919EEFB83B7A",
+      "predicate": "follows",
+      "object": "The webshop updates Inventory",
+      "object_id": "sid-E8238EDF-DBEF-4E60-B9F3-941E2AD3FFD5"
+    },
+    {
+      "subject": "The webshop updates Inventory",
+      "subject_id": "sid-E8238EDF-DBEF-4E60-B9F3-941E2AD3FFD5",
+      "predicate": "follows",
+      "object": "The Manufacturer receives an order and starts buiding",
+      "object_id": "sid-2D642952-9047-48AF-834E-9DA5900DB197"
+    },
+    {
+      "subject": "write an compliament email",
+      "subject_id": "sid-58A2563E-BDA4-4375-91C9-12FF15686B98",
+      "predicate": "follows",
+      "object": "finish the project",
+      "object_id": "sid-59319315-3C6E-482B-9EE3-750FD0E1D75B"
+    },
+    {
+      "subject": "The webshop sends an invoice",
+      "subject_id": "sid-E80DC7FE-F009-4CEE-987D-0AD57E76BA78",
+      "predicate": "follows",
+      "object": "The Manufacturer receives an order and starts buiding",
+      "object_id": "sid-2D642952-9047-48AF-834E-9DA5900DB197"
+    },
+    {
+      "subject": "order the cheapest part",
+      "subject_id": "sid-D369D967-16D8-4C30-B33D-DF33CB0A539A",
+      "predicate": "follows",
+      "object": "The webshop receives an order",
+      "object_id": "sid-720D9034-B8D1-4F69-B40D-919EEFB83B7A"
+    },
+    {
+      "subject": "The webshop delivers an order",
+      "subject_id": "sid-66565908-F2D8-4EB3-A47A-7C7790F34A7B",
+      "predicate": "follows",
+      "object": "The Manufacturer receives an order and starts buiding",
+      "object_id": "sid-2D642952-9047-48AF-834E-9DA5900DB197"
+    },
+    {
+      "subject": "Choose the shop wiht cheapest parts",
+      "subject_id": "sid-452BD26B-040D-4E69-8570-8942B562D593",
+      "predicate": "follows",
+      "object": "Make an order to the Webshop",
+      "object_id": "sid-681DAA33-5B5C-4EBA-BBAC-48AAC5E84230"
+    },
+    {
+      "subject": "Create list of necessary parts",
+      "subject_id": "sid-445595DA-4924-4455-A3E8-2ACE8E11A866",
+      "predicate": "follows",
+      "object": "Query Webshops for  necessary parts",
+      "object_id": "sid-E94F1862-3F2D-4DE0-B17D-482FD70EC0DC"
+    },
+    {
+      "subject": "finish the project",
+      "subject_id": "sid-59319315-3C6E-482B-9EE3-750FD0E1D75B",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "sid-5AC13B8F-B585-4707-B3BA-EB53E5E16D6E"
+    },
+    {
+      "subject": "Query Webshops for  necessary parts",
+      "subject_id": "sid-E94F1862-3F2D-4DE0-B17D-482FD70EC0DC",
+      "predicate": "follows",
+      "object": "Choose the shop wiht cheapest parts",
+      "object_id": "sid-452BD26B-040D-4E69-8570-8942B562D593"
+    }
+  ],
+  "matches": {
+    "Choose the shop wiht cheapest parts": {
+      "match": "part.cheapest",
+      "score": 0.5648
+    },
+    "Create list of necessary parts": {
+      "match": "part.ordered",
+      "score": 0.4241
+    },
+    "Make an order to the Webshop": {
+      "match": "webshop.queried",
+      "score": 0.6302
+    },
+    "Query Webshops for  necessary parts": {
+      "match": "webshop.queried",
+      "score": 0.6125
+    },
+    "The Manufacturer receives an order and starts buiding": {
+      "match": "part.ordered",
+      "score": 0.3187
+    },
+    "The webshop delivers an order": {
+      "match": "webshop.selected",
+      "score": 0.6616
+    },
+    "The webshop receives an order": {
+      "match": "webshop.queried",
+      "score": 0.6815
+    },
+    "The webshop sends an invoice": {
+      "match": "webshop.queried",
+      "score": 0.5978
+    },
+    "The webshop updates Inventory": {
+      "match": "webshop.queried",
+      "score": 0.6211
+    },
+    "finish the project": {
+      "match": "part.arrived",
+      "score": 0.1876
+    },
+    "order the cheapest part": {
+      "match": "part.cheapest",
+      "score": 0.7292
+    },
+    "order the part with faster delivery": {
+      "match": "part.ordered",
+      "score": 0.4514
+    },
+    "write an compliament email": {
+      "match": "mail.sent",
+      "score": 0.3449
+    }
+  },
+  "process_graph": [
+    {
+      "from": "webshop.queried",
+      "to": "webshop.queried",
+      "activity_from": "Make an order to the Webshop",
+      "activity_to": "The webshop receives an order"
+    },
+    {
+      "from": "part.ordered",
+      "to": "webshop.queried",
+      "activity_from": "order the part with faster delivery",
+      "activity_to": "The webshop receives an order"
+    },
+    {
+      "from": "part.ordered",
+      "to": "mail.sent",
+      "activity_from": "The Manufacturer receives an order and starts buiding",
+      "activity_to": "write an compliament email"
+    },
+    {
+      "from": "part.ordered",
+      "to": "part.ordered",
+      "activity_from": "The Manufacturer receives an order and starts buiding",
+      "activity_to": "order the part with faster delivery"
+    },
+    {
+      "from": "part.ordered",
+      "to": "part.arrived",
+      "activity_from": "The Manufacturer receives an order and starts buiding",
+      "activity_to": "finish the project"
+    },
+    {
+      "from": "part.ordered",
+      "to": "part.cheapest",
+      "activity_from": "The Manufacturer receives an order and starts buiding",
+      "activity_to": "order the cheapest part"
+    },
+    {
+      "from": "part.ordered",
+      "to": "part.arrived",
+      "activity_from": "The Manufacturer receives an order and starts buiding",
+      "activity_to": "finish the project"
+    },
+    {
+      "from": "webshop.queried",
+      "to": "webshop.selected",
+      "activity_from": "The webshop receives an order",
+      "activity_to": "The webshop delivers an order"
+    },
+    {
+      "from": "webshop.queried",
+      "to": "webshop.queried",
+      "activity_from": "The webshop receives an order",
+      "activity_to": "The webshop sends an invoice"
+    },
+    {
+      "from": "webshop.queried",
+      "to": "webshop.queried",
+      "activity_from": "The webshop receives an order",
+      "activity_to": "The webshop updates Inventory"
+    },
+    {
+      "from": "webshop.queried",
+      "to": "part.ordered",
+      "activity_from": "The webshop updates Inventory",
+      "activity_to": "The Manufacturer receives an order and starts buiding"
+    },
+    {
+      "from": "mail.sent",
+      "to": "part.arrived",
+      "activity_from": "write an compliament email",
+      "activity_to": "finish the project"
+    },
+    {
+      "from": "webshop.queried",
+      "to": "part.ordered",
+      "activity_from": "The webshop sends an invoice",
+      "activity_to": "The Manufacturer receives an order and starts buiding"
+    },
+    {
+      "from": "part.cheapest",
+      "to": "webshop.queried",
+      "activity_from": "order the cheapest part",
+      "activity_to": "The webshop receives an order"
+    },
+    {
+      "from": "webshop.selected",
+      "to": "part.ordered",
+      "activity_from": "The webshop delivers an order",
+      "activity_to": "The Manufacturer receives an order and starts buiding"
+    },
+    {
+      "from": "part.cheapest",
+      "to": "webshop.queried",
+      "activity_from": "Choose the shop wiht cheapest parts",
+      "activity_to": "Make an order to the Webshop"
+    },
+    {
+      "from": "part.ordered",
+      "to": "webshop.queried",
+      "activity_from": "Create list of necessary parts",
+      "activity_to": "Query Webshops for  necessary parts"
+    },
+    {
+      "from": "webshop.queried",
+      "to": "part.cheapest",
+      "activity_from": "Query Webshops for  necessary parts",
+      "activity_to": "Choose the shop wiht cheapest parts"
+    }
+  ],
+  "alignment": {
+    "part.cheapest": {
+      "operator": "AND",
+      "quote": "Always use the cheapest parts.",
+      "terms": [
+        {
+          "term": "part.ordered",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED"
+    },
+    "part.fastest": {
+      "operator": "AND",
+      "quote": "Always use the cheapest parts.",
+      "terms": [
+        {
+          "term": "part.ordered",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['part.fastest']",
+          "missing": [
+            "part.fastest"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE"
+    },
+    "part.reordered": {
+      "operator": "AND",
+      "quote": "Always use the cheapest parts.",
+      "terms": [
+        {
+          "term": "part.cheapest",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['part.reordered']",
+          "missing": [
+            "part.reordered"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE"
+    },
+    "part.low_stock": {
+      "operator": "AND",
+      "quote": "If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below 3 you reorder again (the fastest).",
+      "terms": [
+        {
+          "term": "part.in_stock",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['part.in_stock', 'part.low_stock']",
+          "missing": [
+            "part.in_stock",
+            "part.low_stock"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE"
+    },
+    "part.out_of_stock": {
+      "operator": "AND",
+      "quote": "If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below 3 you reorder again (the fastest).",
+      "terms": [
+        {
+          "term": "part.in_stock",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['part.in_stock', 'part.out_of_stock']",
+          "missing": [
+            "part.in_stock",
+            "part.out_of_stock"
+          ]
+        },
+        {
+          "term": "stock.low",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['stock.low', 'part.out_of_stock']",
+          "missing": [
+            "stock.low",
+            "part.out_of_stock"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE"
+    },
+    "shop.selected": {
+      "operator": "AND",
+      "quote": "In order to find out which web shop has the right parts, you have to query them all, and find out how much they can deliver, at which price, and how long it will take.",
+      "terms": [
+        {
+          "term": "webshop.queried",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['shop.selected']",
+          "missing": [
+            "shop.selected"
+          ]
+        },
+        {
+          "term": "shop.queried",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['shop.queried', 'shop.selected']",
+          "missing": [
+            "shop.queried",
+            "shop.selected"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE"
+    },
+    "mail.sent": {
+      "operator": "AND",
+      "quote": "If it is zero, you write a mail to your friends, complaining about the webshops.",
+      "terms": [
+        {
+          "term": "stock.zero",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['stock.zero']",
+          "missing": [
+            "stock.zero"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE"
+    },
+    "webshop.selected": {
+      "operator": "AND",
+      "quote": "In order to find out which web shop has the right parts, you have to query them all,",
+      "terms": [
+        {
+          "term": "webshop.queried",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        },
+        {
+          "term": "shop.queried",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['shop.queried']",
+          "missing": [
+            "shop.queried"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE"
+    }
+  },
+  "report": {
+    "summary": {
+      "ecarts": 0,
+      "non_verifiable": 7,
+      "conforme": 2
+    },
+    "ecarts": [],
+    "non_verifiable": [
+      {
+        "root_cause": "(aucune activite du processus ne correspond clairement a cela)",
+        "quote": "Always use the cheapest parts.",
+        "explanation": "Il est impossible de vérifier si l'exigence \"part fastest\" est respectée ou non car la condition précise qui doit être remplie avant cette activité n'est pas claire. \n\nCette condition est mentionnée dans la citation : \"Always use the cheapest parts.\" Cela signifie qu'une exigence existe avant cette étape, mais on ne sait pas ce que cette exigence signifie précisément.\n\nEn d'autres termes, on ne peut pas savoir si l'exigence \"part fastest\" est respectée ou non car la condition précise qui doit être remplie avant cette activité n'est pas claire.",
+        "affected_activities": [
+          "(aucune activite du processus ne correspond clairement a cela)"
+        ],
+        "affected_count": 1
+      },
+      {
+        "root_cause": "(aucune activite du processus ne correspond clairement a cela)",
+        "quote": "Always use the cheapest parts.",
+        "explanation": "Il est impossible de vérifier si l'exigence \"Toujours utiliser les parties les moins chères\" est respectée ou non, car cette condition n'a pu être associée à aucune activité claire du processus observé. \n\nLa citation \"Always use the cheapest parts.\" montre qu'une condition est exigée avant cette étape, mais elle ne décrit pas ce que cette condition signifie précisément.",
+        "affected_activities": [
+          "(aucune activite du processus ne correspond clairement a cela)"
+        ],
+        "affected_count": 1
+      },
+      {
+        "root_cause": "(aucune activite du processus ne correspond clairement a cela)",
+        "quote": "If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below 3 you reorder again (the fastest).",
+        "explanation": "Il est impossible de vérifier si l'exigence est respectée ou non dans ce cas précis. En effet, la condition précise qui doit être remplie avant que l'activité \"aucune activité du processus ne correspond clairement à cela\" puisse se produire n'est pas clairement décrite.\n\nLa citation fournie indique qu'une condition est exigée avant cette étape : \"If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below 3 you reorder again (the fastest).\" Cela montre que l'exigence existe, mais ne décrit pas ce que cette condition signifie précisément.\n\nDans ce cas, il est impossible de savoir si la condition est respectée ou non, car il n'y a pas d'activité claire du processus qui correspond à cette condition.",
+        "affected_activities": [
+          "(aucune activite du processus ne correspond clairement a cela)"
+        ],
+        "affected_count": 3
+      },
+      {
+        "root_cause": "(aucune activite du processus ne correspond clairement a cela)",
+        "quote": "If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below 3 you reorder again (the fastest).",
+        "explanation": "Il est impossible de vérifier si l'exigence est respectée ou non avant que l'activité \"aucune activité du processus ne correspond clairement à cela\" puisse se produire, car il s'agit d'une condition précise qui doit être déjà remplie. Cette condition est liée à la gestion des stocks, mais son sens précis n'est pas décrit dans la citation fournie.\n\nLa citation fournie indique que si le stock d'une partie tombe en dessous de 5, on réapprovisionne (le moins cher), et si il tombe en dessous de 3, on réapprovisionne à nouveau (le plus rapide). Cela montre que certaines conditions doivent être remplies avant de pouvoir procéder à certaines actions, mais il n'est pas clair quelles sont ces conditions précises.\n\nEn d'autres termes, il est impossible de savoir si la condition requise est respectée ou non avant que l'activité \"aucune activité du processus ne correspond clairement à cela\" puisse se produire, car cette condition n'est pas décrite de manière claire.",
+        "affected_activities": [
+          "(aucune activite du processus ne correspond clairement a cela)"
+        ],
+        "affected_count": 2
+      },
+      {
+        "root_cause": "(aucune activite du processus ne correspond clairement a cela)",
+        "quote": "If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below 3 you reorder again (the fastest).",
+        "explanation": "Il est impossible de vérifier si l'exigence \"stock low\" est respectée ou non avant que l'activité \"aucune activité du processus ne correspond clairement à cela\" se produise. En effet, la citation fournie \"If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below 3 you reorder again (the fastest).\" montre qu'une condition est exigée avant cette étape, mais ne décrit pas explicitement ce que signifie \"stock low\".\n\nCela signifie que nous ne pouvons pas savoir si la condition \"stock low\" est déjà remplie avant que l'activité \"aucune activité du processus ne correspond clairement à cela\" se produise.",
+        "affected_activities": [
+          "(aucune activite du processus ne correspond clairement a cela)"
+        ],
+        "affected_count": 1
+      },
+      {
+        "root_cause": "(aucune activite du processus ne correspond clairement a cela)",
+        "quote": "In order to find out which web shop has the right parts, you have to query them all, and find out how much they can deliver, at which price, and how long it will take.",
+        "explanation": "Il est impossible de vérifier si l'exigence est respectée ou non dans ce cas précis. En effet, la condition précise qui doit être remplie avant que l'activité \"aucune activité du processus ne correspond clairement à cela\" puisse se produire n'est pas clairement décrite.\n\nLa citation fournie, \"In order to find out which web shop has the right parts, you have to query them all, and find out how much they can deliver, at which price, and how long it will take.\", montre que certaines conditions doivent être remplies avant de poursuivre, mais elle ne décrit pas explicitement la condition manquante.\n\nIl est donc impossible de déterminer si cette condition est respectée ou non, car elle n'est pas clairement décrite. (Cette meme cause affecte aussi : The webshop delivers an order.)",
+        "affected_activities": [
+          "(aucune activite du processus ne correspond clairement a cela)",
+          "The webshop delivers an order"
+        ],
+        "affected_count": 4
+      },
+      {
+        "root_cause": "(aucune activite du processus ne correspond clairement a cela)",
+        "quote": "If it is zero, you write a mail to your friends, complaining about the webshops.",
+        "explanation": "Il y a une condition précise qui doit être remplie avant que l'activité \"write an complaint email\" puisse se produire. Cette condition est mentionnée dans la citation suivante : \"If it is zero, you write a mail to your friends, complaining about the webshops.\"\n\nCette citation montre qu'une condition est exigée avant cette étape, mais elle ne décrit pas ce que cette condition signifie précisément. En effet, la citation ne fournit aucune information sur la nature de cette condition.\n\nLa condition n'a pu être associée à aucune activité claire du processus observé, ce qui signifie qu'il est impossible de vérifier si l'exigence est respectée ou non.",
+        "affected_activities": [
+          "write an compliament email"
+        ],
+        "affected_count": 1
+      }
+    ],
+    "conforme": [
+      {
+        "target": "order the cheapest part",
+        "term": "order the part with faster delivery"
+      },
+      {
+        "target": "The webshop delivers an order",
+        "term": "The webshop receives an order"
+      }
+    ],
+    "piece_jointe_alignement_brut": {
+      "part.cheapest": {
+        "operator": "AND",
+        "quote": "Always use the cheapest parts.",
+        "terms": [
+          {
+            "term": "part.ordered",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED"
+      },
+      "part.fastest": {
+        "operator": "AND",
+        "quote": "Always use the cheapest parts.",
+        "terms": [
+          {
+            "term": "part.ordered",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['part.fastest']",
+            "missing": [
+              "part.fastest"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE"
+      },
+      "part.reordered": {
+        "operator": "AND",
+        "quote": "Always use the cheapest parts.",
+        "terms": [
+          {
+            "term": "part.cheapest",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['part.reordered']",
+            "missing": [
+              "part.reordered"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE"
+      },
+      "part.low_stock": {
+        "operator": "AND",
+        "quote": "If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below 3 you reorder again (the fastest).",
+        "terms": [
+          {
+            "term": "part.in_stock",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['part.in_stock', 'part.low_stock']",
+            "missing": [
+              "part.in_stock",
+              "part.low_stock"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE"
+      },
+      "part.out_of_stock": {
+        "operator": "AND",
+        "quote": "If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below 3 you reorder again (the fastest).",
+        "terms": [
+          {
+            "term": "part.in_stock",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['part.in_stock', 'part.out_of_stock']",
+            "missing": [
+              "part.in_stock",
+              "part.out_of_stock"
+            ]
+          },
+          {
+            "term": "stock.low",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['stock.low', 'part.out_of_stock']",
+            "missing": [
+              "stock.low",
+              "part.out_of_stock"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE"
+      },
+      "shop.selected": {
+        "operator": "AND",
+        "quote": "In order to find out which web shop has the right parts, you have to query them all, and find out how much they can deliver, at which price, and how long it will take.",
+        "terms": [
+          {
+            "term": "webshop.queried",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['shop.selected']",
+            "missing": [
+              "shop.selected"
+            ]
+          },
+          {
+            "term": "shop.queried",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['shop.queried', 'shop.selected']",
+            "missing": [
+              "shop.queried",
+              "shop.selected"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE"
+      },
+      "mail.sent": {
+        "operator": "AND",
+        "quote": "If it is zero, you write a mail to your friends, complaining about the webshops.",
+        "terms": [
+          {
+            "term": "stock.zero",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['stock.zero']",
+            "missing": [
+              "stock.zero"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE"
+      },
+      "webshop.selected": {
+        "operator": "AND",
+        "quote": "In order to find out which web shop has the right parts, you have to query them all,",
+        "terms": [
+          {
+            "term": "webshop.queried",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          },
+          {
+            "term": "shop.queried",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['shop.queried']",
+            "missing": [
+              "shop.queried"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE"
+      }
+    }
+  },
+  "errors": []
+}

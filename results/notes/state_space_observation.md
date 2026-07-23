@@ -326,28 +326,414 @@ de vérification/correction post-extraction plutôt que d'un raffinement supplé
 
 ---
 
-## 14. Questions ouvertes / prochaines étapes
+## 14. Mécanisme neurosymbolique post-extraction : citation, ancrage, conflict resolution
 
-- ~~Correctif prioritaire : réponse vide de `reformulate_text()`~~ — **appliqué** (section 13) :
-  lève désormais `ValueError` explicite au lieu de propager une chaîne vide.
-- **Prompting abandonné comme levier universel, quatre résultats négatifs indépendants** —
-  few-shot, chain-of-thought, reformulation zero-shot et reformulation one-shot renforcée
-  échouent tous sur `work_accident`, chacun avec un mode de dégradation distinct (cf. section 13).
-  Prochain levier à explorer : un mécanisme de vérification/correction post-extraction, indépendant
-  du prompting.
-- Si le CoT est repris plus tard, revoir la formulation de l'étape de vérification d'exclusivité
-  mutuelle pour éviter l'énumération explicite par paire (coût quadratique) — par exemple, demander
-  une vérification groupée par entité plutôt que par paire de conditions (cf. section 12).
-- Vérifier le déterminisme réel de l'endpoint NVIDIA NIM à `temperature=0` — le point de rupture du
-  CoT sur `work_accident` s'est déplacé entre deux runs identiques en apparence (cf. section 13).
-- Intégrer Gemini comme provider dans `base_llm.py` pour le faire tourner dans le pipeline
-  automatisé (mêmes prompts, mêmes cas, écriture dans le même `results/state_space/`), au lieu
-  d'un test manuel hors pipeline — pertinent puisque Gemini est, à ce stade, le seul modèle testé
-  à éviter le piège acteur=entité de façon stable.
-- Implémenter la boucle HITL différée (script de review post-génération) pour commencer à
-  accumuler un gold set validé sans bloquer l'itération.
-- Investiguer le comportement de troncature silencieuse des modèles reasoning (`gpt-oss-*`) face
-  au budget de tokens, indépendamment du CoT — apparaît aussi en zero-shot sur `work_accident`.
+Suite au constat de six résultats négatifs sur le prompting seul (sections 4, 7, 10, 13), changement de
+levier : au lieu de continuer à raffiner le prompt d'extraction, ajout d'un mécanisme de
+vérification/correction **post-extraction**, inspiré de deux papiers de la revue de littérature
+(Hemmer et al. 2025, validation neurosymbolique par couches ; Li et al. 2024, G&O — décomposition
+génération/organisation en tours séparés). Trois fonctions ajoutées à `state_space_node.py`,
+appliquées après coup sur les 6 variantes de prompting déjà existantes, sans modifier ces dernières :
+
+- **`extract_evidence()`** — second appel LLM : pour chaque entité déjà extraite, demande une citation
+  verbatim de la ou les phrases du texte source qui la justifient. Design délibéré : on ne demande pas
+  au modèle de justifier le *nom* de l'entité (construction du modèle, rarement un span littéral du
+  texte — le fuzzy-match sur le nom testé initialement était un signal faible), mais la *preuve*
+  censée la soutenir, qui elle doit être un span réel.
+- **`validate_grounding()`** — pure Python, aucun appel LLM. Vérifie que chaque citation est un span
+  exact (ou quasi-exact, `difflib`) du texte source. Teste si la justification prétendue par le modèle
+  est réelle, pas si l'entité elle-même est fondée.
+- **`resolve_conflicts()`** — second tour LLM (self-refine) : montre au modèle sa propre extraction et
+  lui redemande de trancher entité/acteur et exclusivité mutuelle selon la même définition, avec
+  interdiction explicite d'ajouter de nouvelles entités. Testé malgré une réserve documentée avant
+  implémentation : la littérature sur le self-refine (ex. Huang et al. 2023) montre que l'auto-critique
+  sans vérificateur externe peut se convaincre elle-même d'un changement non réellement meilleur — donc
+  traité comme une expérience à évaluer avec la même rigueur que les précédentes, pas comme un
+  correctif présupposé fiable.
+
+---
+
+## 15. Résultats du mécanisme neurosymbolique (run_13) : deux nouveaux modes d'échec, un signal positif isolé
+
+**Conflict resolution : échec majoritaire (~8/18 cas), mais d'un type nouveau — échec de clôture, pas
+de jugement.** Dans plusieurs cas ratés (ex. `maternity_leave`, zero_shot), le modèle identifie
+*correctement* en prose que `parent` est un acteur et que les états ne sont pas mutuellement
+exclusifs — un raisonnement juste — mais son JSON final ne reflète pas cette analyse, ou du texte
+supplémentaire est généré après le JSON, cassant le parsing. Contrairement aux modes d'échec
+précédents (collapse, binaire, actor=entity — des erreurs de *jugement*), celui-ci est une erreur
+*d'exécution* : le modèle voit juste mais ne clôture pas proprement sa sortie structurée. Corollaire :
+quand le parsing réussit, la correction est parfois réellement substantielle et positive — ex.
+`reformulated_zero_shot`/`job_application` : `job_applicant` passe de 7 états mêlant actions et états à
+3 états épurés après conflict resolution. Le mécanisme n'est donc pas inutile en soi ; son taux
+d'échec actuel vient principalement d'un problème de format de sortie, pas de raisonnement.
+
+**Limite découverte dans `validate_grounding` : la recombinaison de fragments réels peut tromper le
+vérificateur.** Sur `reformulated_one_shot`/`work_accident`, plusieurs citations passent
+`grounding: true` alors qu'elles recombinent des fragments individuellement exacts du texte source
+d'une façon qui **altère le sens** (ex. omission silencieuse d'une négation en combinant deux clauses
+disjointes). Chaque fragment est un vrai substring, donc le test passe, mais la citation résultante ne
+représente pas fidèlement ce que dit le texte à cet endroit. C'est une limite de conception à noter
+explicitement : `validate_grounding` teste l'authenticité des fragments, pas la fidélité sémantique de
+leur recombinaison — un mode de "triche" subtil découvert empiriquement plutôt qu'anticipé.
+
+**Défaut de conception à corriger : le grounding sur les variantes reformulées compare au mauvais
+texte.** `postprocess(reformulated, state_space, llm)` compare la citation au texte **reformulé**, pas
+au texte source original. Une dérive de la reformulation elle-même (déjà documentée sections 10-13)
+ne serait donc jamais détectée par ce grounding tel qu'implémenté — il valide la fidélité au texte
+intermédiaire, pas à l'intention d'origine.
+
+**Signal positif isolé, à l'inverse** : sur ce même cas (`reformulated_one_shot`/`job_application`),
+`grounding` détecte correctement `job_offer`, `job_applicant`, `company` comme `false` — ces citations
+sont en réalité des paraphrases plutôt que des extraits, et le vérificateur les flague correctement.
+Preuve que le mécanisme fonctionne comme prévu au moins dans certains cas, avant même correction des
+deux limites ci-dessus.
+
+**Bug de format identifié et à corriger en priorité** : le prompt de conflict resolution ne force
+aucun marqueur de fin (contrairement au CoT, section 6, qui utilise `FINAL_ANSWER:`). Ajouter un tel
+marqueur devrait éliminer la majorité des échecs de parsing observés ici, puisque le raisonnement en
+amont est souvent correct — le problème est la clôture, pas le contenu.
+
+---
+
+## 16. Changement de paradigme : Protocole 2 — extraction permissive + validation symbolique déterministe
+
+Après six résultats négatifs indépendants sur le prompting seul (few-shot, CoT, reformulation ×2,
+définitions V1/V2/V3), et un biais confirmé stable à travers quatre familles de modèles (llama-8b,
+llama-70b, mistral-nemotron, gpt-oss-120b) sur le même cas (`company`/`job_application`, résistant
+même à un prompt V3 spécifiquement conçu pour son cas d'ambiguïté mesurée), décision de changer de
+nature d'intervention plutôt que de continuer à raffiner le prompt.
+
+**Diagnostic préalable (déterminant, pas hasard) — biais confirmé, pas bruit.** Test de répétition
+(même prompt, `temperature=0`, 3-5 runs identiques) sur llama-8b, llama-70b, mistral-nemotron :
+`company` apparaît **identique à travers toutes les répétitions**, sur les trois modèles. Ce n'est
+donc pas un problème de variance d'échantillonnage — un mécanisme de consensus par sampling
+(self-consistency / "Monte-Carlo" au sens échantillonnage à `temperature>0`, distinct du MC Dropout
+qui nécessite un accès aux poids) n'aurait aucune prise dessus, puisqu'il n'y a essentiellement
+aucune variance à exploiter. Décision de ne pas poursuivre cette piste.
+
+**Architecture retenue**, formalisée à partir d'un diagramme de pipeline plus large fourni par
+l'utilisateur (Macro : intent inference → U (state space) → Pre (préconditions) → Mapping(1) → G ;
+Micro : alignement avec le BPMN observé → conformity score). Décision explicite de ne **pas**
+adopter la restructuration façon Saccon et al. (primitives locales → construction algorithmique de
+`U` par atteignabilité) : la granularité résultante d'une construction déterministe ne serait pas
+garantie compatible avec celle d'un BPMN réellement généré, observé dans la branche parallèle du
+pipeline (`Mapping(2)`) — un problème de mismatch de formalisme, plus profond que celui de fidélité
+d'extraction, que ce protocole ne veut pas introduire.
+
+**Protocole retenu** : découpler la tâche difficile (jugement de granularité) en deux étapes de
+nature différente.
+
+- **Étape A — génération permissive (LLM)** : le prompt (`agent/prompt/state_space_prompt_permissive.py`,
+  4 variantes zero/one/two-shot/cot) ne demande plus aucun jugement entité/acteur — seulement une
+  énumération sur-inclusive de tout candidat associé à un changement de condition dans le texte.
+  Toute la mécanique de règle d'exclusion (présente en V1/V2/V3) est retirée du prompt.
+- **Étape B — validation symbolique déterministe (aucun LLM, aucun entraînement)** :
+  `agent/nodes/state_space_node_v2.py`. Deux signaux, calculés sur le texte source brut :
+  - `f_srl` — ratio objet/(sujet+objet) du mot-tête du candidat, via dependency parsing spaCy
+    (`en_core_web_sm`). Note de terminologie : ce n'est pas du véritable Semantic Role Labeling
+    (rôles sémantiques stables, type PropBank/Agent-Patient) mais une approximation syntaxique de
+    surface (fonction grammaticale locale) — distinction vérifiée en confrontant à la littérature
+    SRL (Gildea & Jurafsky 2002 ; "LLMs Can Also Do Well" ACL 2025, arXiv 2506.05385, qui montre
+    qu'un LLM zero-shot est très peu fiable sur la tâche SRL elle-même — 10 à 21% F1 sans
+    fine-tuning — confirmant que ce jugement ne doit pas être délégué au LLM lui-même).
+  - `f_wn` — classification par hyperonyme WordNet (0 = organisation/personne, 1 = artefact/document/
+    événement, 0.5 = indéterminé), du sens le plus fréquent du mot-tête, via NLTK.
+  - **Règle de vote sans poids calibrés** (délibérément préférée à une somme pondérée `w₁f_srl+w₂f_wn`
+    dont les coefficients auraient été choisis à dire d'expert — jugé trop fragile face à un
+    reviewer AAAI) : rejet uniquement si les deux signaux s'accordent (`f_srl ≤ 0.5` ET `f_wn = 0`).
+    Par défaut, un candidat est conservé (le rappel prime sur la précision à ce stade — cohérent
+    avec l'objectif reformulé : accepter une erreur résiduelle d'exhaustivité, éliminer l'erreur de
+    jugement).
+
+**Bugs corrigés en cours de route** :
+- `_head_word()` ne lemmatisait pas son résultat — un candidat pluriel/composite (`"company
+  reviews"`) ne matchait jamais `token.lemma_` (singulier) calculé sur le texte, cassant
+  silencieusement `f_srl` (`None` systématique). Corrigé en lemmatisant la tête via spaCy avant
+  comparaison.
+- Absence de filtre pour les pronoms/mots vides (`You`, `process`, `it`...) produits par CoT —
+  ajout d'une liste noire (`STOP_CANDIDATES`) appliquée avant le calcul des signaux.
+
+**Pistes explorées puis explicitement abandonnées, pour éviter l'accumulation de rustines** :
+un troisième signal basé sur un modèle NLI zero-shot (`typeform/distilbert-base-uncased-mnli`,
+puis `facebook/bart-large-mnli`) a été testé pour corriger spécifiquement le cas `maternity_leave`
+(voir §19). Résultat mitigé : corrige bien le cas visé mais introduit un nouveau biais sur un cas
+qui fonctionnait déjà (`application` classé à tort comme acteur à 66-71%). Décision explicite de ne
+**pas** l'intégrer, même de façon conditionnelle (n'activer NLI que si `f_srl` est peu fiable) —
+reconnu comme un début d'accumulation de rustines ad hoc sans principe unificateur, répétant au
+niveau symbolique l'anti-pattern déjà observé et abandonné au niveau du prompting (patcher
+réactivement chaque cas d'échec découvert plutôt que d'évaluer l'architecture globale). Retour
+délibéré à la règle à deux signaux, plus simple et plus défendable.
+
+---
+
+## 17. Résultats du Protocole 2 : succès reproductible sur le biais central, deux limites caractérisées
+
+Testé sur 5 runs (3× llama-3.1-8b, 2× llama-3.3-70b), 4 prompts (zero/one/two-shot/cot), 3 cas.
+
+**Succès stable et reproductible** :
+- `company`/`companies` rejeté correctement sur `job_application` dans **10/10 occurrences**
+  exploitables, à travers les deux modèles et tous les prompts (à l'exception d'un candidat
+  composite `"company reviews"` produit par un `zero_shot` sans exemple — cf. limite de
+  granularité de l'étape A, non un défaut de la couche B). C'est le premier résultat qui corrige,
+  de façon reproductible, le biais qui avait résisté à 9 stratégies de prompting sur 4 familles de
+  modèles.
+- `employee` rejeté correctement sur `work_accident` dans **10/10 occurrences** (`f_srl=0.0,
+  f_wn=0.0` — accord net des deux signaux), un succès nouveau non observé en Protocole 1.
+
+**Limite 1 — dépendance à la fréquence d'occurrence, caractérisée précisément.**
+`Company` sur `maternity_leave` : gardé à tort dans **5/5 runs**, de façon parfaitement
+reproductible (`f_srl=1.0` à chaque fois). Cause identifiée : le texte ne mentionne "company" que
+1-2 fois, toutes en position objet syntaxique (`"Notify Social Security, Company in time"`,
+`"Gather information from companies"`) — aucune occurrence sujet dans ce texte précis, contrairement
+à `job_application` où le texte dit explicitement *"Companies have to confirm..."*. Le signal `f_srl`
+mesure un **comportement syntaxique dans le texte courant**, pas une propriété stable du candidat —
+sur un texte court à faible redondance, ce signal devient peu fiable, voire trompeur (ici il pointe
+activement dans le mauvais sens, pas juste "indéterminé"). Limite reproductible et caractérisable
+("le signal se dégrade en dessous d'un certain nombre d'occurrences"), documentée comme telle plutôt
+que patchée.
+
+**Limite 2 — seuil de rejet trop strict pour certains acteurs sémantiquement nets.**
+`employer` gardé à tort dans **10/10 occurrences**, avec un ratio stable et reproductible
+(`f_srl≈0.67`, jamais ≤0.5) malgré `f_wn=0.0` net (WordNet identifie clairement "employer" comme
+`person.n.01`). Le comportement syntaxique de ce candidat est mixte mais pas assez tranché pour
+franchir le seuil actuel, même si le signal sémantique est sans ambiguïté. Contrairement à la
+Limite 1 (signal peu fiable), ici le signal sémantique est fiable mais le seuil de la règle de vote
+ne l'exploite pas assez — piste de correction potentielle (ex: rejet si `f_wn=0.0` seul, quelle que
+soit `f_srl`, au lieu d'exiger l'accord des deux) volontairement non appliquée à ce stade pour éviter
+de re-basculer vers l'accumulation de règles ad hoc sans validation plus large.
+
+**Confirmation indépendante, mode d'échec de l'étape A déjà documenté en Protocole 1** :
+`work_accident` continue de produire des échecs de parsing fréquents (troncature, cf. section 6) et
+une sur-fragmentation en candidats contextuels redondants (`"work accident (report by
+self-employed person)"`, observé en two-shot) — ce protocole ne corrige pas ces deux problèmes, qui
+relèvent de l'étape A (qualité de génération du LLM), hors du périmètre de la couche B.
+
+---
+
+## 18. Signal NLI zero-shot : piste testée, écartée après diagnostic
+
+Hypothèse testée : un signal indépendant de la fréquence d'occurrence (contrairement à `f_srl`)
+pourrait corriger la Limite 1 ci-dessus. Un modèle NLI zero-shot classifie chaque candidat contre
+deux hypothèses ("organisation/acteur" vs "document/dossier suivi dans le temps"), sans besoin de
+plusieurs occurrences dans le texte.
+
+- `typeform/distilbert-base-uncased-mnli` (léger) : échoue nettement — classe `Company`/
+  `maternity_leave` à 87% "document" (faux, dans le mauvais sens) et `application`/`job_application`
+  (cas le plus évident du corpus) à 71% "acteur" (faux). Modèle trop petit pour cette distinction
+  fine.
+- `facebook/bart-large-mnli` (référence standard) : corrige bien le cas visé (`Company`/
+  `maternity_leave` → 76% "acteur", correct), mais introduit un nouveau biais sur le cas qui
+  fonctionnait déjà (`application` → 66% "acteur", faux) — signe d'un biais de label plutôt que
+  d'un jugement sémantique robuste (probablement lié à la formulation asymétrique des deux
+  hypothèses).
+
+**Décision** : ne pas intégrer, même conditionnellement. Le gain sur la Limite 1 ne compense pas le
+risque de casser un cas déjà résolu, et l'ajout aurait constitué un troisième patch réactif sur la
+couche symbolique — reconnu explicitement comme reproduisant, côté symbolique, l'anti-pattern déjà
+abandonné côté prompting. La règle à deux signaux (`f_srl`+`f_wn`) est conservée telle quelle, avec
+ses deux limites documentées en section 17 plutôt que masquées.
+
+---
+
+## 19. Protocole 3 : validation par lexnames WordNet, remplace SRL+hypernymes manuels
+
+Motivation directe : le Protocole 2 (§16-18) nécessitait de maintenir `ACTOR_HYPERNYMS`/
+`ENTITY_HYPERNYMS`, deux listes de synsets choisies à la main — un problème de généralité reconnu
+explicitement : chaque nouveau cas de test ou domaine métier risquait de révéler un acteur non
+couvert, obligeant à étendre la liste indéfiniment ("à chaque nouveau use case il faudra une
+correction après coup — c'est infaisable").
+
+**Solution retenue** : les **lexnames** WordNet — une taxonomie **fixe et fermée** de 25 catégories
+sémantiques (`noun.person`, `noun.group`, `noun.artifact`, `noun.act`, ...) qui couvre déjà tout
+WordNet. Le mapping acteur/entité (`{noun.person, noun.group} → ACTOR`, `{noun.artifact,
+noun.communication, noun.act, noun.event, noun.cognition} → ENTITY`) est choisi une seule fois sur
+un ensemble borné, et ne grandit jamais avec de nouveaux cas de test — contrairement à une liste de
+synsets. `agent/nodes/state_space_node_v3.py` : un seul signal `f_lex` remplace `f_srl`+`f_wn`,
+règle de rejet simplifiée (`rejeté ⟺ f_lex == "ACTOR"`), suppression de la dépendance à spaCy
+(`f_srl` abandonné avec elle).
+
+**Résultat, sur 4 runs (3× llama-8b, 1× mistral-nemotron)** : nette amélioration par rapport au
+Protocole 2. `company` rejeté 15/16 occurrences (le seul raté étant un candidat composite
+`"company reviews"`, un problème d'étape A, pas de la couche B). **`employer` rejeté 4/4** — corrige
+la Limite 2 du Protocole 2 (`f_srl≈0.67`, jamais assez bas pour franchir le seuil), sans aucun
+réglage de seuil, juste par le changement de nature du signal. `director`, `school`, `student(s)`,
+`employee(s)` rejetés systématiquement, y compris des candidats **jamais anticipés ni ajoutés à la
+main** — preuve concrète de la généralité recherchée.
+
+**Limite résiduelle identifiée : `person` non résolu.** `wn.synsets("person")[0]` (`person.n.01`,
+"a human being") est lui-même étiqueté `noun.Tops` par WordNet, pas `noun.person` — une bizarrerie
+de construction de la ressource, pas un défaut de la méthode. `self-employed person` et `person`
+seul échappent donc au filtre.
+
+---
+
+## 20. Protocole 4 : vote sur les N premiers sens (tentative de correction de la limite `person`)
+
+Deux corrections automatiques testées pour `person`, sans réintroduire de liste de mots :
+- Vote majoritaire sur les 3 premiers sens (`top_n=3`) plutôt que le seul sens dominant.
+- Pondération par fréquence d'usage sur tous les sens (`lemma.count()`).
+
+**Résultat : aucune des deux ne corrige `person`** — vérifié empiriquement, aucun des sens de
+"person" n'est jamais étiqueté `noun.person`, quelle que soit la fenêtre ou la pondération choisie.
+Confirmé comme limite structurelle de WordNet, documentée en commentaire dans
+`agent/nodes/state_space_node_v4.py`, plutôt que patchée par un cas spécial (qui aurait recréé le
+problème de liste ouverte que le Protocole 3 cherchait justement à éliminer).
+
+**Le vote top-3 reste adopté pour son bénéfice indépendant** : `director`, `customer`, `student`,
+`worker` basculent proprement en ACTOR alors qu'ils ne l'étaient pas toujours avec le seul sens
+dominant (Protocole 3) — amélioration générale au-delà du cas `person`, retenue malgré l'échec sur
+le cas qui l'avait motivée.
+
+---
+
+## 21. Retour au Protocole 1 : définition V4, premier résultat de prompting nettement positif
+
+Après trois versions de définition infructueuses sur le jugement direct par le LLM (V1 circulaire,
+V2 flip test binaire insuffisant sur les cas mixtes, V3 règle de départage appliquée de façon
+incohérente), une V4 a été écrite en empruntant le niveau d'exhaustivité d'un guide d'annotation
+formel — inspirée d'un prompt de reformulation externe examiné en parallèle (`REFORMULATION_PROMPT_V2`,
+non adopté tel quel : format activité/précondition/jalon jugé trop composite, cf. décision en
+section suivante) : structure **Definitions** (entité, état explicite/implicite, acteur) +
+**Classification rules** (règle de majorité d'occurrences plutôt qu'un test sur une seule occurrence,
+checklist actionnable finale) + **Rules** de sortie tout aussi détaillées (jamais de sortie
+minimaliste sous prétexte de "zero-shot" — zero-shot signifie seulement l'absence d'exemple, pas la
+pauvreté des consignes).
+
+**Résultat sur `job_application` : 9/9 runs, 3 familles de modèles indépendantes (llama-3.1-8b,
+mistral-nemotron, gpt-oss-20b), zéro occurrence de `company` seul comme entité.** Premier résultat
+de prompting robuste sur ce cas précis, après 3 tentatives négatives (V1/V2/V3) et 4 familles de
+modèles ayant toutes montré le biais comme stable (§16). Le mécanisme observé va au-delà du simple
+rejet : le LLM applique correctement la règle *"if the process tracks that received outcome, extract
+that outcome as its own entity"* — `company_review`, `company_rating` apparaissent spontanément
+comme entités séparées, exactement la décomposition visée depuis le début, produite sans
+intervention de la couche symbolique.
+
+**Généralisation partielle aux deux autres cas** : `work_accident` et `maternity_leave` propres sur
+6-7 runs sur 9, avec des exceptions concentrées sur llama-3.1-8b (le modèle le plus faible) —
+`company`/`employer`/`director`/`school` réapparaissent sur 2 de ses 3 runs, malgré une
+`temperature=0` identique (cohérent avec le non-déterminisme de l'endpoint déjà documenté en
+section 14). Plusieurs échecs indépendants de la qualité du prompt observés en parallèle : rate
+limiting (429), troncature déjà documentée sur les modèles reasoning (`gpt-oss-*`).
+
+**Bilan** : V4 est la variante de prompting la plus robuste testée à ce jour, sans être une garantie
+absolue — la limite résiduelle se concentre sur le modèle le plus faible de l'échantillon, pas
+distribuée aléatoirement. À valider par des répétitions supplémentaires sur gpt-oss-120b et llama-70b
+avant de la considérer comme définitivement stable.
+
+**Décision prise en parallèle** : le format externe qui a inspiré le niveau d'exhaustivité de V4
+(`REFORMULATION_PROMPT_V2`, activités numérotées avec préconditions/jalons intégrés) n'a pas été
+adopté comme remplacement de l'architecture `U`/`Pre` à deux étapes. Diagnostic : il réintroduit un
+jugement composite en un seul appel (granularité d'activité + condition, simultanément) — exactement
+le type de tâche qui a produit les échecs documentés en sections 3-15 — et autorise `OR` dans les
+préconditions, alors que le pipeline reste volontairement additif (`AND` uniquement) pour ne pas
+complexifier la propagation d'échec en aval (SAT vs parcours de graphe simple). Seule la technique
+d'écriture (exhaustivité structurée définitions/règles) a été retenue et transposée à la définition
+entité/acteur du Protocole 1, pas le format de sortie.
+
+---
+
+---
+
+## 22. Prompt permissif discipliné (étape A) + Protocole 3 : élimination du bruit de format, meilleur résultat combiné à ce jour
+
+**Bug identifié** : l'étape A du Protocole 2/3 produisait occasionnellement des états ou des noms de
+candidats sous forme de clauses entières recopiées du texte plutôt que de labels courts — exemple
+observé : `{"childcare_facility": ["taking a child to or collecting them from is considered part
+of the work accident conditions"]}`. Ce n'est pas un problème de jugement entité/acteur (délégué à
+la couche B), c'est un problème de discipline de format, indépendant, qui casse silencieusement
+toute la chaîne en aval (validation symbolique, citation d'evidence, construction de graphe).
+
+**Correctif** : réécriture complète de `agent/prompt/state_space_prompt_permissive.py`. Séparation
+explicite de deux blocs indépendants — `_CANDIDATE_DEFINITION` (quoi inclure, toujours permissif)
+et `_FORMAT_RULES` (comment nommer, jamais négociable, même pour un candidat incertain). Le contre-
+exemple fautif réel (`childcare_facility`) est intégré tel quel dans le prompt comme exemple
+`WRONG`/`RIGHT` explicite, plutôt qu'un exemple générique abstrait — cohérent avec l'efficacité déjà
+observée des contre-exemples concrets ailleurs dans ce document. Règles ajoutées : longueur
+maximale (1-4 mots), interdiction des amorces de clause (gérondif, "the fact that", "it is
+considered"), snake_case, et une clause de repli explicite ("si vous ne pouvez pas compresser en
+label court sans inventer, omettez plutôt que d'écrire une phrase"). Les 4 variantes (zero/one/two-
+shot/cot) reçoivent le même niveau de détail — pas de version "allégée" pour le zero-shot.
+
+**Résultat sur 12 runs (5 familles de modèles : mistral-medium-3.5-128b, llama-3.1-8b,
+mistral-nemotron, gpt-oss-20b, gpt-oss-120b), 1125 candidats évalués au total** :
+
+- **Zéro violation de format détectée** (aucun état ni candidat sous forme de phrase/clause), sur
+  l'ensemble des 12 runs, toutes variantes et modèles confondus — le bug ciblé est éliminé.
+- **309/1125 candidats (27%) rejetés par la couche B**, avec une cohérence inter-modèle remarquable :
+  `school`, `professional_association`, `chamber_of_labour`, `trade_union_federation`, `guild`,
+  `fire_brigade`, `employer`, `employee`, `labour_inspectorate`, `accident_insurance_provider`,
+  `directorate`, `university`, `insured_party` rejetés de façon quasi identique à travers les 5
+  familles de modèles sur `work_accident`.
+- **`company`/`parent` sur `maternity_leave` corrigé de façon systématique** — confirme que la
+  Limite 1 du Protocole 2 (§17, signal `f_srl` trompeur par manque d'occurrences) reste résolue par
+  le Protocole 3 (lexnames) même avec ce nouveau prompt d'étape A.
+- **`gpt-oss-120b`, auparavant instable (troncatures documentées en section 6), propre sur
+  l'ensemble de ses runs** — aucune régression liée à la longueur accrue du nouveau prompt (2523 à
+  4311 caractères selon la variante).
+
+**Interprétation : la combinaison est meilleure que chacun des deux leviers pris isolément.**
+Le prompt discipliné seul (sans couche B) resterait, comme V4 en Protocole 1, sensible au modèle
+utilisé — un LLM pourrait toujours juger `company` comme légitime malgré de bonnes définitions
+(observé sur llama-8b en Protocole 1, section 21). La couche B seule (Protocole 3 avec l'ancien
+prompt permissif) perdait du signal sur les candidats mal formés (noms composites masquant le mot-
+tête problématique, section 19). Ensemble : l'étape A produit des candidats propres et exhaustifs,
+la couche B tranche le jugement difficile de façon reproductible et indépendante du modèle — c'est
+la première configuration testée où la robustesse ne dépend plus principalement de la qualité
+intrinsèque du LLM choisi.
+
+**Point résiduel à vérifier** : `run_18`/`zero_shot`/`maternity_leave` rejette `information_gathering`
+comme `ACTOR` — probablement un faux rejet (candidat qui ressemble à une activité, mal classé par le
+lexname dominant de son mot-tête). À investiguer avant de considérer ce protocole comme stable.
+
+---
+
+## 23. Questions ouvertes / prochaines étapes
+
+- **Investiguer le faux rejet `information_gathering`** (section 22) — vérifier si cest un cas isolé ou un mode déchec récurrent du signal lexname sur des candidats nommés comme des activités plutôt que des objets.
+- **Le prompt permissif discipliné + Protocole 3 est la meilleure configuration testée à ce jour** — candidat naturel pour devenir le pipeline de référence.
+
+- **V4 à confirmer sur davantage de modèles** — testée sur llama-8b, mistral-nemotron, gpt-oss-20b ;
+  reste à tester sur gpt-oss-120b et llama-70b avant de la considérer comme la définition de
+  référence du Protocole 1 (cf. section 21).
+- **Limite résiduelle de V4 concentrée sur llama-3.1-8b** — non aléatoire, cohérente avec le pattern
+  déjà observé (les petits modèles résistent davantage à toute intervention de prompting). Ne pas
+  chercher une V5 tant que la cause précise (capacité de raisonnement conditionnel insuffisante vs.
+  non-déterminisme de l'endpoint) n'est pas isolée.
+- **`person` non résolu dans les Protocoles 3/4** — limite structurelle de WordNet documentée (le
+  mot n'est jamais étiqueté `noun.person` lui-même), acceptée comme telle plutôt que patchée par un
+  cas spécial qui romprait la généralité recherchée (cf. section 20).
+- **Décider si le Protocole 1 (prompting seul, désormais avec V4) ou le Protocole 3 (validation
+  symbolique par lexnames) devient le pipeline de référence** — les deux montrent maintenant de bons
+  résultats sur `company`/`employer`, obtenus par des mécanismes différents (meilleure définition vs.
+  filtrage externe indépendant du LLM). Un test croisé (V4 comme étape A du Protocole 3, au lieu du
+  prompt permissif actuel) pourrait combiner les deux gains plutôt que de choisir entre eux.
+- **Limite 1 du Protocole 2 (dépendance à la fréquence)** — piste de correction à évaluer sans
+  précipitation : pondérer la confiance de `f_srl` par le nombre brut d'occurrences plutôt que par
+  le seul ratio, ou basculer vers `f_wn` seul quand `f_srl` repose sur moins de 2-3 occurrences.
+  Ne pas re-tester NLI comme substitut (cf. section 18, décision prise).
+- **Limite 2 du Protocole 2 (seuil trop strict pour `employer`)** — résolue indirectement par le
+  Protocole 3 (lexnames), qui n'a plus ce seuil. Non prioritaire de la corriger dans le Protocole 2
+  lui-même si le Protocole 3/4 devient la référence.
+- **Qualité de l'étape A reste un facteur, même en Protocole 2/3** — `zero_shot` sans exemple produit
+  des candidats composites (`"company reviews"`) qui contournent le filtre B en dissimulant le mot-
+  tête problématique ; `work_accident` continue à produire échecs de parsing et sur-fragmentation,
+  hérités du Protocole 1, hors du périmètre de la couche B.
+- Tester si l'étape A permissive (Protocole 2/3) bénéficierait elle-même d'être reformulée avec le
+  niveau d'exhaustivité de V4, plutôt que le prompt permissif minimal actuel.
+- Tester le Protocole 2/3 sur gpt-oss-120b (déjà testé en Protocole 1) pour vérifier si les limites
+  caractérisées (section 17) et les succès (section 20) se reproduisent à l'identique.
+- Implémenter la boucle HITL différée pour commencer à accumuler un gold set validé — les rapports
+  de validation (`validation_report`, Protocoles 2/3) et les citations `evidence` (Protocole 1)
+  offrent tous deux une base de traçabilité utile pour cette revue humaine.
+- **Correctif prioritaire (Protocole 1, toujours en attente)** : ajouter un marqueur de fin explicite
+  (type `FINAL_ANSWER:`) au prompt de conflict resolution pour éliminer les échecs de parsing dus à
+  du texte parasite après le JSON (cf. section 15) — pertinence réduite si le Protocole 3 devient le
+  pipeline principal, à trancher.
+- **`validate_grounding` à renforcer** (Protocole 1) : ne détecte pas la recombinaison trompeuse de
+  fragments individuellement authentiques.
+- Intégrer Gemini comme provider dans `base_llm.py` — Gemini reste le seul modèle observé (test
+  manuel hors pipeline) à éviter nativement le piège acteur=entité en zero-shot simple ; à vérifier
+  si V4 (Protocole 1) ou le Protocole 3 rendent cette différence de modèle moins déterminante.
 - **Positionnement littérature confirmé par Hermes (USENIX Security 2024) et RFCNLP (IEEE S&P
   2022)** : même un pipeline supervisé, lourdement outillé (grammaire dédiée, ~2800h d'annotation
   humaine pour Hermes) ne résout pas l'erreur d'extraction à la source — les deux déplacent la

@@ -1,0 +1,418 @@
+{
+  "case_name": "R_g01",
+  "text": "Category: Repair and Service\nTitle: DIY Repair of a Broken Smartphone Screen\n\nA nifty online tool helps you with repairing your Smartphone on your own.\nYou start by entering the model and what is broken. The tool gives you the list\nof materials, the list of tools, and (for each part) several ordering choices.\nSome stuff you already have (e.g. some tools, screws). The tool also lets you contact friends\nif you can borrow / buy something for cheap from them. The rest you buy.\nAfterwards you receive instructions how to fix your phone. If it worked, send a review and/or video\nof you fixing it. If it hasn't worked out, you can send it to an expert.\n",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "openai/gpt-oss-20b",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "openai/gpt-oss-20b",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/text_and_bpmn/bpmn/R_g01/2.bpmn2.xml",
+  "dfg_edges": [
+    {
+      "source_id": "sid-E2585526-5B21-49AC-8308-E761B5A2029E",
+      "source_label": "Generating instructions to fix",
+      "target_id": "sid-82DEB406-8AD2-4116-AA1E-8054CDAEE972",
+      "target_label": "follow instructions",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-FAA98EEC-8816-48F8-B43F-ED9CD14BDEC3",
+      "source_label": "check list with own inventory (tool/screw)",
+      "target_id": "sid-E2585526-5B21-49AC-8308-E761B5A2029E",
+      "target_label": "Generating instructions to fix",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "yes"
+      ]
+    },
+    {
+      "source_id": "sid-FAA98EEC-8816-48F8-B43F-ED9CD14BDEC3",
+      "source_label": "check list with own inventory (tool/screw)",
+      "target_id": "sid-15834841-9DB5-479A-96D6-1C12B268FB3B",
+      "target_label": "",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-FAA98EEC-8816-48F8-B43F-ED9CD14BDEC3",
+      "source_label": "check list with own inventory (tool/screw)",
+      "target_id": "sid-B6D1B5BE-2111-425F-84E3-E1D3E6469336",
+      "target_label": "getting everything else needed",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "no",
+        "ExclusiveGateway",
+        "no",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-FAA98EEC-8816-48F8-B43F-ED9CD14BDEC3",
+      "source_label": "check list with own inventory (tool/screw)",
+      "target_id": "sid-97A20464-9DC9-49F9-969F-5AB7EB3B44D8",
+      "target_label": "contact friend",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "no",
+        "ExclusiveGateway",
+        "yes"
+      ]
+    },
+    {
+      "source_id": "sid-55F2FF34-679B-4885-B9A1-0D1308E8DEA0",
+      "source_label": "compute necessary Tools",
+      "target_id": "sid-FAA98EEC-8816-48F8-B43F-ED9CD14BDEC3",
+      "target_label": "check list with own inventory (tool/screw)",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-0D3DE9F4-C18E-4AED-A52A-D2ED2ED8B7FB",
+      "source_label": "send phone to expert",
+      "target_id": "sid-23074708-7BE6-474B-90E2-A3AC4ADE0B62",
+      "target_label": "phone is repaired",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-BEACE581-4AA3-45DA-9036-0991A2DE1A5B",
+      "source_label": "Saving video to DB",
+      "target_id": "sid-23074708-7BE6-474B-90E2-A3AC4ADE0B62",
+      "target_label": "phone is repaired",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-5EA1A930-062F-46BF-B62C-20108CAEE758",
+      "source_label": "Phone is broken",
+      "target_id": "sid-C6D81327-ED1F-4E79-A443-B33DDB8D6B9A",
+      "target_label": "enter manufacturer",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-60326312-7321-48FE-B816-0E93D57A67EF",
+      "source_label": "enter broken part",
+      "target_id": "sid-55F2FF34-679B-4885-B9A1-0D1308E8DEA0",
+      "target_label": "compute necessary Tools",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "no",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-60326312-7321-48FE-B816-0E93D57A67EF",
+      "source_label": "enter broken part",
+      "target_id": "sid-083B7B2F-B887-4E67-AEB1-A1B76F8C0A06",
+      "target_label": "compute parts list",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "no",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-60326312-7321-48FE-B816-0E93D57A67EF",
+      "source_label": "enter broken part",
+      "target_id": "sid-60326312-7321-48FE-B816-0E93D57A67EF",
+      "target_label": "enter broken part",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "yes"
+      ]
+    },
+    {
+      "source_id": "sid-60326312-7321-48FE-B816-0E93D57A67EF",
+      "source_label": "enter broken part",
+      "target_id": "sid-80F9B881-9180-4242-AFAD-43AA32D1868F",
+      "target_label": "",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-C6D81327-ED1F-4E79-A443-B33DDB8D6B9A",
+      "source_label": "enter manufacturer",
+      "target_id": "sid-93F0F83B-AE76-4980-8308-52CAC4ACBEF2",
+      "target_label": "enter model",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-82DEB406-8AD2-4116-AA1E-8054CDAEE972",
+      "source_label": "follow instructions",
+      "target_id": "sid-0D3DE9F4-C18E-4AED-A52A-D2ED2ED8B7FB",
+      "target_label": "send phone to expert",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "no",
+        "ExclusiveGateway",
+        "no"
+      ]
+    },
+    {
+      "source_id": "sid-82DEB406-8AD2-4116-AA1E-8054CDAEE972",
+      "source_label": "follow instructions",
+      "target_id": "sid-7EC75C61-C802-425D-AA2F-3604FDB1F450",
+      "target_label": "Leave Review",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "no",
+        "ExclusiveGateway",
+        "yes"
+      ]
+    },
+    {
+      "source_id": "sid-82DEB406-8AD2-4116-AA1E-8054CDAEE972",
+      "source_label": "follow instructions",
+      "target_id": "sid-82DEB406-8AD2-4116-AA1E-8054CDAEE972",
+      "target_label": "follow instructions",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "yes"
+      ]
+    },
+    {
+      "source_id": "sid-97A20464-9DC9-49F9-969F-5AB7EB3B44D8",
+      "source_label": "contact friend",
+      "target_id": "sid-B6D1B5BE-2111-425F-84E3-E1D3E6469336",
+      "target_label": "getting everything else needed",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-083B7B2F-B887-4E67-AEB1-A1B76F8C0A06",
+      "source_label": "compute parts list",
+      "target_id": "sid-FAA98EEC-8816-48F8-B43F-ED9CD14BDEC3",
+      "target_label": "check list with own inventory (tool/screw)",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-B6D1B5BE-2111-425F-84E3-E1D3E6469336",
+      "source_label": "getting everything else needed",
+      "target_id": "sid-E2585526-5B21-49AC-8308-E761B5A2029E",
+      "target_label": "Generating instructions to fix",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-19C62338-20A3-4DBF-B780-DBB41F4E13E9",
+      "source_label": "Upload video",
+      "target_id": "sid-BEACE581-4AA3-45DA-9036-0991A2DE1A5B",
+      "target_label": "Saving video to DB",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-7EC75C61-C802-425D-AA2F-3604FDB1F450",
+      "source_label": "Leave Review",
+      "target_id": "sid-23074708-7BE6-474B-90E2-A3AC4ADE0B62",
+      "target_label": "phone is repaired",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "no",
+        "ExclusiveGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-7EC75C61-C802-425D-AA2F-3604FDB1F450",
+      "source_label": "Leave Review",
+      "target_id": "sid-19C62338-20A3-4DBF-B780-DBB41F4E13E9",
+      "target_label": "Upload video",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "yes"
+      ]
+    },
+    {
+      "source_id": "sid-93F0F83B-AE76-4980-8308-52CAC4ACBEF2",
+      "source_label": "enter model",
+      "target_id": "sid-60326312-7321-48FE-B816-0E93D57A67EF",
+      "target_label": "enter broken part",
+      "gateway_context": []
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "Generating instructions to fix",
+      "subject_id": "sid-E2585526-5B21-49AC-8308-E761B5A2029E",
+      "predicate": "follows",
+      "object": "follow instructions",
+      "object_id": "sid-82DEB406-8AD2-4116-AA1E-8054CDAEE972"
+    },
+    {
+      "subject": "check list with own inventory (tool/screw)",
+      "subject_id": "sid-FAA98EEC-8816-48F8-B43F-ED9CD14BDEC3",
+      "predicate": "follows",
+      "object": "Generating instructions to fix",
+      "object_id": "sid-E2585526-5B21-49AC-8308-E761B5A2029E"
+    },
+    {
+      "subject": "check list with own inventory (tool/screw)",
+      "subject_id": "sid-FAA98EEC-8816-48F8-B43F-ED9CD14BDEC3",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "sid-15834841-9DB5-479A-96D6-1C12B268FB3B"
+    },
+    {
+      "subject": "check list with own inventory (tool/screw)",
+      "subject_id": "sid-FAA98EEC-8816-48F8-B43F-ED9CD14BDEC3",
+      "predicate": "follows",
+      "object": "getting everything else needed",
+      "object_id": "sid-B6D1B5BE-2111-425F-84E3-E1D3E6469336"
+    },
+    {
+      "subject": "check list with own inventory (tool/screw)",
+      "subject_id": "sid-FAA98EEC-8816-48F8-B43F-ED9CD14BDEC3",
+      "predicate": "follows",
+      "object": "contact friend",
+      "object_id": "sid-97A20464-9DC9-49F9-969F-5AB7EB3B44D8"
+    },
+    {
+      "subject": "compute necessary Tools",
+      "subject_id": "sid-55F2FF34-679B-4885-B9A1-0D1308E8DEA0",
+      "predicate": "follows",
+      "object": "check list with own inventory (tool/screw)",
+      "object_id": "sid-FAA98EEC-8816-48F8-B43F-ED9CD14BDEC3"
+    },
+    {
+      "subject": "send phone to expert",
+      "subject_id": "sid-0D3DE9F4-C18E-4AED-A52A-D2ED2ED8B7FB",
+      "predicate": "follows",
+      "object": "phone is repaired",
+      "object_id": "sid-23074708-7BE6-474B-90E2-A3AC4ADE0B62"
+    },
+    {
+      "subject": "Saving video to DB",
+      "subject_id": "sid-BEACE581-4AA3-45DA-9036-0991A2DE1A5B",
+      "predicate": "follows",
+      "object": "phone is repaired",
+      "object_id": "sid-23074708-7BE6-474B-90E2-A3AC4ADE0B62"
+    },
+    {
+      "subject": "Phone is broken",
+      "subject_id": "sid-5EA1A930-062F-46BF-B62C-20108CAEE758",
+      "predicate": "follows",
+      "object": "enter manufacturer",
+      "object_id": "sid-C6D81327-ED1F-4E79-A443-B33DDB8D6B9A"
+    },
+    {
+      "subject": "enter broken part",
+      "subject_id": "sid-60326312-7321-48FE-B816-0E93D57A67EF",
+      "predicate": "follows",
+      "object": "compute necessary Tools",
+      "object_id": "sid-55F2FF34-679B-4885-B9A1-0D1308E8DEA0"
+    },
+    {
+      "subject": "enter broken part",
+      "subject_id": "sid-60326312-7321-48FE-B816-0E93D57A67EF",
+      "predicate": "follows",
+      "object": "compute parts list",
+      "object_id": "sid-083B7B2F-B887-4E67-AEB1-A1B76F8C0A06"
+    },
+    {
+      "subject": "enter broken part",
+      "subject_id": "sid-60326312-7321-48FE-B816-0E93D57A67EF",
+      "predicate": "follows",
+      "object": "enter broken part",
+      "object_id": "sid-60326312-7321-48FE-B816-0E93D57A67EF"
+    },
+    {
+      "subject": "enter broken part",
+      "subject_id": "sid-60326312-7321-48FE-B816-0E93D57A67EF",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "sid-80F9B881-9180-4242-AFAD-43AA32D1868F"
+    },
+    {
+      "subject": "enter manufacturer",
+      "subject_id": "sid-C6D81327-ED1F-4E79-A443-B33DDB8D6B9A",
+      "predicate": "follows",
+      "object": "enter model",
+      "object_id": "sid-93F0F83B-AE76-4980-8308-52CAC4ACBEF2"
+    },
+    {
+      "subject": "follow instructions",
+      "subject_id": "sid-82DEB406-8AD2-4116-AA1E-8054CDAEE972",
+      "predicate": "follows",
+      "object": "send phone to expert",
+      "object_id": "sid-0D3DE9F4-C18E-4AED-A52A-D2ED2ED8B7FB"
+    },
+    {
+      "subject": "follow instructions",
+      "subject_id": "sid-82DEB406-8AD2-4116-AA1E-8054CDAEE972",
+      "predicate": "follows",
+      "object": "Leave Review",
+      "object_id": "sid-7EC75C61-C802-425D-AA2F-3604FDB1F450"
+    },
+    {
+      "subject": "follow instructions",
+      "subject_id": "sid-82DEB406-8AD2-4116-AA1E-8054CDAEE972",
+      "predicate": "follows",
+      "object": "follow instructions",
+      "object_id": "sid-82DEB406-8AD2-4116-AA1E-8054CDAEE972"
+    },
+    {
+      "subject": "contact friend",
+      "subject_id": "sid-97A20464-9DC9-49F9-969F-5AB7EB3B44D8",
+      "predicate": "follows",
+      "object": "getting everything else needed",
+      "object_id": "sid-B6D1B5BE-2111-425F-84E3-E1D3E6469336"
+    },
+    {
+      "subject": "compute parts list",
+      "subject_id": "sid-083B7B2F-B887-4E67-AEB1-A1B76F8C0A06",
+      "predicate": "follows",
+      "object": "check list with own inventory (tool/screw)",
+      "object_id": "sid-FAA98EEC-8816-48F8-B43F-ED9CD14BDEC3"
+    },
+    {
+      "subject": "getting everything else needed",
+      "subject_id": "sid-B6D1B5BE-2111-425F-84E3-E1D3E6469336",
+      "predicate": "follows",
+      "object": "Generating instructions to fix",
+      "object_id": "sid-E2585526-5B21-49AC-8308-E761B5A2029E"
+    },
+    {
+      "subject": "Upload video",
+      "subject_id": "sid-19C62338-20A3-4DBF-B780-DBB41F4E13E9",
+      "predicate": "follows",
+      "object": "Saving video to DB",
+      "object_id": "sid-BEACE581-4AA3-45DA-9036-0991A2DE1A5B"
+    },
+    {
+      "subject": "Leave Review",
+      "subject_id": "sid-7EC75C61-C802-425D-AA2F-3604FDB1F450",
+      "predicate": "follows",
+      "object": "phone is repaired",
+      "object_id": "sid-23074708-7BE6-474B-90E2-A3AC4ADE0B62"
+    },
+    {
+      "subject": "Leave Review",
+      "subject_id": "sid-7EC75C61-C802-425D-AA2F-3604FDB1F450",
+      "predicate": "follows",
+      "object": "Upload video",
+      "object_id": "sid-19C62338-20A3-4DBF-B780-DBB41F4E13E9"
+    },
+    {
+      "subject": "enter model",
+      "subject_id": "sid-93F0F83B-AE76-4980-8308-52CAC4ACBEF2",
+      "predicate": "follows",
+      "object": "enter broken part",
+      "object_id": "sid-60326312-7321-48FE-B816-0E93D57A67EF"
+    }
+  ],
+  "errors": [
+    "state_space: parse failed, raw response=''",
+    "precondition: 'state_space'",
+    "state_matching: 'state_space'",
+    "graph_construction: 'state_space'",
+    "alignment: 'reference_graph'",
+    "report: 'alignment'"
+  ]
+}

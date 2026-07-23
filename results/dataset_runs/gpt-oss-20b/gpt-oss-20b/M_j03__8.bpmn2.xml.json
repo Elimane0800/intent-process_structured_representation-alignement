@@ -1,0 +1,392 @@
+{
+  "case_name": "M_j03",
+  "text": "Category: Manufacturing\nTitle: Contract\n\nFor your contract project you need parts from several web shops. In order to\nfind out which web shop has the right parts, you have to query them all, and\nfind out how much they can deliver, at which price, and how long it will take.\n\nCreate a list of parts that you order from each shop. If one shop has not enough \nparts, order from several shops. Always use the cheapest parts.\n\nThe parts arrive in batches in a random order, typically they are +/- 2 days\nearlier/later.  \n\nWhen the first parts arrive you start building. Sometimes you have to reorder parts.\nIf your stock (for a single part) falls below 5, you reorder (the cheapest), if it\nfalls below 3 you reorder again (the fastest). If it is zero, you write a mail\nto your friends, complaining about the webshops.\n",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "openai/gpt-oss-20b",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "openai/gpt-oss-20b",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/text_and_bpmn/bpmn/M_j03/8.bpmn2.xml",
+  "candidates": {
+    "parts": [
+      "ordered",
+      "arrived",
+      "reordered"
+    ],
+    "web_shop": [
+      "queried",
+      "has_right_parts"
+    ],
+    "parts_list": [
+      "created"
+    ],
+    "batch": [
+      "arrived"
+    ],
+    "stock": [
+      "below_5",
+      "below_3",
+      "zero"
+    ],
+    "mail": [
+      "written"
+    ],
+    "friends": [
+      "receiving_mail"
+    ],
+    "webshops": [
+      "complained_about"
+    ],
+    "price": [
+      "cheapest"
+    ],
+    "time": [
+      "fastest"
+    ],
+    "order": [
+      "created"
+    ]
+  },
+  "validation_report": {
+    "parts": {
+      "f_lex": "INDETERMINATE",
+      "kept": true
+    },
+    "web_shop": {
+      "f_lex": "ENTITY",
+      "kept": true
+    },
+    "parts_list": {
+      "f_lex": "ENTITY",
+      "kept": true
+    },
+    "batch": {
+      "f_lex": "ACTOR",
+      "kept": false
+    },
+    "stock": {
+      "f_lex": "INDETERMINATE",
+      "kept": true
+    },
+    "mail": {
+      "f_lex": "ENTITY",
+      "kept": true
+    },
+    "friends": {
+      "f_lex": "ACTOR",
+      "kept": false
+    },
+    "webshops": {
+      "f_lex": "INDETERMINATE",
+      "kept": true
+    },
+    "price": {
+      "f_lex": "INDETERMINATE",
+      "kept": true
+    },
+    "time": {
+      "f_lex": "ENTITY",
+      "kept": true
+    },
+    "order": {
+      "f_lex": "ENTITY",
+      "kept": true
+    }
+  },
+  "state_space": {
+    "parts": [
+      "ordered",
+      "arrived",
+      "reordered"
+    ],
+    "web_shop": [
+      "queried",
+      "has_right_parts"
+    ],
+    "parts_list": [
+      "created"
+    ],
+    "stock": [
+      "below_5",
+      "below_3",
+      "zero"
+    ],
+    "mail": [
+      "written"
+    ],
+    "webshops": [
+      "complained_about"
+    ],
+    "price": [
+      "cheapest"
+    ],
+    "time": [
+      "fastest"
+    ],
+    "order": [
+      "created"
+    ]
+  },
+  "raw_preconditions": {
+    "parts.ordered": {
+      "precondition": "parts_list.created",
+      "quote": "Create a list of parts that you order from each shop."
+    },
+    "parts.arrived": {
+      "precondition": "parts.ordered",
+      "quote": "When the first parts arrive you start building."
+    },
+    "parts.reordered": {
+      "precondition": "stock.below_5 OR stock.below_3",
+      "quote": "If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below 3 you reorder again (the fastest)."
+    },
+    "web_shop.queried": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "web_shop.has_right_parts": {
+      "precondition": "web_shop.queried",
+      "quote": "you have to query them all"
+    },
+    "parts_list.created": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "stock.below_5": {
+      "precondition": "UNRESOLVED",
+      "quote": null
+    },
+    "stock.below_3": {
+      "precondition": "UNRESOLVED",
+      "quote": null
+    },
+    "stock.zero": {
+      "precondition": "UNRESOLVED",
+      "quote": null
+    },
+    "mail.written": {
+      "precondition": "stock.zero",
+      "quote": "If it is zero, you write a mail to your friends, complaining about the webshops."
+    },
+    "webshops.complained_about": {
+      "precondition": "mail.written",
+      "quote": "If it is zero, you write a mail to your friends, complaining about the webshops."
+    },
+    "price.cheapest": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "time.fastest": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "order.created": {
+      "precondition": "INITIAL",
+      "quote": null
+    }
+  },
+  "validated_preconditions": {
+    "parts.ordered": {
+      "precondition": "parts_list.created",
+      "quote": "Create a list of parts that you order from each shop.",
+      "status": "OK",
+      "reason": null
+    },
+    "parts.arrived": {
+      "precondition": "parts.ordered",
+      "quote": "When the first parts arrive you start building.",
+      "status": "OK",
+      "reason": null
+    },
+    "parts.reordered": {
+      "precondition": "stock.below_5 OR stock.below_3",
+      "quote": "If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below 3 you reorder again (the fastest).",
+      "status": "OK",
+      "reason": null
+    },
+    "web_shop.queried": {
+      "precondition": "INITIAL",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "web_shop.has_right_parts": {
+      "precondition": "web_shop.queried",
+      "quote": "you have to query them all",
+      "status": "OK",
+      "reason": null
+    },
+    "parts_list.created": {
+      "precondition": "INITIAL",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "stock.below_5": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "stock.below_3": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "stock.zero": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "mail.written": {
+      "precondition": "stock.zero",
+      "quote": "If it is zero, you write a mail to your friends, complaining about the webshops.",
+      "status": "OK",
+      "reason": null
+    },
+    "webshops.complained_about": {
+      "precondition": "mail.written",
+      "quote": "If it is zero, you write a mail to your friends, complaining about the webshops.",
+      "status": "OK",
+      "reason": null
+    },
+    "price.cheapest": {
+      "precondition": "INITIAL",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "time.fastest": {
+      "precondition": "INITIAL",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "order.created": {
+      "precondition": "INITIAL",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    }
+  },
+  "precondition_cycles": [],
+  "reference_graph": {
+    "nodes": [
+      {
+        "id": "parts.ordered",
+        "weight": 1.0
+      },
+      {
+        "id": "parts.arrived",
+        "weight": 0.5
+      },
+      {
+        "id": "parts.reordered",
+        "weight": 1.0
+      },
+      {
+        "id": "web_shop.queried",
+        "weight": 0.5
+      },
+      {
+        "id": "web_shop.has_right_parts",
+        "weight": 0.5
+      },
+      {
+        "id": "parts_list.created",
+        "weight": 0.5
+      },
+      {
+        "id": "stock.below_5",
+        "weight": 0.5
+      },
+      {
+        "id": "stock.below_3",
+        "weight": 0.5
+      },
+      {
+        "id": "stock.zero",
+        "weight": 0.5
+      },
+      {
+        "id": "mail.written",
+        "weight": 1.0
+      },
+      {
+        "id": "webshops.complained_about",
+        "weight": 0.5
+      },
+      {
+        "id": "price.cheapest",
+        "weight": 0.0
+      },
+      {
+        "id": "time.fastest",
+        "weight": 0.0
+      },
+      {
+        "id": "order.created",
+        "weight": 0.0
+      }
+    ],
+    "edges": [
+      {
+        "from": "parts_list.created",
+        "to": "parts.ordered",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "Create a list of parts that you order from each shop."
+      },
+      {
+        "from": "parts.ordered",
+        "to": "parts.arrived",
+        "type": "sequence",
+        "operator": "AND",
+        "quote": "When the first parts arrive you start building."
+      },
+      {
+        "from": "stock.below_5",
+        "to": "parts.reordered",
+        "type": "cross_entity_guard",
+        "operator": "OR",
+        "quote": "If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below 3 you reorder again (the fastest)."
+      },
+      {
+        "from": "stock.below_3",
+        "to": "parts.reordered",
+        "type": "cross_entity_guard",
+        "operator": "OR",
+        "quote": "If your stock (for a single part) falls below 5, you reorder (the cheapest), if it falls below 3 you reorder again (the fastest)."
+      },
+      {
+        "from": "web_shop.queried",
+        "to": "web_shop.has_right_parts",
+        "type": "sequence",
+        "operator": "AND",
+        "quote": "you have to query them all"
+      },
+      {
+        "from": "stock.zero",
+        "to": "mail.written",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "If it is zero, you write a mail to your friends, complaining about the webshops."
+      },
+      {
+        "from": "mail.written",
+        "to": "webshops.complained_about",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "If it is zero, you write a mail to your friends, complaining about the webshops."
+      }
+    ],
+    "cycles": []
+  },
+  "errors": [
+    "bpmn_to_spo: 'str' object has no attribute 'add_in_arc'",
+    "state_matching: 'spo_triples'",
+    "alignment: 'process_graph'",
+    "report: 'alignment'"
+  ]
+}

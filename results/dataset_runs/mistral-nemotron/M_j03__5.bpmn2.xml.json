@@ -1,0 +1,369 @@
+{
+  "case_name": "M_j03",
+  "text": "Category: Manufacturing\nTitle: Contract\n\nFor your contract project you need parts from several web shops. In order to\nfind out which web shop has the right parts, you have to query them all, and\nfind out how much they can deliver, at which price, and how long it will take.\n\nCreate a list of parts that you order from each shop. If one shop has not enough \nparts, order from several shops. Always use the cheapest parts.\n\nThe parts arrive in batches in a random order, typically they are +/- 2 days\nearlier/later.  \n\nWhen the first parts arrive you start building. Sometimes you have to reorder parts.\nIf your stock (for a single part) falls below 5, you reorder (the cheapest), if it\nfalls below 3 you reorder again (the fastest). If it is zero, you write a mail\nto your friends, complaining about the webshops.\n",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "mistral-nemotron",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "mistral-nemotron",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/text_and_bpmn/bpmn/M_j03/5.bpmn2.xml",
+  "dfg_edges": [
+    {
+      "source_id": "sid-079E2709-979F-4AA4-9624-E1C24D55FD37",
+      "source_label": "Check Inventory",
+      "target_id": "sid-1A2FBEAE-9C40-4F91-820B-C80DA3AA514F",
+      "target_label": "Finish Contract Project",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "Enough Parts to finish project"
+      ]
+    },
+    {
+      "source_id": "sid-079E2709-979F-4AA4-9624-E1C24D55FD37",
+      "source_label": "Check Inventory",
+      "target_id": "sid-863687EF-681A-45AE-B816-FBBE87AB2D51",
+      "target_label": "Complain to Friends via E-Mail",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "Zero remaining of individual Part"
+      ]
+    },
+    {
+      "source_id": "sid-079E2709-979F-4AA4-9624-E1C24D55FD37",
+      "source_label": "Check Inventory",
+      "target_id": "sid-451700EC-66E9-492E-A417-D51110E960EC",
+      "target_label": "Reorder Cheapest Part",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "Five remaining of individual Part"
+      ]
+    },
+    {
+      "source_id": "sid-079E2709-979F-4AA4-9624-E1C24D55FD37",
+      "source_label": "Check Inventory",
+      "target_id": "sid-FA8AC190-C7AD-4BA4-96E6-E7EF304A728F",
+      "target_label": "Reorder Fastest Way possible",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "Three remaining of individual Part"
+      ]
+    },
+    {
+      "source_id": "sid-F87C193D-6F7B-426D-8A12-D18BBE0A81FA",
+      "source_label": "Start Contract Project",
+      "target_id": "sid-A42A2EFC-5B9E-40A6-AD0D-8E2DEFE6987B",
+      "target_label": "Query Shops",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-863687EF-681A-45AE-B816-FBBE87AB2D51",
+      "source_label": "Complain to Friends via E-Mail",
+      "target_id": "sid-A5B7F21B-B065-4200-A2A2-237570DA2CC8",
+      "target_label": "Wait for Order to arrive",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-B4577FCE-C61E-4799-8B2A-9DBEC7E37FD9",
+      "source_label": "Start building",
+      "target_id": "sid-079E2709-979F-4AA4-9624-E1C24D55FD37",
+      "target_label": "Check Inventory",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-E66872F8-5163-43D1-8093-36D290895CBA",
+      "source_label": "Look Up Price of Parts",
+      "target_id": "sid-273562F6-F773-4AB6-9836-5B54091ABFB3",
+      "target_label": "Create List of Parts for Shops",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-A5B7F21B-B065-4200-A2A2-237570DA2CC8",
+      "source_label": "Wait for Order to arrive",
+      "target_id": "sid-FE3703E8-A56A-40F2-B563-E91843CC0E68",
+      "target_label": "Receive Order of Parts",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-FA8AC190-C7AD-4BA4-96E6-E7EF304A728F",
+      "source_label": "Reorder Fastest Way possible",
+      "target_id": "sid-A5B7F21B-B065-4200-A2A2-237570DA2CC8",
+      "target_label": "Wait for Order to arrive",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-273562F6-F773-4AB6-9836-5B54091ABFB3",
+      "source_label": "Create List of Parts for Shops",
+      "target_id": "sid-614B3BC4-2D9E-4590-8C5A-88E84B6DED95",
+      "target_label": "Order Cheapest Parts from several Shops",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "Shop has not enough Parts"
+      ]
+    },
+    {
+      "source_id": "sid-273562F6-F773-4AB6-9836-5B54091ABFB3",
+      "source_label": "Create List of Parts for Shops",
+      "target_id": "sid-FCD7DF9F-BADF-46EE-A957-1CF6DDDAC6FA",
+      "target_label": "Make Order from Shop",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "Shop has all Parts"
+      ]
+    },
+    {
+      "source_id": "sid-3C3070F2-B438-48CF-B26B-B98341021180",
+      "source_label": "Look Up Delivery Capacity",
+      "target_id": "sid-273562F6-F773-4AB6-9836-5B54091ABFB3",
+      "target_label": "Create List of Parts for Shops",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-451700EC-66E9-492E-A417-D51110E960EC",
+      "source_label": "Reorder Cheapest Part",
+      "target_id": "sid-A5B7F21B-B065-4200-A2A2-237570DA2CC8",
+      "target_label": "Wait for Order to arrive",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-1A2FBEAE-9C40-4F91-820B-C80DA3AA514F",
+      "source_label": "Finish Contract Project",
+      "target_id": "sid-3D2BD42D-5779-4BC6-831E-9956AF26758B",
+      "target_label": "End of Project",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-4CF96A15-CC1E-4D23-AE82-94C555F7012D",
+      "source_label": "Look Up Time-to-deliver",
+      "target_id": "sid-273562F6-F773-4AB6-9836-5B54091ABFB3",
+      "target_label": "Create List of Parts for Shops",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-614B3BC4-2D9E-4590-8C5A-88E84B6DED95",
+      "source_label": "Order Cheapest Parts from several Shops",
+      "target_id": "sid-A5B7F21B-B065-4200-A2A2-237570DA2CC8",
+      "target_label": "Wait for Order to arrive",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-FCD7DF9F-BADF-46EE-A957-1CF6DDDAC6FA",
+      "source_label": "Make Order from Shop",
+      "target_id": "sid-A5B7F21B-B065-4200-A2A2-237570DA2CC8",
+      "target_label": "Wait for Order to arrive",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-A42A2EFC-5B9E-40A6-AD0D-8E2DEFE6987B",
+      "source_label": "Query Shops",
+      "target_id": "sid-E66872F8-5163-43D1-8093-36D290895CBA",
+      "target_label": "Look Up Price of Parts",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-A42A2EFC-5B9E-40A6-AD0D-8E2DEFE6987B",
+      "source_label": "Query Shops",
+      "target_id": "sid-3C3070F2-B438-48CF-B26B-B98341021180",
+      "target_label": "Look Up Delivery Capacity",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-A42A2EFC-5B9E-40A6-AD0D-8E2DEFE6987B",
+      "source_label": "Query Shops",
+      "target_id": "sid-4CF96A15-CC1E-4D23-AE82-94C555F7012D",
+      "target_label": "Look Up Time-to-deliver",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-FE3703E8-A56A-40F2-B563-E91843CC0E68",
+      "source_label": "Receive Order of Parts",
+      "target_id": "sid-B4577FCE-C61E-4799-8B2A-9DBEC7E37FD9",
+      "target_label": "Start building",
+      "gateway_context": []
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "Check Inventory",
+      "subject_id": "sid-079E2709-979F-4AA4-9624-E1C24D55FD37",
+      "predicate": "follows",
+      "object": "Finish Contract Project",
+      "object_id": "sid-1A2FBEAE-9C40-4F91-820B-C80DA3AA514F"
+    },
+    {
+      "subject": "Check Inventory",
+      "subject_id": "sid-079E2709-979F-4AA4-9624-E1C24D55FD37",
+      "predicate": "follows",
+      "object": "Complain to Friends via E-Mail",
+      "object_id": "sid-863687EF-681A-45AE-B816-FBBE87AB2D51"
+    },
+    {
+      "subject": "Check Inventory",
+      "subject_id": "sid-079E2709-979F-4AA4-9624-E1C24D55FD37",
+      "predicate": "follows",
+      "object": "Reorder Cheapest Part",
+      "object_id": "sid-451700EC-66E9-492E-A417-D51110E960EC"
+    },
+    {
+      "subject": "Check Inventory",
+      "subject_id": "sid-079E2709-979F-4AA4-9624-E1C24D55FD37",
+      "predicate": "follows",
+      "object": "Reorder Fastest Way possible",
+      "object_id": "sid-FA8AC190-C7AD-4BA4-96E6-E7EF304A728F"
+    },
+    {
+      "subject": "Start Contract Project",
+      "subject_id": "sid-F87C193D-6F7B-426D-8A12-D18BBE0A81FA",
+      "predicate": "follows",
+      "object": "Query Shops",
+      "object_id": "sid-A42A2EFC-5B9E-40A6-AD0D-8E2DEFE6987B"
+    },
+    {
+      "subject": "Complain to Friends via E-Mail",
+      "subject_id": "sid-863687EF-681A-45AE-B816-FBBE87AB2D51",
+      "predicate": "follows",
+      "object": "Wait for Order to arrive",
+      "object_id": "sid-A5B7F21B-B065-4200-A2A2-237570DA2CC8"
+    },
+    {
+      "subject": "Start building",
+      "subject_id": "sid-B4577FCE-C61E-4799-8B2A-9DBEC7E37FD9",
+      "predicate": "follows",
+      "object": "Check Inventory",
+      "object_id": "sid-079E2709-979F-4AA4-9624-E1C24D55FD37"
+    },
+    {
+      "subject": "Look Up Price of Parts",
+      "subject_id": "sid-E66872F8-5163-43D1-8093-36D290895CBA",
+      "predicate": "follows",
+      "object": "Create List of Parts for Shops",
+      "object_id": "sid-273562F6-F773-4AB6-9836-5B54091ABFB3"
+    },
+    {
+      "subject": "Wait for Order to arrive",
+      "subject_id": "sid-A5B7F21B-B065-4200-A2A2-237570DA2CC8",
+      "predicate": "follows",
+      "object": "Receive Order of Parts",
+      "object_id": "sid-FE3703E8-A56A-40F2-B563-E91843CC0E68"
+    },
+    {
+      "subject": "Reorder Fastest Way possible",
+      "subject_id": "sid-FA8AC190-C7AD-4BA4-96E6-E7EF304A728F",
+      "predicate": "follows",
+      "object": "Wait for Order to arrive",
+      "object_id": "sid-A5B7F21B-B065-4200-A2A2-237570DA2CC8"
+    },
+    {
+      "subject": "Create List of Parts for Shops",
+      "subject_id": "sid-273562F6-F773-4AB6-9836-5B54091ABFB3",
+      "predicate": "follows",
+      "object": "Order Cheapest Parts from several Shops",
+      "object_id": "sid-614B3BC4-2D9E-4590-8C5A-88E84B6DED95"
+    },
+    {
+      "subject": "Create List of Parts for Shops",
+      "subject_id": "sid-273562F6-F773-4AB6-9836-5B54091ABFB3",
+      "predicate": "follows",
+      "object": "Make Order from Shop",
+      "object_id": "sid-FCD7DF9F-BADF-46EE-A957-1CF6DDDAC6FA"
+    },
+    {
+      "subject": "Look Up Delivery Capacity",
+      "subject_id": "sid-3C3070F2-B438-48CF-B26B-B98341021180",
+      "predicate": "follows",
+      "object": "Create List of Parts for Shops",
+      "object_id": "sid-273562F6-F773-4AB6-9836-5B54091ABFB3"
+    },
+    {
+      "subject": "Reorder Cheapest Part",
+      "subject_id": "sid-451700EC-66E9-492E-A417-D51110E960EC",
+      "predicate": "follows",
+      "object": "Wait for Order to arrive",
+      "object_id": "sid-A5B7F21B-B065-4200-A2A2-237570DA2CC8"
+    },
+    {
+      "subject": "Finish Contract Project",
+      "subject_id": "sid-1A2FBEAE-9C40-4F91-820B-C80DA3AA514F",
+      "predicate": "follows",
+      "object": "End of Project",
+      "object_id": "sid-3D2BD42D-5779-4BC6-831E-9956AF26758B"
+    },
+    {
+      "subject": "Look Up Time-to-deliver",
+      "subject_id": "sid-4CF96A15-CC1E-4D23-AE82-94C555F7012D",
+      "predicate": "follows",
+      "object": "Create List of Parts for Shops",
+      "object_id": "sid-273562F6-F773-4AB6-9836-5B54091ABFB3"
+    },
+    {
+      "subject": "Order Cheapest Parts from several Shops",
+      "subject_id": "sid-614B3BC4-2D9E-4590-8C5A-88E84B6DED95",
+      "predicate": "follows",
+      "object": "Wait for Order to arrive",
+      "object_id": "sid-A5B7F21B-B065-4200-A2A2-237570DA2CC8"
+    },
+    {
+      "subject": "Make Order from Shop",
+      "subject_id": "sid-FCD7DF9F-BADF-46EE-A957-1CF6DDDAC6FA",
+      "predicate": "follows",
+      "object": "Wait for Order to arrive",
+      "object_id": "sid-A5B7F21B-B065-4200-A2A2-237570DA2CC8"
+    },
+    {
+      "subject": "Query Shops",
+      "subject_id": "sid-A42A2EFC-5B9E-40A6-AD0D-8E2DEFE6987B",
+      "predicate": "follows",
+      "object": "Look Up Price of Parts",
+      "object_id": "sid-E66872F8-5163-43D1-8093-36D290895CBA"
+    },
+    {
+      "subject": "Query Shops",
+      "subject_id": "sid-A42A2EFC-5B9E-40A6-AD0D-8E2DEFE6987B",
+      "predicate": "follows",
+      "object": "Look Up Delivery Capacity",
+      "object_id": "sid-3C3070F2-B438-48CF-B26B-B98341021180"
+    },
+    {
+      "subject": "Query Shops",
+      "subject_id": "sid-A42A2EFC-5B9E-40A6-AD0D-8E2DEFE6987B",
+      "predicate": "follows",
+      "object": "Look Up Time-to-deliver",
+      "object_id": "sid-4CF96A15-CC1E-4D23-AE82-94C555F7012D"
+    },
+    {
+      "subject": "Receive Order of Parts",
+      "subject_id": "sid-FE3703E8-A56A-40F2-B563-E91843CC0E68",
+      "predicate": "follows",
+      "object": "Start building",
+      "object_id": "sid-B4577FCE-C61E-4799-8B2A-9DBEC7E37FD9"
+    }
+  ],
+  "errors": [
+    "state_space: Error code: 429 - {'status': 429, 'title': 'Too Many Requests'}",
+    "precondition: 'state_space'",
+    "state_matching: 'state_space'",
+    "graph_construction: 'state_space'",
+    "alignment: 'reference_graph'",
+    "report: 'alignment'"
+  ]
+}

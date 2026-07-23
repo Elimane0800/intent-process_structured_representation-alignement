@@ -1,0 +1,284 @@
+{
+  "case_name": "R_j01",
+  "text": "Category: Repair and Service\nTitle: OEE\n\nWrite a process, that collects relevant information from a machine, and\ncalculated the Overall Equipment Efficiency (OEE). If the OEE falls below a\ncertain value/percentage, stop the machine and send an email to an engineer.\nWhen the machine is restarted, continue measuring. When the machine is\ndisconnected, stop the process.\n",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "mistral-nemotron",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "mistral-nemotron",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/text_and_bpmn/bpmn/R_j01/9.bpmn2.xml",
+  "dfg_edges": [
+    {
+      "source_id": "sid-CB0A1E96-D290-4B24-B1A5-08849DF03647",
+      "source_label": "OEE data required",
+      "target_id": "sid-7B53F0F4-E6AC-47AE-B158-1D1D680995A1",
+      "target_label": "Get quality data",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-CB0A1E96-D290-4B24-B1A5-08849DF03647",
+      "source_label": "OEE data required",
+      "target_id": "sid-893AF56A-DF61-49F3-925F-5C5E57F4F51D",
+      "target_label": "Get performance data",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-CB0A1E96-D290-4B24-B1A5-08849DF03647",
+      "source_label": "OEE data required",
+      "target_id": "sid-F98F6A04-6084-4C3B-861A-7296C0A3FD5A",
+      "target_label": "Get availability data",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-7B53F0F4-E6AC-47AE-B158-1D1D680995A1",
+      "source_label": "Get quality data",
+      "target_id": "sid-71E29C83-B619-4B75-9872-B496734D1EB7",
+      "target_label": "Calculate OEE",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-893AF56A-DF61-49F3-925F-5C5E57F4F51D",
+      "source_label": "Get performance data",
+      "target_id": "sid-71E29C83-B619-4B75-9872-B496734D1EB7",
+      "target_label": "Calculate OEE",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-6B4C0785-CF3B-448A-ACFE-65D58490B0FE",
+      "source_label": "Disconnect the machine",
+      "target_id": "sid-45B59E6C-0272-4A50-A586-D1F6F0EABF2A",
+      "target_label": "Machine operating normally / Machine disconnected",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-A96F0AE9-B014-4485-88B6-1A18E19FAA4D",
+      "source_label": "Continue measuring",
+      "target_id": "sid-45B59E6C-0272-4A50-A586-D1F6F0EABF2A",
+      "target_label": "Machine operating normally / Machine disconnected",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-C2C437F2-7F39-4775-B15F-4556CD546DB6",
+      "source_label": "Restart the machine",
+      "target_id": "sid-A96F0AE9-B014-4485-88B6-1A18E19FAA4D",
+      "target_label": "Continue measuring",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-81711710-A881-483C-B3E6-DCDBD71C8BE7",
+      "source_label": "Repair the issue",
+      "target_id": "sid-81711710-A881-483C-B3E6-DCDBD71C8BE7",
+      "target_label": "Repair the issue",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "Yes",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-81711710-A881-483C-B3E6-DCDBD71C8BE7",
+      "source_label": "Repair the issue",
+      "target_id": "sid-C2C437F2-7F39-4775-B15F-4556CD546DB6",
+      "target_label": "Restart the machine",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "No"
+      ]
+    },
+    {
+      "source_id": "sid-F98F6A04-6084-4C3B-861A-7296C0A3FD5A",
+      "source_label": "Get availability data",
+      "target_id": "sid-71E29C83-B619-4B75-9872-B496734D1EB7",
+      "target_label": "Calculate OEE",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-B562080D-A0A6-47B4-B3A4-F49034C110BB",
+      "source_label": "Stop the machine",
+      "target_id": "sid-B9BBEFFA-4B96-4942-AD47-F62E0CEC6F9E",
+      "target_label": "Send email to  an engineer",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-B9BBEFFA-4B96-4942-AD47-F62E0CEC6F9E",
+      "source_label": "Send email to  an engineer",
+      "target_id": "sid-81711710-A881-483C-B3E6-DCDBD71C8BE7",
+      "target_label": "Repair the issue",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "Yes",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-B9BBEFFA-4B96-4942-AD47-F62E0CEC6F9E",
+      "source_label": "Send email to  an engineer",
+      "target_id": "sid-6B4C0785-CF3B-448A-ACFE-65D58490B0FE",
+      "target_label": "Disconnect the machine",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "No"
+      ]
+    },
+    {
+      "source_id": "sid-71E29C83-B619-4B75-9872-B496734D1EB7",
+      "source_label": "Calculate OEE",
+      "target_id": "sid-B562080D-A0A6-47B4-B3A4-F49034C110BB",
+      "target_label": "Stop the machine",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "Yes"
+      ]
+    },
+    {
+      "source_id": "sid-71E29C83-B619-4B75-9872-B496734D1EB7",
+      "source_label": "Calculate OEE",
+      "target_id": "sid-45B59E6C-0272-4A50-A586-D1F6F0EABF2A",
+      "target_label": "Machine operating normally / Machine disconnected",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "No",
+        "ExclusiveGateway"
+      ]
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "OEE data required",
+      "subject_id": "sid-CB0A1E96-D290-4B24-B1A5-08849DF03647",
+      "predicate": "follows",
+      "object": "Get quality data",
+      "object_id": "sid-7B53F0F4-E6AC-47AE-B158-1D1D680995A1"
+    },
+    {
+      "subject": "OEE data required",
+      "subject_id": "sid-CB0A1E96-D290-4B24-B1A5-08849DF03647",
+      "predicate": "follows",
+      "object": "Get performance data",
+      "object_id": "sid-893AF56A-DF61-49F3-925F-5C5E57F4F51D"
+    },
+    {
+      "subject": "OEE data required",
+      "subject_id": "sid-CB0A1E96-D290-4B24-B1A5-08849DF03647",
+      "predicate": "follows",
+      "object": "Get availability data",
+      "object_id": "sid-F98F6A04-6084-4C3B-861A-7296C0A3FD5A"
+    },
+    {
+      "subject": "Get quality data",
+      "subject_id": "sid-7B53F0F4-E6AC-47AE-B158-1D1D680995A1",
+      "predicate": "follows",
+      "object": "Calculate OEE",
+      "object_id": "sid-71E29C83-B619-4B75-9872-B496734D1EB7"
+    },
+    {
+      "subject": "Get performance data",
+      "subject_id": "sid-893AF56A-DF61-49F3-925F-5C5E57F4F51D",
+      "predicate": "follows",
+      "object": "Calculate OEE",
+      "object_id": "sid-71E29C83-B619-4B75-9872-B496734D1EB7"
+    },
+    {
+      "subject": "Disconnect the machine",
+      "subject_id": "sid-6B4C0785-CF3B-448A-ACFE-65D58490B0FE",
+      "predicate": "follows",
+      "object": "Machine operating normally / Machine disconnected",
+      "object_id": "sid-45B59E6C-0272-4A50-A586-D1F6F0EABF2A"
+    },
+    {
+      "subject": "Continue measuring",
+      "subject_id": "sid-A96F0AE9-B014-4485-88B6-1A18E19FAA4D",
+      "predicate": "follows",
+      "object": "Machine operating normally / Machine disconnected",
+      "object_id": "sid-45B59E6C-0272-4A50-A586-D1F6F0EABF2A"
+    },
+    {
+      "subject": "Restart the machine",
+      "subject_id": "sid-C2C437F2-7F39-4775-B15F-4556CD546DB6",
+      "predicate": "follows",
+      "object": "Continue measuring",
+      "object_id": "sid-A96F0AE9-B014-4485-88B6-1A18E19FAA4D"
+    },
+    {
+      "subject": "Repair the issue",
+      "subject_id": "sid-81711710-A881-483C-B3E6-DCDBD71C8BE7",
+      "predicate": "follows",
+      "object": "Repair the issue",
+      "object_id": "sid-81711710-A881-483C-B3E6-DCDBD71C8BE7"
+    },
+    {
+      "subject": "Repair the issue",
+      "subject_id": "sid-81711710-A881-483C-B3E6-DCDBD71C8BE7",
+      "predicate": "follows",
+      "object": "Restart the machine",
+      "object_id": "sid-C2C437F2-7F39-4775-B15F-4556CD546DB6"
+    },
+    {
+      "subject": "Get availability data",
+      "subject_id": "sid-F98F6A04-6084-4C3B-861A-7296C0A3FD5A",
+      "predicate": "follows",
+      "object": "Calculate OEE",
+      "object_id": "sid-71E29C83-B619-4B75-9872-B496734D1EB7"
+    },
+    {
+      "subject": "Stop the machine",
+      "subject_id": "sid-B562080D-A0A6-47B4-B3A4-F49034C110BB",
+      "predicate": "follows",
+      "object": "Send email to  an engineer",
+      "object_id": "sid-B9BBEFFA-4B96-4942-AD47-F62E0CEC6F9E"
+    },
+    {
+      "subject": "Send email to  an engineer",
+      "subject_id": "sid-B9BBEFFA-4B96-4942-AD47-F62E0CEC6F9E",
+      "predicate": "follows",
+      "object": "Repair the issue",
+      "object_id": "sid-81711710-A881-483C-B3E6-DCDBD71C8BE7"
+    },
+    {
+      "subject": "Send email to  an engineer",
+      "subject_id": "sid-B9BBEFFA-4B96-4942-AD47-F62E0CEC6F9E",
+      "predicate": "follows",
+      "object": "Disconnect the machine",
+      "object_id": "sid-6B4C0785-CF3B-448A-ACFE-65D58490B0FE"
+    },
+    {
+      "subject": "Calculate OEE",
+      "subject_id": "sid-71E29C83-B619-4B75-9872-B496734D1EB7",
+      "predicate": "follows",
+      "object": "Stop the machine",
+      "object_id": "sid-B562080D-A0A6-47B4-B3A4-F49034C110BB"
+    },
+    {
+      "subject": "Calculate OEE",
+      "subject_id": "sid-71E29C83-B619-4B75-9872-B496734D1EB7",
+      "predicate": "follows",
+      "object": "Machine operating normally / Machine disconnected",
+      "object_id": "sid-45B59E6C-0272-4A50-A586-D1F6F0EABF2A"
+    }
+  ],
+  "errors": [
+    "state_space: Error code: 429 - {'status': 429, 'title': 'Too Many Requests'}",
+    "precondition: 'state_space'",
+    "state_matching: 'state_space'",
+    "graph_construction: 'state_space'",
+    "alignment: 'reference_graph'",
+    "report: 'alignment'"
+  ]
+}

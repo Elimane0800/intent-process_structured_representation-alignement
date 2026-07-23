@@ -1,0 +1,1121 @@
+{
+  "case_name": "X_g01",
+  "text": "Category: Miscellaneous\nTitle: New Application for Registering for an USI course\n\nIf you want to register for a course at the sports institute, you need to\nselect a course. If slots are free, the system tells you the courses, and\ndates. Select one. Next, you need to check if you already have an account at\nthe sports institute. If not, you need to check whether you are registered at\nan eligible university. If you are, register your account. If you are not,\nrequest an activation and wait for a response. As soon as you have an account,\nlog into it. The application is also connected to your twitter account, and\nlets you tweet to friends who might want to join you, you can complete the\nregistration for the course and provide the payment information. In the end, you\nwill receive a course ticket.\n",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "gpt-oss-20b",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "gpt-oss-20b",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/text_and_bpmn/bpmn/X_g01/3.bpmn2.xml",
+  "report_model": "gpt-oss-20b",
+  "candidates": {
+    "course": [
+      "selected",
+      "free_slots"
+    ],
+    "account": [
+      "registered",
+      "activated",
+      "logged_in"
+    ],
+    "twitter_account": [
+      "connected",
+      "tweeted"
+    ],
+    "payment_information": [
+      "provided"
+    ],
+    "course_ticket": [
+      "received"
+    ]
+  },
+  "validation_report": {
+    "course": {
+      "f_lex": "ENTITY",
+      "kept": true
+    },
+    "account": {
+      "f_lex": "ENTITY",
+      "kept": true
+    },
+    "twitter_account": {
+      "f_lex": "ENTITY",
+      "kept": true
+    },
+    "payment_information": {
+      "f_lex": "ENTITY",
+      "kept": true
+    },
+    "course_ticket": {
+      "f_lex": "ENTITY",
+      "kept": true
+    }
+  },
+  "state_space": {
+    "course": [
+      "selected",
+      "free_slots"
+    ],
+    "twitter_account": [
+      "connected",
+      "tweeted",
+      "registered",
+      "activated",
+      "logged_in"
+    ],
+    "payment_information": [
+      "provided"
+    ],
+    "course_ticket": [
+      "received"
+    ]
+  },
+  "state_space_dedup": {
+    "merged": {
+      "twitter_account": {
+        "absorbed": [
+          "account"
+        ],
+        "rule": "anaphoric_containment",
+        "states": [
+          "connected",
+          "tweeted",
+          "registered",
+          "activated",
+          "logged_in"
+        ]
+      }
+    },
+    "ambiguous_not_merged": {}
+  },
+  "raw_preconditions": {
+    "course.selected": {
+      "precondition": "course.free_slots",
+      "quote": "If slots are free, the system tells you the courses, and dates. Select one."
+    },
+    "course.free_slots": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "twitter_account.connected": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "twitter_account.tweeted": {
+      "precondition": "twitter_account.connected",
+      "quote": "lets you tweet to friends who might want to join you"
+    },
+    "twitter_account.registered": {
+      "precondition": "twitter_account.activated",
+      "quote": "request an activation and wait for a response. As soon as you have an account, log into it."
+    },
+    "twitter_account.activated": {
+      "precondition": "UNRESOLVED",
+      "quote": null
+    },
+    "twitter_account.logged_in": {
+      "precondition": "twitter_account.registered",
+      "quote": "As soon as you have an account, log into it."
+    },
+    "payment_information.provided": {
+      "precondition": "course.selected AND twitter_account.logged_in",
+      "quote": "you can complete the registration for the course and provide the payment information."
+    },
+    "course_ticket.received": {
+      "precondition": "payment_information.provided",
+      "quote": "In the end, you will receive a course ticket."
+    }
+  },
+  "validated_preconditions": {
+    "course.selected": {
+      "precondition": "course.free_slots",
+      "quote": "If slots are free, the system tells you the courses, and dates. Select one.",
+      "status": "OK",
+      "reason": null
+    },
+    "course.free_slots": {
+      "precondition": "INITIAL",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "twitter_account.connected": {
+      "precondition": "INITIAL",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "twitter_account.tweeted": {
+      "precondition": "twitter_account.connected",
+      "quote": "lets you tweet to friends who might want to join you",
+      "status": "OK",
+      "reason": null
+    },
+    "twitter_account.registered": {
+      "precondition": "twitter_account.activated",
+      "quote": "request an activation and wait for a response. As soon as you have an account, log into it.",
+      "status": "OK",
+      "reason": null
+    },
+    "twitter_account.activated": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "twitter_account.logged_in": {
+      "precondition": "twitter_account.registered",
+      "quote": "As soon as you have an account, log into it.",
+      "status": "OK",
+      "reason": null
+    },
+    "payment_information.provided": {
+      "precondition": "course.selected AND twitter_account.logged_in",
+      "quote": "you can complete the registration for the course and provide the payment information.",
+      "status": "OK",
+      "reason": null
+    },
+    "course_ticket.received": {
+      "precondition": "payment_information.provided",
+      "quote": "In the end, you will receive a course ticket.",
+      "status": "OK",
+      "reason": null
+    }
+  },
+  "precondition_cycles": [],
+  "reference_graph": {
+    "nodes": [
+      {
+        "id": "course.selected",
+        "weight": 0.667
+      },
+      {
+        "id": "course.free_slots",
+        "weight": 0.333
+      },
+      {
+        "id": "twitter_account.connected",
+        "weight": 0.333
+      },
+      {
+        "id": "twitter_account.tweeted",
+        "weight": 0.333
+      },
+      {
+        "id": "twitter_account.registered",
+        "weight": 0.667
+      },
+      {
+        "id": "twitter_account.activated",
+        "weight": 0.333
+      },
+      {
+        "id": "twitter_account.logged_in",
+        "weight": 0.667
+      },
+      {
+        "id": "payment_information.provided",
+        "weight": 1.0
+      },
+      {
+        "id": "course_ticket.received",
+        "weight": 0.333
+      }
+    ],
+    "edges": [
+      {
+        "from": "course.free_slots",
+        "to": "course.selected",
+        "type": "sequence",
+        "operator": "AND",
+        "quote": "If slots are free, the system tells you the courses, and dates. Select one."
+      },
+      {
+        "from": "twitter_account.connected",
+        "to": "twitter_account.tweeted",
+        "type": "sequence",
+        "operator": "AND",
+        "quote": "lets you tweet to friends who might want to join you"
+      },
+      {
+        "from": "twitter_account.activated",
+        "to": "twitter_account.registered",
+        "type": "sequence",
+        "operator": "AND",
+        "quote": "request an activation and wait for a response. As soon as you have an account, log into it."
+      },
+      {
+        "from": "twitter_account.registered",
+        "to": "twitter_account.logged_in",
+        "type": "sequence",
+        "operator": "AND",
+        "quote": "As soon as you have an account, log into it."
+      },
+      {
+        "from": "course.selected",
+        "to": "payment_information.provided",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "you can complete the registration for the course and provide the payment information."
+      },
+      {
+        "from": "twitter_account.logged_in",
+        "to": "payment_information.provided",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "you can complete the registration for the course and provide the payment information."
+      },
+      {
+        "from": "payment_information.provided",
+        "to": "course_ticket.received",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "In the end, you will receive a course ticket."
+      }
+    ],
+    "cycles": []
+  },
+  "dfg_edges": [
+    {
+      "source_id": "sid-27940F5D-8BD7-4C5C-85DD-63D6D20BA2F1",
+      "source_label": "register for the course",
+      "target_id": "sid-04D6EE73-CBDF-4C23-9C71-ED4349F50200",
+      "target_label": "receive the customer data",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-27940F5D-8BD7-4C5C-85DD-63D6D20BA2F1",
+      "source_label": "register for the course",
+      "target_id": "sid-DAD24915-AB28-42C0-8CEB-34F3EFFA2CF7",
+      "target_label": "tweet for your friends",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "InclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-27940F5D-8BD7-4C5C-85DD-63D6D20BA2F1",
+      "source_label": "register for the course",
+      "target_id": "sid-2D0ABC76-AA02-48B4-B239-E7A364E80187",
+      "target_label": "",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "InclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-5CF81E3B-B4D7-4E06-A481-823EA90DA4DE",
+      "source_label": "check the account",
+      "target_id": "sid-098739DB-5FFA-437C-9416-FCB8F4BFD3CA",
+      "target_label": "register for the course",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "yes"
+      ]
+    },
+    {
+      "source_id": "sid-5CF81E3B-B4D7-4E06-A481-823EA90DA4DE",
+      "source_label": "check the account",
+      "target_id": "sid-BC932F19-A6AC-4656-BE42-E69EF571C151",
+      "target_label": "check the uni account",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "no"
+      ]
+    },
+    {
+      "source_id": "sid-3CEFEE7B-34F6-4EE3-B22B-D9B5FFF4639D",
+      "source_label": "register for the course",
+      "target_id": "sid-04D6EE73-CBDF-4C23-9C71-ED4349F50200",
+      "target_label": "receive the customer data",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-3CEFEE7B-34F6-4EE3-B22B-D9B5FFF4639D",
+      "source_label": "register for the course",
+      "target_id": "sid-DAD24915-AB28-42C0-8CEB-34F3EFFA2CF7",
+      "target_label": "tweet for your friends",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "InclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-3CEFEE7B-34F6-4EE3-B22B-D9B5FFF4639D",
+      "source_label": "register for the course",
+      "target_id": "sid-2D0ABC76-AA02-48B4-B239-E7A364E80187",
+      "target_label": "",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "InclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-3F19EA7C-9A24-45C9-A194-4D7BF7F4A329",
+      "source_label": "wait for the response",
+      "target_id": "sid-3CEFEE7B-34F6-4EE3-B22B-D9B5FFF4639D",
+      "target_label": "register for the course",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-2DBD1EB2-0670-4CA2-B775-17B42927F480",
+      "source_label": "select a course",
+      "target_id": "sid-13A67440-8407-4FD8-B63C-8767F98394BE",
+      "target_label": "select a course",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-2DBD1EB2-0670-4CA2-B775-17B42927F480",
+      "source_label": "select a course",
+      "target_id": "sid-53F52505-A1F9-4416-B610-00BC5133247A",
+      "target_label": "check if there is free slots",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-DAD24915-AB28-42C0-8CEB-34F3EFFA2CF7",
+      "source_label": "tweet for your friends",
+      "target_id": "sid-2D0ABC76-AA02-48B4-B239-E7A364E80187",
+      "target_label": "",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-4AD13E3B-0C85-4750-A23E-9B1C6DEBC272",
+      "source_label": "send the payment infos",
+      "target_id": "sid-530C83AB-7808-4D36-A1FD-7FF07DF1952D",
+      "target_label": "send the course ticket",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-4AD13E3B-0C85-4750-A23E-9B1C6DEBC272",
+      "source_label": "send the payment infos",
+      "target_id": "sid-2D0ABC76-AA02-48B4-B239-E7A364E80187",
+      "target_label": "",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-DF68C231-BC1F-46FC-B946-23AF1B26F557",
+      "source_label": "request an activation",
+      "target_id": "sid-3F19EA7C-9A24-45C9-A194-4D7BF7F4A329",
+      "target_label": "wait for the response",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-BC932F19-A6AC-4656-BE42-E69EF571C151",
+      "source_label": "check the uni account",
+      "target_id": "sid-DF68C231-BC1F-46FC-B946-23AF1B26F557",
+      "target_label": "request an activation",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "no"
+      ]
+    },
+    {
+      "source_id": "sid-BC932F19-A6AC-4656-BE42-E69EF571C151",
+      "source_label": "check the uni account",
+      "target_id": "sid-0667D7BF-44CA-498A-B6C0-2FA6BB77878B",
+      "target_label": "register your acoount",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "yes"
+      ]
+    },
+    {
+      "source_id": "sid-AC91E374-DB73-48F2-B2AA-CB28FC132948",
+      "source_label": "connect to the twitter",
+      "target_id": "sid-4AD13E3B-0C85-4750-A23E-9B1C6DEBC272",
+      "target_label": "send the payment infos",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-098739DB-5FFA-437C-9416-FCB8F4BFD3CA",
+      "source_label": "register for the course",
+      "target_id": "sid-04D6EE73-CBDF-4C23-9C71-ED4349F50200",
+      "target_label": "receive the customer data",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-0667D7BF-44CA-498A-B6C0-2FA6BB77878B",
+      "source_label": "register your acoount",
+      "target_id": "sid-27940F5D-8BD7-4C5C-85DD-63D6D20BA2F1",
+      "target_label": "register for the course",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-04D6EE73-CBDF-4C23-9C71-ED4349F50200",
+      "source_label": "receive the customer data",
+      "target_id": "sid-AC91E374-DB73-48F2-B2AA-CB28FC132948",
+      "target_label": "connect to the twitter",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-53F52505-A1F9-4416-B610-00BC5133247A",
+      "source_label": "check if there is free slots",
+      "target_id": "sid-6CF8194B-8E43-4AB7-B0CE-6325C65E5481",
+      "target_label": "no slots are free",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "no"
+      ]
+    },
+    {
+      "source_id": "sid-53F52505-A1F9-4416-B610-00BC5133247A",
+      "source_label": "check if there is free slots",
+      "target_id": "sid-9662380A-29A3-4231-B332-8A626ABD4CE3",
+      "target_label": "list the courses and dates",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "yes"
+      ]
+    },
+    {
+      "source_id": "sid-9662380A-29A3-4231-B332-8A626ABD4CE3",
+      "source_label": "list the courses and dates",
+      "target_id": "sid-04D6EE73-CBDF-4C23-9C71-ED4349F50200",
+      "target_label": "receive the customer data",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-9662380A-29A3-4231-B332-8A626ABD4CE3",
+      "source_label": "list the courses and dates",
+      "target_id": "sid-13A67440-8407-4FD8-B63C-8767F98394BE",
+      "target_label": "select a course",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-2D0ABC76-AA02-48B4-B239-E7A364E80187",
+      "source_label": "",
+      "target_id": "sid-C08F5B68-12A5-4E0A-B1BF-EE379914C84C",
+      "target_label": "",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-530C83AB-7808-4D36-A1FD-7FF07DF1952D",
+      "source_label": "send the course ticket",
+      "target_id": "sid-C08F5B68-12A5-4E0A-B1BF-EE379914C84C",
+      "target_label": "",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-13A67440-8407-4FD8-B63C-8767F98394BE",
+      "source_label": "select a course",
+      "target_id": "sid-5CF81E3B-B4D7-4E06-A481-823EA90DA4DE",
+      "target_label": "check the account",
+      "gateway_context": []
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "register for the course",
+      "subject_id": "sid-27940F5D-8BD7-4C5C-85DD-63D6D20BA2F1",
+      "predicate": "follows",
+      "object": "receive the customer data",
+      "object_id": "sid-04D6EE73-CBDF-4C23-9C71-ED4349F50200"
+    },
+    {
+      "subject": "register for the course",
+      "subject_id": "sid-27940F5D-8BD7-4C5C-85DD-63D6D20BA2F1",
+      "predicate": "follows",
+      "object": "tweet for your friends",
+      "object_id": "sid-DAD24915-AB28-42C0-8CEB-34F3EFFA2CF7"
+    },
+    {
+      "subject": "register for the course",
+      "subject_id": "sid-27940F5D-8BD7-4C5C-85DD-63D6D20BA2F1",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "sid-2D0ABC76-AA02-48B4-B239-E7A364E80187"
+    },
+    {
+      "subject": "check the account",
+      "subject_id": "sid-5CF81E3B-B4D7-4E06-A481-823EA90DA4DE",
+      "predicate": "follows",
+      "object": "register for the course",
+      "object_id": "sid-098739DB-5FFA-437C-9416-FCB8F4BFD3CA"
+    },
+    {
+      "subject": "check the account",
+      "subject_id": "sid-5CF81E3B-B4D7-4E06-A481-823EA90DA4DE",
+      "predicate": "follows",
+      "object": "check the uni account",
+      "object_id": "sid-BC932F19-A6AC-4656-BE42-E69EF571C151"
+    },
+    {
+      "subject": "register for the course",
+      "subject_id": "sid-3CEFEE7B-34F6-4EE3-B22B-D9B5FFF4639D",
+      "predicate": "follows",
+      "object": "receive the customer data",
+      "object_id": "sid-04D6EE73-CBDF-4C23-9C71-ED4349F50200"
+    },
+    {
+      "subject": "register for the course",
+      "subject_id": "sid-3CEFEE7B-34F6-4EE3-B22B-D9B5FFF4639D",
+      "predicate": "follows",
+      "object": "tweet for your friends",
+      "object_id": "sid-DAD24915-AB28-42C0-8CEB-34F3EFFA2CF7"
+    },
+    {
+      "subject": "register for the course",
+      "subject_id": "sid-3CEFEE7B-34F6-4EE3-B22B-D9B5FFF4639D",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "sid-2D0ABC76-AA02-48B4-B239-E7A364E80187"
+    },
+    {
+      "subject": "wait for the response",
+      "subject_id": "sid-3F19EA7C-9A24-45C9-A194-4D7BF7F4A329",
+      "predicate": "follows",
+      "object": "register for the course",
+      "object_id": "sid-3CEFEE7B-34F6-4EE3-B22B-D9B5FFF4639D"
+    },
+    {
+      "subject": "select a course",
+      "subject_id": "sid-2DBD1EB2-0670-4CA2-B775-17B42927F480",
+      "predicate": "follows",
+      "object": "select a course",
+      "object_id": "sid-13A67440-8407-4FD8-B63C-8767F98394BE"
+    },
+    {
+      "subject": "select a course",
+      "subject_id": "sid-2DBD1EB2-0670-4CA2-B775-17B42927F480",
+      "predicate": "follows",
+      "object": "check if there is free slots",
+      "object_id": "sid-53F52505-A1F9-4416-B610-00BC5133247A"
+    },
+    {
+      "subject": "tweet for your friends",
+      "subject_id": "sid-DAD24915-AB28-42C0-8CEB-34F3EFFA2CF7",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "sid-2D0ABC76-AA02-48B4-B239-E7A364E80187"
+    },
+    {
+      "subject": "send the payment infos",
+      "subject_id": "sid-4AD13E3B-0C85-4750-A23E-9B1C6DEBC272",
+      "predicate": "follows",
+      "object": "send the course ticket",
+      "object_id": "sid-530C83AB-7808-4D36-A1FD-7FF07DF1952D"
+    },
+    {
+      "subject": "send the payment infos",
+      "subject_id": "sid-4AD13E3B-0C85-4750-A23E-9B1C6DEBC272",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "sid-2D0ABC76-AA02-48B4-B239-E7A364E80187"
+    },
+    {
+      "subject": "request an activation",
+      "subject_id": "sid-DF68C231-BC1F-46FC-B946-23AF1B26F557",
+      "predicate": "follows",
+      "object": "wait for the response",
+      "object_id": "sid-3F19EA7C-9A24-45C9-A194-4D7BF7F4A329"
+    },
+    {
+      "subject": "check the uni account",
+      "subject_id": "sid-BC932F19-A6AC-4656-BE42-E69EF571C151",
+      "predicate": "follows",
+      "object": "request an activation",
+      "object_id": "sid-DF68C231-BC1F-46FC-B946-23AF1B26F557"
+    },
+    {
+      "subject": "check the uni account",
+      "subject_id": "sid-BC932F19-A6AC-4656-BE42-E69EF571C151",
+      "predicate": "follows",
+      "object": "register your acoount",
+      "object_id": "sid-0667D7BF-44CA-498A-B6C0-2FA6BB77878B"
+    },
+    {
+      "subject": "connect to the twitter",
+      "subject_id": "sid-AC91E374-DB73-48F2-B2AA-CB28FC132948",
+      "predicate": "follows",
+      "object": "send the payment infos",
+      "object_id": "sid-4AD13E3B-0C85-4750-A23E-9B1C6DEBC272"
+    },
+    {
+      "subject": "register for the course",
+      "subject_id": "sid-098739DB-5FFA-437C-9416-FCB8F4BFD3CA",
+      "predicate": "follows",
+      "object": "receive the customer data",
+      "object_id": "sid-04D6EE73-CBDF-4C23-9C71-ED4349F50200"
+    },
+    {
+      "subject": "register your acoount",
+      "subject_id": "sid-0667D7BF-44CA-498A-B6C0-2FA6BB77878B",
+      "predicate": "follows",
+      "object": "register for the course",
+      "object_id": "sid-27940F5D-8BD7-4C5C-85DD-63D6D20BA2F1"
+    },
+    {
+      "subject": "receive the customer data",
+      "subject_id": "sid-04D6EE73-CBDF-4C23-9C71-ED4349F50200",
+      "predicate": "follows",
+      "object": "connect to the twitter",
+      "object_id": "sid-AC91E374-DB73-48F2-B2AA-CB28FC132948"
+    },
+    {
+      "subject": "check if there is free slots",
+      "subject_id": "sid-53F52505-A1F9-4416-B610-00BC5133247A",
+      "predicate": "follows",
+      "object": "no slots are free",
+      "object_id": "sid-6CF8194B-8E43-4AB7-B0CE-6325C65E5481"
+    },
+    {
+      "subject": "check if there is free slots",
+      "subject_id": "sid-53F52505-A1F9-4416-B610-00BC5133247A",
+      "predicate": "follows",
+      "object": "list the courses and dates",
+      "object_id": "sid-9662380A-29A3-4231-B332-8A626ABD4CE3"
+    },
+    {
+      "subject": "list the courses and dates",
+      "subject_id": "sid-9662380A-29A3-4231-B332-8A626ABD4CE3",
+      "predicate": "follows",
+      "object": "receive the customer data",
+      "object_id": "sid-04D6EE73-CBDF-4C23-9C71-ED4349F50200"
+    },
+    {
+      "subject": "list the courses and dates",
+      "subject_id": "sid-9662380A-29A3-4231-B332-8A626ABD4CE3",
+      "predicate": "follows",
+      "object": "select a course",
+      "object_id": "sid-13A67440-8407-4FD8-B63C-8767F98394BE"
+    },
+    {
+      "subject": "",
+      "subject_id": "sid-2D0ABC76-AA02-48B4-B239-E7A364E80187",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "sid-C08F5B68-12A5-4E0A-B1BF-EE379914C84C"
+    },
+    {
+      "subject": "send the course ticket",
+      "subject_id": "sid-530C83AB-7808-4D36-A1FD-7FF07DF1952D",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "sid-C08F5B68-12A5-4E0A-B1BF-EE379914C84C"
+    },
+    {
+      "subject": "select a course",
+      "subject_id": "sid-13A67440-8407-4FD8-B63C-8767F98394BE",
+      "predicate": "follows",
+      "object": "check the account",
+      "object_id": "sid-5CF81E3B-B4D7-4E06-A481-823EA90DA4DE"
+    }
+  ],
+  "matches": {
+    "check if there is free slots": {
+      "match": "course.free_slots",
+      "score": 0.589
+    },
+    "check the account": {
+      "match": "twitter_account.logged_in",
+      "score": 0.2963
+    },
+    "check the uni account": {
+      "match": "twitter_account.registered",
+      "score": 0.269
+    },
+    "connect to the twitter": {
+      "match": "twitter_account.connected",
+      "score": 0.7104
+    },
+    "list the courses and dates": {
+      "match": "course.selected",
+      "score": 0.4511
+    },
+    "no slots are free": {
+      "match": "course.free_slots",
+      "score": 0.6181
+    },
+    "receive the customer data": {
+      "match": "payment_information.provided",
+      "score": 0.3431
+    },
+    "register for the course": {
+      "match": "course_ticket.received",
+      "score": 0.499
+    },
+    "register your acoount": {
+      "match": "twitter_account.registered",
+      "score": 0.5496
+    },
+    "request an activation": {
+      "match": "twitter_account.activated",
+      "score": 0.4447
+    },
+    "select a course": {
+      "match": "course.selected",
+      "score": 0.7889
+    },
+    "send the course ticket": {
+      "match": "course_ticket.received",
+      "score": 0.7743
+    },
+    "send the payment infos": {
+      "match": "payment_information.provided",
+      "score": 0.7468
+    },
+    "tweet for your friends": {
+      "match": "twitter_account.tweeted",
+      "score": 0.4735
+    },
+    "wait for the response": {
+      "match": "payment_information.provided",
+      "score": 0.17
+    }
+  },
+  "process_graph": [
+    {
+      "from": "course_ticket.received",
+      "to": "payment_information.provided",
+      "activity_from": "register for the course",
+      "activity_to": "receive the customer data"
+    },
+    {
+      "from": "course_ticket.received",
+      "to": "twitter_account.tweeted",
+      "activity_from": "register for the course",
+      "activity_to": "tweet for your friends"
+    },
+    {
+      "from": "twitter_account.logged_in",
+      "to": "course_ticket.received",
+      "activity_from": "check the account",
+      "activity_to": "register for the course"
+    },
+    {
+      "from": "twitter_account.logged_in",
+      "to": "twitter_account.registered",
+      "activity_from": "check the account",
+      "activity_to": "check the uni account"
+    },
+    {
+      "from": "course_ticket.received",
+      "to": "payment_information.provided",
+      "activity_from": "register for the course",
+      "activity_to": "receive the customer data"
+    },
+    {
+      "from": "course_ticket.received",
+      "to": "twitter_account.tweeted",
+      "activity_from": "register for the course",
+      "activity_to": "tweet for your friends"
+    },
+    {
+      "from": "payment_information.provided",
+      "to": "course_ticket.received",
+      "activity_from": "wait for the response",
+      "activity_to": "register for the course"
+    },
+    {
+      "from": "course.selected",
+      "to": "course.selected",
+      "activity_from": "select a course",
+      "activity_to": "select a course"
+    },
+    {
+      "from": "course.selected",
+      "to": "course.free_slots",
+      "activity_from": "select a course",
+      "activity_to": "check if there is free slots"
+    },
+    {
+      "from": "payment_information.provided",
+      "to": "course_ticket.received",
+      "activity_from": "send the payment infos",
+      "activity_to": "send the course ticket"
+    },
+    {
+      "from": "twitter_account.activated",
+      "to": "payment_information.provided",
+      "activity_from": "request an activation",
+      "activity_to": "wait for the response"
+    },
+    {
+      "from": "twitter_account.registered",
+      "to": "twitter_account.activated",
+      "activity_from": "check the uni account",
+      "activity_to": "request an activation"
+    },
+    {
+      "from": "twitter_account.registered",
+      "to": "twitter_account.registered",
+      "activity_from": "check the uni account",
+      "activity_to": "register your acoount"
+    },
+    {
+      "from": "twitter_account.connected",
+      "to": "payment_information.provided",
+      "activity_from": "connect to the twitter",
+      "activity_to": "send the payment infos"
+    },
+    {
+      "from": "course_ticket.received",
+      "to": "payment_information.provided",
+      "activity_from": "register for the course",
+      "activity_to": "receive the customer data"
+    },
+    {
+      "from": "twitter_account.registered",
+      "to": "course_ticket.received",
+      "activity_from": "register your acoount",
+      "activity_to": "register for the course"
+    },
+    {
+      "from": "payment_information.provided",
+      "to": "twitter_account.connected",
+      "activity_from": "receive the customer data",
+      "activity_to": "connect to the twitter"
+    },
+    {
+      "from": "course.free_slots",
+      "to": "course.free_slots",
+      "activity_from": "check if there is free slots",
+      "activity_to": "no slots are free"
+    },
+    {
+      "from": "course.free_slots",
+      "to": "course.selected",
+      "activity_from": "check if there is free slots",
+      "activity_to": "list the courses and dates"
+    },
+    {
+      "from": "course.selected",
+      "to": "payment_information.provided",
+      "activity_from": "list the courses and dates",
+      "activity_to": "receive the customer data"
+    },
+    {
+      "from": "course.selected",
+      "to": "course.selected",
+      "activity_from": "list the courses and dates",
+      "activity_to": "select a course"
+    },
+    {
+      "from": "course.selected",
+      "to": "twitter_account.logged_in",
+      "activity_from": "select a course",
+      "activity_to": "check the account"
+    }
+  ],
+  "alignment": {
+    "course.selected": {
+      "operator": "AND",
+      "quote": "If slots are free, the system tells you the courses, and dates. Select one.",
+      "terms": [
+        {
+          "term": "course.free_slots",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED"
+    },
+    "twitter_account.tweeted": {
+      "operator": "AND",
+      "quote": "lets you tweet to friends who might want to join you",
+      "terms": [
+        {
+          "term": "twitter_account.connected",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED"
+    },
+    "twitter_account.registered": {
+      "operator": "AND",
+      "quote": "request an activation and wait for a response. As soon as you have an account, log into it.",
+      "terms": [
+        {
+          "term": "twitter_account.activated",
+          "status": "VIOLATED",
+          "reason": "both states matched, no path in process",
+          "missing": []
+        }
+      ],
+      "status": "VIOLATED"
+    },
+    "twitter_account.logged_in": {
+      "operator": "AND",
+      "quote": "As soon as you have an account, log into it.",
+      "terms": [
+        {
+          "term": "twitter_account.registered",
+          "status": "UNRESOLVABLE",
+          "reason": "would be VIOLATED, but match confidence below 0.35 for: twitter_account.logged_in=0.296 -- cannot conclude on an uncertain match",
+          "missing": [],
+          "low_confidence": [
+            "twitter_account.logged_in"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE"
+    },
+    "payment_information.provided": {
+      "operator": "AND",
+      "quote": "you can complete the registration for the course and provide the payment information.",
+      "terms": [
+        {
+          "term": "course.selected",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        },
+        {
+          "term": "twitter_account.logged_in",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED"
+    },
+    "course_ticket.received": {
+      "operator": "AND",
+      "quote": "In the end, you will receive a course ticket.",
+      "terms": [
+        {
+          "term": "payment_information.provided",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED"
+    }
+  },
+  "report": {
+    "summary": {
+      "ecarts": 1,
+      "non_verifiable": 0,
+      "conforme": 5
+    },
+    "ecarts": [
+      {
+        "root_cause": "request an activation",
+        "quote": "request an activation and wait for a response. As soon as you have an account, log into it.",
+        "explanation": "Dans le texte source, il est écrit : “request an activation and wait for a response. As soon as you have an account, log into it.”  \nDans le processus observé, l’activité « request an activation » ne précède pas l’activité « register your account ».  \nCette différence montre que la condition « request an activation » doit être réalisée avant « register your account », mais le processus actuel ne la respecte pas. (Cette meme cause affecte aussi : check the account.)",
+        "quote_verbatim": true,
+        "affected_activities": [
+          "check the account",
+          "register your acoount"
+        ],
+        "affected_count": 2
+      }
+    ],
+    "non_verifiable": [],
+    "conforme": [
+      {
+        "target": "select a course",
+        "term": "no slots are free"
+      },
+      {
+        "target": "tweet for your friends",
+        "term": "connect to the twitter"
+      },
+      {
+        "target": "send the payment infos",
+        "term": "select a course"
+      },
+      {
+        "target": "send the payment infos",
+        "term": "check the account"
+      },
+      {
+        "target": "send the course ticket",
+        "term": "send the payment infos"
+      }
+    ],
+    "piece_jointe_alignement_brut": {
+      "course.selected": {
+        "operator": "AND",
+        "quote": "If slots are free, the system tells you the courses, and dates. Select one.",
+        "terms": [
+          {
+            "term": "course.free_slots",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED"
+      },
+      "twitter_account.tweeted": {
+        "operator": "AND",
+        "quote": "lets you tweet to friends who might want to join you",
+        "terms": [
+          {
+            "term": "twitter_account.connected",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED"
+      },
+      "twitter_account.registered": {
+        "operator": "AND",
+        "quote": "request an activation and wait for a response. As soon as you have an account, log into it.",
+        "terms": [
+          {
+            "term": "twitter_account.activated",
+            "status": "VIOLATED",
+            "reason": "both states matched, no path in process",
+            "missing": []
+          }
+        ],
+        "status": "VIOLATED"
+      },
+      "twitter_account.logged_in": {
+        "operator": "AND",
+        "quote": "As soon as you have an account, log into it.",
+        "terms": [
+          {
+            "term": "twitter_account.registered",
+            "status": "UNRESOLVABLE",
+            "reason": "would be VIOLATED, but match confidence below 0.35 for: twitter_account.logged_in=0.296 -- cannot conclude on an uncertain match",
+            "missing": [],
+            "low_confidence": [
+              "twitter_account.logged_in"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE"
+      },
+      "payment_information.provided": {
+        "operator": "AND",
+        "quote": "you can complete the registration for the course and provide the payment information.",
+        "terms": [
+          {
+            "term": "course.selected",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          },
+          {
+            "term": "twitter_account.logged_in",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED"
+      },
+      "course_ticket.received": {
+        "operator": "AND",
+        "quote": "In the end, you will receive a course ticket.",
+        "terms": [
+          {
+            "term": "payment_information.provided",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED"
+      }
+    }
+  },
+  "errors": []
+}

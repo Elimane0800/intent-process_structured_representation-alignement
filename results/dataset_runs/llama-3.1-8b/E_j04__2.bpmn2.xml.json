@@ -1,0 +1,1152 @@
+{
+  "case_name": "E_j04",
+  "text": "Category: E-Government\nTitle: Internship\n\nYou can enter a topic that interests you, and how much money you want. You can\nalso enter experience and hobbies. Several offers will arrive (at arbitrary\npoints in time). You can accept or deny offers. As soon as an offer is accepted, \nall other offers become invalid. You have to write at least 3 status updates\nabout your internship (every week). The company has to write 3 status updates\nabout you. After the internship is finished you can recommend the company to a\nlist of friends (via twitter). Separate tweets are sent in parallel.\n",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "llama-3.1-8b",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "llama-3.1-8b",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/text_and_bpmn/bpmn/E_j04/2.bpmn2.xml",
+  "candidates": {
+    "topic": [
+      "entered"
+    ],
+    "offer": [
+      "arrived",
+      "accepted",
+      "invalid",
+      "denied"
+    ],
+    "status_update": [
+      "written"
+    ],
+    "internship": [
+      "finished"
+    ],
+    "company": [
+      "written"
+    ],
+    "tweet": [
+      "sent"
+    ]
+  },
+  "validation_report": {
+    "topic": {
+      "f_lex": "ENTITY",
+      "kept": true
+    },
+    "offer": {
+      "f_lex": "ENTITY",
+      "kept": true
+    },
+    "status_update": {
+      "f_lex": "ENTITY",
+      "kept": true
+    },
+    "internship": {
+      "f_lex": "ENTITY",
+      "kept": true
+    },
+    "company": {
+      "f_lex": "ACTOR",
+      "kept": false
+    },
+    "tweet": {
+      "f_lex": "ENTITY",
+      "kept": true
+    }
+  },
+  "state_space": {
+    "topic": [
+      "entered"
+    ],
+    "offer": [
+      "arrived",
+      "accepted",
+      "invalid",
+      "denied"
+    ],
+    "status_update": [
+      "written"
+    ],
+    "internship": [
+      "finished"
+    ],
+    "tweet": [
+      "sent"
+    ]
+  },
+  "raw_preconditions": {
+    "topic.entered": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "offer.arrived": {
+      "precondition": "topic.entered",
+      "quote": "You can enter a topic that interests you, and how much money you want."
+    },
+    "offer.denied": {
+      "precondition": "offer.arrived",
+      "quote": "You can also enter experience and hobbies."
+    },
+    "offer.accepted": {
+      "precondition": "offer.arrived",
+      "quote": "You can also enter experience and hobbies."
+    },
+    "status_update.written": {
+      "precondition": "offer.accepted",
+      "quote": "You have to write at least 3 status updates about your internship (every week)."
+    },
+    "internship.finished": {
+      "precondition": "status_update.written AND status_update.written AND status_update.written",
+      "quote": "You have to write at least 3 status updates about your internship (every week)."
+    },
+    "company.status_update.written": {
+      "precondition": "offer.accepted",
+      "quote": "The company has to write 3 status updates about you."
+    },
+    "tweet.sent": {
+      "precondition": "internship.finished",
+      "quote": "After the internship is finished you can recommend the company to a list of friends (via twitter)."
+    },
+    "offer.invalid": {
+      "precondition": "offer.accepted",
+      "quote": "As soon as an offer is accepted, all other offers become invalid."
+    }
+  },
+  "validated_preconditions": {
+    "topic.entered": {
+      "precondition": "INITIAL",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "offer.arrived": {
+      "precondition": "topic.entered",
+      "quote": "You can enter a topic that interests you, and how much money you want.",
+      "status": "OK",
+      "reason": null
+    },
+    "offer.denied": {
+      "precondition": "offer.arrived",
+      "quote": "You can also enter experience and hobbies.",
+      "status": "OK",
+      "reason": null
+    },
+    "offer.accepted": {
+      "precondition": "offer.arrived",
+      "quote": "You can also enter experience and hobbies.",
+      "status": "OK",
+      "reason": null
+    },
+    "status_update.written": {
+      "precondition": "offer.accepted",
+      "quote": "You have to write at least 3 status updates about your internship (every week).",
+      "status": "OK",
+      "reason": null
+    },
+    "internship.finished": {
+      "precondition": "topic.entered AND offer.arrived",
+      "quote": "You can enter a topic that interests you, and how much money you want. You can also enter experience and hobbies.",
+      "status": "OK",
+      "reason": null,
+      "retried": true
+    },
+    "company.status_update.written": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "DOWNGRADED",
+      "reason": "malformed or unknown target key: 'company.status_update.written' is not a valid entity.state of the state space"
+    },
+    "tweet.sent": {
+      "precondition": "internship.finished",
+      "quote": "After the internship is finished you can recommend the company to a list of friends (via twitter).",
+      "status": "OK",
+      "reason": null
+    },
+    "offer.invalid": {
+      "precondition": "offer.accepted",
+      "quote": "As soon as an offer is accepted, all other offers become invalid.",
+      "status": "OK",
+      "reason": null
+    }
+  },
+  "precondition_cycles": [],
+  "reference_graph": {
+    "nodes": [
+      {
+        "id": "topic.entered",
+        "weight": 0.5
+      },
+      {
+        "id": "offer.arrived",
+        "weight": 1.0
+      },
+      {
+        "id": "offer.accepted",
+        "weight": 0.75
+      },
+      {
+        "id": "offer.invalid",
+        "weight": 0.25
+      },
+      {
+        "id": "offer.denied",
+        "weight": 0.25
+      },
+      {
+        "id": "status_update.written",
+        "weight": 0.25
+      },
+      {
+        "id": "internship.finished",
+        "weight": 0.75
+      },
+      {
+        "id": "tweet.sent",
+        "weight": 0.25
+      }
+    ],
+    "edges": [
+      {
+        "from": "topic.entered",
+        "to": "offer.arrived",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "You can enter a topic that interests you, and how much money you want."
+      },
+      {
+        "from": "offer.arrived",
+        "to": "offer.denied",
+        "type": "sequence",
+        "operator": "AND",
+        "quote": "You can also enter experience and hobbies."
+      },
+      {
+        "from": "offer.arrived",
+        "to": "offer.accepted",
+        "type": "sequence",
+        "operator": "AND",
+        "quote": "You can also enter experience and hobbies."
+      },
+      {
+        "from": "offer.accepted",
+        "to": "status_update.written",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "You have to write at least 3 status updates about your internship (every week)."
+      },
+      {
+        "from": "topic.entered",
+        "to": "internship.finished",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "You can enter a topic that interests you, and how much money you want. You can also enter experience and hobbies."
+      },
+      {
+        "from": "offer.arrived",
+        "to": "internship.finished",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "You can enter a topic that interests you, and how much money you want. You can also enter experience and hobbies."
+      },
+      {
+        "from": "internship.finished",
+        "to": "tweet.sent",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "After the internship is finished you can recommend the company to a list of friends (via twitter)."
+      },
+      {
+        "from": "offer.accepted",
+        "to": "offer.invalid",
+        "type": "sequence",
+        "operator": "AND",
+        "quote": "As soon as an offer is accepted, all other offers become invalid."
+      }
+    ],
+    "cycles": []
+  },
+  "dfg_edges": [
+    {
+      "source_id": "sid-A3B5C363-248E-42FE-A1F7-4B7F6E4A15AA",
+      "source_label": "Write >= 3 update letters",
+      "target_id": "sid-3E49D09B-AFD5-4CD8-A200-A70888C3E28C",
+      "target_label": "Work as trainee",
+      "gateway_context": [
+        "ParallelGateway",
+        "ExclusiveGateway",
+        "no"
+      ]
+    },
+    {
+      "source_id": "sid-A3B5C363-248E-42FE-A1F7-4B7F6E4A15AA",
+      "source_label": "Write >= 3 update letters",
+      "target_id": "sid-4BA86532-A912-4422-9DFF-8EC5AE6FA243",
+      "target_label": "Employment contract is cancelled",
+      "gateway_context": [
+        "ParallelGateway",
+        "ExclusiveGateway",
+        "yes"
+      ]
+    },
+    {
+      "source_id": "sid-18591140-2ACC-4349-9D1A-7D04DC903528",
+      "source_label": "Select way of Recommendation",
+      "target_id": "sid-5F7B5713-3A3A-4A0D-890A-DC9D85AAFDFC",
+      "target_label": "Select List of friends",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "Twitter"
+      ]
+    },
+    {
+      "source_id": "sid-18591140-2ACC-4349-9D1A-7D04DC903528",
+      "source_label": "Select way of Recommendation",
+      "target_id": "sid-0ACB98D7-847C-4698-AE02-5CF6D09862F8",
+      "target_label": "Rate Company",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "other"
+      ]
+    },
+    {
+      "source_id": "sid-18591140-2ACC-4349-9D1A-7D04DC903528",
+      "source_label": "Select way of Recommendation",
+      "target_id": "sid-63F370C4-D88A-437D-BA68-A86C960DDC09",
+      "target_label": "Finish Work",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "no recommendation"
+      ]
+    },
+    {
+      "source_id": "sid-5F7B5713-3A3A-4A0D-890A-DC9D85AAFDFC",
+      "source_label": "Select List of friends",
+      "target_id": "sid-346B3428-83A7-4277-BEB4-4C8343D5ACCE",
+      "target_label": "Tweets are sent",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-346B3428-83A7-4277-BEB4-4C8343D5ACCE",
+      "source_label": "Tweets are sent",
+      "target_id": "sid-3B6877E2-CAA1-4377-A508-AB0D9F8F0854",
+      "target_label": "",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-A134C053-F809-418A-A93A-655ACF7FE863",
+      "source_label": "7 days",
+      "target_id": "sid-A3B5C363-248E-42FE-A1F7-4B7F6E4A15AA",
+      "target_label": "Write >= 3 update letters",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-3FB64BEB-CB04-41D1-B75C-2DA7611BD926",
+      "source_label": "Recommendation is published",
+      "target_id": "sid-9D1B719C-F362-4559-9A25-7493673BB10D",
+      "target_label": "",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-63F370C4-D88A-437D-BA68-A86C960DDC09",
+      "source_label": "Finish Work",
+      "target_id": "sid-AEAC9ECA-3E2F-4206-9FB7-988672EA71C9",
+      "target_label": "",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-0537D78D-0CC1-44AC-9B54-2A575BBF4B60",
+      "source_label": "7 days",
+      "target_id": "sid-549AEBBF-9AE1-49EB-BCFF-1ABA071BCC7D",
+      "target_label": "Receive >=3 Feedback letter",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-CC295CA1-FC85-46FC-A53B-B08A8F794419",
+      "source_label": "Letter of rejection is sent",
+      "target_id": "sid-9341D48B-DD45-4797-8FA9-54F36FFE79B4",
+      "target_label": "Receive Offer",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-0ACB98D7-847C-4698-AE02-5CF6D09862F8",
+      "source_label": "Rate Company",
+      "target_id": "sid-3FB64BEB-CB04-41D1-B75C-2DA7611BD926",
+      "target_label": "Recommendation is published",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-549AEBBF-9AE1-49EB-BCFF-1ABA071BCC7D",
+      "source_label": "Receive >=3 Feedback letter",
+      "target_id": "sid-3E49D09B-AFD5-4CD8-A200-A70888C3E28C",
+      "target_label": "Work as trainee",
+      "gateway_context": [
+        "ParallelGateway",
+        "ExclusiveGateway",
+        "no"
+      ]
+    },
+    {
+      "source_id": "sid-549AEBBF-9AE1-49EB-BCFF-1ABA071BCC7D",
+      "source_label": "Receive >=3 Feedback letter",
+      "target_id": "sid-4BA86532-A912-4422-9DFF-8EC5AE6FA243",
+      "target_label": "Employment contract is cancelled",
+      "gateway_context": [
+        "ParallelGateway",
+        "ExclusiveGateway",
+        "yes"
+      ]
+    },
+    {
+      "source_id": "sid-94E79F44-540E-4F32-A8CE-CD44ECEF6A02",
+      "source_label": "All other offers are set invalid",
+      "target_id": "sid-3E49D09B-AFD5-4CD8-A200-A70888C3E28C",
+      "target_label": "Work as trainee",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-3E49D09B-AFD5-4CD8-A200-A70888C3E28C",
+      "source_label": "Work as trainee",
+      "target_id": "sid-A134C053-F809-418A-A93A-655ACF7FE863",
+      "target_label": "7 days",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-3E49D09B-AFD5-4CD8-A200-A70888C3E28C",
+      "source_label": "Work as trainee",
+      "target_id": "sid-0537D78D-0CC1-44AC-9B54-2A575BBF4B60",
+      "target_label": "7 days",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-104326F0-5B9F-4B9E-9DC0-CA5C1100FED1",
+      "source_label": "Enter additional data",
+      "target_id": "sid-880C319D-EEDC-48BD-8F00-AEC437D77534",
+      "target_label": "",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-104326F0-5B9F-4B9E-9DC0-CA5C1100FED1",
+      "source_label": "Enter additional data",
+      "target_id": "sid-CFBC3D71-4E0C-4CCE-96E5-7698EA6E951A",
+      "target_label": "Confirm Application",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-7DDBC839-37B5-497F-8751-81766FEBB510",
+      "source_label": "",
+      "target_id": "sid-ABB22EFE-F28A-4D81-857D-0F2E56AC2F6B",
+      "target_label": "Enter necessary data",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-9341D48B-DD45-4797-8FA9-54F36FFE79B4",
+      "source_label": "Receive Offer",
+      "target_id": "sid-94E79F44-540E-4F32-A8CE-CD44ECEF6A02",
+      "target_label": "All other offers are set invalid",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "accept offer"
+      ]
+    },
+    {
+      "source_id": "sid-9341D48B-DD45-4797-8FA9-54F36FFE79B4",
+      "source_label": "Receive Offer",
+      "target_id": "sid-CC295CA1-FC85-46FC-A53B-B08A8F794419",
+      "target_label": "Letter of rejection is sent",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "decline offer"
+      ]
+    },
+    {
+      "source_id": "sid-CFBC3D71-4E0C-4CCE-96E5-7698EA6E951A",
+      "source_label": "Confirm Application",
+      "target_id": "sid-9341D48B-DD45-4797-8FA9-54F36FFE79B4",
+      "target_label": "Receive Offer",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-4BA86532-A912-4422-9DFF-8EC5AE6FA243",
+      "source_label": "Employment contract is cancelled",
+      "target_id": "sid-18591140-2ACC-4349-9D1A-7D04DC903528",
+      "target_label": "Select way of Recommendation",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-ABB22EFE-F28A-4D81-857D-0F2E56AC2F6B",
+      "source_label": "Enter necessary data",
+      "target_id": "sid-9328F800-21A2-4A7B-A149-5B33F1B69394",
+      "target_label": "",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-ABB22EFE-F28A-4D81-857D-0F2E56AC2F6B",
+      "source_label": "Enter necessary data",
+      "target_id": "sid-CFBC3D71-4E0C-4CCE-96E5-7698EA6E951A",
+      "target_label": "Confirm Application",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "no"
+      ]
+    },
+    {
+      "source_id": "sid-ABB22EFE-F28A-4D81-857D-0F2E56AC2F6B",
+      "source_label": "Enter necessary data",
+      "target_id": "sid-104326F0-5B9F-4B9E-9DC0-CA5C1100FED1",
+      "target_label": "Enter additional data",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "yes"
+      ]
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "Write >= 3 update letters",
+      "subject_id": "sid-A3B5C363-248E-42FE-A1F7-4B7F6E4A15AA",
+      "predicate": "follows",
+      "object": "Work as trainee",
+      "object_id": "sid-3E49D09B-AFD5-4CD8-A200-A70888C3E28C"
+    },
+    {
+      "subject": "Write >= 3 update letters",
+      "subject_id": "sid-A3B5C363-248E-42FE-A1F7-4B7F6E4A15AA",
+      "predicate": "follows",
+      "object": "Employment contract is cancelled",
+      "object_id": "sid-4BA86532-A912-4422-9DFF-8EC5AE6FA243"
+    },
+    {
+      "subject": "Select way of Recommendation",
+      "subject_id": "sid-18591140-2ACC-4349-9D1A-7D04DC903528",
+      "predicate": "follows",
+      "object": "Select List of friends",
+      "object_id": "sid-5F7B5713-3A3A-4A0D-890A-DC9D85AAFDFC"
+    },
+    {
+      "subject": "Select way of Recommendation",
+      "subject_id": "sid-18591140-2ACC-4349-9D1A-7D04DC903528",
+      "predicate": "follows",
+      "object": "Rate Company",
+      "object_id": "sid-0ACB98D7-847C-4698-AE02-5CF6D09862F8"
+    },
+    {
+      "subject": "Select way of Recommendation",
+      "subject_id": "sid-18591140-2ACC-4349-9D1A-7D04DC903528",
+      "predicate": "follows",
+      "object": "Finish Work",
+      "object_id": "sid-63F370C4-D88A-437D-BA68-A86C960DDC09"
+    },
+    {
+      "subject": "Select List of friends",
+      "subject_id": "sid-5F7B5713-3A3A-4A0D-890A-DC9D85AAFDFC",
+      "predicate": "follows",
+      "object": "Tweets are sent",
+      "object_id": "sid-346B3428-83A7-4277-BEB4-4C8343D5ACCE"
+    },
+    {
+      "subject": "Tweets are sent",
+      "subject_id": "sid-346B3428-83A7-4277-BEB4-4C8343D5ACCE",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "sid-3B6877E2-CAA1-4377-A508-AB0D9F8F0854"
+    },
+    {
+      "subject": "7 days",
+      "subject_id": "sid-A134C053-F809-418A-A93A-655ACF7FE863",
+      "predicate": "follows",
+      "object": "Write >= 3 update letters",
+      "object_id": "sid-A3B5C363-248E-42FE-A1F7-4B7F6E4A15AA"
+    },
+    {
+      "subject": "Recommendation is published",
+      "subject_id": "sid-3FB64BEB-CB04-41D1-B75C-2DA7611BD926",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "sid-9D1B719C-F362-4559-9A25-7493673BB10D"
+    },
+    {
+      "subject": "Finish Work",
+      "subject_id": "sid-63F370C4-D88A-437D-BA68-A86C960DDC09",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "sid-AEAC9ECA-3E2F-4206-9FB7-988672EA71C9"
+    },
+    {
+      "subject": "7 days",
+      "subject_id": "sid-0537D78D-0CC1-44AC-9B54-2A575BBF4B60",
+      "predicate": "follows",
+      "object": "Receive >=3 Feedback letter",
+      "object_id": "sid-549AEBBF-9AE1-49EB-BCFF-1ABA071BCC7D"
+    },
+    {
+      "subject": "Letter of rejection is sent",
+      "subject_id": "sid-CC295CA1-FC85-46FC-A53B-B08A8F794419",
+      "predicate": "follows",
+      "object": "Receive Offer",
+      "object_id": "sid-9341D48B-DD45-4797-8FA9-54F36FFE79B4"
+    },
+    {
+      "subject": "Rate Company",
+      "subject_id": "sid-0ACB98D7-847C-4698-AE02-5CF6D09862F8",
+      "predicate": "follows",
+      "object": "Recommendation is published",
+      "object_id": "sid-3FB64BEB-CB04-41D1-B75C-2DA7611BD926"
+    },
+    {
+      "subject": "Receive >=3 Feedback letter",
+      "subject_id": "sid-549AEBBF-9AE1-49EB-BCFF-1ABA071BCC7D",
+      "predicate": "follows",
+      "object": "Work as trainee",
+      "object_id": "sid-3E49D09B-AFD5-4CD8-A200-A70888C3E28C"
+    },
+    {
+      "subject": "Receive >=3 Feedback letter",
+      "subject_id": "sid-549AEBBF-9AE1-49EB-BCFF-1ABA071BCC7D",
+      "predicate": "follows",
+      "object": "Employment contract is cancelled",
+      "object_id": "sid-4BA86532-A912-4422-9DFF-8EC5AE6FA243"
+    },
+    {
+      "subject": "All other offers are set invalid",
+      "subject_id": "sid-94E79F44-540E-4F32-A8CE-CD44ECEF6A02",
+      "predicate": "follows",
+      "object": "Work as trainee",
+      "object_id": "sid-3E49D09B-AFD5-4CD8-A200-A70888C3E28C"
+    },
+    {
+      "subject": "Work as trainee",
+      "subject_id": "sid-3E49D09B-AFD5-4CD8-A200-A70888C3E28C",
+      "predicate": "follows",
+      "object": "7 days",
+      "object_id": "sid-A134C053-F809-418A-A93A-655ACF7FE863"
+    },
+    {
+      "subject": "Work as trainee",
+      "subject_id": "sid-3E49D09B-AFD5-4CD8-A200-A70888C3E28C",
+      "predicate": "follows",
+      "object": "7 days",
+      "object_id": "sid-0537D78D-0CC1-44AC-9B54-2A575BBF4B60"
+    },
+    {
+      "subject": "Enter additional data",
+      "subject_id": "sid-104326F0-5B9F-4B9E-9DC0-CA5C1100FED1",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "sid-880C319D-EEDC-48BD-8F00-AEC437D77534"
+    },
+    {
+      "subject": "Enter additional data",
+      "subject_id": "sid-104326F0-5B9F-4B9E-9DC0-CA5C1100FED1",
+      "predicate": "follows",
+      "object": "Confirm Application",
+      "object_id": "sid-CFBC3D71-4E0C-4CCE-96E5-7698EA6E951A"
+    },
+    {
+      "subject": "",
+      "subject_id": "sid-7DDBC839-37B5-497F-8751-81766FEBB510",
+      "predicate": "follows",
+      "object": "Enter necessary data",
+      "object_id": "sid-ABB22EFE-F28A-4D81-857D-0F2E56AC2F6B"
+    },
+    {
+      "subject": "Receive Offer",
+      "subject_id": "sid-9341D48B-DD45-4797-8FA9-54F36FFE79B4",
+      "predicate": "follows",
+      "object": "All other offers are set invalid",
+      "object_id": "sid-94E79F44-540E-4F32-A8CE-CD44ECEF6A02"
+    },
+    {
+      "subject": "Receive Offer",
+      "subject_id": "sid-9341D48B-DD45-4797-8FA9-54F36FFE79B4",
+      "predicate": "follows",
+      "object": "Letter of rejection is sent",
+      "object_id": "sid-CC295CA1-FC85-46FC-A53B-B08A8F794419"
+    },
+    {
+      "subject": "Confirm Application",
+      "subject_id": "sid-CFBC3D71-4E0C-4CCE-96E5-7698EA6E951A",
+      "predicate": "follows",
+      "object": "Receive Offer",
+      "object_id": "sid-9341D48B-DD45-4797-8FA9-54F36FFE79B4"
+    },
+    {
+      "subject": "Employment contract is cancelled",
+      "subject_id": "sid-4BA86532-A912-4422-9DFF-8EC5AE6FA243",
+      "predicate": "follows",
+      "object": "Select way of Recommendation",
+      "object_id": "sid-18591140-2ACC-4349-9D1A-7D04DC903528"
+    },
+    {
+      "subject": "Enter necessary data",
+      "subject_id": "sid-ABB22EFE-F28A-4D81-857D-0F2E56AC2F6B",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "sid-9328F800-21A2-4A7B-A149-5B33F1B69394"
+    },
+    {
+      "subject": "Enter necessary data",
+      "subject_id": "sid-ABB22EFE-F28A-4D81-857D-0F2E56AC2F6B",
+      "predicate": "follows",
+      "object": "Confirm Application",
+      "object_id": "sid-CFBC3D71-4E0C-4CCE-96E5-7698EA6E951A"
+    },
+    {
+      "subject": "Enter necessary data",
+      "subject_id": "sid-ABB22EFE-F28A-4D81-857D-0F2E56AC2F6B",
+      "predicate": "follows",
+      "object": "Enter additional data",
+      "object_id": "sid-104326F0-5B9F-4B9E-9DC0-CA5C1100FED1"
+    }
+  ],
+  "matches": {
+    "7 days": {
+      "match": "offer.invalid",
+      "score": 0.0963
+    },
+    "All other offers are set invalid": {
+      "match": "offer.invalid",
+      "score": 0.6746
+    },
+    "Confirm Application": {
+      "match": "offer.accepted",
+      "score": 0.2533
+    },
+    "Employment contract is cancelled": {
+      "match": "offer.denied",
+      "score": 0.2542
+    },
+    "Enter additional data": {
+      "match": "topic.entered",
+      "score": 0.2955
+    },
+    "Enter necessary data": {
+      "match": "topic.entered",
+      "score": 0.3134
+    },
+    "Finish Work": {
+      "match": "internship.finished",
+      "score": 0.2906
+    },
+    "Letter of rejection is sent": {
+      "match": "offer.denied",
+      "score": 0.4329
+    },
+    "Rate Company": {
+      "match": "offer.accepted",
+      "score": 0.1182
+    },
+    "Receive >=3 Feedback letter": {
+      "match": "status_update.written",
+      "score": 0.1403
+    },
+    "Receive Offer": {
+      "match": "offer.arrived",
+      "score": 0.6062
+    },
+    "Recommendation is published": {
+      "match": "offer.accepted",
+      "score": 0.1791
+    },
+    "Select List of friends": {
+      "match": "offer.accepted",
+      "score": 0.1604
+    },
+    "Select way of Recommendation": {
+      "match": "offer.accepted",
+      "score": 0.2101
+    },
+    "Tweets are sent": {
+      "match": "tweet.sent",
+      "score": 0.7165
+    },
+    "Work as trainee": {
+      "match": "internship.finished",
+      "score": 0.325
+    },
+    "Write >= 3 update letters": {
+      "match": "status_update.written",
+      "score": 0.4346
+    }
+  },
+  "process_graph": [
+    {
+      "from": "status_update.written",
+      "to": "internship.finished",
+      "activity_from": "Write >= 3 update letters",
+      "activity_to": "Work as trainee"
+    },
+    {
+      "from": "status_update.written",
+      "to": "offer.denied",
+      "activity_from": "Write >= 3 update letters",
+      "activity_to": "Employment contract is cancelled"
+    },
+    {
+      "from": "offer.accepted",
+      "to": "offer.accepted",
+      "activity_from": "Select way of Recommendation",
+      "activity_to": "Select List of friends"
+    },
+    {
+      "from": "offer.accepted",
+      "to": "offer.accepted",
+      "activity_from": "Select way of Recommendation",
+      "activity_to": "Rate Company"
+    },
+    {
+      "from": "offer.accepted",
+      "to": "internship.finished",
+      "activity_from": "Select way of Recommendation",
+      "activity_to": "Finish Work"
+    },
+    {
+      "from": "offer.accepted",
+      "to": "tweet.sent",
+      "activity_from": "Select List of friends",
+      "activity_to": "Tweets are sent"
+    },
+    {
+      "from": "offer.invalid",
+      "to": "status_update.written",
+      "activity_from": "7 days",
+      "activity_to": "Write >= 3 update letters"
+    },
+    {
+      "from": "offer.invalid",
+      "to": "status_update.written",
+      "activity_from": "7 days",
+      "activity_to": "Receive >=3 Feedback letter"
+    },
+    {
+      "from": "offer.denied",
+      "to": "offer.arrived",
+      "activity_from": "Letter of rejection is sent",
+      "activity_to": "Receive Offer"
+    },
+    {
+      "from": "offer.accepted",
+      "to": "offer.accepted",
+      "activity_from": "Rate Company",
+      "activity_to": "Recommendation is published"
+    },
+    {
+      "from": "status_update.written",
+      "to": "internship.finished",
+      "activity_from": "Receive >=3 Feedback letter",
+      "activity_to": "Work as trainee"
+    },
+    {
+      "from": "status_update.written",
+      "to": "offer.denied",
+      "activity_from": "Receive >=3 Feedback letter",
+      "activity_to": "Employment contract is cancelled"
+    },
+    {
+      "from": "offer.invalid",
+      "to": "internship.finished",
+      "activity_from": "All other offers are set invalid",
+      "activity_to": "Work as trainee"
+    },
+    {
+      "from": "internship.finished",
+      "to": "offer.invalid",
+      "activity_from": "Work as trainee",
+      "activity_to": "7 days"
+    },
+    {
+      "from": "internship.finished",
+      "to": "offer.invalid",
+      "activity_from": "Work as trainee",
+      "activity_to": "7 days"
+    },
+    {
+      "from": "topic.entered",
+      "to": "offer.accepted",
+      "activity_from": "Enter additional data",
+      "activity_to": "Confirm Application"
+    },
+    {
+      "from": "offer.arrived",
+      "to": "offer.invalid",
+      "activity_from": "Receive Offer",
+      "activity_to": "All other offers are set invalid"
+    },
+    {
+      "from": "offer.arrived",
+      "to": "offer.denied",
+      "activity_from": "Receive Offer",
+      "activity_to": "Letter of rejection is sent"
+    },
+    {
+      "from": "offer.accepted",
+      "to": "offer.arrived",
+      "activity_from": "Confirm Application",
+      "activity_to": "Receive Offer"
+    },
+    {
+      "from": "offer.denied",
+      "to": "offer.accepted",
+      "activity_from": "Employment contract is cancelled",
+      "activity_to": "Select way of Recommendation"
+    },
+    {
+      "from": "topic.entered",
+      "to": "offer.accepted",
+      "activity_from": "Enter necessary data",
+      "activity_to": "Confirm Application"
+    },
+    {
+      "from": "topic.entered",
+      "to": "topic.entered",
+      "activity_from": "Enter necessary data",
+      "activity_to": "Enter additional data"
+    }
+  ],
+  "alignment": {
+    "offer.arrived": {
+      "operator": "AND",
+      "quote": "You can enter a topic that interests you, and how much money you want.",
+      "terms": [
+        {
+          "term": "topic.entered",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED"
+    },
+    "offer.denied": {
+      "operator": "AND",
+      "quote": "You can also enter experience and hobbies.",
+      "terms": [
+        {
+          "term": "offer.arrived",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED"
+    },
+    "offer.accepted": {
+      "operator": "AND",
+      "quote": "You can also enter experience and hobbies.",
+      "terms": [
+        {
+          "term": "offer.arrived",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED"
+    },
+    "status_update.written": {
+      "operator": "AND",
+      "quote": "You have to write at least 3 status updates about your internship (every week).",
+      "terms": [
+        {
+          "term": "offer.accepted",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED"
+    },
+    "internship.finished": {
+      "operator": "AND",
+      "quote": "You can enter a topic that interests you, and how much money you want. You can also enter experience and hobbies.",
+      "terms": [
+        {
+          "term": "topic.entered",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        },
+        {
+          "term": "offer.arrived",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED"
+    },
+    "tweet.sent": {
+      "operator": "AND",
+      "quote": "After the internship is finished you can recommend the company to a list of friends (via twitter).",
+      "terms": [
+        {
+          "term": "internship.finished",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED"
+    },
+    "offer.invalid": {
+      "operator": "AND",
+      "quote": "As soon as an offer is accepted, all other offers become invalid.",
+      "terms": [
+        {
+          "term": "offer.accepted",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED"
+    }
+  },
+  "report": {
+    "summary": {
+      "ecarts": 0,
+      "non_verifiable": 0,
+      "conforme": 8
+    },
+    "ecarts": [],
+    "non_verifiable": [],
+    "conforme": [
+      {
+        "target": "Receive Offer",
+        "term": "Enter necessary data"
+      },
+      {
+        "target": "Letter of rejection is sent",
+        "term": "Receive Offer"
+      },
+      {
+        "target": "Confirm Application",
+        "term": "Receive Offer"
+      },
+      {
+        "target": "Write >= 3 update letters",
+        "term": "Confirm Application"
+      },
+      {
+        "target": "Work as trainee",
+        "term": "Enter necessary data"
+      },
+      {
+        "target": "Work as trainee",
+        "term": "Receive Offer"
+      },
+      {
+        "target": "Tweets are sent",
+        "term": "Work as trainee"
+      },
+      {
+        "target": "All other offers are set invalid",
+        "term": "Confirm Application"
+      }
+    ],
+    "piece_jointe_alignement_brut": {
+      "offer.arrived": {
+        "operator": "AND",
+        "quote": "You can enter a topic that interests you, and how much money you want.",
+        "terms": [
+          {
+            "term": "topic.entered",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED"
+      },
+      "offer.denied": {
+        "operator": "AND",
+        "quote": "You can also enter experience and hobbies.",
+        "terms": [
+          {
+            "term": "offer.arrived",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED"
+      },
+      "offer.accepted": {
+        "operator": "AND",
+        "quote": "You can also enter experience and hobbies.",
+        "terms": [
+          {
+            "term": "offer.arrived",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED"
+      },
+      "status_update.written": {
+        "operator": "AND",
+        "quote": "You have to write at least 3 status updates about your internship (every week).",
+        "terms": [
+          {
+            "term": "offer.accepted",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED"
+      },
+      "internship.finished": {
+        "operator": "AND",
+        "quote": "You can enter a topic that interests you, and how much money you want. You can also enter experience and hobbies.",
+        "terms": [
+          {
+            "term": "topic.entered",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          },
+          {
+            "term": "offer.arrived",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED"
+      },
+      "tweet.sent": {
+        "operator": "AND",
+        "quote": "After the internship is finished you can recommend the company to a list of friends (via twitter).",
+        "terms": [
+          {
+            "term": "internship.finished",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED"
+      },
+      "offer.invalid": {
+        "operator": "AND",
+        "quote": "As soon as an offer is accepted, all other offers become invalid.",
+        "terms": [
+          {
+            "term": "offer.accepted",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED"
+      }
+    }
+  },
+  "errors": []
+}

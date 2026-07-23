@@ -1,0 +1,697 @@
+{
+  "case_name": "R_g01",
+  "text": "Category: Repair and Service\nTitle: DIY Repair of a Broken Smartphone Screen\n\nA nifty online tool helps you with repairing your Smartphone on your own.\nYou start by entering the model and what is broken. The tool gives you the list\nof materials, the list of tools, and (for each part) several ordering choices.\nSome stuff you already have (e.g. some tools, screws). The tool also lets you contact friends\nif you can borrow / buy something for cheap from them. The rest you buy.\nAfterwards you receive instructions how to fix your phone. If it worked, send a review and/or video\nof you fixing it. If it hasn't worked out, you can send it to an expert.\n",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "llama-3.1-8b",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "llama-3.1-8b",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/text_and_bpmn/bpmn/R_g01/6.bpmn2.xml",
+  "candidates": {
+    "smartphone": [
+      "broken",
+      "fixed"
+    ],
+    "phone": [
+      "fixed"
+    ],
+    "review": [
+      "sent"
+    ],
+    "video": [
+      "sent"
+    ],
+    "expert": [
+      "sent_to"
+    ]
+  },
+  "validation_report": {
+    "smartphone": {
+      "f_lex": "INDETERMINATE",
+      "kept": true
+    },
+    "phone": {
+      "f_lex": "ENTITY",
+      "kept": true
+    },
+    "review": {
+      "f_lex": "ENTITY",
+      "kept": true
+    },
+    "video": {
+      "f_lex": "ENTITY",
+      "kept": true
+    },
+    "expert": {
+      "f_lex": "ACTOR",
+      "kept": false
+    }
+  },
+  "state_space": {
+    "smartphone": [
+      "broken",
+      "fixed"
+    ],
+    "phone": [
+      "fixed"
+    ],
+    "review": [
+      "sent"
+    ],
+    "video": [
+      "sent"
+    ]
+  },
+  "raw_preconditions": {
+    "smartphone.broken": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "phone.fixed": {
+      "precondition": "UNRESOLVED",
+      "quote": null
+    },
+    "review.sent": {
+      "precondition": "smartphone.fixed AND video.sent",
+      "quote": "If it worked, send a review and/or video of you fixing it."
+    },
+    "video.sent": {
+      "precondition": "smartphone.fixed AND (review.sent OR video.sent)",
+      "quote": "If it worked, send a review and/or video of you fixing it."
+    },
+    "smartphone.fixed": {
+      "precondition": "smartphone.broken AND (phone.fixed OR (review.sent OR video.sent))",
+      "quote": "Afterwards you receive instructions how to fix your phone. If it worked, send a review and/or video of you fixing it. If it hasn't worked out, you can send it to an expert."
+    }
+  },
+  "validated_preconditions": {
+    "smartphone.broken": {
+      "precondition": "INITIAL",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "phone.fixed": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "review.sent": {
+      "precondition": "smartphone.fixed AND video.sent",
+      "quote": "If it worked, send a review and/or video of you fixing it.",
+      "status": "OK",
+      "reason": null
+    },
+    "video.sent": {
+      "precondition": "smartphone.broken",
+      "quote": "You start by entering the model and what is broken.",
+      "status": "OK",
+      "reason": null,
+      "retried": true
+    },
+    "smartphone.fixed": {
+      "precondition": "smartphone.broken",
+      "quote": "You start by entering the model and what is broken.",
+      "status": "OK",
+      "reason": null,
+      "retried": true
+    }
+  },
+  "precondition_cycles": [],
+  "reference_graph": {
+    "nodes": [
+      {
+        "id": "smartphone.broken",
+        "weight": 1.0
+      },
+      {
+        "id": "smartphone.fixed",
+        "weight": 1.0
+      },
+      {
+        "id": "phone.fixed",
+        "weight": 0.0
+      },
+      {
+        "id": "review.sent",
+        "weight": 1.0
+      },
+      {
+        "id": "video.sent",
+        "weight": 1.0
+      }
+    ],
+    "edges": [
+      {
+        "from": "smartphone.fixed",
+        "to": "review.sent",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "If it worked, send a review and/or video of you fixing it."
+      },
+      {
+        "from": "video.sent",
+        "to": "review.sent",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "If it worked, send a review and/or video of you fixing it."
+      },
+      {
+        "from": "smartphone.broken",
+        "to": "video.sent",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "You start by entering the model and what is broken."
+      },
+      {
+        "from": "smartphone.broken",
+        "to": "smartphone.fixed",
+        "type": "sequence",
+        "operator": "AND",
+        "quote": "You start by entering the model and what is broken."
+      }
+    ],
+    "cycles": []
+  },
+  "dfg_edges": [
+    {
+      "source_id": "sid-A5F68322-DFE7-4644-A6D7-A0B63DECDED9",
+      "source_label": "Buy rest",
+      "target_id": "sid-9D18859A-6A42-4426-A37B-20D223A7CFB6",
+      "target_label": "Receiving instructions",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-4DFCAAF3-524A-4EBE-B03F-C96D56A58D42",
+      "source_label": "send review of fixing it",
+      "target_id": "sid-09F55F85-1D39-4DB7-810A-F069771B3527",
+      "target_label": "Repair Process finished",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-AD626D44-09C7-4BB0-87AA-C4CF4D278EA3",
+      "source_label": "Receiving list of requirements",
+      "target_id": "sid-D3A64D02-090D-4F0B-AB2F-B4A3F69AE810",
+      "target_label": "contact friends",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-AD626D44-09C7-4BB0-87AA-C4CF4D278EA3",
+      "source_label": "Receiving list of requirements",
+      "target_id": "sid-F3AE118A-DF1B-442D-BB75-DC521F27035C",
+      "target_label": "everything available",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-66E205B0-C80E-4A45-8085-B1D175F83C7D",
+      "source_label": "try fixing the phone",
+      "target_id": "sid-4DFCAAF3-524A-4EBE-B03F-C96D56A58D42",
+      "target_label": "send review of fixing it",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "worked"
+      ]
+    },
+    {
+      "source_id": "sid-66E205B0-C80E-4A45-8085-B1D175F83C7D",
+      "source_label": "try fixing the phone",
+      "target_id": "sid-D194F9A5-9119-4266-BD50-743C962D181E",
+      "target_label": "send phone to an expert",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "doesnt work"
+      ]
+    },
+    {
+      "source_id": "sid-A6637EE1-A313-4ADF-8162-A5987BF4E1A7",
+      "source_label": "nothing available",
+      "target_id": "sid-A5F68322-DFE7-4644-A6D7-A0B63DECDED9",
+      "target_label": "Buy rest",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-D3A64D02-090D-4F0B-AB2F-B4A3F69AE810",
+      "source_label": "contact friends",
+      "target_id": "sid-A6637EE1-A313-4ADF-8162-A5987BF4E1A7",
+      "target_label": "nothing available",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "has no requirements"
+      ]
+    },
+    {
+      "source_id": "sid-D3A64D02-090D-4F0B-AB2F-B4A3F69AE810",
+      "source_label": "contact friends",
+      "target_id": "sid-0B6D12A0-CB03-485B-A852-8426E63387CC",
+      "target_label": "buy /borrowrequirements from friends",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "has requirements"
+      ]
+    },
+    {
+      "source_id": "sid-D194F9A5-9119-4266-BD50-743C962D181E",
+      "source_label": "send phone to an expert",
+      "target_id": "sid-09F55F85-1D39-4DB7-810A-F069771B3527",
+      "target_label": "Repair Process finished",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-0B6D12A0-CB03-485B-A852-8426E63387CC",
+      "source_label": "buy /borrowrequirements from friends",
+      "target_id": "sid-A5F68322-DFE7-4644-A6D7-A0B63DECDED9",
+      "target_label": "Buy rest",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-2C995627-524A-4668-A2C6-C3FFDE40A6F9",
+      "source_label": "Start Repair process",
+      "target_id": "sid-72FB7303-8245-438C-89A1-E62EF2074C6A",
+      "target_label": "Entering the model and the defect",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-F3AE118A-DF1B-442D-BB75-DC521F27035C",
+      "source_label": "everything available",
+      "target_id": "sid-9D18859A-6A42-4426-A37B-20D223A7CFB6",
+      "target_label": "Receiving instructions",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-72FB7303-8245-438C-89A1-E62EF2074C6A",
+      "source_label": "Entering the model and the defect",
+      "target_id": "sid-AD626D44-09C7-4BB0-87AA-C4CF4D278EA3",
+      "target_label": "Receiving list of requirements",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-9D18859A-6A42-4426-A37B-20D223A7CFB6",
+      "source_label": "Receiving instructions",
+      "target_id": "sid-66E205B0-C80E-4A45-8085-B1D175F83C7D",
+      "target_label": "try fixing the phone",
+      "gateway_context": []
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "Buy rest",
+      "subject_id": "sid-A5F68322-DFE7-4644-A6D7-A0B63DECDED9",
+      "predicate": "follows",
+      "object": "Receiving instructions",
+      "object_id": "sid-9D18859A-6A42-4426-A37B-20D223A7CFB6"
+    },
+    {
+      "subject": "send review of fixing it",
+      "subject_id": "sid-4DFCAAF3-524A-4EBE-B03F-C96D56A58D42",
+      "predicate": "follows",
+      "object": "Repair Process finished",
+      "object_id": "sid-09F55F85-1D39-4DB7-810A-F069771B3527"
+    },
+    {
+      "subject": "Receiving list of requirements",
+      "subject_id": "sid-AD626D44-09C7-4BB0-87AA-C4CF4D278EA3",
+      "predicate": "follows",
+      "object": "contact friends",
+      "object_id": "sid-D3A64D02-090D-4F0B-AB2F-B4A3F69AE810"
+    },
+    {
+      "subject": "Receiving list of requirements",
+      "subject_id": "sid-AD626D44-09C7-4BB0-87AA-C4CF4D278EA3",
+      "predicate": "follows",
+      "object": "everything available",
+      "object_id": "sid-F3AE118A-DF1B-442D-BB75-DC521F27035C"
+    },
+    {
+      "subject": "try fixing the phone",
+      "subject_id": "sid-66E205B0-C80E-4A45-8085-B1D175F83C7D",
+      "predicate": "follows",
+      "object": "send review of fixing it",
+      "object_id": "sid-4DFCAAF3-524A-4EBE-B03F-C96D56A58D42"
+    },
+    {
+      "subject": "try fixing the phone",
+      "subject_id": "sid-66E205B0-C80E-4A45-8085-B1D175F83C7D",
+      "predicate": "follows",
+      "object": "send phone to an expert",
+      "object_id": "sid-D194F9A5-9119-4266-BD50-743C962D181E"
+    },
+    {
+      "subject": "nothing available",
+      "subject_id": "sid-A6637EE1-A313-4ADF-8162-A5987BF4E1A7",
+      "predicate": "follows",
+      "object": "Buy rest",
+      "object_id": "sid-A5F68322-DFE7-4644-A6D7-A0B63DECDED9"
+    },
+    {
+      "subject": "contact friends",
+      "subject_id": "sid-D3A64D02-090D-4F0B-AB2F-B4A3F69AE810",
+      "predicate": "follows",
+      "object": "nothing available",
+      "object_id": "sid-A6637EE1-A313-4ADF-8162-A5987BF4E1A7"
+    },
+    {
+      "subject": "contact friends",
+      "subject_id": "sid-D3A64D02-090D-4F0B-AB2F-B4A3F69AE810",
+      "predicate": "follows",
+      "object": "buy /borrowrequirements from friends",
+      "object_id": "sid-0B6D12A0-CB03-485B-A852-8426E63387CC"
+    },
+    {
+      "subject": "send phone to an expert",
+      "subject_id": "sid-D194F9A5-9119-4266-BD50-743C962D181E",
+      "predicate": "follows",
+      "object": "Repair Process finished",
+      "object_id": "sid-09F55F85-1D39-4DB7-810A-F069771B3527"
+    },
+    {
+      "subject": "buy /borrowrequirements from friends",
+      "subject_id": "sid-0B6D12A0-CB03-485B-A852-8426E63387CC",
+      "predicate": "follows",
+      "object": "Buy rest",
+      "object_id": "sid-A5F68322-DFE7-4644-A6D7-A0B63DECDED9"
+    },
+    {
+      "subject": "Start Repair process",
+      "subject_id": "sid-2C995627-524A-4668-A2C6-C3FFDE40A6F9",
+      "predicate": "follows",
+      "object": "Entering the model and the defect",
+      "object_id": "sid-72FB7303-8245-438C-89A1-E62EF2074C6A"
+    },
+    {
+      "subject": "everything available",
+      "subject_id": "sid-F3AE118A-DF1B-442D-BB75-DC521F27035C",
+      "predicate": "follows",
+      "object": "Receiving instructions",
+      "object_id": "sid-9D18859A-6A42-4426-A37B-20D223A7CFB6"
+    },
+    {
+      "subject": "Entering the model and the defect",
+      "subject_id": "sid-72FB7303-8245-438C-89A1-E62EF2074C6A",
+      "predicate": "follows",
+      "object": "Receiving list of requirements",
+      "object_id": "sid-AD626D44-09C7-4BB0-87AA-C4CF4D278EA3"
+    },
+    {
+      "subject": "Receiving instructions",
+      "subject_id": "sid-9D18859A-6A42-4426-A37B-20D223A7CFB6",
+      "predicate": "follows",
+      "object": "try fixing the phone",
+      "object_id": "sid-66E205B0-C80E-4A45-8085-B1D175F83C7D"
+    }
+  ],
+  "matches": {
+    "Buy rest": {
+      "match": "review.sent",
+      "score": 0.1328
+    },
+    "Entering the model and the defect": {
+      "match": "smartphone.broken",
+      "score": 0.1337
+    },
+    "Receiving instructions": {
+      "match": "review.sent",
+      "score": 0.2077
+    },
+    "Receiving list of requirements": {
+      "match": "review.sent",
+      "score": 0.2414
+    },
+    "Repair Process finished": {
+      "match": "review.sent",
+      "score": 0.2495
+    },
+    "Start Repair process": {
+      "match": "smartphone.broken",
+      "score": 0.2383
+    },
+    "buy /borrowrequirements from friends": {
+      "match": "smartphone.broken",
+      "score": 0.0965
+    },
+    "contact friends": {
+      "match": "review.sent",
+      "score": 0.1643
+    },
+    "everything available": {
+      "match": "smartphone.fixed",
+      "score": 0.146
+    },
+    "nothing available": {
+      "match": "smartphone.broken",
+      "score": 0.1546
+    },
+    "send phone to an expert": {
+      "match": "phone.fixed",
+      "score": 0.3458
+    },
+    "send review of fixing it": {
+      "match": "review.sent",
+      "score": 0.6098
+    },
+    "try fixing the phone": {
+      "match": "phone.fixed",
+      "score": 0.562
+    }
+  },
+  "process_graph": [
+    {
+      "from": "review.sent",
+      "to": "review.sent",
+      "activity_from": "Buy rest",
+      "activity_to": "Receiving instructions"
+    },
+    {
+      "from": "review.sent",
+      "to": "review.sent",
+      "activity_from": "send review of fixing it",
+      "activity_to": "Repair Process finished"
+    },
+    {
+      "from": "review.sent",
+      "to": "review.sent",
+      "activity_from": "Receiving list of requirements",
+      "activity_to": "contact friends"
+    },
+    {
+      "from": "review.sent",
+      "to": "smartphone.fixed",
+      "activity_from": "Receiving list of requirements",
+      "activity_to": "everything available"
+    },
+    {
+      "from": "phone.fixed",
+      "to": "review.sent",
+      "activity_from": "try fixing the phone",
+      "activity_to": "send review of fixing it"
+    },
+    {
+      "from": "phone.fixed",
+      "to": "phone.fixed",
+      "activity_from": "try fixing the phone",
+      "activity_to": "send phone to an expert"
+    },
+    {
+      "from": "smartphone.broken",
+      "to": "review.sent",
+      "activity_from": "nothing available",
+      "activity_to": "Buy rest"
+    },
+    {
+      "from": "review.sent",
+      "to": "smartphone.broken",
+      "activity_from": "contact friends",
+      "activity_to": "nothing available"
+    },
+    {
+      "from": "review.sent",
+      "to": "smartphone.broken",
+      "activity_from": "contact friends",
+      "activity_to": "buy /borrowrequirements from friends"
+    },
+    {
+      "from": "phone.fixed",
+      "to": "review.sent",
+      "activity_from": "send phone to an expert",
+      "activity_to": "Repair Process finished"
+    },
+    {
+      "from": "smartphone.broken",
+      "to": "review.sent",
+      "activity_from": "buy /borrowrequirements from friends",
+      "activity_to": "Buy rest"
+    },
+    {
+      "from": "smartphone.broken",
+      "to": "smartphone.broken",
+      "activity_from": "Start Repair process",
+      "activity_to": "Entering the model and the defect"
+    },
+    {
+      "from": "smartphone.fixed",
+      "to": "review.sent",
+      "activity_from": "everything available",
+      "activity_to": "Receiving instructions"
+    },
+    {
+      "from": "smartphone.broken",
+      "to": "review.sent",
+      "activity_from": "Entering the model and the defect",
+      "activity_to": "Receiving list of requirements"
+    },
+    {
+      "from": "review.sent",
+      "to": "phone.fixed",
+      "activity_from": "Receiving instructions",
+      "activity_to": "try fixing the phone"
+    }
+  ],
+  "alignment": {
+    "review.sent": {
+      "operator": "AND",
+      "quote": "If it worked, send a review and/or video of you fixing it.",
+      "terms": [
+        {
+          "term": "smartphone.fixed",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        },
+        {
+          "term": "video.sent",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['video.sent']",
+          "missing": [
+            "video.sent"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE"
+    },
+    "video.sent": {
+      "operator": "AND",
+      "quote": "You start by entering the model and what is broken.",
+      "terms": [
+        {
+          "term": "smartphone.broken",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['video.sent']",
+          "missing": [
+            "video.sent"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE"
+    },
+    "smartphone.fixed": {
+      "operator": "AND",
+      "quote": "You start by entering the model and what is broken.",
+      "terms": [
+        {
+          "term": "smartphone.broken",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED"
+    }
+  },
+  "report": {
+    "summary": {
+      "ecarts": 0,
+      "non_verifiable": 1,
+      "conforme": 2
+    },
+    "ecarts": [],
+    "non_verifiable": [
+      {
+        "root_cause": "(aucune activite du processus ne correspond clairement a cela)",
+        "quote": "If it worked, send a review and/or video of you fixing it.",
+        "explanation": "Il est impossible de vérifier si l'exigence \"video sent\" est respectée ou non avant l'activité \"send review of fixing it\". En effet, la citation \"If it worked, send a review and/or video of you fixing it.\" montre qu'une condition est exigée avant cette étape, mais elle ne décrit pas ce que cette condition signifie précisément.\n\nL'activité \"send review of fixing it\" ne peut se produire que si la condition \"video sent\" est remplie. Cependant, il n'est pas possible de vérifier si cette condition est respectée ou non, car il n'y a pas d'activité claire du processus qui puisse l'associer. (Cette meme cause affecte aussi : (aucune activite du processus ne correspond clairement a cela).)",
+        "affected_activities": [
+          "(aucune activite du processus ne correspond clairement a cela)",
+          "send review of fixing it"
+        ],
+        "affected_count": 2
+      }
+    ],
+    "conforme": [
+      {
+        "target": "send review of fixing it",
+        "term": "everything available"
+      },
+      {
+        "target": "everything available",
+        "term": "Start Repair process"
+      }
+    ],
+    "piece_jointe_alignement_brut": {
+      "review.sent": {
+        "operator": "AND",
+        "quote": "If it worked, send a review and/or video of you fixing it.",
+        "terms": [
+          {
+            "term": "smartphone.fixed",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          },
+          {
+            "term": "video.sent",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['video.sent']",
+            "missing": [
+              "video.sent"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE"
+      },
+      "video.sent": {
+        "operator": "AND",
+        "quote": "You start by entering the model and what is broken.",
+        "terms": [
+          {
+            "term": "smartphone.broken",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['video.sent']",
+            "missing": [
+              "video.sent"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE"
+      },
+      "smartphone.fixed": {
+        "operator": "AND",
+        "quote": "You start by entering the model and what is broken.",
+        "terms": [
+          {
+            "term": "smartphone.broken",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED"
+      }
+    }
+  },
+  "errors": []
+}

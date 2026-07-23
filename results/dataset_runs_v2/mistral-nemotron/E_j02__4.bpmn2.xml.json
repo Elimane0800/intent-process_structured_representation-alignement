@@ -1,0 +1,968 @@
+{
+  "case_name": "E_j02",
+  "text": "Category: E-Government\nTitle: Becoming A Parent\n\nCreate a process that support in planning, taking and extending a maternity\nleave.\n\n* Fetch information about potential models (months duration, split between parents)\n* Let parent select\n* Collect relevant information\n* Notify Social Security, Company in time\n* Gather information from companies\n* At the end of the period let parent decide about extension.\n",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "mistral-nemotron",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "mistral-nemotron",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/text_and_bpmn/bpmn/E_j02/4.bpmn2.xml",
+  "report_model": "mistral-nemotron",
+  "candidates": {
+    "parent": [
+      "selecting",
+      "notified",
+      "deciding"
+    ],
+    "information": [
+      "fetched",
+      "collected",
+      "gathered"
+    ],
+    "model": [
+      "selected"
+    ],
+    "social_security": [
+      "notified"
+    ],
+    "company": [
+      "notified",
+      "gathered_from"
+    ],
+    "period": [
+      "ended"
+    ]
+  },
+  "validation_report": {
+    "parent": {
+      "f_lex": "ACTOR",
+      "kept": false
+    },
+    "information": {
+      "f_lex": "ENTITY",
+      "kept": true
+    },
+    "model": {
+      "f_lex": "ENTITY",
+      "kept": true
+    },
+    "social_security": {
+      "f_lex": "INDETERMINATE",
+      "kept": true
+    },
+    "company": {
+      "f_lex": "ACTOR",
+      "kept": false
+    },
+    "period": {
+      "f_lex": "INDETERMINATE",
+      "kept": true
+    }
+  },
+  "state_space": {
+    "information": [
+      "fetched",
+      "collected",
+      "gathered"
+    ],
+    "model": [
+      "selected"
+    ],
+    "social_security": [
+      "notified"
+    ],
+    "period": [
+      "ended"
+    ]
+  },
+  "state_space_dedup": {
+    "merged": {},
+    "ambiguous_not_merged": {}
+  },
+  "raw_preconditions": {
+    "information.fetched": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "information.collected": {
+      "precondition": "information.fetched",
+      "quote": "Collect relevant information"
+    },
+    "information.gathered": {
+      "precondition": "period.ended",
+      "quote": "Gather information from companies"
+    },
+    "model.selected": {
+      "precondition": "information.fetched",
+      "quote": "Let parent select"
+    },
+    "social_security.notified": {
+      "precondition": "model.selected AND information.collected",
+      "quote": "Notify Social Security, Company in time"
+    },
+    "period.ended": {
+      "precondition": "UNRESOLVED",
+      "quote": null
+    }
+  },
+  "validated_preconditions": {
+    "information.fetched": {
+      "precondition": "INITIAL",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "information.collected": {
+      "precondition": "information.fetched",
+      "quote": "Collect relevant information",
+      "status": "OK",
+      "reason": null
+    },
+    "information.gathered": {
+      "precondition": "period.ended",
+      "quote": "Gather information from companies",
+      "status": "OK",
+      "reason": null
+    },
+    "model.selected": {
+      "precondition": "information.fetched",
+      "quote": "Let parent select",
+      "status": "OK",
+      "reason": null
+    },
+    "social_security.notified": {
+      "precondition": "model.selected AND information.collected",
+      "quote": "Notify Social Security, Company in time",
+      "status": "OK",
+      "reason": null
+    },
+    "period.ended": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    }
+  },
+  "precondition_cycles": [],
+  "reference_graph": {
+    "nodes": [
+      {
+        "id": "information.fetched",
+        "weight": 1.0
+      },
+      {
+        "id": "information.collected",
+        "weight": 1.0
+      },
+      {
+        "id": "information.gathered",
+        "weight": 0.5
+      },
+      {
+        "id": "model.selected",
+        "weight": 1.0
+      },
+      {
+        "id": "social_security.notified",
+        "weight": 1.0
+      },
+      {
+        "id": "period.ended",
+        "weight": 0.5
+      }
+    ],
+    "edges": [
+      {
+        "from": "information.fetched",
+        "to": "information.collected",
+        "type": "sequence",
+        "operator": "AND",
+        "quote": "Collect relevant information"
+      },
+      {
+        "from": "period.ended",
+        "to": "information.gathered",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "Gather information from companies"
+      },
+      {
+        "from": "information.fetched",
+        "to": "model.selected",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "Let parent select"
+      },
+      {
+        "from": "model.selected",
+        "to": "social_security.notified",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "Notify Social Security, Company in time"
+      },
+      {
+        "from": "information.collected",
+        "to": "social_security.notified",
+        "type": "cross_entity_guard",
+        "operator": "AND",
+        "quote": "Notify Social Security, Company in time"
+      }
+    ],
+    "cycles": []
+  },
+  "dfg_edges": [
+    {
+      "source_id": "sid-E3DD0C96-B435-4F8E-9A01-88026F757782",
+      "source_label": "Baby younger than 2 years",
+      "target_id": "sid-F603E737-035C-4F63-A74D-E78199CC3F50",
+      "target_label": "employed",
+      "gateway_context": [
+        "ParallelGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-E3DD0C96-B435-4F8E-9A01-88026F757782",
+      "source_label": "Baby younger than 2 years",
+      "target_id": "sid-F3737B01-3CDB-4DCD-902B-1FD35D614470",
+      "target_label": "Self-employed/studying/housewife/man",
+      "gateway_context": [
+        "ParallelGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-EF754AB6-BEFA-40E0-BFC9-C74517319175",
+      "source_label": "Send employer notification ",
+      "target_id": "sid-443E9297-4747-4F4D-99F8-C04AEA972992",
+      "target_label": "Company",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-EF754AB6-BEFA-40E0-BFC9-C74517319175",
+      "source_label": "Send employer notification ",
+      "target_id": "sid-993E93BA-5C8B-4621-9EB3-3B4EC9DC0548",
+      "target_label": "Recieve employer notification",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-AA5DFC67-BB13-44D2-B1AF-158DFBD24ECA",
+      "source_label": "maternity leave more than 3 months",
+      "target_id": "sid-5F129A45-2A00-46EF-8125-A59950FC37AA",
+      "target_label": "Send employer notification ",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-434E4BE7-9491-4F99-8F9C-8F2FEE9AA4E2",
+      "source_label": "maternity leave less than 2 months ",
+      "target_id": "sid-EF754AB6-BEFA-40E0-BFC9-C74517319175",
+      "target_label": "Send employer notification ",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-8CD495C8-3148-41D4-8417-846019D32EB2",
+      "source_label": "Split maternity leave",
+      "target_id": "sid-AA5DFC67-BB13-44D2-B1AF-158DFBD24ECA",
+      "target_label": "maternity leave more than 3 months",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-8CD495C8-3148-41D4-8417-846019D32EB2",
+      "source_label": "Split maternity leave",
+      "target_id": "sid-434E4BE7-9491-4F99-8F9C-8F2FEE9AA4E2",
+      "target_label": "maternity leave less than 2 months ",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-F603E737-035C-4F63-A74D-E78199CC3F50",
+      "source_label": "employed",
+      "target_id": "sid-25E99566-9731-4F3E-81D5-A27685A83479",
+      "target_label": "Send employer notfication",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-25E99566-9731-4F3E-81D5-A27685A83479",
+      "source_label": "Send employer notfication",
+      "target_id": "sid-31CCDE57-FA2E-49E6-8BE9-AF8A7AD9DE90",
+      "target_label": "Recieve employer confimation",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-25E99566-9731-4F3E-81D5-A27685A83479",
+      "source_label": "Send employer notfication",
+      "target_id": "sid-443E9297-4747-4F4D-99F8-C04AEA972992",
+      "target_label": "Company",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-993E93BA-5C8B-4621-9EB3-3B4EC9DC0548",
+      "source_label": "Recieve employer notification",
+      "target_id": "sid-788B6FE7-8EED-41D3-9FA6-9EBC24D0645C",
+      "target_label": "Take maternity leave",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-443E9297-4747-4F4D-99F8-C04AEA972992",
+      "source_label": "Company",
+      "target_id": "sid-31CCDE57-FA2E-49E6-8BE9-AF8A7AD9DE90",
+      "target_label": "Recieve employer confimation",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-443E9297-4747-4F4D-99F8-C04AEA972992",
+      "source_label": "Company",
+      "target_id": "sid-993E93BA-5C8B-4621-9EB3-3B4EC9DC0548",
+      "target_label": "Recieve employer notification",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-498D4D4A-8DA3-4F8F-9E5C-1A105ABEB845",
+      "source_label": "Extend maternity leave",
+      "target_id": "sid-AA5DFC67-BB13-44D2-B1AF-158DFBD24ECA",
+      "target_label": "maternity leave more than 3 months",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-498D4D4A-8DA3-4F8F-9E5C-1A105ABEB845",
+      "source_label": "Extend maternity leave",
+      "target_id": "sid-434E4BE7-9491-4F99-8F9C-8F2FEE9AA4E2",
+      "target_label": "maternity leave less than 2 months ",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-CC9F2CF3-00A8-44EE-967E-C712C2F86339",
+      "source_label": "Take maternity leave",
+      "target_id": "sid-498D4D4A-8DA3-4F8F-9E5C-1A105ABEB845",
+      "target_label": "Extend maternity leave",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-CC9F2CF3-00A8-44EE-967E-C712C2F86339",
+      "source_label": "Take maternity leave",
+      "target_id": "sid-09D4BF01-FEA4-445A-A253-B5C907607DF3",
+      "target_label": "Both parents take maternity leave",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-CC9F2CF3-00A8-44EE-967E-C712C2F86339",
+      "source_label": "Take maternity leave",
+      "target_id": "sid-8CD495C8-3148-41D4-8417-846019D32EB2",
+      "target_label": "Split maternity leave",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-31CCDE57-FA2E-49E6-8BE9-AF8A7AD9DE90",
+      "source_label": "Recieve employer confimation",
+      "target_id": "sid-CC9F2CF3-00A8-44EE-967E-C712C2F86339",
+      "target_label": "Take maternity leave",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-57627A6E-20CB-4BEE-917A-1D5C3C038197",
+      "source_label": "Parent",
+      "target_id": "sid-F603E737-035C-4F63-A74D-E78199CC3F50",
+      "target_label": "employed",
+      "gateway_context": [
+        "ParallelGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-57627A6E-20CB-4BEE-917A-1D5C3C038197",
+      "source_label": "Parent",
+      "target_id": "sid-F3737B01-3CDB-4DCD-902B-1FD35D614470",
+      "target_label": "Self-employed/studying/housewife/man",
+      "gateway_context": [
+        "ParallelGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-5F129A45-2A00-46EF-8125-A59950FC37AA",
+      "source_label": "Send employer notification ",
+      "target_id": "sid-443E9297-4747-4F4D-99F8-C04AEA972992",
+      "target_label": "Company",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-5F129A45-2A00-46EF-8125-A59950FC37AA",
+      "source_label": "Send employer notification ",
+      "target_id": "sid-993E93BA-5C8B-4621-9EB3-3B4EC9DC0548",
+      "target_label": "Recieve employer notification",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "Baby younger than 2 years",
+      "subject_id": "sid-E3DD0C96-B435-4F8E-9A01-88026F757782",
+      "predicate": "follows",
+      "object": "employed",
+      "object_id": "sid-F603E737-035C-4F63-A74D-E78199CC3F50"
+    },
+    {
+      "subject": "Baby younger than 2 years",
+      "subject_id": "sid-E3DD0C96-B435-4F8E-9A01-88026F757782",
+      "predicate": "follows",
+      "object": "Self-employed/studying/housewife/man",
+      "object_id": "sid-F3737B01-3CDB-4DCD-902B-1FD35D614470"
+    },
+    {
+      "subject": "Send employer notification ",
+      "subject_id": "sid-EF754AB6-BEFA-40E0-BFC9-C74517319175",
+      "predicate": "follows",
+      "object": "Company",
+      "object_id": "sid-443E9297-4747-4F4D-99F8-C04AEA972992"
+    },
+    {
+      "subject": "Send employer notification ",
+      "subject_id": "sid-EF754AB6-BEFA-40E0-BFC9-C74517319175",
+      "predicate": "follows",
+      "object": "Recieve employer notification",
+      "object_id": "sid-993E93BA-5C8B-4621-9EB3-3B4EC9DC0548"
+    },
+    {
+      "subject": "maternity leave more than 3 months",
+      "subject_id": "sid-AA5DFC67-BB13-44D2-B1AF-158DFBD24ECA",
+      "predicate": "follows",
+      "object": "Send employer notification ",
+      "object_id": "sid-5F129A45-2A00-46EF-8125-A59950FC37AA"
+    },
+    {
+      "subject": "maternity leave less than 2 months ",
+      "subject_id": "sid-434E4BE7-9491-4F99-8F9C-8F2FEE9AA4E2",
+      "predicate": "follows",
+      "object": "Send employer notification ",
+      "object_id": "sid-EF754AB6-BEFA-40E0-BFC9-C74517319175"
+    },
+    {
+      "subject": "Split maternity leave",
+      "subject_id": "sid-8CD495C8-3148-41D4-8417-846019D32EB2",
+      "predicate": "follows",
+      "object": "maternity leave more than 3 months",
+      "object_id": "sid-AA5DFC67-BB13-44D2-B1AF-158DFBD24ECA"
+    },
+    {
+      "subject": "Split maternity leave",
+      "subject_id": "sid-8CD495C8-3148-41D4-8417-846019D32EB2",
+      "predicate": "follows",
+      "object": "maternity leave less than 2 months ",
+      "object_id": "sid-434E4BE7-9491-4F99-8F9C-8F2FEE9AA4E2"
+    },
+    {
+      "subject": "employed",
+      "subject_id": "sid-F603E737-035C-4F63-A74D-E78199CC3F50",
+      "predicate": "follows",
+      "object": "Send employer notfication",
+      "object_id": "sid-25E99566-9731-4F3E-81D5-A27685A83479"
+    },
+    {
+      "subject": "Send employer notfication",
+      "subject_id": "sid-25E99566-9731-4F3E-81D5-A27685A83479",
+      "predicate": "follows",
+      "object": "Recieve employer confimation",
+      "object_id": "sid-31CCDE57-FA2E-49E6-8BE9-AF8A7AD9DE90"
+    },
+    {
+      "subject": "Send employer notfication",
+      "subject_id": "sid-25E99566-9731-4F3E-81D5-A27685A83479",
+      "predicate": "follows",
+      "object": "Company",
+      "object_id": "sid-443E9297-4747-4F4D-99F8-C04AEA972992"
+    },
+    {
+      "subject": "Recieve employer notification",
+      "subject_id": "sid-993E93BA-5C8B-4621-9EB3-3B4EC9DC0548",
+      "predicate": "follows",
+      "object": "Take maternity leave",
+      "object_id": "sid-788B6FE7-8EED-41D3-9FA6-9EBC24D0645C"
+    },
+    {
+      "subject": "Company",
+      "subject_id": "sid-443E9297-4747-4F4D-99F8-C04AEA972992",
+      "predicate": "follows",
+      "object": "Recieve employer confimation",
+      "object_id": "sid-31CCDE57-FA2E-49E6-8BE9-AF8A7AD9DE90"
+    },
+    {
+      "subject": "Company",
+      "subject_id": "sid-443E9297-4747-4F4D-99F8-C04AEA972992",
+      "predicate": "follows",
+      "object": "Recieve employer notification",
+      "object_id": "sid-993E93BA-5C8B-4621-9EB3-3B4EC9DC0548"
+    },
+    {
+      "subject": "Extend maternity leave",
+      "subject_id": "sid-498D4D4A-8DA3-4F8F-9E5C-1A105ABEB845",
+      "predicate": "follows",
+      "object": "maternity leave more than 3 months",
+      "object_id": "sid-AA5DFC67-BB13-44D2-B1AF-158DFBD24ECA"
+    },
+    {
+      "subject": "Extend maternity leave",
+      "subject_id": "sid-498D4D4A-8DA3-4F8F-9E5C-1A105ABEB845",
+      "predicate": "follows",
+      "object": "maternity leave less than 2 months ",
+      "object_id": "sid-434E4BE7-9491-4F99-8F9C-8F2FEE9AA4E2"
+    },
+    {
+      "subject": "Take maternity leave",
+      "subject_id": "sid-CC9F2CF3-00A8-44EE-967E-C712C2F86339",
+      "predicate": "follows",
+      "object": "Extend maternity leave",
+      "object_id": "sid-498D4D4A-8DA3-4F8F-9E5C-1A105ABEB845"
+    },
+    {
+      "subject": "Take maternity leave",
+      "subject_id": "sid-CC9F2CF3-00A8-44EE-967E-C712C2F86339",
+      "predicate": "follows",
+      "object": "Both parents take maternity leave",
+      "object_id": "sid-09D4BF01-FEA4-445A-A253-B5C907607DF3"
+    },
+    {
+      "subject": "Take maternity leave",
+      "subject_id": "sid-CC9F2CF3-00A8-44EE-967E-C712C2F86339",
+      "predicate": "follows",
+      "object": "Split maternity leave",
+      "object_id": "sid-8CD495C8-3148-41D4-8417-846019D32EB2"
+    },
+    {
+      "subject": "Recieve employer confimation",
+      "subject_id": "sid-31CCDE57-FA2E-49E6-8BE9-AF8A7AD9DE90",
+      "predicate": "follows",
+      "object": "Take maternity leave",
+      "object_id": "sid-CC9F2CF3-00A8-44EE-967E-C712C2F86339"
+    },
+    {
+      "subject": "Parent",
+      "subject_id": "sid-57627A6E-20CB-4BEE-917A-1D5C3C038197",
+      "predicate": "follows",
+      "object": "employed",
+      "object_id": "sid-F603E737-035C-4F63-A74D-E78199CC3F50"
+    },
+    {
+      "subject": "Parent",
+      "subject_id": "sid-57627A6E-20CB-4BEE-917A-1D5C3C038197",
+      "predicate": "follows",
+      "object": "Self-employed/studying/housewife/man",
+      "object_id": "sid-F3737B01-3CDB-4DCD-902B-1FD35D614470"
+    },
+    {
+      "subject": "Send employer notification ",
+      "subject_id": "sid-5F129A45-2A00-46EF-8125-A59950FC37AA",
+      "predicate": "follows",
+      "object": "Company",
+      "object_id": "sid-443E9297-4747-4F4D-99F8-C04AEA972992"
+    },
+    {
+      "subject": "Send employer notification ",
+      "subject_id": "sid-5F129A45-2A00-46EF-8125-A59950FC37AA",
+      "predicate": "follows",
+      "object": "Recieve employer notification",
+      "object_id": "sid-993E93BA-5C8B-4621-9EB3-3B4EC9DC0548"
+    }
+  ],
+  "matches": {
+    "Baby younger than 2 years": {
+      "match": "information.fetched",
+      "score": 0.0637
+    },
+    "Both parents take maternity leave": {
+      "match": "social_security.notified",
+      "score": 0.1042
+    },
+    "Company": {
+      "match": "information.collected",
+      "score": 0.1742
+    },
+    "Extend maternity leave": {
+      "match": "social_security.notified",
+      "score": 0.1418
+    },
+    "Parent": {
+      "match": "period.ended",
+      "score": 0.1771
+    },
+    "Recieve employer confimation": {
+      "match": "social_security.notified",
+      "score": 0.2048
+    },
+    "Recieve employer notification": {
+      "match": "social_security.notified",
+      "score": 0.4321
+    },
+    "Self-employed/studying/housewife/man": {
+      "match": "social_security.notified",
+      "score": 0.1278
+    },
+    "Send employer notfication": {
+      "match": "social_security.notified",
+      "score": 0.4232
+    },
+    "Send employer notification ": {
+      "match": "social_security.notified",
+      "score": 0.4436
+    },
+    "Split maternity leave": {
+      "match": "period.ended",
+      "score": 0.1306
+    },
+    "Take maternity leave": {
+      "match": "social_security.notified",
+      "score": 0.1238
+    },
+    "employed": {
+      "match": "information.fetched",
+      "score": 0.2173
+    },
+    "maternity leave less than 2 months ": {
+      "match": "social_security.notified",
+      "score": 0.1473
+    },
+    "maternity leave more than 3 months": {
+      "match": "social_security.notified",
+      "score": 0.1698
+    }
+  },
+  "process_graph": [
+    {
+      "from": "information.fetched",
+      "to": "information.fetched",
+      "activity_from": "Baby younger than 2 years",
+      "activity_to": "employed"
+    },
+    {
+      "from": "information.fetched",
+      "to": "social_security.notified",
+      "activity_from": "Baby younger than 2 years",
+      "activity_to": "Self-employed/studying/housewife/man"
+    },
+    {
+      "from": "social_security.notified",
+      "to": "information.collected",
+      "activity_from": "Send employer notification ",
+      "activity_to": "Company"
+    },
+    {
+      "from": "social_security.notified",
+      "to": "social_security.notified",
+      "activity_from": "Send employer notification ",
+      "activity_to": "Recieve employer notification"
+    },
+    {
+      "from": "social_security.notified",
+      "to": "social_security.notified",
+      "activity_from": "maternity leave more than 3 months",
+      "activity_to": "Send employer notification "
+    },
+    {
+      "from": "social_security.notified",
+      "to": "social_security.notified",
+      "activity_from": "maternity leave less than 2 months ",
+      "activity_to": "Send employer notification "
+    },
+    {
+      "from": "period.ended",
+      "to": "social_security.notified",
+      "activity_from": "Split maternity leave",
+      "activity_to": "maternity leave more than 3 months"
+    },
+    {
+      "from": "period.ended",
+      "to": "social_security.notified",
+      "activity_from": "Split maternity leave",
+      "activity_to": "maternity leave less than 2 months "
+    },
+    {
+      "from": "information.fetched",
+      "to": "social_security.notified",
+      "activity_from": "employed",
+      "activity_to": "Send employer notfication"
+    },
+    {
+      "from": "social_security.notified",
+      "to": "social_security.notified",
+      "activity_from": "Send employer notfication",
+      "activity_to": "Recieve employer confimation"
+    },
+    {
+      "from": "social_security.notified",
+      "to": "information.collected",
+      "activity_from": "Send employer notfication",
+      "activity_to": "Company"
+    },
+    {
+      "from": "social_security.notified",
+      "to": "social_security.notified",
+      "activity_from": "Recieve employer notification",
+      "activity_to": "Take maternity leave"
+    },
+    {
+      "from": "information.collected",
+      "to": "social_security.notified",
+      "activity_from": "Company",
+      "activity_to": "Recieve employer confimation"
+    },
+    {
+      "from": "information.collected",
+      "to": "social_security.notified",
+      "activity_from": "Company",
+      "activity_to": "Recieve employer notification"
+    },
+    {
+      "from": "social_security.notified",
+      "to": "social_security.notified",
+      "activity_from": "Extend maternity leave",
+      "activity_to": "maternity leave more than 3 months"
+    },
+    {
+      "from": "social_security.notified",
+      "to": "social_security.notified",
+      "activity_from": "Extend maternity leave",
+      "activity_to": "maternity leave less than 2 months "
+    },
+    {
+      "from": "social_security.notified",
+      "to": "social_security.notified",
+      "activity_from": "Take maternity leave",
+      "activity_to": "Extend maternity leave"
+    },
+    {
+      "from": "social_security.notified",
+      "to": "social_security.notified",
+      "activity_from": "Take maternity leave",
+      "activity_to": "Both parents take maternity leave"
+    },
+    {
+      "from": "social_security.notified",
+      "to": "period.ended",
+      "activity_from": "Take maternity leave",
+      "activity_to": "Split maternity leave"
+    },
+    {
+      "from": "social_security.notified",
+      "to": "social_security.notified",
+      "activity_from": "Recieve employer confimation",
+      "activity_to": "Take maternity leave"
+    },
+    {
+      "from": "period.ended",
+      "to": "information.fetched",
+      "activity_from": "Parent",
+      "activity_to": "employed"
+    },
+    {
+      "from": "period.ended",
+      "to": "social_security.notified",
+      "activity_from": "Parent",
+      "activity_to": "Self-employed/studying/housewife/man"
+    },
+    {
+      "from": "social_security.notified",
+      "to": "information.collected",
+      "activity_from": "Send employer notification ",
+      "activity_to": "Company"
+    },
+    {
+      "from": "social_security.notified",
+      "to": "social_security.notified",
+      "activity_from": "Send employer notification ",
+      "activity_to": "Recieve employer notification"
+    }
+  ],
+  "alignment": {
+    "information.collected": {
+      "operator": "AND",
+      "quote": "Collect relevant information",
+      "terms": [
+        {
+          "term": "information.fetched",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED"
+    },
+    "information.gathered": {
+      "operator": "AND",
+      "quote": "Gather information from companies",
+      "terms": [
+        {
+          "term": "period.ended",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['information.gathered']",
+          "missing": [
+            "information.gathered"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE"
+    },
+    "model.selected": {
+      "operator": "AND",
+      "quote": "Let parent select",
+      "terms": [
+        {
+          "term": "information.fetched",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['model.selected']",
+          "missing": [
+            "model.selected"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE"
+    },
+    "social_security.notified": {
+      "operator": "AND",
+      "quote": "Notify Social Security, Company in time",
+      "terms": [
+        {
+          "term": "model.selected",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['model.selected']",
+          "missing": [
+            "model.selected"
+          ]
+        },
+        {
+          "term": "information.collected",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "UNRESOLVABLE"
+    }
+  },
+  "report": {
+    "summary": {
+      "ecarts": 0,
+      "non_verifiable": 2,
+      "conforme": 2
+    },
+    "ecarts": [],
+    "non_verifiable": [
+      {
+        "root_cause": "(aucune activite du processus ne correspond clairement a cela)",
+        "quote": "Gather information from companies",
+        "explanation": "Le texte source indique qu'il faut d'abord \"Gather information from companies\" avant que l'activité \"(aucune activité du processus ne correspond clairement à cela)\" puisse se produire. Cependant, cette condition n'est associée à aucune étape claire du processus observé, ce qui rend impossible de vérifier si elle est respectée ou non.",
+        "quote_verbatim": true,
+        "affected_activities": [
+          "(aucune activite du processus ne correspond clairement a cela)"
+        ],
+        "affected_count": 1
+      },
+      {
+        "root_cause": "(aucune activite du processus ne correspond clairement a cela)",
+        "quote": "Let parent select",
+        "explanation": "Le texte source indique qu'une condition doit être remplie avant l'activité \"(aucune activité du processus ne correspond clairement à cela)\" : la citation précise \"Let parent select\".\n\nCette condition n'est associée à aucune activité claire dans le processus observé, ce qui rend impossible de vérifier si elle est respectée ou non. (Cette meme cause affecte aussi : Send employer notification .)",
+        "quote_verbatim": true,
+        "affected_activities": [
+          "(aucune activite du processus ne correspond clairement a cela)",
+          "Send employer notification "
+        ],
+        "affected_count": 2
+      }
+    ],
+    "conforme": [
+      {
+        "target": "Company",
+        "term": "employed"
+      },
+      {
+        "target": "Send employer notification ",
+        "term": "Company"
+      }
+    ],
+    "piece_jointe_alignement_brut": {
+      "information.collected": {
+        "operator": "AND",
+        "quote": "Collect relevant information",
+        "terms": [
+          {
+            "term": "information.fetched",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED"
+      },
+      "information.gathered": {
+        "operator": "AND",
+        "quote": "Gather information from companies",
+        "terms": [
+          {
+            "term": "period.ended",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['information.gathered']",
+            "missing": [
+              "information.gathered"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE"
+      },
+      "model.selected": {
+        "operator": "AND",
+        "quote": "Let parent select",
+        "terms": [
+          {
+            "term": "information.fetched",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['model.selected']",
+            "missing": [
+              "model.selected"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE"
+      },
+      "social_security.notified": {
+        "operator": "AND",
+        "quote": "Notify Social Security, Company in time",
+        "terms": [
+          {
+            "term": "model.selected",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['model.selected']",
+            "missing": [
+              "model.selected"
+            ]
+          },
+          {
+            "term": "information.collected",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "UNRESOLVABLE"
+      }
+    }
+  },
+  "errors": []
+}

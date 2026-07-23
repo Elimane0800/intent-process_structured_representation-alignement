@@ -1,0 +1,666 @@
+{
+  "case_name": "M_g02",
+  "text": "Category: Manufacturing\nTitle: Building a custom machine out of Lego bricks\n\nWhen building a custom machine out of Lego bricks, you first need to\ndevelop the basic design. After that, you order certain Lego brick sets. \nYou give the lego sets to a group of children which should sort the parts for you (into a\nnumber of containers). Your machine is built out of a number of subcomponents.\nYou build them individually, using parts from the sorted containers.  If there\nare no more parts in a container, you reorder individual parts. After building\neach subcomponent, you have to test them individually and (if each test is\nsuccessful) assemble them. If subcomponents are not tested successfully, you have\nto redesign and rebuild them.\n",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "llama-3.1-8b",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "llama-3.1-8b",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/text_and_bpmn/bpmn/M_g02/9.bpmn2.xml",
+  "candidates": {
+    "machine": [
+      "built"
+    ],
+    "design": [
+      "basic"
+    ],
+    "lego_brick_sets": [
+      "ordered"
+    ],
+    "container": [
+      "empty"
+    ],
+    "subcomponent": [
+      "redesigned",
+      "rebuilt"
+    ],
+    "part": [
+      "sorted",
+      "reordered",
+      "used"
+    ],
+    "test": [
+      "successful"
+    ]
+  },
+  "validation_report": {
+    "machine": {
+      "f_lex": "ENTITY",
+      "kept": true
+    },
+    "design": {
+      "f_lex": "ENTITY",
+      "kept": true
+    },
+    "lego_brick_sets": {
+      "f_lex": "ACTOR",
+      "kept": false
+    },
+    "container": {
+      "f_lex": "ENTITY",
+      "kept": true
+    },
+    "subcomponent": {
+      "f_lex": "INDETERMINATE",
+      "kept": true
+    },
+    "part": {
+      "f_lex": "INDETERMINATE",
+      "kept": true
+    },
+    "test": {
+      "f_lex": "ENTITY",
+      "kept": true
+    }
+  },
+  "state_space": {
+    "machine": [
+      "built"
+    ],
+    "design": [
+      "basic"
+    ],
+    "container": [
+      "empty"
+    ],
+    "subcomponent": [
+      "redesigned",
+      "rebuilt"
+    ],
+    "part": [
+      "sorted",
+      "reordered",
+      "used"
+    ],
+    "test": [
+      "successful"
+    ]
+  },
+  "dfg_edges": [
+    {
+      "source_id": "sid-417A0727-85DC-4F5E-B133-D0531A168CDF",
+      "source_label": "Start ",
+      "target_id": "sid-37EBDA59-1ADF-47E2-9701-F8C70E86ACE6",
+      "target_label": "Develop Basic Design",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-F0D3D26C-8C22-4762-9EC5-5FA2E88912A7",
+      "source_label": "Hand the lego sets to children",
+      "target_id": "sid-1BDC6CA8-B20B-44FC-B669-6E97A73B04EC",
+      "target_label": "Sort parts into containers",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-F0D3D26C-8C22-4762-9EC5-5FA2E88912A7",
+      "source_label": "Hand the lego sets to children",
+      "target_id": "sid-6E449D20-659A-4596-99DA-00914710E122",
+      "target_label": "Sort parts into containers",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-33714195-56DD-482F-8A97-B03D89ED71D2",
+      "source_label": "Test subcomponent",
+      "target_id": "sid-5524FA17-E3AB-4E9D-808D-2AA37FFDD023",
+      "target_label": "Redesign subcomponent",
+      "gateway_context": [
+        "ParallelGateway",
+        "ExclusiveGateway",
+        "Test not successful"
+      ]
+    },
+    {
+      "source_id": "sid-33714195-56DD-482F-8A97-B03D89ED71D2",
+      "source_label": "Test subcomponent",
+      "target_id": "sid-2108270F-5E81-47EE-A1AB-F99E3D45F6FE",
+      "target_label": "Assemble subcomponent",
+      "gateway_context": [
+        "ParallelGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-5524FA17-E3AB-4E9D-808D-2AA37FFDD023",
+      "source_label": "Redesign subcomponent",
+      "target_id": "sid-F3262A37-1A69-4E65-8028-33C4692AF2B5",
+      "target_label": "Check the stock",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "Container empty"
+      ]
+    },
+    {
+      "source_id": "sid-5524FA17-E3AB-4E9D-808D-2AA37FFDD023",
+      "source_label": "Redesign subcomponent",
+      "target_id": "sid-5B925965-34DA-4DDA-A57A-AA75D00541AE",
+      "target_label": "Build subcomponent",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "Parts on stock",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-5524FA17-E3AB-4E9D-808D-2AA37FFDD023",
+      "source_label": "Redesign subcomponent",
+      "target_id": "sid-4C378C4F-10B6-43A9-8518-03EDE15235C5",
+      "target_label": "Build subcomponent",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "Parts on stock",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-6E449D20-659A-4596-99DA-00914710E122",
+      "source_label": "Sort parts into containers",
+      "target_id": "sid-F3262A37-1A69-4E65-8028-33C4692AF2B5",
+      "target_label": "Check the stock",
+      "gateway_context": [
+        "ParallelGateway",
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "Container empty"
+      ]
+    },
+    {
+      "source_id": "sid-6E449D20-659A-4596-99DA-00914710E122",
+      "source_label": "Sort parts into containers",
+      "target_id": "sid-5B925965-34DA-4DDA-A57A-AA75D00541AE",
+      "target_label": "Build subcomponent",
+      "gateway_context": [
+        "ParallelGateway",
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "Parts on stock",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-6E449D20-659A-4596-99DA-00914710E122",
+      "source_label": "Sort parts into containers",
+      "target_id": "sid-4C378C4F-10B6-43A9-8518-03EDE15235C5",
+      "target_label": "Build subcomponent",
+      "gateway_context": [
+        "ParallelGateway",
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "Parts on stock",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-7CF3B2D8-D6DE-456B-986D-7A92CCC81E33",
+      "source_label": "Test subcomponent",
+      "target_id": "sid-5524FA17-E3AB-4E9D-808D-2AA37FFDD023",
+      "target_label": "Redesign subcomponent",
+      "gateway_context": [
+        "ParallelGateway",
+        "ExclusiveGateway",
+        "Test not successful"
+      ]
+    },
+    {
+      "source_id": "sid-7CF3B2D8-D6DE-456B-986D-7A92CCC81E33",
+      "source_label": "Test subcomponent",
+      "target_id": "sid-2108270F-5E81-47EE-A1AB-F99E3D45F6FE",
+      "target_label": "Assemble subcomponent",
+      "gateway_context": [
+        "ParallelGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "sid-F3262A37-1A69-4E65-8028-33C4692AF2B5",
+      "source_label": "Check the stock",
+      "target_id": "sid-2C0799FA-BA8A-40C2-8F9A-41A24BBCCF28",
+      "target_label": "Order Lego Brick sets",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-2C0799FA-BA8A-40C2-8F9A-41A24BBCCF28",
+      "source_label": "Order Lego Brick sets",
+      "target_id": "sid-F0D3D26C-8C22-4762-9EC5-5FA2E88912A7",
+      "target_label": "Hand the lego sets to children",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-2C0799FA-BA8A-40C2-8F9A-41A24BBCCF28",
+      "source_label": "Order Lego Brick sets",
+      "target_id": "sid-C7137019-578A-4233-B439-29FA39704478",
+      "target_label": "",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-4C378C4F-10B6-43A9-8518-03EDE15235C5",
+      "source_label": "Build subcomponent",
+      "target_id": "sid-33714195-56DD-482F-8A97-B03D89ED71D2",
+      "target_label": "Test subcomponent",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-37EBDA59-1ADF-47E2-9701-F8C70E86ACE6",
+      "source_label": "Develop Basic Design",
+      "target_id": "sid-F3262A37-1A69-4E65-8028-33C4692AF2B5",
+      "target_label": "Check the stock",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-2108270F-5E81-47EE-A1AB-F99E3D45F6FE",
+      "source_label": "Assemble subcomponent",
+      "target_id": "sid-79F34C53-5D29-4D91-A8F2-8674E65BA8EC",
+      "target_label": "End ",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-5B925965-34DA-4DDA-A57A-AA75D00541AE",
+      "source_label": "Build subcomponent",
+      "target_id": "sid-7CF3B2D8-D6DE-456B-986D-7A92CCC81E33",
+      "target_label": "Test subcomponent",
+      "gateway_context": []
+    },
+    {
+      "source_id": "sid-1BDC6CA8-B20B-44FC-B669-6E97A73B04EC",
+      "source_label": "Sort parts into containers",
+      "target_id": "sid-F3262A37-1A69-4E65-8028-33C4692AF2B5",
+      "target_label": "Check the stock",
+      "gateway_context": [
+        "ParallelGateway",
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "Container empty"
+      ]
+    },
+    {
+      "source_id": "sid-1BDC6CA8-B20B-44FC-B669-6E97A73B04EC",
+      "source_label": "Sort parts into containers",
+      "target_id": "sid-5B925965-34DA-4DDA-A57A-AA75D00541AE",
+      "target_label": "Build subcomponent",
+      "gateway_context": [
+        "ParallelGateway",
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "Parts on stock",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "sid-1BDC6CA8-B20B-44FC-B669-6E97A73B04EC",
+      "source_label": "Sort parts into containers",
+      "target_id": "sid-4C378C4F-10B6-43A9-8518-03EDE15235C5",
+      "target_label": "Build subcomponent",
+      "gateway_context": [
+        "ParallelGateway",
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "Parts on stock",
+        "ParallelGateway"
+      ]
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "Start ",
+      "subject_id": "sid-417A0727-85DC-4F5E-B133-D0531A168CDF",
+      "predicate": "follows",
+      "object": "Develop Basic Design",
+      "object_id": "sid-37EBDA59-1ADF-47E2-9701-F8C70E86ACE6"
+    },
+    {
+      "subject": "Hand the lego sets to children",
+      "subject_id": "sid-F0D3D26C-8C22-4762-9EC5-5FA2E88912A7",
+      "predicate": "follows",
+      "object": "Sort parts into containers",
+      "object_id": "sid-1BDC6CA8-B20B-44FC-B669-6E97A73B04EC"
+    },
+    {
+      "subject": "Hand the lego sets to children",
+      "subject_id": "sid-F0D3D26C-8C22-4762-9EC5-5FA2E88912A7",
+      "predicate": "follows",
+      "object": "Sort parts into containers",
+      "object_id": "sid-6E449D20-659A-4596-99DA-00914710E122"
+    },
+    {
+      "subject": "Test subcomponent",
+      "subject_id": "sid-33714195-56DD-482F-8A97-B03D89ED71D2",
+      "predicate": "follows",
+      "object": "Redesign subcomponent",
+      "object_id": "sid-5524FA17-E3AB-4E9D-808D-2AA37FFDD023"
+    },
+    {
+      "subject": "Test subcomponent",
+      "subject_id": "sid-33714195-56DD-482F-8A97-B03D89ED71D2",
+      "predicate": "follows",
+      "object": "Assemble subcomponent",
+      "object_id": "sid-2108270F-5E81-47EE-A1AB-F99E3D45F6FE"
+    },
+    {
+      "subject": "Redesign subcomponent",
+      "subject_id": "sid-5524FA17-E3AB-4E9D-808D-2AA37FFDD023",
+      "predicate": "follows",
+      "object": "Check the stock",
+      "object_id": "sid-F3262A37-1A69-4E65-8028-33C4692AF2B5"
+    },
+    {
+      "subject": "Redesign subcomponent",
+      "subject_id": "sid-5524FA17-E3AB-4E9D-808D-2AA37FFDD023",
+      "predicate": "follows",
+      "object": "Build subcomponent",
+      "object_id": "sid-5B925965-34DA-4DDA-A57A-AA75D00541AE"
+    },
+    {
+      "subject": "Redesign subcomponent",
+      "subject_id": "sid-5524FA17-E3AB-4E9D-808D-2AA37FFDD023",
+      "predicate": "follows",
+      "object": "Build subcomponent",
+      "object_id": "sid-4C378C4F-10B6-43A9-8518-03EDE15235C5"
+    },
+    {
+      "subject": "Sort parts into containers",
+      "subject_id": "sid-6E449D20-659A-4596-99DA-00914710E122",
+      "predicate": "follows",
+      "object": "Check the stock",
+      "object_id": "sid-F3262A37-1A69-4E65-8028-33C4692AF2B5"
+    },
+    {
+      "subject": "Sort parts into containers",
+      "subject_id": "sid-6E449D20-659A-4596-99DA-00914710E122",
+      "predicate": "follows",
+      "object": "Build subcomponent",
+      "object_id": "sid-5B925965-34DA-4DDA-A57A-AA75D00541AE"
+    },
+    {
+      "subject": "Sort parts into containers",
+      "subject_id": "sid-6E449D20-659A-4596-99DA-00914710E122",
+      "predicate": "follows",
+      "object": "Build subcomponent",
+      "object_id": "sid-4C378C4F-10B6-43A9-8518-03EDE15235C5"
+    },
+    {
+      "subject": "Test subcomponent",
+      "subject_id": "sid-7CF3B2D8-D6DE-456B-986D-7A92CCC81E33",
+      "predicate": "follows",
+      "object": "Redesign subcomponent",
+      "object_id": "sid-5524FA17-E3AB-4E9D-808D-2AA37FFDD023"
+    },
+    {
+      "subject": "Test subcomponent",
+      "subject_id": "sid-7CF3B2D8-D6DE-456B-986D-7A92CCC81E33",
+      "predicate": "follows",
+      "object": "Assemble subcomponent",
+      "object_id": "sid-2108270F-5E81-47EE-A1AB-F99E3D45F6FE"
+    },
+    {
+      "subject": "Check the stock",
+      "subject_id": "sid-F3262A37-1A69-4E65-8028-33C4692AF2B5",
+      "predicate": "follows",
+      "object": "Order Lego Brick sets",
+      "object_id": "sid-2C0799FA-BA8A-40C2-8F9A-41A24BBCCF28"
+    },
+    {
+      "subject": "Order Lego Brick sets",
+      "subject_id": "sid-2C0799FA-BA8A-40C2-8F9A-41A24BBCCF28",
+      "predicate": "follows",
+      "object": "Hand the lego sets to children",
+      "object_id": "sid-F0D3D26C-8C22-4762-9EC5-5FA2E88912A7"
+    },
+    {
+      "subject": "Order Lego Brick sets",
+      "subject_id": "sid-2C0799FA-BA8A-40C2-8F9A-41A24BBCCF28",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "sid-C7137019-578A-4233-B439-29FA39704478"
+    },
+    {
+      "subject": "Build subcomponent",
+      "subject_id": "sid-4C378C4F-10B6-43A9-8518-03EDE15235C5",
+      "predicate": "follows",
+      "object": "Test subcomponent",
+      "object_id": "sid-33714195-56DD-482F-8A97-B03D89ED71D2"
+    },
+    {
+      "subject": "Develop Basic Design",
+      "subject_id": "sid-37EBDA59-1ADF-47E2-9701-F8C70E86ACE6",
+      "predicate": "follows",
+      "object": "Check the stock",
+      "object_id": "sid-F3262A37-1A69-4E65-8028-33C4692AF2B5"
+    },
+    {
+      "subject": "Assemble subcomponent",
+      "subject_id": "sid-2108270F-5E81-47EE-A1AB-F99E3D45F6FE",
+      "predicate": "follows",
+      "object": "End ",
+      "object_id": "sid-79F34C53-5D29-4D91-A8F2-8674E65BA8EC"
+    },
+    {
+      "subject": "Build subcomponent",
+      "subject_id": "sid-5B925965-34DA-4DDA-A57A-AA75D00541AE",
+      "predicate": "follows",
+      "object": "Test subcomponent",
+      "object_id": "sid-7CF3B2D8-D6DE-456B-986D-7A92CCC81E33"
+    },
+    {
+      "subject": "Sort parts into containers",
+      "subject_id": "sid-1BDC6CA8-B20B-44FC-B669-6E97A73B04EC",
+      "predicate": "follows",
+      "object": "Check the stock",
+      "object_id": "sid-F3262A37-1A69-4E65-8028-33C4692AF2B5"
+    },
+    {
+      "subject": "Sort parts into containers",
+      "subject_id": "sid-1BDC6CA8-B20B-44FC-B669-6E97A73B04EC",
+      "predicate": "follows",
+      "object": "Build subcomponent",
+      "object_id": "sid-5B925965-34DA-4DDA-A57A-AA75D00541AE"
+    },
+    {
+      "subject": "Sort parts into containers",
+      "subject_id": "sid-1BDC6CA8-B20B-44FC-B669-6E97A73B04EC",
+      "predicate": "follows",
+      "object": "Build subcomponent",
+      "object_id": "sid-4C378C4F-10B6-43A9-8518-03EDE15235C5"
+    }
+  ],
+  "matches": {
+    "Assemble subcomponent": {
+      "match": "subcomponent.rebuilt",
+      "score": 0.64
+    },
+    "Build subcomponent": {
+      "match": "subcomponent.rebuilt",
+      "score": 0.7595
+    },
+    "Check the stock": {
+      "match": "test.successful",
+      "score": 0.1878
+    },
+    "Develop Basic Design": {
+      "match": "design.basic",
+      "score": 0.802
+    },
+    "End ": {
+      "match": "part.used",
+      "score": 0.2523
+    },
+    "Hand the lego sets to children": {
+      "match": "container.empty",
+      "score": 0.118
+    },
+    "Order Lego Brick sets": {
+      "match": "part.sorted",
+      "score": 0.218
+    },
+    "Redesign subcomponent": {
+      "match": "subcomponent.redesigned",
+      "score": 0.9066
+    },
+    "Sort parts into containers": {
+      "match": "part.sorted",
+      "score": 0.6497
+    },
+    "Start ": {
+      "match": "part.used",
+      "score": 0.2261
+    },
+    "Test subcomponent": {
+      "match": "subcomponent.rebuilt",
+      "score": 0.6193
+    }
+  },
+  "process_graph": [
+    {
+      "from": "part.used",
+      "to": "design.basic",
+      "activity_from": "Start ",
+      "activity_to": "Develop Basic Design"
+    },
+    {
+      "from": "container.empty",
+      "to": "part.sorted",
+      "activity_from": "Hand the lego sets to children",
+      "activity_to": "Sort parts into containers"
+    },
+    {
+      "from": "container.empty",
+      "to": "part.sorted",
+      "activity_from": "Hand the lego sets to children",
+      "activity_to": "Sort parts into containers"
+    },
+    {
+      "from": "subcomponent.rebuilt",
+      "to": "subcomponent.redesigned",
+      "activity_from": "Test subcomponent",
+      "activity_to": "Redesign subcomponent"
+    },
+    {
+      "from": "subcomponent.rebuilt",
+      "to": "subcomponent.rebuilt",
+      "activity_from": "Test subcomponent",
+      "activity_to": "Assemble subcomponent"
+    },
+    {
+      "from": "subcomponent.redesigned",
+      "to": "test.successful",
+      "activity_from": "Redesign subcomponent",
+      "activity_to": "Check the stock"
+    },
+    {
+      "from": "subcomponent.redesigned",
+      "to": "subcomponent.rebuilt",
+      "activity_from": "Redesign subcomponent",
+      "activity_to": "Build subcomponent"
+    },
+    {
+      "from": "subcomponent.redesigned",
+      "to": "subcomponent.rebuilt",
+      "activity_from": "Redesign subcomponent",
+      "activity_to": "Build subcomponent"
+    },
+    {
+      "from": "part.sorted",
+      "to": "test.successful",
+      "activity_from": "Sort parts into containers",
+      "activity_to": "Check the stock"
+    },
+    {
+      "from": "part.sorted",
+      "to": "subcomponent.rebuilt",
+      "activity_from": "Sort parts into containers",
+      "activity_to": "Build subcomponent"
+    },
+    {
+      "from": "part.sorted",
+      "to": "subcomponent.rebuilt",
+      "activity_from": "Sort parts into containers",
+      "activity_to": "Build subcomponent"
+    },
+    {
+      "from": "subcomponent.rebuilt",
+      "to": "subcomponent.redesigned",
+      "activity_from": "Test subcomponent",
+      "activity_to": "Redesign subcomponent"
+    },
+    {
+      "from": "subcomponent.rebuilt",
+      "to": "subcomponent.rebuilt",
+      "activity_from": "Test subcomponent",
+      "activity_to": "Assemble subcomponent"
+    },
+    {
+      "from": "test.successful",
+      "to": "part.sorted",
+      "activity_from": "Check the stock",
+      "activity_to": "Order Lego Brick sets"
+    },
+    {
+      "from": "part.sorted",
+      "to": "container.empty",
+      "activity_from": "Order Lego Brick sets",
+      "activity_to": "Hand the lego sets to children"
+    },
+    {
+      "from": "subcomponent.rebuilt",
+      "to": "subcomponent.rebuilt",
+      "activity_from": "Build subcomponent",
+      "activity_to": "Test subcomponent"
+    },
+    {
+      "from": "design.basic",
+      "to": "test.successful",
+      "activity_from": "Develop Basic Design",
+      "activity_to": "Check the stock"
+    },
+    {
+      "from": "subcomponent.rebuilt",
+      "to": "part.used",
+      "activity_from": "Assemble subcomponent",
+      "activity_to": "End "
+    },
+    {
+      "from": "subcomponent.rebuilt",
+      "to": "subcomponent.rebuilt",
+      "activity_from": "Build subcomponent",
+      "activity_to": "Test subcomponent"
+    },
+    {
+      "from": "part.sorted",
+      "to": "test.successful",
+      "activity_from": "Sort parts into containers",
+      "activity_to": "Check the stock"
+    },
+    {
+      "from": "part.sorted",
+      "to": "subcomponent.rebuilt",
+      "activity_from": "Sort parts into containers",
+      "activity_to": "Build subcomponent"
+    },
+    {
+      "from": "part.sorted",
+      "to": "subcomponent.rebuilt",
+      "activity_from": "Sort parts into containers",
+      "activity_to": "Build subcomponent"
+    }
+  ],
+  "errors": [
+    "precondition: parse failed, raw response='{\\n  \"machine\": {\\n    \"precondition\": \"INITIAL\",\\n    \"quote\": null\\n  },\\n  \"design\": {\\n    \"precondition\": \"INITIAL\",\\n    \"quote\": null\\n  },\\n  \"container\": {\\n    \"precondition\": \"INITIAL\",\\n    \"quote\": null\\n  },\\n  \"subcomponent\": {\\n    \"precondition\": \"INITIAL\",\\n    \"quote\": null\\n  },\\n  \"part\": {\\n    \"precondition\": \"INITIAL\",\\n    \"quote\": null\\n  },\\n  \"test\": {\\n    \"precondition\": \"INITIAL\",\\n    \"quote\": null\\n  },\\n  \"machine.built\": {\\n    \"precondition\": \"design.basic AND container.empty\",\\n    \"quote\": \"When building a custom machine out of Lego bricks, you first need to develop the basic design.\"\\n  },\\n  \"container.empty\": {\\n    \"precondition\": \"INITIAL\",\\n    \"quote\": null\\n  },\\n  \"part.sorted\": {\\n    \"precondition\": \"INITIAL\",\\n    \"quote\": null\\n  },\\n  \"part.reordered\": {\\n    \"precondition\": \"part.sorted\",\\n    \"quote\": \"If there are no more parts in a container, you reorder individual parts.\"\\n  },\\n  \"subcomponent.redesigned\": {\\n    \"precondition\": \"subcomponent.rebuilt AND test.unsuccessful\",\\n    \"quote\": \"If subcomponents are not tested successfully, you have to redesign and rebuild them.\"\\n  },\\n  \"subcomponent.rebuilt\": {\\n    \"precondition\": \"subcomponent.redesigned\",\\n    \"quote\": \"If subcomponents are not tested successfully, you have to redesign and rebuild them.\"\\n  },\\n  \"test.unsuccessful\": {\\n    \"precondition\": \"subcomponent.rebuilt\",\\n    \"quote\": \"If subcomponents are not tested successfully, you have to redesign and rebuild them.\"\\n  },\\n  \"part.used\": {\\n    \"precondition\": \"part.sorted\",\\n    \"quote\": \"You give the lego sets to a group of children which should sort the parts for you (into a number of containers).\"\\n  },\\n  \"machine.built AND part.used\": {\\n    \"precondition\": \"design.basic AND container.empty AND part.sorted\",\\n    \"quote\": \"When building a custom machine out of Lego bricks, you first need to develop the basic design. After that, you order certain Lego brick sets. You give the lego sets to a group of children which should sort the parts for you (into a number of containers).\"\\n  },\\n  \"subcomponent.redesigned OR subcomponent.rebuilt\": {\\n    \"precondition\": \"subcomponent.redesigned OR subcomponent.rebuilt\",\\n    \"quote\": \"If there are no more parts in a container, you reorder individual parts. After building each subcomponent, you have to test them individually and (if each test is successful) assemble them. If subcomponents are not tested successfully, you have to redesign and rebuild them.\"\\n  },\\n  \"test.successful\": {\\n    \"precondition\": \"test.unsuccessful\",\\n    \"quote\": \"If subcomponents are not tested successfully, you have to redesign and rebuild them.\"\\n  },\\n  \"test.unsuccessful OR test.successful\": {\\n    \"precondition\": \"test.unsuccessful OR test.successful\",\\n    \"quote\": \"If subcomponents are not tested successfully, you have to redesign and rebuild them.\"\\n  },\\n  \"part.sorted OR part.reordered\": {\\n    \"precondition\": \"part.sorted OR part.reordered\",\\n    \"quote\": \"If there are no more parts in a container, you reorder individual parts.\"\\n  },\\n  \"subcomponent.redesigned OR subcomponent.rebuilt OR test.successful\": {\\n    \"precondition\": \"subcomponent.redesigned OR subcomponent.rebuilt OR test.successful\",\\n    \"quote\": \"If subcomponents are not tested successfully, you have to redesign and rebuild them.\"\\n  },\\n  \"subcomponent.redesigned OR subcomponent.rebuilt OR test.unsuccessful\": {\\n    \"precondition\": \"subcomponent.redesigned OR subcomponent.rebuilt OR test.unsuccessful\",\\n    \"quote\": \"If subcomponents are not tested successfully, you have to redesign and rebuild them.\"\\n  },\\n  \"subcomponent.redesigned OR subcomponent.rebuilt OR test.successful OR test.unsuccessful\": {\\n    \"precondition\": \"subcomponent.redesigned OR subcomponent.rebuilt OR test.successful OR test.unsuccessful\",\\n    \"quote\": \"If subcomponents are not tested successfully, you have to redesign and rebuild them.\"\\n  },\\n  \"subcomponent.redesigned OR subcomponent.rebuilt OR test.successful OR test.unsuccessful OR part.sorted OR part.reordered\": {\\n    \"precondition\": \"subcomponent.redesigned OR subcomponent.rebuilt OR test.successful OR test.unsuccessful OR part.sorted OR part.reordered\",\\n    \"quote\": \"If subcomponents are not tested successfully, you have to redesign and rebuild them.\"\\n  },\\n  \"subcomponent.redesigned OR subcomponent.rebuilt OR test.successful OR test.unsuccessful OR part.sorted OR part.reordered OR machine.built\": {\\n    \"precondition\": \"UNRESOLVED\",\\n    \"quote\": \"When building a custom machine out of Lego bricks, you first need to develop the basic design. After that, you order certain Lego brick sets. You give the lego sets to a group of children which should sort the parts for you (into a number of containers). Your machine is built out of a number of subcomponents.\"\\n  },\\n  \"subcomponent.redesigned OR subcomponent.rebuilt OR test.successful OR test.unsuccessful OR part.sorted OR part.reordered OR machine.built OR design.basic\": {\\n    \"precondition\": \"UNRESOLVED\",\\n    \"quote\": \"When building a custom machine out of Lego bricks, you first need to develop the basic design. After that, you order certain Lego brick sets. You give the lego sets to a group of children which should sort the parts for you (into a number of containers). Your machine is built out of a number of subcomponents.\"\\n  },\\n  \"subcomponent.redesigned OR subcomponent.rebuilt OR test.successful OR test.unsuccessful OR part.sorted OR part.reordered OR machine.built OR design.basic OR container.empty\": {\\n    \"precondition\": \"UNRESOLVED\",\\n    \"quote\": \"When building a custom machine out of Lego bricks, you first need to develop the basic design. After that, you order certain Lego brick sets. You give the lego sets to a group of children which should sort the parts for you (into a number of containers). Your machine is built out of a number of subcomponents.\"\\n  },\\n  \"subcomponent.redesigned OR subcomponent.rebuilt OR test.successful OR test.unsuccessful OR part.sorted OR part.reordered OR machine.built OR design.basic OR container.empty OR part.used\": {\\n    \"precondition\": \"UNRESOLVED\",\\n    \"quote\": \"When building a custom machine out of Lego bricks, you first need to develop the basic design. After that, you order certain Lego brick sets. You give the lego sets to a group of children which should sort the parts for you (into a number of containers). Your machine is built out of a number of subcomponents.\"\\n  },\\n  \"subcomponent.redesigned OR subcomponent.rebuilt OR test.successful OR test.unsuccessful OR part.sorted OR part.reordered OR machine.built OR design.basic OR container.empty OR part.used OR test.successful\": {\\n    \"precondition\": \"UNRESOLVED\",\\n    \"quote\": \"When building a custom machine out of Lego bricks, you first need to develop the basic design. After that, you order certain Lego brick sets. You give the lego sets to a group of children which should sort the parts for you (into a number of containers). Your machine is built out of a number of subcomponents.\"\\n  },\\n  \"subcomponent.redesigned OR subcomponent.rebuilt OR test.successful OR test.unsuccessful OR part.sorted OR part.reordered OR machine.built OR design.basic OR container.empty OR part.used OR test.successful OR test.unsuccessful\": {\\n    \"precondition\": \"UNRESOLVED\",\\n    \"quote\": \"When building a custom machine out of Lego bricks, you first need to develop the basic design. After that, you order certain Lego brick sets. You give the lego sets to a group of children which should sort the parts for you (into a number of containers). Your machine is built out of a number of subcomponents.\"\\n  },\\n  \"subcomponent.redesigned OR subcomponent.rebuilt OR test.successful OR test.unsuccessful OR part.sorted OR part.reordered OR machine.built OR design.basic OR container.empty OR part.used OR test.successful OR test.unsuccessful OR subcomponent.redesigned\": {\\n    \"precondition\": \"UNRESOLVED\",\\n    \"quote\": \"If subcomponents are not tested successfully, you have to redesign and rebuild them.\"\\n  },\\n  \"subcomponent.redesigned OR subcomponent.rebuilt OR test.successful OR test.unsuccessful OR part.sorted OR part.reordered OR machine.built OR design.basic OR container.empty OR part.used OR test.successful OR test.unsuccessful OR subcomponent.redesigned OR subcomponent.rebuilt\": {\\n    \"precondition\": \"UNRESOLVED\",\\n    \"quote\": \"If subcomponents are not tested successfully, you have to redesign and rebuild them.\"\\n  },\\n  \"subcomponent.redesigned OR subcomponent.rebuilt OR test.successful OR test.unsuccessful OR part.sorted OR part.reordered OR machine.built OR design.basic OR container.empty OR part.used OR test.successful OR test.unsuccessful OR subcomponent.redesigned OR subcomponent.rebuilt OR test.successful\": {\\n    \"precondition\": \"UNRESOLVED\",\\n    \"quote\": \"If subcomponents are not tested successfully, you have to redesign and rebuild them.\"\\n  },\\n  \"subcomponent.redesigned OR subcomponent.rebuilt OR test.successful OR test.unsuccessful OR part.sorted OR part.reordered OR machine.built OR design.basic OR container.empty OR part.used OR test.successful OR test.unsuccessful OR subcomponent.redesigned OR subcomponent.rebuilt OR test.successful OR test.unsuccessful\": {\\n    \"precondition\": \"UNRESOLVED\",\\n    \"quote\": \"If subcomponents are not tested successfully, you have to redesign and rebuild them.\"\\n  },\\n  \"subcomponent.redesigned OR subcomponent.rebuilt OR test.successful OR test.unsuccessful OR part.sorted OR part.reordered OR machine.built OR design.basic OR container.empty OR part.used OR test.successful OR test.unsuccessful OR subcomponent.redesigned OR subcomponent.rebuilt OR test.successful OR test.unsuccessful OR part.sorted\": {\\n    \"precondition\": \"UNRESOLVED\",\\n    \"quote\": \"If subcomponents are not tested successfully, you have to redesign and rebuild them.\"\\n  },\\n  \"subcomponent.redesigned OR subcomponent.rebuilt OR test.successful OR test.unsuccessful OR part.sorted OR part.reordered OR machine.built OR design.basic OR container.empty OR part.used OR test.successful OR test.unsuccessful OR subcomponent.redesigned OR subcomponent.rebuilt OR test.successful OR test.unsuccessful OR part.sorted OR part.reordered\": {\\n    \"precondition\": \"UNRESOLVED\",\\n    \"quote\": \"If subcomponents are not tested successfully, you have to redesign and rebuild them.\"\\n  },\\n  \"subcomponent.redesigned OR subcomponent.rebuilt OR test.successful OR test.unsuccessful OR part.sorted OR part.reordered OR machine.built OR design.basic OR container.empty OR part.used OR test.successful OR test.unsuccessful OR subcomponent.redesigned OR subcomponent.rebuilt OR test.successful OR test.unsuccessful OR part.sorted OR part.reordered OR machine.built\": {\\n    \"precondition\": \"UNRESOLVED\",\\n    \"quote\": \"If subcomponents are not tested successfully, you have to redesign and rebuild them.\"\\n  },\\n  \"subcomponent.redesigned OR subcomponent.rebuilt OR test.successful OR test.unsuccessful OR part.sorted OR part.reordered OR machine.built OR design.basic OR container.empty OR part.used OR test.successful OR test.unsuccessful OR subcomponent.redesigned OR subcomponent.rebuilt OR test.successful OR test.unsuccessful OR part.sorted OR part.reordered OR machine.built OR design.basic\": {\\n    \"precondition\": \"UNRESOLVED\",\\n    \"quote\": \"When building a custom machine out of Lego bricks, you first need to develop the basic design. After that, you order certain Lego brick sets. You give the lego sets to a group of children which should sort the parts for you (into a number of containers). Your machine is built out of a number of subcomponents.\"\\n  },\\n  \"subcomponent.redesigned OR subcomponent.rebuilt OR test.successful OR test.unsuccessful OR part.sorted OR part.reordered OR machine.built OR design.basic OR container.empty OR part.used OR test.successful OR test.unsuccessful OR subcomponent.redesigned OR subcomponent.rebuilt OR test.successful OR test.unsuccessful OR part.sorted OR part.reordered OR machine.built OR design.basic OR container.empty\": {\\n    \"precondition\": \"UNRESOLVED\",\\n    \"quote\": \"When building a custom machine out of Lego bricks, you first need to develop the basic design. After that, you order certain Lego brick sets. You give the lego sets to a group of children which should sort the parts for you (into a number of containers). Your machine is built out of a number of subcomponents.\"\\n  },\\n  \"subcomponent.redesigned OR subcomponent.rebuilt OR test.successful OR test.unsuccessful OR part.sorted OR part.reordered OR machine.built OR design.basic OR container.empty OR part.used OR test.successful OR test.unsuccessful OR subcomponent.redesigned OR subcomponent.rebuilt OR test.successful OR test.unsuccessful OR part.sorted OR part.reordered OR machine.built OR design.basic OR container.empty OR part.used\": {\\n    \"precondition\": \"UNRESOLVED\",\\n    \"quote\": \"When building a custom machine out of Lego bricks, you first need to develop the basic design. After that, you order certain Lego brick sets. You give the lego sets to a group of children which should sort the parts for you (into a number of containers). Your machine is built out of a number of subcomponents.\"\\n  },\\n  \"subcomponent.redesigned OR subcomponent.rebuilt OR test.successful OR test.unsuccessful OR part.sorted OR part.reordered OR machine.built OR design.basic OR container.empty OR part.used OR test.successful OR test.unsuccessful OR subcomponent.redesigned OR subcomponent.rebuilt OR test.successful OR test.unsuccessful OR part.sorted OR part.reordered OR machine.built OR design.basic OR container.empty OR part.used OR test.successful\": {\\n    \"precondition\": \"UNRESOLVED\",\\n    \"quote\": \"When building a custom machine out of Lego bricks, you first need to develop the basic design. After that, you order certain Lego brick sets. You give the lego sets to a group of children which should sort the parts for you (into a number of containers). Your machine is built out of a number of subcomponents.\"\\n  },\\n  \"subcomponent.redesigned OR subcomponent.rebuilt OR test.successful OR test.unsuccessful OR part.sorted OR part.reordered OR machine.built OR design.basic OR container.empty OR part.used OR test.successful OR test.unsuccessful OR subcomponent.redesigned OR subcomponent.rebuilt OR test.successful OR test.unsuccessful OR part.sorted OR part.reordered OR machine.built OR design.basic OR container.empty OR part.used OR test.successful OR test.unsuccessful OR subcomponent.redesigned OR subcomponent.rebuilt OR test.successful OR test.unsuccessful OR part.sorted OR part.reordered OR machine.built OR design.basic OR container.empty OR part.used\": {\\n    \"precondition\": \"UNRESOLVED\",\\n    \"quote\": \"When building a custom machine out of Lego bricks, you first need to develop the basic design. After that, you order certain Lego brick sets. You give the lego sets to a group of children which should sort the parts for you (into a number of containers). Your machine is built out of a number of subcomponents.\"\\n  },\\n  \"subcomponent.redesigned OR subcomponent.rebuilt OR test.successful OR test.unsuccessful OR part.sorted OR part.reordered OR machine.built OR design.basic OR container.empty OR part.used OR test.successful OR test.unsuccessful OR subcomponent.redesigned OR subcomponent.rebuilt OR test.successful OR test.unsuccessful OR part.sorted OR part.reordered OR machine.built OR design.basic OR container.empty OR part.used OR test.successful OR test.unsuccessful OR subcomponent.redesigned OR subcomponent.rebuilt OR test.successful OR test.unsuccessful OR part.sorted OR part.reordered OR machine.built OR design.basic OR container.empty OR part.used\": {\\n    \"precondition\": \"UNRESOLVED\",\\n    \"quote\": \"When building a custom machine out of Lego bricks, you first need to develop the basic design. After that, you order certain Lego brick sets. You give the lego sets to a group of children which should sort the parts for you (into a number of containers). Your machine is built out of a number of subcomponents.\"\\n  },\\n  \"subcomponent.redesigned OR subcomponent.rebuilt OR test.successful OR test.unsuccessful OR part.sorted OR part.reordered OR machine.built OR design.basic OR container.empty OR part.used OR test.successful OR test.unsuccessful OR subcomponent.redesigned OR subcomponent.rebuilt OR test.successful OR test.unsuccessful OR part.sorted OR part.reordered OR machine.built OR design.basic OR container.empty OR part.used OR test.successful OR test.unsuccessful OR subcomponent.redesigned OR subcomponent.rebuilt OR test.successful OR test.unsuccessful OR part.sorted OR part.reordered OR machine.built OR design.basic OR container.empty OR part.used OR test.successful OR test.unsuccessful\": {\\n    \"precondition\": \"UNRESOLVED\",\\n    \"quote\": \"When building a custom machine out of Lego bricks, you first need to develop the basic design. After that, you order certain Lego brick sets. You give the lego sets to a group of children which should sort the parts for you (into a number of containers). Your machine is built out of a number of subcomponents.\"\\n  },\\n  \"subcomponent.redesigned OR subcomponent.rebuilt OR test.successful OR test.unsuccessful OR part.sorted OR part.reordered OR machine.built OR design.basic OR container.empty OR part.used OR test.successful OR test.unsuccessful OR subcomponent.redesigned OR subcomponent.rebuilt OR test.successful OR test.unsuccessful OR part.sorted OR part.reordered OR machine.built OR design.basic OR container.empty OR part.used OR test.successful OR test.unsuccessful OR subcomponent.redesigned OR subcomponent.rebuilt OR test.successful OR test.unsuccessful OR part.sorted OR part.reordered OR machine.built OR design.basic OR container.empty OR part.used OR test.successful OR test.unsuccessful OR subcomponent.redesigned OR subcomponent.rebuilt OR test.successful OR test.unsuccessful OR part.sorted OR part.reordered OR machine.built OR design.basic OR container.empty OR part.used OR test.successful OR test.unsuccessful\": {\\n    \"precondition\": \"UNRESOLVED\",\\n    \"quote\": \"When building a custom machine out of Lego bricks, you first need to develop the basic design. After that, you order certain Lego brick sets. You give the lego sets to a group of children which should sort the parts for you (into a number of containers). Your machine is built out of a number of subcomponents.\"\\n  },\\n  \"subcomponent.redesigned OR subcomponent.rebuilt OR test.successful OR test.unsuccessful OR part.sorted OR part.reordered OR machine.built OR design.basic OR container.empty OR part.used OR test.successful OR test.unsuccessful OR subcomponent.redesigned OR subcomponent.rebuilt OR test.successful OR test.unsuccessful OR part.sorted OR part.reordered OR machine.built OR design.basic OR container.empty OR part.used OR test.successful OR test.unsuccessful OR subcomponent.redesigned OR subcomponent.rebuilt OR test.successful OR test.unsuccessful OR part.sorted OR part.reordered OR machine.built OR design.basic OR container.empty OR part.used OR test.successful OR test.unsuccessful OR subcomponent.redesigned OR subcomponent.rebuilt OR test.successful OR test.unsuccessful OR part.sorted OR part.reordered OR machine.built OR design.basic OR container.empty OR part.used OR test.successful OR test.unsuccessful OR subcomponent.redesigned OR subcomponent.rebuilt OR test.successful OR test.unsuccessful OR part.sorted OR part.reordered OR machine.built OR design.basic OR container.empty OR part.used OR test.successful OR test.unsuccessful\": {\\n    \"precondition\": \"UNRESOLVED\",\\n    \"quote\": \"When building a custom machine out of Lego bricks, you first need to develop the basic design. After that, you order certain Lego brick sets. You give the lego sets to a group of children which should sort the parts for you (into a number of containers). Your machine is built out of a number of subcomponents.\"\\n  },\\n  \"subcomponent.redesigned OR subcomponent.rebuilt OR test.successful OR test.unsuccessful OR part.sorted OR part.reordered OR machine.built OR design.basic OR container.empty OR part.used OR test.successful OR test.unsuccessful OR subcomponent.redesigned OR subcomponent.rebuilt OR test.successful OR test.unsuccessful OR part.sorted OR part.reordered OR machine.built OR design.basic OR container.empty OR part.used OR test.successful OR test.unsuccessful OR subcomponent.redesigned OR subcomponent.rebuilt OR test.successful OR test.unsuccessful OR part.sorted OR part.reordered OR machine.built OR design.basic OR container.empty OR part.used OR test.successful OR test.unsuccessful OR subcomponent.redesigned OR subcomponent.rebuilt OR test.successful OR test.unsuccessful OR part.sorted OR part.reordered OR machine.built OR design.basic OR container.empty OR part.used OR test.successful OR test.unsuccessful OR subcomponent.redesigned OR subcomponent.rebuilt OR test.successful OR test.unsuccessful OR part.sorted OR part.reordered OR machine.built OR design.basic OR container.empty OR part.used OR test.successful OR test.unsuccessful\": {\\n    \"precondition\": \"UNRESOLVED\",\\n    \"quote\": \"When building a custom machine out of Lego bricks, you first need to develop the basic design. After that, you order certain Lego brick sets. You give the lego sets to a group of children which should sort the parts for you (into a number of containers). Your machine is built out of a number of subcomponents.\"\\n  },\\n  \"subcomponent.redesigned OR subcomponent.rebuilt OR test.successful OR test.unsuccessful OR part.sorted OR part.reordered OR machine.built OR design.basic OR container.empty OR part.used OR test.successful OR test.unsuccessful OR subcomponent.redesigned OR subcomponent.rebuilt OR test.successful OR test.unsuccessful OR part.sorted OR part.reordered OR machine.built OR design.basic OR container.empty OR part.used OR test.successful OR test.unsuccessful OR subcomponent.redesigned OR subcomponent.rebuilt OR test.successful OR test.unsuccessful OR part.sorted OR part.reordered OR machine.built OR design.basic OR container.empty OR part.used OR test.successful OR test.unsuccessful OR subcomponent.redesigned OR subcomponent.rebuilt OR test.successful OR test.unsuccessful OR part.sorted OR part.reordered OR machine.built OR design.basic OR container.empty OR part.used OR test.successful OR test.unsuccessful OR subcomponent.redesigned OR subcomponent.rebuilt OR test.successful OR test.unsuccessful OR part.sorted OR part.reordered OR machine.built OR design.basic OR container.empty OR part.used OR test.successful OR test.unsuccessful OR subcomponent.redesigned OR subcomponent.rebuilt OR test.successful OR test.unsuccessful OR part.sorted OR part.reordered OR machine.built OR design.basic OR container.empty OR part.used OR test.successful OR test.unsuccessful\": {\\n    \"precondition\": \"UNRESOLVED\",\\n    \"quote\": \"When building a custom machine out of Lego bricks, you first need to develop the basic design. After that, you order certain Lego brick sets. You give the lego sets to a group of children which should sort the parts for you (into a number of containers). Your machine is built out of a number of subcomponents.\"\\n  },\\n  \"subcomponent.redesigned OR subcomponent.rebuilt OR test.successful OR test.unsuccessful OR part.sorted OR part.reordered OR machine.built OR design.basic OR container.empty OR part.used OR test.successful OR test.unsuccessful OR subcomponent.redesigned OR subcomponent.rebuilt OR test.successful OR test.unsuccessful OR part.sorted OR part.reordered OR machine.built OR design.basic OR container.empty OR part.used OR test.successful OR test.unsuccessful OR subcomponent.redesigned OR subcomponent.rebuilt OR test.successful OR test.unsuccessful OR part.sorted OR part.reordered OR machine.built OR design.basic OR container.empty OR part.used OR test.successful OR test.unsuccessful OR subcomponent.redesigned OR subcomponent.rebuilt OR test.successful OR test.unsuccessful OR part.sorted OR part.reordered OR machine.built OR design.basic OR container.empty OR part.used OR test.successful OR test.unsuccessful OR subcomponent.redesigned OR subcomponent.rebuilt OR test.successful OR test.unsuccessful OR part.sorted OR part.reordered OR machine.built OR design.basic OR container.empty OR part.used OR test.successful OR test.unsuccessful OR subcomponent.redesigned OR subcomponent.rebuilt OR test.successful OR test.unsuccessful OR part.sorted OR part.reordered OR machine.built OR design.basic OR container.empty OR part.used OR test.successful OR test.unsuccessful\": {\\n    \"precondition\": \"UNRESOLVED\",\\n    \"quote\": \"When building a custom machine out of Lego bricks, you first need to develop the basic design. After that, you order certain Lego brick sets. You give the lego sets to a group of children which should sort the parts for you (into a number of containers). Your machine is built out of a number of subcomponents.\"\\n  },\\n  \"subcomponent.redesigned OR subcomponent.rebuilt OR test.successful OR test.unsuccessful OR part.sorted OR part.reordered OR machine.built OR design.basic OR container.empty OR part.used OR test.successful OR test.unsuccessful OR subcomponent.redesigned OR subcomponent.rebuilt OR test.successful OR test.unsuccessful OR part.sorted OR part.reordered OR machine.built OR design.basic OR container.empty OR part.used OR test.successful OR test.unsuccessful OR subcomponent.redesigned OR subcomponent.rebuilt OR test.successful OR test.unsuccessful OR part.sorted OR part.reordered OR machine.built OR design.basic OR container.empty OR part.used OR test.successful OR test.unsuccessful OR subcomponent.redesigned OR subcomponent.rebuilt OR test.successful OR test.unsuccessful OR part.sorted OR part.reordered OR machine.built OR design.basic OR container.empty OR part.used OR test.successful OR test.unsuccessful OR subcomponent.redesigned OR subcomponent.rebuilt OR test.successful OR test.unsuccessful OR part.sorted OR part.reordered OR machine.built OR design.basic OR container.empty OR part.used OR test.successful OR test.unsuccessful OR subcomponent.redesigned OR subcomponent.rebuilt OR test.successful OR test.unsuccessful OR part.sorted OR part.reordered OR machine.built OR design.basic OR container.empty OR part.used OR test.successful OR test.unsuccessful\": {\\n    \"precondition\": \"UNRESOLVED\",\\n    \"quote\": \"When building a custom machine out of Lego bricks, you first need to develop the basic design. After that, you order certain Lego brick sets. You give the lego sets to a group of children which should sort the parts for you (into a number of containers). Your machine is built out of a number of subcomponents.\"\\n  },\\n  \"subcomponent.redesigned OR subcomponent.rebuilt OR test.successful OR test.unsuccessful OR part.sorted OR part.reordered OR machine.built OR design.basic OR container.empty OR part.used OR test.successful OR test.unsuccessful OR subcomponent.redesigned OR subcomponent.rebuilt OR test.successful OR test.unsuccessful OR part.sorted OR part.reordered OR machine.built OR design.basic OR container.empty OR part.used OR test.successful OR test.unsuccessful OR subcomponent.redesigned OR subcomponent.rebuilt OR test.successful OR test.unsuccessful OR part.sorted OR part.reordered OR machine.built OR design.basic OR container.empty OR part.used OR test.successful OR test.unsuccessful OR subcomponent.redesigned OR subcomponent.rebuilt OR test.successful OR test.unsuccessful OR part.sorted OR part.reordered OR machine.built OR design.basic OR container.empty OR part.used OR test.successful OR test.unsuccessful OR subcomponent.redesigned OR subcomponent.rebuilt OR test.successful OR test.unsuccessful OR part.sorted OR part.reordered OR machine.built OR design.basic OR container.empty OR part.used OR test.successful OR test.unsuccessful OR subcomponent.redesigned OR subcomponent.rebuilt OR test.successful OR test.unsuccessful OR part.sorted OR part.reordered OR machine.built OR design.basic OR container.empty OR part.used OR test.successful OR test.unsuccessful OR subcomponent.redesigned OR subcomponent.rebuilt OR test.successful OR test.unsuccessful OR part.sorted OR part.reordered OR machine.built OR design.basic OR container.empty OR part.used OR test.successful OR test.unsuccessful\": {\\n    \"precondition\": \"UNRESOLVED\",\\n    \"quote\": \"When building a custom machine out of Lego bricks, you first need to develop the basic design. After that, you order certain Lego brick sets. You give the lego sets to a group of children which should sort the parts for you (into a number of containers). Your machine is built out of a number of subcomponents.\"\\n  },\\n  \"subcomponent.redesigned OR subcomponent.rebuilt OR test.successful OR test.unsuccessful OR part.sorted OR part.reordered OR machine.built OR design.basic OR container.empty OR part.used OR test.successful OR test.unsuccessful OR subcomponent.redesigned OR subcomponent.rebuilt OR test.successful OR test.unsuccessful OR part.sorted OR part.reordered OR machine.built OR design.basic OR container.empty OR part.used OR test.successful OR test.unsuccessful OR subcomponent.redesigned OR subcomponent.rebuilt OR test.successful OR test.unsuccessful OR part.sorted OR part.reordered OR machine.built OR design.basic OR container.empty OR part.used OR test.successful OR test.unsuccessful OR subcomponent.redesigned OR subcomponent.rebuilt OR test.successful OR test.unsuccessful OR part.sorted OR part.reordered OR machine.built OR design.basic OR container.empty OR part.used OR test.successful OR test.unsuccessful OR subcomponent.redesigned OR subcomponent.rebuilt OR test.successful OR test.unsuccessful OR part.sorted OR part.reordered OR machine.built OR design.basic OR container.empty OR part.used OR test.successful OR test.unsuccessful OR subcomponent.redesigned OR subcomponent.rebuilt OR test.successful OR test.unsuccessful OR part.sorted OR part.reordered OR machine.built OR design.basic OR container.empty OR part.used OR test.successful OR test.unsuccessful OR subcomponent.redesigned OR subcomponent.rebuilt OR test.successful OR test.unsuccessful OR part.sorted OR part.reordered OR machine.built OR design.basic OR container.empty OR part.used OR test.successful OR test.unsuccessful OR subcomponent.redesigned OR subcomponent.rebuilt OR test.successful OR test.unsuccessful OR part.sorted OR part.reordered OR machine.built OR design.basic OR container.empty OR part.used OR test.successful OR test.unsuccessful\": {\\n    \"precondition\": \"UNRESOLVED\",\\n    \"quote\": \"When building a custom machine out of Lego bricks, you first need to develop the basic design. After that, you order certain Lego brick sets. You give the lego sets to a group of children which should sort the parts for you (into a number of containers). Your machine is built out of a number of subcomponents.\"\\n  },\\n  \"subcomponent.redesigned OR subcomponent.rebuilt OR test.successful OR test.unsuccessful OR part.sorted OR part.reordered OR machine.built OR design.basic OR container.empty OR part.used OR test.successful OR test.unsuccessful OR subcomponent.redesigned OR subcomponent.rebuilt OR test.successful OR test.unsuccessful OR part.sorted OR part.reordered OR machine.built OR design.basic OR container.empty OR part.used OR test.successful OR test.unsuccessful OR subcomponent.redesigned OR subcomponent.rebuilt OR test.successful OR test.unsuccessful OR part.sorted OR part.reordered OR machine.built OR design.basic OR container.empty OR part.used OR test.successful OR test.unsuccessful OR subcomponent.redesigned OR subcomponent.rebuilt OR test.successful OR test.unsuccessful OR part.sorted OR part.reordered OR machine.built OR design.basic OR container.empty OR part.used OR test.successful OR test.unsuccessful OR subcomponent.redesigned OR subcomponent.rebuilt OR test.successful OR test.unsuccessful OR part.sorted OR part.reordered OR machine.built OR design.basic OR container.empty OR part.used OR test.successful OR test.unsuccessful OR subcomponent.redesigned OR subcomponent.rebuilt OR test.successful OR test.unsuccessful OR part.sorted OR part.reordered OR machine.built OR design.basic OR container.empty OR part.used OR test.successful OR test.unsuccessful OR subcomponent.redesigned OR subcomponent.rebuilt OR test.successful OR test.unsuccessful OR part.sorted OR part.reordered OR machine.built OR design.basic OR container.empty OR part.used OR test.successful OR test.unsuccessful OR subcomponent.redesigned OR subcomponent.rebuilt OR test.successful OR test.unsuccessful OR part.sorted OR part.reordered OR machine.built OR design.basic OR container.empty OR part.used OR test.successful OR test.unsuccessful OR subcomponent.redesigned OR subcomponent.rebuilt OR test.successful OR test.unsuccessful OR part.sorted OR part.reordered OR machine.built OR design.basic OR container.empty OR part.used OR test.successful OR test.unsuccessful\": {\\n    \"precondition\": \"UNRESOLVED\",\\n    \"quote\": \"When building a custom machine out of Lego bricks, you first need to develop the basic design. After that, you order certain Lego brick sets. You give the lego sets to a group of children which should sort the parts for you (into a number of containers). Your machine is built out of a number of subcomponents.\"\\n  },\\n  \"subcomponent.redesigned OR subcomponent.rebuilt OR test.successful OR test.unsuccessful OR part.sorted OR part.reordered OR machine.built OR design.basic OR container.empty OR part.used OR test.successful OR test.unsuccessful OR subcomponent.redesigned OR subcomponent.rebuilt OR test.successful OR test.unsuccessful OR part.sorted OR part.reordered OR machine.built OR design.basic OR container.empty OR part.used OR test.successful OR test.unsuccessful OR subcomponent.redesigned OR subcomponent.rebuilt OR test.successful OR test.unsuccessful OR part.sorted OR part.reordered OR machine.built OR design.basic OR container.empty OR part.used OR test.successful OR test.unsuccessful OR subcomponent.redesigned OR subcomponent.rebuilt OR test.successful OR test.unsuccessful OR part.sorted OR part.reordered OR machine.built OR design.basic OR container.empty OR part.used OR test.successful OR test.unsuccessful OR subcomponent.redesigned OR subcomponent.rebuilt OR test.successful OR test.unsuccessful OR part.sorted OR part.reordered OR machine.built OR design.basic OR container.empty OR part.used OR test.successful OR test.unsuccessful OR subcomponent.redesigned OR subcomponent.rebuilt OR test.successful OR test.unsuccessful OR part.sorted OR part.reordered OR machine.built OR design.basic OR container.empty OR part.used OR test.successful OR test.unsuccessful OR subcomponent.redesigned OR subcomponent.rebuilt OR test.successful OR test.unsuccessful OR part.sorted OR part.reordered OR machine.built OR design.basic OR container.empty OR part.used OR test.successful OR test.unsuccessful OR subcomponent.redesigned OR subcomponent.rebuilt OR test.successful OR test.unsuccessful OR part.sorted OR part.reordered OR machine.built OR design.basic OR container.empty OR part.used OR test.successful OR test.unsuccessful OR subcomponent.redesigned OR subcomponent.rebuilt OR test.successful OR test.unsuccessful OR part.sorted OR part.reordered OR machine.built OR design.basic OR container.empty OR part.used OR test.successful OR test.unsuccessful\": {\\n    \"precondition\": \"UNRESOLVED\",\\n    \"quote\": \"When building a custom machine out of Lego bricks, you first need to develop the basic design. After that, you order certain Lego brick sets. You give the lego sets to a group of children which should sort the parts for you (into a number of containers). Your machine is built out of a number of subcomponents.\"\\n  },\\n  \"subcomponent.redesigned OR subcomponent.rebuilt OR test.successful OR test.unsuccessful OR part.sorted OR part.reordered OR machine.built OR design.basic OR container.empty OR part.used OR test.successful OR test.unsuccessful OR subcomponent.redesigned OR subcomponent.rebuilt OR test.successful OR test.unsuccessful OR part.sorted OR part.reordered OR machine.built OR design.basic OR container.empty OR part.used OR test.successful OR test.unsuccessful OR subcomponent.redesigned OR subcomponent.rebuilt OR test.successful OR test.unsuccessful OR part.sorted OR part.reordered OR machine.built OR design.basic OR container.empty OR part.used OR test.successful OR test.unsuccessful OR subcomponent.redesigned OR subcomponent.rebuilt OR test.successful OR test.unsuccessful OR part.sorted OR part.reordered OR machine.built OR design.basic OR container.empty OR part.used OR test.successful OR test.unsuccessful OR subcomponent.redesigned OR subcomponent.rebuilt OR test.successful OR test.unsuccessful OR part.sorted OR part.reordered OR machine.built OR design.basic OR container.empty OR part.used OR test.successful OR test.unsuccessful OR subcomponent.redesigned OR subcomponent.rebuilt OR test.successful OR test.unsuccessful OR part.sorted OR part.reordered OR machine.built OR design.basic OR container.empty OR part.used OR test.successful OR test.unsuccessful OR subcomponent.redesigned OR subcomponent.rebuilt OR test.successful OR test.unsuccessful OR part.sorted OR part.reordered OR machine.built OR design.basic OR container.empty OR part.used OR test.successful OR test.unsuccessful OR subcomponent.redesigned OR subcomponent.rebuilt OR test.successful OR test.unsuccessful OR part.sorted OR part.reordered OR machine.built OR design.basic OR container.empty OR part.used OR test.successful OR test.unsuccessful OR subcomponent.redesigned OR subcomponent.rebuilt OR test.successful OR test.unsuccessful OR part.sorted OR part.reordered OR machine.built OR design.basic OR container.empty'",
+    "graph_construction: 'validated_preconditions'",
+    "alignment: 'reference_graph'",
+    "report: 'alignment'"
+  ]
+}
