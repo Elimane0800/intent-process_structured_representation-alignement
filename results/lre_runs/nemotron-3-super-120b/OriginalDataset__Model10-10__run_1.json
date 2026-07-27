@@ -1,0 +1,933 @@
+{
+  "case_name": "OriginalDataset/Model10-10",
+  "text": "The fault detector reports a failure to the user or user has a suspicion of their own fault. \nThe user shall examine the failure. \nThe user rejects the failure of the fault detector or the user confirms the failure of the fault detector. \nIf the user confirms the failure of the fault detector, he informs the customer and the manager. \nThe user fixes the fault at the measuring device. \nThe user shares the results of the repairs carried out with the fault detector. \nThe user will inform the customer about the resolution of the interference. \nThe user will inform the manager about the resolution of the interference.\n",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "nemotron-3-super-120b",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "nemotron-3-super-120b",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/../datasets/lre/alignment_model_text-master/datasets/OriginalDataset/Models/Model10-10.bpmn",
+  "report_model": "nemotron-3-super-120b",
+  "candidates": {
+    "fault_detector": {
+      "states": [
+        "reported",
+        "confirmed",
+        "rejected"
+      ],
+      "exclusive_groups": [
+        [
+          "rejected",
+          "confirmed"
+        ]
+      ],
+      "concurrent_with": []
+    },
+    "user": {
+      "states": [
+        "examining",
+        "informing_customer",
+        "informing_manager",
+        "fixing",
+        "sharing_results",
+        "informing_customer_resolution",
+        "informing_manager_resolution"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "measuring_device": {
+      "states": [
+        "fixed"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "results": {
+      "states": [
+        "shared"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "interference": {
+      "states": [
+        "resolved"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    }
+  },
+  "validation_report": {
+    "fault_detector": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "detector"
+    },
+    "user": {
+      "f_lex": "ACTOR",
+      "kept": false,
+      "head_used": "user"
+    },
+    "measuring_device": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "device"
+    },
+    "results": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "results"
+    },
+    "interference": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "interference"
+    },
+    "__meta__": {
+      "total_candidates": 5,
+      "indeterminate_kept_count": 0
+    }
+  },
+  "exclusive_groups_report": {
+    "accepted": [
+      {
+        "entity": "fault_detector",
+        "states": [
+          "rejected",
+          "confirmed"
+        ],
+        "quote": "The user rejects the failure of the fault detector or the user confirms the failure of the fault detector."
+      }
+    ],
+    "rejected": []
+  },
+  "state_space": {
+    "fault_detector": {
+      "states": [
+        "reported",
+        "confirmed",
+        "rejected"
+      ],
+      "exclusive_groups": [
+        [
+          "rejected",
+          "confirmed"
+        ]
+      ],
+      "concurrent_with": []
+    },
+    "measuring_device": {
+      "states": [
+        "fixed"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "result": {
+      "states": [
+        "shared"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "interference": {
+      "states": [
+        "resolved"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    }
+  },
+  "state_space_dedup": {
+    "merged": {},
+    "ambiguous_not_merged": {}
+  },
+  "raw_preconditions": {
+    "fault_detector.reported": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "fault_detector.confirmed": {
+      "precondition": "fault_detector.reported",
+      "quote": "The fault detector reports a failure to the user or user has a suspicion of their own fault."
+    },
+    "fault_detector.rejected": {
+      "precondition": "fault_detector.reported",
+      "quote": "The user rejects the failure of the fault detector or the user confirms the failure of the fault detector."
+    },
+    "measuring_device.fixed": {
+      "precondition": "fault_detector.confirmed",
+      "quote": "The user fixes the fault at the measuring device."
+    },
+    "result.shared": {
+      "precondition": "measuring_device.fixed",
+      "quote": "The user shares the results of the repairs carried out with the fault detector."
+    },
+    "interference.resolved": {
+      "precondition": "result.shared",
+      "quote": "The user will inform the customer about the resolution of the interference."
+    }
+  },
+  "validated_preconditions": {
+    "fault_detector.reported": {
+      "precondition": "INITIAL",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "fault_detector.confirmed": {
+      "precondition": "fault_detector.reported",
+      "quote": "The fault detector reports a failure to the user or user has a suspicion of their own fault.",
+      "status": "OK",
+      "reason": null
+    },
+    "fault_detector.rejected": {
+      "precondition": "fault_detector.reported",
+      "quote": "The user rejects the failure of the fault detector or the user confirms the failure of the fault detector.",
+      "status": "OK",
+      "reason": null
+    },
+    "measuring_device.fixed": {
+      "precondition": "fault_detector.confirmed",
+      "quote": "The user fixes the fault at the measuring device.",
+      "status": "OK",
+      "reason": null
+    },
+    "result.shared": {
+      "precondition": "measuring_device.fixed",
+      "quote": "The user shares the results of the repairs carried out with the fault detector.",
+      "status": "OK",
+      "reason": null
+    },
+    "interference.resolved": {
+      "precondition": "result.shared",
+      "quote": "The user will inform the customer about the resolution of the interference.",
+      "status": "OK",
+      "reason": null
+    }
+  },
+  "precondition_cycles": [],
+  "branch_conflicts": [
+    {
+      "entity": "fault_detector",
+      "exclusive_group": [
+        "rejected",
+        "confirmed"
+      ],
+      "conflicting_targets": [
+        "fault_detector.rejected",
+        "fault_detector.confirmed"
+      ],
+      "shared_precondition": "fault_detector.reported",
+      "reason": "targets marked mutually exclusive in the state space share the exact same accepted precondition -- reaching it would trigger both branches at once"
+    }
+  ],
+  "reference_graph": {
+    "nodes": [
+      {
+        "id": "fault_detector.reported",
+        "weight": 1.0
+      },
+      {
+        "id": "fault_detector.confirmed",
+        "weight": 1.0
+      },
+      {
+        "id": "fault_detector.rejected",
+        "weight": 0.5
+      },
+      {
+        "id": "measuring_device.fixed",
+        "weight": 1.0
+      },
+      {
+        "id": "result.shared",
+        "weight": 1.0
+      },
+      {
+        "id": "interference.resolved",
+        "weight": 0.5
+      }
+    ],
+    "edges": [
+      {
+        "from": "fault_detector.reported",
+        "to": "fault_detector.confirmed",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "The fault detector reports a failure to the user or user has a suspicion of their own fault.",
+        "negated": false
+      },
+      {
+        "from": "fault_detector.reported",
+        "to": "fault_detector.rejected",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "The user rejects the failure of the fault detector or the user confirms the failure of the fault detector.",
+        "negated": false
+      },
+      {
+        "from": "fault_detector.confirmed",
+        "to": "measuring_device.fixed",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "The user fixes the fault at the measuring device.",
+        "negated": false
+      },
+      {
+        "from": "measuring_device.fixed",
+        "to": "result.shared",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "The user shares the results of the repairs carried out with the fault detector.",
+        "negated": false
+      },
+      {
+        "from": "result.shared",
+        "to": "interference.resolved",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "The user will inform the customer about the resolution of the interference.",
+        "negated": false
+      }
+    ],
+    "cycles": [],
+    "branch_conflicts": [
+      {
+        "entity": "fault_detector",
+        "exclusive_group": [
+          "rejected",
+          "confirmed"
+        ],
+        "conflicting_targets": [
+          "fault_detector.rejected",
+          "fault_detector.confirmed"
+        ],
+        "shared_precondition": "fault_detector.reported",
+        "reason": "targets marked mutually exclusive in the state space share the exact same accepted precondition -- reaching it would trigger both branches at once"
+      }
+    ],
+    "exclusive_pairs": [
+      {
+        "entity": "fault_detector",
+        "nodes": [
+          "fault_detector.rejected",
+          "fault_detector.confirmed"
+        ]
+      }
+    ]
+  },
+  "dfg_edges": [
+    {
+      "source_id": "Task_5",
+      "source_label": "Inform the MSP about the failure",
+      "target_id": "Task_6",
+      "target_label": "Repair the fault",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_3",
+      "source_label": "Examine failure report",
+      "target_id": "Task_0",
+      "target_label": "Reject failure report",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_3",
+      "source_label": "Examine failure report",
+      "target_id": "Task_1",
+      "target_label": "Confirm failure report",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_9",
+      "source_label": "Report failure",
+      "target_id": "IntermediateMessageEventThrowing_0",
+      "target_label": "",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_4",
+      "source_label": "Inform the GO about the failure",
+      "target_id": "Task_5",
+      "target_label": "Inform the MSP about the failure",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_2",
+      "source_label": "Suspect fault",
+      "target_id": "Task_3",
+      "target_label": "Examine failure report",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_0",
+      "source_label": "Reject failure report",
+      "target_id": "Task_4",
+      "target_label": "Inform the GO about the failure",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "IntermediateMessageEventThrowing_0",
+      "source_label": "",
+      "target_id": "IntermediateMessageEventCatching_0",
+      "target_label": "",
+      "gateway_context": []
+    },
+    {
+      "source_id": "IntermediateMessageEventThrowing_0",
+      "source_label": "",
+      "target_id": "IntermediateMessageEventCatching_1",
+      "target_label": "",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_7",
+      "source_label": "Inform about the results of the repair of the fault",
+      "target_id": "IntermediateMessageEventCatching_1",
+      "target_label": "",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_7",
+      "source_label": "Inform about the results of the repair of the fault",
+      "target_id": "Task_8",
+      "target_label": "Inform about the resolution of the inference",
+      "gateway_context": []
+    },
+    {
+      "source_id": "IntermediateMessageEventCatching_0",
+      "source_label": "",
+      "target_id": "Task_3",
+      "target_label": "Examine failure report",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_1",
+      "source_label": "Confirm failure report",
+      "target_id": "Task_4",
+      "target_label": "Inform the GO about the failure",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_6",
+      "source_label": "Repair the fault",
+      "target_id": "Task_7",
+      "target_label": "Inform about the results of the repair of the fault",
+      "gateway_context": []
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "Inform the MSP about the failure",
+      "subject_id": "Task_5",
+      "predicate": "follows",
+      "object": "Repair the fault",
+      "object_id": "Task_6"
+    },
+    {
+      "subject": "Examine failure report",
+      "subject_id": "Task_3",
+      "predicate": "follows",
+      "object": "Reject failure report",
+      "object_id": "Task_0"
+    },
+    {
+      "subject": "Examine failure report",
+      "subject_id": "Task_3",
+      "predicate": "follows",
+      "object": "Confirm failure report",
+      "object_id": "Task_1"
+    },
+    {
+      "subject": "Report failure",
+      "subject_id": "Task_9",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "IntermediateMessageEventThrowing_0"
+    },
+    {
+      "subject": "Inform the GO about the failure",
+      "subject_id": "Task_4",
+      "predicate": "follows",
+      "object": "Inform the MSP about the failure",
+      "object_id": "Task_5"
+    },
+    {
+      "subject": "Suspect fault",
+      "subject_id": "Task_2",
+      "predicate": "follows",
+      "object": "Examine failure report",
+      "object_id": "Task_3"
+    },
+    {
+      "subject": "Reject failure report",
+      "subject_id": "Task_0",
+      "predicate": "follows",
+      "object": "Inform the GO about the failure",
+      "object_id": "Task_4"
+    },
+    {
+      "subject": "",
+      "subject_id": "IntermediateMessageEventThrowing_0",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "IntermediateMessageEventCatching_0"
+    },
+    {
+      "subject": "",
+      "subject_id": "IntermediateMessageEventThrowing_0",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "IntermediateMessageEventCatching_1"
+    },
+    {
+      "subject": "Inform about the results of the repair of the fault",
+      "subject_id": "Task_7",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "IntermediateMessageEventCatching_1"
+    },
+    {
+      "subject": "Inform about the results of the repair of the fault",
+      "subject_id": "Task_7",
+      "predicate": "follows",
+      "object": "Inform about the resolution of the inference",
+      "object_id": "Task_8"
+    },
+    {
+      "subject": "",
+      "subject_id": "IntermediateMessageEventCatching_0",
+      "predicate": "follows",
+      "object": "Examine failure report",
+      "object_id": "Task_3"
+    },
+    {
+      "subject": "Confirm failure report",
+      "subject_id": "Task_1",
+      "predicate": "follows",
+      "object": "Inform the GO about the failure",
+      "object_id": "Task_4"
+    },
+    {
+      "subject": "Repair the fault",
+      "subject_id": "Task_6",
+      "predicate": "follows",
+      "object": "Inform about the results of the repair of the fault",
+      "object_id": "Task_7"
+    }
+  ],
+  "matches": {
+    "Task_5": {
+      "activity_label": "Inform the MSP about the failure",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_6": {
+      "activity_label": "Repair the fault",
+      "matches": [
+        {
+          "match": "fault_detector.reported",
+          "score": 0.4649
+        },
+        {
+          "match": "fault_detector.confirmed",
+          "score": 0.4268
+        }
+      ],
+      "clusters": [
+        [
+          "fault_detector.reported",
+          "fault_detector.confirmed"
+        ]
+      ]
+    },
+    "Task_3": {
+      "activity_label": "Examine failure report",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_0": {
+      "activity_label": "Reject failure report",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_1": {
+      "activity_label": "Confirm failure report",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_9": {
+      "activity_label": "Report failure",
+      "matches": [
+        {
+          "match": "fault_detector.reported",
+          "score": 0.4574
+        }
+      ],
+      "clusters": [
+        [
+          "fault_detector.reported"
+        ]
+      ]
+    },
+    "Task_4": {
+      "activity_label": "Inform the GO about the failure",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_2": {
+      "activity_label": "Suspect fault",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_7": {
+      "activity_label": "Inform about the results of the repair of the fault",
+      "matches": [
+        {
+          "match": "fault_detector.reported",
+          "score": 0.4779
+        }
+      ],
+      "clusters": [
+        [
+          "fault_detector.reported"
+        ]
+      ]
+    },
+    "Task_8": {
+      "activity_label": "Inform about the resolution of the inference",
+      "matches": [
+        {
+          "match": "interference.resolved",
+          "score": 0.387
+        }
+      ],
+      "clusters": [
+        [
+          "interference.resolved"
+        ]
+      ]
+    }
+  },
+  "process_graph": [
+    {
+      "from": "fault_detector.reported",
+      "to": "interference.resolved",
+      "activity_from": "Inform about the results of the repair of the fault",
+      "activity_to": "Inform about the resolution of the inference",
+      "source_id": "Task_7",
+      "target_id": "Task_8"
+    },
+    {
+      "from": "fault_detector.reported",
+      "to": "fault_detector.reported",
+      "activity_from": "Repair the fault",
+      "activity_to": "Inform about the results of the repair of the fault",
+      "source_id": "Task_6",
+      "target_id": "Task_7"
+    },
+    {
+      "from": "fault_detector.confirmed",
+      "to": "fault_detector.reported",
+      "activity_from": "Repair the fault",
+      "activity_to": "Inform about the results of the repair of the fault",
+      "source_id": "Task_6",
+      "target_id": "Task_7"
+    }
+  ],
+  "alignment": {
+    "fault_detector.confirmed": {
+      "operator": "AND",
+      "quote": "The fault detector reports a failure to the user or user has a suspicion of their own fault.",
+      "terms": [
+        {
+          "term": "fault_detector.reported",
+          "status": "VIOLATED",
+          "reason": "both states matched, no path in process",
+          "missing": []
+        }
+      ],
+      "status": "VIOLATED",
+      "clauses": [
+        {
+          "terms": [
+            "fault_detector.reported"
+          ],
+          "status": "VIOLATED"
+        }
+      ]
+    },
+    "fault_detector.rejected": {
+      "operator": "AND",
+      "quote": "The user rejects the failure of the fault detector or the user confirms the failure of the fault detector.",
+      "terms": [
+        {
+          "term": "fault_detector.reported",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['fault_detector.rejected']",
+          "missing": [
+            "fault_detector.rejected"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "fault_detector.reported"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "measuring_device.fixed": {
+      "operator": "AND",
+      "quote": "The user fixes the fault at the measuring device.",
+      "terms": [
+        {
+          "term": "fault_detector.confirmed",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['measuring_device.fixed']",
+          "missing": [
+            "measuring_device.fixed"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "fault_detector.confirmed"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "result.shared": {
+      "operator": "AND",
+      "quote": "The user shares the results of the repairs carried out with the fault detector.",
+      "terms": [
+        {
+          "term": "measuring_device.fixed",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['measuring_device.fixed', 'result.shared']",
+          "missing": [
+            "measuring_device.fixed",
+            "result.shared"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "measuring_device.fixed"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "interference.resolved": {
+      "operator": "AND",
+      "quote": "The user will inform the customer about the resolution of the interference.",
+      "terms": [
+        {
+          "term": "result.shared",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['result.shared']",
+          "missing": [
+            "result.shared"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "result.shared"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    }
+  },
+  "report": {
+    "verdict": {
+      "verdict": "NOT_FAITHFUL",
+      "justification": "1 gap(s) found between the source text's requirements and the observed process -- at least one precondition asserted by the text is contradicted by the model's actual sequence of activities.",
+      "scope": "This verdict covers the causal reachability of the requirements expressed in the source text, not the general quality of the process model -- a multiplicity defect (an activity executed more than once due to a mismatched branching structure) is not covered by this verdict, even if the process is otherwise well-formed."
+    },
+    "summary": {
+      "ecarts": 1,
+      "non_verifiable": 2,
+      "conforme": 0
+    },
+    "ecarts": [
+      {
+        "root_cause": "Inform about the results of the repair of the fault",
+        "quote": "The fault detector reports a failure to the user or user has a suspicion of their own fault.",
+        "explanation": "The source text states: \"The fault detector reports a failure to the user or user has a suspicion of their own fault.\" This indicates that a condition must be met before the activity \"Repair the fault\" can occur. However, in the observed process, there is no step that ensures \"Inform about the results of the repair of the fault\" happens before \"Repair the fault\" takes place. The process flow does not establish this required order, even though both activities are present.",
+        "quote_verbatim": true,
+        "affected_activities": [
+          "Repair the fault"
+        ],
+        "affected_count": 1
+      }
+    ],
+    "non_verifiable": [
+      {
+        "root_cause": "fault detector rejected",
+        "quote": "The user rejects the failure of the fault detector or the user confirms the failure of the fault detector.",
+        "explanation": "The activity \"fault detector rejected\" requires a specific condition to be met before it can occur, as stated in the source text: \"The user rejects the failure of the fault detector or the user confirms the failure of the fault detector.\"  \nThis condition could not be linked to any observable activity in the process, so it is impossible to determine whether it was satisfied or not.",
+        "quote_verbatim": true,
+        "affected_activities": [
+          "fault detector rejected"
+        ],
+        "affected_count": 1
+      },
+      {
+        "root_cause": "measuring device fixed",
+        "quote": "The user fixes the fault at the measuring device.",
+        "explanation": "The activity \"measuring device fixed\" requires a condition to be met first, as stated in the source text: \"The user fixes the fault at the measuring device.\" However, no clear activity in the observed process matches this condition, so it cannot be confirmed whether the requirement is satisfied or not. This means we cannot verify if the step happened correctly — only that the necessary information to check is missing. (This same root cause also affects: Inform about the resolution of the inference, result shared.)",
+        "quote_verbatim": true,
+        "affected_activities": [
+          "Inform about the resolution of the inference",
+          "measuring device fixed",
+          "result shared"
+        ],
+        "affected_count": 4
+      }
+    ],
+    "conforme": [],
+    "piece_jointe_alignement_brut": {
+      "fault_detector.confirmed": {
+        "operator": "AND",
+        "quote": "The fault detector reports a failure to the user or user has a suspicion of their own fault.",
+        "terms": [
+          {
+            "term": "fault_detector.reported",
+            "status": "VIOLATED",
+            "reason": "both states matched, no path in process",
+            "missing": []
+          }
+        ],
+        "status": "VIOLATED",
+        "clauses": [
+          {
+            "terms": [
+              "fault_detector.reported"
+            ],
+            "status": "VIOLATED"
+          }
+        ]
+      },
+      "fault_detector.rejected": {
+        "operator": "AND",
+        "quote": "The user rejects the failure of the fault detector or the user confirms the failure of the fault detector.",
+        "terms": [
+          {
+            "term": "fault_detector.reported",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['fault_detector.rejected']",
+            "missing": [
+              "fault_detector.rejected"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "fault_detector.reported"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "measuring_device.fixed": {
+        "operator": "AND",
+        "quote": "The user fixes the fault at the measuring device.",
+        "terms": [
+          {
+            "term": "fault_detector.confirmed",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['measuring_device.fixed']",
+            "missing": [
+              "measuring_device.fixed"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "fault_detector.confirmed"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "result.shared": {
+        "operator": "AND",
+        "quote": "The user shares the results of the repairs carried out with the fault detector.",
+        "terms": [
+          {
+            "term": "measuring_device.fixed",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['measuring_device.fixed', 'result.shared']",
+            "missing": [
+              "measuring_device.fixed",
+              "result.shared"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "measuring_device.fixed"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "interference.resolved": {
+        "operator": "AND",
+        "quote": "The user will inform the customer about the resolution of the interference.",
+        "terms": [
+          {
+            "term": "result.shared",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['result.shared']",
+            "missing": [
+              "result.shared"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "result.shared"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      }
+    }
+  },
+  "errors": []
+}

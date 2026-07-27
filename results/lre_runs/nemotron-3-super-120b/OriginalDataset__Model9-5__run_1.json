@@ -1,0 +1,1082 @@
+{
+  "case_name": "OriginalDataset/Model9-5",
+  "text": "After the Expense Report is received, a new account must be created if the employee does not already have one. The report is then reviewed for automatic approval. Amounts under $200 are automatically approved, whereas amounts equal to or over $200 require approval of the supervisor. In case of rejection, the employee must receive a rejection notice by email. Otherwise, the reimbursement goes to the employees direct deposit bank account. If the request is not completed in 7 days, then the employee must receive an approval in progress email. If the request is not finished within 30 days, then the process is stopped and the employee receives an email cancellation notice and must re-submit the expense report.",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "nemotron-3-super-120b",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "nemotron-3-super-120b",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/../datasets/lre/alignment_model_text-master/datasets/OriginalDataset/Models/Model9-5.bpmn",
+  "report_model": "nemotron-3-super-120b",
+  "candidates": {
+    "expense_report": {
+      "states": [
+        "received",
+        "under_review",
+        "automatically_approved",
+        "requiring_supervisor_approval",
+        "rejected",
+        "approved",
+        "in_progress",
+        "cancelled"
+      ],
+      "exclusive_groups": [
+        [
+          "automatically_approved",
+          "requiring_supervisor_approval"
+        ]
+      ],
+      "concurrent_with": []
+    },
+    "account": {
+      "states": [
+        "created",
+        "existing"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "reimbursement": {
+      "states": [
+        "sent_to_direct_deposit"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "rejection_notice": {
+      "states": [
+        "sent_by_email"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "approval_in_progress_email": {
+      "states": [
+        "sent"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "cancellation_notice": {
+      "states": [
+        "sent_by_email"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    }
+  },
+  "validation_report": {
+    "expense_report": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "report"
+    },
+    "account": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "account"
+    },
+    "reimbursement": {
+      "f_lex": "INDETERMINATE",
+      "kept": true,
+      "head_used": "reimbursement"
+    },
+    "rejection_notice": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "notice"
+    },
+    "approval_in_progress_email": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "email"
+    },
+    "cancellation_notice": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "notice"
+    },
+    "__meta__": {
+      "total_candidates": 6,
+      "indeterminate_kept_count": 1
+    }
+  },
+  "exclusive_groups_report": {
+    "accepted": [
+      {
+        "entity": "expense_report",
+        "states": [
+          "automatically_approved",
+          "requiring_supervisor_approval"
+        ],
+        "quote": "Amounts under $200 are automatically approved, whereas amounts equal to or over $200 require approval of the supervisor."
+      }
+    ],
+    "rejected": []
+  },
+  "state_space": {
+    "expense_report": {
+      "states": [
+        "received",
+        "under_review",
+        "automatically_approved",
+        "requiring_supervisor_approval",
+        "rejected",
+        "approved",
+        "in_progress",
+        "cancelled"
+      ],
+      "exclusive_groups": [
+        [
+          "automatically_approved",
+          "requiring_supervisor_approval"
+        ]
+      ],
+      "concurrent_with": []
+    },
+    "account": {
+      "states": [
+        "created",
+        "existing"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "reimbursement": {
+      "states": [
+        "sent_to_direct_deposit"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "rejection_notice": {
+      "states": [
+        "sent_by_email"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "approval_in_progress_email": {
+      "states": [
+        "sent"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "cancellation_notice": {
+      "states": [
+        "sent_by_email"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    }
+  },
+  "state_space_dedup": {
+    "merged": {},
+    "ambiguous_not_merged": {}
+  },
+  "raw_preconditions": {
+    "expense_report.received": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "expense_report.under_review": {
+      "precondition": "expense_report.received",
+      "quote": "After the Expense Report is received, a new account must be created if the employee does not already have one. The report is then reviewed for automatic approval."
+    },
+    "expense_report.automatically_approved": {
+      "precondition": "expense_report.under_review AND amount_under_200",
+      "quote": null,
+      "unresolved_reason": "amount_under_200 is not a state in the state space"
+    },
+    "expense_report.requiring_supervisor_approval": {
+      "precondition": "expense_report.under_review AND amount_200_or_over",
+      "quote": null,
+      "unresolved_reason": "amount_200_or_over is not a state in the state space"
+    },
+    "expense_report.rejected": {
+      "precondition": "expense_report.requiring_supervisor_approval AND supervisor_rejected",
+      "quote": null,
+      "unresolved_reason": "supervisor_rejected is not a state in the state space"
+    },
+    "expense_report.approved": {
+      "precondition": "expense_report.automatically_approved OR expense_report.requiring_supervisor_approval AND supervisor_approved",
+      "quote": null,
+      "unresolved_reason": "supervisor_approved is not a state in the state space"
+    },
+    "expense_report.in_progress": {
+      "precondition": "expense_report.approved",
+      "quote": "Otherwise, the reimbursement goes to the employees direct deposit bank account."
+    },
+    "expense_report.cancelled": {
+      "precondition": "NOT completed_within_30_days",
+      "quote": null,
+      "unresolved_reason": "completed_within_30_days is not a state in the state space"
+    },
+    "account.created": {
+      "precondition": "NOT account.existing",
+      "quote": "After the Expense Report is received, a new account must be created if the employee does not already have one."
+    },
+    "account.existing": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "reimbursement.sent_to_direct_deposit": {
+      "precondition": "expense_report.approved",
+      "quote": "Otherwise, the reimbursement goes to the employees direct deposit bank account."
+    },
+    "rejection_notice.sent_by_email": {
+      "precondition": "expense_report.rejected",
+      "quote": "In case of rejection, the employee must receive a rejection notice by email."
+    },
+    "approval_in_progress_email.sent": {
+      "precondition": "NOT completed_within_7_days",
+      "quote": null,
+      "unresolved_reason": "completed_within_7_days is not a state in the state space"
+    },
+    "cancellation_notice.sent_by_email": {
+      "precondition": "NOT completed_within_30_days",
+      "quote": null,
+      "unresolved_reason": "completed_within_30_days is not a state in the state space"
+    }
+  },
+  "validated_preconditions": {
+    "expense_report.received": {
+      "precondition": "INITIAL",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "expense_report.under_review": {
+      "precondition": "expense_report.received",
+      "quote": "After the Expense Report is received, a new account must be created if the employee does not already have one. The report is then reviewed for automatic approval.",
+      "status": "OK",
+      "reason": null
+    },
+    "expense_report.automatically_approved": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "DOWNGRADED",
+      "reason": "references unknown state(s): ['amount_under_200']",
+      "retried": true
+    },
+    "expense_report.requiring_supervisor_approval": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "DOWNGRADED",
+      "reason": "references unknown state(s): ['amount_200_or_over']",
+      "retried": true
+    },
+    "expense_report.rejected": {
+      "precondition": "expense_report.requiring_supervisor_approval",
+      "quote": "Amounts under $200 are automatically approved, whereas amounts equal to or over $200 require approval of the supervisor.",
+      "status": "OK",
+      "reason": null,
+      "retried": true
+    },
+    "expense_report.approved": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "DOWNGRADED",
+      "reason": "references unknown state(s): ['supervisor_approved']",
+      "retried": true
+    },
+    "expense_report.in_progress": {
+      "precondition": "expense_report.approved",
+      "quote": "Otherwise, the reimbursement goes to the employees direct deposit bank account.",
+      "status": "OK",
+      "reason": null
+    },
+    "expense_report.cancelled": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "DOWNGRADED",
+      "reason": "references unknown state(s): ['NOT completed_within_30_days']",
+      "retried": true
+    },
+    "account.created": {
+      "precondition": "NOT account.existing",
+      "quote": "After the Expense Report is received, a new account must be created if the employee does not already have one.",
+      "status": "OK",
+      "reason": null
+    },
+    "account.existing": {
+      "precondition": "INITIAL",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "reimbursement.sent_to_direct_deposit": {
+      "precondition": "expense_report.approved",
+      "quote": "Otherwise, the reimbursement goes to the employees direct deposit bank account.",
+      "status": "OK",
+      "reason": null
+    },
+    "rejection_notice.sent_by_email": {
+      "precondition": "expense_report.rejected",
+      "quote": "In case of rejection, the employee must receive a rejection notice by email.",
+      "status": "OK",
+      "reason": null
+    },
+    "approval_in_progress_email.sent": {
+      "precondition": "NOT expense_report.in_progress",
+      "quote": "If the request is not completed in 7 days, then the employee must receive an approval in progress email.",
+      "status": "OK",
+      "reason": null,
+      "retried": true
+    },
+    "cancellation_notice.sent_by_email": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "DOWNGRADED",
+      "reason": "references unknown state(s): ['NOT completed_within_30_days']",
+      "retried": true
+    }
+  },
+  "precondition_cycles": [],
+  "branch_conflicts": [],
+  "reference_graph": {
+    "nodes": [
+      {
+        "id": "expense_report.received",
+        "weight": 0.5
+      },
+      {
+        "id": "expense_report.under_review",
+        "weight": 0.5
+      },
+      {
+        "id": "expense_report.automatically_approved",
+        "weight": 0.0
+      },
+      {
+        "id": "expense_report.requiring_supervisor_approval",
+        "weight": 0.5
+      },
+      {
+        "id": "expense_report.rejected",
+        "weight": 1.0
+      },
+      {
+        "id": "expense_report.approved",
+        "weight": 1.0
+      },
+      {
+        "id": "expense_report.in_progress",
+        "weight": 1.0
+      },
+      {
+        "id": "expense_report.cancelled",
+        "weight": 0.0
+      },
+      {
+        "id": "account.created",
+        "weight": 0.5
+      },
+      {
+        "id": "account.existing",
+        "weight": 0.5
+      },
+      {
+        "id": "reimbursement.sent_to_direct_deposit",
+        "weight": 0.5
+      },
+      {
+        "id": "rejection_notice.sent_by_email",
+        "weight": 0.5
+      },
+      {
+        "id": "approval_in_progress_email.sent",
+        "weight": 0.5
+      },
+      {
+        "id": "cancellation_notice.sent_by_email",
+        "weight": 0.0
+      }
+    ],
+    "edges": [
+      {
+        "from": "expense_report.received",
+        "to": "expense_report.under_review",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "After the Expense Report is received, a new account must be created if the employee does not already have one. The report is then reviewed for automatic approval.",
+        "negated": false
+      },
+      {
+        "from": "expense_report.requiring_supervisor_approval",
+        "to": "expense_report.rejected",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "Amounts under $200 are automatically approved, whereas amounts equal to or over $200 require approval of the supervisor.",
+        "negated": false
+      },
+      {
+        "from": "expense_report.approved",
+        "to": "expense_report.in_progress",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "Otherwise, the reimbursement goes to the employees direct deposit bank account.",
+        "negated": false
+      },
+      {
+        "from": "account.existing",
+        "to": "account.created",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "After the Expense Report is received, a new account must be created if the employee does not already have one.",
+        "negated": true
+      },
+      {
+        "from": "expense_report.approved",
+        "to": "reimbursement.sent_to_direct_deposit",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "Otherwise, the reimbursement goes to the employees direct deposit bank account.",
+        "negated": false
+      },
+      {
+        "from": "expense_report.rejected",
+        "to": "rejection_notice.sent_by_email",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "In case of rejection, the employee must receive a rejection notice by email.",
+        "negated": false
+      },
+      {
+        "from": "expense_report.in_progress",
+        "to": "approval_in_progress_email.sent",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "If the request is not completed in 7 days, then the employee must receive an approval in progress email.",
+        "negated": true
+      }
+    ],
+    "cycles": [],
+    "branch_conflicts": [],
+    "exclusive_pairs": [
+      {
+        "entity": "expense_report",
+        "nodes": [
+          "expense_report.automatically_approved",
+          "expense_report.requiring_supervisor_approval"
+        ]
+      }
+    ]
+  },
+  "dfg_edges": [
+    {
+      "source_id": "Task_3",
+      "source_label": "Create account",
+      "target_id": "Task_2",
+      "target_label": "Review for pre-approval",
+      "gateway_context": []
+    },
+    {
+      "source_id": "IntermediateTimerEvent_1",
+      "source_label": "23 days",
+      "target_id": "Task_1",
+      "target_label": "Advise employee to start again",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_4",
+      "source_label": "Send for payment",
+      "target_id": "Task_5",
+      "target_label": "Transfer to employee account",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_2",
+      "source_label": "Review for pre-approval",
+      "target_id": "Task_4",
+      "target_label": "Send for payment",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_2",
+      "source_label": "Review for pre-approval",
+      "target_id": "Task_6",
+      "target_label": "Conduct supervisor review",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_0",
+      "source_label": "Approve in progress email",
+      "target_id": "IntermediateTimerEvent_1",
+      "target_label": "23 days",
+      "gateway_context": []
+    },
+    {
+      "source_id": "IntermediateTimerEvent_0",
+      "source_label": "7 days",
+      "target_id": "Task_0",
+      "target_label": "Approve in progress email",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_6",
+      "source_label": "Conduct supervisor review",
+      "target_id": "Task_7",
+      "target_label": "Notify  employee",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_6",
+      "source_label": "Conduct supervisor review",
+      "target_id": "Task_4",
+      "target_label": "Send for payment",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway"
+      ]
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "Create account",
+      "subject_id": "Task_3",
+      "predicate": "follows",
+      "object": "Review for pre-approval",
+      "object_id": "Task_2"
+    },
+    {
+      "subject": "23 days",
+      "subject_id": "IntermediateTimerEvent_1",
+      "predicate": "follows",
+      "object": "Advise employee to start again",
+      "object_id": "Task_1"
+    },
+    {
+      "subject": "Send for payment",
+      "subject_id": "Task_4",
+      "predicate": "follows",
+      "object": "Transfer to employee account",
+      "object_id": "Task_5"
+    },
+    {
+      "subject": "Review for pre-approval",
+      "subject_id": "Task_2",
+      "predicate": "follows",
+      "object": "Send for payment",
+      "object_id": "Task_4"
+    },
+    {
+      "subject": "Review for pre-approval",
+      "subject_id": "Task_2",
+      "predicate": "follows",
+      "object": "Conduct supervisor review",
+      "object_id": "Task_6"
+    },
+    {
+      "subject": "Approve in progress email",
+      "subject_id": "Task_0",
+      "predicate": "follows",
+      "object": "23 days",
+      "object_id": "IntermediateTimerEvent_1"
+    },
+    {
+      "subject": "7 days",
+      "subject_id": "IntermediateTimerEvent_0",
+      "predicate": "follows",
+      "object": "Approve in progress email",
+      "object_id": "Task_0"
+    },
+    {
+      "subject": "Conduct supervisor review",
+      "subject_id": "Task_6",
+      "predicate": "follows",
+      "object": "Notify  employee",
+      "object_id": "Task_7"
+    },
+    {
+      "subject": "Conduct supervisor review",
+      "subject_id": "Task_6",
+      "predicate": "follows",
+      "object": "Send for payment",
+      "object_id": "Task_4"
+    }
+  ],
+  "matches": {
+    "Task_3": {
+      "activity_label": "Create account",
+      "matches": [
+        {
+          "match": "account.created",
+          "score": 0.8136
+        }
+      ],
+      "clusters": [
+        [
+          "account.created"
+        ]
+      ]
+    },
+    "Task_2": {
+      "activity_label": "Review for pre-approval",
+      "matches": [],
+      "clusters": []
+    },
+    "IntermediateTimerEvent_1": {
+      "activity_label": "23 days",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_1": {
+      "activity_label": "Advise employee to start again",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_4": {
+      "activity_label": "Send for payment",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_5": {
+      "activity_label": "Transfer to employee account",
+      "matches": [
+        {
+          "match": "account.created",
+          "score": 0.4248
+        }
+      ],
+      "clusters": [
+        [
+          "account.created"
+        ]
+      ]
+    },
+    "Task_6": {
+      "activity_label": "Conduct supervisor review",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_0": {
+      "activity_label": "Approve in progress email",
+      "matches": [
+        {
+          "match": "approval_in_progress_email.sent",
+          "score": 0.8177
+        }
+      ],
+      "clusters": [
+        [
+          "approval_in_progress_email.sent"
+        ]
+      ]
+    },
+    "IntermediateTimerEvent_0": {
+      "activity_label": "7 days",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_7": {
+      "activity_label": "Notify  employee",
+      "matches": [],
+      "clusters": []
+    }
+  },
+  "process_graph": [],
+  "alignment": {
+    "expense_report.under_review": {
+      "operator": "AND",
+      "quote": "After the Expense Report is received, a new account must be created if the employee does not already have one. The report is then reviewed for automatic approval.",
+      "terms": [
+        {
+          "term": "expense_report.received",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['expense_report.received', 'expense_report.under_review']",
+          "missing": [
+            "expense_report.received",
+            "expense_report.under_review"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "expense_report.received"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "expense_report.rejected": {
+      "operator": "AND",
+      "quote": "Amounts under $200 are automatically approved, whereas amounts equal to or over $200 require approval of the supervisor.",
+      "terms": [
+        {
+          "term": "expense_report.requiring_supervisor_approval",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['expense_report.requiring_supervisor_approval', 'expense_report.rejected']",
+          "missing": [
+            "expense_report.requiring_supervisor_approval",
+            "expense_report.rejected"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "expense_report.requiring_supervisor_approval"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "expense_report.in_progress": {
+      "operator": "AND",
+      "quote": "Otherwise, the reimbursement goes to the employees direct deposit bank account.",
+      "terms": [
+        {
+          "term": "expense_report.approved",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['expense_report.approved', 'expense_report.in_progress']",
+          "missing": [
+            "expense_report.approved",
+            "expense_report.in_progress"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "expense_report.approved"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "account.created": {
+      "operator": "AND",
+      "quote": "After the Expense Report is received, a new account must be created if the employee does not already have one.",
+      "terms": [
+        {
+          "term": "NOT account.existing",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['account.existing']",
+          "missing": [
+            "account.existing"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "NOT account.existing"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "reimbursement.sent_to_direct_deposit": {
+      "operator": "AND",
+      "quote": "Otherwise, the reimbursement goes to the employees direct deposit bank account.",
+      "terms": [
+        {
+          "term": "expense_report.approved",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['expense_report.approved', 'reimbursement.sent_to_direct_deposit']",
+          "missing": [
+            "expense_report.approved",
+            "reimbursement.sent_to_direct_deposit"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "expense_report.approved"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "rejection_notice.sent_by_email": {
+      "operator": "AND",
+      "quote": "In case of rejection, the employee must receive a rejection notice by email.",
+      "terms": [
+        {
+          "term": "expense_report.rejected",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['expense_report.rejected', 'rejection_notice.sent_by_email']",
+          "missing": [
+            "expense_report.rejected",
+            "rejection_notice.sent_by_email"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "expense_report.rejected"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "approval_in_progress_email.sent": {
+      "operator": "AND",
+      "quote": "If the request is not completed in 7 days, then the employee must receive an approval in progress email.",
+      "terms": [
+        {
+          "term": "NOT expense_report.in_progress",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['expense_report.in_progress']",
+          "missing": [
+            "expense_report.in_progress"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "NOT expense_report.in_progress"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    }
+  },
+  "report": {
+    "verdict": {
+      "verdict": "FAITHFUL_WITH_RESERVATIONS",
+      "justification": "No gap found, but 4 requirement(s) from the text could not be associated with any clear activity in the observed process -- neither confirmed nor refuted. This verdict is NOT a confirmation of full faithfulness.",
+      "scope": "This verdict covers the causal reachability of the requirements expressed in the source text, not the general quality of the process model -- a multiplicity defect (an activity executed more than once due to a mismatched branching structure) is not covered by this verdict, even if the process is otherwise well-formed."
+    },
+    "summary": {
+      "ecarts": 0,
+      "non_verifiable": 4,
+      "conforme": 0
+    },
+    "ecarts": [],
+    "non_verifiable": [
+      {
+        "root_cause": "expense report received",
+        "quote": "After the Expense Report is received, a new account must be created if the employee does not already have one. The report is then reviewed for automatic approval.",
+        "explanation": "The source text states that a condition must be met before the activity \"expense report under review\" can occur: \"After the Expense Report is received, a new account must be created if the employee does not already have one. The report is then reviewed for automatic approval.\"  \nThis condition — that the expense report has been received — cannot be linked to any specific activity in the observed process, so it is impossible to verify whether it is satisfied or not.",
+        "quote_verbatim": true,
+        "affected_activities": [
+          "expense report under review"
+        ],
+        "affected_count": 2
+      },
+      {
+        "root_cause": "expense report requiring supervisor approval",
+        "quote": "Amounts under $200 are automatically approved, whereas amounts equal to or over $200 require approval of the supervisor.",
+        "explanation": "The requirement states that \"Amounts under $200 are automatically approved, whereas amounts equal to or over $200 require approval of the supervisor.\" This means the activity \"expense report rejected\" can only occur if the expense report required supervisor approval. However, no activity in the observed process clearly indicates when or whether supervisor approval was required for a given expense report. Because this condition cannot be observed or verified from the available information, it is impossible to determine whether the requirement was met before \"expense report rejected\" occurred. This is not a confirmation or refutation of conformance — only an acknowledgment that the necessary information to check the condition is missing. (This same root cause also affects: rejection notice sent by email.)",
+        "quote_verbatim": true,
+        "affected_activities": [
+          "expense report rejected",
+          "rejection notice sent by email"
+        ],
+        "affected_count": 4
+      },
+      {
+        "root_cause": "expense report approved",
+        "quote": "Otherwise, the reimbursement goes to the employees direct deposit bank account.",
+        "explanation": "The activity \"expense report in progress\" requires that the expense report be approved first, as indicated by the source text.  \n\"Otherwise, the reimbursement goes to the employees direct deposit bank account.\"  \nHowever, no clear activity in the observed process corresponds to \"expense report approved,\" so it is impossible to verify whether this condition is met or not.  \nThis is neither a confirmation nor a refutation of conformance — only an inability to verify due to missing information. (This same root cause also affects: Approve in progress email, reimbursement sent to direct deposit.)",
+        "quote_verbatim": true,
+        "affected_activities": [
+          "Approve in progress email",
+          "expense report in progress",
+          "reimbursement sent to direct deposit"
+        ],
+        "affected_count": 5
+      },
+      {
+        "root_cause": "account existing",
+        "quote": "After the Expense Report is received, a new account must be created if the employee does not already have one.",
+        "explanation": "The requirement states that an account must not already exist before creating one, as shown by the quote: \"After the Expense Report is received, a new account must be created if the employee does not already have one.\"  \nHowever, no activity in the observed process clearly shows whether an account already exists or not, so it is impossible to verify if this absence condition is respected.  \nThis does not confirm or deny conformance — it only means the requirement cannot be checked with the available information.",
+        "quote_verbatim": true,
+        "affected_activities": [
+          "Create account"
+        ],
+        "affected_count": 1
+      }
+    ],
+    "conforme": [],
+    "piece_jointe_alignement_brut": {
+      "expense_report.under_review": {
+        "operator": "AND",
+        "quote": "After the Expense Report is received, a new account must be created if the employee does not already have one. The report is then reviewed for automatic approval.",
+        "terms": [
+          {
+            "term": "expense_report.received",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['expense_report.received', 'expense_report.under_review']",
+            "missing": [
+              "expense_report.received",
+              "expense_report.under_review"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "expense_report.received"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "expense_report.rejected": {
+        "operator": "AND",
+        "quote": "Amounts under $200 are automatically approved, whereas amounts equal to or over $200 require approval of the supervisor.",
+        "terms": [
+          {
+            "term": "expense_report.requiring_supervisor_approval",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['expense_report.requiring_supervisor_approval', 'expense_report.rejected']",
+            "missing": [
+              "expense_report.requiring_supervisor_approval",
+              "expense_report.rejected"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "expense_report.requiring_supervisor_approval"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "expense_report.in_progress": {
+        "operator": "AND",
+        "quote": "Otherwise, the reimbursement goes to the employees direct deposit bank account.",
+        "terms": [
+          {
+            "term": "expense_report.approved",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['expense_report.approved', 'expense_report.in_progress']",
+            "missing": [
+              "expense_report.approved",
+              "expense_report.in_progress"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "expense_report.approved"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "account.created": {
+        "operator": "AND",
+        "quote": "After the Expense Report is received, a new account must be created if the employee does not already have one.",
+        "terms": [
+          {
+            "term": "NOT account.existing",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['account.existing']",
+            "missing": [
+              "account.existing"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "NOT account.existing"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "reimbursement.sent_to_direct_deposit": {
+        "operator": "AND",
+        "quote": "Otherwise, the reimbursement goes to the employees direct deposit bank account.",
+        "terms": [
+          {
+            "term": "expense_report.approved",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['expense_report.approved', 'reimbursement.sent_to_direct_deposit']",
+            "missing": [
+              "expense_report.approved",
+              "reimbursement.sent_to_direct_deposit"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "expense_report.approved"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "rejection_notice.sent_by_email": {
+        "operator": "AND",
+        "quote": "In case of rejection, the employee must receive a rejection notice by email.",
+        "terms": [
+          {
+            "term": "expense_report.rejected",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['expense_report.rejected', 'rejection_notice.sent_by_email']",
+            "missing": [
+              "expense_report.rejected",
+              "rejection_notice.sent_by_email"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "expense_report.rejected"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "approval_in_progress_email.sent": {
+        "operator": "AND",
+        "quote": "If the request is not completed in 7 days, then the employee must receive an approval in progress email.",
+        "terms": [
+          {
+            "term": "NOT expense_report.in_progress",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['expense_report.in_progress']",
+            "missing": [
+              "expense_report.in_progress"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "NOT expense_report.in_progress"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      }
+    }
+  },
+  "errors": []
+}

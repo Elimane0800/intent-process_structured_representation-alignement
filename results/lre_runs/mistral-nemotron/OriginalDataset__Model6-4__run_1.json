@@ -1,0 +1,1092 @@
+{
+  "case_name": "OriginalDataset/Model6-4",
+  "text": "The first step is to determine contact details of potential customers. This can be achieved in several ways. Sometimes, we buy details for cold calls, sometimes, our marketing staff participates in exhibitions and sometimes, you just happen to know somebody, who is interested in the product. Then we start calling the customer. That is done by the call center staff. They are determining the contact person and the budget which would be available for the project. Of course, asking the customer whether he is generally interested is also important. If this is not the case, we leave him alone, except if the potential project budget is huge. Then the head of development personally tries to acquire the customer. If the customer is interested in the end, the next step is a detailed online presentation. It is given either by a sales representative or by a pre-sales employee in case of a more technical presentation. Afterwards we are waiting for the customer to come back to us. If we are not contacted within 2 weeks, a sales representative is calling the customer. The last phase is the creation of a quotation.",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "mistral-nemotron",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "mistral-nemotron",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/../datasets/lre/alignment_model_text-master/datasets/OriginalDataset/Models/Model6-4.bpmn",
+  "report_model": "mistral-nemotron",
+  "candidates": {
+    "contact_details": {
+      "states": [
+        "bought",
+        "collected_at_exhibition",
+        "known_personally"
+      ],
+      "exclusive_groups": [
+        [
+          "bought",
+          "collected_at_exhibition",
+          "known_personally"
+        ]
+      ],
+      "concurrent_with": []
+    },
+    "customer": {
+      "states": [
+        "contacted",
+        "interested",
+        "disinterested",
+        "high_budget",
+        "presented_to",
+        "awaiting_response",
+        "quotation_created"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": [
+        "call_center_staff",
+        "head_of_development",
+        "sales_representative",
+        "pre_sales_employee"
+      ]
+    },
+    "call_center_staff": {
+      "states": [
+        "calling",
+        "determining_contact_person",
+        "determining_budget",
+        "checking_interest"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": [
+        "customer"
+      ]
+    },
+    "head_of_development": {
+      "states": [
+        "acquiring_customer"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": [
+        "customer"
+      ]
+    },
+    "sales_representative": {
+      "states": [
+        "giving_presentation",
+        "following_up"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": [
+        "customer"
+      ]
+    },
+    "pre_sales_employee": {
+      "states": [
+        "giving_technical_presentation"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": [
+        "customer"
+      ]
+    },
+    "quotation": {
+      "states": [
+        "created"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    }
+  },
+  "validation_report": {
+    "contact_details": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "details"
+    },
+    "customer": {
+      "f_lex": "ACTOR",
+      "kept": false,
+      "head_used": "customer"
+    },
+    "call_center_staff": {
+      "f_lex": "INDETERMINATE",
+      "kept": true,
+      "head_used": "staff"
+    },
+    "head_of_development": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "development"
+    },
+    "sales_representative": {
+      "f_lex": "ACTOR",
+      "kept": false,
+      "head_used": "representative"
+    },
+    "pre_sales_employee": {
+      "f_lex": "ACTOR",
+      "kept": false,
+      "head_used": "employee"
+    },
+    "quotation": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "quotation"
+    },
+    "__meta__": {
+      "total_candidates": 7,
+      "indeterminate_kept_count": 1
+    }
+  },
+  "exclusive_groups_report": {
+    "accepted": [
+      {
+        "entity": "contact_details",
+        "states": [
+          "bought",
+          "collected_at_exhibition",
+          "known_personally"
+        ],
+        "quote": "we buy details for cold calls, sometimes, our marketing staff participates in exhibitions and sometimes, you just happen to know somebody"
+      }
+    ],
+    "rejected": []
+  },
+  "state_space": {
+    "contact_detail": {
+      "states": [
+        "bought",
+        "collected_at_exhibition",
+        "known_personally"
+      ],
+      "exclusive_groups": [
+        [
+          "bought",
+          "collected_at_exhibition",
+          "known_personally"
+        ]
+      ],
+      "concurrent_with": []
+    },
+    "call_center_staff": {
+      "states": [
+        "calling",
+        "determining_contact_person",
+        "determining_budget",
+        "checking_interest"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "head_of_development": {
+      "states": [
+        "acquiring_customer"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "quotation": {
+      "states": [
+        "created"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    }
+  },
+  "state_space_dedup": {
+    "merged": {},
+    "ambiguous_not_merged": {}
+  },
+  "raw_preconditions": {
+    "contact_detail.bought": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "contact_detail.collected_at_exhibition": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "contact_detail.known_personally": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "call_center_staff.calling": {
+      "precondition": "contact_detail.bought OR contact_detail.collected_at_exhibition OR contact_detail.known_personally",
+      "quote": "Then we start calling the customer."
+    },
+    "call_center_staff.determining_contact_person": {
+      "precondition": "call_center_staff.calling",
+      "quote": "They are determining the contact person and the budget which would be available for the project."
+    },
+    "call_center_staff.determining_budget": {
+      "precondition": "call_center_staff.calling",
+      "quote": "They are determining the contact person and the budget which would be available for the project."
+    },
+    "call_center_staff.checking_interest": {
+      "precondition": "call_center_staff.calling",
+      "quote": "Of course, asking the customer whether he is generally interested is also important."
+    },
+    "head_of_development.acquiring_customer": {
+      "precondition": "call_center_staff.checking_interest AND NOT call_center_staff.determining_budget",
+      "quote": "If this is not the case, we leave him alone, except if the potential project budget is huge. Then the head of development personally tries to acquire the customer."
+    },
+    "quotation.created": {
+      "precondition": "UNRESOLVED",
+      "quote": null
+    }
+  },
+  "validated_preconditions": {
+    "contact_detail.bought": {
+      "precondition": "INITIAL",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "contact_detail.collected_at_exhibition": {
+      "precondition": "INITIAL",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "contact_detail.known_personally": {
+      "precondition": "INITIAL",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "call_center_staff.calling": {
+      "precondition": "contact_detail.bought OR contact_detail.collected_at_exhibition OR contact_detail.known_personally",
+      "quote": "Then we start calling the customer.",
+      "status": "OK",
+      "reason": null
+    },
+    "call_center_staff.determining_contact_person": {
+      "precondition": "call_center_staff.calling",
+      "quote": "They are determining the contact person and the budget which would be available for the project.",
+      "status": "OK",
+      "reason": null
+    },
+    "call_center_staff.determining_budget": {
+      "precondition": "call_center_staff.calling",
+      "quote": "They are determining the contact person and the budget which would be available for the project.",
+      "status": "OK",
+      "reason": null
+    },
+    "call_center_staff.checking_interest": {
+      "precondition": "call_center_staff.calling",
+      "quote": "Of course, asking the customer whether he is generally interested is also important.",
+      "status": "OK",
+      "reason": null
+    },
+    "head_of_development.acquiring_customer": {
+      "precondition": "call_center_staff.checking_interest AND NOT call_center_staff.determining_budget",
+      "quote": "If this is not the case, we leave him alone, except if the potential project budget is huge. Then the head of development personally tries to acquire the customer.",
+      "status": "OK",
+      "reason": null
+    },
+    "quotation.created": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    }
+  },
+  "precondition_cycles": [],
+  "branch_conflicts": [],
+  "reference_graph": {
+    "nodes": [
+      {
+        "id": "contact_detail.bought",
+        "weight": 0.167
+      },
+      {
+        "id": "contact_detail.collected_at_exhibition",
+        "weight": 0.167
+      },
+      {
+        "id": "contact_detail.known_personally",
+        "weight": 0.167
+      },
+      {
+        "id": "call_center_staff.calling",
+        "weight": 1.0
+      },
+      {
+        "id": "call_center_staff.determining_contact_person",
+        "weight": 0.167
+      },
+      {
+        "id": "call_center_staff.determining_budget",
+        "weight": 0.333
+      },
+      {
+        "id": "call_center_staff.checking_interest",
+        "weight": 0.333
+      },
+      {
+        "id": "head_of_development.acquiring_customer",
+        "weight": 0.333
+      },
+      {
+        "id": "quotation.created",
+        "weight": 0.0
+      }
+    ],
+    "edges": [
+      {
+        "from": "contact_detail.bought",
+        "to": "call_center_staff.calling",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "Then we start calling the customer.",
+        "negated": false
+      },
+      {
+        "from": "contact_detail.collected_at_exhibition",
+        "to": "call_center_staff.calling",
+        "clause": 1,
+        "type": "cross_entity_guard",
+        "quote": "Then we start calling the customer.",
+        "negated": false
+      },
+      {
+        "from": "contact_detail.known_personally",
+        "to": "call_center_staff.calling",
+        "clause": 2,
+        "type": "cross_entity_guard",
+        "quote": "Then we start calling the customer.",
+        "negated": false
+      },
+      {
+        "from": "call_center_staff.calling",
+        "to": "call_center_staff.determining_contact_person",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "They are determining the contact person and the budget which would be available for the project.",
+        "negated": false
+      },
+      {
+        "from": "call_center_staff.calling",
+        "to": "call_center_staff.determining_budget",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "They are determining the contact person and the budget which would be available for the project.",
+        "negated": false
+      },
+      {
+        "from": "call_center_staff.calling",
+        "to": "call_center_staff.checking_interest",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "Of course, asking the customer whether he is generally interested is also important.",
+        "negated": false
+      },
+      {
+        "from": "call_center_staff.checking_interest",
+        "to": "head_of_development.acquiring_customer",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "If this is not the case, we leave him alone, except if the potential project budget is huge. Then the head of development personally tries to acquire the customer.",
+        "negated": false
+      },
+      {
+        "from": "call_center_staff.determining_budget",
+        "to": "head_of_development.acquiring_customer",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "If this is not the case, we leave him alone, except if the potential project budget is huge. Then the head of development personally tries to acquire the customer.",
+        "negated": true
+      }
+    ],
+    "cycles": [],
+    "branch_conflicts": [],
+    "exclusive_pairs": [
+      {
+        "entity": "contact_detail",
+        "nodes": [
+          "contact_detail.bought",
+          "contact_detail.collected_at_exhibition",
+          "contact_detail.known_personally"
+        ]
+      }
+    ]
+  },
+  "dfg_edges": [
+    {
+      "source_id": "Task_0yasbbh",
+      "source_label": "Contact customer",
+      "target_id": "Task_1oshr8b",
+      "target_label": "Give technical presentation",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "aroused in request",
+        "ExclusiveGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_0yasbbh",
+      "source_label": "Contact customer",
+      "target_id": "Task_1n5augf",
+      "target_label": "Give sales presentation",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "aroused in request",
+        "ExclusiveGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_0k8j1jy",
+      "source_label": "Buy data",
+      "target_id": "Task_1la91ms",
+      "target_label": "Determine contact person",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_1n5augf",
+      "source_label": "Give sales presentation",
+      "target_id": "IntermediateCatchEvent_0az5gqy",
+      "target_label": "",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "EventBasedGateway"
+      ]
+    },
+    {
+      "source_id": "Task_1n5augf",
+      "source_label": "Give sales presentation",
+      "target_id": "IntermediateCatchEvent_1hsqzfa",
+      "target_label": "Customer comes back",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "EventBasedGateway"
+      ]
+    },
+    {
+      "source_id": "Task_0lzccjb",
+      "source_label": "Visit exhibition",
+      "target_id": "Task_11kc93s",
+      "target_label": "Import excel-sheet with customer data",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_17xq7m5",
+      "source_label": "Use other sources",
+      "target_id": "Task_1la91ms",
+      "target_label": "Determine contact person",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_1psfmbe",
+      "source_label": "Determine available project budget",
+      "target_id": "Task_0yasbbh",
+      "target_label": "Contact customer",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "not interested"
+      ]
+    },
+    {
+      "source_id": "Task_1psfmbe",
+      "source_label": "Determine available project budget",
+      "target_id": "Task_1oshr8b",
+      "target_label": "Give technical presentation",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "is interested",
+        "ExclusiveGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_1psfmbe",
+      "source_label": "Determine available project budget",
+      "target_id": "Task_1n5augf",
+      "target_label": "Give sales presentation",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "is interested",
+        "ExclusiveGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_11kc93s",
+      "source_label": "Import excel-sheet with customer data",
+      "target_id": "Task_1la91ms",
+      "target_label": "Determine contact person",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_1la91ms",
+      "source_label": "Determine contact person",
+      "target_id": "Task_1psfmbe",
+      "target_label": "Determine available project budget",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "Ok"
+      ]
+    },
+    {
+      "source_id": "Task_1oshr8b",
+      "source_label": "Give technical presentation",
+      "target_id": "IntermediateCatchEvent_0az5gqy",
+      "target_label": "",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "EventBasedGateway"
+      ]
+    },
+    {
+      "source_id": "Task_1oshr8b",
+      "source_label": "Give technical presentation",
+      "target_id": "IntermediateCatchEvent_1hsqzfa",
+      "target_label": "Customer comes back",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "EventBasedGateway"
+      ]
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "Contact customer",
+      "subject_id": "Task_0yasbbh",
+      "predicate": "follows",
+      "object": "Give technical presentation",
+      "object_id": "Task_1oshr8b"
+    },
+    {
+      "subject": "Contact customer",
+      "subject_id": "Task_0yasbbh",
+      "predicate": "follows",
+      "object": "Give sales presentation",
+      "object_id": "Task_1n5augf"
+    },
+    {
+      "subject": "Buy data",
+      "subject_id": "Task_0k8j1jy",
+      "predicate": "follows",
+      "object": "Determine contact person",
+      "object_id": "Task_1la91ms"
+    },
+    {
+      "subject": "Give sales presentation",
+      "subject_id": "Task_1n5augf",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "IntermediateCatchEvent_0az5gqy"
+    },
+    {
+      "subject": "Give sales presentation",
+      "subject_id": "Task_1n5augf",
+      "predicate": "follows",
+      "object": "Customer comes back",
+      "object_id": "IntermediateCatchEvent_1hsqzfa"
+    },
+    {
+      "subject": "Visit exhibition",
+      "subject_id": "Task_0lzccjb",
+      "predicate": "follows",
+      "object": "Import excel-sheet with customer data",
+      "object_id": "Task_11kc93s"
+    },
+    {
+      "subject": "Use other sources",
+      "subject_id": "Task_17xq7m5",
+      "predicate": "follows",
+      "object": "Determine contact person",
+      "object_id": "Task_1la91ms"
+    },
+    {
+      "subject": "Determine available project budget",
+      "subject_id": "Task_1psfmbe",
+      "predicate": "follows",
+      "object": "Contact customer",
+      "object_id": "Task_0yasbbh"
+    },
+    {
+      "subject": "Determine available project budget",
+      "subject_id": "Task_1psfmbe",
+      "predicate": "follows",
+      "object": "Give technical presentation",
+      "object_id": "Task_1oshr8b"
+    },
+    {
+      "subject": "Determine available project budget",
+      "subject_id": "Task_1psfmbe",
+      "predicate": "follows",
+      "object": "Give sales presentation",
+      "object_id": "Task_1n5augf"
+    },
+    {
+      "subject": "Import excel-sheet with customer data",
+      "subject_id": "Task_11kc93s",
+      "predicate": "follows",
+      "object": "Determine contact person",
+      "object_id": "Task_1la91ms"
+    },
+    {
+      "subject": "Determine contact person",
+      "subject_id": "Task_1la91ms",
+      "predicate": "follows",
+      "object": "Determine available project budget",
+      "object_id": "Task_1psfmbe"
+    },
+    {
+      "subject": "Give technical presentation",
+      "subject_id": "Task_1oshr8b",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "IntermediateCatchEvent_0az5gqy"
+    },
+    {
+      "subject": "Give technical presentation",
+      "subject_id": "Task_1oshr8b",
+      "predicate": "follows",
+      "object": "Customer comes back",
+      "object_id": "IntermediateCatchEvent_1hsqzfa"
+    }
+  ],
+  "matches": {
+    "Task_0yasbbh": {
+      "activity_label": "Contact customer",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_1oshr8b": {
+      "activity_label": "Give technical presentation",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_1n5augf": {
+      "activity_label": "Give sales presentation",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_0k8j1jy": {
+      "activity_label": "Buy data",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_1la91ms": {
+      "activity_label": "Determine contact person",
+      "matches": [
+        {
+          "match": "call_center_staff.determining_contact_person",
+          "score": 0.4609
+        }
+      ],
+      "clusters": [
+        [
+          "call_center_staff.determining_contact_person"
+        ]
+      ]
+    },
+    "IntermediateCatchEvent_1hsqzfa": {
+      "activity_label": "Customer comes back",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_0lzccjb": {
+      "activity_label": "Visit exhibition",
+      "matches": [
+        {
+          "match": "contact_detail.collected_at_exhibition",
+          "score": 0.4856
+        }
+      ],
+      "clusters": [
+        [
+          "contact_detail.collected_at_exhibition"
+        ]
+      ]
+    },
+    "Task_11kc93s": {
+      "activity_label": "Import excel-sheet with customer data",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_17xq7m5": {
+      "activity_label": "Use other sources",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_1psfmbe": {
+      "activity_label": "Determine available project budget",
+      "matches": [],
+      "clusters": []
+    }
+  },
+  "process_graph": [],
+  "alignment": {
+    "call_center_staff.calling": {
+      "operator": "OR",
+      "quote": "Then we start calling the customer.",
+      "terms": [
+        {
+          "term": "contact_detail.bought",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['contact_detail.bought', 'call_center_staff.calling']",
+          "missing": [
+            "contact_detail.bought",
+            "call_center_staff.calling"
+          ]
+        },
+        {
+          "term": "contact_detail.collected_at_exhibition",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['call_center_staff.calling']",
+          "missing": [
+            "call_center_staff.calling"
+          ]
+        },
+        {
+          "term": "contact_detail.known_personally",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['contact_detail.known_personally', 'call_center_staff.calling']",
+          "missing": [
+            "contact_detail.known_personally",
+            "call_center_staff.calling"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "contact_detail.bought"
+          ],
+          "status": "UNRESOLVABLE"
+        },
+        {
+          "terms": [
+            "contact_detail.collected_at_exhibition"
+          ],
+          "status": "UNRESOLVABLE"
+        },
+        {
+          "terms": [
+            "contact_detail.known_personally"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "call_center_staff.determining_contact_person": {
+      "operator": "AND",
+      "quote": "They are determining the contact person and the budget which would be available for the project.",
+      "terms": [
+        {
+          "term": "call_center_staff.calling",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['call_center_staff.calling']",
+          "missing": [
+            "call_center_staff.calling"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "call_center_staff.calling"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "call_center_staff.determining_budget": {
+      "operator": "AND",
+      "quote": "They are determining the contact person and the budget which would be available for the project.",
+      "terms": [
+        {
+          "term": "call_center_staff.calling",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['call_center_staff.calling', 'call_center_staff.determining_budget']",
+          "missing": [
+            "call_center_staff.calling",
+            "call_center_staff.determining_budget"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "call_center_staff.calling"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "call_center_staff.checking_interest": {
+      "operator": "AND",
+      "quote": "Of course, asking the customer whether he is generally interested is also important.",
+      "terms": [
+        {
+          "term": "call_center_staff.calling",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['call_center_staff.calling', 'call_center_staff.checking_interest']",
+          "missing": [
+            "call_center_staff.calling",
+            "call_center_staff.checking_interest"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "call_center_staff.calling"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "head_of_development.acquiring_customer": {
+      "operator": "AND",
+      "quote": "If this is not the case, we leave him alone, except if the potential project budget is huge. Then the head of development personally tries to acquire the customer.",
+      "terms": [
+        {
+          "term": "call_center_staff.checking_interest",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['call_center_staff.checking_interest', 'head_of_development.acquiring_customer']",
+          "missing": [
+            "call_center_staff.checking_interest",
+            "head_of_development.acquiring_customer"
+          ]
+        },
+        {
+          "term": "NOT call_center_staff.determining_budget",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['call_center_staff.determining_budget', 'head_of_development.acquiring_customer']",
+          "missing": [
+            "call_center_staff.determining_budget",
+            "head_of_development.acquiring_customer"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "call_center_staff.checking_interest",
+            "NOT call_center_staff.determining_budget"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    }
+  },
+  "report": {
+    "verdict": {
+      "verdict": "FAITHFUL_WITH_RESERVATIONS",
+      "justification": "No gap found, but 3 requirement(s) from the text could not be associated with any clear activity in the observed process -- neither confirmed nor refuted. This verdict is NOT a confirmation of full faithfulness.",
+      "scope": "This verdict covers the causal reachability of the requirements expressed in the source text, not the general quality of the process model -- a multiplicity defect (an activity executed more than once due to a mismatched branching structure) is not covered by this verdict, even if the process is otherwise well-formed."
+    },
+    "summary": {
+      "ecarts": 0,
+      "non_verifiable": 3,
+      "conforme": 0
+    },
+    "ecarts": [],
+    "non_verifiable": [
+      {
+        "root_cause": "contact detail bought",
+        "quote": "Then we start calling the customer.",
+        "explanation": "The process requires that \"contact detail bought\" must happen before \"call center staff calling,\" as stated in the source text: \"Then we start calling the customer.\" However, the observed process does not clearly show when or how this condition is met, so we cannot confirm whether this requirement is followed or not.",
+        "quote_verbatim": true,
+        "affected_activities": [
+          "call center staff calling"
+        ],
+        "affected_count": 1
+      },
+      {
+        "root_cause": "call center staff calling",
+        "quote": "Then we start calling the customer.",
+        "explanation": "The process requires that a condition be met before \"call center staff calling\" can occur, as stated in the source text: \"Then we start calling the customer.\" However, the observed process does not clearly show what this condition is, so we cannot confirm whether it was met or not. (This same root cause also affects: Determine contact person, call center staff checking interest, call center staff determining budget, head of development acquiring customer.)",
+        "quote_verbatim": true,
+        "affected_activities": [
+          "Determine contact person",
+          "call center staff calling",
+          "call center staff checking interest",
+          "call center staff determining budget",
+          "head of development acquiring customer"
+        ],
+        "affected_count": 12
+      },
+      {
+        "root_cause": "contact detail known personally",
+        "quote": "Then we start calling the customer.",
+        "explanation": "The process requires that the contact details of the customer be known personally before the activity \"call center staff calling\" can occur. The source text states: \"Then we start calling the customer.\" However, the observed process does not show any clear activity where this condition is checked or confirmed, so it is impossible to verify whether this requirement is met.",
+        "quote_verbatim": true,
+        "affected_activities": [
+          "call center staff calling"
+        ],
+        "affected_count": 1
+      }
+    ],
+    "conforme": [],
+    "piece_jointe_alignement_brut": {
+      "call_center_staff.calling": {
+        "operator": "OR",
+        "quote": "Then we start calling the customer.",
+        "terms": [
+          {
+            "term": "contact_detail.bought",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['contact_detail.bought', 'call_center_staff.calling']",
+            "missing": [
+              "contact_detail.bought",
+              "call_center_staff.calling"
+            ]
+          },
+          {
+            "term": "contact_detail.collected_at_exhibition",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['call_center_staff.calling']",
+            "missing": [
+              "call_center_staff.calling"
+            ]
+          },
+          {
+            "term": "contact_detail.known_personally",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['contact_detail.known_personally', 'call_center_staff.calling']",
+            "missing": [
+              "contact_detail.known_personally",
+              "call_center_staff.calling"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "contact_detail.bought"
+            ],
+            "status": "UNRESOLVABLE"
+          },
+          {
+            "terms": [
+              "contact_detail.collected_at_exhibition"
+            ],
+            "status": "UNRESOLVABLE"
+          },
+          {
+            "terms": [
+              "contact_detail.known_personally"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "call_center_staff.determining_contact_person": {
+        "operator": "AND",
+        "quote": "They are determining the contact person and the budget which would be available for the project.",
+        "terms": [
+          {
+            "term": "call_center_staff.calling",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['call_center_staff.calling']",
+            "missing": [
+              "call_center_staff.calling"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "call_center_staff.calling"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "call_center_staff.determining_budget": {
+        "operator": "AND",
+        "quote": "They are determining the contact person and the budget which would be available for the project.",
+        "terms": [
+          {
+            "term": "call_center_staff.calling",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['call_center_staff.calling', 'call_center_staff.determining_budget']",
+            "missing": [
+              "call_center_staff.calling",
+              "call_center_staff.determining_budget"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "call_center_staff.calling"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "call_center_staff.checking_interest": {
+        "operator": "AND",
+        "quote": "Of course, asking the customer whether he is generally interested is also important.",
+        "terms": [
+          {
+            "term": "call_center_staff.calling",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['call_center_staff.calling', 'call_center_staff.checking_interest']",
+            "missing": [
+              "call_center_staff.calling",
+              "call_center_staff.checking_interest"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "call_center_staff.calling"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "head_of_development.acquiring_customer": {
+        "operator": "AND",
+        "quote": "If this is not the case, we leave him alone, except if the potential project budget is huge. Then the head of development personally tries to acquire the customer.",
+        "terms": [
+          {
+            "term": "call_center_staff.checking_interest",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['call_center_staff.checking_interest', 'head_of_development.acquiring_customer']",
+            "missing": [
+              "call_center_staff.checking_interest",
+              "head_of_development.acquiring_customer"
+            ]
+          },
+          {
+            "term": "NOT call_center_staff.determining_budget",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['call_center_staff.determining_budget', 'head_of_development.acquiring_customer']",
+            "missing": [
+              "call_center_staff.determining_budget",
+              "head_of_development.acquiring_customer"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "call_center_staff.checking_interest",
+              "NOT call_center_staff.determining_budget"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      }
+    }
+  },
+  "errors": []
+}

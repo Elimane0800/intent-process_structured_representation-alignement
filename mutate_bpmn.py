@@ -45,6 +45,24 @@ manifest.json qui porte la verite terrain (operateur, parametres exacts, attente
 STRICTE d'avec Zenodo : les mutants n'ont pas de note experte et n'entrent JAMAIS dans une
 correlation -- validite interne uniquement, tableau separe dans le papier.
 
+Correctif du biais de ciblage (post-perturbation-study v1, cf. dataset_run_v2_observations.md
+section 8) : les operateurs REQUIRED (remove_activity/swap_labels/cross_case_replace)
+choisissaient une activite au hasard parmi TOUTES les activites nommees du BPMN, sans verifier
+si l'etat qu'elle ancre est effectivement REFERENCE PAR UN GUARD de G. Une part inconnue des
+mutants tombait donc sur une zone du graphe non verifiee par aucune precondition --
+structurellement indetectable, independamment de la qualite du mecanisme de verification.
+Preuve du biais : sur le premier run, les detections se concentraient sur 1-2 fichiers de base
+par modele au lieu d'etre dispersees -- signe direct que beaucoup de mutations tombaient hors
+zone verifiee.
+
+Fix : restreindre le pool de candidats de ces trois operateurs a l'UNION, sur les modeles
+fournis, des activites dont l'etat apparie apparait comme terme OU cible d'au moins une arete
+de reference_graph. Volontairement une UNION et pas un jeu de mutants par modele : a ce stade
+du developpement, les 3 modeles sont testes ensemble (comme partout ailleurs dans le projet),
+pas comme une comparaison inter-modeles -- un seul manifest, un seul jeu de mutants, chacun
+toujours evalue contre les 3 modeles, exactement comme avant le correctif. Seule la SELECTION
+de l'activite mutee change ; l'evaluation et le reporting restent identiques.
+
 Determinisme : seed fixe par (fichier, operateur, index) -- memes mutants a chaque execution,
 reproductibles pour le papier.
 """
@@ -64,6 +82,53 @@ ET.register_namespace("", BPMN_NS)
 ACTIVITY_TAGS = {"task", "usertask", "servicetask", "manualtask", "scripttask", "sendtask",
                   "receivetask", "businessruletask", "calltask"}
 GATEWAY_TAGS = {"exclusivegateway", "parallelgateway", "inclusivegateway", "eventbasedgateway"}
+
+
+def _guard_relevant_activities(model: str, base_key: str, v2_results_dir: str) -> set[str] | None:
+    """Charge le run v2 de reference pour (modele, base_key) et retourne l'ensemble des labels
+    d'activite dont l'etat apparie apparait comme terme OU cible d'au moins une arete de
+    reference_graph -- le pool de candidats legitime pour les operateurs required (cf. docstring
+    de tete). Retourne None (pas un ensemble vide) si le run de reference est absent ou
+    inexploitable -- distingue explicitement "aucune activite pertinente trouvee" (ensemble
+    vide, cas reel possible) de "impossible a determiner" (None, l'appelant doit sauter, jamais
+    supposer un comportement par defaut)."""
+    path = os.path.join(v2_results_dir, model, base_key.replace("/", "__") + ".json")
+    if not os.path.exists(path):
+        return None
+    with open(path) as f:
+        state = json.load(f)
+    reference_graph = state.get("reference_graph")
+    matches = state.get("matches")
+    if not reference_graph or not reference_graph.get("edges") or not matches:
+        return None
+    guard_milestones = {e["from"] for e in reference_graph["edges"]} | \
+                       {e["to"] for e in reference_graph["edges"]}
+    return {
+        activity for activity, m in matches.items()
+        if isinstance(m, dict) and m.get("match") in guard_milestones
+    }
+
+
+def _guard_relevant_activities_union(models: list[str], base_key: str,
+                                      v2_results_dir: str) -> set[str] | None:
+    """Union, sur tous les modeles fournis, des activites guard-pertinentes pour base_key --
+    UN seul mutant par variante est genere a partir de cette union (pas un jeu par modele) :
+    on veut juste eviter de muter une activite hors de toute zone verifiee, pas produire une
+    analyse comparative modele par modele (hors scope a ce stade du developpement -- 3 modeles
+    testes ensemble, comme partout ailleurs dans le projet, pas 3 etudes separees).
+
+    None seulement si AUCUN modele n'a de run v2 exploitable pour cette base (rien a cibler,
+    jamais suppose non restreint). Si certains modeles ont une reference et d'autres non, l'union
+    porte sur ceux qui en ont -- les autres sont simplement absents, non bloquants."""
+    found_any = False
+    union: set[str] = set()
+    for model in models:
+        allowed = _guard_relevant_activities(model, base_key, v2_results_dir)
+        if allowed is not None:
+            found_any = True
+            union |= allowed
+    return union if found_any else None
+
 
 
 def _local(tag: str) -> str:
@@ -99,11 +164,16 @@ def _save_mutant(tree: ET.ElementTree, out_path: str) -> None:
 
 # --- Operateurs nuisibles -------------------------------------------------------------------
 
-def mutate_remove_activity(tree: ET.ElementTree, rng: random.Random) -> dict | None:
+def mutate_remove_activity(tree: ET.ElementTree, rng: random.Random,
+                            allowed_labels: set[str] | None = None) -> dict | None:
     """Supprime une activite nommee a exactement 1 flux entrant et 1 sortant (pont propre,
     deterministe -- pas de choix semantique sur le recablage), recable entrant -> cible du
     sortant, supprime les deux flux originaux et le noeud. Les blocs <incoming>/<outgoing> des
-    voisins sont mis a jour pour rester coherents (certains parseurs les lisent)."""
+    voisins sont mis a jour pour rester coherents (certains parseurs les lisent).
+
+    allowed_labels : si fourni, restreint le pool aux activites dont le label y figure --
+    correctif du biais de ciblage (cf. docstring de tete), jamais un filtre silencieux : si la
+    restriction vide le pool, retourne None comme n'importe quel autre cas non applicable."""
     root = tree.getroot()
     flows = _flows(root)
     by_source, by_target = {}, {}
@@ -121,6 +191,8 @@ def mutate_remove_activity(tree: ET.ElementTree, rng: random.Random) -> dict | N
     msg_refs = {f.get("sourceRef") for f in root.iter() if _local(f.tag) == "messageflow"} | \
                {f.get("targetRef") for f in root.iter() if _local(f.tag) == "messageflow"}
     candidates = [a for a in candidates if a.get("id") not in msg_refs]
+    if allowed_labels is not None:
+        candidates = [a for a in candidates if (a.get("name") or "").strip() in allowed_labels]
     if not candidates:
         return None
     victim = rng.choice(candidates)
@@ -141,10 +213,15 @@ def mutate_remove_activity(tree: ET.ElementTree, rng: random.Random) -> dict | N
     return {"removed_activity": vname, "removed_id": vid}
 
 
-def mutate_swap_labels(tree: ET.ElementTree, rng: random.Random) -> dict | None:
+def mutate_swap_labels(tree: ET.ElementTree, rng: random.Random,
+                        allowed_labels: set[str] | None = None) -> dict | None:
     """Echange les labels de deux activites nommees reliees par un chemin sequentiel court
     (A -> B direct, ou A -> gateway -> B) -- l'ordre des deux activites nommees s'inverse
-    exactement, structure de flux intacte. Prefere une paire directe si disponible."""
+    exactement, structure de flux intacte. Prefere une paire directe si disponible.
+
+    allowed_labels : si fourni, ne retient une paire que si AU MOINS UN des deux labels y
+    figure (pas les deux -- l'echange affecte l'ancrage des deux etats, un seul suffit a rendre
+    la mutation potentiellement detectable ; exiger les deux videraient le pool inutilement)."""
     root = tree.getroot()
     acts = {a.get("id"): a for a in _named_activities(root)}
     flows = _flows(root)
@@ -162,6 +239,12 @@ def mutate_swap_labels(tree: ET.ElementTree, rng: random.Random) -> dict | None:
                 for a in into_gw.get(f.get("sourceRef"), []):
                     direct_pairs.append((a, f.get("targetRef")))
     direct_pairs = [(a, b) for a, b in direct_pairs if a != b]
+    if allowed_labels is not None:
+        direct_pairs = [
+            (a, b) for a, b in direct_pairs
+            if (acts[a].get("name") or "").strip() in allowed_labels
+            or (acts[b].get("name") or "").strip() in allowed_labels
+        ]
     if not direct_pairs:
         return None
     a_id, b_id = rng.choice(sorted(direct_pairs))
@@ -173,11 +256,17 @@ def mutate_swap_labels(tree: ET.ElementTree, rng: random.Random) -> dict | None:
 
 
 def mutate_cross_case_replace(tree: ET.ElementTree, rng: random.Random,
-                               foreign_labels: list[str]) -> dict | None:
+                               foreign_labels: list[str],
+                               allowed_labels: set[str] | None = None) -> dict | None:
     """Remplace le label d'une activite par un label d'activite d'une AUTRE description --
-    intrus semantiquement etranger au texte de ce cas."""
+    intrus semantiquement etranger au texte de ce cas.
+
+    allowed_labels : si fourni, restreint le pool de victimes possibles (l'etat qui PERD son
+    ancre doit etre guard-pertinent, sinon la mutation est indetectable par construction)."""
     root = tree.getroot()
     candidates = _named_activities(root)
+    if allowed_labels is not None:
+        candidates = [a for a in candidates if (a.get("name") or "").strip() in allowed_labels]
     if not candidates or not foreign_labels:
         return None
     victim = rng.choice(candidates)
@@ -263,6 +352,7 @@ OPERATORS = {
     "insert_activity": (mutate_insert_activity, "forbidden"),
     "shuffle_xml": (mutate_shuffle_xml, "forbidden"),
 }
+REQUIRED_OPS = {"remove_activity", "swap_labels", "cross_case_replace"}
 
 
 def collect_activity_labels(path: str) -> list[str]:
@@ -270,11 +360,17 @@ def collect_activity_labels(path: str) -> list[str]:
     return sorted({a.get("name").strip() for a in _named_activities(root)})
 
 
-def generate_mutants(base_files: dict[str, str], out_dir: str,
-                      variants_per_operator: int = 3) -> list[dict]:
+def generate_mutants(base_files: dict[str, str], out_dir: str, v2_results_dir: str,
+                      models: list[str], variants_per_operator: int = 3) -> list[dict]:
     """base_files : {"desc/fichier.bpmn2.xml": chemin} -- genere variants_per_operator mutants
-    par operateur et par fichier (seeds distincts), ecrit le manifest de verite terrain.
-    Les labels etrangers de cross_case_replace viennent des AUTRES fichiers fournis."""
+    par operateur et par fichier (seeds distincts, UN SEUL jeu de mutants, pas un par modele),
+    ecrit le manifest de verite terrain. Les labels etrangers de cross_case_replace viennent
+    des AUTRES fichiers fournis.
+
+    Correctif du biais de ciblage (cf. docstring de tete) : les operateurs required sont
+    restreints a l'union, sur `models`, des activites guard-pertinentes -- evite de muter une
+    activite hors de toute zone verifiee par un guard, sans dupliquer les mutants par modele
+    (chaque mutant reste evalue contre les 3 modeles, exactement comme avant)."""
     os.makedirs(out_dir, exist_ok=True)
     labels_by_case = {key: collect_activity_labels(p) for key, p in base_files.items()}
     manifest = []
@@ -284,12 +380,34 @@ def generate_mutants(base_files: dict[str, str], out_dir: str,
         foreign = sorted({l for k, ls in labels_by_case.items()
                           if k.split("/")[0] != desc for l in ls})
         safe = key.replace("/", "__").replace(".bpmn2.xml", "")
+
+        allowed = _guard_relevant_activities_union(models, key, v2_results_dir)
+        if allowed is None:
+            print(f"  [mutate] {key} : aucun run v2 exploitable pour aucun des {len(models)} "
+                  f"modeles -- operateurs required non generes pour ce cas (jamais suppose "
+                  f"non restreint)")
+        elif not allowed:
+            print(f"  [mutate] {key} : 0 activite guard-pertinente trouvee (union de "
+                  f"{len(models)} modele(s)) -- aucun mutant required genere pour ce cas")
+
         for op_name, (op_fn, expected) in OPERATORS.items():
+            needs_restriction = op_name in REQUIRED_OPS
+            if needs_restriction and allowed is None:
+                for i in range(variants_per_operator):
+                    manifest.append({"base": key, "operator": op_name, "variant": i,
+                                      "expected": expected, "applicable": False,
+                                      "reason": "no_v2_reference"})
+                continue
+
             for i in range(variants_per_operator):
                 rng = random.Random(f"{key}|{op_name}|{i}")  # deterministe et reproductible
                 tree = _load(path)
-                details = op_fn(tree, rng, foreign) if op_name == "cross_case_replace" \
-                    else op_fn(tree, rng)
+                if op_name == "cross_case_replace":
+                    details = op_fn(tree, rng, foreign, allowed if needs_restriction else None)
+                elif needs_restriction:
+                    details = op_fn(tree, rng, allowed)
+                else:
+                    details = op_fn(tree, rng)
                 if details is None:
                     manifest.append({"base": key, "operator": op_name, "variant": i,
                                       "expected": expected, "applicable": False})
@@ -303,7 +421,7 @@ def generate_mutants(base_files: dict[str, str], out_dir: str,
     with open(os.path.join(out_dir, "manifest.json"), "w") as f:
         json.dump(manifest, f, indent=2, ensure_ascii=False)
     applicable = sum(1 for m in manifest if m["applicable"])
-    print(f"[mutate] {applicable} mutant(s) generes ({len(manifest) - applicable} "
+    print(f"\n[mutate] {applicable} mutant(s) generes ({len(manifest) - applicable} "
           f"non applicables), manifest: {os.path.join(out_dir, 'manifest.json')}")
     return manifest
 
@@ -313,6 +431,8 @@ if __name__ == "__main__":
     # reel (les chemins ci-dessous correspondent a l'arborescence du projet).
     BPMN_ROOT = os.path.join(os.path.dirname(__file__), "text_and_bpmn", "bpmn")
     OUT_DIR = os.path.join(os.path.dirname(__file__), "results", "mutants")
+    V2_RESULTS_DIR = os.path.join(os.path.dirname(__file__), "results", "dataset_runs_v2")
+    MODELS = ["llama-3.1-8b", "mistral-nemotron", "gpt-oss-20b"]
     BASE_FILES = {
         f"{desc}/{fname}": os.path.join(BPMN_ROOT, desc, fname)
         for desc, fname in [
@@ -321,4 +441,4 @@ if __name__ == "__main__":
             ("X_g01", "0.bpmn2.xml"),
         ]
     }
-    generate_mutants(BASE_FILES, OUT_DIR)
+    generate_mutants(BASE_FILES, OUT_DIR, V2_RESULTS_DIR, MODELS)

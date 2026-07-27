@@ -1,0 +1,675 @@
+{
+  "case_name": "OriginalDataset/Model10-5",
+  "text": "The MPON requests a device takeover bid of the MPOO. The MPOO sends a tender for the equipment takeover to the MPON. The MPON places an order at the MPOO. The MPOO confirms the order of the MPON and sends the master data.\n",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "mistral-nemotron",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "mistral-nemotron",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/../datasets/lre/alignment_model_text-master/datasets/OriginalDataset/Models/Model10-5.bpmn",
+  "report_model": "mistral-nemotron",
+  "candidates": {
+    "device_takeover_bid": {
+      "states": [
+        "requested"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "tender": {
+      "states": [
+        "sent"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "order": {
+      "states": [
+        "placed",
+        "confirmed"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "master_data": {
+      "states": [
+        "sent"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    }
+  },
+  "validation_report": {
+    "device_takeover_bid": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "bid"
+    },
+    "tender": {
+      "f_lex": "INDETERMINATE",
+      "kept": true,
+      "head_used": "tender"
+    },
+    "order": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "order"
+    },
+    "master_data": {
+      "f_lex": "INDETERMINATE",
+      "kept": true,
+      "head_used": "data"
+    },
+    "__meta__": {
+      "total_candidates": 4,
+      "indeterminate_kept_count": 2
+    }
+  },
+  "exclusive_groups_report": {
+    "accepted": [],
+    "rejected": []
+  },
+  "state_space": {
+    "device_takeover_bid": {
+      "states": [
+        "requested"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "tender": {
+      "states": [
+        "sent"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "order": {
+      "states": [
+        "placed",
+        "confirmed"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "master_data": {
+      "states": [
+        "sent"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    }
+  },
+  "state_space_dedup": {
+    "merged": {},
+    "ambiguous_not_merged": {}
+  },
+  "raw_preconditions": {
+    "device_takeover_bid.requested": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "tender.sent": {
+      "precondition": "device_takeover_bid.requested",
+      "quote": "The MPOO sends a tender for the equipment takeover to the MPON."
+    },
+    "order.placed": {
+      "precondition": "tender.sent",
+      "quote": "The MPON places an order at the MPOO."
+    },
+    "order.confirmed": {
+      "precondition": "order.placed",
+      "quote": "The MPOO confirms the order of the MPON and sends the master data."
+    },
+    "master_data.sent": {
+      "precondition": "order.confirmed",
+      "quote": "The MPOO confirms the order of the MPON and sends the master data."
+    }
+  },
+  "validated_preconditions": {
+    "device_takeover_bid.requested": {
+      "precondition": "INITIAL",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "tender.sent": {
+      "precondition": "device_takeover_bid.requested",
+      "quote": "The MPOO sends a tender for the equipment takeover to the MPON.",
+      "status": "OK",
+      "reason": null
+    },
+    "order.placed": {
+      "precondition": "tender.sent",
+      "quote": "The MPON places an order at the MPOO.",
+      "status": "OK",
+      "reason": null
+    },
+    "order.confirmed": {
+      "precondition": "order.placed",
+      "quote": "The MPOO confirms the order of the MPON and sends the master data.",
+      "status": "OK",
+      "reason": null
+    },
+    "master_data.sent": {
+      "precondition": "order.confirmed",
+      "quote": "The MPOO confirms the order of the MPON and sends the master data.",
+      "status": "OK",
+      "reason": null
+    }
+  },
+  "precondition_cycles": [],
+  "branch_conflicts": [],
+  "reference_graph": {
+    "nodes": [
+      {
+        "id": "device_takeover_bid.requested",
+        "weight": 0.5
+      },
+      {
+        "id": "tender.sent",
+        "weight": 1.0
+      },
+      {
+        "id": "order.placed",
+        "weight": 1.0
+      },
+      {
+        "id": "order.confirmed",
+        "weight": 1.0
+      },
+      {
+        "id": "master_data.sent",
+        "weight": 0.5
+      }
+    ],
+    "edges": [
+      {
+        "from": "device_takeover_bid.requested",
+        "to": "tender.sent",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "The MPOO sends a tender for the equipment takeover to the MPON.",
+        "negated": false
+      },
+      {
+        "from": "tender.sent",
+        "to": "order.placed",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "The MPON places an order at the MPOO.",
+        "negated": false
+      },
+      {
+        "from": "order.placed",
+        "to": "order.confirmed",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "The MPOO confirms the order of the MPON and sends the master data.",
+        "negated": false
+      },
+      {
+        "from": "order.confirmed",
+        "to": "master_data.sent",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "The MPOO confirms the order of the MPON and sends the master data.",
+        "negated": false
+      }
+    ],
+    "cycles": [],
+    "branch_conflicts": [],
+    "exclusive_pairs": []
+  },
+  "dfg_edges": [
+    {
+      "source_id": "Task_0",
+      "source_label": "Request a device takeover bid",
+      "target_id": "Task_2",
+      "target_label": "Tender the equipment takeover",
+      "gateway_context": [
+        "NormalStartEvent"
+      ]
+    },
+    {
+      "source_id": "Task_0",
+      "source_label": "Request a device takeover bid",
+      "target_id": "Task_1",
+      "target_label": "Order",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_1",
+      "source_label": "Order",
+      "target_id": "Task_3",
+      "target_label": "Confirm order and transmission of master data",
+      "gateway_context": [
+        "NormalEndEvent"
+      ]
+    },
+    {
+      "source_id": "Task_2",
+      "source_label": "Tender the equipment takeover",
+      "target_id": "Task_3",
+      "target_label": "Confirm order and transmission of master data",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_2",
+      "source_label": "Tender the equipment takeover",
+      "target_id": "Task_1",
+      "target_label": "Order",
+      "gateway_context": []
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "Request a device takeover bid",
+      "subject_id": "Task_0",
+      "predicate": "follows",
+      "object": "Tender the equipment takeover",
+      "object_id": "Task_2"
+    },
+    {
+      "subject": "Request a device takeover bid",
+      "subject_id": "Task_0",
+      "predicate": "follows",
+      "object": "Order",
+      "object_id": "Task_1"
+    },
+    {
+      "subject": "Order",
+      "subject_id": "Task_1",
+      "predicate": "follows",
+      "object": "Confirm order and transmission of master data",
+      "object_id": "Task_3"
+    },
+    {
+      "subject": "Tender the equipment takeover",
+      "subject_id": "Task_2",
+      "predicate": "follows",
+      "object": "Confirm order and transmission of master data",
+      "object_id": "Task_3"
+    },
+    {
+      "subject": "Tender the equipment takeover",
+      "subject_id": "Task_2",
+      "predicate": "follows",
+      "object": "Order",
+      "object_id": "Task_1"
+    }
+  ],
+  "matches": {
+    "Task_0": {
+      "activity_label": "Request a device takeover bid",
+      "matches": [
+        {
+          "match": "device_takeover_bid.requested",
+          "score": 0.6888
+        }
+      ],
+      "clusters": [
+        [
+          "device_takeover_bid.requested"
+        ]
+      ]
+    },
+    "Task_2": {
+      "activity_label": "Tender the equipment takeover",
+      "matches": [
+        {
+          "match": "device_takeover_bid.requested",
+          "score": 0.3858
+        },
+        {
+          "match": "tender.sent",
+          "score": 0.3707
+        }
+      ],
+      "clusters": [
+        [
+          "device_takeover_bid.requested"
+        ],
+        [
+          "tender.sent"
+        ]
+      ]
+    },
+    "Task_1": {
+      "activity_label": "Order",
+      "matches": [
+        {
+          "match": "order.placed",
+          "score": 0.3562
+        }
+      ],
+      "clusters": [
+        [
+          "order.placed"
+        ]
+      ]
+    },
+    "Task_3": {
+      "activity_label": "Confirm order and transmission of master data",
+      "matches": [
+        {
+          "match": "master_data.sent",
+          "score": 0.393
+        },
+        {
+          "match": "order.confirmed",
+          "score": 0.3753
+        }
+      ],
+      "clusters": [
+        [
+          "master_data.sent"
+        ],
+        [
+          "order.confirmed"
+        ]
+      ]
+    }
+  },
+  "process_graph": [
+    {
+      "from": "device_takeover_bid.requested",
+      "to": "device_takeover_bid.requested",
+      "activity_from": "Request a device takeover bid",
+      "activity_to": "Tender the equipment takeover",
+      "source_id": "Task_0",
+      "target_id": "Task_2"
+    },
+    {
+      "from": "device_takeover_bid.requested",
+      "to": "tender.sent",
+      "activity_from": "Request a device takeover bid",
+      "activity_to": "Tender the equipment takeover",
+      "source_id": "Task_0",
+      "target_id": "Task_2"
+    },
+    {
+      "from": "device_takeover_bid.requested",
+      "to": "order.placed",
+      "activity_from": "Request a device takeover bid",
+      "activity_to": "Order",
+      "source_id": "Task_0",
+      "target_id": "Task_1"
+    },
+    {
+      "from": "order.placed",
+      "to": "master_data.sent",
+      "activity_from": "Order",
+      "activity_to": "Confirm order and transmission of master data",
+      "source_id": "Task_1",
+      "target_id": "Task_3"
+    },
+    {
+      "from": "order.placed",
+      "to": "order.confirmed",
+      "activity_from": "Order",
+      "activity_to": "Confirm order and transmission of master data",
+      "source_id": "Task_1",
+      "target_id": "Task_3"
+    },
+    {
+      "from": "device_takeover_bid.requested",
+      "to": "master_data.sent",
+      "activity_from": "Tender the equipment takeover",
+      "activity_to": "Confirm order and transmission of master data",
+      "source_id": "Task_2",
+      "target_id": "Task_3"
+    },
+    {
+      "from": "device_takeover_bid.requested",
+      "to": "order.confirmed",
+      "activity_from": "Tender the equipment takeover",
+      "activity_to": "Confirm order and transmission of master data",
+      "source_id": "Task_2",
+      "target_id": "Task_3"
+    },
+    {
+      "from": "tender.sent",
+      "to": "master_data.sent",
+      "activity_from": "Tender the equipment takeover",
+      "activity_to": "Confirm order and transmission of master data",
+      "source_id": "Task_2",
+      "target_id": "Task_3"
+    },
+    {
+      "from": "tender.sent",
+      "to": "order.confirmed",
+      "activity_from": "Tender the equipment takeover",
+      "activity_to": "Confirm order and transmission of master data",
+      "source_id": "Task_2",
+      "target_id": "Task_3"
+    },
+    {
+      "from": "device_takeover_bid.requested",
+      "to": "order.placed",
+      "activity_from": "Tender the equipment takeover",
+      "activity_to": "Order",
+      "source_id": "Task_2",
+      "target_id": "Task_1"
+    },
+    {
+      "from": "tender.sent",
+      "to": "order.placed",
+      "activity_from": "Tender the equipment takeover",
+      "activity_to": "Order",
+      "source_id": "Task_2",
+      "target_id": "Task_1"
+    }
+  ],
+  "alignment": {
+    "tender.sent": {
+      "operator": "AND",
+      "quote": "The MPOO sends a tender for the equipment takeover to the MPON.",
+      "terms": [
+        {
+          "term": "device_takeover_bid.requested",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED",
+      "clauses": [
+        {
+          "terms": [
+            "device_takeover_bid.requested"
+          ],
+          "status": "SATISFIED"
+        }
+      ]
+    },
+    "order.placed": {
+      "operator": "AND",
+      "quote": "The MPON places an order at the MPOO.",
+      "terms": [
+        {
+          "term": "tender.sent",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED",
+      "clauses": [
+        {
+          "terms": [
+            "tender.sent"
+          ],
+          "status": "SATISFIED"
+        }
+      ]
+    },
+    "order.confirmed": {
+      "operator": "AND",
+      "quote": "The MPOO confirms the order of the MPON and sends the master data.",
+      "terms": [
+        {
+          "term": "order.placed",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED",
+      "clauses": [
+        {
+          "terms": [
+            "order.placed"
+          ],
+          "status": "SATISFIED"
+        }
+      ]
+    },
+    "master_data.sent": {
+      "operator": "AND",
+      "quote": "The MPOO confirms the order of the MPON and sends the master data.",
+      "terms": [
+        {
+          "term": "order.confirmed",
+          "status": "VIOLATED",
+          "reason": "both states matched, no path in process",
+          "missing": []
+        }
+      ],
+      "status": "VIOLATED",
+      "clauses": [
+        {
+          "terms": [
+            "order.confirmed"
+          ],
+          "status": "VIOLATED"
+        }
+      ]
+    }
+  },
+  "report": {
+    "verdict": {
+      "verdict": "NOT_FAITHFUL",
+      "justification": "1 gap(s) found between the source text's requirements and the observed process -- at least one precondition asserted by the text is contradicted by the model's actual sequence of activities.",
+      "scope": "This verdict covers the causal reachability of the requirements expressed in the source text, not the general quality of the process model -- a multiplicity defect (an activity executed more than once due to a mismatched branching structure) is not covered by this verdict, even if the process is otherwise well-formed."
+    },
+    "summary": {
+      "ecarts": 1,
+      "non_verifiable": 0,
+      "conforme": 3
+    },
+    "ecarts": [
+      {
+        "root_cause": "Confirm order and transmission of master data",
+        "quote": "The MPOO confirms the order of the MPON and sends the master data.",
+        "explanation": "The process requires that the activity \"Confirm order and transmission of master data\" must happen before the same activity can occur again. However, the current process flow does not enforce this sequence.\n\nThe source text states: *\"The MPOO confirms the order of the MPON and sends the master data.\"*",
+        "quote_verbatim": true,
+        "affected_activities": [
+          "Confirm order and transmission of master data"
+        ],
+        "affected_count": 1
+      }
+    ],
+    "non_verifiable": [],
+    "conforme": [
+      {
+        "target": "Tender the equipment takeover",
+        "term": "Request a device takeover bid"
+      },
+      {
+        "target": "Order",
+        "term": "Tender the equipment takeover"
+      },
+      {
+        "target": "Confirm order and transmission of master data",
+        "term": "Order"
+      }
+    ],
+    "piece_jointe_alignement_brut": {
+      "tender.sent": {
+        "operator": "AND",
+        "quote": "The MPOO sends a tender for the equipment takeover to the MPON.",
+        "terms": [
+          {
+            "term": "device_takeover_bid.requested",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED",
+        "clauses": [
+          {
+            "terms": [
+              "device_takeover_bid.requested"
+            ],
+            "status": "SATISFIED"
+          }
+        ]
+      },
+      "order.placed": {
+        "operator": "AND",
+        "quote": "The MPON places an order at the MPOO.",
+        "terms": [
+          {
+            "term": "tender.sent",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED",
+        "clauses": [
+          {
+            "terms": [
+              "tender.sent"
+            ],
+            "status": "SATISFIED"
+          }
+        ]
+      },
+      "order.confirmed": {
+        "operator": "AND",
+        "quote": "The MPOO confirms the order of the MPON and sends the master data.",
+        "terms": [
+          {
+            "term": "order.placed",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED",
+        "clauses": [
+          {
+            "terms": [
+              "order.placed"
+            ],
+            "status": "SATISFIED"
+          }
+        ]
+      },
+      "master_data.sent": {
+        "operator": "AND",
+        "quote": "The MPOO confirms the order of the MPON and sends the master data.",
+        "terms": [
+          {
+            "term": "order.confirmed",
+            "status": "VIOLATED",
+            "reason": "both states matched, no path in process",
+            "missing": []
+          }
+        ],
+        "status": "VIOLATED",
+        "clauses": [
+          {
+            "terms": [
+              "order.confirmed"
+            ],
+            "status": "VIOLATED"
+          }
+        ]
+      }
+    }
+  },
+  "errors": []
+}

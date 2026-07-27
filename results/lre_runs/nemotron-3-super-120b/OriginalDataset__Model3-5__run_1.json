@@ -1,0 +1,1484 @@
+{
+  "case_name": "OriginalDataset/Model3-5",
+  "text": "Mail from the party is collected on a daily basis by the Mail Processing Unit. Within this unit, the Mail Clerk sorts the unopened mail into the various business areas. The mail is then distributed. When the mail is received by the Registry, it is opened and sorted into groups for distribution, and thus registered in a manual incoming Mail Register. Afterwards, the Assistant Registry Manager within the Registry performs a quality check. If the mail is not compliant, a list of requisition explaining the reason for rejection is compiled and sent back to the party. Otherwise, the matter details (types of action) are captured and provided to the Cashier, who takes the applicable fees attached to the mail. At this point, the Assistant Registry Manager puts the receipt and copied documents into an envelope and posts it to the party. Meantime, the Cashier captures the Party Details and prints the Physical Court File. ",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "nemotron-3-super-120b",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "nemotron-3-super-120b",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/../datasets/lre/alignment_model_text-master/datasets/OriginalDataset/Models/Model3-5.bpmn",
+  "report_model": "nemotron-3-super-120b",
+  "candidates": {
+    "mail": {
+      "states": [
+        "collected",
+        "unopened",
+        "sorted",
+        "distributed",
+        "received",
+        "opened",
+        "registered",
+        "not_compliant",
+        "compliant",
+        "posted"
+      ],
+      "exclusive_groups": [
+        [
+          "not_compliant",
+          "compliant"
+        ]
+      ],
+      "concurrent_with": []
+    },
+    "mail_clerk": {
+      "states": [
+        "sorting"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "assistant_registry_manager": {
+      "states": [
+        "performing_quality_check",
+        "putting_receipt_and_documents_into_envelope"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "cashier": {
+      "states": [
+        "capturing_matter_details",
+        "taking_applicable_fees",
+        "capturing_party_details",
+        "printing_physical_court_file"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "requisition_list": {
+      "states": [
+        "compiled",
+        "sent_back"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "physical_court_file": {
+      "states": [
+        "printed"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "envelope": {
+      "states": [
+        "posted"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    }
+  },
+  "validation_report": {
+    "mail": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "mail"
+    },
+    "mail_clerk": {
+      "f_lex": "ACTOR",
+      "kept": false,
+      "head_used": "clerk"
+    },
+    "assistant_registry_manager": {
+      "f_lex": "ACTOR",
+      "kept": false,
+      "head_used": "manager"
+    },
+    "cashier": {
+      "f_lex": "ACTOR",
+      "kept": false,
+      "head_used": "cashier"
+    },
+    "requisition_list": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "list"
+    },
+    "physical_court_file": {
+      "f_lex": "INDETERMINATE",
+      "kept": true,
+      "head_used": "file"
+    },
+    "envelope": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "envelope"
+    },
+    "__meta__": {
+      "total_candidates": 7,
+      "indeterminate_kept_count": 1
+    }
+  },
+  "exclusive_groups_report": {
+    "accepted": [
+      {
+        "entity": "mail",
+        "states": [
+          "not_compliant",
+          "compliant"
+        ],
+        "quote": "If the mail is not compliant, a list of requisition explaining the reason for rejection is compiled and sent back to the party. Otherwise, the matter details (types of action) are captured and provided to the Cashier"
+      }
+    ],
+    "rejected": []
+  },
+  "state_space": {
+    "mail": {
+      "states": [
+        "collected",
+        "unopened",
+        "sorted",
+        "distributed",
+        "received",
+        "opened",
+        "registered",
+        "not_compliant",
+        "compliant",
+        "posted"
+      ],
+      "exclusive_groups": [
+        [
+          "not_compliant",
+          "compliant"
+        ]
+      ],
+      "concurrent_with": []
+    },
+    "requisition_list": {
+      "states": [
+        "compiled",
+        "sent_back"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "physical_court_file": {
+      "states": [
+        "printed"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "envelope": {
+      "states": [
+        "posted"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    }
+  },
+  "state_space_dedup": {
+    "merged": {},
+    "ambiguous_not_merged": {}
+  },
+  "raw_preconditions": {
+    "mail.collected": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "mail.unopened": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "mail.sorted": {
+      "precondition": "mail.collected AND mail.unopened",
+      "quote": "Mail from the party is collected on a daily basis by the Mail Processing Unit. Within this unit, the Mail Clerk sorts the unopened mail into the various business areas."
+    },
+    "mail.distributed": {
+      "precondition": "mail.sorted",
+      "quote": "The mail is then distributed."
+    },
+    "mail.received": {
+      "precondition": "mail.distributed",
+      "quote": "When the mail is received by the Registry, it is opened and sorted into groups for distribution, and thus registered in a manual incoming Mail Register."
+    },
+    "mail.opened": {
+      "precondition": "mail.received",
+      "quote": "When the mail is received by the Registry, it is opened and sorted into groups for distribution, and thus registered in a manual incoming Mail Register."
+    },
+    "mail.registered": {
+      "precondition": "mail.opened",
+      "quote": "When the mail is received by the Registry, it is opened and sorted into groups for distribution, and thus registered in a manual incoming Mail Register."
+    },
+    "mail.not_compliant": {
+      "precondition": "mail.registered",
+      "quote": "If the mail is not compliant, a list of requisition explaining the reason for rejection is compiled and sent back to the party."
+    },
+    "mail.compliant": {
+      "precondition": "mail.registered AND NOT mail.not_compliant",
+      "quote": "If the mail is not compliant, a list of requisition explaining the reason for rejection is compiled and sent back to the party. Otherwise, the matter details (types of action) are captured and provided to the Cashier, who takes the applicable fees attached to the mail."
+    },
+    "requisition_list.compiled": {
+      "precondition": "mail.not_compliant",
+      "quote": "If the mail is not compliant, a list of requisition explaining the reason for rejection is compiled and sent back to the party."
+    },
+    "requisition_list.sent_back": {
+      "precondition": "requisition_list.compiled",
+      "quote": "If the mail is not compliant, a list of requisition explaining the reason for rejection is compiled and sent back to the party."
+    },
+    "physical_court_file.printed": {
+      "precondition": "mail.compliant",
+      "quote": "Meantime, the Cashier captures the Party Details and prints the Physical Court File."
+    },
+    "envelope.posted": {
+      "precondition": "mail.compliant",
+      "quote": "At this point, the Assistant Registry Manager puts the receipt and copied documents into an envelope and posts it to the party."
+    }
+  },
+  "validated_preconditions": {
+    "mail.collected": {
+      "precondition": "INITIAL",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "mail.unopened": {
+      "precondition": "INITIAL",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "mail.sorted": {
+      "precondition": "mail.collected AND mail.unopened",
+      "quote": "Mail from the party is collected on a daily basis by the Mail Processing Unit. Within this unit, the Mail Clerk sorts the unopened mail into the various business areas.",
+      "status": "OK",
+      "reason": null
+    },
+    "mail.distributed": {
+      "precondition": "mail.sorted",
+      "quote": "The mail is then distributed.",
+      "status": "OK",
+      "reason": null
+    },
+    "mail.received": {
+      "precondition": "mail.distributed",
+      "quote": "When the mail is received by the Registry, it is opened and sorted into groups for distribution, and thus registered in a manual incoming Mail Register.",
+      "status": "OK",
+      "reason": null
+    },
+    "mail.opened": {
+      "precondition": "mail.received",
+      "quote": "When the mail is received by the Registry, it is opened and sorted into groups for distribution, and thus registered in a manual incoming Mail Register.",
+      "status": "OK",
+      "reason": null
+    },
+    "mail.registered": {
+      "precondition": "mail.opened",
+      "quote": "When the mail is received by the Registry, it is opened and sorted into groups for distribution, and thus registered in a manual incoming Mail Register.",
+      "status": "OK",
+      "reason": null
+    },
+    "mail.not_compliant": {
+      "precondition": "mail.registered",
+      "quote": "If the mail is not compliant, a list of requisition explaining the reason for rejection is compiled and sent back to the party.",
+      "status": "OK",
+      "reason": null
+    },
+    "mail.compliant": {
+      "precondition": "mail.registered AND NOT mail.not_compliant",
+      "quote": "If the mail is not compliant, a list of requisition explaining the reason for rejection is compiled and sent back to the party. Otherwise, the matter details (types of action) are captured and provided to the Cashier, who takes the applicable fees attached to the mail.",
+      "status": "OK",
+      "reason": null
+    },
+    "requisition_list.compiled": {
+      "precondition": "mail.not_compliant",
+      "quote": "If the mail is not compliant, a list of requisition explaining the reason for rejection is compiled and sent back to the party.",
+      "status": "OK",
+      "reason": null
+    },
+    "requisition_list.sent_back": {
+      "precondition": "requisition_list.compiled",
+      "quote": "If the mail is not compliant, a list of requisition explaining the reason for rejection is compiled and sent back to the party.",
+      "status": "OK",
+      "reason": null
+    },
+    "physical_court_file.printed": {
+      "precondition": "mail.compliant",
+      "quote": "Meantime, the Cashier captures the Party Details and prints the Physical Court File.",
+      "status": "OK",
+      "reason": null
+    },
+    "envelope.posted": {
+      "precondition": "mail.compliant",
+      "quote": "At this point, the Assistant Registry Manager puts the receipt and copied documents into an envelope and posts it to the party.",
+      "status": "OK",
+      "reason": null
+    }
+  },
+  "precondition_cycles": [],
+  "branch_conflicts": [],
+  "reference_graph": {
+    "nodes": [
+      {
+        "id": "mail.collected",
+        "weight": 0.25
+      },
+      {
+        "id": "mail.unopened",
+        "weight": 0.25
+      },
+      {
+        "id": "mail.sorted",
+        "weight": 0.75
+      },
+      {
+        "id": "mail.distributed",
+        "weight": 0.5
+      },
+      {
+        "id": "mail.received",
+        "weight": 0.5
+      },
+      {
+        "id": "mail.opened",
+        "weight": 0.5
+      },
+      {
+        "id": "mail.registered",
+        "weight": 0.75
+      },
+      {
+        "id": "mail.not_compliant",
+        "weight": 0.75
+      },
+      {
+        "id": "mail.compliant",
+        "weight": 1.0
+      },
+      {
+        "id": "mail.posted",
+        "weight": 0.0
+      },
+      {
+        "id": "requisition_list.compiled",
+        "weight": 0.5
+      },
+      {
+        "id": "requisition_list.sent_back",
+        "weight": 0.25
+      },
+      {
+        "id": "physical_court_file.printed",
+        "weight": 0.25
+      },
+      {
+        "id": "envelope.posted",
+        "weight": 0.25
+      }
+    ],
+    "edges": [
+      {
+        "from": "mail.collected",
+        "to": "mail.sorted",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "Mail from the party is collected on a daily basis by the Mail Processing Unit. Within this unit, the Mail Clerk sorts the unopened mail into the various business areas.",
+        "negated": false
+      },
+      {
+        "from": "mail.unopened",
+        "to": "mail.sorted",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "Mail from the party is collected on a daily basis by the Mail Processing Unit. Within this unit, the Mail Clerk sorts the unopened mail into the various business areas.",
+        "negated": false
+      },
+      {
+        "from": "mail.sorted",
+        "to": "mail.distributed",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "The mail is then distributed.",
+        "negated": false
+      },
+      {
+        "from": "mail.distributed",
+        "to": "mail.received",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "When the mail is received by the Registry, it is opened and sorted into groups for distribution, and thus registered in a manual incoming Mail Register.",
+        "negated": false
+      },
+      {
+        "from": "mail.received",
+        "to": "mail.opened",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "When the mail is received by the Registry, it is opened and sorted into groups for distribution, and thus registered in a manual incoming Mail Register.",
+        "negated": false
+      },
+      {
+        "from": "mail.opened",
+        "to": "mail.registered",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "When the mail is received by the Registry, it is opened and sorted into groups for distribution, and thus registered in a manual incoming Mail Register.",
+        "negated": false
+      },
+      {
+        "from": "mail.registered",
+        "to": "mail.not_compliant",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "If the mail is not compliant, a list of requisition explaining the reason for rejection is compiled and sent back to the party.",
+        "negated": false
+      },
+      {
+        "from": "mail.registered",
+        "to": "mail.compliant",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "If the mail is not compliant, a list of requisition explaining the reason for rejection is compiled and sent back to the party. Otherwise, the matter details (types of action) are captured and provided to the Cashier, who takes the applicable fees attached to the mail.",
+        "negated": false
+      },
+      {
+        "from": "mail.not_compliant",
+        "to": "mail.compliant",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "If the mail is not compliant, a list of requisition explaining the reason for rejection is compiled and sent back to the party. Otherwise, the matter details (types of action) are captured and provided to the Cashier, who takes the applicable fees attached to the mail.",
+        "negated": true
+      },
+      {
+        "from": "mail.not_compliant",
+        "to": "requisition_list.compiled",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "If the mail is not compliant, a list of requisition explaining the reason for rejection is compiled and sent back to the party.",
+        "negated": false
+      },
+      {
+        "from": "requisition_list.compiled",
+        "to": "requisition_list.sent_back",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "If the mail is not compliant, a list of requisition explaining the reason for rejection is compiled and sent back to the party.",
+        "negated": false
+      },
+      {
+        "from": "mail.compliant",
+        "to": "physical_court_file.printed",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "Meantime, the Cashier captures the Party Details and prints the Physical Court File.",
+        "negated": false
+      },
+      {
+        "from": "mail.compliant",
+        "to": "envelope.posted",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "At this point, the Assistant Registry Manager puts the receipt and copied documents into an envelope and posts it to the party.",
+        "negated": false
+      }
+    ],
+    "cycles": [],
+    "branch_conflicts": [],
+    "exclusive_pairs": [
+      {
+        "entity": "mail",
+        "nodes": [
+          "mail.not_compliant",
+          "mail.compliant"
+        ]
+      }
+    ]
+  },
+  "dfg_edges": [
+    {
+      "source_id": "Task_1cj4etn",
+      "source_label": "Receipt P&E fee payment",
+      "target_id": "Task_0fa64qy",
+      "target_label": "Capture P&E party details",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "Task_1cj4etn",
+      "source_label": "Receipt P&E fee payment",
+      "target_id": "Task_0svq7pj",
+      "target_label": "Prepare mailed document response",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "Task_0oplrbc",
+      "source_label": "Check mail compliance",
+      "target_id": "Task_1ltvv50",
+      "target_label": "Compile mail document requisition",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "No"
+      ]
+    },
+    {
+      "source_id": "Task_0oplrbc",
+      "source_label": "Check mail compliance",
+      "target_id": "Task_1dx7gas",
+      "target_label": "Capture mailed document matter details",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "Yes"
+      ]
+    },
+    {
+      "source_id": "Task_0h2dm75",
+      "source_label": "Sort opened mail",
+      "target_id": "Task_0tgqnf8",
+      "target_label": "Register mail",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_0wb6m96",
+      "source_label": "Sort unopened mail",
+      "target_id": "Task_0h2dm75",
+      "target_label": "Sort opened mail",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_0fa64qy",
+      "source_label": "Capture P&E party details",
+      "target_id": "Task_1s0f6g9",
+      "target_label": "Print physical file",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_1dx7gas",
+      "source_label": "Capture mailed document matter details",
+      "target_id": "Task_1cj4etn",
+      "target_label": "Receipt P&E fee payment",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_0tgqnf8",
+      "source_label": "Register mail",
+      "target_id": "Task_0oplrbc",
+      "target_label": "Check mail compliance",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_02tv0tg",
+      "source_label": "Collect mail",
+      "target_id": "Task_0wb6m96",
+      "target_label": "Sort unopened mail",
+      "gateway_context": []
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "Receipt P&E fee payment",
+      "subject_id": "Task_1cj4etn",
+      "predicate": "follows",
+      "object": "Capture P&E party details",
+      "object_id": "Task_0fa64qy"
+    },
+    {
+      "subject": "Receipt P&E fee payment",
+      "subject_id": "Task_1cj4etn",
+      "predicate": "follows",
+      "object": "Prepare mailed document response",
+      "object_id": "Task_0svq7pj"
+    },
+    {
+      "subject": "Check mail compliance",
+      "subject_id": "Task_0oplrbc",
+      "predicate": "follows",
+      "object": "Compile mail document requisition",
+      "object_id": "Task_1ltvv50"
+    },
+    {
+      "subject": "Check mail compliance",
+      "subject_id": "Task_0oplrbc",
+      "predicate": "follows",
+      "object": "Capture mailed document matter details",
+      "object_id": "Task_1dx7gas"
+    },
+    {
+      "subject": "Sort opened mail",
+      "subject_id": "Task_0h2dm75",
+      "predicate": "follows",
+      "object": "Register mail",
+      "object_id": "Task_0tgqnf8"
+    },
+    {
+      "subject": "Sort unopened mail",
+      "subject_id": "Task_0wb6m96",
+      "predicate": "follows",
+      "object": "Sort opened mail",
+      "object_id": "Task_0h2dm75"
+    },
+    {
+      "subject": "Capture P&E party details",
+      "subject_id": "Task_0fa64qy",
+      "predicate": "follows",
+      "object": "Print physical file",
+      "object_id": "Task_1s0f6g9"
+    },
+    {
+      "subject": "Capture mailed document matter details",
+      "subject_id": "Task_1dx7gas",
+      "predicate": "follows",
+      "object": "Receipt P&E fee payment",
+      "object_id": "Task_1cj4etn"
+    },
+    {
+      "subject": "Register mail",
+      "subject_id": "Task_0tgqnf8",
+      "predicate": "follows",
+      "object": "Check mail compliance",
+      "object_id": "Task_0oplrbc"
+    },
+    {
+      "subject": "Collect mail",
+      "subject_id": "Task_02tv0tg",
+      "predicate": "follows",
+      "object": "Sort unopened mail",
+      "object_id": "Task_0wb6m96"
+    }
+  ],
+  "matches": {
+    "Task_1cj4etn": {
+      "activity_label": "Receipt P&E fee payment",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_0fa64qy": {
+      "activity_label": "Capture P&E party details",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_0svq7pj": {
+      "activity_label": "Prepare mailed document response",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_0oplrbc": {
+      "activity_label": "Check mail compliance",
+      "matches": [
+        {
+          "match": "mail.compliant",
+          "score": 0.4938
+        },
+        {
+          "match": "mail.not_compliant",
+          "score": 0.4872
+        }
+      ],
+      "clusters": [
+        [
+          "mail.compliant",
+          "mail.not_compliant"
+        ]
+      ]
+    },
+    "Task_1ltvv50": {
+      "activity_label": "Compile mail document requisition",
+      "matches": [
+        {
+          "match": "requisition_list.compiled",
+          "score": 0.3738
+        }
+      ],
+      "clusters": [
+        [
+          "requisition_list.compiled"
+        ]
+      ]
+    },
+    "Task_1dx7gas": {
+      "activity_label": "Capture mailed document matter details",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_0h2dm75": {
+      "activity_label": "Sort opened mail",
+      "matches": [
+        {
+          "match": "mail.opened",
+          "score": 0.6869
+        },
+        {
+          "match": "mail.sorted",
+          "score": 0.6648
+        },
+        {
+          "match": "mail.unopened",
+          "score": 0.6383
+        }
+      ],
+      "clusters": [
+        [
+          "mail.opened"
+        ],
+        [
+          "mail.sorted"
+        ],
+        [
+          "mail.unopened"
+        ]
+      ]
+    },
+    "Task_0tgqnf8": {
+      "activity_label": "Register mail",
+      "matches": [
+        {
+          "match": "mail.registered",
+          "score": 0.8193
+        }
+      ],
+      "clusters": [
+        [
+          "mail.registered"
+        ]
+      ]
+    },
+    "Task_0wb6m96": {
+      "activity_label": "Sort unopened mail",
+      "matches": [
+        {
+          "match": "mail.unopened",
+          "score": 0.733
+        }
+      ],
+      "clusters": [
+        [
+          "mail.unopened"
+        ]
+      ]
+    },
+    "Task_1s0f6g9": {
+      "activity_label": "Print physical file",
+      "matches": [
+        {
+          "match": "physical_court_file.printed",
+          "score": 0.6602
+        }
+      ],
+      "clusters": [
+        [
+          "physical_court_file.printed"
+        ]
+      ]
+    },
+    "Task_02tv0tg": {
+      "activity_label": "Collect mail",
+      "matches": [
+        {
+          "match": "mail.collected",
+          "score": 0.8328
+        }
+      ],
+      "clusters": [
+        [
+          "mail.collected"
+        ]
+      ]
+    }
+  },
+  "process_graph": [
+    {
+      "from": "mail.compliant",
+      "to": "requisition_list.compiled",
+      "activity_from": "Check mail compliance",
+      "activity_to": "Compile mail document requisition",
+      "source_id": "Task_0oplrbc",
+      "target_id": "Task_1ltvv50"
+    },
+    {
+      "from": "mail.not_compliant",
+      "to": "requisition_list.compiled",
+      "activity_from": "Check mail compliance",
+      "activity_to": "Compile mail document requisition",
+      "source_id": "Task_0oplrbc",
+      "target_id": "Task_1ltvv50"
+    },
+    {
+      "from": "mail.opened",
+      "to": "mail.registered",
+      "activity_from": "Sort opened mail",
+      "activity_to": "Register mail",
+      "source_id": "Task_0h2dm75",
+      "target_id": "Task_0tgqnf8"
+    },
+    {
+      "from": "mail.sorted",
+      "to": "mail.registered",
+      "activity_from": "Sort opened mail",
+      "activity_to": "Register mail",
+      "source_id": "Task_0h2dm75",
+      "target_id": "Task_0tgqnf8"
+    },
+    {
+      "from": "mail.unopened",
+      "to": "mail.registered",
+      "activity_from": "Sort opened mail",
+      "activity_to": "Register mail",
+      "source_id": "Task_0h2dm75",
+      "target_id": "Task_0tgqnf8"
+    },
+    {
+      "from": "mail.unopened",
+      "to": "mail.opened",
+      "activity_from": "Sort unopened mail",
+      "activity_to": "Sort opened mail",
+      "source_id": "Task_0wb6m96",
+      "target_id": "Task_0h2dm75"
+    },
+    {
+      "from": "mail.unopened",
+      "to": "mail.sorted",
+      "activity_from": "Sort unopened mail",
+      "activity_to": "Sort opened mail",
+      "source_id": "Task_0wb6m96",
+      "target_id": "Task_0h2dm75"
+    },
+    {
+      "from": "mail.unopened",
+      "to": "mail.unopened",
+      "activity_from": "Sort unopened mail",
+      "activity_to": "Sort opened mail",
+      "source_id": "Task_0wb6m96",
+      "target_id": "Task_0h2dm75"
+    },
+    {
+      "from": "mail.registered",
+      "to": "mail.compliant",
+      "activity_from": "Register mail",
+      "activity_to": "Check mail compliance",
+      "source_id": "Task_0tgqnf8",
+      "target_id": "Task_0oplrbc"
+    },
+    {
+      "from": "mail.registered",
+      "to": "mail.not_compliant",
+      "activity_from": "Register mail",
+      "activity_to": "Check mail compliance",
+      "source_id": "Task_0tgqnf8",
+      "target_id": "Task_0oplrbc"
+    },
+    {
+      "from": "mail.collected",
+      "to": "mail.unopened",
+      "activity_from": "Collect mail",
+      "activity_to": "Sort unopened mail",
+      "source_id": "Task_02tv0tg",
+      "target_id": "Task_0wb6m96"
+    }
+  ],
+  "alignment": {
+    "mail.sorted": {
+      "operator": "AND",
+      "quote": "Mail from the party is collected on a daily basis by the Mail Processing Unit. Within this unit, the Mail Clerk sorts the unopened mail into the various business areas.",
+      "terms": [
+        {
+          "term": "mail.collected",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        },
+        {
+          "term": "mail.unopened",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED",
+      "clauses": [
+        {
+          "terms": [
+            "mail.collected",
+            "mail.unopened"
+          ],
+          "status": "SATISFIED"
+        }
+      ]
+    },
+    "mail.distributed": {
+      "operator": "AND",
+      "quote": "The mail is then distributed.",
+      "terms": [
+        {
+          "term": "mail.sorted",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['mail.distributed']",
+          "missing": [
+            "mail.distributed"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "mail.sorted"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "mail.received": {
+      "operator": "AND",
+      "quote": "When the mail is received by the Registry, it is opened and sorted into groups for distribution, and thus registered in a manual incoming Mail Register.",
+      "terms": [
+        {
+          "term": "mail.distributed",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['mail.distributed', 'mail.received']",
+          "missing": [
+            "mail.distributed",
+            "mail.received"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "mail.distributed"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "mail.opened": {
+      "operator": "AND",
+      "quote": "When the mail is received by the Registry, it is opened and sorted into groups for distribution, and thus registered in a manual incoming Mail Register.",
+      "terms": [
+        {
+          "term": "mail.received",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['mail.received']",
+          "missing": [
+            "mail.received"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "mail.received"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "mail.registered": {
+      "operator": "AND",
+      "quote": "When the mail is received by the Registry, it is opened and sorted into groups for distribution, and thus registered in a manual incoming Mail Register.",
+      "terms": [
+        {
+          "term": "mail.opened",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED",
+      "clauses": [
+        {
+          "terms": [
+            "mail.opened"
+          ],
+          "status": "SATISFIED"
+        }
+      ]
+    },
+    "mail.not_compliant": {
+      "operator": "AND",
+      "quote": "If the mail is not compliant, a list of requisition explaining the reason for rejection is compiled and sent back to the party.",
+      "terms": [
+        {
+          "term": "mail.registered",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED",
+      "clauses": [
+        {
+          "terms": [
+            "mail.registered"
+          ],
+          "status": "SATISFIED"
+        }
+      ]
+    },
+    "mail.compliant": {
+      "operator": "AND",
+      "quote": "If the mail is not compliant, a list of requisition explaining the reason for rejection is compiled and sent back to the party. Otherwise, the matter details (types of action) are captured and provided to the Cashier, who takes the applicable fees attached to the mail.",
+      "terms": [
+        {
+          "term": "mail.registered",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        },
+        {
+          "term": "NOT mail.not_compliant",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED",
+      "clauses": [
+        {
+          "terms": [
+            "mail.registered",
+            "NOT mail.not_compliant"
+          ],
+          "status": "SATISFIED"
+        }
+      ]
+    },
+    "requisition_list.compiled": {
+      "operator": "AND",
+      "quote": "If the mail is not compliant, a list of requisition explaining the reason for rejection is compiled and sent back to the party.",
+      "terms": [
+        {
+          "term": "mail.not_compliant",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED",
+      "clauses": [
+        {
+          "terms": [
+            "mail.not_compliant"
+          ],
+          "status": "SATISFIED"
+        }
+      ]
+    },
+    "requisition_list.sent_back": {
+      "operator": "AND",
+      "quote": "If the mail is not compliant, a list of requisition explaining the reason for rejection is compiled and sent back to the party.",
+      "terms": [
+        {
+          "term": "requisition_list.compiled",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['requisition_list.sent_back']",
+          "missing": [
+            "requisition_list.sent_back"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "requisition_list.compiled"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "physical_court_file.printed": {
+      "operator": "AND",
+      "quote": "Meantime, the Cashier captures the Party Details and prints the Physical Court File.",
+      "terms": [
+        {
+          "term": "mail.compliant",
+          "status": "VIOLATED",
+          "reason": "both states matched, no path in process",
+          "missing": []
+        }
+      ],
+      "status": "VIOLATED",
+      "clauses": [
+        {
+          "terms": [
+            "mail.compliant"
+          ],
+          "status": "VIOLATED"
+        }
+      ]
+    },
+    "envelope.posted": {
+      "operator": "AND",
+      "quote": "At this point, the Assistant Registry Manager puts the receipt and copied documents into an envelope and posts it to the party.",
+      "terms": [
+        {
+          "term": "mail.compliant",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['envelope.posted']",
+          "missing": [
+            "envelope.posted"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "mail.compliant"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    }
+  },
+  "report": {
+    "verdict": {
+      "verdict": "NOT_FAITHFUL",
+      "justification": "1 gap(s) found between the source text's requirements and the observed process -- at least one precondition asserted by the text is contradicted by the model's actual sequence of activities.",
+      "scope": "This verdict covers the causal reachability of the requirements expressed in the source text, not the general quality of the process model -- a multiplicity defect (an activity executed more than once due to a mismatched branching structure) is not covered by this verdict, even if the process is otherwise well-formed."
+    },
+    "summary": {
+      "ecarts": 1,
+      "non_verifiable": 3,
+      "conforme": 7
+    },
+    "ecarts": [
+      {
+        "root_cause": "Check mail compliance",
+        "quote": "Meantime, the Cashier captures the Party Details and prints the Physical Court File.",
+        "explanation": "The source text states: \"Meantime, the Cashier captures the Party Details and prints the Physical Court File.\" This indicates that printing the physical file is part of the Cashier’s actions, implying a condition must be met beforehand. However, in the observed process, there is no indication that \"Check mail compliance\" occurs before \"Print physical file\" — the two activities exist, but their required order is not enforced in the flow.",
+        "quote_verbatim": true,
+        "affected_activities": [
+          "Print physical file"
+        ],
+        "affected_count": 1
+      }
+    ],
+    "non_verifiable": [
+      {
+        "root_cause": "mail distributed",
+        "quote": "The mail is then distributed.",
+        "explanation": "The activity \"mail distributed\" requires a condition to be met first, as indicated by the quote: \"The mail is then distributed.\" However, no clear activity in the observed process can be linked to this required condition. Because the condition cannot be identified or verified from the given information, it is impossible to determine whether it is satisfied or not. This does not mean the process conforms or fails — only that verification is not possible based on what is provided. (This same root cause also affects: Sort opened mail, mail received.)",
+        "quote_verbatim": true,
+        "affected_activities": [
+          "Sort opened mail",
+          "mail distributed",
+          "mail received"
+        ],
+        "affected_count": 4
+      },
+      {
+        "root_cause": "requisition list sent back",
+        "quote": "If the mail is not compliant, a list of requisition explaining the reason for rejection is compiled and sent back to the party.",
+        "explanation": "The activity \"requisition list sent back\" requires a condition to be met first, as stated in the source text: \"If the mail is not compliant, a list of requisition explaining the reason for rejection is compiled and sent back to the party.\" However, no clear activity in the observed process corresponds to this required condition, so it cannot be verified whether the condition is satisfied or not. This means we cannot confirm or deny whether the requirement is met — only that verification is impossible based on the information given.",
+        "quote_verbatim": true,
+        "affected_activities": [
+          "requisition list sent back"
+        ],
+        "affected_count": 1
+      },
+      {
+        "root_cause": "envelope posted",
+        "quote": "At this point, the Assistant Registry Manager puts the receipt and copied documents into an envelope and posts it to the party.",
+        "explanation": "The activity \"envelope posted\" requires a condition to be met beforehand, as stated in the source text: \"At this point, the Assistant Registry Manager puts the receipt and copied documents into an envelope and posts it to the party.\" However, no clear activity in the observed process can be linked to this required condition. Because the condition cannot be identified or observed, it is impossible to verify whether it is satisfied or not. This does not mean the process conforms or fails — only that verification is not possible based on the available information.",
+        "quote_verbatim": true,
+        "affected_activities": [
+          "envelope posted"
+        ],
+        "affected_count": 1
+      }
+    ],
+    "conforme": [
+      {
+        "target": "Sort opened mail",
+        "term": "Collect mail"
+      },
+      {
+        "target": "Sort opened mail",
+        "term": "Sort unopened mail"
+      },
+      {
+        "target": "Register mail",
+        "term": "Sort opened mail"
+      },
+      {
+        "target": "Check mail compliance",
+        "term": "Register mail"
+      },
+      {
+        "target": "Check mail compliance",
+        "term": "Register mail"
+      },
+      {
+        "target": "Check mail compliance",
+        "term": "absence of: Check mail compliance"
+      },
+      {
+        "target": "Compile mail document requisition",
+        "term": "Check mail compliance"
+      }
+    ],
+    "piece_jointe_alignement_brut": {
+      "mail.sorted": {
+        "operator": "AND",
+        "quote": "Mail from the party is collected on a daily basis by the Mail Processing Unit. Within this unit, the Mail Clerk sorts the unopened mail into the various business areas.",
+        "terms": [
+          {
+            "term": "mail.collected",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          },
+          {
+            "term": "mail.unopened",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED",
+        "clauses": [
+          {
+            "terms": [
+              "mail.collected",
+              "mail.unopened"
+            ],
+            "status": "SATISFIED"
+          }
+        ]
+      },
+      "mail.distributed": {
+        "operator": "AND",
+        "quote": "The mail is then distributed.",
+        "terms": [
+          {
+            "term": "mail.sorted",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['mail.distributed']",
+            "missing": [
+              "mail.distributed"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "mail.sorted"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "mail.received": {
+        "operator": "AND",
+        "quote": "When the mail is received by the Registry, it is opened and sorted into groups for distribution, and thus registered in a manual incoming Mail Register.",
+        "terms": [
+          {
+            "term": "mail.distributed",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['mail.distributed', 'mail.received']",
+            "missing": [
+              "mail.distributed",
+              "mail.received"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "mail.distributed"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "mail.opened": {
+        "operator": "AND",
+        "quote": "When the mail is received by the Registry, it is opened and sorted into groups for distribution, and thus registered in a manual incoming Mail Register.",
+        "terms": [
+          {
+            "term": "mail.received",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['mail.received']",
+            "missing": [
+              "mail.received"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "mail.received"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "mail.registered": {
+        "operator": "AND",
+        "quote": "When the mail is received by the Registry, it is opened and sorted into groups for distribution, and thus registered in a manual incoming Mail Register.",
+        "terms": [
+          {
+            "term": "mail.opened",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED",
+        "clauses": [
+          {
+            "terms": [
+              "mail.opened"
+            ],
+            "status": "SATISFIED"
+          }
+        ]
+      },
+      "mail.not_compliant": {
+        "operator": "AND",
+        "quote": "If the mail is not compliant, a list of requisition explaining the reason for rejection is compiled and sent back to the party.",
+        "terms": [
+          {
+            "term": "mail.registered",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED",
+        "clauses": [
+          {
+            "terms": [
+              "mail.registered"
+            ],
+            "status": "SATISFIED"
+          }
+        ]
+      },
+      "mail.compliant": {
+        "operator": "AND",
+        "quote": "If the mail is not compliant, a list of requisition explaining the reason for rejection is compiled and sent back to the party. Otherwise, the matter details (types of action) are captured and provided to the Cashier, who takes the applicable fees attached to the mail.",
+        "terms": [
+          {
+            "term": "mail.registered",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          },
+          {
+            "term": "NOT mail.not_compliant",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED",
+        "clauses": [
+          {
+            "terms": [
+              "mail.registered",
+              "NOT mail.not_compliant"
+            ],
+            "status": "SATISFIED"
+          }
+        ]
+      },
+      "requisition_list.compiled": {
+        "operator": "AND",
+        "quote": "If the mail is not compliant, a list of requisition explaining the reason for rejection is compiled and sent back to the party.",
+        "terms": [
+          {
+            "term": "mail.not_compliant",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED",
+        "clauses": [
+          {
+            "terms": [
+              "mail.not_compliant"
+            ],
+            "status": "SATISFIED"
+          }
+        ]
+      },
+      "requisition_list.sent_back": {
+        "operator": "AND",
+        "quote": "If the mail is not compliant, a list of requisition explaining the reason for rejection is compiled and sent back to the party.",
+        "terms": [
+          {
+            "term": "requisition_list.compiled",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['requisition_list.sent_back']",
+            "missing": [
+              "requisition_list.sent_back"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "requisition_list.compiled"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "physical_court_file.printed": {
+        "operator": "AND",
+        "quote": "Meantime, the Cashier captures the Party Details and prints the Physical Court File.",
+        "terms": [
+          {
+            "term": "mail.compliant",
+            "status": "VIOLATED",
+            "reason": "both states matched, no path in process",
+            "missing": []
+          }
+        ],
+        "status": "VIOLATED",
+        "clauses": [
+          {
+            "terms": [
+              "mail.compliant"
+            ],
+            "status": "VIOLATED"
+          }
+        ]
+      },
+      "envelope.posted": {
+        "operator": "AND",
+        "quote": "At this point, the Assistant Registry Manager puts the receipt and copied documents into an envelope and posts it to the party.",
+        "terms": [
+          {
+            "term": "mail.compliant",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['envelope.posted']",
+            "missing": [
+              "envelope.posted"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "mail.compliant"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      }
+    }
+  },
+  "errors": []
+}

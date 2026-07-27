@@ -1,0 +1,1950 @@
+{
+  "case_name": "OriginalDataset/Hospital",
+  "text": "The examination process can be summarised as follows. The process starts\nwhen the female patient is examined by an outpatient physician, who decides\nwhether she is healthy or needs to undertake an additional examination. In the\nformer case, the physician fills out the examination form and the patient can\nleave. In the latter case, an examination and follow-up treatment order is placed\nby the physician who additionally fills out a request form. Beyond information\nabout the patient, the request form includes details about the examination \nrequested and refers to a suitable lab. Furthermore, the outpatient physician\ninforms the patient about potential risks. If the patient signs an informed consent\nand agrees to continue with the procedure, a delegate of the physician\narranges an appointment of the patient with one of the wards. The latter is\nthen responsible for taking a sample to be analysed in the lab later. Before the\nappointment, the required examination and sampling is prepared by a nurse of\nthe ward based on the information provided by the outpatient section. Then, a\nward physician takes the sample requested. He further sends it to the lab indicated\nin the request form and conducts the follow-up treatment of the patient.\nAfter receiving the sample, a physician of the lab validates its state and decides\nwhether the sample can be used for analysis or whether it is contaminated and\na new sample is required. After the analysis is performed by a medical technical\nassistant of the lab, a lab physician validates the results. Finally, a physician\nfrom the outpatient department makes the diagnosis and prescribes the therapy\nfor the patient.\n",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "nemotron-3-super-120b",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "nemotron-3-super-120b",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/../datasets/lre/alignment_model_text-master/datasets/OriginalDataset/Models/Hospital.bpmn",
+  "report_model": "nemotron-3-super-120b",
+  "candidates": {
+    "patient": {
+      "states": [
+        "examined",
+        "healthy",
+        "needs_additional_examination",
+        "informed_consent_signed",
+        "sample_taken",
+        "diagnosed",
+        "therapy_prescribed"
+      ],
+      "exclusive_groups": [
+        [
+          "healthy",
+          "needs_additional_examination"
+        ]
+      ],
+      "concurrent_with": []
+    },
+    "examination_form": {
+      "states": [
+        "filled_out"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "request_form": {
+      "states": [
+        "placed",
+        "filled_out"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "sample": {
+      "states": [
+        "taken",
+        "prepared",
+        "sent_to_lab",
+        "validated",
+        "used_for_analysis",
+        "contaminated",
+        "new_sample_required"
+      ],
+      "exclusive_groups": [
+        [
+          "validated",
+          "contaminated"
+        ],
+        [
+          "used_for_analysis",
+          "new_sample_required"
+        ]
+      ],
+      "concurrent_with": []
+    },
+    "appointment": {
+      "states": [
+        "arranged"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "ward": {
+      "states": [
+        "responsible_for_sample_taking"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "nurse": {
+      "states": [
+        "preparing_examination_and_sampling"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "ward_physician": {
+      "states": [
+        "taking_sample",
+        "sending_sample_to_lab",
+        "conducting_follow_up_treatment"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "lab_physician": {
+      "states": [
+        "validating_sample_state",
+        "validating_results"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "medical_technical_assistant": {
+      "states": [
+        "performing_analysis"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "outpatient_physician": {
+      "states": [
+        "deciding_health_status",
+        "filling_out_examination_form",
+        "filling_out_request_form",
+        "informing_patient_about_risks",
+        "making_diagnosis",
+        "prescribing_therapy"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    }
+  },
+  "validation_report": {
+    "patient": {
+      "f_lex": "INDETERMINATE",
+      "kept": true,
+      "head_used": "patient"
+    },
+    "examination_form": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "form"
+    },
+    "request_form": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "form"
+    },
+    "sample": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "sample"
+    },
+    "appointment": {
+      "f_lex": "INDETERMINATE",
+      "kept": true,
+      "head_used": "appointment"
+    },
+    "ward": {
+      "f_lex": "INDETERMINATE",
+      "kept": true,
+      "head_used": "ward"
+    },
+    "nurse": {
+      "f_lex": "ACTOR",
+      "kept": false,
+      "head_used": "nurse"
+    },
+    "ward_physician": {
+      "f_lex": "ACTOR",
+      "kept": false,
+      "head_used": "physician"
+    },
+    "lab_physician": {
+      "f_lex": "ACTOR",
+      "kept": false,
+      "head_used": "physician"
+    },
+    "medical_technical_assistant": {
+      "f_lex": "ACTOR",
+      "kept": false,
+      "head_used": "assistant"
+    },
+    "outpatient_physician": {
+      "f_lex": "ACTOR",
+      "kept": false,
+      "head_used": "physician"
+    },
+    "__meta__": {
+      "total_candidates": 11,
+      "indeterminate_kept_count": 3
+    }
+  },
+  "exclusive_groups_report": {
+    "accepted": [
+      {
+        "entity": "patient",
+        "states": [
+          "healthy",
+          "needs_additional_examination"
+        ],
+        "quote": "who decides whether she is healthy or needs to undertake an additional examination"
+      },
+      {
+        "entity": "sample",
+        "states": [
+          "validated",
+          "contaminated"
+        ],
+        "quote": "decides whether the sample can be used for analysis or whether it is contaminated"
+      },
+      {
+        "entity": "sample",
+        "states": [
+          "used_for_analysis",
+          "new_sample_required"
+        ],
+        "quote": "decides whether the sample can be used for analysis or whether it is contaminated and a new sample is required"
+      }
+    ],
+    "rejected": []
+  },
+  "state_space": {
+    "patient": {
+      "states": [
+        "examined",
+        "healthy",
+        "needs_additional_examination",
+        "informed_consent_signed",
+        "sample_taken",
+        "diagnosed",
+        "therapy_prescribed"
+      ],
+      "exclusive_groups": [
+        [
+          "healthy",
+          "needs_additional_examination"
+        ]
+      ],
+      "concurrent_with": []
+    },
+    "examination_form": {
+      "states": [
+        "filled_out"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "request_form": {
+      "states": [
+        "placed",
+        "filled_out"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "sample": {
+      "states": [
+        "taken",
+        "prepared",
+        "sent_to_lab",
+        "validated",
+        "used_for_analysis",
+        "contaminated",
+        "new_sample_required"
+      ],
+      "exclusive_groups": [
+        [
+          "validated",
+          "contaminated"
+        ],
+        [
+          "used_for_analysis",
+          "new_sample_required"
+        ]
+      ],
+      "concurrent_with": []
+    },
+    "appointment": {
+      "states": [
+        "arranged"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "ward": {
+      "states": [
+        "responsible_for_sample_taking"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    }
+  },
+  "state_space_dedup": {
+    "merged": {},
+    "ambiguous_not_merged": {}
+  },
+  "raw_preconditions": {
+    "patient.examined": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "patient.healthy": {
+      "precondition": "patient.examined",
+      "quote": "who decides whether she is healthy or needs to undertake an additional examination"
+    },
+    "patient.needs_additional_examination": {
+      "precondition": "patient.examined",
+      "quote": "who decides whether she is healthy or needs to undertake an additional examination"
+    },
+    "patient.informed_consent_signed": {
+      "precondition": "patient.needs_additional_examination",
+      "quote": "If the patient signs an informed consent and agrees to continue with the procedure"
+    },
+    "patient.sample_taken": {
+      "precondition": "patient.informed_consent_signed AND appointment.arranged AND ward.responsible_for_sample_taking",
+      "quote": [
+        "a delegate of the physician arranges an appointment of the patient with one of the wards.",
+        "The latter is then responsible for taking a sample to be analysed in the lab later.",
+        "Before the appointment, the required examination and sampling is prepared by a nurse of the ward based on the information provided by the outpatient section."
+      ]
+    },
+    "patient.diagnosed": {
+      "precondition": "sample.validated AND sample.used_for_analysis",
+      "quote": "After receiving the sample, a physician of the lab validates its state and decides whether the sample can be used for analysis or whether it is contaminated and a new sample is required. After the analysis is performed by a medical technical assistant of the lab, a lab physician validates the results. Finally, a physician from the outpatient department makes the diagnosis and prescribes the therapy for the patient."
+    },
+    "patient.therapy_prescribed": {
+      "precondition": "patient.diagnosed",
+      "quote": "Finally, a physician from the outpatient department makes the diagnosis and prescribes the therapy for the patient."
+    },
+    "examination_form.filled_out": {
+      "precondition": "patient.healthy",
+      "quote": "In the former case, the physician fills out the examination form and the patient can leave."
+    },
+    "request_form.placed": {
+      "precondition": "patient.needs_additional_examination",
+      "quote": "In the latter case, an examination and follow-up treatment order is placed by the physician who additionally fills out a request form."
+    },
+    "request_form.filled_out": {
+      "precondition": "patient.needs_additional_examination",
+      "quote": "In the latter case, an examination and follow-up treatment order is placed by the physician who additionally fills out a request form."
+    },
+    "sample.taken": {
+      "precondition": "patient.informed_consent_signed AND appointment.arranged AND ward.responsible_for_sample_taking",
+      "quote": [
+        "a delegate of the physician arranges an appointment of the patient with one of the wards.",
+        "The latter is then responsible for taking a sample to be analysed in the lab later.",
+        "Before the appointment, the required examination and sampling is prepared by a nurse of the ward based on the information provided by the outpatient section."
+      ]
+    },
+    "sample.prepared": {
+      "precondition": "patient.informed_consent_signed AND appointment.arranged AND ward.responsible_for_sample_taking",
+      "quote": [
+        "a delegate of the physician arranges an appointment of the patient with one of the wards.",
+        "The latter is then responsible for taking a sample to be analysed in the lab later.",
+        "Before the appointment, the required examination and sampling is prepared by a nurse of the ward based on the information provided by the outpatient section."
+      ]
+    },
+    "sample.sent_to_lab": {
+      "precondition": "sample.taken",
+      "quote": "He further sends it to the lab indicated in the request form and conducts the follow-up treatment of the patient."
+    },
+    "sample.validated": {
+      "precondition": "sample.sent_to_lab",
+      "quote": "After receiving the sample, a physician of the lab validates its state and decides whether the sample can be used for analysis or whether it is contaminated and a new sample is required."
+    },
+    "sample.used_for_analysis": {
+      "precondition": "sample.validated",
+      "quote": "After receiving the sample, a physician of the lab validates its state and decides whether the sample can be used for analysis or whether it is contaminated and a new sample is required. After the analysis is performed by a medical technical assistant of the lab, a lab physician validates the results."
+    },
+    "sample.contaminated": {
+      "precondition": "sample.validated",
+      "quote": "After receiving the sample, a physician of the lab validates its state and decides whether the sample can be used for analysis or whether it is contaminated and a new sample is required."
+    },
+    "sample.new_sample_required": {
+      "precondition": "sample.validated",
+      "quote": "After receiving the sample, a physician of the lab validates its state and decides whether the sample can be used for analysis or whether it is contaminated and a new sample is required."
+    },
+    "appointment.arranged": {
+      "precondition": "patient.informed_consent_signed",
+      "quote": "a delegate of the physician arranges an appointment of the patient with one of the wards."
+    },
+    "ward.responsible_for_sample_taking": {
+      "precondition": "appointment.arranged",
+      "quote": "The latter is then responsible for taking a sample to be analysed in the lab later."
+    }
+  },
+  "validated_preconditions": {
+    "patient.examined": {
+      "precondition": "INITIAL",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "patient.healthy": {
+      "precondition": "patient.examined",
+      "quote": "who decides whether she is healthy or needs to undertake an additional examination",
+      "status": "OK",
+      "reason": null
+    },
+    "patient.needs_additional_examination": {
+      "precondition": "patient.examined",
+      "quote": "who decides whether she is healthy or needs to undertake an additional examination",
+      "status": "OK",
+      "reason": null
+    },
+    "patient.informed_consent_signed": {
+      "precondition": "patient.needs_additional_examination",
+      "quote": "If the patient signs an informed consent and agrees to continue with the procedure",
+      "status": "OK",
+      "reason": null
+    },
+    "patient.sample_taken": {
+      "precondition": "patient.informed_consent_signed AND appointment.arranged AND ward.responsible_for_sample_taking",
+      "quote": [
+        "a delegate of the physician arranges an appointment of the patient with one of the wards.",
+        "The latter is then responsible for taking a sample to be analysed in the lab later.",
+        "Before the appointment, the required examination and sampling is prepared by a nurse of the ward based on the information provided by the outpatient section."
+      ],
+      "status": "OK",
+      "reason": null
+    },
+    "patient.diagnosed": {
+      "precondition": "sample.validated AND sample.used_for_analysis",
+      "quote": "After receiving the sample, a physician of the lab validates its state and decides whether the sample can be used for analysis or whether it is contaminated and a new sample is required. After the analysis is performed by a medical technical assistant of the lab, a lab physician validates the results. Finally, a physician from the outpatient department makes the diagnosis and prescribes the therapy for the patient.",
+      "status": "OK",
+      "reason": null
+    },
+    "patient.therapy_prescribed": {
+      "precondition": "patient.diagnosed",
+      "quote": "Finally, a physician from the outpatient department makes the diagnosis and prescribes the therapy for the patient.",
+      "status": "OK",
+      "reason": null
+    },
+    "examination_form.filled_out": {
+      "precondition": "patient.healthy",
+      "quote": "In the former case, the physician fills out the examination form and the patient can leave.",
+      "status": "OK",
+      "reason": null
+    },
+    "request_form.placed": {
+      "precondition": "patient.needs_additional_examination",
+      "quote": "In the latter case, an examination and follow-up treatment order is placed by the physician who additionally fills out a request form.",
+      "status": "OK",
+      "reason": null
+    },
+    "request_form.filled_out": {
+      "precondition": "patient.needs_additional_examination",
+      "quote": "In the latter case, an examination and follow-up treatment order is placed by the physician who additionally fills out a request form.",
+      "status": "OK",
+      "reason": null
+    },
+    "sample.taken": {
+      "precondition": "patient.informed_consent_signed AND appointment.arranged AND ward.responsible_for_sample_taking",
+      "quote": [
+        "a delegate of the physician arranges an appointment of the patient with one of the wards.",
+        "The latter is then responsible for taking a sample to be analysed in the lab later.",
+        "Before the appointment, the required examination and sampling is prepared by a nurse of the ward based on the information provided by the outpatient section."
+      ],
+      "status": "OK",
+      "reason": null
+    },
+    "sample.prepared": {
+      "precondition": "patient.informed_consent_signed AND appointment.arranged AND ward.responsible_for_sample_taking",
+      "quote": [
+        "a delegate of the physician arranges an appointment of the patient with one of the wards.",
+        "The latter is then responsible for taking a sample to be analysed in the lab later.",
+        "Before the appointment, the required examination and sampling is prepared by a nurse of the ward based on the information provided by the outpatient section."
+      ],
+      "status": "OK",
+      "reason": null
+    },
+    "sample.sent_to_lab": {
+      "precondition": "sample.taken",
+      "quote": "He further sends it to the lab indicated in the request form and conducts the follow-up treatment of the patient.",
+      "status": "OK",
+      "reason": null
+    },
+    "sample.validated": {
+      "precondition": "sample.sent_to_lab",
+      "quote": "After receiving the sample, a physician of the lab validates its state and decides whether the sample can be used for analysis or whether it is contaminated and a new sample is required.",
+      "status": "OK",
+      "reason": null
+    },
+    "sample.used_for_analysis": {
+      "precondition": "sample.validated",
+      "quote": "After receiving the sample, a physician of the lab validates its state and decides whether the sample can be used for analysis or whether it is contaminated and a new sample is required. After the analysis is performed by a medical technical assistant of the lab, a lab physician validates the results.",
+      "status": "OK",
+      "reason": null
+    },
+    "sample.contaminated": {
+      "precondition": "sample.validated",
+      "quote": "After receiving the sample, a physician of the lab validates its state and decides whether the sample can be used for analysis or whether it is contaminated and a new sample is required.",
+      "status": "OK",
+      "reason": null
+    },
+    "sample.new_sample_required": {
+      "precondition": "sample.validated",
+      "quote": "After receiving the sample, a physician of the lab validates its state and decides whether the sample can be used for analysis or whether it is contaminated and a new sample is required.",
+      "status": "OK",
+      "reason": null
+    },
+    "appointment.arranged": {
+      "precondition": "patient.informed_consent_signed",
+      "quote": "a delegate of the physician arranges an appointment of the patient with one of the wards.",
+      "status": "OK",
+      "reason": null
+    },
+    "ward.responsible_for_sample_taking": {
+      "precondition": "appointment.arranged",
+      "quote": "The latter is then responsible for taking a sample to be analysed in the lab later.",
+      "status": "OK",
+      "reason": null
+    }
+  },
+  "precondition_cycles": [],
+  "branch_conflicts": [
+    {
+      "entity": "patient",
+      "exclusive_group": [
+        "healthy",
+        "needs_additional_examination"
+      ],
+      "conflicting_targets": [
+        "patient.healthy",
+        "patient.needs_additional_examination"
+      ],
+      "shared_precondition": "patient.examined",
+      "reason": "targets marked mutually exclusive in the state space share the exact same accepted precondition -- reaching it would trigger both branches at once"
+    },
+    {
+      "entity": "sample",
+      "exclusive_group": [
+        "used_for_analysis",
+        "new_sample_required"
+      ],
+      "conflicting_targets": [
+        "sample.used_for_analysis",
+        "sample.new_sample_required"
+      ],
+      "shared_precondition": "sample.validated",
+      "reason": "targets marked mutually exclusive in the state space share the exact same accepted precondition -- reaching it would trigger both branches at once"
+    }
+  ],
+  "reference_graph": {
+    "nodes": [
+      {
+        "id": "patient.examined",
+        "weight": 0.4
+      },
+      {
+        "id": "patient.healthy",
+        "weight": 0.4
+      },
+      {
+        "id": "patient.needs_additional_examination",
+        "weight": 0.8
+      },
+      {
+        "id": "patient.informed_consent_signed",
+        "weight": 1.0
+      },
+      {
+        "id": "patient.sample_taken",
+        "weight": 0.6
+      },
+      {
+        "id": "patient.diagnosed",
+        "weight": 0.6
+      },
+      {
+        "id": "patient.therapy_prescribed",
+        "weight": 0.2
+      },
+      {
+        "id": "examination_form.filled_out",
+        "weight": 0.2
+      },
+      {
+        "id": "request_form.placed",
+        "weight": 0.2
+      },
+      {
+        "id": "request_form.filled_out",
+        "weight": 0.2
+      },
+      {
+        "id": "sample.taken",
+        "weight": 0.8
+      },
+      {
+        "id": "sample.prepared",
+        "weight": 0.6
+      },
+      {
+        "id": "sample.sent_to_lab",
+        "weight": 0.4
+      },
+      {
+        "id": "sample.validated",
+        "weight": 1.0
+      },
+      {
+        "id": "sample.used_for_analysis",
+        "weight": 0.4
+      },
+      {
+        "id": "sample.contaminated",
+        "weight": 0.2
+      },
+      {
+        "id": "sample.new_sample_required",
+        "weight": 0.2
+      },
+      {
+        "id": "appointment.arranged",
+        "weight": 1.0
+      },
+      {
+        "id": "ward.responsible_for_sample_taking",
+        "weight": 0.8
+      }
+    ],
+    "edges": [
+      {
+        "from": "patient.examined",
+        "to": "patient.healthy",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "who decides whether she is healthy or needs to undertake an additional examination",
+        "negated": false
+      },
+      {
+        "from": "patient.examined",
+        "to": "patient.needs_additional_examination",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "who decides whether she is healthy or needs to undertake an additional examination",
+        "negated": false
+      },
+      {
+        "from": "patient.needs_additional_examination",
+        "to": "patient.informed_consent_signed",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "If the patient signs an informed consent and agrees to continue with the procedure",
+        "negated": false
+      },
+      {
+        "from": "patient.informed_consent_signed",
+        "to": "patient.sample_taken",
+        "clause": 0,
+        "type": "sequence",
+        "quote": [
+          "a delegate of the physician arranges an appointment of the patient with one of the wards.",
+          "The latter is then responsible for taking a sample to be analysed in the lab later.",
+          "Before the appointment, the required examination and sampling is prepared by a nurse of the ward based on the information provided by the outpatient section."
+        ],
+        "negated": false
+      },
+      {
+        "from": "appointment.arranged",
+        "to": "patient.sample_taken",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": [
+          "a delegate of the physician arranges an appointment of the patient with one of the wards.",
+          "The latter is then responsible for taking a sample to be analysed in the lab later.",
+          "Before the appointment, the required examination and sampling is prepared by a nurse of the ward based on the information provided by the outpatient section."
+        ],
+        "negated": false
+      },
+      {
+        "from": "ward.responsible_for_sample_taking",
+        "to": "patient.sample_taken",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": [
+          "a delegate of the physician arranges an appointment of the patient with one of the wards.",
+          "The latter is then responsible for taking a sample to be analysed in the lab later.",
+          "Before the appointment, the required examination and sampling is prepared by a nurse of the ward based on the information provided by the outpatient section."
+        ],
+        "negated": false
+      },
+      {
+        "from": "sample.validated",
+        "to": "patient.diagnosed",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "After receiving the sample, a physician of the lab validates its state and decides whether the sample can be used for analysis or whether it is contaminated and a new sample is required. After the analysis is performed by a medical technical assistant of the lab, a lab physician validates the results. Finally, a physician from the outpatient department makes the diagnosis and prescribes the therapy for the patient.",
+        "negated": false
+      },
+      {
+        "from": "sample.used_for_analysis",
+        "to": "patient.diagnosed",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "After receiving the sample, a physician of the lab validates its state and decides whether the sample can be used for analysis or whether it is contaminated and a new sample is required. After the analysis is performed by a medical technical assistant of the lab, a lab physician validates the results. Finally, a physician from the outpatient department makes the diagnosis and prescribes the therapy for the patient.",
+        "negated": false
+      },
+      {
+        "from": "patient.diagnosed",
+        "to": "patient.therapy_prescribed",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "Finally, a physician from the outpatient department makes the diagnosis and prescribes the therapy for the patient.",
+        "negated": false
+      },
+      {
+        "from": "patient.healthy",
+        "to": "examination_form.filled_out",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "In the former case, the physician fills out the examination form and the patient can leave.",
+        "negated": false
+      },
+      {
+        "from": "patient.needs_additional_examination",
+        "to": "request_form.placed",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "In the latter case, an examination and follow-up treatment order is placed by the physician who additionally fills out a request form.",
+        "negated": false
+      },
+      {
+        "from": "patient.needs_additional_examination",
+        "to": "request_form.filled_out",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "In the latter case, an examination and follow-up treatment order is placed by the physician who additionally fills out a request form.",
+        "negated": false
+      },
+      {
+        "from": "patient.informed_consent_signed",
+        "to": "sample.taken",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": [
+          "a delegate of the physician arranges an appointment of the patient with one of the wards.",
+          "The latter is then responsible for taking a sample to be analysed in the lab later.",
+          "Before the appointment, the required examination and sampling is prepared by a nurse of the ward based on the information provided by the outpatient section."
+        ],
+        "negated": false
+      },
+      {
+        "from": "appointment.arranged",
+        "to": "sample.taken",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": [
+          "a delegate of the physician arranges an appointment of the patient with one of the wards.",
+          "The latter is then responsible for taking a sample to be analysed in the lab later.",
+          "Before the appointment, the required examination and sampling is prepared by a nurse of the ward based on the information provided by the outpatient section."
+        ],
+        "negated": false
+      },
+      {
+        "from": "ward.responsible_for_sample_taking",
+        "to": "sample.taken",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": [
+          "a delegate of the physician arranges an appointment of the patient with one of the wards.",
+          "The latter is then responsible for taking a sample to be analysed in the lab later.",
+          "Before the appointment, the required examination and sampling is prepared by a nurse of the ward based on the information provided by the outpatient section."
+        ],
+        "negated": false
+      },
+      {
+        "from": "patient.informed_consent_signed",
+        "to": "sample.prepared",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": [
+          "a delegate of the physician arranges an appointment of the patient with one of the wards.",
+          "The latter is then responsible for taking a sample to be analysed in the lab later.",
+          "Before the appointment, the required examination and sampling is prepared by a nurse of the ward based on the information provided by the outpatient section."
+        ],
+        "negated": false
+      },
+      {
+        "from": "appointment.arranged",
+        "to": "sample.prepared",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": [
+          "a delegate of the physician arranges an appointment of the patient with one of the wards.",
+          "The latter is then responsible for taking a sample to be analysed in the lab later.",
+          "Before the appointment, the required examination and sampling is prepared by a nurse of the ward based on the information provided by the outpatient section."
+        ],
+        "negated": false
+      },
+      {
+        "from": "ward.responsible_for_sample_taking",
+        "to": "sample.prepared",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": [
+          "a delegate of the physician arranges an appointment of the patient with one of the wards.",
+          "The latter is then responsible for taking a sample to be analysed in the lab later.",
+          "Before the appointment, the required examination and sampling is prepared by a nurse of the ward based on the information provided by the outpatient section."
+        ],
+        "negated": false
+      },
+      {
+        "from": "sample.taken",
+        "to": "sample.sent_to_lab",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "He further sends it to the lab indicated in the request form and conducts the follow-up treatment of the patient.",
+        "negated": false
+      },
+      {
+        "from": "sample.sent_to_lab",
+        "to": "sample.validated",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "After receiving the sample, a physician of the lab validates its state and decides whether the sample can be used for analysis or whether it is contaminated and a new sample is required.",
+        "negated": false
+      },
+      {
+        "from": "sample.validated",
+        "to": "sample.used_for_analysis",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "After receiving the sample, a physician of the lab validates its state and decides whether the sample can be used for analysis or whether it is contaminated and a new sample is required. After the analysis is performed by a medical technical assistant of the lab, a lab physician validates the results.",
+        "negated": false
+      },
+      {
+        "from": "sample.validated",
+        "to": "sample.contaminated",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "After receiving the sample, a physician of the lab validates its state and decides whether the sample can be used for analysis or whether it is contaminated and a new sample is required.",
+        "negated": false
+      },
+      {
+        "from": "sample.validated",
+        "to": "sample.new_sample_required",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "After receiving the sample, a physician of the lab validates its state and decides whether the sample can be used for analysis or whether it is contaminated and a new sample is required.",
+        "negated": false
+      },
+      {
+        "from": "patient.informed_consent_signed",
+        "to": "appointment.arranged",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "a delegate of the physician arranges an appointment of the patient with one of the wards.",
+        "negated": false
+      },
+      {
+        "from": "appointment.arranged",
+        "to": "ward.responsible_for_sample_taking",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "The latter is then responsible for taking a sample to be analysed in the lab later.",
+        "negated": false
+      }
+    ],
+    "cycles": [],
+    "branch_conflicts": [
+      {
+        "entity": "patient",
+        "exclusive_group": [
+          "healthy",
+          "needs_additional_examination"
+        ],
+        "conflicting_targets": [
+          "patient.healthy",
+          "patient.needs_additional_examination"
+        ],
+        "shared_precondition": "patient.examined",
+        "reason": "targets marked mutually exclusive in the state space share the exact same accepted precondition -- reaching it would trigger both branches at once"
+      },
+      {
+        "entity": "sample",
+        "exclusive_group": [
+          "used_for_analysis",
+          "new_sample_required"
+        ],
+        "conflicting_targets": [
+          "sample.used_for_analysis",
+          "sample.new_sample_required"
+        ],
+        "shared_precondition": "sample.validated",
+        "reason": "targets marked mutually exclusive in the state space share the exact same accepted precondition -- reaching it would trigger both branches at once"
+      }
+    ],
+    "exclusive_pairs": [
+      {
+        "entity": "patient",
+        "nodes": [
+          "patient.healthy",
+          "patient.needs_additional_examination"
+        ]
+      },
+      {
+        "entity": "sample",
+        "nodes": [
+          "sample.validated",
+          "sample.contaminated"
+        ]
+      },
+      {
+        "entity": "sample",
+        "nodes": [
+          "sample.used_for_analysis",
+          "sample.new_sample_required"
+        ]
+      }
+    ]
+  },
+  "dfg_edges": [
+    {
+      "source_id": "Task1",
+      "source_label": "Examine patient",
+      "target_id": "Task4",
+      "target_label": "Release patient",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "No",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task1",
+      "source_label": "Examine patient",
+      "target_id": "Task2",
+      "target_label": "Order examination & follow-up treatment",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "Yes"
+      ]
+    },
+    {
+      "source_id": "Task8",
+      "source_label": "Perform follow-up treatment",
+      "target_id": "Task10",
+      "target_label": "Validate sample state",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "Task6",
+      "source_label": "Prepare examination",
+      "target_id": "Task7",
+      "target_label": "Take sample",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task10",
+      "source_label": "Validate sample state",
+      "target_id": "Task11",
+      "target_label": "Analyse sample",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "Yes"
+      ]
+    },
+    {
+      "source_id": "Task10",
+      "source_label": "Validate sample state",
+      "target_id": "Task7",
+      "target_label": "Take sample",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "No",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task5",
+      "source_label": "Make appointment",
+      "target_id": "Task6",
+      "target_label": "Prepare examination",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task2",
+      "source_label": "Order examination & follow-up treatment",
+      "target_id": "Task3",
+      "target_label": "Inform about risks",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task9",
+      "source_label": "Send sample",
+      "target_id": "Task10",
+      "target_label": "Validate sample state",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "Task12",
+      "source_label": "Validate results",
+      "target_id": "Task13",
+      "target_label": "Make diagnosis",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task13",
+      "source_label": "Make diagnosis",
+      "target_id": "Task14",
+      "target_label": "Describe therapy",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task11",
+      "source_label": "Analyse sample",
+      "target_id": "Task12",
+      "target_label": "Validate results",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task7",
+      "source_label": "Take sample",
+      "target_id": "Task9",
+      "target_label": "Send sample",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "Task7",
+      "source_label": "Take sample",
+      "target_id": "Task8",
+      "target_label": "Perform follow-up treatment",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "Task3",
+      "source_label": "Inform about risks",
+      "target_id": "Task4",
+      "target_label": "Release patient",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "No",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task3",
+      "source_label": "Inform about risks",
+      "target_id": "Task5",
+      "target_label": "Make appointment",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "Yes"
+      ]
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "Examine patient",
+      "subject_id": "Task1",
+      "predicate": "follows",
+      "object": "Release patient",
+      "object_id": "Task4"
+    },
+    {
+      "subject": "Examine patient",
+      "subject_id": "Task1",
+      "predicate": "follows",
+      "object": "Order examination & follow-up treatment",
+      "object_id": "Task2"
+    },
+    {
+      "subject": "Perform follow-up treatment",
+      "subject_id": "Task8",
+      "predicate": "follows",
+      "object": "Validate sample state",
+      "object_id": "Task10"
+    },
+    {
+      "subject": "Prepare examination",
+      "subject_id": "Task6",
+      "predicate": "follows",
+      "object": "Take sample",
+      "object_id": "Task7"
+    },
+    {
+      "subject": "Validate sample state",
+      "subject_id": "Task10",
+      "predicate": "follows",
+      "object": "Analyse sample",
+      "object_id": "Task11"
+    },
+    {
+      "subject": "Validate sample state",
+      "subject_id": "Task10",
+      "predicate": "follows",
+      "object": "Take sample",
+      "object_id": "Task7"
+    },
+    {
+      "subject": "Make appointment",
+      "subject_id": "Task5",
+      "predicate": "follows",
+      "object": "Prepare examination",
+      "object_id": "Task6"
+    },
+    {
+      "subject": "Order examination & follow-up treatment",
+      "subject_id": "Task2",
+      "predicate": "follows",
+      "object": "Inform about risks",
+      "object_id": "Task3"
+    },
+    {
+      "subject": "Send sample",
+      "subject_id": "Task9",
+      "predicate": "follows",
+      "object": "Validate sample state",
+      "object_id": "Task10"
+    },
+    {
+      "subject": "Validate results",
+      "subject_id": "Task12",
+      "predicate": "follows",
+      "object": "Make diagnosis",
+      "object_id": "Task13"
+    },
+    {
+      "subject": "Make diagnosis",
+      "subject_id": "Task13",
+      "predicate": "follows",
+      "object": "Describe therapy",
+      "object_id": "Task14"
+    },
+    {
+      "subject": "Analyse sample",
+      "subject_id": "Task11",
+      "predicate": "follows",
+      "object": "Validate results",
+      "object_id": "Task12"
+    },
+    {
+      "subject": "Take sample",
+      "subject_id": "Task7",
+      "predicate": "follows",
+      "object": "Send sample",
+      "object_id": "Task9"
+    },
+    {
+      "subject": "Take sample",
+      "subject_id": "Task7",
+      "predicate": "follows",
+      "object": "Perform follow-up treatment",
+      "object_id": "Task8"
+    },
+    {
+      "subject": "Inform about risks",
+      "subject_id": "Task3",
+      "predicate": "follows",
+      "object": "Release patient",
+      "object_id": "Task4"
+    },
+    {
+      "subject": "Inform about risks",
+      "subject_id": "Task3",
+      "predicate": "follows",
+      "object": "Make appointment",
+      "object_id": "Task5"
+    }
+  ],
+  "activity_guards": {
+    "activities": {
+      "Examine patient": {
+        "status": "OK",
+        "clauses": [
+          []
+        ]
+      },
+      "Order examination & follow-up treatment": {
+        "status": "STRUCTURE_UNRESOLVED"
+      },
+      "Inform about risks": {
+        "status": "STRUCTURE_UNRESOLVED"
+      },
+      "Make appointment": {
+        "status": "STRUCTURE_UNRESOLVED"
+      },
+      "Release patient": {
+        "status": "STRUCTURE_UNRESOLVED"
+      },
+      "Prepare examination": {
+        "status": "STRUCTURE_UNRESOLVED"
+      },
+      "Take sample": {
+        "status": "STRUCTURE_UNRESOLVED"
+      },
+      "Send sample": {
+        "status": "STRUCTURE_UNRESOLVED"
+      },
+      "Perform follow-up treatment": {
+        "status": "STRUCTURE_UNRESOLVED"
+      },
+      "Validate sample state": {
+        "status": "STRUCTURE_UNRESOLVED"
+      },
+      "Analyse sample": {
+        "status": "STRUCTURE_UNRESOLVED"
+      },
+      "Validate results": {
+        "status": "STRUCTURE_UNRESOLVED"
+      },
+      "Make diagnosis": {
+        "status": "STRUCTURE_UNRESOLVED"
+      },
+      "Describe therapy": {
+        "status": "STRUCTURE_UNRESOLVED"
+      }
+    },
+    "undeclared_splits": []
+  },
+  "matches": {
+    "Task1": {
+      "activity_label": "Examine patient",
+      "matches": [
+        {
+          "match": "patient.examined",
+          "score": 0.4675
+        }
+      ],
+      "clusters": [
+        [
+          "patient.examined"
+        ]
+      ]
+    },
+    "Task4": {
+      "activity_label": "Release patient",
+      "matches": [],
+      "clusters": []
+    },
+    "Task2": {
+      "activity_label": "Order examination & follow-up treatment",
+      "matches": [
+        {
+          "match": "patient.needs_additional_examination",
+          "score": 0.377
+        }
+      ],
+      "clusters": [
+        [
+          "patient.needs_additional_examination"
+        ]
+      ]
+    },
+    "Task8": {
+      "activity_label": "Perform follow-up treatment",
+      "matches": [],
+      "clusters": []
+    },
+    "Task10": {
+      "activity_label": "Validate sample state",
+      "matches": [
+        {
+          "match": "sample.validated",
+          "score": 0.3935
+        }
+      ],
+      "clusters": [
+        [
+          "sample.validated"
+        ]
+      ]
+    },
+    "Task6": {
+      "activity_label": "Prepare examination",
+      "matches": [
+        {
+          "match": "examination_form.filled_out",
+          "score": 0.3575
+        }
+      ],
+      "clusters": [
+        [
+          "examination_form.filled_out"
+        ]
+      ]
+    },
+    "Task7": {
+      "activity_label": "Take sample",
+      "matches": [
+        {
+          "match": "sample.taken",
+          "score": 0.4002
+        }
+      ],
+      "clusters": [
+        [
+          "sample.taken"
+        ]
+      ]
+    },
+    "Task11": {
+      "activity_label": "Analyse sample",
+      "matches": [
+        {
+          "match": "sample.used_for_analysis",
+          "score": 0.367
+        }
+      ],
+      "clusters": [
+        [
+          "sample.used_for_analysis"
+        ]
+      ]
+    },
+    "Task5": {
+      "activity_label": "Make appointment",
+      "matches": [
+        {
+          "match": "appointment.arranged",
+          "score": 0.3939
+        }
+      ],
+      "clusters": [
+        [
+          "appointment.arranged"
+        ]
+      ]
+    },
+    "Task3": {
+      "activity_label": "Inform about risks",
+      "matches": [],
+      "clusters": []
+    },
+    "Task9": {
+      "activity_label": "Send sample",
+      "matches": [
+        {
+          "match": "sample.sent_to_lab",
+          "score": 0.3564
+        }
+      ],
+      "clusters": [
+        [
+          "sample.sent_to_lab"
+        ]
+      ]
+    },
+    "Task12": {
+      "activity_label": "Validate results",
+      "matches": [
+        {
+          "match": "sample.validated",
+          "score": 0.4982
+        }
+      ],
+      "clusters": [
+        [
+          "sample.validated"
+        ]
+      ]
+    },
+    "Task13": {
+      "activity_label": "Make diagnosis",
+      "matches": [
+        {
+          "match": "patient.diagnosed",
+          "score": 0.4952
+        }
+      ],
+      "clusters": [
+        [
+          "patient.diagnosed"
+        ]
+      ]
+    },
+    "Task14": {
+      "activity_label": "Describe therapy",
+      "matches": [
+        {
+          "match": "patient.therapy_prescribed",
+          "score": 0.547
+        }
+      ],
+      "clusters": [
+        [
+          "patient.therapy_prescribed"
+        ]
+      ]
+    }
+  },
+  "process_graph": [
+    {
+      "from": "patient.examined",
+      "to": "patient.needs_additional_examination",
+      "activity_from": "Examine patient",
+      "activity_to": "Order examination & follow-up treatment",
+      "source_id": "Task1",
+      "target_id": "Task2"
+    },
+    {
+      "from": "examination_form.filled_out",
+      "to": "sample.taken",
+      "activity_from": "Prepare examination",
+      "activity_to": "Take sample",
+      "source_id": "Task6",
+      "target_id": "Task7"
+    },
+    {
+      "from": "sample.validated",
+      "to": "sample.used_for_analysis",
+      "activity_from": "Validate sample state",
+      "activity_to": "Analyse sample",
+      "source_id": "Task10",
+      "target_id": "Task11"
+    },
+    {
+      "from": "sample.validated",
+      "to": "sample.taken",
+      "activity_from": "Validate sample state",
+      "activity_to": "Take sample",
+      "source_id": "Task10",
+      "target_id": "Task7"
+    },
+    {
+      "from": "appointment.arranged",
+      "to": "examination_form.filled_out",
+      "activity_from": "Make appointment",
+      "activity_to": "Prepare examination",
+      "source_id": "Task5",
+      "target_id": "Task6"
+    },
+    {
+      "from": "sample.sent_to_lab",
+      "to": "sample.validated",
+      "activity_from": "Send sample",
+      "activity_to": "Validate sample state",
+      "source_id": "Task9",
+      "target_id": "Task10"
+    },
+    {
+      "from": "sample.validated",
+      "to": "patient.diagnosed",
+      "activity_from": "Validate results",
+      "activity_to": "Make diagnosis",
+      "source_id": "Task12",
+      "target_id": "Task13"
+    },
+    {
+      "from": "patient.diagnosed",
+      "to": "patient.therapy_prescribed",
+      "activity_from": "Make diagnosis",
+      "activity_to": "Describe therapy",
+      "source_id": "Task13",
+      "target_id": "Task14"
+    },
+    {
+      "from": "sample.used_for_analysis",
+      "to": "sample.validated",
+      "activity_from": "Analyse sample",
+      "activity_to": "Validate results",
+      "source_id": "Task11",
+      "target_id": "Task12"
+    },
+    {
+      "from": "sample.taken",
+      "to": "sample.sent_to_lab",
+      "activity_from": "Take sample",
+      "activity_to": "Send sample",
+      "source_id": "Task7",
+      "target_id": "Task9"
+    }
+  ],
+  "alignment": {
+    "patient.healthy": {
+      "operator": "AND",
+      "quote": "who decides whether she is healthy or needs to undertake an additional examination",
+      "terms": [
+        {
+          "term": "patient.examined",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['patient.healthy']",
+          "missing": [
+            "patient.healthy"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "patient.examined"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "patient.needs_additional_examination": {
+      "operator": "AND",
+      "quote": "who decides whether she is healthy or needs to undertake an additional examination",
+      "terms": [
+        {
+          "term": "patient.examined",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED",
+      "clauses": [
+        {
+          "terms": [
+            "patient.examined"
+          ],
+          "status": "SATISFIED"
+        }
+      ]
+    },
+    "patient.informed_consent_signed": {
+      "operator": "AND",
+      "quote": "If the patient signs an informed consent and agrees to continue with the procedure",
+      "terms": [
+        {
+          "term": "patient.needs_additional_examination",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['patient.informed_consent_signed']",
+          "missing": [
+            "patient.informed_consent_signed"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "patient.needs_additional_examination"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "patient.sample_taken": {
+      "operator": "AND",
+      "quote": [
+        "a delegate of the physician arranges an appointment of the patient with one of the wards.",
+        "The latter is then responsible for taking a sample to be analysed in the lab later.",
+        "Before the appointment, the required examination and sampling is prepared by a nurse of the ward based on the information provided by the outpatient section."
+      ],
+      "terms": [
+        {
+          "term": "patient.informed_consent_signed",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['patient.informed_consent_signed', 'patient.sample_taken']",
+          "missing": [
+            "patient.informed_consent_signed",
+            "patient.sample_taken"
+          ]
+        },
+        {
+          "term": "appointment.arranged",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['patient.sample_taken']",
+          "missing": [
+            "patient.sample_taken"
+          ]
+        },
+        {
+          "term": "ward.responsible_for_sample_taking",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['ward.responsible_for_sample_taking', 'patient.sample_taken']",
+          "missing": [
+            "ward.responsible_for_sample_taking",
+            "patient.sample_taken"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "patient.informed_consent_signed",
+            "appointment.arranged",
+            "ward.responsible_for_sample_taking"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "patient.diagnosed": {
+      "operator": "AND",
+      "quote": "After receiving the sample, a physician of the lab validates its state and decides whether the sample can be used for analysis or whether it is contaminated and a new sample is required. After the analysis is performed by a medical technical assistant of the lab, a lab physician validates the results. Finally, a physician from the outpatient department makes the diagnosis and prescribes the therapy for the patient.",
+      "terms": [
+        {
+          "term": "sample.validated",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        },
+        {
+          "term": "sample.used_for_analysis",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED",
+      "clauses": [
+        {
+          "terms": [
+            "sample.validated",
+            "sample.used_for_analysis"
+          ],
+          "status": "SATISFIED"
+        }
+      ]
+    },
+    "patient.therapy_prescribed": {
+      "operator": "AND",
+      "quote": "Finally, a physician from the outpatient department makes the diagnosis and prescribes the therapy for the patient.",
+      "terms": [
+        {
+          "term": "patient.diagnosed",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED",
+      "clauses": [
+        {
+          "terms": [
+            "patient.diagnosed"
+          ],
+          "status": "SATISFIED"
+        }
+      ]
+    },
+    "examination_form.filled_out": {
+      "operator": "AND",
+      "quote": "In the former case, the physician fills out the examination form and the patient can leave.",
+      "terms": [
+        {
+          "term": "patient.healthy",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['patient.healthy']",
+          "missing": [
+            "patient.healthy"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "patient.healthy"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "request_form.placed": {
+      "operator": "AND",
+      "quote": "In the latter case, an examination and follow-up treatment order is placed by the physician who additionally fills out a request form.",
+      "terms": [
+        {
+          "term": "patient.needs_additional_examination",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['request_form.placed']",
+          "missing": [
+            "request_form.placed"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "patient.needs_additional_examination"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "request_form.filled_out": {
+      "operator": "AND",
+      "quote": "In the latter case, an examination and follow-up treatment order is placed by the physician who additionally fills out a request form.",
+      "terms": [
+        {
+          "term": "patient.needs_additional_examination",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['request_form.filled_out']",
+          "missing": [
+            "request_form.filled_out"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "patient.needs_additional_examination"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "sample.taken": {
+      "operator": "AND",
+      "quote": [
+        "a delegate of the physician arranges an appointment of the patient with one of the wards.",
+        "The latter is then responsible for taking a sample to be analysed in the lab later.",
+        "Before the appointment, the required examination and sampling is prepared by a nurse of the ward based on the information provided by the outpatient section."
+      ],
+      "terms": [
+        {
+          "term": "patient.informed_consent_signed",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['patient.informed_consent_signed']",
+          "missing": [
+            "patient.informed_consent_signed"
+          ]
+        },
+        {
+          "term": "appointment.arranged",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        },
+        {
+          "term": "ward.responsible_for_sample_taking",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['ward.responsible_for_sample_taking']",
+          "missing": [
+            "ward.responsible_for_sample_taking"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "patient.informed_consent_signed",
+            "appointment.arranged",
+            "ward.responsible_for_sample_taking"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "sample.prepared": {
+      "operator": "AND",
+      "quote": [
+        "a delegate of the physician arranges an appointment of the patient with one of the wards.",
+        "The latter is then responsible for taking a sample to be analysed in the lab later.",
+        "Before the appointment, the required examination and sampling is prepared by a nurse of the ward based on the information provided by the outpatient section."
+      ],
+      "terms": [
+        {
+          "term": "patient.informed_consent_signed",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['patient.informed_consent_signed', 'sample.prepared']",
+          "missing": [
+            "patient.informed_consent_signed",
+            "sample.prepared"
+          ]
+        },
+        {
+          "term": "appointment.arranged",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['sample.prepared']",
+          "missing": [
+            "sample.prepared"
+          ]
+        },
+        {
+          "term": "ward.responsible_for_sample_taking",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['ward.responsible_for_sample_taking', 'sample.prepared']",
+          "missing": [
+            "ward.responsible_for_sample_taking",
+            "sample.prepared"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "patient.informed_consent_signed",
+            "appointment.arranged",
+            "ward.responsible_for_sample_taking"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "sample.sent_to_lab": {
+      "operator": "AND",
+      "quote": "He further sends it to the lab indicated in the request form and conducts the follow-up treatment of the patient.",
+      "terms": [
+        {
+          "term": "sample.taken",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED",
+      "clauses": [
+        {
+          "terms": [
+            "sample.taken"
+          ],
+          "status": "SATISFIED"
+        }
+      ]
+    },
+    "sample.validated": {
+      "operator": "AND",
+      "quote": "After receiving the sample, a physician of the lab validates its state and decides whether the sample can be used for analysis or whether it is contaminated and a new sample is required.",
+      "terms": [
+        {
+          "term": "sample.sent_to_lab",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED",
+      "clauses": [
+        {
+          "terms": [
+            "sample.sent_to_lab"
+          ],
+          "status": "SATISFIED"
+        }
+      ]
+    },
+    "sample.used_for_analysis": {
+      "operator": "AND",
+      "quote": "After receiving the sample, a physician of the lab validates its state and decides whether the sample can be used for analysis or whether it is contaminated and a new sample is required. After the analysis is performed by a medical technical assistant of the lab, a lab physician validates the results.",
+      "terms": [
+        {
+          "term": "sample.validated",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED",
+      "clauses": [
+        {
+          "terms": [
+            "sample.validated"
+          ],
+          "status": "SATISFIED"
+        }
+      ]
+    },
+    "sample.contaminated": {
+      "operator": "AND",
+      "quote": "After receiving the sample, a physician of the lab validates its state and decides whether the sample can be used for analysis or whether it is contaminated and a new sample is required.",
+      "terms": [
+        {
+          "term": "sample.validated",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['sample.contaminated']",
+          "missing": [
+            "sample.contaminated"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "sample.validated"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "sample.new_sample_required": {
+      "operator": "AND",
+      "quote": "After receiving the sample, a physician of the lab validates its state and decides whether the sample can be used for analysis or whether it is contaminated and a new sample is required.",
+      "terms": [
+        {
+          "term": "sample.validated",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['sample.new_sample_required']",
+          "missing": [
+            "sample.new_sample_required"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "sample.validated"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "appointment.arranged": {
+      "operator": "AND",
+      "quote": "a delegate of the physician arranges an appointment of the patient with one of the wards.",
+      "terms": [
+        {
+          "term": "patient.informed_consent_signed",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['patient.informed_consent_signed']",
+          "missing": [
+            "patient.informed_consent_signed"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "patient.informed_consent_signed"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "ward.responsible_for_sample_taking": {
+      "operator": "AND",
+      "quote": "The latter is then responsible for taking a sample to be analysed in the lab later.",
+      "terms": [
+        {
+          "term": "appointment.arranged",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['ward.responsible_for_sample_taking']",
+          "missing": [
+            "ward.responsible_for_sample_taking"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "appointment.arranged"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    }
+  },
+  "errors": [
+    "report: 'list' object has no attribute 'split'"
+  ]
+}

@@ -1,0 +1,845 @@
+{
+  "case_name": "OriginalDataset/Hotel",
+  "text": "The Evanstonian is an upscale independent hotel. When a guest calls room service at The Evanstonian, the room-service manager takes down the order. She then submits an order ticket to the kitchen to begin preparing the food. She also gives an order to the sommelier (i.e., the wine waiter) to fetch wine from the cellar and to prepare any other alcoholic beverages. Eighty percent of room-service orders include wine or some other alcoholic beverage. Finally, she assigns the order to the waiter. While the kitchen and the sommelier are doing their tasks, the waiter readies a cart (i.e., puts a tablecloth on the cart and gathers silverware). The waiter is also responsible for nonalcoholic drinks. Once the food, wine, and cart are ready, the waiter delivers it to the guest’s room. After returning to the room-service station, the waiter debits the guest’s account. The waiter may wait to do the billing if he has another order to prepare or deliver.\n",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "llama-3.1-8b",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "llama-3.1-8b",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/../datasets/lre/alignment_model_text-master/datasets/OriginalDataset/Models/Hotel.bpmn",
+  "report_model": "llama-3.1-8b",
+  "candidates": {
+    "room_service_order": {
+      "states": [
+        "submitted",
+        "in_progress",
+        "ready",
+        "delivered"
+      ],
+      "exclusive_groups": [
+        [
+          "delivered",
+          "in_progress"
+        ]
+      ],
+      "concurrent_with": []
+    },
+    "order_ticket": {
+      "states": [
+        "submitted"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "wine_order": {
+      "states": [
+        "placed",
+        "prepared"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "cart": {
+      "states": [
+        "readied"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "guest_account": {
+      "states": [
+        "debited"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "guest_room": {
+      "states": [
+        "visited"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "kitchen": {
+      "states": [
+        "working"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "sommelier": {
+      "states": [
+        "working"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "waiter": {
+      "states": [
+        "working",
+        "returning"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    }
+  },
+  "validation_report": {
+    "room_service_order": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "order"
+    },
+    "order_ticket": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "ticket"
+    },
+    "wine_order": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "order"
+    },
+    "cart": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "cart"
+    },
+    "guest_account": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "account"
+    },
+    "guest_room": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "room"
+    },
+    "kitchen": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "kitchen"
+    },
+    "sommelier": {
+      "f_lex": "ACTOR",
+      "kept": false,
+      "head_used": "sommelier"
+    },
+    "waiter": {
+      "f_lex": "ACTOR",
+      "kept": false,
+      "head_used": "waiter"
+    },
+    "__meta__": {
+      "total_candidates": 9,
+      "indeterminate_kept_count": 0
+    }
+  },
+  "exclusive_groups_report": {
+    "accepted": [
+      {
+        "entity": "room_service_order",
+        "states": [
+          "delivered",
+          "in_progress"
+        ],
+        "quote": "While the kitchen and the sommelier are doing their tasks, the waiter readies a cart (i.e., puts a tablecloth on the cart and gathers silverware). Once the food, wine, and cart are ready, the waiter delivers it to the guest’s room."
+      }
+    ],
+    "rejected": [
+      {
+        "entity": "order_ticket",
+        "states": [
+          "submitted",
+          "not submitted"
+        ],
+        "quote": "She then submits an order ticket to the kitchen to begin preparing the food.",
+        "reason": "references a state outside this entity's own states list"
+      },
+      {
+        "entity": "wine_order",
+        "states": [
+          "placed",
+          "not placed"
+        ],
+        "quote": "She also gives an order to the sommelier (i.e., the wine waiter) to fetch wine from the cellar and to prepare any other alcoholic beverages.",
+        "reason": "references a state outside this entity's own states list"
+      },
+      {
+        "entity": "wine_order",
+        "states": [
+          "prepared",
+          "not prepared"
+        ],
+        "quote": "She also gives an order to the sommelier (i.e., the wine waiter) to fetch wine from the cellar and to prepare any other alcoholic beverages.",
+        "reason": "references a state outside this entity's own states list"
+      },
+      {
+        "entity": "cart",
+        "states": [
+          "readied",
+          "not readied"
+        ],
+        "quote": "The waiter readies a cart (i.e., puts a tablecloth on the cart and gathers silverware).",
+        "reason": "references a state outside this entity's own states list"
+      },
+      {
+        "entity": "guest_account",
+        "states": [
+          "debited",
+          "not debited"
+        ],
+        "quote": "After returning to the room-service station, the waiter debits the guest’s account.",
+        "reason": "references a state outside this entity's own states list"
+      }
+    ]
+  },
+  "state_space": {
+    "room_service_order": {
+      "states": [
+        "submitted",
+        "in_progress",
+        "ready",
+        "delivered"
+      ],
+      "exclusive_groups": [
+        [
+          "delivered",
+          "in_progress"
+        ]
+      ],
+      "concurrent_with": []
+    },
+    "order_ticket": {
+      "states": [
+        "submitted"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "wine_order": {
+      "states": [
+        "placed",
+        "prepared"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "cart": {
+      "states": [
+        "readied"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "guest_account": {
+      "states": [
+        "debited"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "guest_room": {
+      "states": [
+        "visited"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "kitchen": {
+      "states": [
+        "working"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    }
+  },
+  "state_space_dedup": {
+    "merged": {},
+    "ambiguous_not_merged": {}
+  },
+  "raw_preconditions": {
+    "room_service_order": {
+      "precondition": "room_service_order.submitted AND order_ticket.submitted",
+      "quote": "When a guest calls room service at The Evanstonian, the room-service manager takes down the order. She then submits an order ticket to the kitchen to begin preparing the food."
+    },
+    "order_ticket": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "wine_order": {
+      "precondition": "room_service_order.submitted AND cart.readied",
+      "quote": "Eighty percent of room-service orders include wine or some other alcoholic beverage. Finally, she assigns the order to the waiter. While the kitchen and the sommelier are doing their tasks, the waiter readies a cart (i.e., puts a tablecloth on the cart and gathers silverware)."
+    },
+    "cart": {
+      "precondition": "room_service_order.submitted AND wine_order.prepared",
+      "quote": "While the kitchen and the sommelier are doing their tasks, the waiter readies a cart (i.e., puts a tablecloth on the cart and gathers silverware)."
+    },
+    "guest_account": {
+      "precondition": "room_service_order.delivered",
+      "quote": "After returning to the room-service station, the waiter debits the guest’s account."
+    },
+    "guest_room": {
+      "precondition": "room_service_order.delivered",
+      "quote": "Once the food, wine, and cart are ready, the waiter delivers it to the guest’s room."
+    },
+    "kitchen": {
+      "precondition": "UNRESOLVED",
+      "quote": null
+    }
+  },
+  "validated_preconditions": {
+    "room_service_order": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "DOWNGRADED",
+      "reason": "malformed or unknown target key: 'room_service_order' is not a valid entity.state of the state space"
+    },
+    "order_ticket": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "DOWNGRADED",
+      "reason": "malformed or unknown target key: 'order_ticket' is not a valid entity.state of the state space"
+    },
+    "wine_order": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "DOWNGRADED",
+      "reason": "malformed or unknown target key: 'wine_order' is not a valid entity.state of the state space"
+    },
+    "cart": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "DOWNGRADED",
+      "reason": "malformed or unknown target key: 'cart' is not a valid entity.state of the state space"
+    },
+    "guest_account": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "DOWNGRADED",
+      "reason": "malformed or unknown target key: 'guest_account' is not a valid entity.state of the state space"
+    },
+    "guest_room": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "DOWNGRADED",
+      "reason": "malformed or unknown target key: 'guest_room' is not a valid entity.state of the state space"
+    },
+    "kitchen": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "DOWNGRADED",
+      "reason": "malformed or unknown target key: 'kitchen' is not a valid entity.state of the state space"
+    }
+  },
+  "precondition_cycles": [],
+  "branch_conflicts": [],
+  "reference_graph": {
+    "nodes": [
+      {
+        "id": "room_service_order.submitted",
+        "weight": 0.0
+      },
+      {
+        "id": "room_service_order.in_progress",
+        "weight": 0.0
+      },
+      {
+        "id": "room_service_order.ready",
+        "weight": 0.0
+      },
+      {
+        "id": "room_service_order.delivered",
+        "weight": 0.0
+      },
+      {
+        "id": "order_ticket.submitted",
+        "weight": 0.0
+      },
+      {
+        "id": "wine_order.placed",
+        "weight": 0.0
+      },
+      {
+        "id": "wine_order.prepared",
+        "weight": 0.0
+      },
+      {
+        "id": "cart.readied",
+        "weight": 0.0
+      },
+      {
+        "id": "guest_account.debited",
+        "weight": 0.0
+      },
+      {
+        "id": "guest_room.visited",
+        "weight": 0.0
+      },
+      {
+        "id": "kitchen.working",
+        "weight": 0.0
+      }
+    ],
+    "edges": [],
+    "cycles": [],
+    "branch_conflicts": [],
+    "exclusive_pairs": [
+      {
+        "entity": "room_service_order",
+        "nodes": [
+          "room_service_order.delivered",
+          "room_service_order.in_progress"
+        ]
+      }
+    ]
+  },
+  "dfg_edges": [
+    {
+      "source_id": "Task_12rew8t",
+      "source_label": "Deliver to Guest's Room",
+      "target_id": "Task_0h8ljxx",
+      "target_label": "Return to Room-Service Station",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_0mymppr",
+      "source_label": "Prepare Meal",
+      "target_id": "Task_12rew8t",
+      "target_label": "Deliver to Guest's Room",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "Task_0h8ljxx",
+      "source_label": "Return to Room-Service Station",
+      "target_id": "Task_0vkxpbk",
+      "target_label": "Debit Guest's Account",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_1yfp1gq",
+      "source_label": "Give Order to Sommelier",
+      "target_id": "Task_0c685de",
+      "target_label": "Fetch Wine from Cellar",
+      "gateway_context": [
+        "InclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_1yfp1gq",
+      "source_label": "Give Order to Sommelier",
+      "target_id": "Task_1y44uft",
+      "target_label": "Prepare Alcoholic Beverages",
+      "gateway_context": [
+        "InclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_1esbsdw",
+      "source_label": "Assign Order to Waiter",
+      "target_id": "Task_0z390gs",
+      "target_label": "Ready Cart",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "Task_1esbsdw",
+      "source_label": "Assign Order to Waiter",
+      "target_id": "Task_05jr8ik",
+      "target_label": "Prepare Non-Alcoholic Drinks",
+      "gateway_context": [
+        "ParallelGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_1esbsdw",
+      "source_label": "Assign Order to Waiter",
+      "target_id": "Task_12rew8t",
+      "target_label": "Deliver to Guest's Room",
+      "gateway_context": [
+        "ParallelGateway",
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "Task_1y44uft",
+      "source_label": "Prepare Alcoholic Beverages",
+      "target_id": "Task_12rew8t",
+      "target_label": "Deliver to Guest's Room",
+      "gateway_context": [
+        "InclusiveGateway",
+        "ExclusiveGateway",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "Task_05jr8ik",
+      "source_label": "Prepare Non-Alcoholic Drinks",
+      "target_id": "Task_12rew8t",
+      "target_label": "Deliver to Guest's Room",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "Task_0c685de",
+      "source_label": "Fetch Wine from Cellar",
+      "target_id": "Task_12rew8t",
+      "target_label": "Deliver to Guest's Room",
+      "gateway_context": [
+        "InclusiveGateway",
+        "ExclusiveGateway",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "Task_0z390gs",
+      "source_label": "Ready Cart",
+      "target_id": "Task_12rew8t",
+      "target_label": "Deliver to Guest's Room",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "Task_16m28ah",
+      "source_label": "Submit Order Ticket to Kitchen",
+      "target_id": "Task_0mymppr",
+      "target_label": "Prepare Meal",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_19oznyv",
+      "source_label": "Take down Order",
+      "target_id": "Task_1esbsdw",
+      "target_label": "Assign Order to Waiter",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "Task_19oznyv",
+      "source_label": "Take down Order",
+      "target_id": "Task_16m28ah",
+      "target_label": "Submit Order Ticket to Kitchen",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "Task_19oznyv",
+      "source_label": "Take down Order",
+      "target_id": "Task_1yfp1gq",
+      "target_label": "Give Order to Sommelier",
+      "gateway_context": [
+        "ParallelGateway",
+        "ExclusiveGateway",
+        "Yes"
+      ]
+    },
+    {
+      "source_id": "Task_19oznyv",
+      "source_label": "Take down Order",
+      "target_id": "Task_12rew8t",
+      "target_label": "Deliver to Guest's Room",
+      "gateway_context": [
+        "ParallelGateway",
+        "ExclusiveGateway",
+        "No",
+        "ExclusiveGateway",
+        "ParallelGateway"
+      ]
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "Deliver to Guest's Room",
+      "subject_id": "Task_12rew8t",
+      "predicate": "follows",
+      "object": "Return to Room-Service Station",
+      "object_id": "Task_0h8ljxx"
+    },
+    {
+      "subject": "Prepare Meal",
+      "subject_id": "Task_0mymppr",
+      "predicate": "follows",
+      "object": "Deliver to Guest's Room",
+      "object_id": "Task_12rew8t"
+    },
+    {
+      "subject": "Return to Room-Service Station",
+      "subject_id": "Task_0h8ljxx",
+      "predicate": "follows",
+      "object": "Debit Guest's Account",
+      "object_id": "Task_0vkxpbk"
+    },
+    {
+      "subject": "Give Order to Sommelier",
+      "subject_id": "Task_1yfp1gq",
+      "predicate": "follows",
+      "object": "Fetch Wine from Cellar",
+      "object_id": "Task_0c685de"
+    },
+    {
+      "subject": "Give Order to Sommelier",
+      "subject_id": "Task_1yfp1gq",
+      "predicate": "follows",
+      "object": "Prepare Alcoholic Beverages",
+      "object_id": "Task_1y44uft"
+    },
+    {
+      "subject": "Assign Order to Waiter",
+      "subject_id": "Task_1esbsdw",
+      "predicate": "follows",
+      "object": "Ready Cart",
+      "object_id": "Task_0z390gs"
+    },
+    {
+      "subject": "Assign Order to Waiter",
+      "subject_id": "Task_1esbsdw",
+      "predicate": "follows",
+      "object": "Prepare Non-Alcoholic Drinks",
+      "object_id": "Task_05jr8ik"
+    },
+    {
+      "subject": "Assign Order to Waiter",
+      "subject_id": "Task_1esbsdw",
+      "predicate": "follows",
+      "object": "Deliver to Guest's Room",
+      "object_id": "Task_12rew8t"
+    },
+    {
+      "subject": "Prepare Alcoholic Beverages",
+      "subject_id": "Task_1y44uft",
+      "predicate": "follows",
+      "object": "Deliver to Guest's Room",
+      "object_id": "Task_12rew8t"
+    },
+    {
+      "subject": "Prepare Non-Alcoholic Drinks",
+      "subject_id": "Task_05jr8ik",
+      "predicate": "follows",
+      "object": "Deliver to Guest's Room",
+      "object_id": "Task_12rew8t"
+    },
+    {
+      "subject": "Fetch Wine from Cellar",
+      "subject_id": "Task_0c685de",
+      "predicate": "follows",
+      "object": "Deliver to Guest's Room",
+      "object_id": "Task_12rew8t"
+    },
+    {
+      "subject": "Ready Cart",
+      "subject_id": "Task_0z390gs",
+      "predicate": "follows",
+      "object": "Deliver to Guest's Room",
+      "object_id": "Task_12rew8t"
+    },
+    {
+      "subject": "Submit Order Ticket to Kitchen",
+      "subject_id": "Task_16m28ah",
+      "predicate": "follows",
+      "object": "Prepare Meal",
+      "object_id": "Task_0mymppr"
+    },
+    {
+      "subject": "Take down Order",
+      "subject_id": "Task_19oznyv",
+      "predicate": "follows",
+      "object": "Assign Order to Waiter",
+      "object_id": "Task_1esbsdw"
+    },
+    {
+      "subject": "Take down Order",
+      "subject_id": "Task_19oznyv",
+      "predicate": "follows",
+      "object": "Submit Order Ticket to Kitchen",
+      "object_id": "Task_16m28ah"
+    },
+    {
+      "subject": "Take down Order",
+      "subject_id": "Task_19oznyv",
+      "predicate": "follows",
+      "object": "Give Order to Sommelier",
+      "object_id": "Task_1yfp1gq"
+    },
+    {
+      "subject": "Take down Order",
+      "subject_id": "Task_19oznyv",
+      "predicate": "follows",
+      "object": "Deliver to Guest's Room",
+      "object_id": "Task_12rew8t"
+    }
+  ],
+  "matches": {
+    "Task_12rew8t": {
+      "activity_label": "Deliver to Guest's Room",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_0h8ljxx": {
+      "activity_label": "Return to Room-Service Station",
+      "matches": [
+        {
+          "match": "room_service_order.delivered",
+          "score": 0.5199
+        },
+        {
+          "match": "room_service_order.ready",
+          "score": 0.5197
+        },
+        {
+          "match": "room_service_order.submitted",
+          "score": 0.5163
+        },
+        {
+          "match": "room_service_order.in_progress",
+          "score": 0.4806
+        }
+      ],
+      "clusters": [
+        [
+          "room_service_order.delivered",
+          "room_service_order.ready",
+          "room_service_order.submitted",
+          "room_service_order.in_progress"
+        ]
+      ]
+    },
+    "Task_0mymppr": {
+      "activity_label": "Prepare Meal",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_0vkxpbk": {
+      "activity_label": "Debit Guest's Account",
+      "matches": [
+        {
+          "match": "guest_account.debited",
+          "score": 0.8022
+        }
+      ],
+      "clusters": [
+        [
+          "guest_account.debited"
+        ]
+      ]
+    },
+    "Task_1yfp1gq": {
+      "activity_label": "Give Order to Sommelier",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_0c685de": {
+      "activity_label": "Fetch Wine from Cellar",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_1y44uft": {
+      "activity_label": "Prepare Alcoholic Beverages",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_1esbsdw": {
+      "activity_label": "Assign Order to Waiter",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_0z390gs": {
+      "activity_label": "Ready Cart",
+      "matches": [
+        {
+          "match": "cart.readied",
+          "score": 0.4095
+        }
+      ],
+      "clusters": [
+        [
+          "cart.readied"
+        ]
+      ]
+    },
+    "Task_05jr8ik": {
+      "activity_label": "Prepare Non-Alcoholic Drinks",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_16m28ah": {
+      "activity_label": "Submit Order Ticket to Kitchen",
+      "matches": [
+        {
+          "match": "order_ticket.submitted",
+          "score": 0.5082
+        }
+      ],
+      "clusters": [
+        [
+          "order_ticket.submitted"
+        ]
+      ]
+    },
+    "Task_19oznyv": {
+      "activity_label": "Take down Order",
+      "matches": [],
+      "clusters": []
+    }
+  },
+  "process_graph": [
+    {
+      "from": "room_service_order.delivered",
+      "to": "guest_account.debited",
+      "activity_from": "Return to Room-Service Station",
+      "activity_to": "Debit Guest's Account",
+      "source_id": "Task_0h8ljxx",
+      "target_id": "Task_0vkxpbk"
+    },
+    {
+      "from": "room_service_order.ready",
+      "to": "guest_account.debited",
+      "activity_from": "Return to Room-Service Station",
+      "activity_to": "Debit Guest's Account",
+      "source_id": "Task_0h8ljxx",
+      "target_id": "Task_0vkxpbk"
+    },
+    {
+      "from": "room_service_order.submitted",
+      "to": "guest_account.debited",
+      "activity_from": "Return to Room-Service Station",
+      "activity_to": "Debit Guest's Account",
+      "source_id": "Task_0h8ljxx",
+      "target_id": "Task_0vkxpbk"
+    },
+    {
+      "from": "room_service_order.in_progress",
+      "to": "guest_account.debited",
+      "activity_from": "Return to Room-Service Station",
+      "activity_to": "Debit Guest's Account",
+      "source_id": "Task_0h8ljxx",
+      "target_id": "Task_0vkxpbk"
+    }
+  ],
+  "alignment": {},
+  "report": {
+    "verdict": {
+      "verdict": "FAITHFUL",
+      "justification": "Every non-trivial precondition asserted by the source text was confirmed in the observed process's sequence of activities.",
+      "scope": "This verdict covers the causal reachability of the requirements expressed in the source text, not the general quality of the process model -- a multiplicity defect (an activity executed more than once due to a mismatched branching structure) is not covered by this verdict, even if the process is otherwise well-formed."
+    },
+    "summary": {
+      "ecarts": 0,
+      "non_verifiable": 0,
+      "conforme": 0
+    },
+    "ecarts": [],
+    "non_verifiable": [],
+    "conforme": [],
+    "piece_jointe_alignement_brut": {}
+  },
+  "errors": []
+}

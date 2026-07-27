@@ -1,0 +1,1864 @@
+{
+  "case_name": "OriginalDataset/Model10-4",
+  "text": "The MPON notifies the MPOO about equipment change intentions. The MPOO announces self dismounting to the MPON or the MPOO shall notify the MPON about no self-dismounting of the MPOO. The MPON or the MPOO perform the final reading. The MPON or the MPOO dismount the old equipment. The MPON mounts the new device. The MPON reads the meter count from the installed meter. The MPON sends the values of the final reading to the GO. The MPON tells the GO about the device changes, the master data and the meter count at installation. The GO shall notify the MSP about the device changes, the master data, the meter count at dismounting, and the meter count at installation.",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "qwen3.6-27b",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "qwen3.6-27b",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/../datasets/lre/alignment_model_text-master/datasets/OriginalDataset/Models/Model10-4.bpmn",
+  "report_model": "qwen3.6-27b",
+  "candidates": {
+    "equipment": {
+      "states": [
+        "change_intended",
+        "self_dismounting_announced",
+        "no_self_dismounting_notified",
+        "final_reading_performed",
+        "dismounted",
+        "mounted"
+      ],
+      "exclusive_groups": [
+        [
+          "self_dismounting_announced",
+          "no_self_dismounting_notified"
+        ]
+      ],
+      "concurrent_with": []
+    },
+    "meter_count": {
+      "states": [
+        "read",
+        "sent_to_go",
+        "notified_to_msp"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "device_changes": {
+      "states": [
+        "told_to_go",
+        "notified_to_msp"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "master_data": {
+      "states": [
+        "told_to_go",
+        "notified_to_msp"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    }
+  },
+  "validation_report": {
+    "equipment": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "equipment"
+    },
+    "meter_count": {
+      "f_lex": "INDETERMINATE",
+      "kept": true,
+      "head_used": "count"
+    },
+    "device_changes": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "changes"
+    },
+    "master_data": {
+      "f_lex": "INDETERMINATE",
+      "kept": true,
+      "head_used": "data"
+    },
+    "__meta__": {
+      "total_candidates": 4,
+      "indeterminate_kept_count": 2
+    }
+  },
+  "exclusive_groups_report": {
+    "accepted": [
+      {
+        "entity": "equipment",
+        "states": [
+          "self_dismounting_announced",
+          "no_self_dismounting_notified"
+        ],
+        "quote": "announces self dismounting ... or ... notify ... about no self-dismounting"
+      }
+    ],
+    "rejected": []
+  },
+  "state_space": {
+    "equipment": {
+      "states": [
+        "change_intended",
+        "self_dismounting_announced",
+        "no_self_dismounting_notified",
+        "final_reading_performed",
+        "dismounted",
+        "mounted"
+      ],
+      "exclusive_groups": [
+        [
+          "self_dismounting_announced",
+          "no_self_dismounting_notified"
+        ]
+      ],
+      "concurrent_with": []
+    },
+    "meter_count": {
+      "states": [
+        "read",
+        "sent_to_go",
+        "notified_to_msp"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "device_change": {
+      "states": [
+        "told_to_go",
+        "notified_to_msp"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "master_data": {
+      "states": [
+        "told_to_go",
+        "notified_to_msp"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    }
+  },
+  "state_space_dedup": {
+    "merged": {},
+    "ambiguous_not_merged": {}
+  },
+  "raw_preconditions": {
+    "equipment.change_intended": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "equipment.self_dismounting_announced": {
+      "precondition": "equipment.change_intended",
+      "quote": "The MPOO announces self dismounting to the MPON"
+    },
+    "equipment.no_self_dismounting_notified": {
+      "precondition": "equipment.change_intended",
+      "quote": "the MPOO shall notify the MPON about no self-dismounting of the MPOO"
+    },
+    "equipment.final_reading_performed": {
+      "precondition": "equipment.self_dismounting_announced OR equipment.no_self_dismounting_notified",
+      "quote": "The MPOO announces self dismounting to the MPON or the MPOO shall notify the MPON about no self-dismounting of the MPOO. The MPON or the MPOO perform the final reading."
+    },
+    "equipment.dismounted": {
+      "precondition": "equipment.final_reading_performed",
+      "quote": "The MPON or the MPOO perform the final reading. The MPON or the MPOO dismount the old equipment."
+    },
+    "equipment.mounted": {
+      "precondition": "equipment.dismounted",
+      "quote": "The MPON or the MPOO dismount the old equipment. The MPON mounts the new device."
+    },
+    "meter_count.read": {
+      "precondition": "equipment.mounted",
+      "quote": "The MPON mounts the new device. The MPON reads the meter count from the installed meter."
+    },
+    "meter_count.sent_to_go": {
+      "precondition": "meter_count.read",
+      "quote": "The MPON reads the meter count from the installed meter. The MPON sends the values of the final reading to the GO."
+    },
+    "device_change.told_to_go": {
+      "precondition": "equipment.mounted",
+      "quote": "The MPON mounts the new device. ... The MPON tells the GO about the device changes"
+    },
+    "master_data.told_to_go": {
+      "precondition": "equipment.mounted",
+      "quote": "The MPON mounts the new device. ... The MPON tells the GO about the ... master data"
+    },
+    "device_change.notified_to_msp": {
+      "precondition": "device_change.told_to_go AND master_data.told_to_go AND meter_count.sent_to_go",
+      "quote": "The MPON tells the GO about the device changes, the master data and the meter count at installation. The GO shall notify the MSP about the device changes, the master data, the meter count at dismounting, and the meter count at installation."
+    },
+    "master_data.notified_to_msp": {
+      "precondition": "device_change.told_to_go AND master_data.told_to_go AND meter_count.sent_to_go",
+      "quote": "The MPON tells the GO about the device changes, the master data and the meter count at installation. The GO shall notify the MSP about the device changes, the master data, the meter count at dismounting, and the meter count at installation."
+    },
+    "meter_count.notified_to_msp": {
+      "precondition": "device_change.told_to_go AND master_data.told_to_go AND meter_count.sent_to_go",
+      "quote": "The MPON tells the GO about the device changes, the master data and the meter count at installation. The GO shall notify the MSP about the device changes, the master data, the meter count at dismounting, and the meter count at installation."
+    }
+  },
+  "validated_preconditions": {
+    "equipment.change_intended": {
+      "precondition": "INITIAL",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "equipment.self_dismounting_announced": {
+      "precondition": "equipment.change_intended",
+      "quote": "The MPOO announces self dismounting to the MPON",
+      "status": "OK",
+      "reason": null
+    },
+    "equipment.no_self_dismounting_notified": {
+      "precondition": "equipment.change_intended",
+      "quote": "the MPOO shall notify the MPON about no self-dismounting of the MPOO",
+      "status": "OK",
+      "reason": null
+    },
+    "equipment.final_reading_performed": {
+      "precondition": "equipment.self_dismounting_announced OR equipment.no_self_dismounting_notified",
+      "quote": "The MPOO announces self dismounting to the MPON or the MPOO shall notify the MPON about no self-dismounting of the MPOO. The MPON or the MPOO perform the final reading.",
+      "status": "OK",
+      "reason": null
+    },
+    "equipment.dismounted": {
+      "precondition": "equipment.final_reading_performed",
+      "quote": "The MPON or the MPOO perform the final reading. The MPON or the MPOO dismount the old equipment.",
+      "status": "OK",
+      "reason": null
+    },
+    "equipment.mounted": {
+      "precondition": "equipment.dismounted",
+      "quote": "The MPON or the MPOO dismount the old equipment. The MPON mounts the new device.",
+      "status": "OK",
+      "reason": null
+    },
+    "meter_count.read": {
+      "precondition": "equipment.mounted",
+      "quote": "The MPON mounts the new device. The MPON reads the meter count from the installed meter.",
+      "status": "OK",
+      "reason": null
+    },
+    "meter_count.sent_to_go": {
+      "precondition": "meter_count.read",
+      "quote": "The MPON reads the meter count from the installed meter. The MPON sends the values of the final reading to the GO.",
+      "status": "OK",
+      "reason": null
+    },
+    "device_change.told_to_go": {
+      "precondition": "equipment.mounted",
+      "quote": "The MPON mounts the new device. The MPON reads the meter count from the installed meter. The MPON sends the values of the final reading to the GO. The MPON tells the GO about the device changes, the master data and the meter count at installation.",
+      "status": "OK",
+      "reason": null,
+      "retried": true
+    },
+    "master_data.told_to_go": {
+      "precondition": "equipment.mounted",
+      "quote": "The MPON mounts the new device. The MPON reads the meter count from the installed meter. The MPON sends the values of the final reading to the GO. The MPON tells the GO about the device changes, the master data and the meter count at installation.",
+      "status": "OK",
+      "reason": null,
+      "retried": true
+    },
+    "device_change.notified_to_msp": {
+      "precondition": "device_change.told_to_go AND master_data.told_to_go AND meter_count.sent_to_go",
+      "quote": "The MPON tells the GO about the device changes, the master data and the meter count at installation. The GO shall notify the MSP about the device changes, the master data, the meter count at dismounting, and the meter count at installation.",
+      "status": "OK",
+      "reason": null
+    },
+    "master_data.notified_to_msp": {
+      "precondition": "device_change.told_to_go AND master_data.told_to_go AND meter_count.sent_to_go",
+      "quote": "The MPON tells the GO about the device changes, the master data and the meter count at installation. The GO shall notify the MSP about the device changes, the master data, the meter count at dismounting, and the meter count at installation.",
+      "status": "OK",
+      "reason": null
+    },
+    "meter_count.notified_to_msp": {
+      "precondition": "device_change.told_to_go AND master_data.told_to_go AND meter_count.sent_to_go",
+      "quote": "The MPON tells the GO about the device changes, the master data and the meter count at installation. The GO shall notify the MSP about the device changes, the master data, the meter count at dismounting, and the meter count at installation.",
+      "status": "OK",
+      "reason": null
+    }
+  },
+  "precondition_cycles": [],
+  "branch_conflicts": [
+    {
+      "entity": "equipment",
+      "exclusive_group": [
+        "self_dismounting_announced",
+        "no_self_dismounting_notified"
+      ],
+      "conflicting_targets": [
+        "equipment.self_dismounting_announced",
+        "equipment.no_self_dismounting_notified"
+      ],
+      "shared_precondition": "equipment.change_intended",
+      "reason": "targets marked mutually exclusive in the state space share the exact same accepted precondition -- reaching it would trigger both branches at once"
+    }
+  ],
+  "reference_graph": {
+    "nodes": [
+      {
+        "id": "equipment.change_intended",
+        "weight": 0.5
+      },
+      {
+        "id": "equipment.self_dismounting_announced",
+        "weight": 0.5
+      },
+      {
+        "id": "equipment.no_self_dismounting_notified",
+        "weight": 0.5
+      },
+      {
+        "id": "equipment.final_reading_performed",
+        "weight": 0.75
+      },
+      {
+        "id": "equipment.dismounted",
+        "weight": 0.5
+      },
+      {
+        "id": "equipment.mounted",
+        "weight": 1.0
+      },
+      {
+        "id": "meter_count.read",
+        "weight": 0.5
+      },
+      {
+        "id": "meter_count.sent_to_go",
+        "weight": 1.0
+      },
+      {
+        "id": "meter_count.notified_to_msp",
+        "weight": 0.75
+      },
+      {
+        "id": "device_change.told_to_go",
+        "weight": 1.0
+      },
+      {
+        "id": "device_change.notified_to_msp",
+        "weight": 0.75
+      },
+      {
+        "id": "master_data.told_to_go",
+        "weight": 1.0
+      },
+      {
+        "id": "master_data.notified_to_msp",
+        "weight": 0.75
+      }
+    ],
+    "edges": [
+      {
+        "from": "equipment.change_intended",
+        "to": "equipment.self_dismounting_announced",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "The MPOO announces self dismounting to the MPON",
+        "negated": false
+      },
+      {
+        "from": "equipment.change_intended",
+        "to": "equipment.no_self_dismounting_notified",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "the MPOO shall notify the MPON about no self-dismounting of the MPOO",
+        "negated": false
+      },
+      {
+        "from": "equipment.self_dismounting_announced",
+        "to": "equipment.final_reading_performed",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "The MPOO announces self dismounting to the MPON or the MPOO shall notify the MPON about no self-dismounting of the MPOO. The MPON or the MPOO perform the final reading.",
+        "negated": false
+      },
+      {
+        "from": "equipment.no_self_dismounting_notified",
+        "to": "equipment.final_reading_performed",
+        "clause": 1,
+        "type": "sequence",
+        "quote": "The MPOO announces self dismounting to the MPON or the MPOO shall notify the MPON about no self-dismounting of the MPOO. The MPON or the MPOO perform the final reading.",
+        "negated": false
+      },
+      {
+        "from": "equipment.final_reading_performed",
+        "to": "equipment.dismounted",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "The MPON or the MPOO perform the final reading. The MPON or the MPOO dismount the old equipment.",
+        "negated": false
+      },
+      {
+        "from": "equipment.dismounted",
+        "to": "equipment.mounted",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "The MPON or the MPOO dismount the old equipment. The MPON mounts the new device.",
+        "negated": false
+      },
+      {
+        "from": "equipment.mounted",
+        "to": "meter_count.read",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "The MPON mounts the new device. The MPON reads the meter count from the installed meter.",
+        "negated": false
+      },
+      {
+        "from": "meter_count.read",
+        "to": "meter_count.sent_to_go",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "The MPON reads the meter count from the installed meter. The MPON sends the values of the final reading to the GO.",
+        "negated": false
+      },
+      {
+        "from": "equipment.mounted",
+        "to": "device_change.told_to_go",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "The MPON mounts the new device. The MPON reads the meter count from the installed meter. The MPON sends the values of the final reading to the GO. The MPON tells the GO about the device changes, the master data and the meter count at installation.",
+        "negated": false
+      },
+      {
+        "from": "equipment.mounted",
+        "to": "master_data.told_to_go",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "The MPON mounts the new device. The MPON reads the meter count from the installed meter. The MPON sends the values of the final reading to the GO. The MPON tells the GO about the device changes, the master data and the meter count at installation.",
+        "negated": false
+      },
+      {
+        "from": "device_change.told_to_go",
+        "to": "device_change.notified_to_msp",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "The MPON tells the GO about the device changes, the master data and the meter count at installation. The GO shall notify the MSP about the device changes, the master data, the meter count at dismounting, and the meter count at installation.",
+        "negated": false
+      },
+      {
+        "from": "master_data.told_to_go",
+        "to": "device_change.notified_to_msp",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "The MPON tells the GO about the device changes, the master data and the meter count at installation. The GO shall notify the MSP about the device changes, the master data, the meter count at dismounting, and the meter count at installation.",
+        "negated": false
+      },
+      {
+        "from": "meter_count.sent_to_go",
+        "to": "device_change.notified_to_msp",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "The MPON tells the GO about the device changes, the master data and the meter count at installation. The GO shall notify the MSP about the device changes, the master data, the meter count at dismounting, and the meter count at installation.",
+        "negated": false
+      },
+      {
+        "from": "device_change.told_to_go",
+        "to": "master_data.notified_to_msp",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "The MPON tells the GO about the device changes, the master data and the meter count at installation. The GO shall notify the MSP about the device changes, the master data, the meter count at dismounting, and the meter count at installation.",
+        "negated": false
+      },
+      {
+        "from": "master_data.told_to_go",
+        "to": "master_data.notified_to_msp",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "The MPON tells the GO about the device changes, the master data and the meter count at installation. The GO shall notify the MSP about the device changes, the master data, the meter count at dismounting, and the meter count at installation.",
+        "negated": false
+      },
+      {
+        "from": "meter_count.sent_to_go",
+        "to": "master_data.notified_to_msp",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "The MPON tells the GO about the device changes, the master data and the meter count at installation. The GO shall notify the MSP about the device changes, the master data, the meter count at dismounting, and the meter count at installation.",
+        "negated": false
+      },
+      {
+        "from": "device_change.told_to_go",
+        "to": "meter_count.notified_to_msp",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "The MPON tells the GO about the device changes, the master data and the meter count at installation. The GO shall notify the MSP about the device changes, the master data, the meter count at dismounting, and the meter count at installation.",
+        "negated": false
+      },
+      {
+        "from": "master_data.told_to_go",
+        "to": "meter_count.notified_to_msp",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "The MPON tells the GO about the device changes, the master data and the meter count at installation. The GO shall notify the MSP about the device changes, the master data, the meter count at dismounting, and the meter count at installation.",
+        "negated": false
+      },
+      {
+        "from": "meter_count.sent_to_go",
+        "to": "meter_count.notified_to_msp",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "The MPON tells the GO about the device changes, the master data and the meter count at installation. The GO shall notify the MSP about the device changes, the master data, the meter count at dismounting, and the meter count at installation.",
+        "negated": false
+      }
+    ],
+    "cycles": [],
+    "branch_conflicts": [
+      {
+        "entity": "equipment",
+        "exclusive_group": [
+          "self_dismounting_announced",
+          "no_self_dismounting_notified"
+        ],
+        "conflicting_targets": [
+          "equipment.self_dismounting_announced",
+          "equipment.no_self_dismounting_notified"
+        ],
+        "shared_precondition": "equipment.change_intended",
+        "reason": "targets marked mutually exclusive in the state space share the exact same accepted precondition -- reaching it would trigger both branches at once"
+      }
+    ],
+    "exclusive_pairs": [
+      {
+        "entity": "equipment",
+        "nodes": [
+          "equipment.self_dismounting_announced",
+          "equipment.no_self_dismounting_notified"
+        ]
+      }
+    ]
+  },
+  "dfg_edges": [
+    {
+      "source_id": "Task_8",
+      "source_label": "Send values of final reading",
+      "target_id": "Task_9",
+      "target_label": "Notify about the device change, the meter data and the meter count at installation",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_8",
+      "source_label": "Send values of final reading",
+      "target_id": "IntermediateMessageEventCatching_2",
+      "target_label": "",
+      "gateway_context": [
+        "NormalStartEvent"
+      ]
+    },
+    {
+      "source_id": "Task_5",
+      "source_label": "Conduct final reading",
+      "target_id": "Task_6",
+      "target_label": "Mount new device",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "IntermediateMessageEventCatching_0",
+      "source_label": "",
+      "target_id": "Task_1",
+      "target_label": "Conduct final reading",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_0",
+      "source_label": "Notify about equipment change intentions",
+      "target_id": "IntermediateMessageEventCatching_0",
+      "target_label": "",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_0",
+      "source_label": "Notify about equipment change intentions",
+      "target_id": "Task_3",
+      "target_label": "Notify about self-dismounting",
+      "gateway_context": [
+        "NormalStartEvent",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_0",
+      "source_label": "Notify about equipment change intentions",
+      "target_id": "Task_4",
+      "target_label": "Notify about no self-dismounting",
+      "gateway_context": [
+        "NormalStartEvent",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_3",
+      "source_label": "Notify about self-dismounting",
+      "target_id": "IntermediateMessageEventCatching_0",
+      "target_label": "",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_3",
+      "source_label": "Notify about self-dismounting",
+      "target_id": "IntermediateMessageEventThrowing_1",
+      "target_label": "",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_3",
+      "source_label": "Notify about self-dismounting",
+      "target_id": "Task_5",
+      "target_label": "Conduct final reading",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "IntermediateMessageEventThrowing_1",
+      "source_label": "",
+      "target_id": "Task_2",
+      "target_label": "Dismount old equipment",
+      "gateway_context": []
+    },
+    {
+      "source_id": "IntermediateMessageEventThrowing_1",
+      "source_label": "",
+      "target_id": "IntermediateMessageEventCatching_1",
+      "target_label": "",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_6",
+      "source_label": "Mount new device",
+      "target_id": "Task_7",
+      "target_label": "Read meter count at installation",
+      "gateway_context": []
+    },
+    {
+      "source_id": "IntermediateMessageEventCatching_1",
+      "source_label": "",
+      "target_id": "Task_6",
+      "target_label": "Mount new device",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_9",
+      "source_label": "Notify about the device change, the meter data and the meter count at installation",
+      "target_id": "IntermediateMessageEventCatching_2",
+      "target_label": "",
+      "gateway_context": [
+        "NormalEndEvent"
+      ]
+    },
+    {
+      "source_id": "IntermediateMessageEventCatching_2",
+      "source_label": "",
+      "target_id": "Task_10",
+      "target_label": "Notify about the device change,  the meter data, the meter count at dismounting, and the meter count at installation",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_1",
+      "source_label": "Conduct final reading",
+      "target_id": "IntermediateMessageEventThrowing_0",
+      "target_label": "",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_4",
+      "source_label": "Notify about no self-dismounting",
+      "target_id": "IntermediateMessageEventThrowing_1",
+      "target_label": "",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_4",
+      "source_label": "Notify about no self-dismounting",
+      "target_id": "Task_5",
+      "target_label": "Conduct final reading",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_4",
+      "source_label": "Notify about no self-dismounting",
+      "target_id": "IntermediateMessageEventCatching_0",
+      "target_label": "",
+      "gateway_context": []
+    },
+    {
+      "source_id": "IntermediateMessageEventThrowing_0",
+      "source_label": "",
+      "target_id": "Task_2",
+      "target_label": "Dismount old equipment",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_7",
+      "source_label": "Read meter count at installation",
+      "target_id": "Task_8",
+      "target_label": "Send values of final reading",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_2",
+      "source_label": "Dismount old equipment",
+      "target_id": "IntermediateMessageEventCatching_1",
+      "target_label": "",
+      "gateway_context": [
+        "NormalEndEvent"
+      ]
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "Send values of final reading",
+      "subject_id": "Task_8",
+      "predicate": "follows",
+      "object": "Notify about the device change, the meter data and the meter count at installation",
+      "object_id": "Task_9"
+    },
+    {
+      "subject": "Send values of final reading",
+      "subject_id": "Task_8",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "IntermediateMessageEventCatching_2"
+    },
+    {
+      "subject": "Conduct final reading",
+      "subject_id": "Task_5",
+      "predicate": "follows",
+      "object": "Mount new device",
+      "object_id": "Task_6"
+    },
+    {
+      "subject": "",
+      "subject_id": "IntermediateMessageEventCatching_0",
+      "predicate": "follows",
+      "object": "Conduct final reading",
+      "object_id": "Task_1"
+    },
+    {
+      "subject": "Notify about equipment change intentions",
+      "subject_id": "Task_0",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "IntermediateMessageEventCatching_0"
+    },
+    {
+      "subject": "Notify about equipment change intentions",
+      "subject_id": "Task_0",
+      "predicate": "follows",
+      "object": "Notify about self-dismounting",
+      "object_id": "Task_3"
+    },
+    {
+      "subject": "Notify about equipment change intentions",
+      "subject_id": "Task_0",
+      "predicate": "follows",
+      "object": "Notify about no self-dismounting",
+      "object_id": "Task_4"
+    },
+    {
+      "subject": "Notify about self-dismounting",
+      "subject_id": "Task_3",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "IntermediateMessageEventCatching_0"
+    },
+    {
+      "subject": "Notify about self-dismounting",
+      "subject_id": "Task_3",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "IntermediateMessageEventThrowing_1"
+    },
+    {
+      "subject": "Notify about self-dismounting",
+      "subject_id": "Task_3",
+      "predicate": "follows",
+      "object": "Conduct final reading",
+      "object_id": "Task_5"
+    },
+    {
+      "subject": "",
+      "subject_id": "IntermediateMessageEventThrowing_1",
+      "predicate": "follows",
+      "object": "Dismount old equipment",
+      "object_id": "Task_2"
+    },
+    {
+      "subject": "",
+      "subject_id": "IntermediateMessageEventThrowing_1",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "IntermediateMessageEventCatching_1"
+    },
+    {
+      "subject": "Mount new device",
+      "subject_id": "Task_6",
+      "predicate": "follows",
+      "object": "Read meter count at installation",
+      "object_id": "Task_7"
+    },
+    {
+      "subject": "",
+      "subject_id": "IntermediateMessageEventCatching_1",
+      "predicate": "follows",
+      "object": "Mount new device",
+      "object_id": "Task_6"
+    },
+    {
+      "subject": "Notify about the device change, the meter data and the meter count at installation",
+      "subject_id": "Task_9",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "IntermediateMessageEventCatching_2"
+    },
+    {
+      "subject": "",
+      "subject_id": "IntermediateMessageEventCatching_2",
+      "predicate": "follows",
+      "object": "Notify about the device change,  the meter data, the meter count at dismounting, and the meter count at installation",
+      "object_id": "Task_10"
+    },
+    {
+      "subject": "Conduct final reading",
+      "subject_id": "Task_1",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "IntermediateMessageEventThrowing_0"
+    },
+    {
+      "subject": "Notify about no self-dismounting",
+      "subject_id": "Task_4",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "IntermediateMessageEventThrowing_1"
+    },
+    {
+      "subject": "Notify about no self-dismounting",
+      "subject_id": "Task_4",
+      "predicate": "follows",
+      "object": "Conduct final reading",
+      "object_id": "Task_5"
+    },
+    {
+      "subject": "Notify about no self-dismounting",
+      "subject_id": "Task_4",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "IntermediateMessageEventCatching_0"
+    },
+    {
+      "subject": "",
+      "subject_id": "IntermediateMessageEventThrowing_0",
+      "predicate": "follows",
+      "object": "Dismount old equipment",
+      "object_id": "Task_2"
+    },
+    {
+      "subject": "Read meter count at installation",
+      "subject_id": "Task_7",
+      "predicate": "follows",
+      "object": "Send values of final reading",
+      "object_id": "Task_8"
+    },
+    {
+      "subject": "Dismount old equipment",
+      "subject_id": "Task_2",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "IntermediateMessageEventCatching_1"
+    }
+  ],
+  "matches": {
+    "Task_8": {
+      "activity_label": "Send values of final reading",
+      "matches": [
+        {
+          "match": "equipment.final_reading_performed",
+          "score": 0.4706
+        }
+      ],
+      "clusters": [
+        [
+          "equipment.final_reading_performed"
+        ]
+      ]
+    },
+    "Task_9": {
+      "activity_label": "Notify about the device change, the meter data and the meter count at installation",
+      "matches": [
+        {
+          "match": "device_change.notified_to_msp",
+          "score": 0.48
+        },
+        {
+          "match": "meter_count.notified_to_msp",
+          "score": 0.4551
+        }
+      ],
+      "clusters": [
+        [
+          "device_change.notified_to_msp"
+        ],
+        [
+          "meter_count.notified_to_msp"
+        ]
+      ]
+    },
+    "Task_5": {
+      "activity_label": "Conduct final reading",
+      "matches": [
+        {
+          "match": "equipment.final_reading_performed",
+          "score": 0.4662
+        }
+      ],
+      "clusters": [
+        [
+          "equipment.final_reading_performed"
+        ]
+      ]
+    },
+    "Task_6": {
+      "activity_label": "Mount new device",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_1": {
+      "activity_label": "Conduct final reading",
+      "matches": [
+        {
+          "match": "equipment.final_reading_performed",
+          "score": 0.6817
+        }
+      ],
+      "clusters": [
+        [
+          "equipment.final_reading_performed"
+        ]
+      ]
+    },
+    "Task_0": {
+      "activity_label": "Notify about equipment change intentions",
+      "matches": [
+        {
+          "match": "equipment.change_intended",
+          "score": 0.4759
+        }
+      ],
+      "clusters": [
+        [
+          "equipment.change_intended"
+        ]
+      ]
+    },
+    "Task_3": {
+      "activity_label": "Notify about self-dismounting",
+      "matches": [
+        {
+          "match": "equipment.self_dismounting_announced",
+          "score": 0.4625
+        },
+        {
+          "match": "equipment.no_self_dismounting_notified",
+          "score": 0.4578
+        }
+      ],
+      "clusters": [
+        [
+          "equipment.self_dismounting_announced",
+          "equipment.no_self_dismounting_notified"
+        ]
+      ]
+    },
+    "Task_4": {
+      "activity_label": "Notify about no self-dismounting",
+      "matches": [
+        {
+          "match": "equipment.no_self_dismounting_notified",
+          "score": 0.4983
+        }
+      ],
+      "clusters": [
+        [
+          "equipment.no_self_dismounting_notified"
+        ]
+      ]
+    },
+    "Task_2": {
+      "activity_label": "Dismount old equipment",
+      "matches": [
+        {
+          "match": "equipment.self_dismounting_announced",
+          "score": 0.4974
+        },
+        {
+          "match": "equipment.dismounted",
+          "score": 0.4782
+        }
+      ],
+      "clusters": [
+        [
+          "equipment.self_dismounting_announced"
+        ],
+        [
+          "equipment.dismounted"
+        ]
+      ]
+    },
+    "Task_7": {
+      "activity_label": "Read meter count at installation",
+      "matches": [
+        {
+          "match": "meter_count.read",
+          "score": 0.7882
+        }
+      ],
+      "clusters": [
+        [
+          "meter_count.read"
+        ]
+      ]
+    },
+    "Task_10": {
+      "activity_label": "Notify about the device change,  the meter data, the meter count at dismounting, and the meter count at installation",
+      "matches": [
+        {
+          "match": "meter_count.notified_to_msp",
+          "score": 0.54
+        },
+        {
+          "match": "device_change.notified_to_msp",
+          "score": 0.5083
+        },
+        {
+          "match": "meter_count.sent_to_go",
+          "score": 0.5047
+        }
+      ],
+      "clusters": [
+        [
+          "meter_count.notified_to_msp"
+        ],
+        [
+          "device_change.notified_to_msp"
+        ],
+        [
+          "meter_count.sent_to_go"
+        ]
+      ]
+    }
+  },
+  "process_graph": [
+    {
+      "from": "equipment.final_reading_performed",
+      "to": "device_change.notified_to_msp",
+      "activity_from": "Send values of final reading",
+      "activity_to": "Notify about the device change, the meter data and the meter count at installation",
+      "source_id": "Task_8",
+      "target_id": "Task_9"
+    },
+    {
+      "from": "equipment.final_reading_performed",
+      "to": "meter_count.notified_to_msp",
+      "activity_from": "Send values of final reading",
+      "activity_to": "Notify about the device change, the meter data and the meter count at installation",
+      "source_id": "Task_8",
+      "target_id": "Task_9"
+    },
+    {
+      "from": "equipment.change_intended",
+      "to": "equipment.self_dismounting_announced",
+      "activity_from": "Notify about equipment change intentions",
+      "activity_to": "Notify about self-dismounting",
+      "source_id": "Task_0",
+      "target_id": "Task_3"
+    },
+    {
+      "from": "equipment.change_intended",
+      "to": "equipment.no_self_dismounting_notified",
+      "activity_from": "Notify about equipment change intentions",
+      "activity_to": "Notify about self-dismounting",
+      "source_id": "Task_0",
+      "target_id": "Task_3"
+    },
+    {
+      "from": "equipment.change_intended",
+      "to": "equipment.no_self_dismounting_notified",
+      "activity_from": "Notify about equipment change intentions",
+      "activity_to": "Notify about no self-dismounting",
+      "source_id": "Task_0",
+      "target_id": "Task_4"
+    },
+    {
+      "from": "equipment.self_dismounting_announced",
+      "to": "equipment.final_reading_performed",
+      "activity_from": "Notify about self-dismounting",
+      "activity_to": "Conduct final reading",
+      "source_id": "Task_3",
+      "target_id": "Task_5"
+    },
+    {
+      "from": "equipment.no_self_dismounting_notified",
+      "to": "equipment.final_reading_performed",
+      "activity_from": "Notify about self-dismounting",
+      "activity_to": "Conduct final reading",
+      "source_id": "Task_3",
+      "target_id": "Task_5"
+    },
+    {
+      "from": "equipment.no_self_dismounting_notified",
+      "to": "equipment.final_reading_performed",
+      "activity_from": "Notify about no self-dismounting",
+      "activity_to": "Conduct final reading",
+      "source_id": "Task_4",
+      "target_id": "Task_5"
+    },
+    {
+      "from": "meter_count.read",
+      "to": "equipment.final_reading_performed",
+      "activity_from": "Read meter count at installation",
+      "activity_to": "Send values of final reading",
+      "source_id": "Task_7",
+      "target_id": "Task_8"
+    }
+  ],
+  "alignment": {
+    "equipment.self_dismounting_announced": {
+      "operator": "AND",
+      "quote": "The MPOO announces self dismounting to the MPON",
+      "terms": [
+        {
+          "term": "equipment.change_intended",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED",
+      "clauses": [
+        {
+          "terms": [
+            "equipment.change_intended"
+          ],
+          "status": "SATISFIED"
+        }
+      ]
+    },
+    "equipment.no_self_dismounting_notified": {
+      "operator": "AND",
+      "quote": "the MPOO shall notify the MPON about no self-dismounting of the MPOO",
+      "terms": [
+        {
+          "term": "equipment.change_intended",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED",
+      "clauses": [
+        {
+          "terms": [
+            "equipment.change_intended"
+          ],
+          "status": "SATISFIED"
+        }
+      ]
+    },
+    "equipment.final_reading_performed": {
+      "operator": "OR",
+      "quote": "The MPOO announces self dismounting to the MPON or the MPOO shall notify the MPON about no self-dismounting of the MPOO. The MPON or the MPOO perform the final reading.",
+      "terms": [
+        {
+          "term": "equipment.self_dismounting_announced",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        },
+        {
+          "term": "equipment.no_self_dismounting_notified",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED",
+      "clauses": [
+        {
+          "terms": [
+            "equipment.self_dismounting_announced"
+          ],
+          "status": "SATISFIED"
+        },
+        {
+          "terms": [
+            "equipment.no_self_dismounting_notified"
+          ],
+          "status": "SATISFIED"
+        }
+      ]
+    },
+    "equipment.dismounted": {
+      "operator": "AND",
+      "quote": "The MPON or the MPOO perform the final reading. The MPON or the MPOO dismount the old equipment.",
+      "terms": [
+        {
+          "term": "equipment.final_reading_performed",
+          "status": "VIOLATED",
+          "reason": "both states matched, no path in process",
+          "missing": []
+        }
+      ],
+      "status": "VIOLATED",
+      "clauses": [
+        {
+          "terms": [
+            "equipment.final_reading_performed"
+          ],
+          "status": "VIOLATED"
+        }
+      ]
+    },
+    "equipment.mounted": {
+      "operator": "AND",
+      "quote": "The MPON or the MPOO dismount the old equipment. The MPON mounts the new device.",
+      "terms": [
+        {
+          "term": "equipment.dismounted",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['equipment.mounted']",
+          "missing": [
+            "equipment.mounted"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "equipment.dismounted"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "meter_count.read": {
+      "operator": "AND",
+      "quote": "The MPON mounts the new device. The MPON reads the meter count from the installed meter.",
+      "terms": [
+        {
+          "term": "equipment.mounted",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['equipment.mounted']",
+          "missing": [
+            "equipment.mounted"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "equipment.mounted"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "meter_count.sent_to_go": {
+      "operator": "AND",
+      "quote": "The MPON reads the meter count from the installed meter. The MPON sends the values of the final reading to the GO.",
+      "terms": [
+        {
+          "term": "meter_count.read",
+          "status": "VIOLATED",
+          "reason": "both states matched, no path in process",
+          "missing": []
+        }
+      ],
+      "status": "VIOLATED",
+      "clauses": [
+        {
+          "terms": [
+            "meter_count.read"
+          ],
+          "status": "VIOLATED"
+        }
+      ]
+    },
+    "device_change.told_to_go": {
+      "operator": "AND",
+      "quote": "The MPON mounts the new device. The MPON reads the meter count from the installed meter. The MPON sends the values of the final reading to the GO. The MPON tells the GO about the device changes, the master data and the meter count at installation.",
+      "terms": [
+        {
+          "term": "equipment.mounted",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['equipment.mounted', 'device_change.told_to_go']",
+          "missing": [
+            "equipment.mounted",
+            "device_change.told_to_go"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "equipment.mounted"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "master_data.told_to_go": {
+      "operator": "AND",
+      "quote": "The MPON mounts the new device. The MPON reads the meter count from the installed meter. The MPON sends the values of the final reading to the GO. The MPON tells the GO about the device changes, the master data and the meter count at installation.",
+      "terms": [
+        {
+          "term": "equipment.mounted",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['equipment.mounted', 'master_data.told_to_go']",
+          "missing": [
+            "equipment.mounted",
+            "master_data.told_to_go"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "equipment.mounted"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "device_change.notified_to_msp": {
+      "operator": "AND",
+      "quote": "The MPON tells the GO about the device changes, the master data and the meter count at installation. The GO shall notify the MSP about the device changes, the master data, the meter count at dismounting, and the meter count at installation.",
+      "terms": [
+        {
+          "term": "device_change.told_to_go",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['device_change.told_to_go']",
+          "missing": [
+            "device_change.told_to_go"
+          ]
+        },
+        {
+          "term": "master_data.told_to_go",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['master_data.told_to_go']",
+          "missing": [
+            "master_data.told_to_go"
+          ]
+        },
+        {
+          "term": "meter_count.sent_to_go",
+          "status": "VIOLATED",
+          "reason": "both states matched, no path in process",
+          "missing": []
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "device_change.told_to_go",
+            "master_data.told_to_go",
+            "meter_count.sent_to_go"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "master_data.notified_to_msp": {
+      "operator": "AND",
+      "quote": "The MPON tells the GO about the device changes, the master data and the meter count at installation. The GO shall notify the MSP about the device changes, the master data, the meter count at dismounting, and the meter count at installation.",
+      "terms": [
+        {
+          "term": "device_change.told_to_go",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['device_change.told_to_go', 'master_data.notified_to_msp']",
+          "missing": [
+            "device_change.told_to_go",
+            "master_data.notified_to_msp"
+          ]
+        },
+        {
+          "term": "master_data.told_to_go",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['master_data.told_to_go', 'master_data.notified_to_msp']",
+          "missing": [
+            "master_data.told_to_go",
+            "master_data.notified_to_msp"
+          ]
+        },
+        {
+          "term": "meter_count.sent_to_go",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['master_data.notified_to_msp']",
+          "missing": [
+            "master_data.notified_to_msp"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "device_change.told_to_go",
+            "master_data.told_to_go",
+            "meter_count.sent_to_go"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "meter_count.notified_to_msp": {
+      "operator": "AND",
+      "quote": "The MPON tells the GO about the device changes, the master data and the meter count at installation. The GO shall notify the MSP about the device changes, the master data, the meter count at dismounting, and the meter count at installation.",
+      "terms": [
+        {
+          "term": "device_change.told_to_go",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['device_change.told_to_go']",
+          "missing": [
+            "device_change.told_to_go"
+          ]
+        },
+        {
+          "term": "master_data.told_to_go",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['master_data.told_to_go']",
+          "missing": [
+            "master_data.told_to_go"
+          ]
+        },
+        {
+          "term": "meter_count.sent_to_go",
+          "status": "VIOLATED",
+          "reason": "both states matched, no path in process",
+          "missing": []
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "device_change.told_to_go",
+            "master_data.told_to_go",
+            "meter_count.sent_to_go"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    }
+  },
+  "report": {
+    "verdict": {
+      "verdict": "NOT_FAITHFUL",
+      "justification": "1 gap(s) found between the source text's requirements and the observed process -- at least one precondition asserted by the text is contradicted by the model's actual sequence of activities.",
+      "scope": "This verdict covers the causal reachability of the requirements expressed in the source text, not the general quality of the process model -- a multiplicity defect (an activity executed more than once due to a mismatched branching structure) is not covered by this verdict, even if the process is otherwise well-formed."
+    },
+    "summary": {
+      "ecarts": 1,
+      "non_verifiable": 1,
+      "conforme": 4
+    },
+    "ecarts": [
+      {
+        "root_cause": "Conduct final reading",
+        "quote": "The MPON or the MPOO perform the final reading. The MPON or the MPOO dismount the old equipment.",
+        "explanation": "The source text states: \"The MPON or the MPOO perform the final reading. The MPON or the MPOO dismount the old equipment.\" However, the observed process does not enforce the required sequence where \"Conduct final reading\" precedes \"Dismount old equipment\".",
+        "quote_verbatim": true,
+        "affected_activities": [
+          "Dismount old equipment"
+        ],
+        "affected_count": 1
+      }
+    ],
+    "non_verifiable": [
+      {
+        "root_cause": "equipment mounted",
+        "quote": "The MPON or the MPOO dismount the old equipment. The MPON mounts the new device.",
+        "explanation": "The source text states: \"The MPON or the MPOO dismount the old equipment. The MPON mounts the new device.\" However, the observed process does not contain a clear activity corresponding to this prerequisite, making it impossible to verify whether the requirement was met. (This same root cause also affects: Notify about the device change,  the meter data, the meter count at dismounting, and the meter count at installation, Read meter count at installation, device change told to go, master data notified to msp, master data told to go.)",
+        "quote_verbatim": true,
+        "affected_activities": [
+          "Notify about the device change,  the meter data, the meter count at dismounting, and the meter count at installation",
+          "Read meter count at installation",
+          "device change told to go",
+          "equipment mounted",
+          "master data notified to msp",
+          "master data told to go"
+        ],
+        "affected_count": 18
+      }
+    ],
+    "conforme": [
+      {
+        "target": "Dismount old equipment",
+        "term": "Notify about equipment change intentions"
+      },
+      {
+        "target": "Notify about no self-dismounting",
+        "term": "Notify about equipment change intentions"
+      },
+      {
+        "target": "Conduct final reading",
+        "term": "Dismount old equipment"
+      },
+      {
+        "target": "Conduct final reading",
+        "term": "Notify about no self-dismounting"
+      }
+    ],
+    "piece_jointe_alignement_brut": {
+      "equipment.self_dismounting_announced": {
+        "operator": "AND",
+        "quote": "The MPOO announces self dismounting to the MPON",
+        "terms": [
+          {
+            "term": "equipment.change_intended",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED",
+        "clauses": [
+          {
+            "terms": [
+              "equipment.change_intended"
+            ],
+            "status": "SATISFIED"
+          }
+        ]
+      },
+      "equipment.no_self_dismounting_notified": {
+        "operator": "AND",
+        "quote": "the MPOO shall notify the MPON about no self-dismounting of the MPOO",
+        "terms": [
+          {
+            "term": "equipment.change_intended",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED",
+        "clauses": [
+          {
+            "terms": [
+              "equipment.change_intended"
+            ],
+            "status": "SATISFIED"
+          }
+        ]
+      },
+      "equipment.final_reading_performed": {
+        "operator": "OR",
+        "quote": "The MPOO announces self dismounting to the MPON or the MPOO shall notify the MPON about no self-dismounting of the MPOO. The MPON or the MPOO perform the final reading.",
+        "terms": [
+          {
+            "term": "equipment.self_dismounting_announced",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          },
+          {
+            "term": "equipment.no_self_dismounting_notified",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED",
+        "clauses": [
+          {
+            "terms": [
+              "equipment.self_dismounting_announced"
+            ],
+            "status": "SATISFIED"
+          },
+          {
+            "terms": [
+              "equipment.no_self_dismounting_notified"
+            ],
+            "status": "SATISFIED"
+          }
+        ]
+      },
+      "equipment.dismounted": {
+        "operator": "AND",
+        "quote": "The MPON or the MPOO perform the final reading. The MPON or the MPOO dismount the old equipment.",
+        "terms": [
+          {
+            "term": "equipment.final_reading_performed",
+            "status": "VIOLATED",
+            "reason": "both states matched, no path in process",
+            "missing": []
+          }
+        ],
+        "status": "VIOLATED",
+        "clauses": [
+          {
+            "terms": [
+              "equipment.final_reading_performed"
+            ],
+            "status": "VIOLATED"
+          }
+        ]
+      },
+      "equipment.mounted": {
+        "operator": "AND",
+        "quote": "The MPON or the MPOO dismount the old equipment. The MPON mounts the new device.",
+        "terms": [
+          {
+            "term": "equipment.dismounted",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['equipment.mounted']",
+            "missing": [
+              "equipment.mounted"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "equipment.dismounted"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "meter_count.read": {
+        "operator": "AND",
+        "quote": "The MPON mounts the new device. The MPON reads the meter count from the installed meter.",
+        "terms": [
+          {
+            "term": "equipment.mounted",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['equipment.mounted']",
+            "missing": [
+              "equipment.mounted"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "equipment.mounted"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "meter_count.sent_to_go": {
+        "operator": "AND",
+        "quote": "The MPON reads the meter count from the installed meter. The MPON sends the values of the final reading to the GO.",
+        "terms": [
+          {
+            "term": "meter_count.read",
+            "status": "VIOLATED",
+            "reason": "both states matched, no path in process",
+            "missing": []
+          }
+        ],
+        "status": "VIOLATED",
+        "clauses": [
+          {
+            "terms": [
+              "meter_count.read"
+            ],
+            "status": "VIOLATED"
+          }
+        ]
+      },
+      "device_change.told_to_go": {
+        "operator": "AND",
+        "quote": "The MPON mounts the new device. The MPON reads the meter count from the installed meter. The MPON sends the values of the final reading to the GO. The MPON tells the GO about the device changes, the master data and the meter count at installation.",
+        "terms": [
+          {
+            "term": "equipment.mounted",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['equipment.mounted', 'device_change.told_to_go']",
+            "missing": [
+              "equipment.mounted",
+              "device_change.told_to_go"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "equipment.mounted"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "master_data.told_to_go": {
+        "operator": "AND",
+        "quote": "The MPON mounts the new device. The MPON reads the meter count from the installed meter. The MPON sends the values of the final reading to the GO. The MPON tells the GO about the device changes, the master data and the meter count at installation.",
+        "terms": [
+          {
+            "term": "equipment.mounted",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['equipment.mounted', 'master_data.told_to_go']",
+            "missing": [
+              "equipment.mounted",
+              "master_data.told_to_go"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "equipment.mounted"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "device_change.notified_to_msp": {
+        "operator": "AND",
+        "quote": "The MPON tells the GO about the device changes, the master data and the meter count at installation. The GO shall notify the MSP about the device changes, the master data, the meter count at dismounting, and the meter count at installation.",
+        "terms": [
+          {
+            "term": "device_change.told_to_go",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['device_change.told_to_go']",
+            "missing": [
+              "device_change.told_to_go"
+            ]
+          },
+          {
+            "term": "master_data.told_to_go",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['master_data.told_to_go']",
+            "missing": [
+              "master_data.told_to_go"
+            ]
+          },
+          {
+            "term": "meter_count.sent_to_go",
+            "status": "VIOLATED",
+            "reason": "both states matched, no path in process",
+            "missing": []
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "device_change.told_to_go",
+              "master_data.told_to_go",
+              "meter_count.sent_to_go"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "master_data.notified_to_msp": {
+        "operator": "AND",
+        "quote": "The MPON tells the GO about the device changes, the master data and the meter count at installation. The GO shall notify the MSP about the device changes, the master data, the meter count at dismounting, and the meter count at installation.",
+        "terms": [
+          {
+            "term": "device_change.told_to_go",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['device_change.told_to_go', 'master_data.notified_to_msp']",
+            "missing": [
+              "device_change.told_to_go",
+              "master_data.notified_to_msp"
+            ]
+          },
+          {
+            "term": "master_data.told_to_go",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['master_data.told_to_go', 'master_data.notified_to_msp']",
+            "missing": [
+              "master_data.told_to_go",
+              "master_data.notified_to_msp"
+            ]
+          },
+          {
+            "term": "meter_count.sent_to_go",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['master_data.notified_to_msp']",
+            "missing": [
+              "master_data.notified_to_msp"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "device_change.told_to_go",
+              "master_data.told_to_go",
+              "meter_count.sent_to_go"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "meter_count.notified_to_msp": {
+        "operator": "AND",
+        "quote": "The MPON tells the GO about the device changes, the master data and the meter count at installation. The GO shall notify the MSP about the device changes, the master data, the meter count at dismounting, and the meter count at installation.",
+        "terms": [
+          {
+            "term": "device_change.told_to_go",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['device_change.told_to_go']",
+            "missing": [
+              "device_change.told_to_go"
+            ]
+          },
+          {
+            "term": "master_data.told_to_go",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['master_data.told_to_go']",
+            "missing": [
+              "master_data.told_to_go"
+            ]
+          },
+          {
+            "term": "meter_count.sent_to_go",
+            "status": "VIOLATED",
+            "reason": "both states matched, no path in process",
+            "missing": []
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "device_change.told_to_go",
+              "master_data.told_to_go",
+              "meter_count.sent_to_go"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      }
+    }
+  },
+  "errors": []
+}

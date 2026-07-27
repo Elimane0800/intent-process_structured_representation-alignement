@@ -1,0 +1,1069 @@
+{
+  "case_name": "OriginalDataset/Model5-3",
+  "text": "The process of an Office Supply Request starts when any employee of the organization submits an office supply request. Once the requirement is registered, the request is received by the immediate supervisor of the employee requesting the office supplies. The supervisor must approve or ask for a change, or reject the request. If the request is rejected the process will end. If the request is asked to make a change then it is returned to the petitioner/employee who can review the comments for the change request. If the request is approved it will go to the purchase department that will be in charge of making quotations (using a subprocess) and select a vendor. If the vendor is not valid in the system the purchase department will have to choose a different vendor. After a vendor is selected and confirmed, the system will generate and send a purchase order and wait for the product to be delivered and the invoice received. In any case the system will send a notification to let the user know what the result was. In any of the cases, approval, rejection or change required the system will send the user a notification.",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "llama-3.1-8b",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "llama-3.1-8b",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/../datasets/lre/alignment_model_text-master/datasets/OriginalDataset/Models/Model5-3.bpmn",
+  "report_model": "llama-3.1-8b",
+  "candidates": {
+    "office_supply_request": {
+      "states": [
+        "submitted",
+        "registered",
+        "received",
+        "approved",
+        "rejected",
+        "changed",
+        "returned",
+        "in_progress",
+        "complete"
+      ],
+      "exclusive_groups": [
+        [
+          "approved",
+          "rejected"
+        ],
+        [
+          "approved",
+          "changed"
+        ],
+        [
+          "changed",
+          "rejected"
+        ]
+      ],
+      "concurrent_with": []
+    },
+    "purchase_order": {
+      "states": [
+        "generated",
+        "sent"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "vendor": {
+      "states": [
+        "selected",
+        "confirmed",
+        "invalid"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "notification": {
+      "states": [
+        "sent"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    }
+  },
+  "validation_report": {
+    "office_supply_request": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "request"
+    },
+    "purchase_order": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "order"
+    },
+    "vendor": {
+      "f_lex": "ACTOR",
+      "kept": false,
+      "head_used": "vendor"
+    },
+    "notification": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "notification"
+    },
+    "__meta__": {
+      "total_candidates": 4,
+      "indeterminate_kept_count": 0
+    }
+  },
+  "exclusive_groups_report": {
+    "accepted": [
+      {
+        "entity": "office_supply_request",
+        "states": [
+          "approved",
+          "rejected"
+        ],
+        "quote": "approve or ask for a change, or reject the request"
+      },
+      {
+        "entity": "office_supply_request",
+        "states": [
+          "approved",
+          "changed"
+        ],
+        "quote": "If the request is approved it will go to the purchase department that will be in charge of making quotations (using a subprocess) and select a vendor. If the request is asked to make a change then it is returned to the petitioner/employee who can review the comments for the change request."
+      },
+      {
+        "entity": "office_supply_request",
+        "states": [
+          "changed",
+          "rejected"
+        ],
+        "quote": "If the request is asked to make a change then it is returned to the petitioner/employee who can review the comments for the change request. If the request is rejected the process will end."
+      }
+    ],
+    "rejected": []
+  },
+  "state_space": {
+    "office_supply_request": {
+      "states": [
+        "submitted",
+        "registered",
+        "received",
+        "approved",
+        "rejected",
+        "changed",
+        "returned",
+        "in_progress",
+        "complete"
+      ],
+      "exclusive_groups": [
+        [
+          "approved",
+          "rejected"
+        ],
+        [
+          "approved",
+          "changed"
+        ],
+        [
+          "changed",
+          "rejected"
+        ]
+      ],
+      "concurrent_with": []
+    },
+    "purchase_order": {
+      "states": [
+        "generated",
+        "sent"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "notification": {
+      "states": [
+        "sent"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    }
+  },
+  "state_space_dedup": {
+    "merged": {},
+    "ambiguous_not_merged": {}
+  },
+  "raw_preconditions": {
+    "office_supply_request.submitted": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "office_supply_request.registered": {
+      "precondition": "office_supply_request.submitted",
+      "quote": "The process of an Office Supply Request starts when any employee of the organization submits an office supply request."
+    },
+    "office_supply_request.received": {
+      "precondition": "office_supply_request.registered",
+      "quote": "Once the requirement is registered, the request is received by the immediate supervisor of the employee requesting the office supplies."
+    },
+    "office_supply_request.approved": {
+      "precondition": "office_supply_request.received AND (office_supply_request.approved OR office_supply_request.changed OR office_supply_request.rejected)",
+      "quote": "If the request is approved it will go to the purchase department that will be in charge of making quotations (using a subprocess) and select a vendor."
+    },
+    "office_supply_request.rejected": {
+      "precondition": "office_supply_request.received AND (office_supply_request.approved OR office_supply_request.changed OR office_supply_request.rejected)",
+      "quote": "If the request is rejected the process will end."
+    },
+    "office_supply_request.changed": {
+      "precondition": "office_supply_request.received AND (office_supply_request.approved OR office_supply_request.changed OR office_supply_request.rejected)",
+      "quote": "If the request is asked to make a change then it is returned to the petitioner/employee who can review the comments for the change request."
+    },
+    "office_supply_request.returned": {
+      "precondition": "office_supply_request.changed",
+      "quote": "If the request is asked to make a change then it is returned to the petitioner/employee who can review the comments for the change request."
+    },
+    "office_supply_request.in_progress": {
+      "precondition": "office_supply_request.approved",
+      "quote": "If the request is approved it will go to the purchase department that will be in charge of making quotations (using a subprocess) and select a vendor."
+    },
+    "office_supply_request.complete": {
+      "precondition": "office_supply_request.in_progress AND (purchase_order.generated OR purchase_order.sent)",
+      "quote": "After a vendor is selected and confirmed, the system will generate and send a purchase order and wait for the product to be delivered and the invoice received."
+    },
+    "purchase_order.generated": {
+      "precondition": "office_supply_request.in_progress AND (purchase_order.generated OR purchase_order.sent)",
+      "quote": "After a vendor is selected and confirmed, the system will generate and send a purchase order and wait for the product to be delivered and the invoice received."
+    },
+    "purchase_order.sent": {
+      "precondition": "office_supply_request.in_progress AND (purchase_order.generated OR purchase_order.sent)",
+      "quote": "After a vendor is selected and confirmed, the system will generate and send a purchase order and wait for the product to be delivered and the invoice received."
+    },
+    "notification.sent": {
+      "precondition": "office_supply_request.approved OR office_supply_request.rejected OR office_supply_request.changed",
+      "quote": "In any case the system will send a notification to let the user know what the result was."
+    }
+  },
+  "validated_preconditions": {
+    "office_supply_request.submitted": {
+      "precondition": "INITIAL",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "office_supply_request.registered": {
+      "precondition": "office_supply_request.submitted",
+      "quote": "The process of an Office Supply Request starts when any employee of the organization submits an office supply request.",
+      "status": "OK",
+      "reason": null
+    },
+    "office_supply_request.received": {
+      "precondition": "office_supply_request.registered",
+      "quote": "Once the requirement is registered, the request is received by the immediate supervisor of the employee requesting the office supplies.",
+      "status": "OK",
+      "reason": null
+    },
+    "office_supply_request.approved": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "DOWNGRADED",
+      "reason": "unbalanced parentheses: 'office_supply_request.received AND (office_supply_request.approved OR office_supply_request.changed OR office_supply_request.rejected)'",
+      "retried": true
+    },
+    "office_supply_request.rejected": {
+      "precondition": "office_supply_request.registered AND notification.sent",
+      "quote": [
+        "The supervisor must approve or ask for a change, or reject the request.",
+        "In any of the cases, approval, rejection or change required the system will send the user a notification."
+      ],
+      "status": "OK",
+      "reason": null,
+      "retried": true
+    },
+    "office_supply_request.changed": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "DOWNGRADED",
+      "reason": "unbalanced parentheses: 'office_supply_request.received AND (office_supply_request.approved OR office_supply_request.rejected OR office_supply_request.changed)'",
+      "retried": true
+    },
+    "office_supply_request.returned": {
+      "precondition": "office_supply_request.changed",
+      "quote": "If the request is asked to make a change then it is returned to the petitioner/employee who can review the comments for the change request.",
+      "status": "OK",
+      "reason": null
+    },
+    "office_supply_request.in_progress": {
+      "precondition": "office_supply_request.approved",
+      "quote": "If the request is approved it will go to the purchase department that will be in charge of making quotations (using a subprocess) and select a vendor.",
+      "status": "OK",
+      "reason": null
+    },
+    "office_supply_request.complete": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "DOWNGRADED",
+      "reason": "unbalanced parentheses: 'office_supply_request.in_progress AND (purchase_order.generated OR purchase_order.sent)'"
+    },
+    "purchase_order.generated": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "DOWNGRADED",
+      "reason": "unbalanced parentheses: 'office_supply_request.in_progress AND (purchase_order.generated OR purchase_order.sent)'",
+      "retried": true
+    },
+    "purchase_order.sent": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "DOWNGRADED",
+      "reason": "unbalanced parentheses: 'office_supply_request.registered AND (purchase_order.generated OR purchase_order.sent)'",
+      "retried": true
+    },
+    "notification.sent": {
+      "precondition": "office_supply_request.approved OR office_supply_request.rejected OR office_supply_request.changed",
+      "quote": "In any case the system will send a notification to let the user know what the result was.",
+      "status": "OK",
+      "reason": null
+    }
+  },
+  "precondition_cycles": [
+    [
+      "office_supply_request.rejected",
+      "notification.sent",
+      "office_supply_request.rejected"
+    ]
+  ],
+  "branch_conflicts": [],
+  "reference_graph": {
+    "nodes": [
+      {
+        "id": "office_supply_request.submitted",
+        "weight": 0.25
+      },
+      {
+        "id": "office_supply_request.registered",
+        "weight": 0.75
+      },
+      {
+        "id": "office_supply_request.received",
+        "weight": 0.25
+      },
+      {
+        "id": "office_supply_request.approved",
+        "weight": 0.5
+      },
+      {
+        "id": "office_supply_request.rejected",
+        "weight": 0.75
+      },
+      {
+        "id": "office_supply_request.changed",
+        "weight": 0.5
+      },
+      {
+        "id": "office_supply_request.returned",
+        "weight": 0.25
+      },
+      {
+        "id": "office_supply_request.in_progress",
+        "weight": 0.25
+      },
+      {
+        "id": "office_supply_request.complete",
+        "weight": 0.0
+      },
+      {
+        "id": "purchase_order.generated",
+        "weight": 0.0
+      },
+      {
+        "id": "purchase_order.sent",
+        "weight": 0.0
+      },
+      {
+        "id": "notification.sent",
+        "weight": 1.0
+      }
+    ],
+    "edges": [
+      {
+        "from": "office_supply_request.submitted",
+        "to": "office_supply_request.registered",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "The process of an Office Supply Request starts when any employee of the organization submits an office supply request.",
+        "negated": false
+      },
+      {
+        "from": "office_supply_request.registered",
+        "to": "office_supply_request.received",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "Once the requirement is registered, the request is received by the immediate supervisor of the employee requesting the office supplies.",
+        "negated": false
+      },
+      {
+        "from": "office_supply_request.registered",
+        "to": "office_supply_request.rejected",
+        "clause": 0,
+        "type": "sequence",
+        "quote": [
+          "The supervisor must approve or ask for a change, or reject the request.",
+          "In any of the cases, approval, rejection or change required the system will send the user a notification."
+        ],
+        "negated": false
+      },
+      {
+        "from": "notification.sent",
+        "to": "office_supply_request.rejected",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": [
+          "The supervisor must approve or ask for a change, or reject the request.",
+          "In any of the cases, approval, rejection or change required the system will send the user a notification."
+        ],
+        "negated": false
+      },
+      {
+        "from": "office_supply_request.changed",
+        "to": "office_supply_request.returned",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "If the request is asked to make a change then it is returned to the petitioner/employee who can review the comments for the change request.",
+        "negated": false
+      },
+      {
+        "from": "office_supply_request.approved",
+        "to": "office_supply_request.in_progress",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "If the request is approved it will go to the purchase department that will be in charge of making quotations (using a subprocess) and select a vendor.",
+        "negated": false
+      },
+      {
+        "from": "office_supply_request.approved",
+        "to": "notification.sent",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "In any case the system will send a notification to let the user know what the result was.",
+        "negated": false
+      },
+      {
+        "from": "office_supply_request.rejected",
+        "to": "notification.sent",
+        "clause": 1,
+        "type": "cross_entity_guard",
+        "quote": "In any case the system will send a notification to let the user know what the result was.",
+        "negated": false
+      },
+      {
+        "from": "office_supply_request.changed",
+        "to": "notification.sent",
+        "clause": 2,
+        "type": "cross_entity_guard",
+        "quote": "In any case the system will send a notification to let the user know what the result was.",
+        "negated": false
+      }
+    ],
+    "cycles": [
+      [
+        "office_supply_request.rejected",
+        "notification.sent",
+        "office_supply_request.rejected"
+      ]
+    ],
+    "branch_conflicts": [],
+    "exclusive_pairs": [
+      {
+        "entity": "office_supply_request",
+        "nodes": [
+          "office_supply_request.approved",
+          "office_supply_request.rejected"
+        ]
+      },
+      {
+        "entity": "office_supply_request",
+        "nodes": [
+          "office_supply_request.approved",
+          "office_supply_request.changed"
+        ]
+      },
+      {
+        "entity": "office_supply_request",
+        "nodes": [
+          "office_supply_request.changed",
+          "office_supply_request.rejected"
+        ]
+      }
+    ]
+  },
+  "dfg_edges": [
+    {
+      "source_id": "Task_0",
+      "source_label": "Generate purchase order",
+      "target_id": "Task_7",
+      "target_label": "Receive products",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_3",
+      "source_label": "Notify about required change",
+      "target_id": "Task_6",
+      "target_label": "Register office supply request",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_7",
+      "source_label": "Receive products",
+      "target_id": "IntermediateEvent_0",
+      "target_label": "Products  Received",
+      "gateway_context": []
+    },
+    {
+      "source_id": "CollapsedSubprocess_0",
+      "source_label": "Quote",
+      "target_id": "Task_0",
+      "target_label": "Generate purchase order",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_6",
+      "source_label": "Register office supply request",
+      "target_id": "Task_2",
+      "target_label": "Approve office supply request",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_5",
+      "source_label": "Notify about approval",
+      "target_id": "CollapsedSubprocess_0",
+      "target_label": "Quote",
+      "gateway_context": []
+    },
+    {
+      "source_id": "IntermediateEvent_0",
+      "source_label": "Products  Received",
+      "target_id": "Task_1",
+      "target_label": "Process invoice",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_2",
+      "source_label": "Approve office supply request",
+      "target_id": "Task_4",
+      "target_label": "Notify about rejection",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_2",
+      "source_label": "Approve office supply request",
+      "target_id": "Task_3",
+      "target_label": "Notify about required change",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_2",
+      "source_label": "Approve office supply request",
+      "target_id": "Task_5",
+      "target_label": "Notify about approval",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "Generate purchase order",
+      "subject_id": "Task_0",
+      "predicate": "follows",
+      "object": "Receive products",
+      "object_id": "Task_7"
+    },
+    {
+      "subject": "Notify about required change",
+      "subject_id": "Task_3",
+      "predicate": "follows",
+      "object": "Register office supply request",
+      "object_id": "Task_6"
+    },
+    {
+      "subject": "Receive products",
+      "subject_id": "Task_7",
+      "predicate": "follows",
+      "object": "Products  Received",
+      "object_id": "IntermediateEvent_0"
+    },
+    {
+      "subject": "Quote",
+      "subject_id": "CollapsedSubprocess_0",
+      "predicate": "follows",
+      "object": "Generate purchase order",
+      "object_id": "Task_0"
+    },
+    {
+      "subject": "Register office supply request",
+      "subject_id": "Task_6",
+      "predicate": "follows",
+      "object": "Approve office supply request",
+      "object_id": "Task_2"
+    },
+    {
+      "subject": "Notify about approval",
+      "subject_id": "Task_5",
+      "predicate": "follows",
+      "object": "Quote",
+      "object_id": "CollapsedSubprocess_0"
+    },
+    {
+      "subject": "Products  Received",
+      "subject_id": "IntermediateEvent_0",
+      "predicate": "follows",
+      "object": "Process invoice",
+      "object_id": "Task_1"
+    },
+    {
+      "subject": "Approve office supply request",
+      "subject_id": "Task_2",
+      "predicate": "follows",
+      "object": "Notify about rejection",
+      "object_id": "Task_4"
+    },
+    {
+      "subject": "Approve office supply request",
+      "subject_id": "Task_2",
+      "predicate": "follows",
+      "object": "Notify about required change",
+      "object_id": "Task_3"
+    },
+    {
+      "subject": "Approve office supply request",
+      "subject_id": "Task_2",
+      "predicate": "follows",
+      "object": "Notify about approval",
+      "object_id": "Task_5"
+    }
+  ],
+  "matches": {
+    "Task_0": {
+      "activity_label": "Generate purchase order",
+      "matches": [
+        {
+          "match": "purchase_order.generated",
+          "score": 0.8682
+        }
+      ],
+      "clusters": [
+        [
+          "purchase_order.generated"
+        ]
+      ]
+    },
+    "Task_7": {
+      "activity_label": "Receive products",
+      "matches": [
+        {
+          "match": "purchase_order.sent",
+          "score": 0.4128
+        },
+        {
+          "match": "office_supply_request.received",
+          "score": 0.4038
+        }
+      ],
+      "clusters": [
+        [
+          "purchase_order.sent"
+        ],
+        [
+          "office_supply_request.received"
+        ]
+      ]
+    },
+    "Task_3": {
+      "activity_label": "Notify about required change",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_6": {
+      "activity_label": "Register office supply request",
+      "matches": [
+        {
+          "match": "office_supply_request.registered",
+          "score": 0.8855
+        }
+      ],
+      "clusters": [
+        [
+          "office_supply_request.registered"
+        ]
+      ]
+    },
+    "IntermediateEvent_0": {
+      "activity_label": "Products  Received",
+      "matches": [
+        {
+          "match": "office_supply_request.received",
+          "score": 0.4031
+        },
+        {
+          "match": "purchase_order.sent",
+          "score": 0.3844
+        },
+        {
+          "match": "office_supply_request.returned",
+          "score": 0.3564
+        }
+      ],
+      "clusters": [
+        [
+          "office_supply_request.received",
+          "office_supply_request.returned"
+        ],
+        [
+          "purchase_order.sent"
+        ]
+      ]
+    },
+    "CollapsedSubprocess_0": {
+      "activity_label": "Quote",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_2": {
+      "activity_label": "Approve office supply request",
+      "matches": [
+        {
+          "match": "office_supply_request.approved",
+          "score": 0.6106
+        }
+      ],
+      "clusters": [
+        [
+          "office_supply_request.approved"
+        ]
+      ]
+    },
+    "Task_5": {
+      "activity_label": "Notify about approval",
+      "matches": [
+        {
+          "match": "notification.sent",
+          "score": 0.354
+        }
+      ],
+      "clusters": [
+        [
+          "notification.sent"
+        ]
+      ]
+    },
+    "Task_1": {
+      "activity_label": "Process invoice",
+      "matches": [
+        {
+          "match": "purchase_order.generated",
+          "score": 0.387
+        },
+        {
+          "match": "purchase_order.sent",
+          "score": 0.3532
+        }
+      ],
+      "clusters": [
+        [
+          "purchase_order.generated",
+          "purchase_order.sent"
+        ]
+      ]
+    },
+    "Task_4": {
+      "activity_label": "Notify about rejection",
+      "matches": [],
+      "clusters": []
+    }
+  },
+  "process_graph": [
+    {
+      "from": "purchase_order.generated",
+      "to": "purchase_order.sent",
+      "activity_from": "Generate purchase order",
+      "activity_to": "Receive products",
+      "source_id": "Task_0",
+      "target_id": "Task_7"
+    },
+    {
+      "from": "purchase_order.generated",
+      "to": "office_supply_request.received",
+      "activity_from": "Generate purchase order",
+      "activity_to": "Receive products",
+      "source_id": "Task_0",
+      "target_id": "Task_7"
+    },
+    {
+      "from": "purchase_order.sent",
+      "to": "office_supply_request.received",
+      "activity_from": "Receive products",
+      "activity_to": "Products  Received",
+      "source_id": "Task_7",
+      "target_id": "IntermediateEvent_0"
+    },
+    {
+      "from": "purchase_order.sent",
+      "to": "purchase_order.sent",
+      "activity_from": "Receive products",
+      "activity_to": "Products  Received",
+      "source_id": "Task_7",
+      "target_id": "IntermediateEvent_0"
+    },
+    {
+      "from": "purchase_order.sent",
+      "to": "office_supply_request.returned",
+      "activity_from": "Receive products",
+      "activity_to": "Products  Received",
+      "source_id": "Task_7",
+      "target_id": "IntermediateEvent_0"
+    },
+    {
+      "from": "office_supply_request.received",
+      "to": "office_supply_request.received",
+      "activity_from": "Receive products",
+      "activity_to": "Products  Received",
+      "source_id": "Task_7",
+      "target_id": "IntermediateEvent_0"
+    },
+    {
+      "from": "office_supply_request.received",
+      "to": "purchase_order.sent",
+      "activity_from": "Receive products",
+      "activity_to": "Products  Received",
+      "source_id": "Task_7",
+      "target_id": "IntermediateEvent_0"
+    },
+    {
+      "from": "office_supply_request.received",
+      "to": "office_supply_request.returned",
+      "activity_from": "Receive products",
+      "activity_to": "Products  Received",
+      "source_id": "Task_7",
+      "target_id": "IntermediateEvent_0"
+    },
+    {
+      "from": "office_supply_request.registered",
+      "to": "office_supply_request.approved",
+      "activity_from": "Register office supply request",
+      "activity_to": "Approve office supply request",
+      "source_id": "Task_6",
+      "target_id": "Task_2"
+    },
+    {
+      "from": "office_supply_request.received",
+      "to": "purchase_order.generated",
+      "activity_from": "Products  Received",
+      "activity_to": "Process invoice",
+      "source_id": "IntermediateEvent_0",
+      "target_id": "Task_1"
+    },
+    {
+      "from": "office_supply_request.received",
+      "to": "purchase_order.sent",
+      "activity_from": "Products  Received",
+      "activity_to": "Process invoice",
+      "source_id": "IntermediateEvent_0",
+      "target_id": "Task_1"
+    },
+    {
+      "from": "purchase_order.sent",
+      "to": "purchase_order.generated",
+      "activity_from": "Products  Received",
+      "activity_to": "Process invoice",
+      "source_id": "IntermediateEvent_0",
+      "target_id": "Task_1"
+    },
+    {
+      "from": "purchase_order.sent",
+      "to": "purchase_order.sent",
+      "activity_from": "Products  Received",
+      "activity_to": "Process invoice",
+      "source_id": "IntermediateEvent_0",
+      "target_id": "Task_1"
+    },
+    {
+      "from": "office_supply_request.returned",
+      "to": "purchase_order.generated",
+      "activity_from": "Products  Received",
+      "activity_to": "Process invoice",
+      "source_id": "IntermediateEvent_0",
+      "target_id": "Task_1"
+    },
+    {
+      "from": "office_supply_request.returned",
+      "to": "purchase_order.sent",
+      "activity_from": "Products  Received",
+      "activity_to": "Process invoice",
+      "source_id": "IntermediateEvent_0",
+      "target_id": "Task_1"
+    },
+    {
+      "from": "office_supply_request.approved",
+      "to": "notification.sent",
+      "activity_from": "Approve office supply request",
+      "activity_to": "Notify about approval",
+      "source_id": "Task_2",
+      "target_id": "Task_5"
+    }
+  ],
+  "alignment": {
+    "office_supply_request.registered": {
+      "operator": "AND",
+      "quote": "The process of an Office Supply Request starts when any employee of the organization submits an office supply request.",
+      "terms": [
+        {
+          "term": "office_supply_request.submitted",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['office_supply_request.submitted']",
+          "missing": [
+            "office_supply_request.submitted"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "office_supply_request.submitted"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "office_supply_request.received": {
+      "operator": "AND",
+      "quote": "Once the requirement is registered, the request is received by the immediate supervisor of the employee requesting the office supplies.",
+      "terms": [
+        {
+          "term": "office_supply_request.registered",
+          "status": "VIOLATED",
+          "reason": "both states matched, no path in process",
+          "missing": []
+        }
+      ],
+      "status": "VIOLATED",
+      "clauses": [
+        {
+          "terms": [
+            "office_supply_request.registered"
+          ],
+          "status": "VIOLATED"
+        }
+      ]
+    },
+    "office_supply_request.rejected": {
+      "operator": "AND",
+      "quote": [
+        "The supervisor must approve or ask for a change, or reject the request.",
+        "In any of the cases, approval, rejection or change required the system will send the user a notification."
+      ],
+      "terms": [
+        {
+          "term": "office_supply_request.registered",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['office_supply_request.rejected']",
+          "missing": [
+            "office_supply_request.rejected"
+          ]
+        },
+        {
+          "term": "notification.sent",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['office_supply_request.rejected']",
+          "missing": [
+            "office_supply_request.rejected"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "office_supply_request.registered",
+            "notification.sent"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "office_supply_request.returned": {
+      "operator": "AND",
+      "quote": "If the request is asked to make a change then it is returned to the petitioner/employee who can review the comments for the change request.",
+      "terms": [
+        {
+          "term": "office_supply_request.changed",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['office_supply_request.changed']",
+          "missing": [
+            "office_supply_request.changed"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "office_supply_request.changed"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "office_supply_request.in_progress": {
+      "operator": "AND",
+      "quote": "If the request is approved it will go to the purchase department that will be in charge of making quotations (using a subprocess) and select a vendor.",
+      "terms": [
+        {
+          "term": "office_supply_request.approved",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['office_supply_request.in_progress']",
+          "missing": [
+            "office_supply_request.in_progress"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "office_supply_request.approved"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "notification.sent": {
+      "operator": "OR",
+      "quote": "In any case the system will send a notification to let the user know what the result was.",
+      "terms": [
+        {
+          "term": "office_supply_request.approved",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        },
+        {
+          "term": "office_supply_request.rejected",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['office_supply_request.rejected']",
+          "missing": [
+            "office_supply_request.rejected"
+          ]
+        },
+        {
+          "term": "office_supply_request.changed",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['office_supply_request.changed']",
+          "missing": [
+            "office_supply_request.changed"
+          ]
+        }
+      ],
+      "status": "SATISFIED",
+      "clauses": [
+        {
+          "terms": [
+            "office_supply_request.approved"
+          ],
+          "status": "SATISFIED"
+        },
+        {
+          "terms": [
+            "office_supply_request.rejected"
+          ],
+          "status": "UNRESOLVABLE"
+        },
+        {
+          "terms": [
+            "office_supply_request.changed"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    }
+  },
+  "errors": [
+    "report: 'list' object has no attribute 'split'"
+  ]
+}

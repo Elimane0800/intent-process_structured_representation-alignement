@@ -1,0 +1,847 @@
+{
+  "case_name": "OriginalDataset/Dispatch-of-goods",
+  "text": "If goods shall be shipped, the secretary clarifies who will do the shipping.\nIf you have large amounts, special shipping will be necessary.\nIn these cases the secretary invites three logistic companies to make offers and she selects one of them.\nIn case of small amounts, normal post shipment is used.\nTherefore a package label is written by the secretary and a parcel insurance taken by the logistics department head if necessary.\nIn the meantime the goods can be already packaged by the warehousemen.\nIf everything is ready, the packaged goods are prepared for being picked up by the logistic company.\n",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "qwen3.6-27b",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "qwen3.6-27b",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/../datasets/lre/alignment_model_text-master/datasets/OriginalDataset/Models/Dispatch-of-goods.bpmn",
+  "report_model": "qwen3.6-27b",
+  "candidates": {
+    "goods": {
+      "states": [
+        "shipped",
+        "packaged",
+        "prepared_for_pickup"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": [
+        "package_label",
+        "parcel_insurance"
+      ]
+    },
+    "shipping_method": {
+      "states": [
+        "clarified",
+        "selected"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "logistic_companies": {
+      "states": [
+        "invited"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "package_label": {
+      "states": [
+        "written"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": [
+        "goods"
+      ]
+    },
+    "parcel_insurance": {
+      "states": [
+        "taken"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": [
+        "goods"
+      ]
+    }
+  },
+  "validation_report": {
+    "goods": {
+      "f_lex": "INDETERMINATE",
+      "kept": true,
+      "head_used": "goods"
+    },
+    "shipping_method": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "method"
+    },
+    "logistic_companies": {
+      "f_lex": "ACTOR",
+      "kept": false,
+      "head_used": "companies"
+    },
+    "package_label": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "label"
+    },
+    "parcel_insurance": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "insurance"
+    },
+    "__meta__": {
+      "total_candidates": 5,
+      "indeterminate_kept_count": 1
+    }
+  },
+  "exclusive_groups_report": {
+    "accepted": [],
+    "rejected": []
+  },
+  "state_space": {
+    "good": {
+      "states": [
+        "shipped",
+        "packaged",
+        "prepared_for_pickup"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": [
+        "package_label",
+        "parcel_insurance"
+      ]
+    },
+    "shipping_method": {
+      "states": [
+        "clarified",
+        "selected"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "package_label": {
+      "states": [
+        "written"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": [
+        "good"
+      ]
+    },
+    "parcel_insurance": {
+      "states": [
+        "taken"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": [
+        "good"
+      ]
+    }
+  },
+  "state_space_dedup": {
+    "merged": {},
+    "ambiguous_not_merged": {}
+  },
+  "raw_preconditions": {
+    "good.shipped": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "good.packaged": {
+      "precondition": "good.shipped",
+      "quote": "If goods shall be shipped, the secretary clarifies who will do the shipping."
+    },
+    "good.prepared_for_pickup": {
+      "precondition": "good.packaged AND package_label.written",
+      "quote": "Therefore a package label is written by the secretary and a parcel insurance taken by the logistics department head if necessary. In the meantime the goods can be already packaged by the warehousemen. If everything is ready, the packaged goods are prepared for being picked up by the logistic company."
+    },
+    "shipping_method.clarified": {
+      "precondition": "good.shipped",
+      "quote": "If goods shall be shipped, the secretary clarifies who will do the shipping."
+    },
+    "shipping_method.selected": {
+      "precondition": "shipping_method.clarified",
+      "quote": "If you have large amounts, special shipping will be necessary. In these cases the secretary invites three logistic companies to make offers and she selects one of them."
+    },
+    "package_label.written": {
+      "precondition": "good.shipped",
+      "quote": "If goods shall be shipped, the secretary clarifies who will do the shipping. ... Therefore a package label is written by the secretary"
+    },
+    "parcel_insurance.taken": {
+      "precondition": "good.shipped",
+      "quote": "If goods shall be shipped, the secretary clarifies who will do the shipping. ... Therefore a package label is written by the secretary and a parcel insurance taken by the logistics department head if necessary."
+    }
+  },
+  "validated_preconditions": {
+    "good.shipped": {
+      "precondition": "INITIAL",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "good.packaged": {
+      "precondition": "good.shipped",
+      "quote": "If goods shall be shipped, the secretary clarifies who will do the shipping.",
+      "status": "OK",
+      "reason": null
+    },
+    "good.prepared_for_pickup": {
+      "precondition": "good.packaged AND package_label.written",
+      "quote": "Therefore a package label is written by the secretary and a parcel insurance taken by the logistics department head if necessary. In the meantime the goods can be already packaged by the warehousemen. If everything is ready, the packaged goods are prepared for being picked up by the logistic company.",
+      "status": "OK",
+      "reason": null
+    },
+    "shipping_method.clarified": {
+      "precondition": "good.shipped",
+      "quote": "If goods shall be shipped, the secretary clarifies who will do the shipping.",
+      "status": "OK",
+      "reason": null
+    },
+    "shipping_method.selected": {
+      "precondition": "shipping_method.clarified",
+      "quote": "If you have large amounts, special shipping will be necessary. In these cases the secretary invites three logistic companies to make offers and she selects one of them.",
+      "status": "OK",
+      "reason": null
+    },
+    "package_label.written": {
+      "precondition": "good.shipped",
+      "quote": "If goods shall be shipped, the secretary clarifies who will do the shipping.",
+      "status": "OK",
+      "reason": null,
+      "retried": true
+    },
+    "parcel_insurance.taken": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "OK",
+      "reason": null,
+      "retried": true
+    }
+  },
+  "precondition_cycles": [],
+  "branch_conflicts": [],
+  "reference_graph": {
+    "nodes": [
+      {
+        "id": "good.shipped",
+        "weight": 1.0
+      },
+      {
+        "id": "good.packaged",
+        "weight": 0.667
+      },
+      {
+        "id": "good.prepared_for_pickup",
+        "weight": 0.667
+      },
+      {
+        "id": "shipping_method.clarified",
+        "weight": 0.667
+      },
+      {
+        "id": "shipping_method.selected",
+        "weight": 0.333
+      },
+      {
+        "id": "package_label.written",
+        "weight": 0.667
+      },
+      {
+        "id": "parcel_insurance.taken",
+        "weight": 0.0
+      }
+    ],
+    "edges": [
+      {
+        "from": "good.shipped",
+        "to": "good.packaged",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "If goods shall be shipped, the secretary clarifies who will do the shipping.",
+        "negated": false
+      },
+      {
+        "from": "good.packaged",
+        "to": "good.prepared_for_pickup",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "Therefore a package label is written by the secretary and a parcel insurance taken by the logistics department head if necessary. In the meantime the goods can be already packaged by the warehousemen. If everything is ready, the packaged goods are prepared for being picked up by the logistic company.",
+        "negated": false
+      },
+      {
+        "from": "package_label.written",
+        "to": "good.prepared_for_pickup",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "Therefore a package label is written by the secretary and a parcel insurance taken by the logistics department head if necessary. In the meantime the goods can be already packaged by the warehousemen. If everything is ready, the packaged goods are prepared for being picked up by the logistic company.",
+        "negated": false
+      },
+      {
+        "from": "good.shipped",
+        "to": "shipping_method.clarified",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "If goods shall be shipped, the secretary clarifies who will do the shipping.",
+        "negated": false
+      },
+      {
+        "from": "shipping_method.clarified",
+        "to": "shipping_method.selected",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "If you have large amounts, special shipping will be necessary. In these cases the secretary invites three logistic companies to make offers and she selects one of them.",
+        "negated": false
+      },
+      {
+        "from": "good.shipped",
+        "to": "package_label.written",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "If goods shall be shipped, the secretary clarifies who will do the shipping.",
+        "negated": false
+      }
+    ],
+    "cycles": [],
+    "branch_conflicts": [],
+    "exclusive_pairs": []
+  },
+  "dfg_edges": [
+    {
+      "source_id": "Task_0e6hvnj",
+      "source_label": "Get 3 offersfrom logisticcompanies",
+      "target_id": "Task_0s79ile",
+      "target_label": "Select logisticcompany andplace order",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_05ftug5",
+      "source_label": "Package goods",
+      "target_id": "Task_0sl26uo",
+      "target_label": "Prepare forpicking upgoods",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_12j0pib",
+      "source_label": "Insure parcel",
+      "target_id": "Task_0sl26uo",
+      "target_label": "Prepare forpicking upgoods",
+      "gateway_context": [
+        "InclusiveGateway",
+        "ExclusiveGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_0vaxgaa",
+      "source_label": "Clarify shipment method",
+      "target_id": "Task_0jsoxba",
+      "target_label": "Write packagelabel",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "no",
+        "InclusiveGateway",
+        "always"
+      ]
+    },
+    {
+      "source_id": "Task_0vaxgaa",
+      "source_label": "Clarify shipment method",
+      "target_id": "Task_12j0pib",
+      "target_label": "Insure parcel",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "no",
+        "InclusiveGateway",
+        "If insurancenecessary"
+      ]
+    },
+    {
+      "source_id": "Task_0vaxgaa",
+      "source_label": "Clarify shipment method",
+      "target_id": "Task_0e6hvnj",
+      "target_label": "Get 3 offersfrom logisticcompanies",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "yes"
+      ]
+    },
+    {
+      "source_id": "Task_0s79ile",
+      "source_label": "Select logisticcompany andplace order",
+      "target_id": "Task_0sl26uo",
+      "target_label": "Prepare forpicking upgoods",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_0jsoxba",
+      "source_label": "Write packagelabel",
+      "target_id": "Task_0sl26uo",
+      "target_label": "Prepare forpicking upgoods",
+      "gateway_context": [
+        "InclusiveGateway",
+        "ExclusiveGateway",
+        "ExclusiveGateway"
+      ]
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "Get 3 offersfrom logisticcompanies",
+      "subject_id": "Task_0e6hvnj",
+      "predicate": "follows",
+      "object": "Select logisticcompany andplace order",
+      "object_id": "Task_0s79ile"
+    },
+    {
+      "subject": "Package goods",
+      "subject_id": "Task_05ftug5",
+      "predicate": "follows",
+      "object": "Prepare forpicking upgoods",
+      "object_id": "Task_0sl26uo"
+    },
+    {
+      "subject": "Insure parcel",
+      "subject_id": "Task_12j0pib",
+      "predicate": "follows",
+      "object": "Prepare forpicking upgoods",
+      "object_id": "Task_0sl26uo"
+    },
+    {
+      "subject": "Clarify shipment method",
+      "subject_id": "Task_0vaxgaa",
+      "predicate": "follows",
+      "object": "Write packagelabel",
+      "object_id": "Task_0jsoxba"
+    },
+    {
+      "subject": "Clarify shipment method",
+      "subject_id": "Task_0vaxgaa",
+      "predicate": "follows",
+      "object": "Insure parcel",
+      "object_id": "Task_12j0pib"
+    },
+    {
+      "subject": "Clarify shipment method",
+      "subject_id": "Task_0vaxgaa",
+      "predicate": "follows",
+      "object": "Get 3 offersfrom logisticcompanies",
+      "object_id": "Task_0e6hvnj"
+    },
+    {
+      "subject": "Select logisticcompany andplace order",
+      "subject_id": "Task_0s79ile",
+      "predicate": "follows",
+      "object": "Prepare forpicking upgoods",
+      "object_id": "Task_0sl26uo"
+    },
+    {
+      "subject": "Write packagelabel",
+      "subject_id": "Task_0jsoxba",
+      "predicate": "follows",
+      "object": "Prepare forpicking upgoods",
+      "object_id": "Task_0sl26uo"
+    }
+  ],
+  "matches": {
+    "Task_0e6hvnj": {
+      "activity_label": "Get 3 offersfrom logisticcompanies",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_0s79ile": {
+      "activity_label": "Select logisticcompany andplace order",
+      "matches": [
+        {
+          "match": "shipping_method.selected",
+          "score": 0.4095
+        }
+      ],
+      "clusters": [
+        [
+          "shipping_method.selected"
+        ]
+      ]
+    },
+    "Task_05ftug5": {
+      "activity_label": "Package goods",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_0sl26uo": {
+      "activity_label": "Prepare forpicking upgoods",
+      "matches": [
+        {
+          "match": "good.prepared_for_pickup",
+          "score": 0.4062
+        }
+      ],
+      "clusters": [
+        [
+          "good.prepared_for_pickup"
+        ]
+      ]
+    },
+    "Task_12j0pib": {
+      "activity_label": "Insure parcel",
+      "matches": [
+        {
+          "match": "parcel_insurance.taken",
+          "score": 0.3821
+        }
+      ],
+      "clusters": [
+        [
+          "parcel_insurance.taken"
+        ]
+      ]
+    },
+    "Task_0vaxgaa": {
+      "activity_label": "Clarify shipment method",
+      "matches": [
+        {
+          "match": "shipping_method.clarified",
+          "score": 0.4744
+        }
+      ],
+      "clusters": [
+        [
+          "shipping_method.clarified"
+        ]
+      ]
+    },
+    "Task_0jsoxba": {
+      "activity_label": "Write packagelabel",
+      "matches": [
+        {
+          "match": "package_label.written",
+          "score": 0.3917
+        }
+      ],
+      "clusters": [
+        [
+          "package_label.written"
+        ]
+      ]
+    }
+  },
+  "process_graph": [
+    {
+      "from": "parcel_insurance.taken",
+      "to": "good.prepared_for_pickup",
+      "activity_from": "Insure parcel",
+      "activity_to": "Prepare forpicking upgoods",
+      "source_id": "Task_12j0pib",
+      "target_id": "Task_0sl26uo"
+    },
+    {
+      "from": "shipping_method.clarified",
+      "to": "package_label.written",
+      "activity_from": "Clarify shipment method",
+      "activity_to": "Write packagelabel",
+      "source_id": "Task_0vaxgaa",
+      "target_id": "Task_0jsoxba"
+    },
+    {
+      "from": "shipping_method.clarified",
+      "to": "parcel_insurance.taken",
+      "activity_from": "Clarify shipment method",
+      "activity_to": "Insure parcel",
+      "source_id": "Task_0vaxgaa",
+      "target_id": "Task_12j0pib"
+    },
+    {
+      "from": "shipping_method.selected",
+      "to": "good.prepared_for_pickup",
+      "activity_from": "Select logisticcompany andplace order",
+      "activity_to": "Prepare forpicking upgoods",
+      "source_id": "Task_0s79ile",
+      "target_id": "Task_0sl26uo"
+    },
+    {
+      "from": "package_label.written",
+      "to": "good.prepared_for_pickup",
+      "activity_from": "Write packagelabel",
+      "activity_to": "Prepare forpicking upgoods",
+      "source_id": "Task_0jsoxba",
+      "target_id": "Task_0sl26uo"
+    }
+  ],
+  "alignment": {
+    "good.packaged": {
+      "operator": "AND",
+      "quote": "If goods shall be shipped, the secretary clarifies who will do the shipping.",
+      "terms": [
+        {
+          "term": "good.shipped",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['good.shipped', 'good.packaged']",
+          "missing": [
+            "good.shipped",
+            "good.packaged"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "good.shipped"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "good.prepared_for_pickup": {
+      "operator": "AND",
+      "quote": "Therefore a package label is written by the secretary and a parcel insurance taken by the logistics department head if necessary. In the meantime the goods can be already packaged by the warehousemen. If everything is ready, the packaged goods are prepared for being picked up by the logistic company.",
+      "terms": [
+        {
+          "term": "good.packaged",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['good.packaged']",
+          "missing": [
+            "good.packaged"
+          ]
+        },
+        {
+          "term": "package_label.written",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "good.packaged",
+            "package_label.written"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "shipping_method.clarified": {
+      "operator": "AND",
+      "quote": "If goods shall be shipped, the secretary clarifies who will do the shipping.",
+      "terms": [
+        {
+          "term": "good.shipped",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['good.shipped']",
+          "missing": [
+            "good.shipped"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "good.shipped"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "shipping_method.selected": {
+      "operator": "AND",
+      "quote": "If you have large amounts, special shipping will be necessary. In these cases the secretary invites three logistic companies to make offers and she selects one of them.",
+      "terms": [
+        {
+          "term": "shipping_method.clarified",
+          "status": "VIOLATED",
+          "reason": "both states matched, no path in process",
+          "missing": []
+        }
+      ],
+      "status": "VIOLATED",
+      "clauses": [
+        {
+          "terms": [
+            "shipping_method.clarified"
+          ],
+          "status": "VIOLATED"
+        }
+      ]
+    },
+    "package_label.written": {
+      "operator": "AND",
+      "quote": "If goods shall be shipped, the secretary clarifies who will do the shipping.",
+      "terms": [
+        {
+          "term": "good.shipped",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['good.shipped']",
+          "missing": [
+            "good.shipped"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "good.shipped"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    }
+  },
+  "report": {
+    "verdict": {
+      "verdict": "FAITHFUL_WITH_RESERVATIONS",
+      "justification": "No gap found, but 1 requirement(s) from the text could not be associated with any clear activity in the observed process -- neither confirmed nor refuted. This verdict is NOT a confirmation of full faithfulness.",
+      "scope": "This verdict covers the causal reachability of the requirements expressed in the source text, not the general quality of the process model -- a multiplicity defect (an activity executed more than once due to a mismatched branching structure) is not covered by this verdict, even if the process is otherwise well-formed."
+    },
+    "summary": {
+      "ecarts": 0,
+      "non_verifiable": 1,
+      "conforme": 1
+    },
+    "ecarts": [],
+    "non_verifiable": [
+      {
+        "root_cause": "good shipped",
+        "quote": "If goods shall be shipped, the secretary clarifies who will do the shipping.",
+        "explanation": "The source text states: \"If goods shall be shipped, the secretary clarifies who will do the shipping.\" However, the activity \"good shipped\" was not observed in the process, making it impossible to verify if this requirement was met. (This same root cause also affects: Clarify shipment method, Prepare forpicking upgoods, Select logisticcompany andplace order, Write packagelabel.)",
+        "quote_verbatim": true,
+        "affected_activities": [
+          "Clarify shipment method",
+          "Prepare forpicking upgoods",
+          "Select logisticcompany andplace order",
+          "Write packagelabel",
+          "good packaged"
+        ],
+        "affected_count": 6
+      }
+    ],
+    "conforme": [
+      {
+        "target": "Prepare forpicking upgoods",
+        "term": "Write packagelabel"
+      }
+    ],
+    "piece_jointe_alignement_brut": {
+      "good.packaged": {
+        "operator": "AND",
+        "quote": "If goods shall be shipped, the secretary clarifies who will do the shipping.",
+        "terms": [
+          {
+            "term": "good.shipped",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['good.shipped', 'good.packaged']",
+            "missing": [
+              "good.shipped",
+              "good.packaged"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "good.shipped"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "good.prepared_for_pickup": {
+        "operator": "AND",
+        "quote": "Therefore a package label is written by the secretary and a parcel insurance taken by the logistics department head if necessary. In the meantime the goods can be already packaged by the warehousemen. If everything is ready, the packaged goods are prepared for being picked up by the logistic company.",
+        "terms": [
+          {
+            "term": "good.packaged",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['good.packaged']",
+            "missing": [
+              "good.packaged"
+            ]
+          },
+          {
+            "term": "package_label.written",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "good.packaged",
+              "package_label.written"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "shipping_method.clarified": {
+        "operator": "AND",
+        "quote": "If goods shall be shipped, the secretary clarifies who will do the shipping.",
+        "terms": [
+          {
+            "term": "good.shipped",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['good.shipped']",
+            "missing": [
+              "good.shipped"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "good.shipped"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "shipping_method.selected": {
+        "operator": "AND",
+        "quote": "If you have large amounts, special shipping will be necessary. In these cases the secretary invites three logistic companies to make offers and she selects one of them.",
+        "terms": [
+          {
+            "term": "shipping_method.clarified",
+            "status": "VIOLATED",
+            "reason": "both states matched, no path in process",
+            "missing": []
+          }
+        ],
+        "status": "VIOLATED",
+        "clauses": [
+          {
+            "terms": [
+              "shipping_method.clarified"
+            ],
+            "status": "VIOLATED"
+          }
+        ]
+      },
+      "package_label.written": {
+        "operator": "AND",
+        "quote": "If goods shall be shipped, the secretary clarifies who will do the shipping.",
+        "terms": [
+          {
+            "term": "good.shipped",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['good.shipped']",
+            "missing": [
+              "good.shipped"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "good.shipped"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      }
+    }
+  },
+  "errors": []
+}

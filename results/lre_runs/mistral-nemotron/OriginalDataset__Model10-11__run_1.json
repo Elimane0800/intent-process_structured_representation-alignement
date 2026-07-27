@@ -1,0 +1,1496 @@
+{
+  "case_name": "OriginalDataset/Model10-11",
+  "text": "The GO requests the measurements of the MSP. The MSP checks the received request. The MSP denies the request of the GO or the MSP performs the measurement. The MSP informs the GO about the failure of the reading or the MSP transmits the measured values to the GO. The GO processes the measured values. The GO sends the changed values to the MSP. The GO transmit the readings to the SP.\n",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "mistral-nemotron",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "mistral-nemotron",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/../datasets/lre/alignment_model_text-master/datasets/OriginalDataset/Models/Model10-11.bpmn",
+  "report_model": "mistral-nemotron",
+  "candidates": {
+    "go": {
+      "states": [
+        "requesting_measurements",
+        "processing_values",
+        "sending_changed_values",
+        "transmitting_readings"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "msp": {
+      "states": [
+        "checking_request",
+        "denying_request",
+        "performing_measurement",
+        "informing_failure",
+        "transmitting_values"
+      ],
+      "exclusive_groups": [
+        [
+          "denying_request",
+          "performing_measurement"
+        ],
+        [
+          "informing_failure",
+          "transmitting_values"
+        ]
+      ],
+      "concurrent_with": []
+    },
+    "measurement": {
+      "states": [
+        "requested",
+        "performed",
+        "failed",
+        "transmitted"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "values": {
+      "states": [
+        "measured",
+        "changed",
+        "processed",
+        "transmitted"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "readings": {
+      "states": [
+        "transmitted"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "sp": {
+      "states": [
+        "receiving_readings"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    }
+  },
+  "validation_report": {
+    "go": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "go"
+    },
+    "msp": {
+      "f_lex": "INDETERMINATE",
+      "kept": true,
+      "head_used": "msp"
+    },
+    "measurement": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "measurement"
+    },
+    "values": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "values"
+    },
+    "readings": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "readings"
+    },
+    "sp": {
+      "f_lex": "INDETERMINATE",
+      "kept": true,
+      "head_used": "sp"
+    },
+    "__meta__": {
+      "total_candidates": 6,
+      "indeterminate_kept_count": 2
+    }
+  },
+  "exclusive_groups_report": {
+    "accepted": [
+      {
+        "entity": "msp",
+        "states": [
+          "denying_request",
+          "performing_measurement"
+        ],
+        "quote": "The MSP denies the request of the GO or the MSP performs the measurement"
+      },
+      {
+        "entity": "msp",
+        "states": [
+          "informing_failure",
+          "transmitting_values"
+        ],
+        "quote": "The MSP informs the GO about the failure of the reading or the MSP transmits the measured values to the GO"
+      }
+    ],
+    "rejected": []
+  },
+  "state_space": {
+    "go": {
+      "states": [
+        "requesting_measurements",
+        "processing_values",
+        "sending_changed_values",
+        "transmitting_readings"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "msp": {
+      "states": [
+        "checking_request",
+        "denying_request",
+        "performing_measurement",
+        "informing_failure",
+        "transmitting_values"
+      ],
+      "exclusive_groups": [
+        [
+          "denying_request",
+          "performing_measurement"
+        ],
+        [
+          "informing_failure",
+          "transmitting_values"
+        ]
+      ],
+      "concurrent_with": []
+    },
+    "measurement": {
+      "states": [
+        "requested",
+        "performed",
+        "failed",
+        "transmitted"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "value": {
+      "states": [
+        "measured",
+        "changed",
+        "processed",
+        "transmitted"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "reading": {
+      "states": [
+        "transmitted"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "sp": {
+      "states": [
+        "receiving_readings"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    }
+  },
+  "state_space_dedup": {
+    "merged": {},
+    "ambiguous_not_merged": {}
+  },
+  "raw_preconditions": {
+    "go.requesting_measurements": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "go.processing_values": {
+      "precondition": "value.measured",
+      "quote": "The GO processes the measured values."
+    },
+    "go.sending_changed_values": {
+      "precondition": "value.processed",
+      "quote": "The GO sends the changed values to the MSP."
+    },
+    "go.transmitting_readings": {
+      "precondition": "value.changed",
+      "quote": "The GO transmit the readings to the SP."
+    },
+    "msp.checking_request": {
+      "precondition": "go.requesting_measurements",
+      "quote": "The MSP checks the received request."
+    },
+    "msp.denying_request": {
+      "precondition": "msp.checking_request",
+      "quote": "The MSP denies the request of the GO or the MSP performs the measurement."
+    },
+    "msp.performing_measurement": {
+      "precondition": "msp.checking_request",
+      "quote": "The MSP denies the request of the GO or the MSP performs the measurement."
+    },
+    "msp.informing_failure": {
+      "precondition": "msp.denying_request",
+      "quote": "The MSP informs the GO about the failure of the reading or the MSP transmits the measured values to the GO."
+    },
+    "msp.transmitting_values": {
+      "precondition": "msp.performing_measurement",
+      "quote": "The MSP informs the GO about the failure of the reading or the MSP transmits the measured values to the GO."
+    },
+    "measurement.requested": {
+      "precondition": "go.requesting_measurements",
+      "quote": "The GO requests the measurements of the MSP."
+    },
+    "measurement.performed": {
+      "precondition": "msp.performing_measurement",
+      "quote": "The MSP performs the measurement."
+    },
+    "measurement.failed": {
+      "precondition": "msp.denying_request",
+      "quote": "The MSP informs the GO about the failure of the reading or the MSP transmits the measured values to the GO."
+    },
+    "measurement.transmitted": {
+      "precondition": "msp.transmitting_values",
+      "quote": "The MSP transmits the measured values to the GO."
+    },
+    "value.measured": {
+      "precondition": "measurement.performed",
+      "quote": "The MSP transmits the measured values to the GO."
+    },
+    "value.changed": {
+      "precondition": "go.sending_changed_values",
+      "quote": "The GO sends the changed values to the MSP."
+    },
+    "value.processed": {
+      "precondition": "value.measured",
+      "quote": "The GO processes the measured values."
+    },
+    "value.transmitted": {
+      "precondition": "msp.transmitting_values",
+      "quote": "The MSP transmits the measured values to the GO."
+    },
+    "reading.transmitted": {
+      "precondition": "go.transmitting_readings",
+      "quote": "The GO transmit the readings to the SP."
+    },
+    "sp.receiving_readings": {
+      "precondition": "reading.transmitted",
+      "quote": "The GO transmit the readings to the SP."
+    }
+  },
+  "validated_preconditions": {
+    "go.requesting_measurements": {
+      "precondition": "INITIAL",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "go.processing_values": {
+      "precondition": "value.measured",
+      "quote": "The GO processes the measured values.",
+      "status": "OK",
+      "reason": null
+    },
+    "go.sending_changed_values": {
+      "precondition": "value.processed",
+      "quote": "The GO sends the changed values to the MSP.",
+      "status": "OK",
+      "reason": null
+    },
+    "go.transmitting_readings": {
+      "precondition": "value.changed",
+      "quote": "The GO transmit the readings to the SP.",
+      "status": "OK",
+      "reason": null
+    },
+    "msp.checking_request": {
+      "precondition": "go.requesting_measurements",
+      "quote": "The MSP checks the received request.",
+      "status": "OK",
+      "reason": null
+    },
+    "msp.denying_request": {
+      "precondition": "msp.checking_request",
+      "quote": "The MSP denies the request of the GO or the MSP performs the measurement.",
+      "status": "OK",
+      "reason": null
+    },
+    "msp.performing_measurement": {
+      "precondition": "msp.checking_request",
+      "quote": "The MSP denies the request of the GO or the MSP performs the measurement.",
+      "status": "OK",
+      "reason": null
+    },
+    "msp.informing_failure": {
+      "precondition": "msp.denying_request",
+      "quote": "The MSP informs the GO about the failure of the reading or the MSP transmits the measured values to the GO.",
+      "status": "OK",
+      "reason": null
+    },
+    "msp.transmitting_values": {
+      "precondition": "msp.performing_measurement",
+      "quote": "The MSP informs the GO about the failure of the reading or the MSP transmits the measured values to the GO.",
+      "status": "OK",
+      "reason": null
+    },
+    "measurement.requested": {
+      "precondition": "go.requesting_measurements",
+      "quote": "The GO requests the measurements of the MSP.",
+      "status": "OK",
+      "reason": null
+    },
+    "measurement.performed": {
+      "precondition": "msp.performing_measurement",
+      "quote": "The MSP performs the measurement.",
+      "status": "OK",
+      "reason": null
+    },
+    "measurement.failed": {
+      "precondition": "msp.denying_request",
+      "quote": "The MSP informs the GO about the failure of the reading or the MSP transmits the measured values to the GO.",
+      "status": "OK",
+      "reason": null
+    },
+    "measurement.transmitted": {
+      "precondition": "msp.performing_measurement",
+      "quote": "The MSP performs the measurement.",
+      "status": "OK",
+      "reason": null,
+      "retried": true
+    },
+    "value.measured": {
+      "precondition": "msp.performing_measurement",
+      "quote": "the MSP performs the measurement",
+      "status": "OK",
+      "reason": null,
+      "retried": true
+    },
+    "value.changed": {
+      "precondition": "go.sending_changed_values",
+      "quote": "The GO sends the changed values to the MSP.",
+      "status": "OK",
+      "reason": null
+    },
+    "value.processed": {
+      "precondition": "value.measured",
+      "quote": "The GO processes the measured values.",
+      "status": "OK",
+      "reason": null
+    },
+    "value.transmitted": {
+      "precondition": "msp.transmitting_values",
+      "quote": "the MSP transmits the measured values to the GO",
+      "status": "OK",
+      "reason": null,
+      "retried": true
+    },
+    "reading.transmitted": {
+      "precondition": "go.transmitting_readings",
+      "quote": "The GO transmit the readings to the SP.",
+      "status": "OK",
+      "reason": null
+    },
+    "sp.receiving_readings": {
+      "precondition": "reading.transmitted",
+      "quote": "The GO transmit the readings to the SP.",
+      "status": "OK",
+      "reason": null
+    }
+  },
+  "precondition_cycles": [],
+  "branch_conflicts": [
+    {
+      "entity": "msp",
+      "exclusive_group": [
+        "denying_request",
+        "performing_measurement"
+      ],
+      "conflicting_targets": [
+        "msp.denying_request",
+        "msp.performing_measurement"
+      ],
+      "shared_precondition": "msp.checking_request",
+      "reason": "targets marked mutually exclusive in the state space share the exact same accepted precondition -- reaching it would trigger both branches at once"
+    }
+  ],
+  "reference_graph": {
+    "nodes": [
+      {
+        "id": "go.requesting_measurements",
+        "weight": 0.4
+      },
+      {
+        "id": "go.processing_values",
+        "weight": 0.2
+      },
+      {
+        "id": "go.sending_changed_values",
+        "weight": 0.4
+      },
+      {
+        "id": "go.transmitting_readings",
+        "weight": 0.4
+      },
+      {
+        "id": "msp.checking_request",
+        "weight": 0.6
+      },
+      {
+        "id": "msp.denying_request",
+        "weight": 0.6
+      },
+      {
+        "id": "msp.performing_measurement",
+        "weight": 1.0
+      },
+      {
+        "id": "msp.informing_failure",
+        "weight": 0.2
+      },
+      {
+        "id": "msp.transmitting_values",
+        "weight": 0.4
+      },
+      {
+        "id": "measurement.requested",
+        "weight": 0.2
+      },
+      {
+        "id": "measurement.performed",
+        "weight": 0.2
+      },
+      {
+        "id": "measurement.failed",
+        "weight": 0.2
+      },
+      {
+        "id": "measurement.transmitted",
+        "weight": 0.2
+      },
+      {
+        "id": "value.measured",
+        "weight": 0.6
+      },
+      {
+        "id": "value.changed",
+        "weight": 0.4
+      },
+      {
+        "id": "value.processed",
+        "weight": 0.4
+      },
+      {
+        "id": "value.transmitted",
+        "weight": 0.2
+      },
+      {
+        "id": "reading.transmitted",
+        "weight": 0.4
+      },
+      {
+        "id": "sp.receiving_readings",
+        "weight": 0.2
+      }
+    ],
+    "edges": [
+      {
+        "from": "value.measured",
+        "to": "go.processing_values",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "The GO processes the measured values.",
+        "negated": false
+      },
+      {
+        "from": "value.processed",
+        "to": "go.sending_changed_values",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "The GO sends the changed values to the MSP.",
+        "negated": false
+      },
+      {
+        "from": "value.changed",
+        "to": "go.transmitting_readings",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "The GO transmit the readings to the SP.",
+        "negated": false
+      },
+      {
+        "from": "go.requesting_measurements",
+        "to": "msp.checking_request",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "The MSP checks the received request.",
+        "negated": false
+      },
+      {
+        "from": "msp.checking_request",
+        "to": "msp.denying_request",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "The MSP denies the request of the GO or the MSP performs the measurement.",
+        "negated": false
+      },
+      {
+        "from": "msp.checking_request",
+        "to": "msp.performing_measurement",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "The MSP denies the request of the GO or the MSP performs the measurement.",
+        "negated": false
+      },
+      {
+        "from": "msp.denying_request",
+        "to": "msp.informing_failure",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "The MSP informs the GO about the failure of the reading or the MSP transmits the measured values to the GO.",
+        "negated": false
+      },
+      {
+        "from": "msp.performing_measurement",
+        "to": "msp.transmitting_values",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "The MSP informs the GO about the failure of the reading or the MSP transmits the measured values to the GO.",
+        "negated": false
+      },
+      {
+        "from": "go.requesting_measurements",
+        "to": "measurement.requested",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "The GO requests the measurements of the MSP.",
+        "negated": false
+      },
+      {
+        "from": "msp.performing_measurement",
+        "to": "measurement.performed",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "The MSP performs the measurement.",
+        "negated": false
+      },
+      {
+        "from": "msp.denying_request",
+        "to": "measurement.failed",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "The MSP informs the GO about the failure of the reading or the MSP transmits the measured values to the GO.",
+        "negated": false
+      },
+      {
+        "from": "msp.performing_measurement",
+        "to": "measurement.transmitted",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "The MSP performs the measurement.",
+        "negated": false
+      },
+      {
+        "from": "msp.performing_measurement",
+        "to": "value.measured",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "the MSP performs the measurement",
+        "negated": false
+      },
+      {
+        "from": "go.sending_changed_values",
+        "to": "value.changed",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "The GO sends the changed values to the MSP.",
+        "negated": false
+      },
+      {
+        "from": "value.measured",
+        "to": "value.processed",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "The GO processes the measured values.",
+        "negated": false
+      },
+      {
+        "from": "msp.transmitting_values",
+        "to": "value.transmitted",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "the MSP transmits the measured values to the GO",
+        "negated": false
+      },
+      {
+        "from": "go.transmitting_readings",
+        "to": "reading.transmitted",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "The GO transmit the readings to the SP.",
+        "negated": false
+      },
+      {
+        "from": "reading.transmitted",
+        "to": "sp.receiving_readings",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "The GO transmit the readings to the SP.",
+        "negated": false
+      }
+    ],
+    "cycles": [],
+    "branch_conflicts": [
+      {
+        "entity": "msp",
+        "exclusive_group": [
+          "denying_request",
+          "performing_measurement"
+        ],
+        "conflicting_targets": [
+          "msp.denying_request",
+          "msp.performing_measurement"
+        ],
+        "shared_precondition": "msp.checking_request",
+        "reason": "targets marked mutually exclusive in the state space share the exact same accepted precondition -- reaching it would trigger both branches at once"
+      }
+    ],
+    "exclusive_pairs": [
+      {
+        "entity": "msp",
+        "nodes": [
+          "msp.denying_request",
+          "msp.performing_measurement"
+        ]
+      },
+      {
+        "entity": "msp",
+        "nodes": [
+          "msp.informing_failure",
+          "msp.transmitting_values"
+        ]
+      }
+    ]
+  },
+  "dfg_edges": [
+    {
+      "source_id": "Task_0",
+      "source_label": "Inform about the failure of the reading",
+      "target_id": "IntermediateMessageEventCatching_0",
+      "target_label": "",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_6",
+      "source_label": "Request measurement",
+      "target_id": "Task_7",
+      "target_label": "Process measured values",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_6",
+      "source_label": "Request measurement",
+      "target_id": "IntermediateMessageEventCatching_0",
+      "target_label": "",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_6",
+      "source_label": "Request measurement",
+      "target_id": "IntermediateMessageEventCatching_1",
+      "target_label": "",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_6",
+      "source_label": "Request measurement",
+      "target_id": "Task_5",
+      "target_label": "Check",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_3",
+      "source_label": "Check performance of measurements",
+      "target_id": "Task_0",
+      "target_label": "Inform about the failure of the reading",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_3",
+      "source_label": "Check performance of measurements",
+      "target_id": "Task_1",
+      "target_label": "Transmit the measured values",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_7",
+      "source_label": "Process measured values",
+      "target_id": "Task_1",
+      "target_label": "Transmit the measured values",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_7",
+      "source_label": "Process measured values",
+      "target_id": "Task_8",
+      "target_label": "Send changed values",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_5",
+      "source_label": "Check",
+      "target_id": "Task_4",
+      "target_label": "Reject",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_5",
+      "source_label": "Check",
+      "target_id": "Task_3",
+      "target_label": "Check performance of measurements",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_4",
+      "source_label": "Reject",
+      "target_id": "IntermediateMessageEventCatching_1",
+      "target_label": "",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_8",
+      "source_label": "Send changed values",
+      "target_id": "Task_2",
+      "target_label": "Transmit readings to the SP",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_1",
+      "source_label": "Transmit the measured values",
+      "target_id": "Task_2",
+      "target_label": "Transmit readings to the SP",
+      "gateway_context": []
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "Inform about the failure of the reading",
+      "subject_id": "Task_0",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "IntermediateMessageEventCatching_0"
+    },
+    {
+      "subject": "Request measurement",
+      "subject_id": "Task_6",
+      "predicate": "follows",
+      "object": "Process measured values",
+      "object_id": "Task_7"
+    },
+    {
+      "subject": "Request measurement",
+      "subject_id": "Task_6",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "IntermediateMessageEventCatching_0"
+    },
+    {
+      "subject": "Request measurement",
+      "subject_id": "Task_6",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "IntermediateMessageEventCatching_1"
+    },
+    {
+      "subject": "Request measurement",
+      "subject_id": "Task_6",
+      "predicate": "follows",
+      "object": "Check",
+      "object_id": "Task_5"
+    },
+    {
+      "subject": "Check performance of measurements",
+      "subject_id": "Task_3",
+      "predicate": "follows",
+      "object": "Inform about the failure of the reading",
+      "object_id": "Task_0"
+    },
+    {
+      "subject": "Check performance of measurements",
+      "subject_id": "Task_3",
+      "predicate": "follows",
+      "object": "Transmit the measured values",
+      "object_id": "Task_1"
+    },
+    {
+      "subject": "Process measured values",
+      "subject_id": "Task_7",
+      "predicate": "follows",
+      "object": "Transmit the measured values",
+      "object_id": "Task_1"
+    },
+    {
+      "subject": "Process measured values",
+      "subject_id": "Task_7",
+      "predicate": "follows",
+      "object": "Send changed values",
+      "object_id": "Task_8"
+    },
+    {
+      "subject": "Check",
+      "subject_id": "Task_5",
+      "predicate": "follows",
+      "object": "Reject",
+      "object_id": "Task_4"
+    },
+    {
+      "subject": "Check",
+      "subject_id": "Task_5",
+      "predicate": "follows",
+      "object": "Check performance of measurements",
+      "object_id": "Task_3"
+    },
+    {
+      "subject": "Reject",
+      "subject_id": "Task_4",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "IntermediateMessageEventCatching_1"
+    },
+    {
+      "subject": "Send changed values",
+      "subject_id": "Task_8",
+      "predicate": "follows",
+      "object": "Transmit readings to the SP",
+      "object_id": "Task_2"
+    },
+    {
+      "subject": "Transmit the measured values",
+      "subject_id": "Task_1",
+      "predicate": "follows",
+      "object": "Transmit readings to the SP",
+      "object_id": "Task_2"
+    }
+  ],
+  "matches": {
+    "Task_0": {
+      "activity_label": "Inform about the failure of the reading",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_6": {
+      "activity_label": "Request measurement",
+      "matches": [
+        {
+          "match": "measurement.requested",
+          "score": 0.4628
+        },
+        {
+          "match": "go.requesting_measurements",
+          "score": 0.4467
+        }
+      ],
+      "clusters": [
+        [
+          "measurement.requested"
+        ],
+        [
+          "go.requesting_measurements"
+        ]
+      ]
+    },
+    "Task_7": {
+      "activity_label": "Process measured values",
+      "matches": [
+        {
+          "match": "value.measured",
+          "score": 0.374
+        }
+      ],
+      "clusters": [
+        [
+          "value.measured"
+        ]
+      ]
+    },
+    "Task_5": {
+      "activity_label": "Check",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_3": {
+      "activity_label": "Check performance of measurements",
+      "matches": [
+        {
+          "match": "go.requesting_measurements",
+          "score": 0.379
+        },
+        {
+          "match": "measurement.performed",
+          "score": 0.3703
+        }
+      ],
+      "clusters": [
+        [
+          "go.requesting_measurements"
+        ],
+        [
+          "measurement.performed"
+        ]
+      ]
+    },
+    "Task_1": {
+      "activity_label": "Transmit the measured values",
+      "matches": [
+        {
+          "match": "measurement.transmitted",
+          "score": 0.472
+        }
+      ],
+      "clusters": [
+        [
+          "measurement.transmitted"
+        ]
+      ]
+    },
+    "Task_8": {
+      "activity_label": "Send changed values",
+      "matches": [
+        {
+          "match": "go.sending_changed_values",
+          "score": 0.7622
+        }
+      ],
+      "clusters": [
+        [
+          "go.sending_changed_values"
+        ]
+      ]
+    },
+    "Task_4": {
+      "activity_label": "Reject",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_2": {
+      "activity_label": "Transmit readings to the SP",
+      "matches": [
+        {
+          "match": "sp.receiving_readings",
+          "score": 0.6834
+        }
+      ],
+      "clusters": [
+        [
+          "sp.receiving_readings"
+        ]
+      ]
+    }
+  },
+  "process_graph": [
+    {
+      "from": "measurement.requested",
+      "to": "value.measured",
+      "activity_from": "Request measurement",
+      "activity_to": "Process measured values",
+      "source_id": "Task_6",
+      "target_id": "Task_7"
+    },
+    {
+      "from": "go.requesting_measurements",
+      "to": "value.measured",
+      "activity_from": "Request measurement",
+      "activity_to": "Process measured values",
+      "source_id": "Task_6",
+      "target_id": "Task_7"
+    },
+    {
+      "from": "go.requesting_measurements",
+      "to": "measurement.transmitted",
+      "activity_from": "Check performance of measurements",
+      "activity_to": "Transmit the measured values",
+      "source_id": "Task_3",
+      "target_id": "Task_1"
+    },
+    {
+      "from": "measurement.performed",
+      "to": "measurement.transmitted",
+      "activity_from": "Check performance of measurements",
+      "activity_to": "Transmit the measured values",
+      "source_id": "Task_3",
+      "target_id": "Task_1"
+    },
+    {
+      "from": "value.measured",
+      "to": "measurement.transmitted",
+      "activity_from": "Process measured values",
+      "activity_to": "Transmit the measured values",
+      "source_id": "Task_7",
+      "target_id": "Task_1"
+    },
+    {
+      "from": "value.measured",
+      "to": "go.sending_changed_values",
+      "activity_from": "Process measured values",
+      "activity_to": "Send changed values",
+      "source_id": "Task_7",
+      "target_id": "Task_8"
+    },
+    {
+      "from": "go.sending_changed_values",
+      "to": "sp.receiving_readings",
+      "activity_from": "Send changed values",
+      "activity_to": "Transmit readings to the SP",
+      "source_id": "Task_8",
+      "target_id": "Task_2"
+    },
+    {
+      "from": "measurement.transmitted",
+      "to": "sp.receiving_readings",
+      "activity_from": "Transmit the measured values",
+      "activity_to": "Transmit readings to the SP",
+      "source_id": "Task_1",
+      "target_id": "Task_2"
+    }
+  ],
+  "alignment": {
+    "go.processing_values": {
+      "operator": "AND",
+      "quote": "The GO processes the measured values.",
+      "terms": [
+        {
+          "term": "value.measured",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['go.processing_values']",
+          "missing": [
+            "go.processing_values"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "value.measured"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "go.sending_changed_values": {
+      "operator": "AND",
+      "quote": "The GO sends the changed values to the MSP.",
+      "terms": [
+        {
+          "term": "value.processed",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['value.processed']",
+          "missing": [
+            "value.processed"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "value.processed"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "go.transmitting_readings": {
+      "operator": "AND",
+      "quote": "The GO transmit the readings to the SP.",
+      "terms": [
+        {
+          "term": "value.changed",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['value.changed', 'go.transmitting_readings']",
+          "missing": [
+            "value.changed",
+            "go.transmitting_readings"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "value.changed"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "msp.checking_request": {
+      "operator": "AND",
+      "quote": "The MSP checks the received request.",
+      "terms": [
+        {
+          "term": "go.requesting_measurements",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['msp.checking_request']",
+          "missing": [
+            "msp.checking_request"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "go.requesting_measurements"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "msp.denying_request": {
+      "operator": "AND",
+      "quote": "The MSP denies the request of the GO or the MSP performs the measurement.",
+      "terms": [
+        {
+          "term": "msp.checking_request",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['msp.checking_request', 'msp.denying_request']",
+          "missing": [
+            "msp.checking_request",
+            "msp.denying_request"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "msp.checking_request"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "msp.performing_measurement": {
+      "operator": "AND",
+      "quote": "The MSP denies the request of the GO or the MSP performs the measurement.",
+      "terms": [
+        {
+          "term": "msp.checking_request",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['msp.checking_request', 'msp.performing_measurement']",
+          "missing": [
+            "msp.checking_request",
+            "msp.performing_measurement"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "msp.checking_request"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "msp.informing_failure": {
+      "operator": "AND",
+      "quote": "The MSP informs the GO about the failure of the reading or the MSP transmits the measured values to the GO.",
+      "terms": [
+        {
+          "term": "msp.denying_request",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['msp.denying_request', 'msp.informing_failure']",
+          "missing": [
+            "msp.denying_request",
+            "msp.informing_failure"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "msp.denying_request"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "msp.transmitting_values": {
+      "operator": "AND",
+      "quote": "The MSP informs the GO about the failure of the reading or the MSP transmits the measured values to the GO.",
+      "terms": [
+        {
+          "term": "msp.performing_measurement",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['msp.performing_measurement', 'msp.transmitting_values']",
+          "missing": [
+            "msp.performing_measurement",
+            "msp.transmitting_values"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "msp.performing_measurement"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "measurement.requested": {
+      "operator": "AND",
+      "quote": "The GO requests the measurements of the MSP.",
+      "terms": [
+        {
+          "term": "go.requesting_measurements",
+          "status": "VIOLATED",
+          "reason": "both states matched, no path in process",
+          "missing": []
+        }
+      ],
+      "status": "VIOLATED",
+      "clauses": [
+        {
+          "terms": [
+            "go.requesting_measurements"
+          ],
+          "status": "VIOLATED"
+        }
+      ]
+    },
+    "measurement.performed": {
+      "operator": "AND",
+      "quote": "The MSP performs the measurement.",
+      "terms": [
+        {
+          "term": "msp.performing_measurement",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['msp.performing_measurement']",
+          "missing": [
+            "msp.performing_measurement"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "msp.performing_measurement"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "measurement.failed": {
+      "operator": "AND",
+      "quote": "The MSP informs the GO about the failure of the reading or the MSP transmits the measured values to the GO.",
+      "terms": [
+        {
+          "term": "msp.denying_request",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['msp.denying_request', 'measurement.failed']",
+          "missing": [
+            "msp.denying_request",
+            "measurement.failed"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "msp.denying_request"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "measurement.transmitted": {
+      "operator": "AND",
+      "quote": "The MSP performs the measurement.",
+      "terms": [
+        {
+          "term": "msp.performing_measurement",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['msp.performing_measurement']",
+          "missing": [
+            "msp.performing_measurement"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "msp.performing_measurement"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "value.measured": {
+      "operator": "AND",
+      "quote": "the MSP performs the measurement",
+      "terms": [
+        {
+          "term": "msp.performing_measurement",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['msp.performing_measurement']",
+          "missing": [
+            "msp.performing_measurement"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "msp.performing_measurement"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "value.changed": {
+      "operator": "AND",
+      "quote": "The GO sends the changed values to the MSP.",
+      "terms": [
+        {
+          "term": "go.sending_changed_values",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['value.changed']",
+          "missing": [
+            "value.changed"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "go.sending_changed_values"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "value.processed": {
+      "operator": "AND",
+      "quote": "The GO processes the measured values.",
+      "terms": [
+        {
+          "term": "value.measured",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['value.processed']",
+          "missing": [
+            "value.processed"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "value.measured"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "value.transmitted": {
+      "operator": "AND",
+      "quote": "the MSP transmits the measured values to the GO",
+      "terms": [
+        {
+          "term": "msp.transmitting_values",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['msp.transmitting_values', 'value.transmitted']",
+          "missing": [
+            "msp.transmitting_values",
+            "value.transmitted"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "msp.transmitting_values"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "reading.transmitted": {
+      "operator": "AND",
+      "quote": "The GO transmit the readings to the SP.",
+      "terms": [
+        {
+          "term": "go.transmitting_readings",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['go.transmitting_readings', 'reading.transmitted']",
+          "missing": [
+            "go.transmitting_readings",
+            "reading.transmitted"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "go.transmitting_readings"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "sp.receiving_readings": {
+      "operator": "AND",
+      "quote": "The GO transmit the readings to the SP.",
+      "terms": [
+        {
+          "term": "reading.transmitted",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['reading.transmitted']",
+          "missing": [
+            "reading.transmitted"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "reading.transmitted"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    }
+  },
+  "errors": [
+    "report: Error code: 429 - {'status': 429, 'title': 'Too Many Requests'}"
+  ]
+}

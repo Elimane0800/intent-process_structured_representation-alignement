@@ -1,0 +1,122 @@
+{
+  "zero_shot": {
+    "meta/llama-3.1-8b-instruct": {
+      "job_application": {
+        "state_space_used": {
+          "job_application": {
+            "states": [
+              "sent",
+              "confirmed",
+              "rated",
+              "negotiated",
+              "in_probation",
+              "rated_by_applicant",
+              "rated_by_company"
+            ],
+            "exclusive_groups": [
+              [
+                "confirmed",
+                "rated"
+              ]
+            ],
+            "concurrent_with": []
+          },
+          "job_offer": {
+            "states": [
+              "sent"
+            ],
+            "exclusive_groups": [],
+            "concurrent_with": []
+          },
+          "job_interview": {
+            "states": [
+              "negotiated"
+            ],
+            "exclusive_groups": [],
+            "concurrent_with": []
+          },
+          "job": {
+            "states": [
+              "permanent",
+              "not_permanent"
+            ],
+            "exclusive_groups": [
+              [
+                "permanent",
+                "not_permanent"
+              ]
+            ],
+            "concurrent_with": []
+          },
+          "review": {
+            "states": [
+              "visible",
+              "invisible"
+            ],
+            "exclusive_groups": [],
+            "concurrent_with": []
+          }
+        },
+        "raw": {
+          "job_application": {
+            "precondition": "job_application.sent OR job_application.confirmed OR job_application.rated",
+            "quote": "You have to regularly report, to which companies you wrote job applications."
+          },
+          "job_offer": {
+            "precondition": "job_application.sent",
+            "quote": "Based on your job applications, new potential job offers are sent to you."
+          },
+          "job_interview": {
+            "precondition": "job_application.negotiated",
+            "quote": "A job interview can be negotiated."
+          },
+          "job": {
+            "precondition": "job_offer.sent AND job_interview.negotiated AND job_application.rated AND job_application.in_probation AND job_application.rated_by_applicant AND job_application.rated_by_company",
+            "quote": "When a company wants you to work for them, you enter the probation phase. After probation phase, you can rate the company and the company can rate you."
+          },
+          "review": {
+            "precondition": "job_application.rated_by_applicant AND job_application.rated_by_company AND job_application.in_probation AND job_application.rated_by_applicant AND job_application.rated_by_company AND (job_application.rated_by_applicant OR job_application.rated_by_company) AND NOT job.permanent",
+            "quote": [
+              "After probation phase, you can rate the company and the company can rate you.",
+              "If a job becomes permanent, the process ends, unless you rated the company C or less, then you continue to receive job offers, but no longer have to report."
+            ]
+          }
+        },
+        "validated": {
+          "job_application": {
+            "precondition": "UNRESOLVED",
+            "quote": null,
+            "status": "DOWNGRADED",
+            "reason": "malformed or unknown target key: 'job_application' is not a valid entity.state of the state space"
+          },
+          "job_offer": {
+            "precondition": "UNRESOLVED",
+            "quote": null,
+            "status": "DOWNGRADED",
+            "reason": "malformed or unknown target key: 'job_offer' is not a valid entity.state of the state space"
+          },
+          "job_interview": {
+            "precondition": "UNRESOLVED",
+            "quote": null,
+            "status": "DOWNGRADED",
+            "reason": "malformed or unknown target key: 'job_interview' is not a valid entity.state of the state space"
+          },
+          "job": {
+            "precondition": "UNRESOLVED",
+            "quote": null,
+            "status": "DOWNGRADED",
+            "reason": "malformed or unknown target key: 'job' is not a valid entity.state of the state space"
+          },
+          "review": {
+            "precondition": "UNRESOLVED",
+            "quote": null,
+            "status": "DOWNGRADED",
+            "reason": "malformed or unknown target key: 'review' is not a valid entity.state of the state space"
+          }
+        },
+        "cycles": [],
+        "branch_conflicts": []
+      }
+    }
+  }
+}

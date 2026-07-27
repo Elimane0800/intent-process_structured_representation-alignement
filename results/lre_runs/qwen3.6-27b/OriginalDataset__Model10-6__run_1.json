@@ -1,0 +1,534 @@
+{
+  "case_name": "OriginalDataset/Model10-6",
+  "text": "The MSPN sents a dismissal to the MSPO. The MSPO reviews the dismissal. The MSPO rejects the dismissal of the MSPN or The MSPO confirms the dismissal of the MSPN.\n",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "qwen3.6-27b",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "qwen3.6-27b",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/../datasets/lre/alignment_model_text-master/datasets/OriginalDataset/Models/Model10-6.bpmn",
+  "report_model": "qwen3.6-27b",
+  "candidates": {
+    "dismissal": {
+      "states": [
+        "sent",
+        "reviewed",
+        "rejected",
+        "confirmed"
+      ],
+      "exclusive_groups": [
+        [
+          "rejected",
+          "confirmed"
+        ]
+      ],
+      "concurrent_with": []
+    }
+  },
+  "validation_report": {
+    "dismissal": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "dismissal"
+    },
+    "__meta__": {
+      "total_candidates": 1,
+      "indeterminate_kept_count": 0
+    }
+  },
+  "exclusive_groups_report": {
+    "accepted": [
+      {
+        "entity": "dismissal",
+        "states": [
+          "rejected",
+          "confirmed"
+        ],
+        "quote": "The MSPO rejects the dismissal of the MSPN or The MSPO confirms the dismissal of the MSPN"
+      }
+    ],
+    "rejected": []
+  },
+  "state_space": {
+    "dismissal": {
+      "states": [
+        "sent",
+        "reviewed",
+        "rejected",
+        "confirmed"
+      ],
+      "exclusive_groups": [
+        [
+          "rejected",
+          "confirmed"
+        ]
+      ],
+      "concurrent_with": []
+    }
+  },
+  "state_space_dedup": {
+    "merged": {},
+    "ambiguous_not_merged": {}
+  },
+  "raw_preconditions": {
+    "dismissal.sent": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "dismissal.reviewed": {
+      "precondition": "dismissal.sent",
+      "quote": "The MSPN sents a dismissal to the MSPO. The MSPO reviews the dismissal."
+    },
+    "dismissal.rejected": {
+      "precondition": "dismissal.reviewed",
+      "quote": "The MSPO reviews the dismissal. The MSPO rejects the dismissal of the MSPN"
+    },
+    "dismissal.confirmed": {
+      "precondition": "dismissal.reviewed",
+      "quote": "The MSPO reviews the dismissal. The MSPO confirms the dismissal of the MSPN."
+    }
+  },
+  "validated_preconditions": {
+    "dismissal.sent": {
+      "precondition": "INITIAL",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "dismissal.reviewed": {
+      "precondition": "dismissal.sent",
+      "quote": "The MSPN sents a dismissal to the MSPO. The MSPO reviews the dismissal.",
+      "status": "OK",
+      "reason": null
+    },
+    "dismissal.rejected": {
+      "precondition": "dismissal.reviewed",
+      "quote": "The MSPO reviews the dismissal. The MSPO rejects the dismissal of the MSPN",
+      "status": "OK",
+      "reason": null
+    },
+    "dismissal.confirmed": {
+      "precondition": "dismissal.reviewed",
+      "quote": "The MSPO reviews the dismissal.",
+      "status": "OK",
+      "reason": null,
+      "retried": true
+    }
+  },
+  "precondition_cycles": [],
+  "branch_conflicts": [
+    {
+      "entity": "dismissal",
+      "exclusive_group": [
+        "rejected",
+        "confirmed"
+      ],
+      "conflicting_targets": [
+        "dismissal.rejected",
+        "dismissal.confirmed"
+      ],
+      "shared_precondition": "dismissal.reviewed",
+      "reason": "targets marked mutually exclusive in the state space share the exact same accepted precondition -- reaching it would trigger both branches at once"
+    }
+  ],
+  "reference_graph": {
+    "nodes": [
+      {
+        "id": "dismissal.sent",
+        "weight": 0.333
+      },
+      {
+        "id": "dismissal.reviewed",
+        "weight": 1.0
+      },
+      {
+        "id": "dismissal.rejected",
+        "weight": 0.333
+      },
+      {
+        "id": "dismissal.confirmed",
+        "weight": 0.333
+      }
+    ],
+    "edges": [
+      {
+        "from": "dismissal.sent",
+        "to": "dismissal.reviewed",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "The MSPN sents a dismissal to the MSPO. The MSPO reviews the dismissal.",
+        "negated": false
+      },
+      {
+        "from": "dismissal.reviewed",
+        "to": "dismissal.rejected",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "The MSPO reviews the dismissal. The MSPO rejects the dismissal of the MSPN",
+        "negated": false
+      },
+      {
+        "from": "dismissal.reviewed",
+        "to": "dismissal.confirmed",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "The MSPO reviews the dismissal.",
+        "negated": false
+      }
+    ],
+    "cycles": [],
+    "branch_conflicts": [
+      {
+        "entity": "dismissal",
+        "exclusive_group": [
+          "rejected",
+          "confirmed"
+        ],
+        "conflicting_targets": [
+          "dismissal.rejected",
+          "dismissal.confirmed"
+        ],
+        "shared_precondition": "dismissal.reviewed",
+        "reason": "targets marked mutually exclusive in the state space share the exact same accepted precondition -- reaching it would trigger both branches at once"
+      }
+    ],
+    "exclusive_pairs": [
+      {
+        "entity": "dismissal",
+        "nodes": [
+          "dismissal.rejected",
+          "dismissal.confirmed"
+        ]
+      }
+    ]
+  },
+  "dfg_edges": [
+    {
+      "source_id": "Task_0",
+      "source_label": "Conduct dismissal",
+      "target_id": "IntermediateMessageEventThrowing_0",
+      "target_label": "",
+      "gateway_context": []
+    },
+    {
+      "source_id": "IntermediateMessageEventThrowing_0",
+      "source_label": "",
+      "target_id": "IntermediateMessageEventCatching_0",
+      "target_label": "",
+      "gateway_context": []
+    },
+    {
+      "source_id": "IntermediateMessageEventThrowing_0",
+      "source_label": "",
+      "target_id": "Task_1",
+      "target_label": "Review",
+      "gateway_context": [
+        "NormalStartEvent"
+      ]
+    },
+    {
+      "source_id": "Task_2",
+      "source_label": "Reject dismissal",
+      "target_id": "IntermediateMessageEventCatching_0",
+      "target_label": "",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_1",
+      "source_label": "Review",
+      "target_id": "Task_2",
+      "target_label": "Reject dismissal",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_1",
+      "source_label": "Review",
+      "target_id": "Task_3",
+      "target_label": "Confirm dismissal",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_3",
+      "source_label": "Confirm dismissal",
+      "target_id": "IntermediateMessageEventCatching_0",
+      "target_label": "",
+      "gateway_context": []
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "Conduct dismissal",
+      "subject_id": "Task_0",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "IntermediateMessageEventThrowing_0"
+    },
+    {
+      "subject": "",
+      "subject_id": "IntermediateMessageEventThrowing_0",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "IntermediateMessageEventCatching_0"
+    },
+    {
+      "subject": "",
+      "subject_id": "IntermediateMessageEventThrowing_0",
+      "predicate": "follows",
+      "object": "Review",
+      "object_id": "Task_1"
+    },
+    {
+      "subject": "Reject dismissal",
+      "subject_id": "Task_2",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "IntermediateMessageEventCatching_0"
+    },
+    {
+      "subject": "Review",
+      "subject_id": "Task_1",
+      "predicate": "follows",
+      "object": "Reject dismissal",
+      "object_id": "Task_2"
+    },
+    {
+      "subject": "Review",
+      "subject_id": "Task_1",
+      "predicate": "follows",
+      "object": "Confirm dismissal",
+      "object_id": "Task_3"
+    },
+    {
+      "subject": "Confirm dismissal",
+      "subject_id": "Task_3",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "IntermediateMessageEventCatching_0"
+    }
+  ],
+  "matches": {
+    "Task_0": {
+      "activity_label": "Conduct dismissal",
+      "matches": [
+        {
+          "match": "dismissal.sent",
+          "score": 0.6196
+        },
+        {
+          "match": "dismissal.reviewed",
+          "score": 0.588
+        },
+        {
+          "match": "dismissal.confirmed",
+          "score": 0.5856
+        }
+      ],
+      "clusters": [
+        [
+          "dismissal.sent"
+        ],
+        [
+          "dismissal.reviewed"
+        ],
+        [
+          "dismissal.confirmed"
+        ]
+      ]
+    },
+    "Task_1": {
+      "activity_label": "Review",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_2": {
+      "activity_label": "Reject dismissal",
+      "matches": [
+        {
+          "match": "dismissal.rejected",
+          "score": 0.5041
+        }
+      ],
+      "clusters": [
+        [
+          "dismissal.rejected"
+        ]
+      ]
+    },
+    "Task_3": {
+      "activity_label": "Confirm dismissal",
+      "matches": [
+        {
+          "match": "dismissal.confirmed",
+          "score": 0.4892
+        }
+      ],
+      "clusters": [
+        [
+          "dismissal.confirmed"
+        ]
+      ]
+    }
+  },
+  "process_graph": [],
+  "alignment": {
+    "dismissal.reviewed": {
+      "operator": "AND",
+      "quote": "The MSPN sents a dismissal to the MSPO. The MSPO reviews the dismissal.",
+      "terms": [
+        {
+          "term": "dismissal.sent",
+          "status": "VIOLATED",
+          "reason": "both states matched, no path in process",
+          "missing": []
+        }
+      ],
+      "status": "VIOLATED",
+      "clauses": [
+        {
+          "terms": [
+            "dismissal.sent"
+          ],
+          "status": "VIOLATED"
+        }
+      ]
+    },
+    "dismissal.rejected": {
+      "operator": "AND",
+      "quote": "The MSPO reviews the dismissal. The MSPO rejects the dismissal of the MSPN",
+      "terms": [
+        {
+          "term": "dismissal.reviewed",
+          "status": "VIOLATED",
+          "reason": "both states matched, no path in process",
+          "missing": []
+        }
+      ],
+      "status": "VIOLATED",
+      "clauses": [
+        {
+          "terms": [
+            "dismissal.reviewed"
+          ],
+          "status": "VIOLATED"
+        }
+      ]
+    },
+    "dismissal.confirmed": {
+      "operator": "AND",
+      "quote": "The MSPO reviews the dismissal.",
+      "terms": [
+        {
+          "term": "dismissal.reviewed",
+          "status": "VIOLATED",
+          "reason": "both states matched, no path in process",
+          "missing": []
+        }
+      ],
+      "status": "VIOLATED",
+      "clauses": [
+        {
+          "terms": [
+            "dismissal.reviewed"
+          ],
+          "status": "VIOLATED"
+        }
+      ]
+    }
+  },
+  "report": {
+    "verdict": {
+      "verdict": "NOT_FAITHFUL",
+      "justification": "1 gap(s) found between the source text's requirements and the observed process -- at least one precondition asserted by the text is contradicted by the model's actual sequence of activities.",
+      "scope": "This verdict covers the causal reachability of the requirements expressed in the source text, not the general quality of the process model -- a multiplicity defect (an activity executed more than once due to a mismatched branching structure) is not covered by this verdict, even if the process is otherwise well-formed."
+    },
+    "summary": {
+      "ecarts": 1,
+      "non_verifiable": 0,
+      "conforme": 0
+    },
+    "ecarts": [
+      {
+        "root_cause": "Conduct dismissal",
+        "quote": "The MSPN sents a dismissal to the MSPO. The MSPO reviews the dismissal.",
+        "explanation": "The source text states: \"The MSPN sents a dismissal to the MSPO. The MSPO reviews the dismissal.\" This establishes a requirement for the activity \"Conduct dismissal\" to precede itself, yet the observed process flow does not enforce this order. (This same root cause also affects: Reject dismissal.)",
+        "quote_verbatim": true,
+        "affected_activities": [
+          "Conduct dismissal",
+          "Reject dismissal"
+        ],
+        "affected_count": 3
+      }
+    ],
+    "non_verifiable": [],
+    "conforme": [],
+    "piece_jointe_alignement_brut": {
+      "dismissal.reviewed": {
+        "operator": "AND",
+        "quote": "The MSPN sents a dismissal to the MSPO. The MSPO reviews the dismissal.",
+        "terms": [
+          {
+            "term": "dismissal.sent",
+            "status": "VIOLATED",
+            "reason": "both states matched, no path in process",
+            "missing": []
+          }
+        ],
+        "status": "VIOLATED",
+        "clauses": [
+          {
+            "terms": [
+              "dismissal.sent"
+            ],
+            "status": "VIOLATED"
+          }
+        ]
+      },
+      "dismissal.rejected": {
+        "operator": "AND",
+        "quote": "The MSPO reviews the dismissal. The MSPO rejects the dismissal of the MSPN",
+        "terms": [
+          {
+            "term": "dismissal.reviewed",
+            "status": "VIOLATED",
+            "reason": "both states matched, no path in process",
+            "missing": []
+          }
+        ],
+        "status": "VIOLATED",
+        "clauses": [
+          {
+            "terms": [
+              "dismissal.reviewed"
+            ],
+            "status": "VIOLATED"
+          }
+        ]
+      },
+      "dismissal.confirmed": {
+        "operator": "AND",
+        "quote": "The MSPO reviews the dismissal.",
+        "terms": [
+          {
+            "term": "dismissal.reviewed",
+            "status": "VIOLATED",
+            "reason": "both states matched, no path in process",
+            "missing": []
+          }
+        ],
+        "status": "VIOLATED",
+        "clauses": [
+          {
+            "terms": [
+              "dismissal.reviewed"
+            ],
+            "status": "VIOLATED"
+          }
+        ]
+      }
+    }
+  },
+  "errors": []
+}

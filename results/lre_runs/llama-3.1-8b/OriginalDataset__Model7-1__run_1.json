@@ -1,0 +1,392 @@
+{
+  "case_name": "OriginalDataset/Model7-1",
+  "text": "First, the Manager checks the open leads. Afterwards, he selects the top five ones. He then tells his Sales Assistant to call the contact person of the leads. The Sales Assistant calls each customer. If someone is interested, he sends a note to the Manager. The Manager then processes the lead. Otherwise, he calls the next customer.",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "llama-3.1-8b",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "llama-3.1-8b",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/../datasets/lre/alignment_model_text-master/datasets/OriginalDataset/Models/Model7-1.bpmn",
+  "report_model": "llama-3.1-8b",
+  "candidates": {
+    "lead": {
+      "states": [
+        "open",
+        "selected",
+        "called",
+        "processed"
+      ],
+      "exclusive_groups": [
+        [
+          "open",
+          "selected"
+        ]
+      ],
+      "concurrent_with": []
+    },
+    "sales_assistant": {
+      "states": [
+        "calling"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "customer": {
+      "states": [
+        "called",
+        "interested"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "manager": {
+      "states": [
+        "checking",
+        "selecting",
+        "calling",
+        "processing"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    }
+  },
+  "validation_report": {
+    "lead": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "lead"
+    },
+    "sales_assistant": {
+      "f_lex": "ACTOR",
+      "kept": false,
+      "head_used": "assistant"
+    },
+    "customer": {
+      "f_lex": "ACTOR",
+      "kept": false,
+      "head_used": "customer"
+    },
+    "manager": {
+      "f_lex": "ACTOR",
+      "kept": false,
+      "head_used": "manager"
+    },
+    "__meta__": {
+      "total_candidates": 4,
+      "indeterminate_kept_count": 0
+    }
+  },
+  "exclusive_groups_report": {
+    "accepted": [
+      {
+        "entity": "lead",
+        "states": [
+          "open",
+          "selected"
+        ],
+        "quote": "he selects the top five ones"
+      }
+    ],
+    "rejected": []
+  },
+  "state_space": {
+    "lead": {
+      "states": [
+        "open",
+        "selected",
+        "called",
+        "processed"
+      ],
+      "exclusive_groups": [
+        [
+          "open",
+          "selected"
+        ]
+      ],
+      "concurrent_with": []
+    }
+  },
+  "state_space_dedup": {
+    "merged": {},
+    "ambiguous_not_merged": {}
+  },
+  "raw_preconditions": {
+    "lead.open": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "lead.selected": {
+      "precondition": "lead.open AND lead.selected",
+      "quote": "Afterwards, he selects the top five ones."
+    },
+    "lead.called": {
+      "precondition": "lead.selected OR lead.called",
+      "quote": "The Sales Assistant calls each customer."
+    },
+    "lead.processed": {
+      "precondition": "lead.called AND NOT lead.processed",
+      "quote": "Otherwise, he calls the next customer."
+    }
+  },
+  "validated_preconditions": {
+    "lead.open": {
+      "precondition": "INITIAL",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "lead.selected": {
+      "precondition": "lead.open",
+      "quote": "First, the Manager checks the open leads.",
+      "status": "OK",
+      "reason": null,
+      "retried": true
+    },
+    "lead.called": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "DOWNGRADED",
+      "reason": "mutual exclusivity violation: 'lead.open' and 'lead.selected' are marked exclusive_groups for this entity but both appear in the same AND-clause: ('lead.open', 'lead.selected')",
+      "retried": true
+    },
+    "lead.processed": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "DOWNGRADED",
+      "reason": "mutual exclusivity violation: 'lead.open' and 'lead.selected' are marked exclusive_groups for this entity but both appear in the same AND-clause: ('lead.open', 'lead.selected')",
+      "retried": true
+    }
+  },
+  "precondition_cycles": [],
+  "branch_conflicts": [],
+  "reference_graph": {
+    "nodes": [
+      {
+        "id": "lead.open",
+        "weight": 1.0
+      },
+      {
+        "id": "lead.selected",
+        "weight": 1.0
+      },
+      {
+        "id": "lead.called",
+        "weight": 0.0
+      },
+      {
+        "id": "lead.processed",
+        "weight": 0.0
+      }
+    ],
+    "edges": [
+      {
+        "from": "lead.open",
+        "to": "lead.selected",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "First, the Manager checks the open leads.",
+        "negated": false
+      }
+    ],
+    "cycles": [],
+    "branch_conflicts": [],
+    "exclusive_pairs": [
+      {
+        "entity": "lead",
+        "nodes": [
+          "lead.open",
+          "lead.selected"
+        ]
+      }
+    ]
+  },
+  "dfg_edges": [
+    {
+      "source_id": "Task_0",
+      "source_label": "Call contact person",
+      "target_id": "Task_0",
+      "target_label": "Call contact person",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_0",
+      "source_label": "Call contact person",
+      "target_id": "Task_3",
+      "target_label": "Process lead",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_1",
+      "source_label": "Check open leads",
+      "target_id": "Task_2",
+      "target_label": "Select top five leads",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_2",
+      "source_label": "Select top five leads",
+      "target_id": "Task_0",
+      "target_label": "Call contact person",
+      "gateway_context": []
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "Call contact person",
+      "subject_id": "Task_0",
+      "predicate": "follows",
+      "object": "Call contact person",
+      "object_id": "Task_0"
+    },
+    {
+      "subject": "Call contact person",
+      "subject_id": "Task_0",
+      "predicate": "follows",
+      "object": "Process lead",
+      "object_id": "Task_3"
+    },
+    {
+      "subject": "Check open leads",
+      "subject_id": "Task_1",
+      "predicate": "follows",
+      "object": "Select top five leads",
+      "object_id": "Task_2"
+    },
+    {
+      "subject": "Select top five leads",
+      "subject_id": "Task_2",
+      "predicate": "follows",
+      "object": "Call contact person",
+      "object_id": "Task_0"
+    }
+  ],
+  "matches": {
+    "Task_0": {
+      "activity_label": "Call contact person",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_3": {
+      "activity_label": "Process lead",
+      "matches": [
+        {
+          "match": "lead.processed",
+          "score": 0.3913
+        }
+      ],
+      "clusters": [
+        [
+          "lead.processed"
+        ]
+      ]
+    },
+    "Task_1": {
+      "activity_label": "Check open leads",
+      "matches": [
+        {
+          "match": "lead.open",
+          "score": 0.6284
+        }
+      ],
+      "clusters": [
+        [
+          "lead.open"
+        ]
+      ]
+    },
+    "Task_2": {
+      "activity_label": "Select top five leads",
+      "matches": [
+        {
+          "match": "lead.selected",
+          "score": 0.4329
+        }
+      ],
+      "clusters": [
+        [
+          "lead.selected"
+        ]
+      ]
+    }
+  },
+  "process_graph": [
+    {
+      "from": "lead.open",
+      "to": "lead.selected",
+      "activity_from": "Check open leads",
+      "activity_to": "Select top five leads",
+      "source_id": "Task_1",
+      "target_id": "Task_2"
+    }
+  ],
+  "alignment": {
+    "lead.selected": {
+      "operator": "AND",
+      "quote": "First, the Manager checks the open leads.",
+      "terms": [
+        {
+          "term": "lead.open",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED",
+      "clauses": [
+        {
+          "terms": [
+            "lead.open"
+          ],
+          "status": "SATISFIED"
+        }
+      ]
+    }
+  },
+  "report": {
+    "verdict": {
+      "verdict": "FAITHFUL",
+      "justification": "Every non-trivial precondition asserted by the source text was confirmed in the observed process's sequence of activities.",
+      "scope": "This verdict covers the causal reachability of the requirements expressed in the source text, not the general quality of the process model -- a multiplicity defect (an activity executed more than once due to a mismatched branching structure) is not covered by this verdict, even if the process is otherwise well-formed."
+    },
+    "summary": {
+      "ecarts": 0,
+      "non_verifiable": 0,
+      "conforme": 1
+    },
+    "ecarts": [],
+    "non_verifiable": [],
+    "conforme": [
+      {
+        "target": "Select top five leads",
+        "term": "Check open leads"
+      }
+    ],
+    "piece_jointe_alignement_brut": {
+      "lead.selected": {
+        "operator": "AND",
+        "quote": "First, the Manager checks the open leads.",
+        "terms": [
+          {
+            "term": "lead.open",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED",
+        "clauses": [
+          {
+            "terms": [
+              "lead.open"
+            ],
+            "status": "SATISFIED"
+          }
+        ]
+      }
+    }
+  },
+  "errors": []
+}

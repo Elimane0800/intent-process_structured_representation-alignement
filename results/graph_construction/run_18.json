@@ -1,0 +1,162 @@
+{
+  "zero_shot": {
+    "meta/llama-3.1-8b-instruct": {
+      "job_application": {
+        "nodes": [
+          {
+            "id": "job_application.sent",
+            "weight": 0.25
+          },
+          {
+            "id": "job_application.confirmed",
+            "weight": 0.5
+          },
+          {
+            "id": "job_application.rated",
+            "weight": 1.0
+          },
+          {
+            "id": "job_application.negotiated",
+            "weight": 0.5
+          },
+          {
+            "id": "job_application.in_probation",
+            "weight": 0.75
+          },
+          {
+            "id": "job_application.rated_by_applicant",
+            "weight": 0.5
+          },
+          {
+            "id": "job_application.rated_by_company",
+            "weight": 0.5
+          },
+          {
+            "id": "job_offer.sent",
+            "weight": 0.25
+          },
+          {
+            "id": "job_interview.negotiated",
+            "weight": 0.25
+          },
+          {
+            "id": "job.permanent",
+            "weight": 0.0
+          },
+          {
+            "id": "job.not_permanent",
+            "weight": 0.5
+          },
+          {
+            "id": "review.visible",
+            "weight": 0.0
+          },
+          {
+            "id": "review.invisible",
+            "weight": 0.0
+          }
+        ],
+        "edges": [
+          {
+            "from": "job_application.rated",
+            "to": "job_offer.sent",
+            "clause": 0,
+            "type": "cross_entity_guard",
+            "quote": "Based on your job applications, new potential job offers are sent to you",
+            "negated": false
+          },
+          {
+            "from": "job_application.rated",
+            "to": "job_interview.negotiated",
+            "clause": 0,
+            "type": "cross_entity_guard",
+            "quote": "A job interview can be negotiated",
+            "negated": false
+          },
+          {
+            "from": "job_application.rated_by_applicant",
+            "to": "job.not_permanent",
+            "clause": 0,
+            "type": "cross_entity_guard",
+            "quote": "Companies have to confirm that they received job applications and rate the application.",
+            "negated": false
+          },
+          {
+            "from": "job_application.rated_by_company",
+            "to": "job.not_permanent",
+            "clause": 1,
+            "type": "cross_entity_guard",
+            "quote": "Companies have to confirm that they received job applications and rate the application.",
+            "negated": false
+          },
+          {
+            "from": "job_application.sent",
+            "to": "job_application.confirmed",
+            "clause": 0,
+            "type": "sequence",
+            "quote": "Companies have to confirm that they received job applications",
+            "negated": false
+          },
+          {
+            "from": "job_application.confirmed",
+            "to": "job_application.rated",
+            "clause": 0,
+            "type": "sequence",
+            "quote": "Companies have to confirm that they received job applications and rate the application",
+            "negated": false
+          },
+          {
+            "from": "job_application.rated",
+            "to": "job_application.negotiated",
+            "clause": 0,
+            "type": "sequence",
+            "quote": "A job interview can be negotiated",
+            "negated": false
+          },
+          {
+            "from": "job_application.negotiated",
+            "to": "job_application.in_probation",
+            "clause": 0,
+            "type": "sequence",
+            "quote": "When a company wants you to work for them, you enter the probation phase",
+            "negated": false
+          },
+          {
+            "from": "job_application.in_probation",
+            "to": "job_application.rated_by_applicant",
+            "clause": 0,
+            "type": "sequence",
+            "quote": "After probation phase, you can rate the company",
+            "negated": false
+          },
+          {
+            "from": "job_application.in_probation",
+            "to": "job_application.rated_by_company",
+            "clause": 0,
+            "type": "sequence",
+            "quote": "After probation phase, you can rate the company and the company can rate you",
+            "negated": false
+          }
+        ],
+        "cycles": [],
+        "branch_conflicts": [],
+        "exclusive_pairs": [
+          {
+            "entity": "job_application",
+            "nodes": [
+              "job_application.confirmed",
+              "job_application.rated"
+            ]
+          },
+          {
+            "entity": "job",
+            "nodes": [
+              "job.permanent",
+              "job.not_permanent"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,1268 @@
+{
+  "case_name": "OriginalDataset/Model9-5",
+  "text": "After the Expense Report is received, a new account must be created if the employee does not already have one. The report is then reviewed for automatic approval. Amounts under $200 are automatically approved, whereas amounts equal to or over $200 require approval of the supervisor. In case of rejection, the employee must receive a rejection notice by email. Otherwise, the reimbursement goes to the employees direct deposit bank account. If the request is not completed in 7 days, then the employee must receive an approval in progress email. If the request is not finished within 30 days, then the process is stopped and the employee receives an email cancellation notice and must re-submit the expense report.",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "llama-3.1-8b",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "llama-3.1-8b",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/../datasets/lre/alignment_model_text-master/datasets/OriginalDataset/Models/Model9-5.bpmn",
+  "report_model": "llama-3.1-8b",
+  "candidates": {
+    "expense_report": {
+      "states": [
+        "received",
+        "created",
+        "reviewed",
+        "approved",
+        "rejected",
+        "completed",
+        "in_progress",
+        "canceled"
+      ],
+      "exclusive_groups": [
+        [
+          "approved",
+          "rejected"
+        ],
+        [
+          "canceled",
+          "completed"
+        ]
+      ],
+      "concurrent_with": []
+    },
+    "reimbursement_request": {
+      "states": [
+        "pending",
+        "approved",
+        "rejected",
+        "in_progress",
+        "canceled"
+      ],
+      "exclusive_groups": [
+        [
+          "approved",
+          "rejected"
+        ]
+      ],
+      "concurrent_with": []
+    },
+    "employee": {
+      "states": [
+        "new",
+        "existing"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "account": {
+      "states": [
+        "created",
+        "existing"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "expense_report_review": {
+      "states": [
+        "automatic_approval",
+        "supervisor_approval"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "approval_process": {
+      "states": [
+        "in_progress",
+        "completed",
+        "canceled"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    }
+  },
+  "validation_report": {
+    "expense_report": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "report"
+    },
+    "reimbursement_request": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "request"
+    },
+    "employee": {
+      "f_lex": "ACTOR",
+      "kept": false,
+      "head_used": "employee"
+    },
+    "account": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "account"
+    },
+    "expense_report_review": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "review"
+    },
+    "approval_process": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "process"
+    },
+    "__meta__": {
+      "total_candidates": 6,
+      "indeterminate_kept_count": 0
+    }
+  },
+  "exclusive_groups_report": {
+    "accepted": [
+      {
+        "entity": "expense_report",
+        "states": [
+          "approved",
+          "rejected"
+        ],
+        "quote": "Amounts under $200 are automatically approved, whereas amounts equal to or over $200 require approval of the supervisor"
+      },
+      {
+        "entity": "expense_report",
+        "states": [
+          "canceled",
+          "completed"
+        ],
+        "quote": "If the request is not finished within 30 days, then the process is stopped and the employee receives an email cancellation notice and must re-submit the expense report."
+      },
+      {
+        "entity": "reimbursement_request",
+        "states": [
+          "approved",
+          "rejected"
+        ],
+        "quote": "In case of rejection, the employee must receive a rejection notice by email."
+      }
+    ],
+    "rejected": [
+      {
+        "entity": "reimbursement_request",
+        "states": [
+          "canceled",
+          "completed"
+        ],
+        "quote": "If the request is not completed in 7 days, then the employee must receive an approval in progress email.",
+        "reason": "references a state outside this entity's own states list"
+      }
+    ]
+  },
+  "state_space": {
+    "expense_report": {
+      "states": [
+        "received",
+        "created",
+        "reviewed",
+        "approved",
+        "rejected",
+        "completed",
+        "in_progress",
+        "canceled"
+      ],
+      "exclusive_groups": [
+        [
+          "approved",
+          "rejected"
+        ],
+        [
+          "canceled",
+          "completed"
+        ]
+      ],
+      "concurrent_with": []
+    },
+    "reimbursement_request": {
+      "states": [
+        "pending",
+        "approved",
+        "rejected",
+        "in_progress",
+        "canceled"
+      ],
+      "exclusive_groups": [
+        [
+          "approved",
+          "rejected"
+        ]
+      ],
+      "concurrent_with": []
+    },
+    "account": {
+      "states": [
+        "created",
+        "existing"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "expense_report_review": {
+      "states": [
+        "automatic_approval",
+        "supervisor_approval"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "approval_process": {
+      "states": [
+        "in_progress",
+        "completed",
+        "canceled"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    }
+  },
+  "state_space_dedup": {
+    "merged": {},
+    "ambiguous_not_merged": {}
+  },
+  "raw_preconditions": {
+    "expense_report.received": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "reimbursement_request.pending": {
+      "precondition": "expense_report.received AND NOT account.existing",
+      "quote": "After the Expense Report is received, a new account must be created if the employee does not already have one."
+    },
+    "expense_report_review.automatic_approval": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "expense_report_review.supervisor_approval": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "reimbursement_request.approved": {
+      "precondition": "expense_report_review.automatic_approval OR expense_report_review.supervisor_approval",
+      "quote": "Otherwise, the reimbursement goes to the employees direct deposit bank account."
+    },
+    "reimbursement_request.rejected": {
+      "precondition": "expense_report_review.automatic_approval OR expense_report_review.supervisor_approval",
+      "quote": "In case of rejection, the employee must receive a rejection notice by email."
+    },
+    "reimbursement_request.in_progress": {
+      "precondition": "reimbursement_request.pending AND NOT expense_report.approved AND (expense_report.approval_process.in_progress OR expense_report.approval_process.canceled)",
+      "quote": "If the request is not completed in 7 days, then the employee must receive an approval in progress email."
+    },
+    "reimbursement_request.canceled": {
+      "precondition": "reimbursement_request.pending AND NOT expense_report.approved AND expense_report.approval_process.canceled",
+      "quote": "If the request is not finished within 30 days, then the process is stopped and the employee receives an email cancellation notice and must re-submit the expense report."
+    },
+    "account.created": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "account.existing": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "approval_process.in_progress": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "approval_process.completed": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "approval_process.canceled": {
+      "precondition": "INITIAL",
+      "quote": null
+    }
+  },
+  "validated_preconditions": {
+    "expense_report.received": {
+      "precondition": "INITIAL",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "reimbursement_request.pending": {
+      "precondition": "expense_report.received AND NOT account.existing",
+      "quote": "After the Expense Report is received, a new account must be created if the employee does not already have one.",
+      "status": "OK",
+      "reason": null
+    },
+    "expense_report_review.automatic_approval": {
+      "precondition": "INITIAL",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "expense_report_review.supervisor_approval": {
+      "precondition": "INITIAL",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "reimbursement_request.approved": {
+      "precondition": "expense_report_review.automatic_approval OR expense_report_review.supervisor_approval",
+      "quote": "Otherwise, the reimbursement goes to the employees direct deposit bank account.",
+      "status": "OK",
+      "reason": null
+    },
+    "reimbursement_request.rejected": {
+      "precondition": "expense_report_review.automatic_approval OR expense_report_review.supervisor_approval",
+      "quote": "In case of rejection, the employee must receive a rejection notice by email.",
+      "status": "OK",
+      "reason": null
+    },
+    "reimbursement_request.in_progress": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "DOWNGRADED",
+      "reason": "unbalanced parentheses: 'reimbursement_request.pending AND NOT expense_report.approved AND (expense_report.approval_process.in_progress OR expense_report.approval_process.canceled)'",
+      "retried": true
+    },
+    "reimbursement_request.canceled": {
+      "precondition": "reimbursement_request.pending AND NOT expense_report.approved",
+      "quote": "In case of rejection, the employee must receive a rejection notice by email.",
+      "status": "OK",
+      "reason": null,
+      "retried": true
+    },
+    "account.created": {
+      "precondition": "INITIAL",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "account.existing": {
+      "precondition": "INITIAL",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "approval_process.in_progress": {
+      "precondition": "INITIAL",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "approval_process.completed": {
+      "precondition": "INITIAL",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "approval_process.canceled": {
+      "precondition": "INITIAL",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    }
+  },
+  "precondition_cycles": [],
+  "branch_conflicts": [
+    {
+      "entity": "reimbursement_request",
+      "exclusive_group": [
+        "approved",
+        "rejected"
+      ],
+      "conflicting_targets": [
+        "reimbursement_request.approved",
+        "reimbursement_request.rejected"
+      ],
+      "shared_precondition": "expense_report_review.automatic_approval OR expense_report_review.supervisor_approval",
+      "reason": "targets marked mutually exclusive in the state space share the exact same accepted precondition -- reaching it would trigger both branches at once"
+    }
+  ],
+  "reference_graph": {
+    "nodes": [
+      {
+        "id": "expense_report.received",
+        "weight": 0.333
+      },
+      {
+        "id": "expense_report.created",
+        "weight": 0.0
+      },
+      {
+        "id": "expense_report.reviewed",
+        "weight": 0.0
+      },
+      {
+        "id": "expense_report.approved",
+        "weight": 0.333
+      },
+      {
+        "id": "expense_report.rejected",
+        "weight": 0.0
+      },
+      {
+        "id": "expense_report.completed",
+        "weight": 0.0
+      },
+      {
+        "id": "expense_report.in_progress",
+        "weight": 0.0
+      },
+      {
+        "id": "expense_report.canceled",
+        "weight": 0.0
+      },
+      {
+        "id": "reimbursement_request.pending",
+        "weight": 1.0
+      },
+      {
+        "id": "reimbursement_request.approved",
+        "weight": 0.667
+      },
+      {
+        "id": "reimbursement_request.rejected",
+        "weight": 0.667
+      },
+      {
+        "id": "reimbursement_request.in_progress",
+        "weight": 0.0
+      },
+      {
+        "id": "reimbursement_request.canceled",
+        "weight": 0.667
+      },
+      {
+        "id": "account.created",
+        "weight": 0.0
+      },
+      {
+        "id": "account.existing",
+        "weight": 0.333
+      },
+      {
+        "id": "expense_report_review.automatic_approval",
+        "weight": 0.667
+      },
+      {
+        "id": "expense_report_review.supervisor_approval",
+        "weight": 0.667
+      },
+      {
+        "id": "approval_process.in_progress",
+        "weight": 0.0
+      },
+      {
+        "id": "approval_process.completed",
+        "weight": 0.0
+      },
+      {
+        "id": "approval_process.canceled",
+        "weight": 0.0
+      }
+    ],
+    "edges": [
+      {
+        "from": "expense_report.received",
+        "to": "reimbursement_request.pending",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "After the Expense Report is received, a new account must be created if the employee does not already have one.",
+        "negated": false
+      },
+      {
+        "from": "account.existing",
+        "to": "reimbursement_request.pending",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "After the Expense Report is received, a new account must be created if the employee does not already have one.",
+        "negated": true
+      },
+      {
+        "from": "expense_report_review.automatic_approval",
+        "to": "reimbursement_request.approved",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "Otherwise, the reimbursement goes to the employees direct deposit bank account.",
+        "negated": false
+      },
+      {
+        "from": "expense_report_review.supervisor_approval",
+        "to": "reimbursement_request.approved",
+        "clause": 1,
+        "type": "cross_entity_guard",
+        "quote": "Otherwise, the reimbursement goes to the employees direct deposit bank account.",
+        "negated": false
+      },
+      {
+        "from": "expense_report_review.automatic_approval",
+        "to": "reimbursement_request.rejected",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "In case of rejection, the employee must receive a rejection notice by email.",
+        "negated": false
+      },
+      {
+        "from": "expense_report_review.supervisor_approval",
+        "to": "reimbursement_request.rejected",
+        "clause": 1,
+        "type": "cross_entity_guard",
+        "quote": "In case of rejection, the employee must receive a rejection notice by email.",
+        "negated": false
+      },
+      {
+        "from": "reimbursement_request.pending",
+        "to": "reimbursement_request.canceled",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "In case of rejection, the employee must receive a rejection notice by email.",
+        "negated": false
+      },
+      {
+        "from": "expense_report.approved",
+        "to": "reimbursement_request.canceled",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "In case of rejection, the employee must receive a rejection notice by email.",
+        "negated": true
+      }
+    ],
+    "cycles": [],
+    "branch_conflicts": [
+      {
+        "entity": "reimbursement_request",
+        "exclusive_group": [
+          "approved",
+          "rejected"
+        ],
+        "conflicting_targets": [
+          "reimbursement_request.approved",
+          "reimbursement_request.rejected"
+        ],
+        "shared_precondition": "expense_report_review.automatic_approval OR expense_report_review.supervisor_approval",
+        "reason": "targets marked mutually exclusive in the state space share the exact same accepted precondition -- reaching it would trigger both branches at once"
+      }
+    ],
+    "exclusive_pairs": [
+      {
+        "entity": "expense_report",
+        "nodes": [
+          "expense_report.approved",
+          "expense_report.rejected"
+        ]
+      },
+      {
+        "entity": "expense_report",
+        "nodes": [
+          "expense_report.canceled",
+          "expense_report.completed"
+        ]
+      },
+      {
+        "entity": "reimbursement_request",
+        "nodes": [
+          "reimbursement_request.approved",
+          "reimbursement_request.rejected"
+        ]
+      }
+    ]
+  },
+  "dfg_edges": [
+    {
+      "source_id": "Task_0",
+      "source_label": "Approve in progress email",
+      "target_id": "IntermediateTimerEvent_1",
+      "target_label": "23 days",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_6",
+      "source_label": "Conduct supervisor review",
+      "target_id": "Task_4",
+      "target_label": "Send for payment",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_6",
+      "source_label": "Conduct supervisor review",
+      "target_id": "Task_7",
+      "target_label": "Notify  employee",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_3",
+      "source_label": "Create account",
+      "target_id": "Task_2",
+      "target_label": "Review for pre-approval",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_2",
+      "source_label": "Review for pre-approval",
+      "target_id": "Task_6",
+      "target_label": "Conduct supervisor review",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_2",
+      "source_label": "Review for pre-approval",
+      "target_id": "Task_4",
+      "target_label": "Send for payment",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "IntermediateTimerEvent_1",
+      "source_label": "23 days",
+      "target_id": "Task_1",
+      "target_label": "Advise employee to start again",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_4",
+      "source_label": "Send for payment",
+      "target_id": "Task_5",
+      "target_label": "Transfer to employee account",
+      "gateway_context": []
+    },
+    {
+      "source_id": "IntermediateTimerEvent_0",
+      "source_label": "7 days",
+      "target_id": "Task_0",
+      "target_label": "Approve in progress email",
+      "gateway_context": []
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "Approve in progress email",
+      "subject_id": "Task_0",
+      "predicate": "follows",
+      "object": "23 days",
+      "object_id": "IntermediateTimerEvent_1"
+    },
+    {
+      "subject": "Conduct supervisor review",
+      "subject_id": "Task_6",
+      "predicate": "follows",
+      "object": "Send for payment",
+      "object_id": "Task_4"
+    },
+    {
+      "subject": "Conduct supervisor review",
+      "subject_id": "Task_6",
+      "predicate": "follows",
+      "object": "Notify  employee",
+      "object_id": "Task_7"
+    },
+    {
+      "subject": "Create account",
+      "subject_id": "Task_3",
+      "predicate": "follows",
+      "object": "Review for pre-approval",
+      "object_id": "Task_2"
+    },
+    {
+      "subject": "Review for pre-approval",
+      "subject_id": "Task_2",
+      "predicate": "follows",
+      "object": "Conduct supervisor review",
+      "object_id": "Task_6"
+    },
+    {
+      "subject": "Review for pre-approval",
+      "subject_id": "Task_2",
+      "predicate": "follows",
+      "object": "Send for payment",
+      "object_id": "Task_4"
+    },
+    {
+      "subject": "23 days",
+      "subject_id": "IntermediateTimerEvent_1",
+      "predicate": "follows",
+      "object": "Advise employee to start again",
+      "object_id": "Task_1"
+    },
+    {
+      "subject": "Send for payment",
+      "subject_id": "Task_4",
+      "predicate": "follows",
+      "object": "Transfer to employee account",
+      "object_id": "Task_5"
+    },
+    {
+      "subject": "7 days",
+      "subject_id": "IntermediateTimerEvent_0",
+      "predicate": "follows",
+      "object": "Approve in progress email",
+      "object_id": "Task_0"
+    }
+  ],
+  "matches": {
+    "Task_0": {
+      "activity_label": "Approve in progress email",
+      "matches": [
+        {
+          "match": "approval_process.in_progress",
+          "score": 0.579
+        }
+      ],
+      "clusters": [
+        [
+          "approval_process.in_progress"
+        ]
+      ]
+    },
+    "IntermediateTimerEvent_1": {
+      "activity_label": "23 days",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_6": {
+      "activity_label": "Conduct supervisor review",
+      "matches": [
+        {
+          "match": "expense_report_review.supervisor_approval",
+          "score": 0.3553
+        }
+      ],
+      "clusters": [
+        [
+          "expense_report_review.supervisor_approval"
+        ]
+      ]
+    },
+    "Task_4": {
+      "activity_label": "Send for payment",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_7": {
+      "activity_label": "Notify  employee",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_3": {
+      "activity_label": "Create account",
+      "matches": [
+        {
+          "match": "account.created",
+          "score": 0.8136
+        }
+      ],
+      "clusters": [
+        [
+          "account.created"
+        ]
+      ]
+    },
+    "Task_2": {
+      "activity_label": "Review for pre-approval",
+      "matches": [
+        {
+          "match": "approval_process.in_progress",
+          "score": 0.3872
+        },
+        {
+          "match": "expense_report_review.automatic_approval",
+          "score": 0.3859
+        },
+        {
+          "match": "approval_process.completed",
+          "score": 0.3744
+        },
+        {
+          "match": "approval_process.canceled",
+          "score": 0.3517
+        }
+      ],
+      "clusters": [
+        [
+          "approval_process.in_progress",
+          "approval_process.completed"
+        ],
+        [
+          "expense_report_review.automatic_approval"
+        ],
+        [
+          "approval_process.canceled"
+        ]
+      ]
+    },
+    "Task_1": {
+      "activity_label": "Advise employee to start again",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_5": {
+      "activity_label": "Transfer to employee account",
+      "matches": [
+        {
+          "match": "account.created",
+          "score": 0.4248
+        }
+      ],
+      "clusters": [
+        [
+          "account.created"
+        ]
+      ]
+    },
+    "IntermediateTimerEvent_0": {
+      "activity_label": "7 days",
+      "matches": [],
+      "clusters": []
+    }
+  },
+  "process_graph": [
+    {
+      "from": "account.created",
+      "to": "approval_process.in_progress",
+      "activity_from": "Create account",
+      "activity_to": "Review for pre-approval",
+      "source_id": "Task_3",
+      "target_id": "Task_2"
+    },
+    {
+      "from": "account.created",
+      "to": "expense_report_review.automatic_approval",
+      "activity_from": "Create account",
+      "activity_to": "Review for pre-approval",
+      "source_id": "Task_3",
+      "target_id": "Task_2"
+    },
+    {
+      "from": "account.created",
+      "to": "approval_process.completed",
+      "activity_from": "Create account",
+      "activity_to": "Review for pre-approval",
+      "source_id": "Task_3",
+      "target_id": "Task_2"
+    },
+    {
+      "from": "account.created",
+      "to": "approval_process.canceled",
+      "activity_from": "Create account",
+      "activity_to": "Review for pre-approval",
+      "source_id": "Task_3",
+      "target_id": "Task_2"
+    },
+    {
+      "from": "approval_process.in_progress",
+      "to": "expense_report_review.supervisor_approval",
+      "activity_from": "Review for pre-approval",
+      "activity_to": "Conduct supervisor review",
+      "source_id": "Task_2",
+      "target_id": "Task_6"
+    },
+    {
+      "from": "expense_report_review.automatic_approval",
+      "to": "expense_report_review.supervisor_approval",
+      "activity_from": "Review for pre-approval",
+      "activity_to": "Conduct supervisor review",
+      "source_id": "Task_2",
+      "target_id": "Task_6"
+    },
+    {
+      "from": "approval_process.completed",
+      "to": "expense_report_review.supervisor_approval",
+      "activity_from": "Review for pre-approval",
+      "activity_to": "Conduct supervisor review",
+      "source_id": "Task_2",
+      "target_id": "Task_6"
+    },
+    {
+      "from": "approval_process.canceled",
+      "to": "expense_report_review.supervisor_approval",
+      "activity_from": "Review for pre-approval",
+      "activity_to": "Conduct supervisor review",
+      "source_id": "Task_2",
+      "target_id": "Task_6"
+    }
+  ],
+  "alignment": {
+    "reimbursement_request.pending": {
+      "operator": "AND",
+      "quote": "After the Expense Report is received, a new account must be created if the employee does not already have one.",
+      "terms": [
+        {
+          "term": "expense_report.received",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['expense_report.received', 'reimbursement_request.pending']",
+          "missing": [
+            "expense_report.received",
+            "reimbursement_request.pending"
+          ]
+        },
+        {
+          "term": "NOT account.existing",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['account.existing', 'reimbursement_request.pending']",
+          "missing": [
+            "account.existing",
+            "reimbursement_request.pending"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "expense_report.received",
+            "NOT account.existing"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "reimbursement_request.approved": {
+      "operator": "OR",
+      "quote": "Otherwise, the reimbursement goes to the employees direct deposit bank account.",
+      "terms": [
+        {
+          "term": "expense_report_review.automatic_approval",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['reimbursement_request.approved']",
+          "missing": [
+            "reimbursement_request.approved"
+          ]
+        },
+        {
+          "term": "expense_report_review.supervisor_approval",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['reimbursement_request.approved']",
+          "missing": [
+            "reimbursement_request.approved"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "expense_report_review.automatic_approval"
+          ],
+          "status": "UNRESOLVABLE"
+        },
+        {
+          "terms": [
+            "expense_report_review.supervisor_approval"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "reimbursement_request.rejected": {
+      "operator": "OR",
+      "quote": "In case of rejection, the employee must receive a rejection notice by email.",
+      "terms": [
+        {
+          "term": "expense_report_review.automatic_approval",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['reimbursement_request.rejected']",
+          "missing": [
+            "reimbursement_request.rejected"
+          ]
+        },
+        {
+          "term": "expense_report_review.supervisor_approval",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['reimbursement_request.rejected']",
+          "missing": [
+            "reimbursement_request.rejected"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "expense_report_review.automatic_approval"
+          ],
+          "status": "UNRESOLVABLE"
+        },
+        {
+          "terms": [
+            "expense_report_review.supervisor_approval"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "reimbursement_request.canceled": {
+      "operator": "AND",
+      "quote": "In case of rejection, the employee must receive a rejection notice by email.",
+      "terms": [
+        {
+          "term": "reimbursement_request.pending",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['reimbursement_request.pending', 'reimbursement_request.canceled']",
+          "missing": [
+            "reimbursement_request.pending",
+            "reimbursement_request.canceled"
+          ]
+        },
+        {
+          "term": "NOT expense_report.approved",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['expense_report.approved', 'reimbursement_request.canceled']",
+          "missing": [
+            "expense_report.approved",
+            "reimbursement_request.canceled"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "reimbursement_request.pending",
+            "NOT expense_report.approved"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    }
+  },
+  "report": {
+    "verdict": {
+      "verdict": "FAITHFUL_WITH_RESERVATIONS",
+      "justification": "No gap found, but 7 requirement(s) from the text could not be associated with any clear activity in the observed process -- neither confirmed nor refuted. This verdict is NOT a confirmation of full faithfulness.",
+      "scope": "This verdict covers the causal reachability of the requirements expressed in the source text, not the general quality of the process model -- a multiplicity defect (an activity executed more than once due to a mismatched branching structure) is not covered by this verdict, even if the process is otherwise well-formed."
+    },
+    "summary": {
+      "ecarts": 0,
+      "non_verifiable": 7,
+      "conforme": 0
+    },
+    "ecarts": [],
+    "non_verifiable": [
+      {
+        "root_cause": "expense report received",
+        "quote": "After the Expense Report is received, a new account must be created if the employee does not already have one.",
+        "explanation": "The source text states that a specific condition must be met before the activity \"reimbursement request pending\" can occur. This condition is that an expense report must have been received.\n\nThe text also mentions that \"After the Expense Report is received, a new account must be created if the employee does not already have one.\" This quote shows that a requirement exists, but it does not describe the condition that must be met before \"reimbursement request pending\" can occur.\n\nSince the quote does not explicitly describe the condition, and there is no other information provided, it is impossible to verify whether the requirement is met or not. This is not a confirmation or refutation of the process's overall conformance, but rather an inability to verify this specific case.",
+        "quote_verbatim": true,
+        "affected_activities": [
+          "reimbursement request pending"
+        ],
+        "affected_count": 1
+      },
+      {
+        "root_cause": "reimbursement request pending",
+        "quote": "After the Expense Report is received, a new account must be created if the employee does not already have one.",
+        "explanation": "The condition required before the activity \"reimbursement request pending\" can occur is that a new account must be created if the employee does not already have one. \n\nThis is justified by the source text: \"After the Expense Report is received, a new account must be created if the employee does not already have one.\"\n\nHowever, it's not possible to verify whether this condition is met or not because it's associated with a different activity in the process, and we can't see how it relates to \"reimbursement request pending\". This doesn't confirm or refute the conformance of the process, it just means we can't check this specific requirement. (This same root cause also affects: reimbursement request canceled.)",
+        "quote_verbatim": true,
+        "affected_activities": [
+          "reimbursement request canceled",
+          "reimbursement request pending"
+        ],
+        "affected_count": 3
+      },
+      {
+        "root_cause": "account existing",
+        "quote": "After the Expense Report is received, a new account must be created if the employee does not already have one.",
+        "explanation": "The requirement is that a specific condition must NOT be met before the activity \"reimbursement request pending\" can occur. This condition is that the employee does not already have an account.\n\nThe source text justifies the existence of this requirement, but does not describe what it means: \"After the Expense Report is received, a new account must be created if the employee does not already have one.\"\n\nThis requirement cannot be verified because it is associated with the absence of an account existing, and there is no clear activity in the process that checks for this absence.",
+        "quote_verbatim": true,
+        "affected_activities": [
+          "reimbursement request pending"
+        ],
+        "affected_count": 1
+      },
+      {
+        "root_cause": "reimbursement request approved",
+        "quote": "Otherwise, the reimbursement goes to the employees direct deposit bank account.",
+        "explanation": "The condition required before the activity \"reimbursement request approved\" can occur is not explicitly stated in the given information. However, a requirement for this condition is mentioned in the source text: \"Otherwise, the reimbursement goes to the employees direct deposit bank account.\"\n\nThis condition cannot be associated with any clear activity in the observed process, making it impossible to verify whether the requirement is met or not. This does not confirm or refute the overall conformance of the process, but rather highlights a specific case where the requirement cannot be verified.",
+        "quote_verbatim": true,
+        "affected_activities": [
+          "reimbursement request approved"
+        ],
+        "affected_count": 2
+      },
+      {
+        "root_cause": "reimbursement request rejected",
+        "quote": "In case of rejection, the employee must receive a rejection notice by email.",
+        "explanation": "The requirement states that before the activity \"reimbursement request rejected\" can occur, a specific condition must be met. The source text justifies the existence of this condition with the following quote: \"In case of rejection, the employee must receive a rejection notice by email.\"\n\nThis condition cannot be associated with any clear activity in the observed process, making it impossible to verify whether the requirement is met or not.",
+        "quote_verbatim": true,
+        "affected_activities": [
+          "reimbursement request rejected"
+        ],
+        "affected_count": 2
+      },
+      {
+        "root_cause": "reimbursement request canceled",
+        "quote": "In case of rejection, the employee must receive a rejection notice by email.",
+        "explanation": "The requirement for \"reimbursement request canceled\" to occur is that a specific condition must already be met. This condition is justified by the source text, which states: \"In case of rejection, the employee must receive a rejection notice by email.\"\n\nHowever, this condition cannot be associated with any clear activity in the observed process, making it impossible to verify whether the requirement is met or not. This does not confirm or refute the overall conformance of the process, but rather indicates that this specific case cannot be evaluated.",
+        "quote_verbatim": true,
+        "affected_activities": [
+          "reimbursement request canceled"
+        ],
+        "affected_count": 2
+      },
+      {
+        "root_cause": "expense report approved",
+        "quote": "In case of rejection, the employee must receive a rejection notice by email.",
+        "explanation": "The requirement states that the activity \"reimbursement request canceled\" should not occur if the expense report is approved. However, there is no clear activity associated with the approval of the expense report, making it impossible to verify whether this absence is respected or not.\n\nThe quote \"In case of rejection, the employee must receive a rejection notice by email.\" shows that a rejection notice is required, but it does not explain what the condition for the \"reimbursement request canceled\" activity is.",
+        "quote_verbatim": true,
+        "affected_activities": [
+          "reimbursement request canceled"
+        ],
+        "affected_count": 1
+      }
+    ],
+    "conforme": [],
+    "piece_jointe_alignement_brut": {
+      "reimbursement_request.pending": {
+        "operator": "AND",
+        "quote": "After the Expense Report is received, a new account must be created if the employee does not already have one.",
+        "terms": [
+          {
+            "term": "expense_report.received",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['expense_report.received', 'reimbursement_request.pending']",
+            "missing": [
+              "expense_report.received",
+              "reimbursement_request.pending"
+            ]
+          },
+          {
+            "term": "NOT account.existing",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['account.existing', 'reimbursement_request.pending']",
+            "missing": [
+              "account.existing",
+              "reimbursement_request.pending"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "expense_report.received",
+              "NOT account.existing"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "reimbursement_request.approved": {
+        "operator": "OR",
+        "quote": "Otherwise, the reimbursement goes to the employees direct deposit bank account.",
+        "terms": [
+          {
+            "term": "expense_report_review.automatic_approval",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['reimbursement_request.approved']",
+            "missing": [
+              "reimbursement_request.approved"
+            ]
+          },
+          {
+            "term": "expense_report_review.supervisor_approval",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['reimbursement_request.approved']",
+            "missing": [
+              "reimbursement_request.approved"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "expense_report_review.automatic_approval"
+            ],
+            "status": "UNRESOLVABLE"
+          },
+          {
+            "terms": [
+              "expense_report_review.supervisor_approval"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "reimbursement_request.rejected": {
+        "operator": "OR",
+        "quote": "In case of rejection, the employee must receive a rejection notice by email.",
+        "terms": [
+          {
+            "term": "expense_report_review.automatic_approval",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['reimbursement_request.rejected']",
+            "missing": [
+              "reimbursement_request.rejected"
+            ]
+          },
+          {
+            "term": "expense_report_review.supervisor_approval",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['reimbursement_request.rejected']",
+            "missing": [
+              "reimbursement_request.rejected"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "expense_report_review.automatic_approval"
+            ],
+            "status": "UNRESOLVABLE"
+          },
+          {
+            "terms": [
+              "expense_report_review.supervisor_approval"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "reimbursement_request.canceled": {
+        "operator": "AND",
+        "quote": "In case of rejection, the employee must receive a rejection notice by email.",
+        "terms": [
+          {
+            "term": "reimbursement_request.pending",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['reimbursement_request.pending', 'reimbursement_request.canceled']",
+            "missing": [
+              "reimbursement_request.pending",
+              "reimbursement_request.canceled"
+            ]
+          },
+          {
+            "term": "NOT expense_report.approved",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['expense_report.approved', 'reimbursement_request.canceled']",
+            "missing": [
+              "expense_report.approved",
+              "reimbursement_request.canceled"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "reimbursement_request.pending",
+              "NOT expense_report.approved"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      }
+    }
+  },
+  "errors": []
+}

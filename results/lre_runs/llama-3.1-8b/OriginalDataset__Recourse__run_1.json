@@ -1,0 +1,529 @@
+{
+  "case_name": "OriginalDataset/Recourse",
+  "text": "If an insurant could be possibly subrogated against, I get information about that.\nI check that case and if the possibility is really there, I send a request for payment to the insurant and make me a reminder.\nIf recourse is not possible, I close the case.\nWhen we receive the money, I make a booking and close the case.\nIf the insurant disagrees with the recourse, I’ll have to check the reasoning of that.\nIf he is right, I simply close the case. \nIf he is wrong, I forward the case to a collection agency.\nIt the deadline for disagreement is reached and we haven’t received any money, I forward the case to the collection agency as well.\n",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "llama-3.1-8b",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "llama-3.1-8b",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/../datasets/lre/alignment_model_text-master/datasets/OriginalDataset/Models/Recourse.bpmn",
+  "report_model": "llama-3.1-8b",
+  "candidates": {
+    "insurant": {
+      "states": [
+        "subrogated",
+        "information_received",
+        "checked",
+        "request_sent",
+        "reminder_made",
+        "closed",
+        "booked"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "case": {
+      "states": [
+        "open",
+        "closed"
+      ],
+      "exclusive_groups": [
+        [
+          "closed",
+          "open"
+        ]
+      ],
+      "concurrent_with": []
+    },
+    "collection_agency": {
+      "states": [
+        "forwarded"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "payment": {
+      "states": [
+        "received"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "disagreement": {
+      "states": [
+        "reached"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    }
+  },
+  "validation_report": {
+    "insurant": {
+      "f_lex": "INDETERMINATE",
+      "kept": true,
+      "head_used": "insurant"
+    },
+    "case": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "case"
+    },
+    "collection_agency": {
+      "f_lex": "ACTOR",
+      "kept": false,
+      "head_used": "agency"
+    },
+    "payment": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "payment"
+    },
+    "disagreement": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "disagreement"
+    },
+    "__meta__": {
+      "total_candidates": 5,
+      "indeterminate_kept_count": 1
+    }
+  },
+  "exclusive_groups_report": {
+    "accepted": [
+      {
+        "entity": "case",
+        "states": [
+          "closed",
+          "open"
+        ],
+        "quote": "If recourse is not possible, I close the case"
+      }
+    ],
+    "rejected": [
+      {
+        "entity": "insurant",
+        "states": [
+          "subrogated",
+          "not subrogated"
+        ],
+        "quote": "If an insurant could be possibly subrogated against",
+        "reason": "references a state outside this entity's own states list"
+      },
+      {
+        "entity": "case",
+        "states": [
+          "closed"
+        ],
+        "quote": "If he is right, I simply close the case",
+        "reason": "missing or too-short states list"
+      },
+      {
+        "entity": "disagreement",
+        "states": [
+          "reached"
+        ],
+        "quote": "It the deadline for disagreement is reached",
+        "reason": "missing or too-short states list"
+      }
+    ]
+  },
+  "state_space": {
+    "insurant": {
+      "states": [
+        "subrogated",
+        "information_received",
+        "checked",
+        "request_sent",
+        "reminder_made",
+        "closed",
+        "booked"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "case": {
+      "states": [
+        "open",
+        "closed"
+      ],
+      "exclusive_groups": [
+        [
+          "closed",
+          "open"
+        ]
+      ],
+      "concurrent_with": []
+    },
+    "payment": {
+      "states": [
+        "received"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "disagreement": {
+      "states": [
+        "reached"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    }
+  },
+  "state_space_dedup": {
+    "merged": {},
+    "ambiguous_not_merged": {}
+  },
+  "dfg_edges": [
+    {
+      "source_id": "Task_12lthpj",
+      "source_label": "send reminder",
+      "target_id": "IntermediateCatchEvent_1ias0p2",
+      "target_label": "disagreement letter received",
+      "gateway_context": [
+        "EventBasedGateway"
+      ]
+    },
+    {
+      "source_id": "Task_12lthpj",
+      "source_label": "send reminder",
+      "target_id": "IntermediateCatchEvent_0d430z1",
+      "target_label": "Money received",
+      "gateway_context": [
+        "EventBasedGateway"
+      ]
+    },
+    {
+      "source_id": "Task_12lthpj",
+      "source_label": "send reminder",
+      "target_id": "IntermediateCatchEvent_037r6f2",
+      "target_label": "Reminder  is due",
+      "gateway_context": [
+        "EventBasedGateway"
+      ]
+    },
+    {
+      "source_id": "Task_1bwmf45",
+      "source_label": "make booking",
+      "target_id": "Task_0yan60f",
+      "target_label": "close case",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_02fdytg",
+      "source_label": "send request for payment",
+      "target_id": "Task_12lthpj",
+      "target_label": "send reminder",
+      "gateway_context": []
+    },
+    {
+      "source_id": "IntermediateCatchEvent_1ias0p2",
+      "source_label": "disagreement letter received",
+      "target_id": "Task_0eti3m2",
+      "target_label": "check reasoning",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_0iirfhd",
+      "source_label": "check case",
+      "target_id": "Task_04aofbe",
+      "target_label": "close case",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "no"
+      ]
+    },
+    {
+      "source_id": "Task_0iirfhd",
+      "source_label": "check case",
+      "target_id": "Task_02fdytg",
+      "target_label": "send request for payment",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "yes"
+      ]
+    },
+    {
+      "source_id": "IntermediateCatchEvent_0d430z1",
+      "source_label": "Money received",
+      "target_id": "Task_1bwmf45",
+      "target_label": "make booking",
+      "gateway_context": []
+    },
+    {
+      "source_id": "IntermediateCatchEvent_037r6f2",
+      "source_label": "Reminder  is due",
+      "target_id": "Task_1w7bb1w",
+      "target_label": "hand over to collection agency",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_0eti3m2",
+      "source_label": "check reasoning",
+      "target_id": "Task_1qlbv5i",
+      "target_label": "close case",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "yes"
+      ]
+    },
+    {
+      "source_id": "Task_0eti3m2",
+      "source_label": "check reasoning",
+      "target_id": "Task_1w7bb1w",
+      "target_label": "hand over to collection agency",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "no"
+      ]
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "send reminder",
+      "subject_id": "Task_12lthpj",
+      "predicate": "follows",
+      "object": "disagreement letter received",
+      "object_id": "IntermediateCatchEvent_1ias0p2"
+    },
+    {
+      "subject": "send reminder",
+      "subject_id": "Task_12lthpj",
+      "predicate": "follows",
+      "object": "Money received",
+      "object_id": "IntermediateCatchEvent_0d430z1"
+    },
+    {
+      "subject": "send reminder",
+      "subject_id": "Task_12lthpj",
+      "predicate": "follows",
+      "object": "Reminder  is due",
+      "object_id": "IntermediateCatchEvent_037r6f2"
+    },
+    {
+      "subject": "make booking",
+      "subject_id": "Task_1bwmf45",
+      "predicate": "follows",
+      "object": "close case",
+      "object_id": "Task_0yan60f"
+    },
+    {
+      "subject": "send request for payment",
+      "subject_id": "Task_02fdytg",
+      "predicate": "follows",
+      "object": "send reminder",
+      "object_id": "Task_12lthpj"
+    },
+    {
+      "subject": "disagreement letter received",
+      "subject_id": "IntermediateCatchEvent_1ias0p2",
+      "predicate": "follows",
+      "object": "check reasoning",
+      "object_id": "Task_0eti3m2"
+    },
+    {
+      "subject": "check case",
+      "subject_id": "Task_0iirfhd",
+      "predicate": "follows",
+      "object": "close case",
+      "object_id": "Task_04aofbe"
+    },
+    {
+      "subject": "check case",
+      "subject_id": "Task_0iirfhd",
+      "predicate": "follows",
+      "object": "send request for payment",
+      "object_id": "Task_02fdytg"
+    },
+    {
+      "subject": "Money received",
+      "subject_id": "IntermediateCatchEvent_0d430z1",
+      "predicate": "follows",
+      "object": "make booking",
+      "object_id": "Task_1bwmf45"
+    },
+    {
+      "subject": "Reminder  is due",
+      "subject_id": "IntermediateCatchEvent_037r6f2",
+      "predicate": "follows",
+      "object": "hand over to collection agency",
+      "object_id": "Task_1w7bb1w"
+    },
+    {
+      "subject": "check reasoning",
+      "subject_id": "Task_0eti3m2",
+      "predicate": "follows",
+      "object": "close case",
+      "object_id": "Task_1qlbv5i"
+    },
+    {
+      "subject": "check reasoning",
+      "subject_id": "Task_0eti3m2",
+      "predicate": "follows",
+      "object": "hand over to collection agency",
+      "object_id": "Task_1w7bb1w"
+    }
+  ],
+  "matches": {
+    "Task_12lthpj": {
+      "activity_label": "send reminder",
+      "matches": [],
+      "clusters": []
+    },
+    "IntermediateCatchEvent_1ias0p2": {
+      "activity_label": "disagreement letter received",
+      "matches": [
+        {
+          "match": "disagreement.reached",
+          "score": 0.4176
+        }
+      ],
+      "clusters": [
+        [
+          "disagreement.reached"
+        ]
+      ]
+    },
+    "IntermediateCatchEvent_0d430z1": {
+      "activity_label": "Money received",
+      "matches": [
+        {
+          "match": "payment.received",
+          "score": 0.3962
+        }
+      ],
+      "clusters": [
+        [
+          "payment.received"
+        ]
+      ]
+    },
+    "IntermediateCatchEvent_037r6f2": {
+      "activity_label": "Reminder  is due",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_1bwmf45": {
+      "activity_label": "make booking",
+      "matches": [
+        {
+          "match": "insurant.booked",
+          "score": 0.3666
+        }
+      ],
+      "clusters": [
+        [
+          "insurant.booked"
+        ]
+      ]
+    },
+    "Task_0yan60f": {
+      "activity_label": "close case",
+      "matches": [
+        {
+          "match": "case.closed",
+          "score": 0.732
+        },
+        {
+          "match": "case.open",
+          "score": 0.725
+        }
+      ],
+      "clusters": [
+        [
+          "case.closed"
+        ],
+        [
+          "case.open"
+        ]
+      ]
+    },
+    "Task_02fdytg": {
+      "activity_label": "send request for payment",
+      "matches": [
+        {
+          "match": "payment.received",
+          "score": 0.3533
+        }
+      ],
+      "clusters": [
+        [
+          "payment.received"
+        ]
+      ]
+    },
+    "Task_0eti3m2": {
+      "activity_label": "check reasoning",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_0iirfhd": {
+      "activity_label": "check case",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_04aofbe": {
+      "activity_label": "close case",
+      "matches": [
+        {
+          "match": "case.closed",
+          "score": 0.3588
+        }
+      ],
+      "clusters": [
+        [
+          "case.closed"
+        ]
+      ]
+    },
+    "Task_1w7bb1w": {
+      "activity_label": "hand over to collection agency",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_1qlbv5i": {
+      "activity_label": "close case",
+      "matches": [
+        {
+          "match": "case.closed",
+          "score": 0.3987
+        }
+      ],
+      "clusters": [
+        [
+          "case.closed"
+        ]
+      ]
+    }
+  },
+  "process_graph": [
+    {
+      "from": "insurant.booked",
+      "to": "case.closed",
+      "activity_from": "make booking",
+      "activity_to": "close case",
+      "source_id": "Task_1bwmf45",
+      "target_id": "Task_0yan60f"
+    },
+    {
+      "from": "insurant.booked",
+      "to": "case.open",
+      "activity_from": "make booking",
+      "activity_to": "close case",
+      "source_id": "Task_1bwmf45",
+      "target_id": "Task_0yan60f"
+    },
+    {
+      "from": "payment.received",
+      "to": "insurant.booked",
+      "activity_from": "Money received",
+      "activity_to": "make booking",
+      "source_id": "IntermediateCatchEvent_0d430z1",
+      "target_id": "Task_1bwmf45"
+    }
+  ],
+  "errors": [
+    "precondition: parse failed, raw response='{\"insurant\": [{\"state\": \"subrogated\", \"precondition\": \"INITIAL\", \"quote\": null}, {\"state\": \"information_received\", \"precondition\": \"insurant.subrogated\", \"quote\": \"If an insurant could be possibly subrogated against, I get information about that.\"}, {\"state\": \"checked\", \"precondition\": \"insurant.subrogated\", \"quote\": \"I check that case and if the possibility is really there,\"}, {\"state\": \"request_sent\", \"precondition\": \"insurant.subrogated AND (insurant.information_received OR insurant.checked)\", \"quote\": \"I check that case and if the possibility is really there, I send a request for payment to the insurant and make me a reminder.\"}, {\"state\": \"reminder_made\", \"precondition\": \"insurant.request_sent\", \"quote\": \"I send a request for payment to the insurant and make me a reminder.\"}, {\"state\": \"closed\", \"precondition\": \"insurant.request_sent OR (case.closed AND payment.received)\", \"quote\": [\"If recourse is not possible, I close the case.\", \"When we receive the money, I make a booking and close the case.\"]}, {\"state\": \"booked\", \"precondition\": \"payment.received\", \"quote\": \"When we receive the money, I make a booking and close the case.\"}, {\"state\": \"case\", [{\"state\": \"open\", \"precondition\": \"INITIAL\", \"quote\": null}, {\"state\": \"closed\", \"precondition\": \"insurant.request_sent OR (insurant.reminder_made AND (case.open OR case.checked))\", \"quote\": [\"If the insurant disagrees with the recourse, I’ll have to check the reasoning of that.\", \"If he is right, I simply close the case.\"]}]}, {\"state\": \"payment\", [{\"state\": \"received\", \"precondition\": \"INITIAL\", \"quote\": null}]}, {\"state\": \"disagreement\", [{\"state\": \"reached\", \"precondition\": \"case.open AND (insurant.request_sent OR (insurant.reminder_made AND insurant.checked))\", \"quote\": \"It the deadline for disagreement is reached and we haven’t received any money, I forward the case to the collection agency as well.\"}]}]'",
+    "graph_construction: 'validated_preconditions'",
+    "alignment: 'reference_graph'",
+    "report: 'alignment'"
+  ]
+}

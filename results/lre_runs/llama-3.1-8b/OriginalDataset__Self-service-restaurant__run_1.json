@@ -1,0 +1,2002 @@
+{
+  "case_name": "OriginalDataset/Self-service-restaurant",
+  "text": "A guest enters the restaurant when feeling hungry.\nHe chooses a dish from the changing meal range and waits until it is his turn.\nFollowing this he places his order with the employee.\nThe employee enters the order into the POS system and collects the money from the guest.\nAfter the payment, the employee sets up a buzzer and passes it on to the guest with the following information: \"When the buzzer rings, your dinner is ready\".\nAfterwards the employee informs the chef of the new meal order.\nThe chef prepares the meal and places it in the service hatch.\nHe then informs the employee that he has placed the finished meal in the service hatch.\nAs soon as the employee is aware that the meal is ready he sets off the guest’s buzzer.\nThis is how the guest finds out that his meal is ready for collection.\nHe can pick up his meal and eat it.\nAs soon as the guest appears at the service hatch, the employee hands over his meal.\nShould a guest not react to the buzzer, the employee calls for him after 5 minutes, if necessary several times in a row.\n",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "llama-3.1-8b",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "llama-3.1-8b",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/../datasets/lre/alignment_model_text-master/datasets/OriginalDataset/Models/Self-service-restaurant.bpmn",
+  "report_model": "llama-3.1-8b",
+  "candidates": {
+    "guest": {
+      "states": [
+        "hungry",
+        "waiting",
+        "ordering",
+        "paid",
+        "waiting_for_dinner",
+        "eating"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "dish": {
+      "states": [
+        "chosen",
+        "ordered",
+        "prepared",
+        "ready"
+      ],
+      "exclusive_groups": [
+        [
+          "chosen",
+          "ordered"
+        ]
+      ],
+      "concurrent_with": []
+    },
+    "employee": {
+      "states": [
+        "informing_chef",
+        "collecting_payment",
+        "handing_over_meal",
+        "calling_guest"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "chef": {
+      "states": [
+        "preparing",
+        "informing_employee"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "buzzer": {
+      "states": [
+        "set",
+        "rings"
+      ],
+      "exclusive_groups": [
+        [
+          "set",
+          "rings"
+        ]
+      ],
+      "concurrent_with": []
+    },
+    "meal": {
+      "states": [
+        "ordered",
+        "prepared",
+        "ready",
+        "collected"
+      ],
+      "exclusive_groups": [
+        [
+          "ordered",
+          "prepared"
+        ],
+        [
+          "ready",
+          "collected"
+        ]
+      ],
+      "concurrent_with": []
+    },
+    "service_hatch": {
+      "states": [
+        "empty",
+        "filled"
+      ],
+      "exclusive_groups": [
+        [
+          "empty",
+          "filled"
+        ]
+      ],
+      "concurrent_with": []
+    },
+    "POS_system": {
+      "states": [
+        "updated"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    }
+  },
+  "validation_report": {
+    "guest": {
+      "f_lex": "ACTOR",
+      "kept": false,
+      "head_used": "guest"
+    },
+    "dish": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "dish"
+    },
+    "employee": {
+      "f_lex": "ACTOR",
+      "kept": false,
+      "head_used": "employee"
+    },
+    "chef": {
+      "f_lex": "ACTOR",
+      "kept": false,
+      "head_used": "chef"
+    },
+    "buzzer": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "buzzer"
+    },
+    "meal": {
+      "f_lex": "INDETERMINATE",
+      "kept": true,
+      "head_used": "meal"
+    },
+    "service_hatch": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "hatch"
+    },
+    "POS_system": {
+      "f_lex": "INDETERMINATE",
+      "kept": true,
+      "head_used": "system"
+    },
+    "__meta__": {
+      "total_candidates": 8,
+      "indeterminate_kept_count": 2
+    }
+  },
+  "exclusive_groups_report": {
+    "accepted": [
+      {
+        "entity": "dish",
+        "states": [
+          "chosen",
+          "ordered"
+        ],
+        "quote": "He chooses a dish from the changing meal range and waits until it is his turn."
+      },
+      {
+        "entity": "buzzer",
+        "states": [
+          "set",
+          "rings"
+        ],
+        "quote": "When the buzzer rings, your dinner is ready"
+      },
+      {
+        "entity": "meal",
+        "states": [
+          "ordered",
+          "prepared"
+        ],
+        "quote": "The chef prepares the meal and places it in the service hatch."
+      },
+      {
+        "entity": "service_hatch",
+        "states": [
+          "empty",
+          "filled"
+        ],
+        "quote": "The chef places it in the service hatch."
+      },
+      {
+        "entity": "meal",
+        "states": [
+          "ready",
+          "collected"
+        ],
+        "quote": "This is how the guest finds out that his meal is ready for collection."
+      }
+    ],
+    "rejected": []
+  },
+  "state_space": {
+    "dish": {
+      "states": [
+        "chosen",
+        "ordered",
+        "prepared",
+        "ready"
+      ],
+      "exclusive_groups": [
+        [
+          "chosen",
+          "ordered"
+        ]
+      ],
+      "concurrent_with": []
+    },
+    "buzzer": {
+      "states": [
+        "set",
+        "rings"
+      ],
+      "exclusive_groups": [
+        [
+          "set",
+          "rings"
+        ]
+      ],
+      "concurrent_with": []
+    },
+    "meal": {
+      "states": [
+        "ordered",
+        "prepared",
+        "ready",
+        "collected"
+      ],
+      "exclusive_groups": [
+        [
+          "ordered",
+          "prepared"
+        ],
+        [
+          "ready",
+          "collected"
+        ]
+      ],
+      "concurrent_with": []
+    },
+    "service_hatch": {
+      "states": [
+        "empty",
+        "filled"
+      ],
+      "exclusive_groups": [
+        [
+          "empty",
+          "filled"
+        ]
+      ],
+      "concurrent_with": []
+    },
+    "po_system": {
+      "states": [
+        "updated"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    }
+  },
+  "state_space_dedup": {
+    "merged": {},
+    "ambiguous_not_merged": {}
+  },
+  "raw_preconditions": {
+    "dish": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "buzzer": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "meal": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "service_hatch": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "po_system": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "guest": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "employee": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "guest.hungry": {
+      "precondition": "guest.hungry",
+      "quote": null
+    },
+    "guest.enters": {
+      "precondition": "guest.hungry",
+      "quote": null
+    },
+    "guest.chosen_dish": {
+      "precondition": "guest.enters AND dish.chosen",
+      "quote": "A guest enters the restaurant when feeling hungry."
+    },
+    "guest.waiting": {
+      "precondition": "guest.chosen_dish",
+      "quote": null
+    },
+    "guest.order_placed": {
+      "precondition": "guest.waiting AND dish.ordered",
+      "quote": "He chooses a dish from the changing meal range and waits until it is his turn."
+    },
+    "po_system.updated": {
+      "precondition": "service_hatch.filled",
+      "quote": null
+    },
+    "employee.collects_money": {
+      "precondition": "po_system.updated",
+      "quote": null
+    },
+    "employee.sets_buzzer": {
+      "precondition": "employee.collects_money",
+      "quote": "The employee sets up a buzzer and passes it on to the guest with the following information: \"When the buzzer rings, your dinner is ready\"."
+    },
+    "buzzer.set": {
+      "precondition": "employee.sets_buzzer",
+      "quote": "The employee sets up a buzzer and passes it on to the guest with the following information: \"When the buzzer rings, your dinner is ready\"."
+    },
+    "buzzer.rings": {
+      "precondition": "employee.notifies_guest",
+      "quote": "As soon as the employee is aware that the meal is ready he sets off the guest’s buzzer."
+    },
+    "employee.informs_chef": {
+      "precondition": "employee.sets_buzzer",
+      "quote": "Afterwards the employee informs the chef of the new meal order."
+    },
+    "chef.prepares_meal": {
+      "precondition": "employee.informs_chef",
+      "quote": null
+    },
+    "meal.prepared": {
+      "precondition": "chef.prepares_meal",
+      "quote": null
+    },
+    "service_hatch.filled": {
+      "precondition": "meal.prepared",
+      "quote": null
+    },
+    "employee.notifies_guest": {
+      "precondition": "po_system.updated",
+      "quote": "As soon as the employee is aware that the meal is ready he sets off the guest’s buzzer."
+    },
+    "guest.picks_up_meal": {
+      "precondition": "buzzer.rings",
+      "quote": "This is how the guest finds out that his meal is ready for collection."
+    },
+    "service_hatch.empty": {
+      "precondition": "guest.picks_up_meal",
+      "quote": null
+    },
+    "employee.hands_over_meal": {
+      "precondition": "service_hatch.empty",
+      "quote": null
+    },
+    "guest.not_reacts": {
+      "precondition": "buzzer.rings",
+      "quote": "Should a guest not react to the buzzer, the employee calls for him after 5 minutes, if necessary several times in a row."
+    },
+    "employee.calls_guest": {
+      "precondition": "guest.not_reacts",
+      "quote": "Should a guest not react to the buzzer, the employee calls for him after 5 minutes, if necessary several times in a row."
+    }
+  },
+  "validated_preconditions": {
+    "dish": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "DOWNGRADED",
+      "reason": "malformed or unknown target key: 'dish' is not a valid entity.state of the state space"
+    },
+    "buzzer": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "DOWNGRADED",
+      "reason": "malformed or unknown target key: 'buzzer' is not a valid entity.state of the state space"
+    },
+    "meal": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "DOWNGRADED",
+      "reason": "malformed or unknown target key: 'meal' is not a valid entity.state of the state space"
+    },
+    "service_hatch": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "DOWNGRADED",
+      "reason": "malformed or unknown target key: 'service_hatch' is not a valid entity.state of the state space"
+    },
+    "po_system": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "DOWNGRADED",
+      "reason": "malformed or unknown target key: 'po_system' is not a valid entity.state of the state space"
+    },
+    "guest": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "DOWNGRADED",
+      "reason": "malformed or unknown target key: 'guest' is not a valid entity.state of the state space"
+    },
+    "employee": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "DOWNGRADED",
+      "reason": "malformed or unknown target key: 'employee' is not a valid entity.state of the state space"
+    },
+    "guest.hungry": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "DOWNGRADED",
+      "reason": "malformed or unknown target key: 'guest.hungry' is not a valid entity.state of the state space"
+    },
+    "guest.enters": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "DOWNGRADED",
+      "reason": "malformed or unknown target key: 'guest.enters' is not a valid entity.state of the state space"
+    },
+    "guest.chosen_dish": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "DOWNGRADED",
+      "reason": "malformed or unknown target key: 'guest.chosen_dish' is not a valid entity.state of the state space"
+    },
+    "guest.waiting": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "DOWNGRADED",
+      "reason": "malformed or unknown target key: 'guest.waiting' is not a valid entity.state of the state space"
+    },
+    "guest.order_placed": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "DOWNGRADED",
+      "reason": "malformed or unknown target key: 'guest.order_placed' is not a valid entity.state of the state space"
+    },
+    "po_system.updated": {
+      "precondition": "buzzer.set",
+      "quote": [
+        "He then informs the employee that he has placed the finished meal in the service hatch.",
+        "As soon as the employee is aware that the meal is ready he sets off the guest’s buzzer."
+      ],
+      "status": "OK",
+      "reason": null,
+      "retried": true
+    },
+    "employee.collects_money": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "DOWNGRADED",
+      "reason": "malformed or unknown target key: 'employee.collects_money' is not a valid entity.state of the state space"
+    },
+    "employee.sets_buzzer": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "DOWNGRADED",
+      "reason": "malformed or unknown target key: 'employee.sets_buzzer' is not a valid entity.state of the state space"
+    },
+    "buzzer.set": {
+      "precondition": "buzzer.rings",
+      "quote": [
+        "When the buzzer rings, your dinner is ready"
+      ],
+      "status": "OK",
+      "reason": null,
+      "retried": true
+    },
+    "buzzer.rings": {
+      "precondition": "meal.prepared AND service_hatch.filled",
+      "quote": [
+        "He then informs the employee that he has placed the finished meal in the service hatch.",
+        "As soon as the employee is aware that the meal is ready he sets off the guest’s buzzer."
+      ],
+      "status": "OK",
+      "reason": null,
+      "retried": true
+    },
+    "employee.informs_chef": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "DOWNGRADED",
+      "reason": "malformed or unknown target key: 'employee.informs_chef' is not a valid entity.state of the state space"
+    },
+    "chef.prepares_meal": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "DOWNGRADED",
+      "reason": "malformed or unknown target key: 'chef.prepares_meal' is not a valid entity.state of the state space"
+    },
+    "meal.prepared": {
+      "precondition": "meal.ordered",
+      "quote": [
+        "The chef prepares the meal and places it in the service hatch.",
+        "He then informs the employee that he has placed the finished meal in the service hatch."
+      ],
+      "status": "OK",
+      "reason": null,
+      "retried": true
+    },
+    "service_hatch.filled": {
+      "precondition": "buzzer.set OR meal.prepared",
+      "quote": [
+        "When the buzzer rings, your dinner is ready",
+        "The chef prepares the meal and places it in the service hatch."
+      ],
+      "status": "OK",
+      "reason": null,
+      "retried": true
+    },
+    "employee.notifies_guest": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "DOWNGRADED",
+      "reason": "malformed or unknown target key: 'employee.notifies_guest' is not a valid entity.state of the state space"
+    },
+    "guest.picks_up_meal": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "DOWNGRADED",
+      "reason": "malformed or unknown target key: 'guest.picks_up_meal' is not a valid entity.state of the state space"
+    },
+    "service_hatch.empty": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "DOWNGRADED",
+      "reason": "quote(s) not found verbatim in text, out of order, or spanning a disjunctive marker under an AND rule",
+      "retried": true
+    },
+    "employee.hands_over_meal": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "DOWNGRADED",
+      "reason": "malformed or unknown target key: 'employee.hands_over_meal' is not a valid entity.state of the state space"
+    },
+    "guest.not_reacts": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "DOWNGRADED",
+      "reason": "malformed or unknown target key: 'guest.not_reacts' is not a valid entity.state of the state space"
+    },
+    "employee.calls_guest": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "DOWNGRADED",
+      "reason": "malformed or unknown target key: 'employee.calls_guest' is not a valid entity.state of the state space"
+    }
+  },
+  "precondition_cycles": [
+    [
+      "buzzer.set",
+      "service_hatch.filled",
+      "buzzer.rings",
+      "buzzer.set"
+    ]
+  ],
+  "branch_conflicts": [],
+  "reference_graph": {
+    "nodes": [
+      {
+        "id": "dish.chosen",
+        "weight": 0.0
+      },
+      {
+        "id": "dish.ordered",
+        "weight": 0.0
+      },
+      {
+        "id": "dish.prepared",
+        "weight": 0.0
+      },
+      {
+        "id": "dish.ready",
+        "weight": 0.0
+      },
+      {
+        "id": "buzzer.set",
+        "weight": 1.0
+      },
+      {
+        "id": "buzzer.rings",
+        "weight": 1.0
+      },
+      {
+        "id": "meal.ordered",
+        "weight": 0.333
+      },
+      {
+        "id": "meal.prepared",
+        "weight": 1.0
+      },
+      {
+        "id": "meal.ready",
+        "weight": 0.0
+      },
+      {
+        "id": "meal.collected",
+        "weight": 0.0
+      },
+      {
+        "id": "service_hatch.empty",
+        "weight": 0.0
+      },
+      {
+        "id": "service_hatch.filled",
+        "weight": 1.0
+      },
+      {
+        "id": "po_system.updated",
+        "weight": 0.333
+      }
+    ],
+    "edges": [
+      {
+        "from": "buzzer.set",
+        "to": "po_system.updated",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": [
+          "He then informs the employee that he has placed the finished meal in the service hatch.",
+          "As soon as the employee is aware that the meal is ready he sets off the guest’s buzzer."
+        ],
+        "negated": false
+      },
+      {
+        "from": "buzzer.rings",
+        "to": "buzzer.set",
+        "clause": 0,
+        "type": "sequence",
+        "quote": [
+          "When the buzzer rings, your dinner is ready"
+        ],
+        "negated": false
+      },
+      {
+        "from": "meal.prepared",
+        "to": "buzzer.rings",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": [
+          "He then informs the employee that he has placed the finished meal in the service hatch.",
+          "As soon as the employee is aware that the meal is ready he sets off the guest’s buzzer."
+        ],
+        "negated": false
+      },
+      {
+        "from": "service_hatch.filled",
+        "to": "buzzer.rings",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": [
+          "He then informs the employee that he has placed the finished meal in the service hatch.",
+          "As soon as the employee is aware that the meal is ready he sets off the guest’s buzzer."
+        ],
+        "negated": false
+      },
+      {
+        "from": "meal.ordered",
+        "to": "meal.prepared",
+        "clause": 0,
+        "type": "sequence",
+        "quote": [
+          "The chef prepares the meal and places it in the service hatch.",
+          "He then informs the employee that he has placed the finished meal in the service hatch."
+        ],
+        "negated": false
+      },
+      {
+        "from": "buzzer.set",
+        "to": "service_hatch.filled",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": [
+          "When the buzzer rings, your dinner is ready",
+          "The chef prepares the meal and places it in the service hatch."
+        ],
+        "negated": false
+      },
+      {
+        "from": "meal.prepared",
+        "to": "service_hatch.filled",
+        "clause": 1,
+        "type": "cross_entity_guard",
+        "quote": [
+          "When the buzzer rings, your dinner is ready",
+          "The chef prepares the meal and places it in the service hatch."
+        ],
+        "negated": false
+      }
+    ],
+    "cycles": [
+      [
+        "buzzer.set",
+        "service_hatch.filled",
+        "buzzer.rings",
+        "buzzer.set"
+      ]
+    ],
+    "branch_conflicts": [],
+    "exclusive_pairs": [
+      {
+        "entity": "dish",
+        "nodes": [
+          "dish.chosen",
+          "dish.ordered"
+        ]
+      },
+      {
+        "entity": "buzzer",
+        "nodes": [
+          "buzzer.set",
+          "buzzer.rings"
+        ]
+      },
+      {
+        "entity": "meal",
+        "nodes": [
+          "meal.ordered",
+          "meal.prepared"
+        ]
+      },
+      {
+        "entity": "meal",
+        "nodes": [
+          "meal.ready",
+          "meal.collected"
+        ]
+      },
+      {
+        "entity": "service_hatch",
+        "nodes": [
+          "service_hatch.empty",
+          "service_hatch.filled"
+        ]
+      }
+    ]
+  },
+  "dfg_edges": [
+    {
+      "source_id": "Task_0ot5dif",
+      "source_label": "Inform employee",
+      "target_id": "IntermediateCatchEvent_1pl0nlh",
+      "target_label": "Meal ready",
+      "gateway_context": []
+    },
+    {
+      "source_id": "IntermediateCatchEvent_0nhl104",
+      "source_label": "5 minutes",
+      "target_id": "Task_0rpvccw",
+      "target_label": "Call guest",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_12zp7cy",
+      "source_label": "Set off buzzer",
+      "target_id": "IntermediateCatchEvent_1r5wlb4",
+      "target_label": "Meal ready",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_12zp7cy",
+      "source_label": "Set off buzzer",
+      "target_id": "IntermediateCatchEvent_0nhl104",
+      "target_label": "5 minutes",
+      "gateway_context": [
+        "EventBasedGateway"
+      ]
+    },
+    {
+      "source_id": "Task_12zp7cy",
+      "source_label": "Set off buzzer",
+      "target_id": "IntermediateCatchEvent_1rch6yh",
+      "target_label": "Guest  appears",
+      "gateway_context": [
+        "EventBasedGateway"
+      ]
+    },
+    {
+      "source_id": "Task_1ng51gy",
+      "source_label": "Collect money",
+      "target_id": "Task_12h2fs9",
+      "target_label": "Pay money",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_1ng51gy",
+      "source_label": "Collect money",
+      "target_id": "Task_03wsmkw",
+      "target_label": "Set up buzzer",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_12h2fs9",
+      "source_label": "Pay money",
+      "target_id": "Task_1ng51gy",
+      "target_label": "Collect money",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_12h2fs9",
+      "source_label": "Pay money",
+      "target_id": "Task_1jlgbwe",
+      "target_label": "Take buzzer",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_1udyby3",
+      "source_label": "Choose dish",
+      "target_id": "IntermediateCatchEvent_1nu2fvu",
+      "target_label": "wait for turn",
+      "gateway_context": []
+    },
+    {
+      "source_id": "IntermediateCatchEvent_1nu2fvu",
+      "source_label": "wait for turn",
+      "target_id": "Task_0a2rm9v",
+      "target_label": "Place order",
+      "gateway_context": []
+    },
+    {
+      "source_id": "IntermediateCatchEvent_1rch6yh",
+      "source_label": "Guest  appears",
+      "target_id": "Task_1a48xz1",
+      "target_label": "Hand over meal",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_0o0pue9",
+      "source_label": "Get meal",
+      "target_id": "Task_07amhtq",
+      "target_label": "Eat meal",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_0o0pue9",
+      "source_label": "Get meal",
+      "target_id": "IntermediateCatchEvent_1rch6yh",
+      "target_label": "Guest  appears",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_1y7mm27",
+      "source_label": "Enter order",
+      "target_id": "Task_1ng51gy",
+      "target_label": "Collect money",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_03wsmkw",
+      "source_label": "Set up buzzer",
+      "target_id": "Task_0ttgn0d",
+      "target_label": "Hand over buzzer",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_0rpvccw",
+      "source_label": "Call guest",
+      "target_id": "Participant_10vg9sk",
+      "target_label": "Guestfood consumption",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_0rpvccw",
+      "source_label": "Call guest",
+      "target_id": "IntermediateCatchEvent_0nhl104",
+      "target_label": "5 minutes",
+      "gateway_context": [
+        "EventBasedGateway"
+      ]
+    },
+    {
+      "source_id": "Task_0rpvccw",
+      "source_label": "Call guest",
+      "target_id": "IntermediateCatchEvent_1rch6yh",
+      "target_label": "Guest  appears",
+      "gateway_context": [
+        "EventBasedGateway"
+      ]
+    },
+    {
+      "source_id": "Task_1wgretj",
+      "source_label": "Inform chef",
+      "target_id": "Task_0av6xl6",
+      "target_label": "Prepare meal",
+      "gateway_context": [
+        "MessageStartEvent"
+      ]
+    },
+    {
+      "source_id": "Task_1wgretj",
+      "source_label": "Inform chef",
+      "target_id": "IntermediateCatchEvent_1pl0nlh",
+      "target_label": "Meal ready",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_1kt8dzo",
+      "source_label": "Enter restaurant",
+      "target_id": "Task_1udyby3",
+      "target_label": "Choose dish",
+      "gateway_context": []
+    },
+    {
+      "source_id": "IntermediateCatchEvent_1r5wlb4",
+      "source_label": "Meal ready",
+      "target_id": "Task_0o0pue9",
+      "target_label": "Get meal",
+      "gateway_context": []
+    },
+    {
+      "source_id": "IntermediateCatchEvent_1pl0nlh",
+      "source_label": "Meal ready",
+      "target_id": "Task_12zp7cy",
+      "target_label": "Set off buzzer",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_1jlgbwe",
+      "source_label": "Take buzzer",
+      "target_id": "IntermediateCatchEvent_1r5wlb4",
+      "target_label": "Meal ready",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_0av6xl6",
+      "source_label": "Prepare meal",
+      "target_id": "Task_1tdsk5o",
+      "target_label": "Place meal in hatch",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_0ttgn0d",
+      "source_label": "Hand over buzzer",
+      "target_id": "Task_1wgretj",
+      "target_label": "Inform chef",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_0ttgn0d",
+      "source_label": "Hand over buzzer",
+      "target_id": "Task_1jlgbwe",
+      "target_label": "Take buzzer",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_0a2rm9v",
+      "source_label": "Place order",
+      "target_id": "Task_12h2fs9",
+      "target_label": "Pay money",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_0a2rm9v",
+      "source_label": "Place order",
+      "target_id": "Task_1y7mm27",
+      "target_label": "Enter order",
+      "gateway_context": [
+        "MessageStartEvent"
+      ]
+    },
+    {
+      "source_id": "Task_1a48xz1",
+      "source_label": "Hand over meal",
+      "target_id": "Task_0o0pue9",
+      "target_label": "Get meal",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_1tdsk5o",
+      "source_label": "Place meal in hatch",
+      "target_id": "Task_0ot5dif",
+      "target_label": "Inform employee",
+      "gateway_context": []
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "Inform employee",
+      "subject_id": "Task_0ot5dif",
+      "predicate": "follows",
+      "object": "Meal ready",
+      "object_id": "IntermediateCatchEvent_1pl0nlh"
+    },
+    {
+      "subject": "5 minutes",
+      "subject_id": "IntermediateCatchEvent_0nhl104",
+      "predicate": "follows",
+      "object": "Call guest",
+      "object_id": "Task_0rpvccw"
+    },
+    {
+      "subject": "Set off buzzer",
+      "subject_id": "Task_12zp7cy",
+      "predicate": "follows",
+      "object": "Meal ready",
+      "object_id": "IntermediateCatchEvent_1r5wlb4"
+    },
+    {
+      "subject": "Set off buzzer",
+      "subject_id": "Task_12zp7cy",
+      "predicate": "follows",
+      "object": "5 minutes",
+      "object_id": "IntermediateCatchEvent_0nhl104"
+    },
+    {
+      "subject": "Set off buzzer",
+      "subject_id": "Task_12zp7cy",
+      "predicate": "follows",
+      "object": "Guest  appears",
+      "object_id": "IntermediateCatchEvent_1rch6yh"
+    },
+    {
+      "subject": "Collect money",
+      "subject_id": "Task_1ng51gy",
+      "predicate": "follows",
+      "object": "Pay money",
+      "object_id": "Task_12h2fs9"
+    },
+    {
+      "subject": "Collect money",
+      "subject_id": "Task_1ng51gy",
+      "predicate": "follows",
+      "object": "Set up buzzer",
+      "object_id": "Task_03wsmkw"
+    },
+    {
+      "subject": "Pay money",
+      "subject_id": "Task_12h2fs9",
+      "predicate": "follows",
+      "object": "Collect money",
+      "object_id": "Task_1ng51gy"
+    },
+    {
+      "subject": "Pay money",
+      "subject_id": "Task_12h2fs9",
+      "predicate": "follows",
+      "object": "Take buzzer",
+      "object_id": "Task_1jlgbwe"
+    },
+    {
+      "subject": "Choose dish",
+      "subject_id": "Task_1udyby3",
+      "predicate": "follows",
+      "object": "wait for turn",
+      "object_id": "IntermediateCatchEvent_1nu2fvu"
+    },
+    {
+      "subject": "wait for turn",
+      "subject_id": "IntermediateCatchEvent_1nu2fvu",
+      "predicate": "follows",
+      "object": "Place order",
+      "object_id": "Task_0a2rm9v"
+    },
+    {
+      "subject": "Guest  appears",
+      "subject_id": "IntermediateCatchEvent_1rch6yh",
+      "predicate": "follows",
+      "object": "Hand over meal",
+      "object_id": "Task_1a48xz1"
+    },
+    {
+      "subject": "Get meal",
+      "subject_id": "Task_0o0pue9",
+      "predicate": "follows",
+      "object": "Eat meal",
+      "object_id": "Task_07amhtq"
+    },
+    {
+      "subject": "Get meal",
+      "subject_id": "Task_0o0pue9",
+      "predicate": "follows",
+      "object": "Guest  appears",
+      "object_id": "IntermediateCatchEvent_1rch6yh"
+    },
+    {
+      "subject": "Enter order",
+      "subject_id": "Task_1y7mm27",
+      "predicate": "follows",
+      "object": "Collect money",
+      "object_id": "Task_1ng51gy"
+    },
+    {
+      "subject": "Set up buzzer",
+      "subject_id": "Task_03wsmkw",
+      "predicate": "follows",
+      "object": "Hand over buzzer",
+      "object_id": "Task_0ttgn0d"
+    },
+    {
+      "subject": "Call guest",
+      "subject_id": "Task_0rpvccw",
+      "predicate": "follows",
+      "object": "Guestfood consumption",
+      "object_id": "Participant_10vg9sk"
+    },
+    {
+      "subject": "Call guest",
+      "subject_id": "Task_0rpvccw",
+      "predicate": "follows",
+      "object": "5 minutes",
+      "object_id": "IntermediateCatchEvent_0nhl104"
+    },
+    {
+      "subject": "Call guest",
+      "subject_id": "Task_0rpvccw",
+      "predicate": "follows",
+      "object": "Guest  appears",
+      "object_id": "IntermediateCatchEvent_1rch6yh"
+    },
+    {
+      "subject": "Inform chef",
+      "subject_id": "Task_1wgretj",
+      "predicate": "follows",
+      "object": "Prepare meal",
+      "object_id": "Task_0av6xl6"
+    },
+    {
+      "subject": "Inform chef",
+      "subject_id": "Task_1wgretj",
+      "predicate": "follows",
+      "object": "Meal ready",
+      "object_id": "IntermediateCatchEvent_1pl0nlh"
+    },
+    {
+      "subject": "Enter restaurant",
+      "subject_id": "Task_1kt8dzo",
+      "predicate": "follows",
+      "object": "Choose dish",
+      "object_id": "Task_1udyby3"
+    },
+    {
+      "subject": "Meal ready",
+      "subject_id": "IntermediateCatchEvent_1r5wlb4",
+      "predicate": "follows",
+      "object": "Get meal",
+      "object_id": "Task_0o0pue9"
+    },
+    {
+      "subject": "Meal ready",
+      "subject_id": "IntermediateCatchEvent_1pl0nlh",
+      "predicate": "follows",
+      "object": "Set off buzzer",
+      "object_id": "Task_12zp7cy"
+    },
+    {
+      "subject": "Take buzzer",
+      "subject_id": "Task_1jlgbwe",
+      "predicate": "follows",
+      "object": "Meal ready",
+      "object_id": "IntermediateCatchEvent_1r5wlb4"
+    },
+    {
+      "subject": "Prepare meal",
+      "subject_id": "Task_0av6xl6",
+      "predicate": "follows",
+      "object": "Place meal in hatch",
+      "object_id": "Task_1tdsk5o"
+    },
+    {
+      "subject": "Hand over buzzer",
+      "subject_id": "Task_0ttgn0d",
+      "predicate": "follows",
+      "object": "Inform chef",
+      "object_id": "Task_1wgretj"
+    },
+    {
+      "subject": "Hand over buzzer",
+      "subject_id": "Task_0ttgn0d",
+      "predicate": "follows",
+      "object": "Take buzzer",
+      "object_id": "Task_1jlgbwe"
+    },
+    {
+      "subject": "Place order",
+      "subject_id": "Task_0a2rm9v",
+      "predicate": "follows",
+      "object": "Pay money",
+      "object_id": "Task_12h2fs9"
+    },
+    {
+      "subject": "Place order",
+      "subject_id": "Task_0a2rm9v",
+      "predicate": "follows",
+      "object": "Enter order",
+      "object_id": "Task_1y7mm27"
+    },
+    {
+      "subject": "Hand over meal",
+      "subject_id": "Task_1a48xz1",
+      "predicate": "follows",
+      "object": "Get meal",
+      "object_id": "Task_0o0pue9"
+    },
+    {
+      "subject": "Place meal in hatch",
+      "subject_id": "Task_1tdsk5o",
+      "predicate": "follows",
+      "object": "Inform employee",
+      "object_id": "Task_0ot5dif"
+    }
+  ],
+  "matches": {
+    "Task_0ot5dif": {
+      "activity_label": "Inform employee",
+      "matches": [],
+      "clusters": []
+    },
+    "IntermediateCatchEvent_1pl0nlh": {
+      "activity_label": "Meal ready",
+      "matches": [
+        {
+          "match": "meal.ready",
+          "score": 0.9644
+        }
+      ],
+      "clusters": [
+        [
+          "meal.ready"
+        ]
+      ]
+    },
+    "IntermediateCatchEvent_0nhl104": {
+      "activity_label": "5 minutes",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_0rpvccw": {
+      "activity_label": "Call guest",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_12zp7cy": {
+      "activity_label": "Set off buzzer",
+      "matches": [
+        {
+          "match": "buzzer.set",
+          "score": 0.5663
+        }
+      ],
+      "clusters": [
+        [
+          "buzzer.set"
+        ]
+      ]
+    },
+    "IntermediateCatchEvent_1r5wlb4": {
+      "activity_label": "Meal ready",
+      "matches": [
+        {
+          "match": "meal.ready",
+          "score": 0.9644
+        }
+      ],
+      "clusters": [
+        [
+          "meal.ready"
+        ]
+      ]
+    },
+    "IntermediateCatchEvent_1rch6yh": {
+      "activity_label": "Guest  appears",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_1ng51gy": {
+      "activity_label": "Collect money",
+      "matches": [
+        {
+          "match": "meal.collected",
+          "score": 0.4694
+        }
+      ],
+      "clusters": [
+        [
+          "meal.collected"
+        ]
+      ]
+    },
+    "Task_12h2fs9": {
+      "activity_label": "Pay money",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_03wsmkw": {
+      "activity_label": "Set up buzzer",
+      "matches": [
+        {
+          "match": "buzzer.set",
+          "score": 0.8672
+        }
+      ],
+      "clusters": [
+        [
+          "buzzer.set"
+        ]
+      ]
+    },
+    "Task_1jlgbwe": {
+      "activity_label": "Take buzzer",
+      "matches": [
+        {
+          "match": "buzzer.set",
+          "score": 0.7171
+        },
+        {
+          "match": "buzzer.rings",
+          "score": 0.6874
+        }
+      ],
+      "clusters": [
+        [
+          "buzzer.set"
+        ],
+        [
+          "buzzer.rings"
+        ]
+      ]
+    },
+    "Task_1udyby3": {
+      "activity_label": "Choose dish",
+      "matches": [
+        {
+          "match": "dish.chosen",
+          "score": 0.8098
+        }
+      ],
+      "clusters": [
+        [
+          "dish.chosen"
+        ]
+      ]
+    },
+    "IntermediateCatchEvent_1nu2fvu": {
+      "activity_label": "wait for turn",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_0a2rm9v": {
+      "activity_label": "Place order",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_1a48xz1": {
+      "activity_label": "Hand over meal",
+      "matches": [
+        {
+          "match": "meal.collected",
+          "score": 0.5712
+        },
+        {
+          "match": "meal.prepared",
+          "score": 0.5509
+        },
+        {
+          "match": "meal.ordered",
+          "score": 0.5365
+        }
+      ],
+      "clusters": [
+        [
+          "meal.collected"
+        ],
+        [
+          "meal.prepared"
+        ],
+        [
+          "meal.ordered"
+        ]
+      ]
+    },
+    "Task_0o0pue9": {
+      "activity_label": "Get meal",
+      "matches": [
+        {
+          "match": "meal.ordered",
+          "score": 0.6462
+        },
+        {
+          "match": "meal.prepared",
+          "score": 0.6366
+        },
+        {
+          "match": "meal.collected",
+          "score": 0.6364
+        },
+        {
+          "match": "meal.ready",
+          "score": 0.6019
+        }
+      ],
+      "clusters": [
+        [
+          "meal.ordered"
+        ],
+        [
+          "meal.prepared"
+        ],
+        [
+          "meal.collected"
+        ],
+        [
+          "meal.ready"
+        ]
+      ]
+    },
+    "Task_07amhtq": {
+      "activity_label": "Eat meal",
+      "matches": [
+        {
+          "match": "meal.prepared",
+          "score": 0.6349
+        },
+        {
+          "match": "meal.collected",
+          "score": 0.5978
+        }
+      ],
+      "clusters": [
+        [
+          "meal.prepared"
+        ],
+        [
+          "meal.collected"
+        ]
+      ]
+    },
+    "Task_1y7mm27": {
+      "activity_label": "Enter order",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_0ttgn0d": {
+      "activity_label": "Hand over buzzer",
+      "matches": [
+        {
+          "match": "buzzer.set",
+          "score": 0.6079
+        },
+        {
+          "match": "buzzer.rings",
+          "score": 0.6021
+        }
+      ],
+      "clusters": [
+        [
+          "buzzer.set"
+        ],
+        [
+          "buzzer.rings"
+        ]
+      ]
+    },
+    "Participant_10vg9sk": {
+      "activity_label": "Guestfood consumption",
+      "matches": [
+        {
+          "match": "meal.prepared",
+          "score": 0.3684
+        },
+        {
+          "match": "meal.collected",
+          "score": 0.368
+        }
+      ],
+      "clusters": [
+        [
+          "meal.prepared"
+        ],
+        [
+          "meal.collected"
+        ]
+      ]
+    },
+    "Task_1wgretj": {
+      "activity_label": "Inform chef",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_0av6xl6": {
+      "activity_label": "Prepare meal",
+      "matches": [
+        {
+          "match": "meal.prepared",
+          "score": 0.5469
+        }
+      ],
+      "clusters": [
+        [
+          "meal.prepared"
+        ]
+      ]
+    },
+    "Task_1kt8dzo": {
+      "activity_label": "Enter restaurant",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_1tdsk5o": {
+      "activity_label": "Place meal in hatch",
+      "matches": [
+        {
+          "match": "meal.prepared",
+          "score": 0.5106
+        },
+        {
+          "match": "meal.ordered",
+          "score": 0.4718
+        },
+        {
+          "match": "meal.collected",
+          "score": 0.4671
+        }
+      ],
+      "clusters": [
+        [
+          "meal.prepared"
+        ],
+        [
+          "meal.ordered"
+        ],
+        [
+          "meal.collected"
+        ]
+      ]
+    }
+  },
+  "process_graph": [
+    {
+      "from": "buzzer.set",
+      "to": "meal.ready",
+      "activity_from": "Set off buzzer",
+      "activity_to": "Meal ready",
+      "source_id": "Task_12zp7cy",
+      "target_id": "IntermediateCatchEvent_1r5wlb4"
+    },
+    {
+      "from": "meal.collected",
+      "to": "buzzer.set",
+      "activity_from": "Collect money",
+      "activity_to": "Set up buzzer",
+      "source_id": "Task_1ng51gy",
+      "target_id": "Task_03wsmkw"
+    },
+    {
+      "from": "meal.ordered",
+      "to": "meal.prepared",
+      "activity_from": "Get meal",
+      "activity_to": "Eat meal",
+      "source_id": "Task_0o0pue9",
+      "target_id": "Task_07amhtq"
+    },
+    {
+      "from": "meal.ordered",
+      "to": "meal.collected",
+      "activity_from": "Get meal",
+      "activity_to": "Eat meal",
+      "source_id": "Task_0o0pue9",
+      "target_id": "Task_07amhtq"
+    },
+    {
+      "from": "meal.prepared",
+      "to": "meal.prepared",
+      "activity_from": "Get meal",
+      "activity_to": "Eat meal",
+      "source_id": "Task_0o0pue9",
+      "target_id": "Task_07amhtq"
+    },
+    {
+      "from": "meal.prepared",
+      "to": "meal.collected",
+      "activity_from": "Get meal",
+      "activity_to": "Eat meal",
+      "source_id": "Task_0o0pue9",
+      "target_id": "Task_07amhtq"
+    },
+    {
+      "from": "meal.collected",
+      "to": "meal.prepared",
+      "activity_from": "Get meal",
+      "activity_to": "Eat meal",
+      "source_id": "Task_0o0pue9",
+      "target_id": "Task_07amhtq"
+    },
+    {
+      "from": "meal.collected",
+      "to": "meal.collected",
+      "activity_from": "Get meal",
+      "activity_to": "Eat meal",
+      "source_id": "Task_0o0pue9",
+      "target_id": "Task_07amhtq"
+    },
+    {
+      "from": "meal.ready",
+      "to": "meal.prepared",
+      "activity_from": "Get meal",
+      "activity_to": "Eat meal",
+      "source_id": "Task_0o0pue9",
+      "target_id": "Task_07amhtq"
+    },
+    {
+      "from": "meal.ready",
+      "to": "meal.collected",
+      "activity_from": "Get meal",
+      "activity_to": "Eat meal",
+      "source_id": "Task_0o0pue9",
+      "target_id": "Task_07amhtq"
+    },
+    {
+      "from": "buzzer.set",
+      "to": "buzzer.set",
+      "activity_from": "Set up buzzer",
+      "activity_to": "Hand over buzzer",
+      "source_id": "Task_03wsmkw",
+      "target_id": "Task_0ttgn0d"
+    },
+    {
+      "from": "buzzer.set",
+      "to": "buzzer.rings",
+      "activity_from": "Set up buzzer",
+      "activity_to": "Hand over buzzer",
+      "source_id": "Task_03wsmkw",
+      "target_id": "Task_0ttgn0d"
+    },
+    {
+      "from": "meal.ready",
+      "to": "meal.ordered",
+      "activity_from": "Meal ready",
+      "activity_to": "Get meal",
+      "source_id": "IntermediateCatchEvent_1r5wlb4",
+      "target_id": "Task_0o0pue9"
+    },
+    {
+      "from": "meal.ready",
+      "to": "meal.prepared",
+      "activity_from": "Meal ready",
+      "activity_to": "Get meal",
+      "source_id": "IntermediateCatchEvent_1r5wlb4",
+      "target_id": "Task_0o0pue9"
+    },
+    {
+      "from": "meal.ready",
+      "to": "meal.collected",
+      "activity_from": "Meal ready",
+      "activity_to": "Get meal",
+      "source_id": "IntermediateCatchEvent_1r5wlb4",
+      "target_id": "Task_0o0pue9"
+    },
+    {
+      "from": "meal.ready",
+      "to": "meal.ready",
+      "activity_from": "Meal ready",
+      "activity_to": "Get meal",
+      "source_id": "IntermediateCatchEvent_1r5wlb4",
+      "target_id": "Task_0o0pue9"
+    },
+    {
+      "from": "meal.ready",
+      "to": "buzzer.set",
+      "activity_from": "Meal ready",
+      "activity_to": "Set off buzzer",
+      "source_id": "IntermediateCatchEvent_1pl0nlh",
+      "target_id": "Task_12zp7cy"
+    },
+    {
+      "from": "buzzer.set",
+      "to": "meal.ready",
+      "activity_from": "Take buzzer",
+      "activity_to": "Meal ready",
+      "source_id": "Task_1jlgbwe",
+      "target_id": "IntermediateCatchEvent_1r5wlb4"
+    },
+    {
+      "from": "buzzer.rings",
+      "to": "meal.ready",
+      "activity_from": "Take buzzer",
+      "activity_to": "Meal ready",
+      "source_id": "Task_1jlgbwe",
+      "target_id": "IntermediateCatchEvent_1r5wlb4"
+    },
+    {
+      "from": "meal.prepared",
+      "to": "meal.prepared",
+      "activity_from": "Prepare meal",
+      "activity_to": "Place meal in hatch",
+      "source_id": "Task_0av6xl6",
+      "target_id": "Task_1tdsk5o"
+    },
+    {
+      "from": "meal.prepared",
+      "to": "meal.ordered",
+      "activity_from": "Prepare meal",
+      "activity_to": "Place meal in hatch",
+      "source_id": "Task_0av6xl6",
+      "target_id": "Task_1tdsk5o"
+    },
+    {
+      "from": "meal.prepared",
+      "to": "meal.collected",
+      "activity_from": "Prepare meal",
+      "activity_to": "Place meal in hatch",
+      "source_id": "Task_0av6xl6",
+      "target_id": "Task_1tdsk5o"
+    },
+    {
+      "from": "buzzer.set",
+      "to": "buzzer.set",
+      "activity_from": "Hand over buzzer",
+      "activity_to": "Take buzzer",
+      "source_id": "Task_0ttgn0d",
+      "target_id": "Task_1jlgbwe"
+    },
+    {
+      "from": "buzzer.set",
+      "to": "buzzer.rings",
+      "activity_from": "Hand over buzzer",
+      "activity_to": "Take buzzer",
+      "source_id": "Task_0ttgn0d",
+      "target_id": "Task_1jlgbwe"
+    },
+    {
+      "from": "buzzer.rings",
+      "to": "buzzer.set",
+      "activity_from": "Hand over buzzer",
+      "activity_to": "Take buzzer",
+      "source_id": "Task_0ttgn0d",
+      "target_id": "Task_1jlgbwe"
+    },
+    {
+      "from": "buzzer.rings",
+      "to": "buzzer.rings",
+      "activity_from": "Hand over buzzer",
+      "activity_to": "Take buzzer",
+      "source_id": "Task_0ttgn0d",
+      "target_id": "Task_1jlgbwe"
+    },
+    {
+      "from": "meal.collected",
+      "to": "meal.ordered",
+      "activity_from": "Hand over meal",
+      "activity_to": "Get meal",
+      "source_id": "Task_1a48xz1",
+      "target_id": "Task_0o0pue9"
+    },
+    {
+      "from": "meal.collected",
+      "to": "meal.prepared",
+      "activity_from": "Hand over meal",
+      "activity_to": "Get meal",
+      "source_id": "Task_1a48xz1",
+      "target_id": "Task_0o0pue9"
+    },
+    {
+      "from": "meal.collected",
+      "to": "meal.collected",
+      "activity_from": "Hand over meal",
+      "activity_to": "Get meal",
+      "source_id": "Task_1a48xz1",
+      "target_id": "Task_0o0pue9"
+    },
+    {
+      "from": "meal.collected",
+      "to": "meal.ready",
+      "activity_from": "Hand over meal",
+      "activity_to": "Get meal",
+      "source_id": "Task_1a48xz1",
+      "target_id": "Task_0o0pue9"
+    },
+    {
+      "from": "meal.prepared",
+      "to": "meal.ordered",
+      "activity_from": "Hand over meal",
+      "activity_to": "Get meal",
+      "source_id": "Task_1a48xz1",
+      "target_id": "Task_0o0pue9"
+    },
+    {
+      "from": "meal.prepared",
+      "to": "meal.prepared",
+      "activity_from": "Hand over meal",
+      "activity_to": "Get meal",
+      "source_id": "Task_1a48xz1",
+      "target_id": "Task_0o0pue9"
+    },
+    {
+      "from": "meal.prepared",
+      "to": "meal.collected",
+      "activity_from": "Hand over meal",
+      "activity_to": "Get meal",
+      "source_id": "Task_1a48xz1",
+      "target_id": "Task_0o0pue9"
+    },
+    {
+      "from": "meal.prepared",
+      "to": "meal.ready",
+      "activity_from": "Hand over meal",
+      "activity_to": "Get meal",
+      "source_id": "Task_1a48xz1",
+      "target_id": "Task_0o0pue9"
+    },
+    {
+      "from": "meal.ordered",
+      "to": "meal.ordered",
+      "activity_from": "Hand over meal",
+      "activity_to": "Get meal",
+      "source_id": "Task_1a48xz1",
+      "target_id": "Task_0o0pue9"
+    },
+    {
+      "from": "meal.ordered",
+      "to": "meal.prepared",
+      "activity_from": "Hand over meal",
+      "activity_to": "Get meal",
+      "source_id": "Task_1a48xz1",
+      "target_id": "Task_0o0pue9"
+    },
+    {
+      "from": "meal.ordered",
+      "to": "meal.collected",
+      "activity_from": "Hand over meal",
+      "activity_to": "Get meal",
+      "source_id": "Task_1a48xz1",
+      "target_id": "Task_0o0pue9"
+    },
+    {
+      "from": "meal.ordered",
+      "to": "meal.ready",
+      "activity_from": "Hand over meal",
+      "activity_to": "Get meal",
+      "source_id": "Task_1a48xz1",
+      "target_id": "Task_0o0pue9"
+    }
+  ],
+  "alignment": {
+    "po_system.updated": {
+      "operator": "AND",
+      "quote": [
+        "He then informs the employee that he has placed the finished meal in the service hatch.",
+        "As soon as the employee is aware that the meal is ready he sets off the guest’s buzzer."
+      ],
+      "terms": [
+        {
+          "term": "buzzer.set",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['po_system.updated']",
+          "missing": [
+            "po_system.updated"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "buzzer.set"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "buzzer.set": {
+      "operator": "AND",
+      "quote": [
+        "When the buzzer rings, your dinner is ready"
+      ],
+      "terms": [
+        {
+          "term": "buzzer.rings",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED",
+      "clauses": [
+        {
+          "terms": [
+            "buzzer.rings"
+          ],
+          "status": "SATISFIED"
+        }
+      ]
+    },
+    "buzzer.rings": {
+      "operator": "AND",
+      "quote": [
+        "He then informs the employee that he has placed the finished meal in the service hatch.",
+        "As soon as the employee is aware that the meal is ready he sets off the guest’s buzzer."
+      ],
+      "terms": [
+        {
+          "term": "meal.prepared",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        },
+        {
+          "term": "service_hatch.filled",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['service_hatch.filled']",
+          "missing": [
+            "service_hatch.filled"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "meal.prepared",
+            "service_hatch.filled"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "meal.prepared": {
+      "operator": "AND",
+      "quote": [
+        "The chef prepares the meal and places it in the service hatch.",
+        "He then informs the employee that he has placed the finished meal in the service hatch."
+      ],
+      "terms": [
+        {
+          "term": "meal.ordered",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED",
+      "clauses": [
+        {
+          "terms": [
+            "meal.ordered"
+          ],
+          "status": "SATISFIED"
+        }
+      ]
+    },
+    "service_hatch.filled": {
+      "operator": "OR",
+      "quote": [
+        "When the buzzer rings, your dinner is ready",
+        "The chef prepares the meal and places it in the service hatch."
+      ],
+      "terms": [
+        {
+          "term": "buzzer.set",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['service_hatch.filled']",
+          "missing": [
+            "service_hatch.filled"
+          ]
+        },
+        {
+          "term": "meal.prepared",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['service_hatch.filled']",
+          "missing": [
+            "service_hatch.filled"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "buzzer.set"
+          ],
+          "status": "UNRESOLVABLE"
+        },
+        {
+          "terms": [
+            "meal.prepared"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    }
+  },
+  "errors": [
+    "report: 'list' object has no attribute 'split'"
+  ]
+}

@@ -1,0 +1,839 @@
+{
+  "case_name": "OriginalDataset/Model7-1",
+  "text": "First, the Manager checks the open leads. Afterwards, he selects the top five ones. He then tells his Sales Assistant to call the contact person of the leads. The Sales Assistant calls each customer. If someone is interested, he sends a note to the Manager. The Manager then processes the lead. Otherwise, he calls the next customer.",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "gpt-5.5",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "gpt-5.5",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/../datasets/lre/alignment_model_text-master/datasets/OriginalDataset/Models/Model7-1.bpmn",
+  "report_model": "gpt-5.5",
+  "candidates": {
+    "lead": {
+      "states": [
+        "open",
+        "checked",
+        "selected",
+        "processed"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "open_leads": {
+      "states": [
+        "checked"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "top_five_leads": {
+      "states": [
+        "selected"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "sales_assistant": {
+      "states": [
+        "instructed"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "contact_person": {
+      "states": [
+        "called"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "customer": {
+      "states": [
+        "called",
+        "interested"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "note": {
+      "states": [
+        "sent"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "manager": {
+      "states": [
+        "notified"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "next_customer": {
+      "states": [
+        "called"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    }
+  },
+  "validation_report": {
+    "lead": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "lead"
+    },
+    "open_leads": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "leads"
+    },
+    "top_five_leads": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "leads"
+    },
+    "sales_assistant": {
+      "f_lex": "ACTOR",
+      "kept": false,
+      "head_used": "assistant"
+    },
+    "contact_person": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "person"
+    },
+    "customer": {
+      "f_lex": "ACTOR",
+      "kept": false,
+      "head_used": "customer"
+    },
+    "note": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "note"
+    },
+    "manager": {
+      "f_lex": "ACTOR",
+      "kept": false,
+      "head_used": "manager"
+    },
+    "next_customer": {
+      "f_lex": "ACTOR",
+      "kept": false,
+      "head_used": "customer"
+    },
+    "__meta__": {
+      "total_candidates": 9,
+      "indeterminate_kept_count": 0
+    }
+  },
+  "exclusive_groups_report": {
+    "accepted": [],
+    "rejected": []
+  },
+  "state_space": {
+    "lead": {
+      "states": [
+        "open",
+        "checked",
+        "selected",
+        "processed"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "open_lead": {
+      "states": [
+        "checked"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "top_five_lead": {
+      "states": [
+        "selected"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "contact_person": {
+      "states": [
+        "called"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "note": {
+      "states": [
+        "sent"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    }
+  },
+  "state_space_dedup": {
+    "merged": {},
+    "ambiguous_not_merged": {
+      "lead": [
+        "open_lead",
+        "top_five_lead"
+      ]
+    }
+  },
+  "raw_preconditions": {
+    "lead.open": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "lead.checked": {
+      "precondition": "lead.open",
+      "quote": "First, the Manager checks the open leads."
+    },
+    "lead.selected": {
+      "precondition": "lead.checked",
+      "quote": "First, the Manager checks the open leads. Afterwards, he selects the top five ones."
+    },
+    "lead.processed": {
+      "precondition": "note.sent",
+      "quote": "If someone is interested, he sends a note to the Manager. The Manager then processes the lead."
+    },
+    "open_lead.checked": {
+      "precondition": "lead.open",
+      "quote": "First, the Manager checks the open leads."
+    },
+    "top_five_lead.selected": {
+      "precondition": "lead.checked",
+      "quote": "First, the Manager checks the open leads. Afterwards, he selects the top five ones."
+    },
+    "contact_person.called": {
+      "precondition": "top_five_lead.selected",
+      "quote": "Afterwards, he selects the top five ones. He then tells his Sales Assistant to call the contact person of the leads."
+    },
+    "note.sent": {
+      "precondition": "UNRESOLVED",
+      "quote": null
+    }
+  },
+  "validated_preconditions": {
+    "lead.open": {
+      "precondition": "INITIAL",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "lead.checked": {
+      "precondition": "lead.open",
+      "quote": "First, the Manager checks the open leads.",
+      "status": "OK",
+      "reason": null
+    },
+    "lead.selected": {
+      "precondition": "lead.checked",
+      "quote": "First, the Manager checks the open leads. Afterwards, he selects the top five ones.",
+      "status": "OK",
+      "reason": null
+    },
+    "lead.processed": {
+      "precondition": "note.sent",
+      "quote": "If someone is interested, he sends a note to the Manager. The Manager then processes the lead.",
+      "status": "OK",
+      "reason": null
+    },
+    "open_lead.checked": {
+      "precondition": "lead.open",
+      "quote": "First, the Manager checks the open leads.",
+      "status": "OK",
+      "reason": null
+    },
+    "top_five_lead.selected": {
+      "precondition": "lead.checked",
+      "quote": "First, the Manager checks the open leads. Afterwards, he selects the top five ones.",
+      "status": "OK",
+      "reason": null
+    },
+    "contact_person.called": {
+      "precondition": "top_five_lead.selected",
+      "quote": "Afterwards, he selects the top five ones. He then tells his Sales Assistant to call the contact person of the leads.",
+      "status": "OK",
+      "reason": null
+    },
+    "note.sent": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    }
+  },
+  "precondition_cycles": [],
+  "branch_conflicts": [],
+  "reference_graph": {
+    "nodes": [
+      {
+        "id": "lead.open",
+        "weight": 0.667
+      },
+      {
+        "id": "lead.checked",
+        "weight": 1.0
+      },
+      {
+        "id": "lead.selected",
+        "weight": 0.333
+      },
+      {
+        "id": "lead.processed",
+        "weight": 0.333
+      },
+      {
+        "id": "open_lead.checked",
+        "weight": 0.333
+      },
+      {
+        "id": "top_five_lead.selected",
+        "weight": 0.667
+      },
+      {
+        "id": "contact_person.called",
+        "weight": 0.333
+      },
+      {
+        "id": "note.sent",
+        "weight": 0.333
+      }
+    ],
+    "edges": [
+      {
+        "from": "lead.open",
+        "to": "lead.checked",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "First, the Manager checks the open leads.",
+        "negated": false
+      },
+      {
+        "from": "lead.checked",
+        "to": "lead.selected",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "First, the Manager checks the open leads. Afterwards, he selects the top five ones.",
+        "negated": false
+      },
+      {
+        "from": "note.sent",
+        "to": "lead.processed",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "If someone is interested, he sends a note to the Manager. The Manager then processes the lead.",
+        "negated": false
+      },
+      {
+        "from": "lead.open",
+        "to": "open_lead.checked",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "First, the Manager checks the open leads.",
+        "negated": false
+      },
+      {
+        "from": "lead.checked",
+        "to": "top_five_lead.selected",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "First, the Manager checks the open leads. Afterwards, he selects the top five ones.",
+        "negated": false
+      },
+      {
+        "from": "top_five_lead.selected",
+        "to": "contact_person.called",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "Afterwards, he selects the top five ones. He then tells his Sales Assistant to call the contact person of the leads.",
+        "negated": false
+      }
+    ],
+    "cycles": [],
+    "branch_conflicts": [],
+    "exclusive_pairs": []
+  },
+  "dfg_edges": [
+    {
+      "source_id": "Task_1",
+      "source_label": "Check open leads",
+      "target_id": "Task_2",
+      "target_label": "Select top five leads",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_2",
+      "source_label": "Select top five leads",
+      "target_id": "Task_0",
+      "target_label": "Call contact person",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_0",
+      "source_label": "Call contact person",
+      "target_id": "Task_3",
+      "target_label": "Process lead",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_0",
+      "source_label": "Call contact person",
+      "target_id": "Task_0",
+      "target_label": "Call contact person",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "Check open leads",
+      "subject_id": "Task_1",
+      "predicate": "follows",
+      "object": "Select top five leads",
+      "object_id": "Task_2"
+    },
+    {
+      "subject": "Select top five leads",
+      "subject_id": "Task_2",
+      "predicate": "follows",
+      "object": "Call contact person",
+      "object_id": "Task_0"
+    },
+    {
+      "subject": "Call contact person",
+      "subject_id": "Task_0",
+      "predicate": "follows",
+      "object": "Process lead",
+      "object_id": "Task_3"
+    },
+    {
+      "subject": "Call contact person",
+      "subject_id": "Task_0",
+      "predicate": "follows",
+      "object": "Call contact person",
+      "object_id": "Task_0"
+    }
+  ],
+  "matches": {
+    "Task_1": {
+      "activity_label": "Check open leads",
+      "matches": [
+        {
+          "match": "open_lead.checked",
+          "score": 0.7969
+        }
+      ],
+      "clusters": [
+        [
+          "open_lead.checked"
+        ]
+      ]
+    },
+    "Task_2": {
+      "activity_label": "Select top five leads",
+      "matches": [
+        {
+          "match": "top_five_lead.selected",
+          "score": 0.8063
+        }
+      ],
+      "clusters": [
+        [
+          "top_five_lead.selected"
+        ]
+      ]
+    },
+    "Task_0": {
+      "activity_label": "Call contact person",
+      "matches": [
+        {
+          "match": "contact_person.called",
+          "score": 0.4351
+        }
+      ],
+      "clusters": [
+        [
+          "contact_person.called"
+        ]
+      ]
+    },
+    "Task_3": {
+      "activity_label": "Process lead",
+      "matches": [
+        {
+          "match": "lead.processed",
+          "score": 0.3913
+        }
+      ],
+      "clusters": [
+        [
+          "lead.processed"
+        ]
+      ]
+    }
+  },
+  "process_graph": [
+    {
+      "from": "open_lead.checked",
+      "to": "top_five_lead.selected",
+      "activity_from": "Check open leads",
+      "activity_to": "Select top five leads",
+      "source_id": "Task_1",
+      "target_id": "Task_2"
+    },
+    {
+      "from": "top_five_lead.selected",
+      "to": "contact_person.called",
+      "activity_from": "Select top five leads",
+      "activity_to": "Call contact person",
+      "source_id": "Task_2",
+      "target_id": "Task_0"
+    },
+    {
+      "from": "contact_person.called",
+      "to": "lead.processed",
+      "activity_from": "Call contact person",
+      "activity_to": "Process lead",
+      "source_id": "Task_0",
+      "target_id": "Task_3"
+    },
+    {
+      "from": "contact_person.called",
+      "to": "contact_person.called",
+      "activity_from": "Call contact person",
+      "activity_to": "Call contact person",
+      "source_id": "Task_0",
+      "target_id": "Task_0"
+    }
+  ],
+  "alignment": {
+    "lead.checked": {
+      "operator": "AND",
+      "quote": "First, the Manager checks the open leads.",
+      "terms": [
+        {
+          "term": "lead.open",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['lead.open', 'lead.checked']",
+          "missing": [
+            "lead.open",
+            "lead.checked"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "lead.open"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "lead.selected": {
+      "operator": "AND",
+      "quote": "First, the Manager checks the open leads. Afterwards, he selects the top five ones.",
+      "terms": [
+        {
+          "term": "lead.checked",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['lead.checked', 'lead.selected']",
+          "missing": [
+            "lead.checked",
+            "lead.selected"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "lead.checked"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "lead.processed": {
+      "operator": "AND",
+      "quote": "If someone is interested, he sends a note to the Manager. The Manager then processes the lead.",
+      "terms": [
+        {
+          "term": "note.sent",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['note.sent']",
+          "missing": [
+            "note.sent"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "note.sent"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "open_lead.checked": {
+      "operator": "AND",
+      "quote": "First, the Manager checks the open leads.",
+      "terms": [
+        {
+          "term": "lead.open",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['lead.open']",
+          "missing": [
+            "lead.open"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "lead.open"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "top_five_lead.selected": {
+      "operator": "AND",
+      "quote": "First, the Manager checks the open leads. Afterwards, he selects the top five ones.",
+      "terms": [
+        {
+          "term": "lead.checked",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['lead.checked']",
+          "missing": [
+            "lead.checked"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "lead.checked"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "contact_person.called": {
+      "operator": "AND",
+      "quote": "Afterwards, he selects the top five ones. He then tells his Sales Assistant to call the contact person of the leads.",
+      "terms": [
+        {
+          "term": "top_five_lead.selected",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED",
+      "clauses": [
+        {
+          "terms": [
+            "top_five_lead.selected"
+          ],
+          "status": "SATISFIED"
+        }
+      ]
+    }
+  },
+  "report": {
+    "verdict": {
+      "verdict": "FAITHFUL_WITH_RESERVATIONS",
+      "justification": "No gap found, but 2 requirement(s) from the text could not be associated with any clear activity in the observed process -- neither confirmed nor refuted. This verdict is NOT a confirmation of full faithfulness.",
+      "scope": "This verdict covers the causal reachability of the requirements expressed in the source text, not the general quality of the process model -- a multiplicity defect (an activity executed more than once due to a mismatched branching structure) is not covered by this verdict, even if the process is otherwise well-formed."
+    },
+    "summary": {
+      "ecarts": 0,
+      "non_verifiable": 2,
+      "conforme": 1
+    },
+    "ecarts": [],
+    "non_verifiable": [
+      {
+        "root_cause": "lead open",
+        "quote": "First, the Manager checks the open leads.",
+        "explanation": "The requirement exists for \"lead checked\": \"First, the Manager checks the open leads.\" However, \"lead open\" cannot be tied to any clear activity in the observed process, so this is neither a confirmation nor a refutation; it cannot be verified. (This same root cause also affects: Check open leads, Select top five leads, lead selected.)",
+        "quote_verbatim": true,
+        "affected_activities": [
+          "Check open leads",
+          "Select top five leads",
+          "lead checked",
+          "lead selected"
+        ],
+        "affected_count": 6
+      },
+      {
+        "root_cause": "note sent",
+        "quote": "If someone is interested, he sends a note to the Manager. The Manager then processes the lead.",
+        "explanation": "For \"Process lead\", the required condition \"note sent\" cannot be linked to any clear activity in the observed process, so this is neither a confirmation nor a refutation; it cannot be verified. The source only establishes that a prior requirement exists: \"If someone is interested, he sends a note to the Manager. The Manager then processes the lead.\"",
+        "quote_verbatim": true,
+        "affected_activities": [
+          "Process lead"
+        ],
+        "affected_count": 1
+      }
+    ],
+    "conforme": [
+      {
+        "target": "Call contact person",
+        "term": "Select top five leads"
+      }
+    ],
+    "piece_jointe_alignement_brut": {
+      "lead.checked": {
+        "operator": "AND",
+        "quote": "First, the Manager checks the open leads.",
+        "terms": [
+          {
+            "term": "lead.open",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['lead.open', 'lead.checked']",
+            "missing": [
+              "lead.open",
+              "lead.checked"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "lead.open"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "lead.selected": {
+        "operator": "AND",
+        "quote": "First, the Manager checks the open leads. Afterwards, he selects the top five ones.",
+        "terms": [
+          {
+            "term": "lead.checked",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['lead.checked', 'lead.selected']",
+            "missing": [
+              "lead.checked",
+              "lead.selected"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "lead.checked"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "lead.processed": {
+        "operator": "AND",
+        "quote": "If someone is interested, he sends a note to the Manager. The Manager then processes the lead.",
+        "terms": [
+          {
+            "term": "note.sent",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['note.sent']",
+            "missing": [
+              "note.sent"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "note.sent"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "open_lead.checked": {
+        "operator": "AND",
+        "quote": "First, the Manager checks the open leads.",
+        "terms": [
+          {
+            "term": "lead.open",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['lead.open']",
+            "missing": [
+              "lead.open"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "lead.open"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "top_five_lead.selected": {
+        "operator": "AND",
+        "quote": "First, the Manager checks the open leads. Afterwards, he selects the top five ones.",
+        "terms": [
+          {
+            "term": "lead.checked",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['lead.checked']",
+            "missing": [
+              "lead.checked"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "lead.checked"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "contact_person.called": {
+        "operator": "AND",
+        "quote": "Afterwards, he selects the top five ones. He then tells his Sales Assistant to call the contact person of the leads.",
+        "terms": [
+          {
+            "term": "top_five_lead.selected",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED",
+        "clauses": [
+          {
+            "terms": [
+              "top_five_lead.selected"
+            ],
+            "status": "SATISFIED"
+          }
+        ]
+      }
+    }
+  },
+  "errors": []
+}

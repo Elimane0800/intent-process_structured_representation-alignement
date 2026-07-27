@@ -1,0 +1,1136 @@
+{
+  "case_name": "OriginalDataset/Model8-2",
+  "text": "When a vacancy is reported to me, I create a job description from the information. Sometimes there is still confusion in the message, then I must ask the Department again. I am submitting the job description for consideration and waiting for the approval. But, it can also happen that the department does not approve it, but rejects it, and requests a correction. Then I correct the description and submit it again for consideration. If the description is finally approved, I post the job.",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "gpt-5.5",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "gpt-5.5",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/../datasets/lre/alignment_model_text-master/datasets/OriginalDataset/Models/Model8-2.bpmn",
+  "report_model": "gpt-5.5",
+  "candidates": {
+    "vacancy": {
+      "states": [
+        "reported"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "message": {
+      "states": [
+        "unclear"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "department": {
+      "states": [
+        "asked"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "job_description": {
+      "states": [
+        "created",
+        "submitted",
+        "under_consideration",
+        "pending_approval",
+        "rejected",
+        "corrected",
+        "approved"
+      ],
+      "exclusive_groups": [
+        [
+          "approved",
+          "rejected"
+        ]
+      ],
+      "concurrent_with": []
+    },
+    "approval": {
+      "states": [
+        "pending"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "correction": {
+      "states": [
+        "requested"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "job": {
+      "states": [
+        "posted"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    }
+  },
+  "validation_report": {
+    "vacancy": {
+      "f_lex": "INDETERMINATE",
+      "kept": true,
+      "head_used": "vacancy"
+    },
+    "message": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "message"
+    },
+    "department": {
+      "f_lex": "INDETERMINATE",
+      "kept": true,
+      "head_used": "department"
+    },
+    "job_description": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "description"
+    },
+    "approval": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "approval"
+    },
+    "correction": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "correction"
+    },
+    "job": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "job"
+    },
+    "__meta__": {
+      "total_candidates": 7,
+      "indeterminate_kept_count": 2
+    }
+  },
+  "exclusive_groups_report": {
+    "accepted": [
+      {
+        "entity": "job_description",
+        "states": [
+          "approved",
+          "rejected"
+        ],
+        "quote": "does not approve it, but rejects it"
+      }
+    ],
+    "rejected": []
+  },
+  "state_space": {
+    "vacancy": {
+      "states": [
+        "reported"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "message": {
+      "states": [
+        "unclear"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "department": {
+      "states": [
+        "asked"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "job_description": {
+      "states": [
+        "created",
+        "submitted",
+        "under_consideration",
+        "pending_approval",
+        "rejected",
+        "corrected",
+        "approved"
+      ],
+      "exclusive_groups": [
+        [
+          "approved",
+          "rejected"
+        ]
+      ],
+      "concurrent_with": []
+    },
+    "approval": {
+      "states": [
+        "pending"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "correction": {
+      "states": [
+        "requested"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "job": {
+      "states": [
+        "posted"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    }
+  },
+  "state_space_dedup": {
+    "merged": {},
+    "ambiguous_not_merged": {}
+  },
+  "raw_preconditions": {
+    "vacancy.reported": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "message.unclear": {
+      "precondition": "UNRESOLVED",
+      "quote": null
+    },
+    "department.asked": {
+      "precondition": "message.unclear",
+      "quote": "Sometimes there is still confusion in the message, then I must ask the Department again."
+    },
+    "job_description.created": {
+      "precondition": "vacancy.reported",
+      "quote": "When a vacancy is reported to me, I create a job description from the information."
+    },
+    "job_description.submitted": {
+      "precondition": "job_description.created OR job_description.corrected",
+      "quote": [
+        "When a vacancy is reported to me, I create a job description from the information.",
+        "I am submitting the job description for consideration and waiting for the approval.",
+        "Then I correct the description and submit it again for consideration."
+      ]
+    },
+    "job_description.under_consideration": {
+      "precondition": "job_description.submitted",
+      "quote": "I am submitting the job description for consideration and waiting for the approval."
+    },
+    "job_description.pending_approval": {
+      "precondition": "job_description.submitted",
+      "quote": "I am submitting the job description for consideration and waiting for the approval."
+    },
+    "job_description.rejected": {
+      "precondition": "approval.pending",
+      "quote": "I am submitting the job description for consideration and waiting for the approval. But, it can also happen that the department does not approve it, but rejects it, and requests a correction."
+    },
+    "job_description.corrected": {
+      "precondition": "correction.requested",
+      "quote": "Then I correct the description and submit it again for consideration."
+    },
+    "job_description.approved": {
+      "precondition": "approval.pending",
+      "quote": "I am submitting the job description for consideration and waiting for the approval. But, it can also happen that the department does not approve it, but rejects it, and requests a correction. Then I correct the description and submit it again for consideration. If the description is finally approved, I post the job."
+    },
+    "approval.pending": {
+      "precondition": "job_description.submitted",
+      "quote": "I am submitting the job description for consideration and waiting for the approval."
+    },
+    "correction.requested": {
+      "precondition": "job_description.rejected",
+      "quote": "But, it can also happen that the department does not approve it, but rejects it, and requests a correction."
+    },
+    "job.posted": {
+      "precondition": "job_description.approved",
+      "quote": "If the description is finally approved, I post the job."
+    }
+  },
+  "validated_preconditions": {
+    "vacancy.reported": {
+      "precondition": "INITIAL",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "message.unclear": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "department.asked": {
+      "precondition": "message.unclear",
+      "quote": "Sometimes there is still confusion in the message, then I must ask the Department again.",
+      "status": "OK",
+      "reason": null
+    },
+    "job_description.created": {
+      "precondition": "vacancy.reported",
+      "quote": "When a vacancy is reported to me, I create a job description from the information.",
+      "status": "OK",
+      "reason": null
+    },
+    "job_description.submitted": {
+      "precondition": "job_description.created OR job_description.corrected",
+      "quote": [
+        "When a vacancy is reported to me, I create a job description from the information.",
+        "I am submitting the job description for consideration and waiting for the approval.",
+        "Then I correct the description and submit it again for consideration."
+      ],
+      "status": "OK",
+      "reason": null
+    },
+    "job_description.under_consideration": {
+      "precondition": "job_description.submitted",
+      "quote": "I am submitting the job description for consideration and waiting for the approval.",
+      "status": "OK",
+      "reason": null
+    },
+    "job_description.pending_approval": {
+      "precondition": "job_description.submitted",
+      "quote": "I am submitting the job description for consideration and waiting for the approval.",
+      "status": "OK",
+      "reason": null
+    },
+    "job_description.rejected": {
+      "precondition": "approval.pending",
+      "quote": "I am submitting the job description for consideration and waiting for the approval. But, it can also happen that the department does not approve it, but rejects it, and requests a correction.",
+      "status": "OK",
+      "reason": null
+    },
+    "job_description.corrected": {
+      "precondition": "correction.requested",
+      "quote": "Then I correct the description and submit it again for consideration.",
+      "status": "OK",
+      "reason": null
+    },
+    "job_description.approved": {
+      "precondition": "approval.pending",
+      "quote": "I am submitting the job description for consideration and waiting for the approval. But, it can also happen that the department does not approve it, but rejects it, and requests a correction. Then I correct the description and submit it again for consideration. If the description is finally approved, I post the job.",
+      "status": "OK",
+      "reason": null
+    },
+    "approval.pending": {
+      "precondition": "job_description.submitted",
+      "quote": "I am submitting the job description for consideration and waiting for the approval.",
+      "status": "OK",
+      "reason": null
+    },
+    "correction.requested": {
+      "precondition": "job_description.rejected",
+      "quote": "But, it can also happen that the department does not approve it, but rejects it, and requests a correction.",
+      "status": "OK",
+      "reason": null
+    },
+    "job.posted": {
+      "precondition": "job_description.approved",
+      "quote": "If the description is finally approved, I post the job.",
+      "status": "OK",
+      "reason": null
+    }
+  },
+  "precondition_cycles": [
+    [
+      "job_description.submitted",
+      "approval.pending",
+      "job_description.rejected",
+      "correction.requested",
+      "job_description.corrected",
+      "job_description.submitted"
+    ]
+  ],
+  "branch_conflicts": [
+    {
+      "entity": "job_description",
+      "exclusive_group": [
+        "approved",
+        "rejected"
+      ],
+      "conflicting_targets": [
+        "job_description.approved",
+        "job_description.rejected"
+      ],
+      "shared_precondition": "approval.pending",
+      "reason": "targets marked mutually exclusive in the state space share the exact same accepted precondition -- reaching it would trigger both branches at once"
+    }
+  ],
+  "reference_graph": {
+    "nodes": [
+      {
+        "id": "vacancy.reported",
+        "weight": 0.2
+      },
+      {
+        "id": "message.unclear",
+        "weight": 0.2
+      },
+      {
+        "id": "department.asked",
+        "weight": 0.2
+      },
+      {
+        "id": "job_description.created",
+        "weight": 0.4
+      },
+      {
+        "id": "job_description.submitted",
+        "weight": 1.0
+      },
+      {
+        "id": "job_description.under_consideration",
+        "weight": 0.2
+      },
+      {
+        "id": "job_description.pending_approval",
+        "weight": 0.2
+      },
+      {
+        "id": "job_description.rejected",
+        "weight": 0.4
+      },
+      {
+        "id": "job_description.corrected",
+        "weight": 0.4
+      },
+      {
+        "id": "job_description.approved",
+        "weight": 0.4
+      },
+      {
+        "id": "approval.pending",
+        "weight": 0.6
+      },
+      {
+        "id": "correction.requested",
+        "weight": 0.4
+      },
+      {
+        "id": "job.posted",
+        "weight": 0.2
+      }
+    ],
+    "edges": [
+      {
+        "from": "message.unclear",
+        "to": "department.asked",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "Sometimes there is still confusion in the message, then I must ask the Department again.",
+        "negated": false
+      },
+      {
+        "from": "vacancy.reported",
+        "to": "job_description.created",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "When a vacancy is reported to me, I create a job description from the information.",
+        "negated": false
+      },
+      {
+        "from": "job_description.created",
+        "to": "job_description.submitted",
+        "clause": 0,
+        "type": "sequence",
+        "quote": [
+          "When a vacancy is reported to me, I create a job description from the information.",
+          "I am submitting the job description for consideration and waiting for the approval.",
+          "Then I correct the description and submit it again for consideration."
+        ],
+        "negated": false
+      },
+      {
+        "from": "job_description.corrected",
+        "to": "job_description.submitted",
+        "clause": 1,
+        "type": "sequence",
+        "quote": [
+          "When a vacancy is reported to me, I create a job description from the information.",
+          "I am submitting the job description for consideration and waiting for the approval.",
+          "Then I correct the description and submit it again for consideration."
+        ],
+        "negated": false
+      },
+      {
+        "from": "job_description.submitted",
+        "to": "job_description.under_consideration",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "I am submitting the job description for consideration and waiting for the approval.",
+        "negated": false
+      },
+      {
+        "from": "job_description.submitted",
+        "to": "job_description.pending_approval",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "I am submitting the job description for consideration and waiting for the approval.",
+        "negated": false
+      },
+      {
+        "from": "approval.pending",
+        "to": "job_description.rejected",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "I am submitting the job description for consideration and waiting for the approval. But, it can also happen that the department does not approve it, but rejects it, and requests a correction.",
+        "negated": false
+      },
+      {
+        "from": "correction.requested",
+        "to": "job_description.corrected",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "Then I correct the description and submit it again for consideration.",
+        "negated": false
+      },
+      {
+        "from": "approval.pending",
+        "to": "job_description.approved",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "I am submitting the job description for consideration and waiting for the approval. But, it can also happen that the department does not approve it, but rejects it, and requests a correction. Then I correct the description and submit it again for consideration. If the description is finally approved, I post the job.",
+        "negated": false
+      },
+      {
+        "from": "job_description.submitted",
+        "to": "approval.pending",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "I am submitting the job description for consideration and waiting for the approval.",
+        "negated": false
+      },
+      {
+        "from": "job_description.rejected",
+        "to": "correction.requested",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "But, it can also happen that the department does not approve it, but rejects it, and requests a correction.",
+        "negated": false
+      },
+      {
+        "from": "job_description.approved",
+        "to": "job.posted",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "If the description is finally approved, I post the job.",
+        "negated": false
+      }
+    ],
+    "cycles": [
+      [
+        "job_description.submitted",
+        "approval.pending",
+        "job_description.rejected",
+        "correction.requested",
+        "job_description.corrected",
+        "job_description.submitted"
+      ]
+    ],
+    "branch_conflicts": [
+      {
+        "entity": "job_description",
+        "exclusive_group": [
+          "approved",
+          "rejected"
+        ],
+        "conflicting_targets": [
+          "job_description.approved",
+          "job_description.rejected"
+        ],
+        "shared_precondition": "approval.pending",
+        "reason": "targets marked mutually exclusive in the state space share the exact same accepted precondition -- reaching it would trigger both branches at once"
+      }
+    ],
+    "exclusive_pairs": [
+      {
+        "entity": "job_description",
+        "nodes": [
+          "job_description.approved",
+          "job_description.rejected"
+        ]
+      }
+    ]
+  },
+  "dfg_edges": [
+    {
+      "source_id": "Task_1",
+      "source_label": "Ask for details and requirements",
+      "target_id": "Task_2",
+      "target_label": "Create job description",
+      "gateway_context": []
+    },
+    {
+      "source_id": "IntermediateMessageEventCatching_1",
+      "source_label": "Job Description is approved",
+      "target_id": "Task_4",
+      "target_label": "Advertise post",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_2",
+      "source_label": "Create job description",
+      "target_id": "IntermediateMessageEventCatching_1",
+      "target_label": "Job Description is approved",
+      "gateway_context": [
+        "EventBasedGateway"
+      ]
+    },
+    {
+      "source_id": "Task_2",
+      "source_label": "Create job description",
+      "target_id": "IntermediateMessageEventCatching_0",
+      "target_label": "Corrections  are required",
+      "gateway_context": [
+        "EventBasedGateway"
+      ]
+    },
+    {
+      "source_id": "IntermediateMessageEventCatching_0",
+      "source_label": "Corrections  are required",
+      "target_id": "Task_3",
+      "target_label": "Correct job description",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_0",
+      "source_label": "Review report",
+      "target_id": "Task_2",
+      "target_label": "Create job description",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_0",
+      "source_label": "Review report",
+      "target_id": "Task_1",
+      "target_label": "Ask for details and requirements",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_3",
+      "source_label": "Correct job description",
+      "target_id": "IntermediateMessageEventCatching_1",
+      "target_label": "Job Description is approved",
+      "gateway_context": [
+        "EventBasedGateway"
+      ]
+    },
+    {
+      "source_id": "Task_3",
+      "source_label": "Correct job description",
+      "target_id": "IntermediateMessageEventCatching_0",
+      "target_label": "Corrections  are required",
+      "gateway_context": [
+        "EventBasedGateway"
+      ]
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "Ask for details and requirements",
+      "subject_id": "Task_1",
+      "predicate": "follows",
+      "object": "Create job description",
+      "object_id": "Task_2"
+    },
+    {
+      "subject": "Job Description is approved",
+      "subject_id": "IntermediateMessageEventCatching_1",
+      "predicate": "follows",
+      "object": "Advertise post",
+      "object_id": "Task_4"
+    },
+    {
+      "subject": "Create job description",
+      "subject_id": "Task_2",
+      "predicate": "follows",
+      "object": "Job Description is approved",
+      "object_id": "IntermediateMessageEventCatching_1"
+    },
+    {
+      "subject": "Create job description",
+      "subject_id": "Task_2",
+      "predicate": "follows",
+      "object": "Corrections  are required",
+      "object_id": "IntermediateMessageEventCatching_0"
+    },
+    {
+      "subject": "Corrections  are required",
+      "subject_id": "IntermediateMessageEventCatching_0",
+      "predicate": "follows",
+      "object": "Correct job description",
+      "object_id": "Task_3"
+    },
+    {
+      "subject": "Review report",
+      "subject_id": "Task_0",
+      "predicate": "follows",
+      "object": "Create job description",
+      "object_id": "Task_2"
+    },
+    {
+      "subject": "Review report",
+      "subject_id": "Task_0",
+      "predicate": "follows",
+      "object": "Ask for details and requirements",
+      "object_id": "Task_1"
+    },
+    {
+      "subject": "Correct job description",
+      "subject_id": "Task_3",
+      "predicate": "follows",
+      "object": "Job Description is approved",
+      "object_id": "IntermediateMessageEventCatching_1"
+    },
+    {
+      "subject": "Correct job description",
+      "subject_id": "Task_3",
+      "predicate": "follows",
+      "object": "Corrections  are required",
+      "object_id": "IntermediateMessageEventCatching_0"
+    }
+  ],
+  "matches": {
+    "Task_1": {
+      "activity_label": "Ask for details and requirements",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_2": {
+      "activity_label": "Create job description",
+      "matches": [
+        {
+          "match": "job_description.created",
+          "score": 0.4712
+        }
+      ],
+      "clusters": [
+        [
+          "job_description.created"
+        ]
+      ]
+    },
+    "IntermediateMessageEventCatching_1": {
+      "activity_label": "Job Description is approved",
+      "matches": [
+        {
+          "match": "job_description.approved",
+          "score": 0.5288
+        },
+        {
+          "match": "job_description.pending_approval",
+          "score": 0.4859
+        }
+      ],
+      "clusters": [
+        [
+          "job_description.approved"
+        ],
+        [
+          "job_description.pending_approval"
+        ]
+      ]
+    },
+    "Task_4": {
+      "activity_label": "Advertise post",
+      "matches": [
+        {
+          "match": "job.posted",
+          "score": 0.5386
+        }
+      ],
+      "clusters": [
+        [
+          "job.posted"
+        ]
+      ]
+    },
+    "IntermediateMessageEventCatching_0": {
+      "activity_label": "Corrections  are required",
+      "matches": [
+        {
+          "match": "correction.requested",
+          "score": 0.4194
+        }
+      ],
+      "clusters": [
+        [
+          "correction.requested"
+        ]
+      ]
+    },
+    "Task_3": {
+      "activity_label": "Correct job description",
+      "matches": [
+        {
+          "match": "job_description.corrected",
+          "score": 0.4711
+        }
+      ],
+      "clusters": [
+        [
+          "job_description.corrected"
+        ]
+      ]
+    },
+    "Task_0": {
+      "activity_label": "Review report",
+      "matches": [],
+      "clusters": []
+    }
+  },
+  "process_graph": [
+    {
+      "from": "job_description.approved",
+      "to": "job.posted",
+      "activity_from": "Job Description is approved",
+      "activity_to": "Advertise post",
+      "source_id": "IntermediateMessageEventCatching_1",
+      "target_id": "Task_4"
+    },
+    {
+      "from": "job_description.pending_approval",
+      "to": "job.posted",
+      "activity_from": "Job Description is approved",
+      "activity_to": "Advertise post",
+      "source_id": "IntermediateMessageEventCatching_1",
+      "target_id": "Task_4"
+    },
+    {
+      "from": "job_description.created",
+      "to": "job_description.approved",
+      "activity_from": "Create job description",
+      "activity_to": "Job Description is approved",
+      "source_id": "Task_2",
+      "target_id": "IntermediateMessageEventCatching_1"
+    },
+    {
+      "from": "job_description.created",
+      "to": "job_description.pending_approval",
+      "activity_from": "Create job description",
+      "activity_to": "Job Description is approved",
+      "source_id": "Task_2",
+      "target_id": "IntermediateMessageEventCatching_1"
+    },
+    {
+      "from": "job_description.created",
+      "to": "correction.requested",
+      "activity_from": "Create job description",
+      "activity_to": "Corrections  are required",
+      "source_id": "Task_2",
+      "target_id": "IntermediateMessageEventCatching_0"
+    },
+    {
+      "from": "correction.requested",
+      "to": "job_description.corrected",
+      "activity_from": "Corrections  are required",
+      "activity_to": "Correct job description",
+      "source_id": "IntermediateMessageEventCatching_0",
+      "target_id": "Task_3"
+    },
+    {
+      "from": "job_description.corrected",
+      "to": "job_description.approved",
+      "activity_from": "Correct job description",
+      "activity_to": "Job Description is approved",
+      "source_id": "Task_3",
+      "target_id": "IntermediateMessageEventCatching_1"
+    },
+    {
+      "from": "job_description.corrected",
+      "to": "job_description.pending_approval",
+      "activity_from": "Correct job description",
+      "activity_to": "Job Description is approved",
+      "source_id": "Task_3",
+      "target_id": "IntermediateMessageEventCatching_1"
+    },
+    {
+      "from": "job_description.corrected",
+      "to": "correction.requested",
+      "activity_from": "Correct job description",
+      "activity_to": "Corrections  are required",
+      "source_id": "Task_3",
+      "target_id": "IntermediateMessageEventCatching_0"
+    }
+  ],
+  "alignment": {
+    "department.asked": {
+      "operator": "AND",
+      "quote": "Sometimes there is still confusion in the message, then I must ask the Department again.",
+      "terms": [
+        {
+          "term": "message.unclear",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['message.unclear', 'department.asked']",
+          "missing": [
+            "message.unclear",
+            "department.asked"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "message.unclear"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "job_description.created": {
+      "operator": "AND",
+      "quote": "When a vacancy is reported to me, I create a job description from the information.",
+      "terms": [
+        {
+          "term": "vacancy.reported",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['vacancy.reported']",
+          "missing": [
+            "vacancy.reported"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "vacancy.reported"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "job_description.submitted": {
+      "operator": "OR",
+      "quote": [
+        "When a vacancy is reported to me, I create a job description from the information.",
+        "I am submitting the job description for consideration and waiting for the approval.",
+        "Then I correct the description and submit it again for consideration."
+      ],
+      "terms": [
+        {
+          "term": "job_description.created",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['job_description.submitted']",
+          "missing": [
+            "job_description.submitted"
+          ]
+        },
+        {
+          "term": "job_description.corrected",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['job_description.submitted']",
+          "missing": [
+            "job_description.submitted"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "job_description.created"
+          ],
+          "status": "UNRESOLVABLE"
+        },
+        {
+          "terms": [
+            "job_description.corrected"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "job_description.under_consideration": {
+      "operator": "AND",
+      "quote": "I am submitting the job description for consideration and waiting for the approval.",
+      "terms": [
+        {
+          "term": "job_description.submitted",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['job_description.submitted', 'job_description.under_consideration']",
+          "missing": [
+            "job_description.submitted",
+            "job_description.under_consideration"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "job_description.submitted"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "job_description.pending_approval": {
+      "operator": "AND",
+      "quote": "I am submitting the job description for consideration and waiting for the approval.",
+      "terms": [
+        {
+          "term": "job_description.submitted",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['job_description.submitted']",
+          "missing": [
+            "job_description.submitted"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "job_description.submitted"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "job_description.rejected": {
+      "operator": "AND",
+      "quote": "I am submitting the job description for consideration and waiting for the approval. But, it can also happen that the department does not approve it, but rejects it, and requests a correction.",
+      "terms": [
+        {
+          "term": "approval.pending",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['approval.pending', 'job_description.rejected']",
+          "missing": [
+            "approval.pending",
+            "job_description.rejected"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "approval.pending"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "job_description.corrected": {
+      "operator": "AND",
+      "quote": "Then I correct the description and submit it again for consideration.",
+      "terms": [
+        {
+          "term": "correction.requested",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED",
+      "clauses": [
+        {
+          "terms": [
+            "correction.requested"
+          ],
+          "status": "SATISFIED"
+        }
+      ]
+    },
+    "job_description.approved": {
+      "operator": "AND",
+      "quote": "I am submitting the job description for consideration and waiting for the approval. But, it can also happen that the department does not approve it, but rejects it, and requests a correction. Then I correct the description and submit it again for consideration. If the description is finally approved, I post the job.",
+      "terms": [
+        {
+          "term": "approval.pending",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['approval.pending']",
+          "missing": [
+            "approval.pending"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "approval.pending"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "approval.pending": {
+      "operator": "AND",
+      "quote": "I am submitting the job description for consideration and waiting for the approval.",
+      "terms": [
+        {
+          "term": "job_description.submitted",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['job_description.submitted', 'approval.pending']",
+          "missing": [
+            "job_description.submitted",
+            "approval.pending"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "job_description.submitted"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "correction.requested": {
+      "operator": "AND",
+      "quote": "But, it can also happen that the department does not approve it, but rejects it, and requests a correction.",
+      "terms": [
+        {
+          "term": "job_description.rejected",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['job_description.rejected']",
+          "missing": [
+            "job_description.rejected"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "job_description.rejected"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "job.posted": {
+      "operator": "AND",
+      "quote": "If the description is finally approved, I post the job.",
+      "terms": [
+        {
+          "term": "job_description.approved",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED",
+      "clauses": [
+        {
+          "terms": [
+            "job_description.approved"
+          ],
+          "status": "SATISFIED"
+        }
+      ]
+    }
+  },
+  "errors": [
+    "report: 'list' object has no attribute 'split'"
+  ]
+}

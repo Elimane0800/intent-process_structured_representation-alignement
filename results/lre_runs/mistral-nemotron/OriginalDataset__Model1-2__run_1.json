@@ -1,0 +1,1325 @@
+{
+  "case_name": "OriginalDataset/Model1-2",
+  "text": "A customer brings in a defective computer and the CRS checks the defect and hands out a repair cost calculation back. If the customer decides that the costs are acceptable, the process continues, otherwise she takes her computer home unrepaired. The ongoing repair consists of two activities, which are executed, in an arbitrary order. The first activity is to check and repair the hardware, whereas the second activity checks and configures the software. After each of these activities, the proper system functionality is tested. If an error is detected another arbitrary repair activity is executed, otherwise the repair is finished.\n",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "mistral-nemotron",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "mistral-nemotron",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/../datasets/lre/alignment_model_text-master/datasets/OriginalDataset/Models/Model1-2.bpmn",
+  "report_model": "mistral-nemotron",
+  "candidates": {
+    "computer": {
+      "states": [
+        "defective",
+        "under_repair",
+        "repaired",
+        "unrepaired"
+      ],
+      "exclusive_groups": [
+        [
+          "repaired",
+          "unrepaired"
+        ]
+      ],
+      "concurrent_with": []
+    },
+    "repair_cost_calculation": {
+      "states": [
+        "issued"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "hardware_repair": {
+      "states": [
+        "in_progress",
+        "complete"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": [
+        "software_configuration"
+      ]
+    },
+    "software_configuration": {
+      "states": [
+        "in_progress",
+        "complete"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": [
+        "hardware_repair"
+      ]
+    },
+    "system_functionality_test": {
+      "states": [
+        "in_progress",
+        "passed",
+        "failed"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    }
+  },
+  "validation_report": {
+    "computer": {
+      "f_lex": "INDETERMINATE",
+      "kept": true,
+      "head_used": "computer"
+    },
+    "repair_cost_calculation": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "calculation"
+    },
+    "hardware_repair": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "repair"
+    },
+    "software_configuration": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "configuration"
+    },
+    "system_functionality_test": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "test"
+    },
+    "__meta__": {
+      "total_candidates": 5,
+      "indeterminate_kept_count": 1
+    }
+  },
+  "exclusive_groups_report": {
+    "accepted": [
+      {
+        "entity": "computer",
+        "states": [
+          "repaired",
+          "unrepaired"
+        ],
+        "quote": "otherwise she takes her computer home unrepaired"
+      }
+    ],
+    "rejected": []
+  },
+  "state_space": {
+    "computer": {
+      "states": [
+        "defective",
+        "under_repair",
+        "repaired",
+        "unrepaired"
+      ],
+      "exclusive_groups": [
+        [
+          "repaired",
+          "unrepaired"
+        ]
+      ],
+      "concurrent_with": []
+    },
+    "repair_cost_calculation": {
+      "states": [
+        "issued"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "hardware_repair": {
+      "states": [
+        "in_progress",
+        "complete"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": [
+        "software_configuration"
+      ]
+    },
+    "software_configuration": {
+      "states": [
+        "in_progress",
+        "complete"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": [
+        "hardware_repair"
+      ]
+    },
+    "system_functionality_test": {
+      "states": [
+        "in_progress",
+        "passed",
+        "failed"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    }
+  },
+  "state_space_dedup": {
+    "merged": {},
+    "ambiguous_not_merged": {}
+  },
+  "raw_preconditions": {
+    "computer.defective": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "computer.under_repair": {
+      "precondition": "repair_cost_calculation.issued AND NOT computer.unrepaired",
+      "quote": "If the customer decides that the costs are acceptable, the process continues, otherwise she takes her computer home unrepaired."
+    },
+    "computer.repaired": {
+      "precondition": "(hardware_repair.complete AND software_configuration.complete) OR (system_functionality_test.passed AND (hardware_repair.complete OR software_configuration.complete))",
+      "quote": [
+        "The ongoing repair consists of two activities, which are executed, in an arbitrary order.",
+        "After each of these activities, the proper system functionality is tested. If an error is detected another arbitrary repair activity is executed, otherwise the repair is finished."
+      ]
+    },
+    "computer.unrepaired": {
+      "precondition": "repair_cost_calculation.issued AND NOT computer.under_repair",
+      "quote": "If the customer decides that the costs are acceptable, the process continues, otherwise she takes her computer home unrepaired."
+    },
+    "repair_cost_calculation.issued": {
+      "precondition": "computer.defective",
+      "quote": "A customer brings in a defective computer and the CRS checks the defect and hands out a repair cost calculation back."
+    },
+    "hardware_repair.in_progress": {
+      "precondition": "computer.under_repair",
+      "quote": "The ongoing repair consists of two activities, which are executed, in an arbitrary order. The first activity is to check and repair the hardware, whereas the second activity checks and configures the software."
+    },
+    "hardware_repair.complete": {
+      "precondition": "hardware_repair.in_progress",
+      "quote": "The ongoing repair consists of two activities, which are executed, in an arbitrary order. The first activity is to check and repair the hardware, whereas the second activity checks and configures the software."
+    },
+    "software_configuration.in_progress": {
+      "precondition": "computer.under_repair",
+      "quote": "The ongoing repair consists of two activities, which are executed, in an arbitrary order. The first activity is to check and repair the hardware, whereas the second activity checks and configures the software."
+    },
+    "software_configuration.complete": {
+      "precondition": "software_configuration.in_progress",
+      "quote": "The ongoing repair consists of two activities, which are executed, in an arbitrary order. The first activity is to check and repair the hardware, whereas the second activity checks and configures the software."
+    },
+    "system_functionality_test.in_progress": {
+      "precondition": "(hardware_repair.complete OR software_configuration.complete)",
+      "quote": "After each of these activities, the proper system functionality is tested."
+    },
+    "system_functionality_test.passed": {
+      "precondition": "system_functionality_test.in_progress",
+      "quote": "After each of these activities, the proper system functionality is tested. If an error is detected another arbitrary repair activity is executed, otherwise the repair is finished."
+    },
+    "system_functionality_test.failed": {
+      "precondition": "system_functionality_test.in_progress",
+      "quote": "After each of these activities, the proper system functionality is tested. If an error is detected another arbitrary repair activity is executed, otherwise the repair is finished."
+    }
+  },
+  "validated_preconditions": {
+    "computer.defective": {
+      "precondition": "INITIAL",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "computer.under_repair": {
+      "precondition": "repair_cost_calculation.issued AND NOT computer.unrepaired",
+      "quote": "If the customer decides that the costs are acceptable, the process continues, otherwise she takes her computer home unrepaired.",
+      "status": "OK",
+      "reason": null
+    },
+    "computer.repaired": {
+      "precondition": "(hardware_repair.complete AND software_configuration.complete) OR (system_functionality_test.passed AND hardware_repair.complete) OR (system_functionality_test.passed AND software_configuration.complete)",
+      "quote": [
+        "The ongoing repair consists of two activities, which are executed, in an arbitrary order. The first activity is to check and repair the hardware, whereas the second activity checks and configures the software.",
+        "After each of these activities, the proper system functionality is tested. If an error is detected another arbitrary repair activity is executed, otherwise the repair is finished."
+      ],
+      "status": "OK",
+      "reason": null,
+      "retried": true
+    },
+    "computer.unrepaired": {
+      "precondition": "repair_cost_calculation.issued AND NOT computer.under_repair",
+      "quote": "If the customer decides that the costs are acceptable, the process continues, otherwise she takes her computer home unrepaired.",
+      "status": "OK",
+      "reason": null
+    },
+    "repair_cost_calculation.issued": {
+      "precondition": "computer.defective",
+      "quote": "A customer brings in a defective computer and the CRS checks the defect and hands out a repair cost calculation back.",
+      "status": "OK",
+      "reason": null
+    },
+    "hardware_repair.in_progress": {
+      "precondition": "computer.under_repair",
+      "quote": "The ongoing repair consists of two activities, which are executed, in an arbitrary order. The first activity is to check and repair the hardware, whereas the second activity checks and configures the software.",
+      "status": "OK",
+      "reason": null
+    },
+    "hardware_repair.complete": {
+      "precondition": "hardware_repair.in_progress",
+      "quote": "The ongoing repair consists of two activities, which are executed, in an arbitrary order. The first activity is to check and repair the hardware, whereas the second activity checks and configures the software.",
+      "status": "OK",
+      "reason": null
+    },
+    "software_configuration.in_progress": {
+      "precondition": "computer.under_repair",
+      "quote": "The ongoing repair consists of two activities, which are executed, in an arbitrary order. The first activity is to check and repair the hardware, whereas the second activity checks and configures the software.",
+      "status": "OK",
+      "reason": null
+    },
+    "software_configuration.complete": {
+      "precondition": "software_configuration.in_progress",
+      "quote": "The ongoing repair consists of two activities, which are executed, in an arbitrary order. The first activity is to check and repair the hardware, whereas the second activity checks and configures the software.",
+      "status": "OK",
+      "reason": null
+    },
+    "system_functionality_test.in_progress": {
+      "precondition": "hardware_repair.in_progress OR software_configuration.in_progress",
+      "quote": "The ongoing repair consists of two activities, which are executed, in an arbitrary order. The first activity is to check and repair the hardware, whereas the second activity checks and configures the software. After each of these activities, the proper system functionality is tested.",
+      "status": "OK",
+      "reason": null,
+      "retried": true
+    },
+    "system_functionality_test.passed": {
+      "precondition": "system_functionality_test.in_progress",
+      "quote": "After each of these activities, the proper system functionality is tested. If an error is detected another arbitrary repair activity is executed, otherwise the repair is finished.",
+      "status": "OK",
+      "reason": null
+    },
+    "system_functionality_test.failed": {
+      "precondition": "system_functionality_test.in_progress",
+      "quote": "After each of these activities, the proper system functionality is tested. If an error is detected another arbitrary repair activity is executed, otherwise the repair is finished.",
+      "status": "OK",
+      "reason": null
+    }
+  },
+  "precondition_cycles": [],
+  "branch_conflicts": [],
+  "reference_graph": {
+    "nodes": [
+      {
+        "id": "computer.defective",
+        "weight": 0.167
+      },
+      {
+        "id": "computer.under_repair",
+        "weight": 0.833
+      },
+      {
+        "id": "computer.repaired",
+        "weight": 1.0
+      },
+      {
+        "id": "computer.unrepaired",
+        "weight": 0.5
+      },
+      {
+        "id": "repair_cost_calculation.issued",
+        "weight": 0.5
+      },
+      {
+        "id": "hardware_repair.in_progress",
+        "weight": 0.5
+      },
+      {
+        "id": "hardware_repair.complete",
+        "weight": 0.5
+      },
+      {
+        "id": "software_configuration.in_progress",
+        "weight": 0.5
+      },
+      {
+        "id": "software_configuration.complete",
+        "weight": 0.5
+      },
+      {
+        "id": "system_functionality_test.in_progress",
+        "weight": 0.667
+      },
+      {
+        "id": "system_functionality_test.passed",
+        "weight": 0.5
+      },
+      {
+        "id": "system_functionality_test.failed",
+        "weight": 0.167
+      }
+    ],
+    "edges": [
+      {
+        "from": "repair_cost_calculation.issued",
+        "to": "computer.under_repair",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "If the customer decides that the costs are acceptable, the process continues, otherwise she takes her computer home unrepaired.",
+        "negated": false
+      },
+      {
+        "from": "computer.unrepaired",
+        "to": "computer.under_repair",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "If the customer decides that the costs are acceptable, the process continues, otherwise she takes her computer home unrepaired.",
+        "negated": true
+      },
+      {
+        "from": "hardware_repair.complete",
+        "to": "computer.repaired",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": [
+          "The ongoing repair consists of two activities, which are executed, in an arbitrary order. The first activity is to check and repair the hardware, whereas the second activity checks and configures the software.",
+          "After each of these activities, the proper system functionality is tested. If an error is detected another arbitrary repair activity is executed, otherwise the repair is finished."
+        ],
+        "negated": false
+      },
+      {
+        "from": "software_configuration.complete",
+        "to": "computer.repaired",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": [
+          "The ongoing repair consists of two activities, which are executed, in an arbitrary order. The first activity is to check and repair the hardware, whereas the second activity checks and configures the software.",
+          "After each of these activities, the proper system functionality is tested. If an error is detected another arbitrary repair activity is executed, otherwise the repair is finished."
+        ],
+        "negated": false
+      },
+      {
+        "from": "system_functionality_test.passed",
+        "to": "computer.repaired",
+        "clause": 1,
+        "type": "cross_entity_guard",
+        "quote": [
+          "The ongoing repair consists of two activities, which are executed, in an arbitrary order. The first activity is to check and repair the hardware, whereas the second activity checks and configures the software.",
+          "After each of these activities, the proper system functionality is tested. If an error is detected another arbitrary repair activity is executed, otherwise the repair is finished."
+        ],
+        "negated": false
+      },
+      {
+        "from": "hardware_repair.complete",
+        "to": "computer.repaired",
+        "clause": 1,
+        "type": "cross_entity_guard",
+        "quote": [
+          "The ongoing repair consists of two activities, which are executed, in an arbitrary order. The first activity is to check and repair the hardware, whereas the second activity checks and configures the software.",
+          "After each of these activities, the proper system functionality is tested. If an error is detected another arbitrary repair activity is executed, otherwise the repair is finished."
+        ],
+        "negated": false
+      },
+      {
+        "from": "system_functionality_test.passed",
+        "to": "computer.repaired",
+        "clause": 2,
+        "type": "cross_entity_guard",
+        "quote": [
+          "The ongoing repair consists of two activities, which are executed, in an arbitrary order. The first activity is to check and repair the hardware, whereas the second activity checks and configures the software.",
+          "After each of these activities, the proper system functionality is tested. If an error is detected another arbitrary repair activity is executed, otherwise the repair is finished."
+        ],
+        "negated": false
+      },
+      {
+        "from": "software_configuration.complete",
+        "to": "computer.repaired",
+        "clause": 2,
+        "type": "cross_entity_guard",
+        "quote": [
+          "The ongoing repair consists of two activities, which are executed, in an arbitrary order. The first activity is to check and repair the hardware, whereas the second activity checks and configures the software.",
+          "After each of these activities, the proper system functionality is tested. If an error is detected another arbitrary repair activity is executed, otherwise the repair is finished."
+        ],
+        "negated": false
+      },
+      {
+        "from": "repair_cost_calculation.issued",
+        "to": "computer.unrepaired",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "If the customer decides that the costs are acceptable, the process continues, otherwise she takes her computer home unrepaired.",
+        "negated": false
+      },
+      {
+        "from": "computer.under_repair",
+        "to": "computer.unrepaired",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "If the customer decides that the costs are acceptable, the process continues, otherwise she takes her computer home unrepaired.",
+        "negated": true
+      },
+      {
+        "from": "computer.defective",
+        "to": "repair_cost_calculation.issued",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "A customer brings in a defective computer and the CRS checks the defect and hands out a repair cost calculation back.",
+        "negated": false
+      },
+      {
+        "from": "computer.under_repair",
+        "to": "hardware_repair.in_progress",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "The ongoing repair consists of two activities, which are executed, in an arbitrary order. The first activity is to check and repair the hardware, whereas the second activity checks and configures the software.",
+        "negated": false
+      },
+      {
+        "from": "hardware_repair.in_progress",
+        "to": "hardware_repair.complete",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "The ongoing repair consists of two activities, which are executed, in an arbitrary order. The first activity is to check and repair the hardware, whereas the second activity checks and configures the software.",
+        "negated": false
+      },
+      {
+        "from": "computer.under_repair",
+        "to": "software_configuration.in_progress",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "The ongoing repair consists of two activities, which are executed, in an arbitrary order. The first activity is to check and repair the hardware, whereas the second activity checks and configures the software.",
+        "negated": false
+      },
+      {
+        "from": "software_configuration.in_progress",
+        "to": "software_configuration.complete",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "The ongoing repair consists of two activities, which are executed, in an arbitrary order. The first activity is to check and repair the hardware, whereas the second activity checks and configures the software.",
+        "negated": false
+      },
+      {
+        "from": "hardware_repair.in_progress",
+        "to": "system_functionality_test.in_progress",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "The ongoing repair consists of two activities, which are executed, in an arbitrary order. The first activity is to check and repair the hardware, whereas the second activity checks and configures the software. After each of these activities, the proper system functionality is tested.",
+        "negated": false
+      },
+      {
+        "from": "software_configuration.in_progress",
+        "to": "system_functionality_test.in_progress",
+        "clause": 1,
+        "type": "cross_entity_guard",
+        "quote": "The ongoing repair consists of two activities, which are executed, in an arbitrary order. The first activity is to check and repair the hardware, whereas the second activity checks and configures the software. After each of these activities, the proper system functionality is tested.",
+        "negated": false
+      },
+      {
+        "from": "system_functionality_test.in_progress",
+        "to": "system_functionality_test.passed",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "After each of these activities, the proper system functionality is tested. If an error is detected another arbitrary repair activity is executed, otherwise the repair is finished.",
+        "negated": false
+      },
+      {
+        "from": "system_functionality_test.in_progress",
+        "to": "system_functionality_test.failed",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "After each of these activities, the proper system functionality is tested. If an error is detected another arbitrary repair activity is executed, otherwise the repair is finished.",
+        "negated": false
+      }
+    ],
+    "cycles": [],
+    "branch_conflicts": [],
+    "exclusive_pairs": [
+      {
+        "entity": "computer",
+        "nodes": [
+          "computer.repaired",
+          "computer.unrepaired"
+        ]
+      }
+    ]
+  },
+  "dfg_edges": [
+    {
+      "source_id": "Task_1fitgv2",
+      "source_label": "Receive repair cost calculation",
+      "target_id": "Task_0y0bk1x",
+      "target_label": "Take computer home",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_1fitgv2",
+      "source_label": "Receive repair cost calculation",
+      "target_id": "Task_1kw3asu",
+      "target_label": "Continue process",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_0y0bk1x",
+      "source_label": "Take computer home",
+      "target_id": "IntermediateCatchEvent_1gbpl65",
+      "target_label": "",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_025ix5y",
+      "source_label": "Prepare repair cost calculation",
+      "target_id": "Task_1fitgv2",
+      "target_label": "Receive repair cost calculation",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_025ix5y",
+      "source_label": "Prepare repair cost calculation",
+      "target_id": "IntermediateCatchEvent_1gbpl65",
+      "target_label": "",
+      "gateway_context": [
+        "EventBasedGateway"
+      ]
+    },
+    {
+      "source_id": "Task_025ix5y",
+      "source_label": "Prepare repair cost calculation",
+      "target_id": "IntermediateCatchEvent_133ativ",
+      "target_label": "",
+      "gateway_context": [
+        "EventBasedGateway"
+      ]
+    },
+    {
+      "source_id": "BoundaryEvent_0d7z4qe",
+      "source_label": "",
+      "target_id": "Task_056wtxd",
+      "target_label": "Check and repair hardware",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "BoundaryEvent_0d7z4qe",
+      "source_label": "",
+      "target_id": "Task_0yjzdx3",
+      "target_label": "Check and configure software",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "IntermediateCatchEvent_133ativ",
+      "source_label": "",
+      "target_id": "Task_056wtxd",
+      "target_label": "Check and repair hardware",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "IntermediateCatchEvent_133ativ",
+      "source_label": "",
+      "target_id": "Task_0yjzdx3",
+      "target_label": "Check and configure software",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_0lhwwbj",
+      "source_label": "Bring in defective computer",
+      "target_id": "Task_025ix5y",
+      "target_label": "Prepare repair cost calculation",
+      "gateway_context": [
+        "MessageStartEvent"
+      ]
+    },
+    {
+      "source_id": "Task_0lhwwbj",
+      "source_label": "Bring in defective computer",
+      "target_id": "Task_1fitgv2",
+      "target_label": "Receive repair cost calculation",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_056wtxd",
+      "source_label": "Check and repair hardware",
+      "target_id": "Task_1jco6af",
+      "target_label": "Test system functionality",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_1kw3asu",
+      "source_label": "Continue process",
+      "target_id": "IntermediateCatchEvent_133ativ",
+      "target_label": "",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_0yjzdx3",
+      "source_label": "Check and configure software",
+      "target_id": "Task_1jco6af",
+      "target_label": "Test system functionality",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "Receive repair cost calculation",
+      "subject_id": "Task_1fitgv2",
+      "predicate": "follows",
+      "object": "Take computer home",
+      "object_id": "Task_0y0bk1x"
+    },
+    {
+      "subject": "Receive repair cost calculation",
+      "subject_id": "Task_1fitgv2",
+      "predicate": "follows",
+      "object": "Continue process",
+      "object_id": "Task_1kw3asu"
+    },
+    {
+      "subject": "Take computer home",
+      "subject_id": "Task_0y0bk1x",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "IntermediateCatchEvent_1gbpl65"
+    },
+    {
+      "subject": "Prepare repair cost calculation",
+      "subject_id": "Task_025ix5y",
+      "predicate": "follows",
+      "object": "Receive repair cost calculation",
+      "object_id": "Task_1fitgv2"
+    },
+    {
+      "subject": "Prepare repair cost calculation",
+      "subject_id": "Task_025ix5y",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "IntermediateCatchEvent_1gbpl65"
+    },
+    {
+      "subject": "Prepare repair cost calculation",
+      "subject_id": "Task_025ix5y",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "IntermediateCatchEvent_133ativ"
+    },
+    {
+      "subject": "",
+      "subject_id": "BoundaryEvent_0d7z4qe",
+      "predicate": "follows",
+      "object": "Check and repair hardware",
+      "object_id": "Task_056wtxd"
+    },
+    {
+      "subject": "",
+      "subject_id": "BoundaryEvent_0d7z4qe",
+      "predicate": "follows",
+      "object": "Check and configure software",
+      "object_id": "Task_0yjzdx3"
+    },
+    {
+      "subject": "",
+      "subject_id": "IntermediateCatchEvent_133ativ",
+      "predicate": "follows",
+      "object": "Check and repair hardware",
+      "object_id": "Task_056wtxd"
+    },
+    {
+      "subject": "",
+      "subject_id": "IntermediateCatchEvent_133ativ",
+      "predicate": "follows",
+      "object": "Check and configure software",
+      "object_id": "Task_0yjzdx3"
+    },
+    {
+      "subject": "Bring in defective computer",
+      "subject_id": "Task_0lhwwbj",
+      "predicate": "follows",
+      "object": "Prepare repair cost calculation",
+      "object_id": "Task_025ix5y"
+    },
+    {
+      "subject": "Bring in defective computer",
+      "subject_id": "Task_0lhwwbj",
+      "predicate": "follows",
+      "object": "Receive repair cost calculation",
+      "object_id": "Task_1fitgv2"
+    },
+    {
+      "subject": "Check and repair hardware",
+      "subject_id": "Task_056wtxd",
+      "predicate": "follows",
+      "object": "Test system functionality",
+      "object_id": "Task_1jco6af"
+    },
+    {
+      "subject": "Continue process",
+      "subject_id": "Task_1kw3asu",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "IntermediateCatchEvent_133ativ"
+    },
+    {
+      "subject": "Check and configure software",
+      "subject_id": "Task_0yjzdx3",
+      "predicate": "follows",
+      "object": "Test system functionality",
+      "object_id": "Task_1jco6af"
+    }
+  ],
+  "matches": {
+    "Task_1fitgv2": {
+      "activity_label": "Receive repair cost calculation",
+      "matches": [
+        {
+          "match": "repair_cost_calculation.issued",
+          "score": 0.5649
+        }
+      ],
+      "clusters": [
+        [
+          "repair_cost_calculation.issued"
+        ]
+      ]
+    },
+    "Task_0y0bk1x": {
+      "activity_label": "Take computer home",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_1kw3asu": {
+      "activity_label": "Continue process",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_025ix5y": {
+      "activity_label": "Prepare repair cost calculation",
+      "matches": [
+        {
+          "match": "repair_cost_calculation.issued",
+          "score": 0.4682
+        }
+      ],
+      "clusters": [
+        [
+          "repair_cost_calculation.issued"
+        ]
+      ]
+    },
+    "Task_056wtxd": {
+      "activity_label": "Check and repair hardware",
+      "matches": [
+        {
+          "match": "hardware_repair.complete",
+          "score": 0.464
+        },
+        {
+          "match": "hardware_repair.in_progress",
+          "score": 0.4359
+        }
+      ],
+      "clusters": [
+        [
+          "hardware_repair.complete",
+          "hardware_repair.in_progress"
+        ]
+      ]
+    },
+    "Task_0yjzdx3": {
+      "activity_label": "Check and configure software",
+      "matches": [
+        {
+          "match": "software_configuration.complete",
+          "score": 0.4377
+        }
+      ],
+      "clusters": [
+        [
+          "software_configuration.complete"
+        ]
+      ]
+    },
+    "Task_0lhwwbj": {
+      "activity_label": "Bring in defective computer",
+      "matches": [
+        {
+          "match": "computer.defective",
+          "score": 0.5961
+        }
+      ],
+      "clusters": [
+        [
+          "computer.defective"
+        ]
+      ]
+    },
+    "Task_1jco6af": {
+      "activity_label": "Test system functionality",
+      "matches": [
+        {
+          "match": "system_functionality_test.passed",
+          "score": 0.4644
+        },
+        {
+          "match": "system_functionality_test.failed",
+          "score": 0.4601
+        },
+        {
+          "match": "system_functionality_test.in_progress",
+          "score": 0.4534
+        }
+      ],
+      "clusters": [
+        [
+          "system_functionality_test.passed",
+          "system_functionality_test.failed"
+        ],
+        [
+          "system_functionality_test.in_progress"
+        ]
+      ]
+    }
+  },
+  "process_graph": [
+    {
+      "from": "repair_cost_calculation.issued",
+      "to": "repair_cost_calculation.issued",
+      "activity_from": "Prepare repair cost calculation",
+      "activity_to": "Receive repair cost calculation",
+      "source_id": "Task_025ix5y",
+      "target_id": "Task_1fitgv2"
+    },
+    {
+      "from": "computer.defective",
+      "to": "repair_cost_calculation.issued",
+      "activity_from": "Bring in defective computer",
+      "activity_to": "Prepare repair cost calculation",
+      "source_id": "Task_0lhwwbj",
+      "target_id": "Task_025ix5y"
+    },
+    {
+      "from": "computer.defective",
+      "to": "repair_cost_calculation.issued",
+      "activity_from": "Bring in defective computer",
+      "activity_to": "Receive repair cost calculation",
+      "source_id": "Task_0lhwwbj",
+      "target_id": "Task_1fitgv2"
+    },
+    {
+      "from": "hardware_repair.complete",
+      "to": "system_functionality_test.passed",
+      "activity_from": "Check and repair hardware",
+      "activity_to": "Test system functionality",
+      "source_id": "Task_056wtxd",
+      "target_id": "Task_1jco6af"
+    },
+    {
+      "from": "hardware_repair.complete",
+      "to": "system_functionality_test.failed",
+      "activity_from": "Check and repair hardware",
+      "activity_to": "Test system functionality",
+      "source_id": "Task_056wtxd",
+      "target_id": "Task_1jco6af"
+    },
+    {
+      "from": "hardware_repair.complete",
+      "to": "system_functionality_test.in_progress",
+      "activity_from": "Check and repair hardware",
+      "activity_to": "Test system functionality",
+      "source_id": "Task_056wtxd",
+      "target_id": "Task_1jco6af"
+    },
+    {
+      "from": "hardware_repair.in_progress",
+      "to": "system_functionality_test.passed",
+      "activity_from": "Check and repair hardware",
+      "activity_to": "Test system functionality",
+      "source_id": "Task_056wtxd",
+      "target_id": "Task_1jco6af"
+    },
+    {
+      "from": "hardware_repair.in_progress",
+      "to": "system_functionality_test.failed",
+      "activity_from": "Check and repair hardware",
+      "activity_to": "Test system functionality",
+      "source_id": "Task_056wtxd",
+      "target_id": "Task_1jco6af"
+    },
+    {
+      "from": "hardware_repair.in_progress",
+      "to": "system_functionality_test.in_progress",
+      "activity_from": "Check and repair hardware",
+      "activity_to": "Test system functionality",
+      "source_id": "Task_056wtxd",
+      "target_id": "Task_1jco6af"
+    },
+    {
+      "from": "software_configuration.complete",
+      "to": "system_functionality_test.passed",
+      "activity_from": "Check and configure software",
+      "activity_to": "Test system functionality",
+      "source_id": "Task_0yjzdx3",
+      "target_id": "Task_1jco6af"
+    },
+    {
+      "from": "software_configuration.complete",
+      "to": "system_functionality_test.failed",
+      "activity_from": "Check and configure software",
+      "activity_to": "Test system functionality",
+      "source_id": "Task_0yjzdx3",
+      "target_id": "Task_1jco6af"
+    },
+    {
+      "from": "software_configuration.complete",
+      "to": "system_functionality_test.in_progress",
+      "activity_from": "Check and configure software",
+      "activity_to": "Test system functionality",
+      "source_id": "Task_0yjzdx3",
+      "target_id": "Task_1jco6af"
+    }
+  ],
+  "alignment": {
+    "computer.under_repair": {
+      "operator": "AND",
+      "quote": "If the customer decides that the costs are acceptable, the process continues, otherwise she takes her computer home unrepaired.",
+      "terms": [
+        {
+          "term": "repair_cost_calculation.issued",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['computer.under_repair']",
+          "missing": [
+            "computer.under_repair"
+          ]
+        },
+        {
+          "term": "NOT computer.unrepaired",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['computer.unrepaired', 'computer.under_repair']",
+          "missing": [
+            "computer.unrepaired",
+            "computer.under_repair"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "repair_cost_calculation.issued",
+            "NOT computer.unrepaired"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "computer.repaired": {
+      "operator": "MIXED",
+      "quote": [
+        "The ongoing repair consists of two activities, which are executed, in an arbitrary order. The first activity is to check and repair the hardware, whereas the second activity checks and configures the software.",
+        "After each of these activities, the proper system functionality is tested. If an error is detected another arbitrary repair activity is executed, otherwise the repair is finished."
+      ],
+      "terms": [
+        {
+          "term": "hardware_repair.complete",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['computer.repaired']",
+          "missing": [
+            "computer.repaired"
+          ]
+        },
+        {
+          "term": "software_configuration.complete",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['computer.repaired']",
+          "missing": [
+            "computer.repaired"
+          ]
+        },
+        {
+          "term": "system_functionality_test.passed",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['computer.repaired']",
+          "missing": [
+            "computer.repaired"
+          ]
+        },
+        {
+          "term": "hardware_repair.complete",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['computer.repaired']",
+          "missing": [
+            "computer.repaired"
+          ]
+        },
+        {
+          "term": "system_functionality_test.passed",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['computer.repaired']",
+          "missing": [
+            "computer.repaired"
+          ]
+        },
+        {
+          "term": "software_configuration.complete",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['computer.repaired']",
+          "missing": [
+            "computer.repaired"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "hardware_repair.complete",
+            "software_configuration.complete"
+          ],
+          "status": "UNRESOLVABLE"
+        },
+        {
+          "terms": [
+            "system_functionality_test.passed",
+            "hardware_repair.complete"
+          ],
+          "status": "UNRESOLVABLE"
+        },
+        {
+          "terms": [
+            "system_functionality_test.passed",
+            "software_configuration.complete"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "computer.unrepaired": {
+      "operator": "AND",
+      "quote": "If the customer decides that the costs are acceptable, the process continues, otherwise she takes her computer home unrepaired.",
+      "terms": [
+        {
+          "term": "repair_cost_calculation.issued",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['computer.unrepaired']",
+          "missing": [
+            "computer.unrepaired"
+          ]
+        },
+        {
+          "term": "NOT computer.under_repair",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['computer.under_repair', 'computer.unrepaired']",
+          "missing": [
+            "computer.under_repair",
+            "computer.unrepaired"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "repair_cost_calculation.issued",
+            "NOT computer.under_repair"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "repair_cost_calculation.issued": {
+      "operator": "AND",
+      "quote": "A customer brings in a defective computer and the CRS checks the defect and hands out a repair cost calculation back.",
+      "terms": [
+        {
+          "term": "computer.defective",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED",
+      "clauses": [
+        {
+          "terms": [
+            "computer.defective"
+          ],
+          "status": "SATISFIED"
+        }
+      ]
+    },
+    "hardware_repair.in_progress": {
+      "operator": "AND",
+      "quote": "The ongoing repair consists of two activities, which are executed, in an arbitrary order. The first activity is to check and repair the hardware, whereas the second activity checks and configures the software.",
+      "terms": [
+        {
+          "term": "computer.under_repair",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['computer.under_repair']",
+          "missing": [
+            "computer.under_repair"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "computer.under_repair"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "hardware_repair.complete": {
+      "operator": "AND",
+      "quote": "The ongoing repair consists of two activities, which are executed, in an arbitrary order. The first activity is to check and repair the hardware, whereas the second activity checks and configures the software.",
+      "terms": [
+        {
+          "term": "hardware_repair.in_progress",
+          "status": "VIOLATED",
+          "reason": "both states matched, no path in process",
+          "missing": []
+        }
+      ],
+      "status": "VIOLATED",
+      "clauses": [
+        {
+          "terms": [
+            "hardware_repair.in_progress"
+          ],
+          "status": "VIOLATED"
+        }
+      ]
+    },
+    "software_configuration.in_progress": {
+      "operator": "AND",
+      "quote": "The ongoing repair consists of two activities, which are executed, in an arbitrary order. The first activity is to check and repair the hardware, whereas the second activity checks and configures the software.",
+      "terms": [
+        {
+          "term": "computer.under_repair",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['computer.under_repair', 'software_configuration.in_progress']",
+          "missing": [
+            "computer.under_repair",
+            "software_configuration.in_progress"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "computer.under_repair"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "software_configuration.complete": {
+      "operator": "AND",
+      "quote": "The ongoing repair consists of two activities, which are executed, in an arbitrary order. The first activity is to check and repair the hardware, whereas the second activity checks and configures the software.",
+      "terms": [
+        {
+          "term": "software_configuration.in_progress",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['software_configuration.in_progress']",
+          "missing": [
+            "software_configuration.in_progress"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "software_configuration.in_progress"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "system_functionality_test.in_progress": {
+      "operator": "OR",
+      "quote": "The ongoing repair consists of two activities, which are executed, in an arbitrary order. The first activity is to check and repair the hardware, whereas the second activity checks and configures the software. After each of these activities, the proper system functionality is tested.",
+      "terms": [
+        {
+          "term": "hardware_repair.in_progress",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        },
+        {
+          "term": "software_configuration.in_progress",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['software_configuration.in_progress']",
+          "missing": [
+            "software_configuration.in_progress"
+          ]
+        }
+      ],
+      "status": "SATISFIED",
+      "clauses": [
+        {
+          "terms": [
+            "hardware_repair.in_progress"
+          ],
+          "status": "SATISFIED"
+        },
+        {
+          "terms": [
+            "software_configuration.in_progress"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "system_functionality_test.passed": {
+      "operator": "AND",
+      "quote": "After each of these activities, the proper system functionality is tested. If an error is detected another arbitrary repair activity is executed, otherwise the repair is finished.",
+      "terms": [
+        {
+          "term": "system_functionality_test.in_progress",
+          "status": "VIOLATED",
+          "reason": "both states matched, no path in process",
+          "missing": []
+        }
+      ],
+      "status": "VIOLATED",
+      "clauses": [
+        {
+          "terms": [
+            "system_functionality_test.in_progress"
+          ],
+          "status": "VIOLATED"
+        }
+      ]
+    },
+    "system_functionality_test.failed": {
+      "operator": "AND",
+      "quote": "After each of these activities, the proper system functionality is tested. If an error is detected another arbitrary repair activity is executed, otherwise the repair is finished.",
+      "terms": [
+        {
+          "term": "system_functionality_test.in_progress",
+          "status": "VIOLATED",
+          "reason": "both states matched, no path in process",
+          "missing": []
+        }
+      ],
+      "status": "VIOLATED",
+      "clauses": [
+        {
+          "terms": [
+            "system_functionality_test.in_progress"
+          ],
+          "status": "VIOLATED"
+        }
+      ]
+    }
+  },
+  "errors": [
+    "report: 'list' object has no attribute 'split'"
+  ]
+}

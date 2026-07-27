@@ -1,0 +1,117 @@
+{
+  "case_name": "OriginalDataset/Model3-6",
+  "text": "When a claim is received, it is first checked whether the claimant is insured by the organization. If not, the claimant is informed that the claim must be rejected. Otherwise, the severity of the claim is evaluated. Based on the outcome (simple or complex claims), relevant forms are sent to the claimant. Once the forms are returned, they are checked for completeness. If the forms provide all relevant details, the claim is registered in the Claims Management system, which ends the Claims Notification process. Otherwise, the claimant is informed to update the forms. Upon reception of the updated forms, they are checked again.\n",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "gpt-oss-20b",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "gpt-oss-20b",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/../datasets/lre/alignment_model_text-master/datasets/OriginalDataset/Models/Model3-6.bpmn",
+  "report_model": "gpt-oss-20b",
+  "dfg_edges": [
+    {
+      "source_id": "Task_0",
+      "source_label": "Check customer  details",
+      "target_id": "Task_1",
+      "target_label": "Reject claim",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_0",
+      "source_label": "Check customer  details",
+      "target_id": "Task_2",
+      "target_label": "Evaluate severity",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_3",
+      "source_label": "Send relevant forms",
+      "target_id": "Task_4",
+      "target_label": "Check for completeness",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_2",
+      "source_label": "Evaluate severity",
+      "target_id": "Task_3",
+      "target_label": "Send relevant forms",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_4",
+      "source_label": "Check for completeness",
+      "target_id": "Task_3",
+      "target_label": "Send relevant forms",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_4",
+      "source_label": "Check for completeness",
+      "target_id": "Task_5",
+      "target_label": "Register claim",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "Check customer  details",
+      "subject_id": "Task_0",
+      "predicate": "follows",
+      "object": "Reject claim",
+      "object_id": "Task_1"
+    },
+    {
+      "subject": "Check customer  details",
+      "subject_id": "Task_0",
+      "predicate": "follows",
+      "object": "Evaluate severity",
+      "object_id": "Task_2"
+    },
+    {
+      "subject": "Send relevant forms",
+      "subject_id": "Task_3",
+      "predicate": "follows",
+      "object": "Check for completeness",
+      "object_id": "Task_4"
+    },
+    {
+      "subject": "Evaluate severity",
+      "subject_id": "Task_2",
+      "predicate": "follows",
+      "object": "Send relevant forms",
+      "object_id": "Task_3"
+    },
+    {
+      "subject": "Check for completeness",
+      "subject_id": "Task_4",
+      "predicate": "follows",
+      "object": "Send relevant forms",
+      "object_id": "Task_3"
+    },
+    {
+      "subject": "Check for completeness",
+      "subject_id": "Task_4",
+      "predicate": "follows",
+      "object": "Register claim",
+      "object_id": "Task_5"
+    }
+  ],
+  "errors": [
+    "state_space: Request timed out.",
+    "precondition: 'state_space'",
+    "state_matching: 'state_space'",
+    "graph_construction: 'state_space'",
+    "alignment: 'reference_graph'",
+    "report: 'alignment'"
+  ]
+}

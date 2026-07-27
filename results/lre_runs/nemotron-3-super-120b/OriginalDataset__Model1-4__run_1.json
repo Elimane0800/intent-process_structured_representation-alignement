@@ -1,0 +1,882 @@
+{
+  "case_name": "OriginalDataset/Model1-4",
+  "text": "Whenever a company makes the decision to go public, its first task is to select the underwriters. Underwriters act as financial midwives to a new issue. Usually they play a triple role: First they provide the company with procedural and financial advice, then they buy the issue, and finally they resell it to the public. Established underwriters are careful of their reputation and will not handle a new issue unless they believe the facts have been presented fairly. Thus, in addition to handling the sale of a company’s issue, the underwriters in effect give their seal of approval to it. They prepare a registration statement for the approval of the Securities and Exchange Commission (SEC). In addition to registering the issue with the SEC, they need to check that the issue complies with the so-called blue-sky laws of each state that regulate sales of securities within the state. While the registration statement is awaiting approval, underwriters begin to firm up the issue price. They arrange a road show to talk to potential investors. Immediately after they receive clearance from the SEC, underwriters fix the issue price. After that they enter into a firm commitment to buy the stock and then offer it to the public, when they havent still found any reason not to do it.\n",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "nemotron-3-super-120b",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "nemotron-3-super-120b",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/../datasets/lre/alignment_model_text-master/datasets/OriginalDataset/Models/Model1-4.bpmn",
+  "report_model": "nemotron-3-super-120b",
+  "candidates": {
+    "company": {
+      "states": [
+        "public"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "underwriters": {
+      "states": [
+        "selected",
+        "advising",
+        "buying",
+        "reselling",
+        "approving",
+        "preparing_registration_statement",
+        "checking_compliance",
+        "firming_up_price",
+        "arranging_road_show",
+        "fixing_price",
+        "committed_to_buy",
+        "offering_to_public"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "issue": {
+      "states": [
+        "new",
+        "approved_by_sec",
+        "compliant_with_blue_sky_laws",
+        "priced",
+        "offered_to_public"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "registration_statement": {
+      "states": [
+        "awaiting_approval"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "road_show": {
+      "states": [
+        "arranged"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    }
+  },
+  "validation_report": {
+    "company": {
+      "f_lex": "ACTOR",
+      "kept": false,
+      "head_used": "company"
+    },
+    "underwriters": {
+      "f_lex": "ACTOR",
+      "kept": false,
+      "head_used": "underwriters"
+    },
+    "issue": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "issue"
+    },
+    "registration_statement": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "statement"
+    },
+    "road_show": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "show"
+    },
+    "__meta__": {
+      "total_candidates": 5,
+      "indeterminate_kept_count": 0
+    }
+  },
+  "exclusive_groups_report": {
+    "accepted": [],
+    "rejected": []
+  },
+  "state_space": {
+    "issue": {
+      "states": [
+        "new",
+        "approved_by_sec",
+        "compliant_with_blue_sky_laws",
+        "priced",
+        "offered_to_public"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "registration_statement": {
+      "states": [
+        "awaiting_approval"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "road_show": {
+      "states": [
+        "arranged"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    }
+  },
+  "state_space_dedup": {
+    "merged": {},
+    "ambiguous_not_merged": {}
+  },
+  "raw_preconditions": {
+    "issue.new": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "issue.approved_by_sec": {
+      "precondition": "registration_statement.awaiting_approval",
+      "quote": "They prepare a registration statement for the approval of the Securities and Exchange Commission (SEC)."
+    },
+    "issue.compliant_with_blue_sky_laws": {
+      "precondition": "registration_statement.awaiting_approval",
+      "quote": "In addition to registering the issue with the SEC, they need to check that the issue complies with the so-called blue-sky laws of each state that regulate sales of securities within the state."
+    },
+    "issue.priced": {
+      "precondition": "issue.approved_by_sec AND issue.compliant_with_blue_sky_laws",
+      "quote": [
+        "Immediately after they receive clearance from the SEC, underwriters fix the issue price.",
+        "In addition to registering the issue with the SEC, they need to check that the issue complies with the so-called blue-sky laws of each state that regulate sales of securities within the state."
+      ]
+    },
+    "issue.offered_to_public": {
+      "precondition": "issue.priced",
+      "quote": "After that they enter into a firm commitment to buy the stock and then offer it to the public, when they havent still found any reason not to do it."
+    },
+    "registration_statement.awaiting_approval": {
+      "precondition": "issue.new",
+      "quote": "Whenever a company makes the decision to go public, its first task is to select the underwriters."
+    },
+    "road_show.arranged": {
+      "precondition": "issue.approved_by_sec AND issue.compliant_with_blue_sky_laws",
+      "quote": [
+        "While the registration statement is awaiting approval, underwriters begin to firm up the issue price.",
+        "They arrange a road show to talk to potential investors."
+      ]
+    }
+  },
+  "validated_preconditions": {
+    "issue.new": {
+      "precondition": "INITIAL",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "issue.approved_by_sec": {
+      "precondition": "registration_statement.awaiting_approval",
+      "quote": "They prepare a registration statement for the approval of the Securities and Exchange Commission (SEC).",
+      "status": "OK",
+      "reason": null
+    },
+    "issue.compliant_with_blue_sky_laws": {
+      "precondition": "registration_statement.awaiting_approval",
+      "quote": "In addition to registering the issue with the SEC, they need to check that the issue complies with the so-called blue-sky laws of each state that regulate sales of securities within the state.",
+      "status": "OK",
+      "reason": null
+    },
+    "issue.priced": {
+      "precondition": "registration_statement.awaiting_approval AND road_show.arranged",
+      "quote": [
+        "While the registration statement is awaiting approval, underwriters begin to firm up the issue price.",
+        "They arrange a road show to talk to potential investors."
+      ],
+      "status": "OK",
+      "reason": null,
+      "retried": true
+    },
+    "issue.offered_to_public": {
+      "precondition": "issue.priced",
+      "quote": "After that they enter into a firm commitment to buy the stock and then offer it to the public, when they havent still found any reason not to do it.",
+      "status": "OK",
+      "reason": null
+    },
+    "registration_statement.awaiting_approval": {
+      "precondition": "issue.new",
+      "quote": "Whenever a company makes the decision to go public, its first task is to select the underwriters.",
+      "status": "OK",
+      "reason": null
+    },
+    "road_show.arranged": {
+      "precondition": "issue.approved_by_sec AND issue.compliant_with_blue_sky_laws",
+      "quote": [
+        "While the registration statement is awaiting approval, underwriters begin to firm up the issue price.",
+        "They arrange a road show to talk to potential investors."
+      ],
+      "status": "OK",
+      "reason": null
+    }
+  },
+  "precondition_cycles": [],
+  "branch_conflicts": [],
+  "reference_graph": {
+    "nodes": [
+      {
+        "id": "issue.new",
+        "weight": 0.25
+      },
+      {
+        "id": "issue.approved_by_sec",
+        "weight": 0.5
+      },
+      {
+        "id": "issue.compliant_with_blue_sky_laws",
+        "weight": 0.5
+      },
+      {
+        "id": "issue.priced",
+        "weight": 0.75
+      },
+      {
+        "id": "issue.offered_to_public",
+        "weight": 0.25
+      },
+      {
+        "id": "registration_statement.awaiting_approval",
+        "weight": 1.0
+      },
+      {
+        "id": "road_show.arranged",
+        "weight": 0.75
+      }
+    ],
+    "edges": [
+      {
+        "from": "registration_statement.awaiting_approval",
+        "to": "issue.approved_by_sec",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "They prepare a registration statement for the approval of the Securities and Exchange Commission (SEC).",
+        "negated": false
+      },
+      {
+        "from": "registration_statement.awaiting_approval",
+        "to": "issue.compliant_with_blue_sky_laws",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "In addition to registering the issue with the SEC, they need to check that the issue complies with the so-called blue-sky laws of each state that regulate sales of securities within the state.",
+        "negated": false
+      },
+      {
+        "from": "registration_statement.awaiting_approval",
+        "to": "issue.priced",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": [
+          "While the registration statement is awaiting approval, underwriters begin to firm up the issue price.",
+          "They arrange a road show to talk to potential investors."
+        ],
+        "negated": false
+      },
+      {
+        "from": "road_show.arranged",
+        "to": "issue.priced",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": [
+          "While the registration statement is awaiting approval, underwriters begin to firm up the issue price.",
+          "They arrange a road show to talk to potential investors."
+        ],
+        "negated": false
+      },
+      {
+        "from": "issue.priced",
+        "to": "issue.offered_to_public",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "After that they enter into a firm commitment to buy the stock and then offer it to the public, when they havent still found any reason not to do it.",
+        "negated": false
+      },
+      {
+        "from": "issue.new",
+        "to": "registration_statement.awaiting_approval",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "Whenever a company makes the decision to go public, its first task is to select the underwriters.",
+        "negated": false
+      },
+      {
+        "from": "issue.approved_by_sec",
+        "to": "road_show.arranged",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": [
+          "While the registration statement is awaiting approval, underwriters begin to firm up the issue price.",
+          "They arrange a road show to talk to potential investors."
+        ],
+        "negated": false
+      },
+      {
+        "from": "issue.compliant_with_blue_sky_laws",
+        "to": "road_show.arranged",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": [
+          "While the registration statement is awaiting approval, underwriters begin to firm up the issue price.",
+          "They arrange a road show to talk to potential investors."
+        ],
+        "negated": false
+      }
+    ],
+    "cycles": [],
+    "branch_conflicts": [],
+    "exclusive_pairs": []
+  },
+  "dfg_edges": [
+    {
+      "source_id": "Task_5",
+      "source_label": "Buy stock",
+      "target_id": "Task_6",
+      "target_label": "Offer to public",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_3",
+      "source_label": "Talk to potential investors",
+      "target_id": "IntermediateMessageEventCatching_1",
+      "target_label": "Answer from SEC",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_4",
+      "source_label": "Fix issue price",
+      "target_id": "Task_5",
+      "target_label": "Buy stock",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_2",
+      "source_label": "Check compliance with laws",
+      "target_id": "Task_3",
+      "target_label": "Talk to potential investors",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "IntermediateMessageEventCatching_1",
+      "source_label": "Answer from SEC",
+      "target_id": "Task_4",
+      "target_label": "Fix issue price",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "IntermediateMessageEventCatching_0",
+      "source_label": "",
+      "target_id": "Task_3",
+      "target_label": "Talk to potential investors",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "Task_1",
+      "source_label": "Prepare registration statement for approval of SEC",
+      "target_id": "IntermediateMessageEventCatching_0",
+      "target_label": "",
+      "gateway_context": []
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "Buy stock",
+      "subject_id": "Task_5",
+      "predicate": "follows",
+      "object": "Offer to public",
+      "object_id": "Task_6"
+    },
+    {
+      "subject": "Talk to potential investors",
+      "subject_id": "Task_3",
+      "predicate": "follows",
+      "object": "Answer from SEC",
+      "object_id": "IntermediateMessageEventCatching_1"
+    },
+    {
+      "subject": "Fix issue price",
+      "subject_id": "Task_4",
+      "predicate": "follows",
+      "object": "Buy stock",
+      "object_id": "Task_5"
+    },
+    {
+      "subject": "Check compliance with laws",
+      "subject_id": "Task_2",
+      "predicate": "follows",
+      "object": "Talk to potential investors",
+      "object_id": "Task_3"
+    },
+    {
+      "subject": "Answer from SEC",
+      "subject_id": "IntermediateMessageEventCatching_1",
+      "predicate": "follows",
+      "object": "Fix issue price",
+      "object_id": "Task_4"
+    },
+    {
+      "subject": "",
+      "subject_id": "IntermediateMessageEventCatching_0",
+      "predicate": "follows",
+      "object": "Talk to potential investors",
+      "object_id": "Task_3"
+    },
+    {
+      "subject": "Prepare registration statement for approval of SEC",
+      "subject_id": "Task_1",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "IntermediateMessageEventCatching_0"
+    }
+  ],
+  "matches": {
+    "Task_5": {
+      "activity_label": "Buy stock",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_6": {
+      "activity_label": "Offer to public",
+      "matches": [
+        {
+          "match": "issue.offered_to_public",
+          "score": 0.7143
+        }
+      ],
+      "clusters": [
+        [
+          "issue.offered_to_public"
+        ]
+      ]
+    },
+    "Task_3": {
+      "activity_label": "Talk to potential investors",
+      "matches": [],
+      "clusters": []
+    },
+    "IntermediateMessageEventCatching_1": {
+      "activity_label": "Answer from SEC",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_4": {
+      "activity_label": "Fix issue price",
+      "matches": [
+        {
+          "match": "issue.priced",
+          "score": 0.4106
+        }
+      ],
+      "clusters": [
+        [
+          "issue.priced"
+        ]
+      ]
+    },
+    "Task_2": {
+      "activity_label": "Check compliance with laws",
+      "matches": [
+        {
+          "match": "issue.compliant_with_blue_sky_laws",
+          "score": 0.3548
+        }
+      ],
+      "clusters": [
+        [
+          "issue.compliant_with_blue_sky_laws"
+        ]
+      ]
+    },
+    "Task_1": {
+      "activity_label": "Prepare registration statement for approval of SEC",
+      "matches": [
+        {
+          "match": "registration_statement.awaiting_approval",
+          "score": 0.7294
+        }
+      ],
+      "clusters": [
+        [
+          "registration_statement.awaiting_approval"
+        ]
+      ]
+    }
+  },
+  "process_graph": [],
+  "alignment": {
+    "issue.approved_by_sec": {
+      "operator": "AND",
+      "quote": "They prepare a registration statement for the approval of the Securities and Exchange Commission (SEC).",
+      "terms": [
+        {
+          "term": "registration_statement.awaiting_approval",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['issue.approved_by_sec']",
+          "missing": [
+            "issue.approved_by_sec"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "registration_statement.awaiting_approval"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "issue.compliant_with_blue_sky_laws": {
+      "operator": "AND",
+      "quote": "In addition to registering the issue with the SEC, they need to check that the issue complies with the so-called blue-sky laws of each state that regulate sales of securities within the state.",
+      "terms": [
+        {
+          "term": "registration_statement.awaiting_approval",
+          "status": "VIOLATED",
+          "reason": "both states matched, no path in process",
+          "missing": []
+        }
+      ],
+      "status": "VIOLATED",
+      "clauses": [
+        {
+          "terms": [
+            "registration_statement.awaiting_approval"
+          ],
+          "status": "VIOLATED"
+        }
+      ]
+    },
+    "issue.priced": {
+      "operator": "AND",
+      "quote": [
+        "While the registration statement is awaiting approval, underwriters begin to firm up the issue price.",
+        "They arrange a road show to talk to potential investors."
+      ],
+      "terms": [
+        {
+          "term": "registration_statement.awaiting_approval",
+          "status": "VIOLATED",
+          "reason": "both states matched, no path in process",
+          "missing": []
+        },
+        {
+          "term": "road_show.arranged",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['road_show.arranged']",
+          "missing": [
+            "road_show.arranged"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "registration_statement.awaiting_approval",
+            "road_show.arranged"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "issue.offered_to_public": {
+      "operator": "AND",
+      "quote": "After that they enter into a firm commitment to buy the stock and then offer it to the public, when they havent still found any reason not to do it.",
+      "terms": [
+        {
+          "term": "issue.priced",
+          "status": "VIOLATED",
+          "reason": "both states matched, no path in process",
+          "missing": []
+        }
+      ],
+      "status": "VIOLATED",
+      "clauses": [
+        {
+          "terms": [
+            "issue.priced"
+          ],
+          "status": "VIOLATED"
+        }
+      ]
+    },
+    "registration_statement.awaiting_approval": {
+      "operator": "AND",
+      "quote": "Whenever a company makes the decision to go public, its first task is to select the underwriters.",
+      "terms": [
+        {
+          "term": "issue.new",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['issue.new']",
+          "missing": [
+            "issue.new"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "issue.new"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "road_show.arranged": {
+      "operator": "AND",
+      "quote": [
+        "While the registration statement is awaiting approval, underwriters begin to firm up the issue price.",
+        "They arrange a road show to talk to potential investors."
+      ],
+      "terms": [
+        {
+          "term": "issue.approved_by_sec",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['issue.approved_by_sec', 'road_show.arranged']",
+          "missing": [
+            "issue.approved_by_sec",
+            "road_show.arranged"
+          ]
+        },
+        {
+          "term": "issue.compliant_with_blue_sky_laws",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['road_show.arranged']",
+          "missing": [
+            "road_show.arranged"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "issue.approved_by_sec",
+            "issue.compliant_with_blue_sky_laws"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    }
+  },
+  "report": {
+    "verdict": {
+      "verdict": "NOT_FAITHFUL",
+      "justification": "1 gap(s) found between the source text's requirements and the observed process -- at least one precondition asserted by the text is contradicted by the model's actual sequence of activities.",
+      "scope": "This verdict covers the causal reachability of the requirements expressed in the source text, not the general quality of the process model -- a multiplicity defect (an activity executed more than once due to a mismatched branching structure) is not covered by this verdict, even if the process is otherwise well-formed."
+    },
+    "summary": {
+      "ecarts": 1,
+      "non_verifiable": 2,
+      "conforme": 0
+    },
+    "ecarts": [
+      {
+        "root_cause": "Fix issue price",
+        "quote": "After that they enter into a firm commitment to buy the stock and then offer it to the public, when they havent still found any reason not to do it.",
+        "explanation": "The process includes both \"Fix issue price\" and \"Offer to public\", but there is no step or rule ensuring that \"Fix issue price\" happens before \"Offer to public\".  \n\"After that they enter into a firm commitment to buy the stock and then offer it to the public, when they havent still found any reason not to do it.\"",
+        "quote_verbatim": true,
+        "affected_activities": [
+          "Offer to public"
+        ],
+        "affected_count": 1
+      }
+    ],
+    "non_verifiable": [
+      {
+        "root_cause": "issue approved by sec",
+        "quote": "They prepare a registration statement for the approval of the Securities and Exchange Commission (SEC).",
+        "explanation": "The activity \"issue approved by sec\" requires a condition to be met beforehand, as indicated by the source text: \"They prepare a registration statement for the approval of the Securities and Exchange Commission (SEC).\"  \nHowever, no clear activity in the observed process matches this condition, so it cannot be verified whether the requirement is satisfied or not. (This same root cause also affects: Fix issue price, road show arranged.)",
+        "quote_verbatim": true,
+        "affected_activities": [
+          "Fix issue price",
+          "issue approved by sec",
+          "road show arranged"
+        ],
+        "affected_count": 5
+      },
+      {
+        "root_cause": "issue new",
+        "quote": "In addition to registering the issue with the SEC, they need to check that the issue complies with the so-called blue-sky laws of each state that regulate sales of securities within the state.",
+        "explanation": "The activity \"Check compliance with laws\" requires that a specific condition be met first, as stated in the source text: \"In addition to registering the issue with the SEC, they need to check that the issue complies with the so-called blue-sky laws of each state that regulate sales of securities within the state.\" However, no clear activity in the observed process corresponds to this condition, so it is impossible to verify whether the requirement is satisfied or not. This does not mean the process is compliant or non-compliant — only that the necessary information to check is missing. (This same root cause also affects: Fix issue price, Prepare registration statement for approval of SEC.)",
+        "quote_verbatim": true,
+        "affected_activities": [
+          "Check compliance with laws",
+          "Fix issue price",
+          "Prepare registration statement for approval of SEC"
+        ],
+        "affected_count": 3
+      }
+    ],
+    "conforme": [],
+    "piece_jointe_alignement_brut": {
+      "issue.approved_by_sec": {
+        "operator": "AND",
+        "quote": "They prepare a registration statement for the approval of the Securities and Exchange Commission (SEC).",
+        "terms": [
+          {
+            "term": "registration_statement.awaiting_approval",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['issue.approved_by_sec']",
+            "missing": [
+              "issue.approved_by_sec"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "registration_statement.awaiting_approval"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "issue.compliant_with_blue_sky_laws": {
+        "operator": "AND",
+        "quote": "In addition to registering the issue with the SEC, they need to check that the issue complies with the so-called blue-sky laws of each state that regulate sales of securities within the state.",
+        "terms": [
+          {
+            "term": "registration_statement.awaiting_approval",
+            "status": "VIOLATED",
+            "reason": "both states matched, no path in process",
+            "missing": []
+          }
+        ],
+        "status": "VIOLATED",
+        "clauses": [
+          {
+            "terms": [
+              "registration_statement.awaiting_approval"
+            ],
+            "status": "VIOLATED"
+          }
+        ]
+      },
+      "issue.priced": {
+        "operator": "AND",
+        "quote": [
+          "While the registration statement is awaiting approval, underwriters begin to firm up the issue price.",
+          "They arrange a road show to talk to potential investors."
+        ],
+        "terms": [
+          {
+            "term": "registration_statement.awaiting_approval",
+            "status": "VIOLATED",
+            "reason": "both states matched, no path in process",
+            "missing": []
+          },
+          {
+            "term": "road_show.arranged",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['road_show.arranged']",
+            "missing": [
+              "road_show.arranged"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "registration_statement.awaiting_approval",
+              "road_show.arranged"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "issue.offered_to_public": {
+        "operator": "AND",
+        "quote": "After that they enter into a firm commitment to buy the stock and then offer it to the public, when they havent still found any reason not to do it.",
+        "terms": [
+          {
+            "term": "issue.priced",
+            "status": "VIOLATED",
+            "reason": "both states matched, no path in process",
+            "missing": []
+          }
+        ],
+        "status": "VIOLATED",
+        "clauses": [
+          {
+            "terms": [
+              "issue.priced"
+            ],
+            "status": "VIOLATED"
+          }
+        ]
+      },
+      "registration_statement.awaiting_approval": {
+        "operator": "AND",
+        "quote": "Whenever a company makes the decision to go public, its first task is to select the underwriters.",
+        "terms": [
+          {
+            "term": "issue.new",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['issue.new']",
+            "missing": [
+              "issue.new"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "issue.new"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "road_show.arranged": {
+        "operator": "AND",
+        "quote": [
+          "While the registration statement is awaiting approval, underwriters begin to firm up the issue price.",
+          "They arrange a road show to talk to potential investors."
+        ],
+        "terms": [
+          {
+            "term": "issue.approved_by_sec",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['issue.approved_by_sec', 'road_show.arranged']",
+            "missing": [
+              "issue.approved_by_sec",
+              "road_show.arranged"
+            ]
+          },
+          {
+            "term": "issue.compliant_with_blue_sky_laws",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['road_show.arranged']",
+            "missing": [
+              "road_show.arranged"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "issue.approved_by_sec",
+              "issue.compliant_with_blue_sky_laws"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      }
+    }
+  },
+  "errors": []
+}

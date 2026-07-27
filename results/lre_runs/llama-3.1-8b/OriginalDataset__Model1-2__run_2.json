@@ -1,0 +1,905 @@
+{
+  "case_name": "OriginalDataset/Model1-2",
+  "text": "A customer brings in a defective computer and the CRS checks the defect and hands out a repair cost calculation back. If the customer decides that the costs are acceptable, the process continues, otherwise she takes her computer home unrepaired. The ongoing repair consists of two activities, which are executed, in an arbitrary order. The first activity is to check and repair the hardware, whereas the second activity checks and configures the software. After each of these activities, the proper system functionality is tested. If an error is detected another arbitrary repair activity is executed, otherwise the repair is finished.\n",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "llama-3.1-8b",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "llama-3.1-8b",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/../datasets/lre/alignment_model_text-master/datasets/OriginalDataset/Models/Model1-2.bpmn",
+  "report_model": "llama-3.1-8b",
+  "candidates": {
+    "computer": {
+      "states": [
+        "defective",
+        "repaired",
+        "unrepaired"
+      ],
+      "exclusive_groups": [
+        [
+          "defective",
+          "unrepaired"
+        ]
+      ],
+      "concurrent_with": []
+    },
+    "repair_cost_calculation": {
+      "states": [
+        "handed_out",
+        "not_handed_out"
+      ],
+      "exclusive_groups": [
+        [
+          "handed_out",
+          "not_handed_out"
+        ]
+      ],
+      "concurrent_with": []
+    },
+    "customer": {
+      "states": [
+        "satisfied",
+        "not_satisfied"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "repair_activity": {
+      "states": [
+        "ongoing",
+        "finished"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": [
+        "repair_activity"
+      ]
+    },
+    "hardware_check": {
+      "states": [
+        "ongoing",
+        "finished"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "software_check": {
+      "states": [
+        "ongoing",
+        "finished"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "system_test": {
+      "states": [
+        "ongoing",
+        "finished"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    }
+  },
+  "validation_report": {
+    "computer": {
+      "f_lex": "INDETERMINATE",
+      "kept": true,
+      "head_used": "computer"
+    },
+    "repair_cost_calculation": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "calculation"
+    },
+    "customer": {
+      "f_lex": "ACTOR",
+      "kept": false,
+      "head_used": "customer"
+    },
+    "repair_activity": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "activity"
+    },
+    "hardware_check": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "check"
+    },
+    "software_check": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "check"
+    },
+    "system_test": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "test"
+    },
+    "__meta__": {
+      "total_candidates": 7,
+      "indeterminate_kept_count": 1
+    }
+  },
+  "exclusive_groups_report": {
+    "accepted": [
+      {
+        "entity": "computer",
+        "states": [
+          "defective",
+          "unrepaired"
+        ],
+        "quote": "otherwise she takes her computer home unrepaired"
+      },
+      {
+        "entity": "repair_cost_calculation",
+        "states": [
+          "handed_out",
+          "not_handed_out"
+        ],
+        "quote": "If the customer decides that the costs are acceptable"
+      }
+    ],
+    "rejected": []
+  },
+  "state_space": {
+    "computer": {
+      "states": [
+        "defective",
+        "repaired",
+        "unrepaired"
+      ],
+      "exclusive_groups": [
+        [
+          "defective",
+          "unrepaired"
+        ]
+      ],
+      "concurrent_with": []
+    },
+    "repair_cost_calculation": {
+      "states": [
+        "handed_out",
+        "not_handed_out"
+      ],
+      "exclusive_groups": [
+        [
+          "handed_out",
+          "not_handed_out"
+        ]
+      ],
+      "concurrent_with": []
+    },
+    "repair_activity": {
+      "states": [
+        "ongoing",
+        "finished"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "hardware_check": {
+      "states": [
+        "ongoing",
+        "finished"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "software_check": {
+      "states": [
+        "ongoing",
+        "finished"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "system_test": {
+      "states": [
+        "ongoing",
+        "finished"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    }
+  },
+  "state_space_dedup": {
+    "merged": {},
+    "ambiguous_not_merged": {}
+  },
+  "raw_preconditions": {
+    "computer": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "repair_cost_calculation": {
+      "precondition": "computer.defective AND NOT computer.unrepaired",
+      "quote": "If the customer decides that the costs are acceptable,"
+    },
+    "repair_activity": {
+      "precondition": "system_test.ongoing",
+      "quote": "If an error is detected another arbitrary repair activity is executed,"
+    },
+    "hardware_check": {
+      "precondition": "repair_activity.ongoing",
+      "quote": "The first activity is to check and repair the hardware,"
+    },
+    "software_check": {
+      "precondition": "repair_activity.ongoing",
+      "quote": "The second activity checks and configures the software."
+    },
+    "system_test": {
+      "precondition": "hardware_check.finished OR software_check.finished",
+      "quote": [
+        "After each of these activities, the proper system functionality is tested.",
+        "If an error is detected another arbitrary repair activity is executed, otherwise the repair is finished."
+      ]
+    }
+  },
+  "validated_preconditions": {
+    "computer": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "DOWNGRADED",
+      "reason": "malformed or unknown target key: 'computer' is not a valid entity.state of the state space"
+    },
+    "repair_cost_calculation": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "DOWNGRADED",
+      "reason": "malformed or unknown target key: 'repair_cost_calculation' is not a valid entity.state of the state space"
+    },
+    "repair_activity": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "DOWNGRADED",
+      "reason": "malformed or unknown target key: 'repair_activity' is not a valid entity.state of the state space"
+    },
+    "hardware_check": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "DOWNGRADED",
+      "reason": "malformed or unknown target key: 'hardware_check' is not a valid entity.state of the state space"
+    },
+    "software_check": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "DOWNGRADED",
+      "reason": "malformed or unknown target key: 'software_check' is not a valid entity.state of the state space"
+    },
+    "system_test": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "DOWNGRADED",
+      "reason": "malformed or unknown target key: 'system_test' is not a valid entity.state of the state space"
+    }
+  },
+  "precondition_cycles": [],
+  "branch_conflicts": [],
+  "reference_graph": {
+    "nodes": [
+      {
+        "id": "computer.defective",
+        "weight": 0.0
+      },
+      {
+        "id": "computer.repaired",
+        "weight": 0.0
+      },
+      {
+        "id": "computer.unrepaired",
+        "weight": 0.0
+      },
+      {
+        "id": "repair_cost_calculation.handed_out",
+        "weight": 0.0
+      },
+      {
+        "id": "repair_cost_calculation.not_handed_out",
+        "weight": 0.0
+      },
+      {
+        "id": "repair_activity.ongoing",
+        "weight": 0.0
+      },
+      {
+        "id": "repair_activity.finished",
+        "weight": 0.0
+      },
+      {
+        "id": "hardware_check.ongoing",
+        "weight": 0.0
+      },
+      {
+        "id": "hardware_check.finished",
+        "weight": 0.0
+      },
+      {
+        "id": "software_check.ongoing",
+        "weight": 0.0
+      },
+      {
+        "id": "software_check.finished",
+        "weight": 0.0
+      },
+      {
+        "id": "system_test.ongoing",
+        "weight": 0.0
+      },
+      {
+        "id": "system_test.finished",
+        "weight": 0.0
+      }
+    ],
+    "edges": [],
+    "cycles": [],
+    "branch_conflicts": [],
+    "exclusive_pairs": [
+      {
+        "entity": "computer",
+        "nodes": [
+          "computer.defective",
+          "computer.unrepaired"
+        ]
+      },
+      {
+        "entity": "repair_cost_calculation",
+        "nodes": [
+          "repair_cost_calculation.handed_out",
+          "repair_cost_calculation.not_handed_out"
+        ]
+      }
+    ]
+  },
+  "dfg_edges": [
+    {
+      "source_id": "Task_025ix5y",
+      "source_label": "Prepare repair cost calculation",
+      "target_id": "IntermediateCatchEvent_1gbpl65",
+      "target_label": "",
+      "gateway_context": [
+        "EventBasedGateway"
+      ]
+    },
+    {
+      "source_id": "Task_025ix5y",
+      "source_label": "Prepare repair cost calculation",
+      "target_id": "IntermediateCatchEvent_133ativ",
+      "target_label": "",
+      "gateway_context": [
+        "EventBasedGateway"
+      ]
+    },
+    {
+      "source_id": "Task_025ix5y",
+      "source_label": "Prepare repair cost calculation",
+      "target_id": "Task_1fitgv2",
+      "target_label": "Receive repair cost calculation",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_056wtxd",
+      "source_label": "Check and repair hardware",
+      "target_id": "Task_1jco6af",
+      "target_label": "Test system functionality",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_0y0bk1x",
+      "source_label": "Take computer home",
+      "target_id": "IntermediateCatchEvent_1gbpl65",
+      "target_label": "",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_0yjzdx3",
+      "source_label": "Check and configure software",
+      "target_id": "Task_1jco6af",
+      "target_label": "Test system functionality",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "IntermediateCatchEvent_133ativ",
+      "source_label": "",
+      "target_id": "Task_056wtxd",
+      "target_label": "Check and repair hardware",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "IntermediateCatchEvent_133ativ",
+      "source_label": "",
+      "target_id": "Task_0yjzdx3",
+      "target_label": "Check and configure software",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_0lhwwbj",
+      "source_label": "Bring in defective computer",
+      "target_id": "Task_025ix5y",
+      "target_label": "Prepare repair cost calculation",
+      "gateway_context": [
+        "MessageStartEvent"
+      ]
+    },
+    {
+      "source_id": "Task_0lhwwbj",
+      "source_label": "Bring in defective computer",
+      "target_id": "Task_1fitgv2",
+      "target_label": "Receive repair cost calculation",
+      "gateway_context": []
+    },
+    {
+      "source_id": "BoundaryEvent_0d7z4qe",
+      "source_label": "",
+      "target_id": "Task_056wtxd",
+      "target_label": "Check and repair hardware",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "BoundaryEvent_0d7z4qe",
+      "source_label": "",
+      "target_id": "Task_0yjzdx3",
+      "target_label": "Check and configure software",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_1kw3asu",
+      "source_label": "Continue process",
+      "target_id": "IntermediateCatchEvent_133ativ",
+      "target_label": "",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_1fitgv2",
+      "source_label": "Receive repair cost calculation",
+      "target_id": "Task_1kw3asu",
+      "target_label": "Continue process",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_1fitgv2",
+      "source_label": "Receive repair cost calculation",
+      "target_id": "Task_0y0bk1x",
+      "target_label": "Take computer home",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "Prepare repair cost calculation",
+      "subject_id": "Task_025ix5y",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "IntermediateCatchEvent_1gbpl65"
+    },
+    {
+      "subject": "Prepare repair cost calculation",
+      "subject_id": "Task_025ix5y",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "IntermediateCatchEvent_133ativ"
+    },
+    {
+      "subject": "Prepare repair cost calculation",
+      "subject_id": "Task_025ix5y",
+      "predicate": "follows",
+      "object": "Receive repair cost calculation",
+      "object_id": "Task_1fitgv2"
+    },
+    {
+      "subject": "Check and repair hardware",
+      "subject_id": "Task_056wtxd",
+      "predicate": "follows",
+      "object": "Test system functionality",
+      "object_id": "Task_1jco6af"
+    },
+    {
+      "subject": "Take computer home",
+      "subject_id": "Task_0y0bk1x",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "IntermediateCatchEvent_1gbpl65"
+    },
+    {
+      "subject": "Check and configure software",
+      "subject_id": "Task_0yjzdx3",
+      "predicate": "follows",
+      "object": "Test system functionality",
+      "object_id": "Task_1jco6af"
+    },
+    {
+      "subject": "",
+      "subject_id": "IntermediateCatchEvent_133ativ",
+      "predicate": "follows",
+      "object": "Check and repair hardware",
+      "object_id": "Task_056wtxd"
+    },
+    {
+      "subject": "",
+      "subject_id": "IntermediateCatchEvent_133ativ",
+      "predicate": "follows",
+      "object": "Check and configure software",
+      "object_id": "Task_0yjzdx3"
+    },
+    {
+      "subject": "Bring in defective computer",
+      "subject_id": "Task_0lhwwbj",
+      "predicate": "follows",
+      "object": "Prepare repair cost calculation",
+      "object_id": "Task_025ix5y"
+    },
+    {
+      "subject": "Bring in defective computer",
+      "subject_id": "Task_0lhwwbj",
+      "predicate": "follows",
+      "object": "Receive repair cost calculation",
+      "object_id": "Task_1fitgv2"
+    },
+    {
+      "subject": "",
+      "subject_id": "BoundaryEvent_0d7z4qe",
+      "predicate": "follows",
+      "object": "Check and repair hardware",
+      "object_id": "Task_056wtxd"
+    },
+    {
+      "subject": "",
+      "subject_id": "BoundaryEvent_0d7z4qe",
+      "predicate": "follows",
+      "object": "Check and configure software",
+      "object_id": "Task_0yjzdx3"
+    },
+    {
+      "subject": "Continue process",
+      "subject_id": "Task_1kw3asu",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "IntermediateCatchEvent_133ativ"
+    },
+    {
+      "subject": "Receive repair cost calculation",
+      "subject_id": "Task_1fitgv2",
+      "predicate": "follows",
+      "object": "Continue process",
+      "object_id": "Task_1kw3asu"
+    },
+    {
+      "subject": "Receive repair cost calculation",
+      "subject_id": "Task_1fitgv2",
+      "predicate": "follows",
+      "object": "Take computer home",
+      "object_id": "Task_0y0bk1x"
+    }
+  ],
+  "activity_guards": {
+    "activities": {
+      "Bring in defective computer": {
+        "status": "OK",
+        "clauses": [
+          []
+        ]
+      },
+      "Prepare repair cost calculation": {
+        "status": "OK",
+        "clauses": [
+          []
+        ]
+      },
+      "Receive repair cost calculation": {
+        "status": "OK",
+        "clauses": [
+          [
+            "Bring in defective computer"
+          ]
+        ]
+      },
+      "Continue process": {
+        "status": "STRUCTURE_UNRESOLVED"
+      },
+      "Take computer home": {
+        "status": "STRUCTURE_UNRESOLVED"
+      },
+      "Check and repair hardware": {
+        "status": "STRUCTURE_UNRESOLVED"
+      },
+      "Check and configure software": {
+        "status": "STRUCTURE_UNRESOLVED"
+      },
+      "Test system functionality": {
+        "status": "STRUCTURE_UNRESOLVED"
+      }
+    },
+    "undeclared_splits": []
+  },
+  "matches": {
+    "Task_025ix5y": {
+      "activity_label": "Prepare repair cost calculation",
+      "matches": [
+        {
+          "match": "repair_cost_calculation.handed_out",
+          "score": 0.429
+        },
+        {
+          "match": "repair_cost_calculation.not_handed_out",
+          "score": 0.4237
+        }
+      ],
+      "clusters": [
+        [
+          "repair_cost_calculation.handed_out",
+          "repair_cost_calculation.not_handed_out"
+        ]
+      ]
+    },
+    "Task_1fitgv2": {
+      "activity_label": "Receive repair cost calculation",
+      "matches": [
+        {
+          "match": "repair_cost_calculation.not_handed_out",
+          "score": 0.53
+        },
+        {
+          "match": "repair_cost_calculation.handed_out",
+          "score": 0.5076
+        }
+      ],
+      "clusters": [
+        [
+          "repair_cost_calculation.not_handed_out",
+          "repair_cost_calculation.handed_out"
+        ]
+      ]
+    },
+    "Task_056wtxd": {
+      "activity_label": "Check and repair hardware",
+      "matches": [
+        {
+          "match": "hardware_check.finished",
+          "score": 0.4397
+        },
+        {
+          "match": "hardware_check.ongoing",
+          "score": 0.431
+        }
+      ],
+      "clusters": [
+        [
+          "hardware_check.finished",
+          "hardware_check.ongoing"
+        ]
+      ]
+    },
+    "Task_1jco6af": {
+      "activity_label": "Test system functionality",
+      "matches": [
+        {
+          "match": "system_test.finished",
+          "score": 0.4105
+        },
+        {
+          "match": "system_test.ongoing",
+          "score": 0.3859
+        }
+      ],
+      "clusters": [
+        [
+          "system_test.finished"
+        ],
+        [
+          "system_test.ongoing"
+        ]
+      ]
+    },
+    "Task_0y0bk1x": {
+      "activity_label": "Take computer home",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_0yjzdx3": {
+      "activity_label": "Check and configure software",
+      "matches": [
+        {
+          "match": "software_check.finished",
+          "score": 0.4387
+        },
+        {
+          "match": "software_check.ongoing",
+          "score": 0.3918
+        }
+      ],
+      "clusters": [
+        [
+          "software_check.finished"
+        ],
+        [
+          "software_check.ongoing"
+        ]
+      ]
+    },
+    "Task_0lhwwbj": {
+      "activity_label": "Bring in defective computer",
+      "matches": [
+        {
+          "match": "computer.defective",
+          "score": 0.5961
+        }
+      ],
+      "clusters": [
+        [
+          "computer.defective"
+        ]
+      ]
+    },
+    "Task_1kw3asu": {
+      "activity_label": "Continue process",
+      "matches": [],
+      "clusters": []
+    }
+  },
+  "process_graph": [
+    {
+      "from": "repair_cost_calculation.handed_out",
+      "to": "repair_cost_calculation.not_handed_out",
+      "activity_from": "Prepare repair cost calculation",
+      "activity_to": "Receive repair cost calculation",
+      "source_id": "Task_025ix5y",
+      "target_id": "Task_1fitgv2"
+    },
+    {
+      "from": "repair_cost_calculation.handed_out",
+      "to": "repair_cost_calculation.handed_out",
+      "activity_from": "Prepare repair cost calculation",
+      "activity_to": "Receive repair cost calculation",
+      "source_id": "Task_025ix5y",
+      "target_id": "Task_1fitgv2"
+    },
+    {
+      "from": "repair_cost_calculation.not_handed_out",
+      "to": "repair_cost_calculation.not_handed_out",
+      "activity_from": "Prepare repair cost calculation",
+      "activity_to": "Receive repair cost calculation",
+      "source_id": "Task_025ix5y",
+      "target_id": "Task_1fitgv2"
+    },
+    {
+      "from": "repair_cost_calculation.not_handed_out",
+      "to": "repair_cost_calculation.handed_out",
+      "activity_from": "Prepare repair cost calculation",
+      "activity_to": "Receive repair cost calculation",
+      "source_id": "Task_025ix5y",
+      "target_id": "Task_1fitgv2"
+    },
+    {
+      "from": "hardware_check.finished",
+      "to": "system_test.finished",
+      "activity_from": "Check and repair hardware",
+      "activity_to": "Test system functionality",
+      "source_id": "Task_056wtxd",
+      "target_id": "Task_1jco6af"
+    },
+    {
+      "from": "hardware_check.finished",
+      "to": "system_test.ongoing",
+      "activity_from": "Check and repair hardware",
+      "activity_to": "Test system functionality",
+      "source_id": "Task_056wtxd",
+      "target_id": "Task_1jco6af"
+    },
+    {
+      "from": "hardware_check.ongoing",
+      "to": "system_test.finished",
+      "activity_from": "Check and repair hardware",
+      "activity_to": "Test system functionality",
+      "source_id": "Task_056wtxd",
+      "target_id": "Task_1jco6af"
+    },
+    {
+      "from": "hardware_check.ongoing",
+      "to": "system_test.ongoing",
+      "activity_from": "Check and repair hardware",
+      "activity_to": "Test system functionality",
+      "source_id": "Task_056wtxd",
+      "target_id": "Task_1jco6af"
+    },
+    {
+      "from": "software_check.finished",
+      "to": "system_test.finished",
+      "activity_from": "Check and configure software",
+      "activity_to": "Test system functionality",
+      "source_id": "Task_0yjzdx3",
+      "target_id": "Task_1jco6af"
+    },
+    {
+      "from": "software_check.finished",
+      "to": "system_test.ongoing",
+      "activity_from": "Check and configure software",
+      "activity_to": "Test system functionality",
+      "source_id": "Task_0yjzdx3",
+      "target_id": "Task_1jco6af"
+    },
+    {
+      "from": "software_check.ongoing",
+      "to": "system_test.finished",
+      "activity_from": "Check and configure software",
+      "activity_to": "Test system functionality",
+      "source_id": "Task_0yjzdx3",
+      "target_id": "Task_1jco6af"
+    },
+    {
+      "from": "software_check.ongoing",
+      "to": "system_test.ongoing",
+      "activity_from": "Check and configure software",
+      "activity_to": "Test system functionality",
+      "source_id": "Task_0yjzdx3",
+      "target_id": "Task_1jco6af"
+    },
+    {
+      "from": "computer.defective",
+      "to": "repair_cost_calculation.handed_out",
+      "activity_from": "Bring in defective computer",
+      "activity_to": "Prepare repair cost calculation",
+      "source_id": "Task_0lhwwbj",
+      "target_id": "Task_025ix5y"
+    },
+    {
+      "from": "computer.defective",
+      "to": "repair_cost_calculation.not_handed_out",
+      "activity_from": "Bring in defective computer",
+      "activity_to": "Prepare repair cost calculation",
+      "source_id": "Task_0lhwwbj",
+      "target_id": "Task_025ix5y"
+    },
+    {
+      "from": "computer.defective",
+      "to": "repair_cost_calculation.not_handed_out",
+      "activity_from": "Bring in defective computer",
+      "activity_to": "Receive repair cost calculation",
+      "source_id": "Task_0lhwwbj",
+      "target_id": "Task_1fitgv2"
+    },
+    {
+      "from": "computer.defective",
+      "to": "repair_cost_calculation.handed_out",
+      "activity_from": "Bring in defective computer",
+      "activity_to": "Receive repair cost calculation",
+      "source_id": "Task_0lhwwbj",
+      "target_id": "Task_1fitgv2"
+    }
+  ],
+  "alignment": {},
+  "report": {
+    "verdict": {
+      "verdict": "FAITHFUL",
+      "justification": "Every non-trivial precondition asserted by the source text was confirmed in the observed process's sequence of activities.",
+      "scope": "This verdict covers the causal reachability of the requirements expressed in the source text, not the general quality of the process model -- a multiplicity defect (an activity executed more than once due to a mismatched branching structure) is not covered by this verdict, even if the process is otherwise well-formed."
+    },
+    "summary": {
+      "ecarts": 0,
+      "non_verifiable": 0,
+      "conforme": 0
+    },
+    "ecarts": [],
+    "non_verifiable": [],
+    "conforme": [],
+    "piece_jointe_alignement_brut": {}
+  },
+  "errors": []
+}

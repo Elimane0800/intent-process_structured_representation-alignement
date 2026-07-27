@@ -1,0 +1,481 @@
+{
+  "case_name": "OriginalDataset/Model2-2",
+  "text": "The process is initiated by a switch-over request. In doing so, the customer transmits his data to the customer service department of the company. Customer service is a shared service center between the departments Sales and Distribution. The customer data is received by customer service and based on this data a customer data object is entered into the CRM system. After customer data has been entered it should then be compared with the internal customer data base and checked for completeness and plausibility. In case of any errors these should be corrected on the basis of a simple error list. The comparison of data is done to prevent individual customer data being stored multiple times. In case the customer does not exist in the customer data base, a new customer object is being created which will remain the data object of interest during the rest of the process flow. This object consists of data elements such as the customers name and address and the assigned power gauge. The generated customer object is then used, in combination with other customer data to prepare the contract documents for the power supplier switch (including data such as bank connection, information on the selected rate, requested date of switch-over). In the following an automated check of the contract documents is carried out within the CIS (customer information system) in order to confirm their successful generation. In case of a negative response, i.e. the contract documents are not (or incorrectly) generated, the causing issues are being analyzed and resolved. Subsequently the contract documents are generated once again. In case of a positive response a confirmation document is sent out to the customer stating that the switch-over to the new supplier can be executed. A request to the grid operator is automatically sent out by the CIS. It puts the question whether the customer may be supplied by the selected supplier in the future. The switch-over request is checked by the grid operator for supplier concurrence, and the grid operator transmits a response comment. In the case of supplier concurrence the grid operator would inform all involved suppliers and demand the resolution of the conflict. The grid operator communicates with the old supplier and carries out the termination of the sales agreement between the customer and the old supplier (i.e. the customer service (of the new supplier) does not have to interact with the old supplier regarding termination). If there are not any objections by the grid operator (i.e. no supplier concurrence), customer service creates a CIS contract. The customer then has the chance to check the contract details and based on this check may decide to either withdraw from the switch contract or confirm it. Depending on the customers acceptance/rejection the process flow at customer service either ends (in case of withdrawal) or continues (in case of a confirmation). An additional constraint is that the customer can only withdraw from the offered contract within 7 days after the 7th day the contract will be regarded as accepted and the process continues. The confirmation message by the customer is therefore not absolutely necessary (as it will count as accepted after 7 days in any way) but it can speed up the switch process. On the switch-date, but no later than 10 days after power supply has begun, the grid operator transmits the power meter data to the customer service and the old supplier via messages containing a services consumption report. At the same time, the grid operator computes the final billing based on the meter data and sends it to the old supplier. Likewise the old supplier creates and sends the final billing to the customer. For the customer as well as the grid operator the process ends then. After receiving the meter data customer service imports the meter data to systems that require the information. The process of winning a new customer ends here.\n",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "gpt-oss-20b",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "gpt-oss-20b",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/../datasets/lre/alignment_model_text-master/datasets/OriginalDataset/Models/Model2-2.bpmn",
+  "report_model": "gpt-oss-20b",
+  "dfg_edges": [
+    {
+      "source_id": "Task_0",
+      "source_label": "Enter customer data object",
+      "target_id": "Task_1",
+      "target_label": "Check customer data",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_6",
+      "source_label": "Check contract documents",
+      "target_id": "Task_5",
+      "target_label": "Prepare contract documents",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_6",
+      "source_label": "Check contract documents",
+      "target_id": "Task_7",
+      "target_label": "Send documents",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_9",
+      "source_label": "Create CIS contract",
+      "target_id": "Task_10",
+      "target_label": "Send switch offer",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_3",
+      "source_label": "Check customer's first registration",
+      "target_id": "Task_4",
+      "target_label": "Create customer",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_3",
+      "source_label": "Check customer's first registration",
+      "target_id": "Task_5",
+      "target_label": "Prepare contract documents",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_7",
+      "source_label": "Send documents",
+      "target_id": "IntermediateMessageEventCatching_0",
+      "target_label": "",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_15",
+      "source_label": "Confirm switch contract",
+      "target_id": "IntermediateMessageEventCatching_5",
+      "target_label": "",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_16",
+      "source_label": "Check for supplier concurrence",
+      "target_id": "IntermediateTimerEvent_1",
+      "target_label": "10 days",
+      "gateway_context": [
+        "EventBasedGateway"
+      ]
+    },
+    {
+      "source_id": "Task_16",
+      "source_label": "Check for supplier concurrence",
+      "target_id": "IntermediateMessageEventCatching_7",
+      "target_label": "",
+      "gateway_context": [
+        "EventBasedGateway"
+      ]
+    },
+    {
+      "source_id": "IntermediateMessageEventCatching_4",
+      "source_label": "",
+      "target_id": "Task_13",
+      "target_label": "Check offered switch contract",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_2",
+      "source_label": "Perform error handling",
+      "target_id": "Task_0",
+      "target_label": "Enter customer data object",
+      "gateway_context": []
+    },
+    {
+      "source_id": "IntermediateTimerEvent_1",
+      "source_label": "10 days",
+      "target_id": "Task_18",
+      "target_label": "Compute final billing",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "IntermediateTimerEvent_1",
+      "source_label": "10 days",
+      "target_id": "Task_17",
+      "target_label": "Send meter data",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "IntermediateMessageEventCatching_0",
+      "source_label": "",
+      "target_id": "Task_8",
+      "target_label": "Check outcome of supplier check",
+      "gateway_context": []
+    },
+    {
+      "source_id": "IntermediateMessageEventCatching_3",
+      "source_label": "",
+      "target_id": "Task_11",
+      "target_label": "Import meter data",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_12",
+      "source_label": "Request switch-over",
+      "target_id": "IntermediateMessageEventCatching_4",
+      "target_label": "",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_5",
+      "source_label": "Prepare contract documents",
+      "target_id": "Task_6",
+      "target_label": "Check contract documents",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_4",
+      "source_label": "Create customer",
+      "target_id": "Task_5",
+      "target_label": "Prepare contract documents",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "IntermediateMessageEventCatching_6",
+      "source_label": "",
+      "target_id": "Task_16",
+      "target_label": "Check for supplier concurrence",
+      "gateway_context": []
+    },
+    {
+      "source_id": "IntermediateTimerEvent_0",
+      "source_label": "wait for 7 days",
+      "target_id": "IntermediateMessageEventCatching_3",
+      "target_label": "",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_10",
+      "source_label": "Send switch offer",
+      "target_id": "IntermediateTimerEvent_0",
+      "target_label": "wait for 7 days",
+      "gateway_context": [
+        "EventBasedGateway"
+      ]
+    },
+    {
+      "source_id": "Task_10",
+      "source_label": "Send switch offer",
+      "target_id": "IntermediateMessageEventCatching_1",
+      "target_label": "Wait for  communication",
+      "gateway_context": [
+        "EventBasedGateway"
+      ]
+    },
+    {
+      "source_id": "Task_10",
+      "source_label": "Send switch offer",
+      "target_id": "IntermediateMessageEventCatching_2",
+      "target_label": "Wait for  withdrawal",
+      "gateway_context": [
+        "EventBasedGateway"
+      ]
+    },
+    {
+      "source_id": "IntermediateMessageEventCatching_1",
+      "source_label": "Wait for  communication",
+      "target_id": "IntermediateMessageEventCatching_3",
+      "target_label": "",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_13",
+      "source_label": "Check offered switch contract",
+      "target_id": "Task_14",
+      "target_label": "Withdraw from switch contract",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_13",
+      "source_label": "Check offered switch contract",
+      "target_id": "Task_15",
+      "target_label": "Confirm switch contract",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_8",
+      "source_label": "Check outcome of supplier check",
+      "target_id": "Task_9",
+      "target_label": "Create CIS contract",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_1",
+      "source_label": "Check customer data",
+      "target_id": "Task_3",
+      "target_label": "Check customer's first registration",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_1",
+      "source_label": "Check customer data",
+      "target_id": "Task_2",
+      "target_label": "Perform error handling",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "Enter customer data object",
+      "subject_id": "Task_0",
+      "predicate": "follows",
+      "object": "Check customer data",
+      "object_id": "Task_1"
+    },
+    {
+      "subject": "Check contract documents",
+      "subject_id": "Task_6",
+      "predicate": "follows",
+      "object": "Prepare contract documents",
+      "object_id": "Task_5"
+    },
+    {
+      "subject": "Check contract documents",
+      "subject_id": "Task_6",
+      "predicate": "follows",
+      "object": "Send documents",
+      "object_id": "Task_7"
+    },
+    {
+      "subject": "Create CIS contract",
+      "subject_id": "Task_9",
+      "predicate": "follows",
+      "object": "Send switch offer",
+      "object_id": "Task_10"
+    },
+    {
+      "subject": "Check customer's first registration",
+      "subject_id": "Task_3",
+      "predicate": "follows",
+      "object": "Create customer",
+      "object_id": "Task_4"
+    },
+    {
+      "subject": "Check customer's first registration",
+      "subject_id": "Task_3",
+      "predicate": "follows",
+      "object": "Prepare contract documents",
+      "object_id": "Task_5"
+    },
+    {
+      "subject": "Send documents",
+      "subject_id": "Task_7",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "IntermediateMessageEventCatching_0"
+    },
+    {
+      "subject": "Confirm switch contract",
+      "subject_id": "Task_15",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "IntermediateMessageEventCatching_5"
+    },
+    {
+      "subject": "Check for supplier concurrence",
+      "subject_id": "Task_16",
+      "predicate": "follows",
+      "object": "10 days",
+      "object_id": "IntermediateTimerEvent_1"
+    },
+    {
+      "subject": "Check for supplier concurrence",
+      "subject_id": "Task_16",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "IntermediateMessageEventCatching_7"
+    },
+    {
+      "subject": "",
+      "subject_id": "IntermediateMessageEventCatching_4",
+      "predicate": "follows",
+      "object": "Check offered switch contract",
+      "object_id": "Task_13"
+    },
+    {
+      "subject": "Perform error handling",
+      "subject_id": "Task_2",
+      "predicate": "follows",
+      "object": "Enter customer data object",
+      "object_id": "Task_0"
+    },
+    {
+      "subject": "10 days",
+      "subject_id": "IntermediateTimerEvent_1",
+      "predicate": "follows",
+      "object": "Compute final billing",
+      "object_id": "Task_18"
+    },
+    {
+      "subject": "10 days",
+      "subject_id": "IntermediateTimerEvent_1",
+      "predicate": "follows",
+      "object": "Send meter data",
+      "object_id": "Task_17"
+    },
+    {
+      "subject": "",
+      "subject_id": "IntermediateMessageEventCatching_0",
+      "predicate": "follows",
+      "object": "Check outcome of supplier check",
+      "object_id": "Task_8"
+    },
+    {
+      "subject": "",
+      "subject_id": "IntermediateMessageEventCatching_3",
+      "predicate": "follows",
+      "object": "Import meter data",
+      "object_id": "Task_11"
+    },
+    {
+      "subject": "Request switch-over",
+      "subject_id": "Task_12",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "IntermediateMessageEventCatching_4"
+    },
+    {
+      "subject": "Prepare contract documents",
+      "subject_id": "Task_5",
+      "predicate": "follows",
+      "object": "Check contract documents",
+      "object_id": "Task_6"
+    },
+    {
+      "subject": "Create customer",
+      "subject_id": "Task_4",
+      "predicate": "follows",
+      "object": "Prepare contract documents",
+      "object_id": "Task_5"
+    },
+    {
+      "subject": "",
+      "subject_id": "IntermediateMessageEventCatching_6",
+      "predicate": "follows",
+      "object": "Check for supplier concurrence",
+      "object_id": "Task_16"
+    },
+    {
+      "subject": "wait for 7 days",
+      "subject_id": "IntermediateTimerEvent_0",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "IntermediateMessageEventCatching_3"
+    },
+    {
+      "subject": "Send switch offer",
+      "subject_id": "Task_10",
+      "predicate": "follows",
+      "object": "wait for 7 days",
+      "object_id": "IntermediateTimerEvent_0"
+    },
+    {
+      "subject": "Send switch offer",
+      "subject_id": "Task_10",
+      "predicate": "follows",
+      "object": "Wait for  communication",
+      "object_id": "IntermediateMessageEventCatching_1"
+    },
+    {
+      "subject": "Send switch offer",
+      "subject_id": "Task_10",
+      "predicate": "follows",
+      "object": "Wait for  withdrawal",
+      "object_id": "IntermediateMessageEventCatching_2"
+    },
+    {
+      "subject": "Wait for  communication",
+      "subject_id": "IntermediateMessageEventCatching_1",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "IntermediateMessageEventCatching_3"
+    },
+    {
+      "subject": "Check offered switch contract",
+      "subject_id": "Task_13",
+      "predicate": "follows",
+      "object": "Withdraw from switch contract",
+      "object_id": "Task_14"
+    },
+    {
+      "subject": "Check offered switch contract",
+      "subject_id": "Task_13",
+      "predicate": "follows",
+      "object": "Confirm switch contract",
+      "object_id": "Task_15"
+    },
+    {
+      "subject": "Check outcome of supplier check",
+      "subject_id": "Task_8",
+      "predicate": "follows",
+      "object": "Create CIS contract",
+      "object_id": "Task_9"
+    },
+    {
+      "subject": "Check customer data",
+      "subject_id": "Task_1",
+      "predicate": "follows",
+      "object": "Check customer's first registration",
+      "object_id": "Task_3"
+    },
+    {
+      "subject": "Check customer data",
+      "subject_id": "Task_1",
+      "predicate": "follows",
+      "object": "Perform error handling",
+      "object_id": "Task_2"
+    }
+  ],
+  "errors": [
+    "state_space: Request timed out.",
+    "precondition: 'state_space'",
+    "state_matching: 'state_space'",
+    "graph_construction: 'state_space'",
+    "alignment: 'reference_graph'",
+    "report: 'alignment'"
+  ]
+}

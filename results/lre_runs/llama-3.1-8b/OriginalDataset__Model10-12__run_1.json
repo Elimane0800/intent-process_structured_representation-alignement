@@ -1,0 +1,552 @@
+{
+  "case_name": "OriginalDataset/Model10-12",
+  "text": "The EC tells the INQ about the change of his master data. The INQ notifies the IP of the change. The IP checks whether the master data can be changed at the desired time. The IP confirms the changes of the INQ or the IP rejects the changes of the INQ.",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "llama-3.1-8b",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "llama-3.1-8b",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/../datasets/lre/alignment_model_text-master/datasets/OriginalDataset/Models/Model10-12.bpmn",
+  "report_model": "llama-3.1-8b",
+  "candidates": {
+    "master_data": {
+      "states": [
+        "changed"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "change": {
+      "states": [
+        "requested"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "notification": {
+      "states": [
+        "sent"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "confirmation": {
+      "states": [
+        "confirmed",
+        "rejected"
+      ],
+      "exclusive_groups": [
+        [
+          "confirmed",
+          "rejected"
+        ]
+      ],
+      "concurrent_with": []
+    }
+  },
+  "validation_report": {
+    "master_data": {
+      "f_lex": "INDETERMINATE",
+      "kept": true,
+      "head_used": "data"
+    },
+    "change": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "change"
+    },
+    "notification": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "notification"
+    },
+    "confirmation": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "confirmation"
+    },
+    "__meta__": {
+      "total_candidates": 4,
+      "indeterminate_kept_count": 1
+    }
+  },
+  "exclusive_groups_report": {
+    "accepted": [
+      {
+        "entity": "confirmation",
+        "states": [
+          "confirmed",
+          "rejected"
+        ],
+        "quote": "confirms the changes of the INQ or the IP rejects the changes of the INQ"
+      }
+    ],
+    "rejected": []
+  },
+  "state_space": {
+    "master_data": {
+      "states": [
+        "changed"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "change": {
+      "states": [
+        "requested"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "notification": {
+      "states": [
+        "sent"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "confirmation": {
+      "states": [
+        "confirmed",
+        "rejected"
+      ],
+      "exclusive_groups": [
+        [
+          "confirmed",
+          "rejected"
+        ]
+      ],
+      "concurrent_with": []
+    }
+  },
+  "state_space_dedup": {
+    "merged": {},
+    "ambiguous_not_merged": {}
+  },
+  "raw_preconditions": {
+    "master_data.changed": {
+      "precondition": "IP.check AND notification.sent",
+      "quote": "The EC tells the INQ about the change of his master data. The INQ notifies the IP of the change. The IP checks whether the master data can be changed at the desired time."
+    },
+    "change.requested": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "notification.sent": {
+      "precondition": "change.requested",
+      "quote": "The INQ notifies the IP of the change."
+    },
+    "IP.check": {
+      "precondition": "notification.sent",
+      "quote": "The IP checks whether the master data can be changed at the desired time."
+    },
+    "IP.confirm": {
+      "precondition": "notification.sent",
+      "quote": "The IP confirms the changes of the INQ or the IP rejects the changes of the INQ."
+    },
+    "confirmation.confirmed": {
+      "precondition": "IP.confirm AND master_data.changed",
+      "quote": "The IP confirms the changes of the INQ or the IP rejects the changes of the INQ."
+    },
+    "confirmation.rejected": {
+      "precondition": "IP.confirm AND NOT master_data.changed",
+      "quote": "The IP confirms the changes of the INQ or the IP rejects the changes of the INQ."
+    }
+  },
+  "validated_preconditions": {
+    "master_data.changed": {
+      "precondition": "notification.sent AND confirmation.confirmed",
+      "quote": [
+        "The IP checks whether the master data can be changed at the desired time.",
+        "The IP confirms the changes of the INQ or the IP rejects the changes of the INQ."
+      ],
+      "status": "OK",
+      "reason": null,
+      "retried": true
+    },
+    "change.requested": {
+      "precondition": "INITIAL",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "notification.sent": {
+      "precondition": "change.requested",
+      "quote": "The INQ notifies the IP of the change.",
+      "status": "OK",
+      "reason": null
+    },
+    "IP.check": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "DOWNGRADED",
+      "reason": "malformed or unknown target key: 'IP.check' is not a valid entity.state of the state space"
+    },
+    "IP.confirm": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "DOWNGRADED",
+      "reason": "malformed or unknown target key: 'IP.confirm' is not a valid entity.state of the state space"
+    },
+    "confirmation.confirmed": {
+      "precondition": "master_data.changed",
+      "quote": [
+        "The IP checks whether the master data can be changed at the desired time.",
+        "The IP confirms the changes of the INQ or the IP rejects the changes of the INQ."
+      ],
+      "status": "OK",
+      "reason": null,
+      "retried": true
+    },
+    "confirmation.rejected": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "DOWNGRADED",
+      "reason": "references unknown state(s): ['IP.confirm']"
+    }
+  },
+  "precondition_cycles": [
+    [
+      "master_data.changed",
+      "confirmation.confirmed",
+      "master_data.changed"
+    ]
+  ],
+  "branch_conflicts": [],
+  "reference_graph": {
+    "nodes": [
+      {
+        "id": "master_data.changed",
+        "weight": 1.0
+      },
+      {
+        "id": "change.requested",
+        "weight": 0.333
+      },
+      {
+        "id": "notification.sent",
+        "weight": 0.667
+      },
+      {
+        "id": "confirmation.confirmed",
+        "weight": 0.667
+      },
+      {
+        "id": "confirmation.rejected",
+        "weight": 0.0
+      }
+    ],
+    "edges": [
+      {
+        "from": "notification.sent",
+        "to": "master_data.changed",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": [
+          "The IP checks whether the master data can be changed at the desired time.",
+          "The IP confirms the changes of the INQ or the IP rejects the changes of the INQ."
+        ],
+        "negated": false
+      },
+      {
+        "from": "confirmation.confirmed",
+        "to": "master_data.changed",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": [
+          "The IP checks whether the master data can be changed at the desired time.",
+          "The IP confirms the changes of the INQ or the IP rejects the changes of the INQ."
+        ],
+        "negated": false
+      },
+      {
+        "from": "change.requested",
+        "to": "notification.sent",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "The INQ notifies the IP of the change.",
+        "negated": false
+      },
+      {
+        "from": "master_data.changed",
+        "to": "confirmation.confirmed",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": [
+          "The IP checks whether the master data can be changed at the desired time.",
+          "The IP confirms the changes of the INQ or the IP rejects the changes of the INQ."
+        ],
+        "negated": false
+      }
+    ],
+    "cycles": [
+      [
+        "master_data.changed",
+        "confirmation.confirmed",
+        "master_data.changed"
+      ]
+    ],
+    "branch_conflicts": [],
+    "exclusive_pairs": [
+      {
+        "entity": "confirmation",
+        "nodes": [
+          "confirmation.confirmed",
+          "confirmation.rejected"
+        ]
+      }
+    ]
+  },
+  "dfg_edges": [
+    {
+      "source_id": "Task_4",
+      "source_label": "Check",
+      "target_id": "Task_2",
+      "target_label": "Confirm",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_4",
+      "source_label": "Check",
+      "target_id": "Task_3",
+      "target_label": "Reject",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "IntermediateMessageEventThrowing_0",
+      "source_label": "",
+      "target_id": "Task_4",
+      "target_label": "Check",
+      "gateway_context": [
+        "NormalStartEvent"
+      ]
+    },
+    {
+      "source_id": "IntermediateMessageEventThrowing_0",
+      "source_label": "",
+      "target_id": "IntermediateMessageEventCatching_0",
+      "target_label": "",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_3",
+      "source_label": "Reject",
+      "target_id": "IntermediateMessageEventCatching_0",
+      "target_label": "",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_2",
+      "source_label": "Confirm",
+      "target_id": "IntermediateMessageEventCatching_0",
+      "target_label": "",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_0",
+      "source_label": "Inform",
+      "target_id": "Task_1",
+      "target_label": "Notify about change",
+      "gateway_context": [
+        "NormalEndEvent",
+        "NormalStartEvent"
+      ]
+    },
+    {
+      "source_id": "Task_1",
+      "source_label": "Notify about change",
+      "target_id": "IntermediateMessageEventThrowing_0",
+      "target_label": "",
+      "gateway_context": []
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "Check",
+      "subject_id": "Task_4",
+      "predicate": "follows",
+      "object": "Confirm",
+      "object_id": "Task_2"
+    },
+    {
+      "subject": "Check",
+      "subject_id": "Task_4",
+      "predicate": "follows",
+      "object": "Reject",
+      "object_id": "Task_3"
+    },
+    {
+      "subject": "",
+      "subject_id": "IntermediateMessageEventThrowing_0",
+      "predicate": "follows",
+      "object": "Check",
+      "object_id": "Task_4"
+    },
+    {
+      "subject": "",
+      "subject_id": "IntermediateMessageEventThrowing_0",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "IntermediateMessageEventCatching_0"
+    },
+    {
+      "subject": "Reject",
+      "subject_id": "Task_3",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "IntermediateMessageEventCatching_0"
+    },
+    {
+      "subject": "Confirm",
+      "subject_id": "Task_2",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "IntermediateMessageEventCatching_0"
+    },
+    {
+      "subject": "Inform",
+      "subject_id": "Task_0",
+      "predicate": "follows",
+      "object": "Notify about change",
+      "object_id": "Task_1"
+    },
+    {
+      "subject": "Notify about change",
+      "subject_id": "Task_1",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "IntermediateMessageEventThrowing_0"
+    }
+  ],
+  "matches": {
+    "Task_4": {
+      "activity_label": "Check",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_2": {
+      "activity_label": "Confirm",
+      "matches": [
+        {
+          "match": "confirmation.confirmed",
+          "score": 0.3716
+        }
+      ],
+      "clusters": [
+        [
+          "confirmation.confirmed"
+        ]
+      ]
+    },
+    "Task_3": {
+      "activity_label": "Reject",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_0": {
+      "activity_label": "Inform",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_1": {
+      "activity_label": "Notify about change",
+      "matches": [],
+      "clusters": []
+    }
+  },
+  "process_graph": [],
+  "alignment": {
+    "master_data.changed": {
+      "operator": "AND",
+      "quote": [
+        "The IP checks whether the master data can be changed at the desired time.",
+        "The IP confirms the changes of the INQ or the IP rejects the changes of the INQ."
+      ],
+      "terms": [
+        {
+          "term": "notification.sent",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['notification.sent', 'master_data.changed']",
+          "missing": [
+            "notification.sent",
+            "master_data.changed"
+          ]
+        },
+        {
+          "term": "confirmation.confirmed",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['master_data.changed']",
+          "missing": [
+            "master_data.changed"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "notification.sent",
+            "confirmation.confirmed"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "notification.sent": {
+      "operator": "AND",
+      "quote": "The INQ notifies the IP of the change.",
+      "terms": [
+        {
+          "term": "change.requested",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['change.requested', 'notification.sent']",
+          "missing": [
+            "change.requested",
+            "notification.sent"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "change.requested"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "confirmation.confirmed": {
+      "operator": "AND",
+      "quote": [
+        "The IP checks whether the master data can be changed at the desired time.",
+        "The IP confirms the changes of the INQ or the IP rejects the changes of the INQ."
+      ],
+      "terms": [
+        {
+          "term": "master_data.changed",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['master_data.changed']",
+          "missing": [
+            "master_data.changed"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "master_data.changed"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    }
+  },
+  "errors": [
+    "report: 'list' object has no attribute 'split'"
+  ]
+}

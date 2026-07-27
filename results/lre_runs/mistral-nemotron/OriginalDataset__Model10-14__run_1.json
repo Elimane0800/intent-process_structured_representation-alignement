@@ -1,0 +1,1093 @@
+{
+  "case_name": "OriginalDataset/Model10-14",
+  "text": "If the MPOO sends the bill for the temporary continuation of the metering point opera- tions to the GO, the GO examines the bill. If the MSPO sends the bill for the temporary continuation of the measurement to the GO, the GO examines the bill. If the MSPO sends the bill for additional readings to the GO, the GO examines the bill. If the MPOO sends the bill for the equipment acquisition to the MPON or the GO, the MPON or the GO examines the bill. The GO or the MPON confirms the invoice with payment advice to the MPOO or the MSPO, or the GO or the MPON rejects the invoice of the MPOO or the MSPO.\n",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "mistral-nemotron",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "mistral-nemotron",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/../datasets/lre/alignment_model_text-master/datasets/OriginalDataset/Models/Model10-14.bpmn",
+  "report_model": "mistral-nemotron",
+  "candidates": {
+    "bill": {
+      "states": [
+        "sent",
+        "examined",
+        "confirmed",
+        "rejected"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "payment_advice": {
+      "states": [
+        "sent"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "invoice": {
+      "states": [
+        "confirmed",
+        "rejected"
+      ],
+      "exclusive_groups": [
+        [
+          "confirmed",
+          "rejected"
+        ]
+      ],
+      "concurrent_with": []
+    }
+  },
+  "validation_report": {
+    "bill": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "bill"
+    },
+    "payment_advice": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "advice"
+    },
+    "invoice": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "invoice"
+    },
+    "__meta__": {
+      "total_candidates": 3,
+      "indeterminate_kept_count": 0
+    }
+  },
+  "exclusive_groups_report": {
+    "accepted": [
+      {
+        "entity": "invoice",
+        "states": [
+          "confirmed",
+          "rejected"
+        ],
+        "quote": "confirms the invoice... or rejects the invoice"
+      }
+    ],
+    "rejected": []
+  },
+  "state_space": {
+    "bill": {
+      "states": [
+        "sent",
+        "examined",
+        "confirmed",
+        "rejected"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "payment_advice": {
+      "states": [
+        "sent"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "invoice": {
+      "states": [
+        "confirmed",
+        "rejected"
+      ],
+      "exclusive_groups": [
+        [
+          "confirmed",
+          "rejected"
+        ]
+      ],
+      "concurrent_with": []
+    }
+  },
+  "state_space_dedup": {
+    "merged": {},
+    "ambiguous_not_merged": {}
+  },
+  "raw_preconditions": {
+    "bill.sent": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "bill.examined": {
+      "precondition": "bill.sent",
+      "quote": "the GO examines the bill"
+    },
+    "bill.confirmed": {
+      "precondition": "bill.examined",
+      "quote": "The GO or the MPON confirms the invoice with payment advice to the MPOO or the MSPO"
+    },
+    "bill.rejected": {
+      "precondition": "bill.examined",
+      "quote": "the GO or the MPON rejects the invoice of the MPOO or the MSPO"
+    },
+    "payment_advice.sent": {
+      "precondition": "bill.confirmed",
+      "quote": "The GO or the MPON confirms the invoice with payment advice to the MPOO or the MSPO"
+    },
+    "invoice.confirmed": {
+      "precondition": "bill.confirmed",
+      "quote": "The GO or the MPON confirms the invoice with payment advice to the MPOO or the MSPO"
+    },
+    "invoice.rejected": {
+      "precondition": "bill.rejected",
+      "quote": "the GO or the MPON rejects the invoice of the MPOO or the MSPO"
+    }
+  },
+  "validated_preconditions": {
+    "bill.sent": {
+      "precondition": "INITIAL",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "bill.examined": {
+      "precondition": "bill.sent",
+      "quote": "the GO examines the bill",
+      "status": "OK",
+      "reason": null
+    },
+    "bill.confirmed": {
+      "precondition": "bill.examined",
+      "quote": "The GO or the MPON confirms the invoice with payment advice to the MPOO or the MSPO",
+      "status": "OK",
+      "reason": null
+    },
+    "bill.rejected": {
+      "precondition": "bill.examined",
+      "quote": "the GO or the MPON rejects the invoice of the MPOO or the MSPO",
+      "status": "OK",
+      "reason": null
+    },
+    "payment_advice.sent": {
+      "precondition": "bill.confirmed",
+      "quote": "The GO or the MPON confirms the invoice with payment advice to the MPOO or the MSPO",
+      "status": "OK",
+      "reason": null
+    },
+    "invoice.confirmed": {
+      "precondition": "bill.confirmed",
+      "quote": "The GO or the MPON confirms the invoice with payment advice to the MPOO or the MSPO",
+      "status": "OK",
+      "reason": null
+    },
+    "invoice.rejected": {
+      "precondition": "bill.rejected",
+      "quote": "the GO or the MPON rejects the invoice of the MPOO or the MSPO",
+      "status": "OK",
+      "reason": null
+    }
+  },
+  "precondition_cycles": [],
+  "branch_conflicts": [],
+  "reference_graph": {
+    "nodes": [
+      {
+        "id": "bill.sent",
+        "weight": 0.333
+      },
+      {
+        "id": "bill.examined",
+        "weight": 1.0
+      },
+      {
+        "id": "bill.confirmed",
+        "weight": 1.0
+      },
+      {
+        "id": "bill.rejected",
+        "weight": 0.667
+      },
+      {
+        "id": "payment_advice.sent",
+        "weight": 0.333
+      },
+      {
+        "id": "invoice.confirmed",
+        "weight": 0.333
+      },
+      {
+        "id": "invoice.rejected",
+        "weight": 0.333
+      }
+    ],
+    "edges": [
+      {
+        "from": "bill.sent",
+        "to": "bill.examined",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "the GO examines the bill",
+        "negated": false
+      },
+      {
+        "from": "bill.examined",
+        "to": "bill.confirmed",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "The GO or the MPON confirms the invoice with payment advice to the MPOO or the MSPO",
+        "negated": false
+      },
+      {
+        "from": "bill.examined",
+        "to": "bill.rejected",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "the GO or the MPON rejects the invoice of the MPOO or the MSPO",
+        "negated": false
+      },
+      {
+        "from": "bill.confirmed",
+        "to": "payment_advice.sent",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "The GO or the MPON confirms the invoice with payment advice to the MPOO or the MSPO",
+        "negated": false
+      },
+      {
+        "from": "bill.confirmed",
+        "to": "invoice.confirmed",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "The GO or the MPON confirms the invoice with payment advice to the MPOO or the MSPO",
+        "negated": false
+      },
+      {
+        "from": "bill.rejected",
+        "to": "invoice.rejected",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "the GO or the MPON rejects the invoice of the MPOO or the MSPO",
+        "negated": false
+      }
+    ],
+    "cycles": [],
+    "branch_conflicts": [],
+    "exclusive_pairs": [
+      {
+        "entity": "invoice",
+        "nodes": [
+          "invoice.confirmed",
+          "invoice.rejected"
+        ]
+      }
+    ]
+  },
+  "dfg_edges": [
+    {
+      "source_id": "Task_0",
+      "source_label": "Confirm bill",
+      "target_id": "IntermediateMessageEventCatching_0",
+      "target_label": "",
+      "gateway_context": []
+    },
+    {
+      "source_id": "IntermediateMessageEventCatching_2",
+      "source_label": "",
+      "target_id": "Task_7",
+      "target_label": "Examine",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_6",
+      "source_label": "Reject bill",
+      "target_id": "IntermediateMessageEventCatching_6",
+      "target_label": "",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_6",
+      "source_label": "Reject bill",
+      "target_id": "IntermediateMessageEventCatching_1",
+      "target_label": "",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_9",
+      "source_label": "Transmit the bill (measurements)",
+      "target_id": "IntermediateMessageEventCatching_4",
+      "target_label": "",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_9",
+      "source_label": "Transmit the bill (measurements)",
+      "target_id": "IntermediateMessageEventCatching_6",
+      "target_label": "",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_3",
+      "source_label": "Confirm bill",
+      "target_id": "Task_2",
+      "target_label": "Examine",
+      "gateway_context": [
+        "NormalStartEvent"
+      ]
+    },
+    {
+      "source_id": "Task_3",
+      "source_label": "Confirm bill",
+      "target_id": "IntermediateMessageEventCatching_0",
+      "target_label": "",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_3",
+      "source_label": "Confirm bill",
+      "target_id": "IntermediateMessageEventCatching_3",
+      "target_label": "",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_7",
+      "source_label": "Examine",
+      "target_id": "Task_5",
+      "target_label": "Confirm bill",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_7",
+      "source_label": "Examine",
+      "target_id": "Task_6",
+      "target_label": "Reject bill",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "IntermediateMessageEventCatching_5",
+      "source_label": "",
+      "target_id": "Task_7",
+      "target_label": "Examine",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "IntermediateMessageEventCatching_4",
+      "source_label": "",
+      "target_id": "Task_7",
+      "target_label": "Examine",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_2",
+      "source_label": "Examine",
+      "target_id": "Task_0",
+      "target_label": "Confirm bill",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_2",
+      "source_label": "Examine",
+      "target_id": "Task_1",
+      "target_label": "Reject bill",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "IntermediateMessageEventCatching_3",
+      "source_label": "",
+      "target_id": "Task_7",
+      "target_label": "Examine",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_5",
+      "source_label": "Confirm bill",
+      "target_id": "IntermediateMessageEventCatching_1",
+      "target_label": "",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_5",
+      "source_label": "Confirm bill",
+      "target_id": "IntermediateMessageEventCatching_6",
+      "target_label": "",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_4",
+      "source_label": "Reject bill",
+      "target_id": "IntermediateMessageEventCatching_1",
+      "target_label": "",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_4",
+      "source_label": "Reject bill",
+      "target_id": "IntermediateMessageEventCatching_2",
+      "target_label": "",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_8",
+      "source_label": "Transmit the bill (additional readings)",
+      "target_id": "IntermediateMessageEventCatching_5",
+      "target_label": "",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_8",
+      "source_label": "Transmit the bill (additional readings)",
+      "target_id": "IntermediateMessageEventCatching_6",
+      "target_label": "",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_1",
+      "source_label": "Reject bill",
+      "target_id": "IntermediateMessageEventCatching_0",
+      "target_label": "",
+      "gateway_context": []
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "Confirm bill",
+      "subject_id": "Task_0",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "IntermediateMessageEventCatching_0"
+    },
+    {
+      "subject": "",
+      "subject_id": "IntermediateMessageEventCatching_2",
+      "predicate": "follows",
+      "object": "Examine",
+      "object_id": "Task_7"
+    },
+    {
+      "subject": "Reject bill",
+      "subject_id": "Task_6",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "IntermediateMessageEventCatching_6"
+    },
+    {
+      "subject": "Reject bill",
+      "subject_id": "Task_6",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "IntermediateMessageEventCatching_1"
+    },
+    {
+      "subject": "Transmit the bill (measurements)",
+      "subject_id": "Task_9",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "IntermediateMessageEventCatching_4"
+    },
+    {
+      "subject": "Transmit the bill (measurements)",
+      "subject_id": "Task_9",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "IntermediateMessageEventCatching_6"
+    },
+    {
+      "subject": "Confirm bill",
+      "subject_id": "Task_3",
+      "predicate": "follows",
+      "object": "Examine",
+      "object_id": "Task_2"
+    },
+    {
+      "subject": "Confirm bill",
+      "subject_id": "Task_3",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "IntermediateMessageEventCatching_0"
+    },
+    {
+      "subject": "Confirm bill",
+      "subject_id": "Task_3",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "IntermediateMessageEventCatching_3"
+    },
+    {
+      "subject": "Examine",
+      "subject_id": "Task_7",
+      "predicate": "follows",
+      "object": "Confirm bill",
+      "object_id": "Task_5"
+    },
+    {
+      "subject": "Examine",
+      "subject_id": "Task_7",
+      "predicate": "follows",
+      "object": "Reject bill",
+      "object_id": "Task_6"
+    },
+    {
+      "subject": "",
+      "subject_id": "IntermediateMessageEventCatching_5",
+      "predicate": "follows",
+      "object": "Examine",
+      "object_id": "Task_7"
+    },
+    {
+      "subject": "",
+      "subject_id": "IntermediateMessageEventCatching_4",
+      "predicate": "follows",
+      "object": "Examine",
+      "object_id": "Task_7"
+    },
+    {
+      "subject": "Examine",
+      "subject_id": "Task_2",
+      "predicate": "follows",
+      "object": "Confirm bill",
+      "object_id": "Task_0"
+    },
+    {
+      "subject": "Examine",
+      "subject_id": "Task_2",
+      "predicate": "follows",
+      "object": "Reject bill",
+      "object_id": "Task_1"
+    },
+    {
+      "subject": "",
+      "subject_id": "IntermediateMessageEventCatching_3",
+      "predicate": "follows",
+      "object": "Examine",
+      "object_id": "Task_7"
+    },
+    {
+      "subject": "Confirm bill",
+      "subject_id": "Task_5",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "IntermediateMessageEventCatching_1"
+    },
+    {
+      "subject": "Confirm bill",
+      "subject_id": "Task_5",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "IntermediateMessageEventCatching_6"
+    },
+    {
+      "subject": "Reject bill",
+      "subject_id": "Task_4",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "IntermediateMessageEventCatching_1"
+    },
+    {
+      "subject": "Reject bill",
+      "subject_id": "Task_4",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "IntermediateMessageEventCatching_2"
+    },
+    {
+      "subject": "Transmit the bill (additional readings)",
+      "subject_id": "Task_8",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "IntermediateMessageEventCatching_5"
+    },
+    {
+      "subject": "Transmit the bill (additional readings)",
+      "subject_id": "Task_8",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "IntermediateMessageEventCatching_6"
+    },
+    {
+      "subject": "Reject bill",
+      "subject_id": "Task_1",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "IntermediateMessageEventCatching_0"
+    }
+  ],
+  "matches": {
+    "Task_0": {
+      "activity_label": "Confirm bill",
+      "matches": [
+        {
+          "match": "bill.confirmed",
+          "score": 0.474
+        }
+      ],
+      "clusters": [
+        [
+          "bill.confirmed"
+        ]
+      ]
+    },
+    "Task_7": {
+      "activity_label": "Examine",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_6": {
+      "activity_label": "Reject bill",
+      "matches": [
+        {
+          "match": "bill.rejected",
+          "score": 0.5296
+        }
+      ],
+      "clusters": [
+        [
+          "bill.rejected"
+        ]
+      ]
+    },
+    "Task_9": {
+      "activity_label": "Transmit the bill (measurements)",
+      "matches": [
+        {
+          "match": "bill.sent",
+          "score": 0.4132
+        }
+      ],
+      "clusters": [
+        [
+          "bill.sent"
+        ]
+      ]
+    },
+    "Task_3": {
+      "activity_label": "Confirm bill",
+      "matches": [
+        {
+          "match": "bill.confirmed",
+          "score": 0.5182
+        }
+      ],
+      "clusters": [
+        [
+          "bill.confirmed"
+        ]
+      ]
+    },
+    "Task_2": {
+      "activity_label": "Examine",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_5": {
+      "activity_label": "Confirm bill",
+      "matches": [
+        {
+          "match": "bill.confirmed",
+          "score": 0.474
+        }
+      ],
+      "clusters": [
+        [
+          "bill.confirmed"
+        ]
+      ]
+    },
+    "Task_1": {
+      "activity_label": "Reject bill",
+      "matches": [
+        {
+          "match": "bill.rejected",
+          "score": 0.5296
+        }
+      ],
+      "clusters": [
+        [
+          "bill.rejected"
+        ]
+      ]
+    },
+    "Task_4": {
+      "activity_label": "Reject bill",
+      "matches": [
+        {
+          "match": "bill.rejected",
+          "score": 0.8728
+        }
+      ],
+      "clusters": [
+        [
+          "bill.rejected"
+        ]
+      ]
+    },
+    "Task_8": {
+      "activity_label": "Transmit the bill (additional readings)",
+      "matches": [
+        {
+          "match": "bill.sent",
+          "score": 0.4014
+        }
+      ],
+      "clusters": [
+        [
+          "bill.sent"
+        ]
+      ]
+    }
+  },
+  "process_graph": [],
+  "alignment": {
+    "bill.examined": {
+      "operator": "AND",
+      "quote": "the GO examines the bill",
+      "terms": [
+        {
+          "term": "bill.sent",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['bill.examined']",
+          "missing": [
+            "bill.examined"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "bill.sent"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "bill.confirmed": {
+      "operator": "AND",
+      "quote": "The GO or the MPON confirms the invoice with payment advice to the MPOO or the MSPO",
+      "terms": [
+        {
+          "term": "bill.examined",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['bill.examined']",
+          "missing": [
+            "bill.examined"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "bill.examined"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "bill.rejected": {
+      "operator": "AND",
+      "quote": "the GO or the MPON rejects the invoice of the MPOO or the MSPO",
+      "terms": [
+        {
+          "term": "bill.examined",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['bill.examined']",
+          "missing": [
+            "bill.examined"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "bill.examined"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "payment_advice.sent": {
+      "operator": "AND",
+      "quote": "The GO or the MPON confirms the invoice with payment advice to the MPOO or the MSPO",
+      "terms": [
+        {
+          "term": "bill.confirmed",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['payment_advice.sent']",
+          "missing": [
+            "payment_advice.sent"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "bill.confirmed"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "invoice.confirmed": {
+      "operator": "AND",
+      "quote": "The GO or the MPON confirms the invoice with payment advice to the MPOO or the MSPO",
+      "terms": [
+        {
+          "term": "bill.confirmed",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['invoice.confirmed']",
+          "missing": [
+            "invoice.confirmed"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "bill.confirmed"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "invoice.rejected": {
+      "operator": "AND",
+      "quote": "the GO or the MPON rejects the invoice of the MPOO or the MSPO",
+      "terms": [
+        {
+          "term": "bill.rejected",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['invoice.rejected']",
+          "missing": [
+            "invoice.rejected"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "bill.rejected"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    }
+  },
+  "report": {
+    "verdict": {
+      "verdict": "FAITHFUL_WITH_RESERVATIONS",
+      "justification": "No gap found, but 4 requirement(s) from the text could not be associated with any clear activity in the observed process -- neither confirmed nor refuted. This verdict is NOT a confirmation of full faithfulness.",
+      "scope": "This verdict covers the causal reachability of the requirements expressed in the source text, not the general quality of the process model -- a multiplicity defect (an activity executed more than once due to a mismatched branching structure) is not covered by this verdict, even if the process is otherwise well-formed."
+    },
+    "summary": {
+      "ecarts": 0,
+      "non_verifiable": 4,
+      "conforme": 0
+    },
+    "ecarts": [],
+    "non_verifiable": [
+      {
+        "root_cause": "bill examined",
+        "quote": "the GO examines the bill",
+        "explanation": "The process requires that a specific condition be met before the activity \"bill examined\" can occur, as indicated by the quote: \"the GO examines the bill\". However, the observed process does not clearly show any activity that would fulfill this requirement, making it impossible to confirm whether the condition was met or not. (This same root cause also affects: Confirm bill, Reject bill.)",
+        "quote_verbatim": true,
+        "affected_activities": [
+          "Confirm bill",
+          "Reject bill",
+          "bill examined"
+        ],
+        "affected_count": 3
+      },
+      {
+        "root_cause": "payment advice sent",
+        "quote": "The GO or the MPON confirms the invoice with payment advice to the MPOO or the MSPO",
+        "explanation": "The activity \"payment advice sent\" requires a prior confirmation of the invoice, as stated in the source text: \"The GO or the MPON confirms the invoice with payment advice to the MPOO or the MSPO.\" However, the observed process does not show any clear activity matching this confirmation step, so we cannot determine whether this requirement is met.",
+        "quote_verbatim": true,
+        "affected_activities": [
+          "payment advice sent"
+        ],
+        "affected_count": 1
+      },
+      {
+        "root_cause": "invoice confirmed",
+        "quote": "The GO or the MPON confirms the invoice with payment advice to the MPOO or the MSPO",
+        "explanation": "The requirement states that the activity \"invoice confirmed\" can only occur if a specific condition is met, as indicated by the quote: \"The GO or the MPON confirms the invoice with payment advice to the MPOO or the MSPO.\"\n\nHowever, the observed process does not clearly show any activity that would fulfill this condition, making it impossible to check whether the requirement is met or not.",
+        "quote_verbatim": true,
+        "affected_activities": [
+          "invoice confirmed"
+        ],
+        "affected_count": 1
+      },
+      {
+        "root_cause": "invoice rejected",
+        "quote": "the GO or the MPON rejects the invoice of the MPOO or the MSPO",
+        "explanation": "The process requires that an invoice be rejected only if \"the GO or the MPON rejects the invoice of the MPOO or the MSPO.\" However, the observed process does not show any activity that clearly checks or enforces this condition before the \"invoice rejected\" step. Because the required condition is not visible in the process, it is impossible to confirm whether this rule is followed or not.",
+        "quote_verbatim": true,
+        "affected_activities": [
+          "invoice rejected"
+        ],
+        "affected_count": 1
+      }
+    ],
+    "conforme": [],
+    "piece_jointe_alignement_brut": {
+      "bill.examined": {
+        "operator": "AND",
+        "quote": "the GO examines the bill",
+        "terms": [
+          {
+            "term": "bill.sent",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['bill.examined']",
+            "missing": [
+              "bill.examined"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "bill.sent"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "bill.confirmed": {
+        "operator": "AND",
+        "quote": "The GO or the MPON confirms the invoice with payment advice to the MPOO or the MSPO",
+        "terms": [
+          {
+            "term": "bill.examined",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['bill.examined']",
+            "missing": [
+              "bill.examined"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "bill.examined"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "bill.rejected": {
+        "operator": "AND",
+        "quote": "the GO or the MPON rejects the invoice of the MPOO or the MSPO",
+        "terms": [
+          {
+            "term": "bill.examined",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['bill.examined']",
+            "missing": [
+              "bill.examined"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "bill.examined"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "payment_advice.sent": {
+        "operator": "AND",
+        "quote": "The GO or the MPON confirms the invoice with payment advice to the MPOO or the MSPO",
+        "terms": [
+          {
+            "term": "bill.confirmed",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['payment_advice.sent']",
+            "missing": [
+              "payment_advice.sent"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "bill.confirmed"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "invoice.confirmed": {
+        "operator": "AND",
+        "quote": "The GO or the MPON confirms the invoice with payment advice to the MPOO or the MSPO",
+        "terms": [
+          {
+            "term": "bill.confirmed",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['invoice.confirmed']",
+            "missing": [
+              "invoice.confirmed"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "bill.confirmed"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "invoice.rejected": {
+        "operator": "AND",
+        "quote": "the GO or the MPON rejects the invoice of the MPOO or the MSPO",
+        "terms": [
+          {
+            "term": "bill.rejected",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['invoice.rejected']",
+            "missing": [
+              "invoice.rejected"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "bill.rejected"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      }
+    }
+  },
+  "errors": []
+}

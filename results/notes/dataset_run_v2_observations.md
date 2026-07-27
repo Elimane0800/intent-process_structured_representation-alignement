@@ -238,10 +238,15 @@ encore plus restreint (n=36) — cohérent avec un effet d'échantillon, pas un 
 5. **Cycles et déduplication** — hypothèse non tranchée, cf. section 5.
 6. **Négation dans la grammaire des guards** — fréquence sur le corpus complet non mesurée,
    cf. section 4.
-7. **Rappel de l'étude de perturbation (classe `required`)** — premier run fait (section 9),
-   mais le biais de génération identifié (mutants non ciblés sur les activités réellement
-   couvertes par un guard) rend le chiffre actuel non interprétable comme mesure pure du
-   mécanisme. Correctif de ciblage identifié, pas encore implémenté.
+7. **Rappel de l'étude de perturbation (classe `required`)** — biais de ciblage identifié
+   **et corrigé** (section 8.2 : union des activités guard-pertinentes sur les 3 modèles,
+   `mutate_bpmn.py`). Il reste seulement à relancer `mutate_bpmn.py` puis
+   `run_perturbation_study.py` sur le manifeste corrigé — les chiffres actuels de la section
+   8.2 datent toujours du manifeste biaisé.
+8. **Refactoring TGMS** — validé par équivalence stricte sur les 153 mutants existants
+   (section 8.3), mais cette validation porte sur le manifeste biaisé (structure de test
+   valide malgré tout, puisqu'elle compare deux implémentations sur les mêmes entrées). À
+   revalider une fois sur le manifeste corrigé, comme simple contrôle de non-régression.
 
 ---
 
@@ -253,7 +258,7 @@ encore plus restreint (n=36) — cohérent avec un effet d'échantillon, pas un 
 v2 correspondant (aucun appel LLM, seulement des appels d'embedding — cf. docstring de tête du
 script pour le principe de contrôle expérimental).
 
-### 9.1 Résultat solide — classe `forbidden` et `blind_spot`, zéro exception
+### 8.1 Résultat solide — classe `forbidden` et `blind_spot`, zéro exception
 
 | Opérateur | Modèles cumulés | Résultat |
 |---|---|---|
@@ -266,39 +271,70 @@ activité ajoutée n'a dégradé un verdict `SATISFIED`, sur trois modèles et d
 distincts. Et confirmation mécanique de l'angle mort assumé sur le type de gateway (la relation
 `"follows"` du DFG est bien insensible à XOR/AND, comme actée dans `bpmn_to_spo_node.py`).
 
-### 9.2 Résultat faible et diagnostiqué — rappel sur la classe `required`
+### 8.2 Résultat faible, diagnostiqué et corrigé — rappel sur la classe `required`, run relancé
 
-| Opérateur | `llama-3.1-8b` | `mistral-nemotron` | `gpt-oss-20b` |
+| Opérateur | `llama-3.1-8b` (avant → après) | `mistral-nemotron` (avant → après) | `gpt-oss-20b` (avant → après) |
 |---|---|---|---|
-| `remove_activity` | 2/12 (16.7%) | 4/18 (22.2%) | 2/21 (9.5%) |
-| `swap_labels` | 0/12 (0.0%) | 2/18 (11.1%) | 0/21 (0.0%) |
-| `cross_case_replace` | 1/12 (8.3%) | 1/18 (5.6%) | 0/21 (0.0%) |
+| `remove_activity` | 2/12 (16.7%) → 2/12 (16.7%) | 4/18 (22.2%) → **8/18 (44.4%)** | 2/21 (9.5%) → 3/21 (14.3%) |
+| `swap_labels` | 0/12 (0.0%) → 0/12 (0.0%) | 2/18 (11.1%) → 3/18 (16.7%) | 0/21 (0.0%) → 0/21 (0.0%) |
+| `cross_case_replace` | 1/12 (8.3%) → 2/12 (16.7%) | 1/18 (5.6%) → **5/18 (27.8%)** | 0/21 (0.0%) → 1/21 (4.8%) |
 
-**Cause probable identifiée, pas encore corrigée — un biais de génération des mutants, pas
-(nécessairement) une faiblesse du mécanisme de vérification.** Inspection du détail brut
-(`results/perturbation_study/results.json`) : les détections ne sont pas dispersées
-uniformément entre les 7 fichiers de base, elles se concentrent sur 1 à 2 fichiers par modèle
-(`V_k09/2` pour `llama-3.1-8b`, `M_g01/10` et `V_k09/2` pour `gpt-oss-20b`) — zéro détection sur
-les autres bases, quel que soit l'opérateur. Si le mécanisme était simplement peu sensible, une
-dispersion plus uniforme serait attendue.
+Run relancé sur le manifeste corrigé (union des activités guard-pertinentes,
+section 8.2 précédente). **`forbidden` et `blind_spot` confirmés inchangés à 0** sous le nouveau
+manifeste (0/24, 0/36, 0/42 faux positifs ; 0/12, 0/18, 0/21 angle mort inattendu) — comme
+attendu, ces opérateurs ne dépendaient jamais du ciblage.
 
-Cause structurelle probable : `mutate_bpmn.py` choisit l'activité mutée **au hasard parmi
-toutes les activités nommées du BPMN**, sans vérifier si l'état qu'elle ancre est effectivement
-référencé comme terme ou cible d'un guard dans `reference_graph`. Une part inconnue des mutants
-touche donc des activités dont l'état n'est jamais vérifié par aucune précondition — mutations
-structurellement indétectables, indépendamment de la qualité du mécanisme d'alignement. Le
-rappel mesuré ici mélange donc deux quantités distinctes : la vraie capacité de détection, et
-la proportion de mutations tombées sur une zone non couverte du graphe.
+Effet du fix réel mais partiel : gain net pour `mistral-nemotron` (doublé sur deux opérateurs),
+gain modeste pour les deux autres. **`swap_labels` reste à 0% pour `llama-3.1-8b` et
+`gpt-oss-20b`, avant et après le fix** — signal que la cause n'est pas (que) le ciblage.
+Investigation ci-dessous.
 
-**Non corrigé dans ce document** : nécessite de cibler la génération de mutants sur les
-activités dont l'état apparaît dans `reference_graph` (information disponible dans le run v2
-mais non consommée par `mutate_bpmn.py`). Complication de conception non résolue : les mutants
-sont aujourd'hui partagés entre les 3 modèles (un seul jeu, indépendant du modèle, car la
-mutation ne touche que le BPMN) ; cibler par pertinence de guard rend la mutation dépendante du
-`U`/`G` de chaque modèle — décision à prendre entre (a) un jeu de mutants par modèle (rappel
-propre, 3× plus de mutants) ou (b) cibler l'union des activités pertinentes sur les 3 modèles
-(un seul jeu, rappel encore partiellement dilué pour les modèles dont le guard ne couvre pas
-l'activité choisie).
+### 8.2bis Cause supplémentaire trouvée — asymétrie de richesse d'extraction des guards entre modèles
+
+Inspection croisée `(base, modèle)` sur `swap_labels` : sur 21 tests (7 bases × 3 modèles),
+**une seule détection, `mistral-nemotron` sur `M_g01/10`, et ses 3 variantes à 100%** — zéro
+partout ailleurs. Le mutant XML est strictement identique pour les trois modèles (manifeste
+unique) : la différence de détection ne peut donc venir que du `U`/`G` propre à chaque modèle.
+
+Vérifié directement sur les trois fichiers `results/dataset_runs_v2/<modèle>/M_g01__10...json` :
+
+| Modèle | Guards | Cibles distinctes | Activités matchées |
+|---|---|---|---|
+| `mistral-nemotron` | **16** | **12** | 16 |
+| `llama-3.1-8b` | 9 | 5 | 16 |
+| `gpt-oss-20b` | 5 | 5 | 16 |
+
+**Même richesse de matching (16 activités pour les trois), écart de 3,2× sur le nombre de
+guards extraits** entre `gpt-oss-20b` et `mistral-nemotron`, sur le même texte source. Le
+rappel mesuré confond donc deux facteurs : la sensibilité du mécanisme de vérification, et la
+richesse de `Pre` que chaque modèle a su extraire — un mécanisme parfait testé sur un `G`
+appauvri afficherait le même rappel bas.
+
+**Non tranché** : cet écart est-il systématique sur les 6 autres fichiers de base, ou
+spécifique à `M_g01/10` ? À vérifier avant de décider comment présenter/normaliser le rappel
+dans un futur papier (rappel brut vs rappel conditionné aux mutations tombant sur une zone
+effectivement couverte par un guard).
+
+### 8.3 Étape connexe, validée séparément — refactoring TGMS
+
+Le mécanisme de vérification (`alignment_node.py`) a été reformulé comme instance explicite
+d'un objet formel (Twin-Graph Milestone System, note de formalisme dédiée), avec deux théorèmes
+de monotonie prouvés. Le refactoring a été validé par **équivalence stricte sur les mêmes 153
+mutants de cette section** (avant régénération du manifeste, donc sur le run biaisé mais
+structurellement identique pour ce test) : chaque verdict individuel (`detected`,
+`false_positive_violated`, `dfg_identical`) est identique bit à bit entre l'ancienne
+implémentation et la nouvelle basée sur le solveur TGMS, aucune exception sur les 153 entrées.
+Un écart réel a été trouvé et corrigé en cours de route (le test d'ancrage `missing` dépendait
+à tort de τ dans la première version du solveur — corrigé, et la note de formalisme mise à
+jour en conséquence, la propriété prouvée étant en réalité plus forte : un verdict `SATISFIED`
+est invariant à τ, pas seulement jamais transformé en `VIOLATED`).
+
+**Confirmé sur le manifeste corrigé** (`run_equivalence_check.py`, exécuté après le fix de
+ciblage de la section 8.2) : **324 mutants vérifiés, 0 écart, 54 sautés** (même cause connue —
+absence de run v2 de référence pour `E_j02/1`, `E_j03/3`, `R_j02/6` chez certains modèles,
+section 8.1). Contrôle de non-régression positif : l'équivalence stricte tient aussi sur le
+manifeste corrigé, pas seulement sur l'ancien manifeste biaisé. Ce point, dernier restant avant
+de considérer le formalisme et les preuves TGMS comme stables, est maintenant clos.
 
 ---
 

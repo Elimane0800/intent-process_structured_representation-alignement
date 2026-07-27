@@ -1,0 +1,168 @@
+{
+  "case_name": "OriginalDataset/Model5-3",
+  "text": "The process of an Office Supply Request starts when any employee of the organization submits an office supply request. Once the requirement is registered, the request is received by the immediate supervisor of the employee requesting the office supplies. The supervisor must approve or ask for a change, or reject the request. If the request is rejected the process will end. If the request is asked to make a change then it is returned to the petitioner/employee who can review the comments for the change request. If the request is approved it will go to the purchase department that will be in charge of making quotations (using a subprocess) and select a vendor. If the vendor is not valid in the system the purchase department will have to choose a different vendor. After a vendor is selected and confirmed, the system will generate and send a purchase order and wait for the product to be delivered and the invoice received. In any case the system will send a notification to let the user know what the result was. In any of the cases, approval, rejection or change required the system will send the user a notification.",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "gpt-oss-20b",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "gpt-oss-20b",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/../datasets/lre/alignment_model_text-master/datasets/OriginalDataset/Models/Model5-3.bpmn",
+  "report_model": "gpt-oss-20b",
+  "dfg_edges": [
+    {
+      "source_id": "Task_0",
+      "source_label": "Generate purchase order",
+      "target_id": "Task_7",
+      "target_label": "Receive products",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_3",
+      "source_label": "Notify about required change",
+      "target_id": "Task_6",
+      "target_label": "Register office supply request",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_7",
+      "source_label": "Receive products",
+      "target_id": "IntermediateEvent_0",
+      "target_label": "Products  Received",
+      "gateway_context": []
+    },
+    {
+      "source_id": "CollapsedSubprocess_0",
+      "source_label": "Quote",
+      "target_id": "Task_0",
+      "target_label": "Generate purchase order",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_6",
+      "source_label": "Register office supply request",
+      "target_id": "Task_2",
+      "target_label": "Approve office supply request",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_5",
+      "source_label": "Notify about approval",
+      "target_id": "CollapsedSubprocess_0",
+      "target_label": "Quote",
+      "gateway_context": []
+    },
+    {
+      "source_id": "IntermediateEvent_0",
+      "source_label": "Products  Received",
+      "target_id": "Task_1",
+      "target_label": "Process invoice",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_2",
+      "source_label": "Approve office supply request",
+      "target_id": "Task_5",
+      "target_label": "Notify about approval",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_2",
+      "source_label": "Approve office supply request",
+      "target_id": "Task_3",
+      "target_label": "Notify about required change",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_2",
+      "source_label": "Approve office supply request",
+      "target_id": "Task_4",
+      "target_label": "Notify about rejection",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "Generate purchase order",
+      "subject_id": "Task_0",
+      "predicate": "follows",
+      "object": "Receive products",
+      "object_id": "Task_7"
+    },
+    {
+      "subject": "Notify about required change",
+      "subject_id": "Task_3",
+      "predicate": "follows",
+      "object": "Register office supply request",
+      "object_id": "Task_6"
+    },
+    {
+      "subject": "Receive products",
+      "subject_id": "Task_7",
+      "predicate": "follows",
+      "object": "Products  Received",
+      "object_id": "IntermediateEvent_0"
+    },
+    {
+      "subject": "Quote",
+      "subject_id": "CollapsedSubprocess_0",
+      "predicate": "follows",
+      "object": "Generate purchase order",
+      "object_id": "Task_0"
+    },
+    {
+      "subject": "Register office supply request",
+      "subject_id": "Task_6",
+      "predicate": "follows",
+      "object": "Approve office supply request",
+      "object_id": "Task_2"
+    },
+    {
+      "subject": "Notify about approval",
+      "subject_id": "Task_5",
+      "predicate": "follows",
+      "object": "Quote",
+      "object_id": "CollapsedSubprocess_0"
+    },
+    {
+      "subject": "Products  Received",
+      "subject_id": "IntermediateEvent_0",
+      "predicate": "follows",
+      "object": "Process invoice",
+      "object_id": "Task_1"
+    },
+    {
+      "subject": "Approve office supply request",
+      "subject_id": "Task_2",
+      "predicate": "follows",
+      "object": "Notify about approval",
+      "object_id": "Task_5"
+    },
+    {
+      "subject": "Approve office supply request",
+      "subject_id": "Task_2",
+      "predicate": "follows",
+      "object": "Notify about required change",
+      "object_id": "Task_3"
+    },
+    {
+      "subject": "Approve office supply request",
+      "subject_id": "Task_2",
+      "predicate": "follows",
+      "object": "Notify about rejection",
+      "object_id": "Task_4"
+    }
+  ],
+  "errors": [
+    "state_space: Request timed out.",
+    "precondition: 'state_space'",
+    "state_matching: 'state_space'",
+    "graph_construction: 'state_space'",
+    "alignment: 'reference_graph'",
+    "report: 'alignment'"
+  ]
+}

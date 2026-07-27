@@ -7,6 +7,49 @@
 # lexnames: a FIXED, CLOSED taxonomy of 25 noun categories that already covers all of WordNet.
 # The actor/entity mapping is chosen once, over these 25 fixed categories, and never needs to
 # grow as new domains/test cases are added -- unlike a hypernym synset list, which does.
+#
+# Protocol 3.1 -- four corrections, each additive, none breaking the existing report/traceability
+# contract ("nothing silent, everything reported with a reason"):
+#
+#   A.1 -- lexname_signal used only synsets[0], a bet on general-English word-sense frequency
+#          that ignores the text's own domain. Now checks the top-3 senses, but unanimity is
+#          computed only over senses that map to ACTOR or ENTITY -- an unmapped ("OTHER") sense
+#          is uninformative, not counter-evidence (this refinement was itself necessary: literal
+#          unanimity across all 3 senses regressed on 'company', whose 3rd WordNet sense is an
+#          unrelated, unmapped meaning, and would have flipped a correctly-excluded actor back to
+#          kept).
+#
+#   A.2 -- the head word actually used for the lexical decision is now recorded per candidate
+#          (validation_report[name]["head_used"]).
+#
+#   A.6 -- Rule 2 (anaphoric containment dedup) now additionally requires the word difference
+#          between the general and the specific name to be drawn from a short closed list of
+#          generic determiners (GENERIC_MODIFIERS), or the pair is surfaced in
+#          ambiguous_not_merged instead of being silently auto-merged. This measurably changes
+#          behavior on the two examples that originally motivated Rule 2 ("3d_model"/"model",
+#          "work_accident"/"accident") -- both now land in ambiguous_not_merged rather than
+#          auto-merging, since neither word difference ("3d", "work") is a generic determiner.
+#          If this proves too conservative in practice, widen GENERIC_MODIFIERS deliberately,
+#          case by case, rather than reverting to unconditional auto-merge.
+#
+#   A.8 -- validate_candidates returns an aggregate under the reserved key "__meta__" (never a
+#          real candidate name), counting kept-but-INDETERMINATE candidates for later audit. Any
+#          code iterating validation_report.items() assuming every key is a literal candidate
+#          name must skip "__meta__" explicitly.
+#
+# Protocol 3.2 (this revision) -- mutual-exclusivity detection is now a SEPARATE, second LLM call
+# (generate_exclusive_groups, below), not part of Step A's output anymore. See the Revision 3 note
+# at the top of state_space_prompt_permissive.py for the full rationale; in short: two full test
+# runs showed generous state enumeration and precise relational judgment competing for the same
+# instruction budget within one call, and the discipline needed for one starved the other. This
+# also closes, by construction, a bug the single-pass design produced directly: one backbone
+# asserted an exclusive_groups pair referencing a state ("not_permanent") it had never added to
+# its own "states" list. generate_exclusive_groups() only ever offers the model states that Step
+# A/B already committed to, and rejects (with a reason, not silently) anything it invents anyway.
+# The general-purpose structural sanitizer (_sanitize_exclusive_groups, still used inside
+# filter_state_space) is kept as defense in depth regardless -- cheap, and it protects the schema
+# invariant even if a future caller feeds this module state that never went through
+# generate_exclusive_groups at all.
 
 import json
 import os
@@ -18,6 +61,7 @@ from agent.prompt.state_space_prompt_permissive import (
     STATE_SPACE_PROMPT_PERMISSIVE_FEWSHOT,
     STATE_SPACE_PROMPT_PERMISSIVE_TWOSHOT,
     STATE_SPACE_PROMPT_PERMISSIVE_COT,
+    EXCLUSIVE_GROUPS_PROMPT,
 )
 
 RESULTS_DIR = os.path.join(os.path.dirname(__file__), "..", "..", "results", "state_space_protocol3")
@@ -30,8 +74,28 @@ ENTITY_LEXNAMES = {"noun.artifact", "noun.communication", "noun.act", "noun.even
 # not grow when moving to a new test case or business domain.
 STOP_CANDIDATES = {"you", "it", "they", "he", "she", "we", "i"}
 
+# Closed, short, and deliberately conservative (A.6): only true generic determiners/qualifiers.
+# See the Protocol 3.1 note above about the behavioral consequence of this list being this short.
+GENERIC_MODIFIERS = {"the", "this", "that", "said"}
 
-# --- Step A: permissive candidate generation (LLM) -- unchanged from Protocol 2 ---
+
+# --- Step A: permissive candidate generation (LLM) -- schema-normalized on the way out ---
+
+def _normalize_entity_value(value) -> dict:
+    """Accept either the legacy bare list-of-states shape or the new {"states": [...],
+    "exclusive_groups": [...], "concurrent_with": [...]} shape, and always return the latter,
+    with all three keys present (possibly empty). Nothing downstream needs to branch on shape
+    again after this point."""
+    if isinstance(value, list):
+        return {"states": list(value), "exclusive_groups": [], "concurrent_with": []}
+    if isinstance(value, dict):
+        return {
+            "states": list(value.get("states", [])),
+            "exclusive_groups": [list(pair) for pair in value.get("exclusive_groups", [])],
+            "concurrent_with": list(value.get("concurrent_with", [])),
+        }
+    raise ValueError(f"Unrecognized candidate value shape (expected list or dict): {value!r}")
+
 
 def generate_candidates(text: str, llm, prompt_template: str = STATE_SPACE_PROMPT_PERMISSIVE) -> dict:
     response = llm.invoke(prompt_template.format(text=text)).content.strip()
@@ -39,52 +103,119 @@ def generate_candidates(text: str, llm, prompt_template: str = STATE_SPACE_PROMP
         response = response.split("FINAL_ANSWER:")[-1]
     content = re.sub(r"^```(?:json)?|```$", "", response.strip(), flags=re.MULTILINE).strip()
     try:
-        return json.loads(content)
+        raw = json.loads(content)
     except json.JSONDecodeError as e:
         raise ValueError(f"parse failed, raw response={response!r}") from e
+    return {name: _normalize_entity_value(value) for name, value in raw.items()}
 
 
 # --- Step B: deterministic lexical validation (no LLM, no training, no growing list) ---
 
 def _head_word(candidate_name: str) -> str:
     """Compound nouns are headed by their rightmost word in English (e.g. 'job_application' -> 'application').
-    No separate lemmatization step needed: WordNet's own morphy backoff handles plural/inflected forms."""
+    No separate lemmatization step needed: WordNet's own morphy backoff handles plural/inflected forms.
+    (A.2 records this choice per-candidate downstream so its error rate can be measured, not just assumed.)"""
     words = re.sub(r"([a-z])([A-Z])", r"\1 \2", candidate_name).replace("_", " ").split()
     return words[-1].lower() if words else candidate_name.lower()
 
 
 def lexname_signal(head: str) -> str:
     """Classify the candidate's dominant noun sense by WordNet lexname (fixed 25-category taxonomy).
-    Returns 'ACTOR', 'ENTITY', or 'INDETERMINATE' (lexname exists but maps to neither camp, or word
-    not found in WordNet at all)."""
+    A.1: looks at the top-3 synsets instead of only the first, to stop betting everything on
+    sense #1's frequency ranking. But unanimity is computed only over the senses that actually
+    map to ACTOR or ENTITY -- an unmapped ("OTHER") sense among the top 3 is not counter-evidence,
+    it is simply uninformative, and must not by itself force INDETERMINATE.
+
+    This distinction is not cosmetic: 'company' senses 1-2 are noun.group (ACTOR) and sense 3 is
+    noun.state (unmapped/OTHER). Requiring literal unanimity across ALL three would make 'company'
+    -- an actor this pipeline must exclude, and a case exercised throughout this project's own
+    manual tests -- flip to INDETERMINATE and get wrongly kept. Ignoring OTHER senses when judging
+    agreement avoids that regression while still catching the case this correction is actually
+    meant to catch: a word whose informative (ACTOR- or ENTITY-mapped) senses genuinely disagree
+    with each other."""
     synsets = wn.synsets(head, pos=wn.NOUN)
     if not synsets:
         return "INDETERMINATE"
-    lexname = synsets[0].lexname()
-    if lexname in ACTOR_LEXNAMES:
+    camps = set()
+    for s in synsets[:3]:
+        lexname = s.lexname()
+        if lexname in ACTOR_LEXNAMES:
+            camps.add("ACTOR")
+        elif lexname in ENTITY_LEXNAMES:
+            camps.add("ENTITY")
+        # unmapped lexnames are ignored here on purpose -- see docstring.
+    if camps == {"ACTOR"}:
         return "ACTOR"
-    if lexname in ENTITY_LEXNAMES:
+    if camps == {"ENTITY"}:
         return "ENTITY"
-    return "INDETERMINATE"
+    return "INDETERMINATE"  # covers: no informative sense at all, or genuine ACTOR/ENTITY split
 
 
 def validate_candidates(candidates: dict) -> dict:
     """Reject only if the candidate's dominant sense is lexically ACTOR-like. Default to keeping
-    otherwise (ENTITY or INDETERMINATE) -- recall matters more than precision at this stage."""
+    otherwise (ENTITY or INDETERMINATE) -- recall matters more than precision at this stage.
+
+    A.2: every entry now carries "head_used". A.8: an aggregate under the reserved "__meta__" key
+    counts, among KEPT candidates, how many were kept only because they were INDETERMINATE rather
+    than a confirmed ENTITY -- instrumentation for a later audit, not a behavior change.
+
+    Also performs a light structural sanity check (not a semantic one -- Step B stays lexical
+    only): if a candidate's exclusive_groups references a state that isn't in its own states
+    list, that's flagged as exclusive_group_warnings rather than silently accepted or dropped.
+    """
     report = {}
-    for name in candidates:
+    total = 0
+    indeterminate_kept = 0
+    for name, value in candidates.items():
+        total += 1
         head = _head_word(name)
         if head in STOP_CANDIDATES:
-            report[name] = {"f_lex": None, "kept": False, "reason": "stopword"}
+            report[name] = {"f_lex": None, "kept": False, "reason": "stopword", "head_used": head}
             continue
+
         f_lex = lexname_signal(head)
-        report[name] = {"f_lex": f_lex, "kept": f_lex != "ACTOR"}
+        kept = f_lex != "ACTOR"
+        entry = {"f_lex": f_lex, "kept": kept, "head_used": head}
+        if kept and f_lex == "INDETERMINATE":
+            indeterminate_kept += 1
+
+        states = set(value.get("states", [])) if isinstance(value, dict) else set(value)
+        raw_groups = value.get("exclusive_groups", []) if isinstance(value, dict) else []
+        bad_pairs = [pair for pair in raw_groups if not set(pair) <= states]
+        if bad_pairs:
+            entry["exclusive_group_warnings"] = bad_pairs
+
+        report[name] = entry
+
+    report["__meta__"] = {"total_candidates": total, "indeterminate_kept_count": indeterminate_kept}
     return report
+
+
+def _sanitize_exclusive_groups(value: dict) -> dict:
+    """Drop any exclusive_groups pair that references a state absent from this same candidate's
+    own states list, rather than letting it travel downstream as a dangling reference. The
+    validation_report warning (exclusive_group_warnings, computed in validate_candidates on the
+    UNSANITIZED value) is the audit trail for this -- it already recorded that it happened before
+    this function ever runs, so nothing is silently lost, only silently propagated is avoided.
+    Never invents the missing state to "fix" the pair instead of dropping it: state A.5's own
+    principle (Step A/B never invent content) applies here just as much as to a missing state
+    label -- a hallucinated complementary state is not something Step B is entitled to manufacture."""
+    states = set(value.get("states", []))
+    clean_groups = [g for g in value.get("exclusive_groups", []) if set(g) <= states]
+    if clean_groups == list(value.get("exclusive_groups", [])):
+        return value
+    sanitized = dict(value)
+    sanitized["exclusive_groups"] = clean_groups
+    return sanitized
 
 
 def filter_state_space(candidates: dict) -> tuple[dict, dict]:
     report = validate_candidates(candidates)
-    filtered = {name: states for name, states in candidates.items() if report[name]["kept"]}
+    filtered = {
+        name: _sanitize_exclusive_groups(value)
+        for name, value in candidates.items()
+        if report[name]["kept"]
+    }
     return filtered, report
 
 
@@ -111,14 +242,13 @@ def filter_state_space(candidates: dict) -> tuple[dict, dict]:
 # unchanged) -- we therefore take the SHORTEST analysis among all forms wn._morphy() returns,
 # which yields the true singular deterministically.
 #
-# Rule 2 -- ANAPHORIC CONTAINMENT: a name whose (normalized) word set is a proper subset of
-# exactly ONE other name's, with the SAME head word, is an anaphoric mention of it ('model' is
-# "the model" referring back to '3d_model'; 'accident' back to 'work_accident'). The general
-# form is absorbed into the specific one (which keeps the maximum information). Uniqueness
-# guard: if the general form is head-shared-contained in SEVERAL specifics (e.g. 'account'
-# under both 'bank_account' and 'battle_net_account'), the anaphora is ambiguous -- nothing is
-# merged, the case is only reported. Different heads never merge ('car_service' head 'service'
-# vs 'car' head 'car').
+# Rule 2 -- ANAPHORIC CONTAINMENT (tightened by A.6, see the Protocol 3.1 note above): a name
+# whose (normalized) word set is a proper subset of exactly ONE other name's, with the SAME head
+# word, is a CANDIDATE for being an anaphoric mention of it. It is only auto-merged when, in
+# addition, every word present in the specific name but absent from the general one belongs to
+# GENERIC_MODIFIERS. Otherwise the pair is reported in ambiguous_not_merged, not merged and not
+# silently ignored -- the uniqueness of the subset match is still worth surfacing even when the
+# auto-merge itself is refused.
 #
 # Singletons whose surface form is merely plural ('parts' alone in U) are NOT renamed -- that
 # would be vocabulary normalization, a different intervention than deduplication, out of scope
@@ -136,7 +266,8 @@ def _normalized_words(candidate_name: str) -> list[str]:
 
 def _merge_states(base: list[str], extra: list[str]) -> list[str]:
     """Union preserving order of first appearance, exact dedup -- consistent with mutual
-    exclusivity: one entity, one list of states."""
+    exclusivity: one entity, one list of states. Also reused, unchanged, for merging
+    "concurrent_with" lists (both are just deduplicated string lists)."""
     merged = list(base)
     for s in extra:
         if s not in merged:
@@ -144,81 +275,215 @@ def _merge_states(base: list[str], extra: list[str]) -> list[str]:
     return merged
 
 
+def _merge_exclusive_groups(base: list[list[str]], extra: list[list[str]]) -> list[list[str]]:
+    """Union of pairs/groups, deduping by member-set regardless of order or list vs. tuple."""
+    merged: list[list[str]] = []
+    seen: list[frozenset] = []
+    for group in list(base) + list(extra):
+        fs = frozenset(group)
+        if fs not in seen:
+            seen.append(fs)
+            merged.append(sorted(group))
+    return merged
+
+
+def _merge_entity_values(base: dict, extra: dict) -> dict:
+    """Merge two normalized entity values ({"states", "exclusive_groups", "concurrent_with"})
+    into a new dict. Never mutates its inputs -- callers can keep using the originals safely."""
+    return {
+        "states": _merge_states(base.get("states", []), extra.get("states", [])),
+        "exclusive_groups": _merge_exclusive_groups(
+            base.get("exclusive_groups", []), extra.get("exclusive_groups", [])
+        ),
+        "concurrent_with": _merge_states(base.get("concurrent_with", []), extra.get("concurrent_with", [])),
+    }
+
+
 def deduplicate_state_space(state_space: dict) -> tuple[dict, dict]:
     """Returns (deduplicated U, report). Report = {"merged": {kept_name: {"absorbed": [...],
-    "rule": ..., "states": [...]}}, "ambiguous_not_merged": {general: [specifics]}} -- every
-    decision is reported, nothing merged or skipped silently."""
+    "rule": ..., "states": [...], "exclusive_groups": [...], "concurrent_with": [...]}},
+    "ambiguous_not_merged": {general: [specifics]}} -- every decision is reported, nothing merged
+    or skipped silently.
+
+    Does not mutate its input. Builds a rename map across both rules so that, at the end,
+    "concurrent_with" references pointing at a name that got merged away are resolved to whatever
+    name it was merged INTO, instead of dangling."""
     report = {"merged": {}, "ambiguous_not_merged": {}}
+    rename_map: dict[str, str] = {}
 
     # Rule 1 -- group by fully normalized name, first-seen order preserved.
     groups: dict[str, list[str]] = {}
     for name in state_space:
         groups.setdefault("_".join(_normalized_words(name)), []).append(name)
 
-    deduped: dict[str, list[str]] = {}
+    deduped: dict[str, dict] = {}
     for normalized, members in groups.items():
         if len(members) == 1:
-            deduped[members[0]] = list(state_space[members[0]])
+            deduped[normalized] = dict(state_space[members[0]])
+            if normalized != members[0]:
+                rename_map[members[0]] = normalized
             continue
-        states: list[str] = []
+
+        value = {"states": [], "exclusive_groups": [], "concurrent_with": []}
         for m in members:
-            states = _merge_states(states, state_space[m])
-        deduped[normalized] = states
+            value = _merge_entity_values(value, state_space[m])
+            if m != normalized:
+                rename_map[m] = normalized
+        deduped[normalized] = value
         report["merged"][normalized] = {
             "absorbed": [m for m in members if m != normalized],
             "rule": "morphological_identity",
-            "states": states,
+            "states": value["states"],
+            "exclusive_groups": value["exclusive_groups"],
+            "concurrent_with": value["concurrent_with"],
         }
 
-    # Rule 2 -- absorb anaphoric generals into their unique specific, iterating until stable
-    # (handles chains like model -> 3d_model -> printed_3d_model in successive passes; bounded
-    # by the number of entities, no unbounded loop possible).
+    # Rule 2 -- absorb anaphoric generals into their unique, generically-qualified specific,
+    # iterating until stable (handles chains in successive passes; bounded by entity count).
     changed = True
     while changed:
         changed = False
         for general in list(deduped):
             g_words = _normalized_words(general)
             g_set, g_head = set(g_words), g_words[-1]
-            specifics = [
+            candidates_by_subset = [
                 other for other in deduped
                 if other != general
                 and g_set < set(_normalized_words(other))
                 and _normalized_words(other)[-1] == g_head
             ]
-            if len(specifics) == 1:
-                specific = specifics[0]
-                merged_states = _merge_states(deduped[specific], deduped.pop(general))
-                deduped[specific] = merged_states
-                entry = report["merged"].setdefault(
-                    specific, {"absorbed": [], "rule": "anaphoric_containment", "states": []}
-                )
-                entry["absorbed"].append(general)
-                # A rule-1 entry that then absorbs by rule 2 carries both rules, traced as such.
-                if entry["rule"] != "anaphoric_containment":
-                    entry["rule"] = f"{entry['rule']}+anaphoric_containment"
-                entry["states"] = merged_states
-                changed = True
-                break  # dict mutated -- restart the pass
-            if len(specifics) > 1:
-                report["ambiguous_not_merged"][general] = sorted(specifics)
+
+            if len(candidates_by_subset) == 0:
+                continue
+
+            if len(candidates_by_subset) > 1:
+                report["ambiguous_not_merged"][general] = sorted(candidates_by_subset)
+                continue
+
+            specific = candidates_by_subset[0]
+            diff = set(_normalized_words(specific)) - g_set
+            if not diff <= GENERIC_MODIFIERS:
+                # Unique subset match, but the extra words are not generic-only (A.6): surfaced,
+                # not auto-merged, and not silently left out of the report either.
+                report["ambiguous_not_merged"][general] = [specific]
+                continue
+
+            merged_value = _merge_entity_values(deduped[specific], deduped.pop(general))
+            deduped[specific] = merged_value
+            rename_map[general] = specific
+            entry = report["merged"].setdefault(
+                specific,
+                {"absorbed": [], "rule": "anaphoric_containment", "states": [], "exclusive_groups": [], "concurrent_with": []},
+            )
+            entry["absorbed"].append(general)
+            if entry["rule"] != "anaphoric_containment":
+                entry["rule"] = f"{entry['rule']}+anaphoric_containment"
+            entry["states"] = merged_value["states"]
+            entry["exclusive_groups"] = merged_value["exclusive_groups"]
+            entry["concurrent_with"] = merged_value["concurrent_with"]
+            changed = True
+            break  # dict mutated -- restart the pass
+
+    # Resolve concurrent_with references through the rename chain built by both rules above,
+    # so a reference to a name that got merged away points at wherever it actually ended up.
+    def _resolve(n: str) -> str:
+        seen = set()
+        while n in rename_map and n not in seen:
+            seen.add(n)
+            n = rename_map[n]
+        return n
+
+    for entity, value in deduped.items():
+        resolved = []
+        for other in value.get("concurrent_with", []):
+            r = _resolve(other)
+            if r != entity and r in deduped and r not in resolved:
+                resolved.append(r)
+        value["concurrent_with"] = resolved
 
     return deduped, report
 
 
+# --- Second, decoupled LLM call: mutual-exclusivity detection (Protocol 3.2) ---
+#
+# Runs AFTER Step B (lexical filtering) and BEFORE Step C (dedup): after B, so this call never
+# has to reason about actors that are about to be discarded anyway (smaller prompt, less noise);
+# before C, so groups get attached per pre-dedup entity name and are then merged along by Step
+# C's existing _merge_entity_values logic exactly like "states" already are -- no special-casing
+# needed in the dedup step itself.
+#
+# Structurally cannot reproduce the dangling-reference bug that motivated this split: every
+# claimed pair is checked against that entity's OWN already-committed states list before being
+# accepted, with the reason recorded (not silently dropped) when it is not.
+
+def generate_exclusive_groups(
+    text: str, state_space: dict, llm, prompt_template: str = EXCLUSIVE_GROUPS_PROMPT
+) -> tuple[dict, dict]:
+    """Returns (state_space_with_groups, report). Does not mutate its input. report =
+    {"accepted": [...], "rejected": [...]}, each entry carrying entity/states/quote (accepted) or
+    entity/states/quote/reason (rejected) -- mirrors the traceability convention already used by
+    validate_candidates and deduplicate_state_space elsewhere in this file."""
+    entity_list = "\n".join(
+        f'- "{name}": {json.dumps(value.get("states", []))}' for name, value in state_space.items()
+    )
+    response = llm.invoke(prompt_template.format(text=text, entities=entity_list)).content.strip()
+    if "FINAL_ANSWER:" in response:
+        response = response.split("FINAL_ANSWER:")[-1]
+    content = re.sub(r"^```(?:json)?|```$", "", response.strip(), flags=re.MULTILINE).strip()
+    try:
+        raw = json.loads(content)
+    except json.JSONDecodeError as e:
+        raise ValueError(f"parse failed, raw response={response!r}") from e
+
+    result = {name: dict(value) for name, value in state_space.items()}
+    report = {"accepted": [], "rejected": []}
+
+    for entry in raw.get("exclusive_groups", []):
+        name = entry.get("entity")
+        pair = entry.get("states")
+        quote = entry.get("quote")
+
+        if name not in result:
+            report["rejected"].append({**entry, "reason": f"unknown entity {name!r}"})
+            continue
+        if not pair or len(pair) < 2:
+            report["rejected"].append({**entry, "reason": "missing or too-short states list"})
+            continue
+        if not quote:
+            report["rejected"].append({**entry, "reason": "missing quote"})
+            continue
+        if not set(pair) <= set(result[name].get("states", [])):
+            report["rejected"].append(
+                {**entry, "reason": "references a state outside this entity's own states list"}
+            )
+            continue
+
+        existing = result[name].setdefault("exclusive_groups", [])
+        if list(pair) not in existing:
+            existing.append(list(pair))
+            report["accepted"].append({"entity": name, "states": list(pair), "quote": quote})
+
+    return result, report
+
+
 if __name__ == "__main__":
     MODELS = [
-        #"meta/llama-3.1-8b-instruct",
+        "meta/llama-3.1-8b-instruct",
         #"meta/llama-3.3-70b-instruct",
-        #"mistralai/mistral-nemotron",
-        #"openai/gpt-oss-20b",
+        "mistralai/mistral-nemotron",
+        "openai/gpt-oss-20b",
         #"openai/gpt-oss-120b",
-        #"mistralai/mistral-large-3-675b-instruct-2512",
-        #"nvidia/nemotron-3-super-120b-a12b",
-        #"nvidia/nemotron-3-nano-30b-a3b",
+        "nvidia/nemotron-3-super-120b-a12b",
+        "nvidia/nemotron-3-nano-30b-a3b",
         #"nvidia/llama-3.3-nemotron-super-49b-v1.5",
-        #"qwen/qwen3.6-27b",
-        #"cohere/north-mini-code:free",
-        "google/gemma-4-31b-it:free"
+        "qwen/qwen3.6-27b",
+        "cohere/north-mini-code:free",
+        #"google/gemma-4-31b-it:free",
+        "gpt-5.5",
+        # "gpt-5.5-pro",
+        # "gpt-5.4-nano",
+        # "gpt-5.6-sol",
+        # "gpt-5.6-terra",
     ]
 
     CASES = {
@@ -231,73 +496,11 @@ if __name__ == "__main__":
             "rate you. Reviews for a company can only be seen (by job applicants) after 1 year. If a "
             "job becomes permanent, the process ends, unless you rated the company C or less, then you "
             "continue to receive job offers, but no longer have to report."
-        ),
-        "maternity_leave": (
-            "Create a process that support in planning, taking and extending a maternity leave. "
-            "* Fetch information about potential models (months duration, split between parents) "
-            "* Let parent select * Collect relevant information * Notify Social Security, Company in "
-            "time * Gather information from companies * At the end of the period let parent decide "
-            "about extension."
-        ),
-        "work_accident": (
-            "Create a process that helps in gathering information about work accidents (and almost work accidents):\n\n"
-            "For insured gainful employment, a work accident is considered to be an accident that occurs in the "
-            "following circumstances, by way of example:\n"
-            "- the accident occurs in a location, at a time and with a cause that correlates to the insured employment\n"
-            "- when working from home\n"
-            "- on the direct route from the permanent place of residence to work, to lunch or on the way home, "
-            "whereby carpools are also protected\n"
-            "- for training sessions that serve to provide specific professional knowledge, whereby an accident on "
-            "the way to or from the training centre is considered a work accident\n"
-            "- on the direct route from home, or from the workplace or training centre to a doctor and back, if "
-            "this interrupts the direct route from the permanent place of residence to work or the route home "
-            "(the doctor's visit must be notified to the employer in advance)\n"
-            "- on the way to or from the workplace or training centre with the purpose of taking a child to or "
-            "collecting them from a childcare facility, a daycare facility, external care or a school, insofar as "
-            "they have a supervisory responsibility for the child\n"
-            "- when making use of advocacy groups or professional associations (e.g. Chamber of Labour, trade "
-            "union federation, guild etc.)\n\n"
-            "For kindergarten children, schoolchildren and students, an accident is considered to be a work "
-            "accident if, amongst other things:\n"
-            "- the accident occurs in a location, at a time and with a cause that correlates to the school or "
-            "university education or the compulsory kindergarten year that forms the basis of the insurance\n"
-            "- when taking part in a school event or school-related event\n"
-            "- on the direct route from the child's place of residence or permanent accommodation to kindergarten "
-            "or a school visit or on the way home\n"
-            "- when performing a practical task prescribed as part of the curriculum and/or the study regulations\n"
-            "- in certain professional (training) orientations\n\n"
-            "In an agricultural or forestry establishment, accidents can be considered work accidents if they do "
-            "not occur directly while performing the insured employment, including working in the household of "
-            "the owner, providing accommodation for guests, secondary occupations for selling agricultural "
-            "products, building work for the establishment, and neighbourhood assistance for another "
-            "establishment.\n\n"
-            "Certain accidents are considered the same as work accidents outside of professional activity, "
-            "including activities under unemployment/labour market support services, assisting with an accident "
-            "or donating blood, and training or serving as a member of a volunteer aid organisation (fire "
-            "brigade, water rescue, Red Cross, Alpine Rescue, air rescue, etc.).\n\n"
-            "The employees must inform the employer immediately of: any work accident, any incident that would "
-            "almost have led to an accident, any serious and immediate risk to safety and health that they "
-            "discover, any defect discovered in protection systems.\n\n"
-            "The employer must immediately report any work accident that leads to a fatality or serious injury "
-            "to the Labour Inspectorate, if it has not been reported to the emergency services.\n\n"
-            "Independent of this, every work accident in which a person with accident insurance has been killed, "
-            "or injured in such a way that they are unable to work for three days, in full or in part, must be "
-            "reported to the responsible accident insurance provider within five days.\n\n"
-            "As a self-employed person, accidents involving people you employ and those that involve you must "
-            "be reported to the accident insurance provider in good time.\n\n"
-            "Students and schoolchildren should report accidents to the competent directorate. Schools, "
-            "educational facilities and universities are obliged to report every work accident through which a "
-            "person with accident insurance is physically injured or killed within a maximum of five days to the "
-            "responsible accident insurance provider in triplicate.\n\n"
-            "In the case of private insurance, the insured party must report an accident in writing immediately "
-            "in line with the conditions and to avoid the provider from being released from the obligation to "
-            "perform. If there are fatalities, this must be reported within three days, even if the accident has "
-            "already been reported."
-        ),
+        )
     }
 
     PROMPTS = {
-        "zero_shot": STATE_SPACE_PROMPT_PERMISSIVE,
+        #"zero_shot": STATE_SPACE_PROMPT_PERMISSIVE,
         "one_shot": STATE_SPACE_PROMPT_PERMISSIVE_FEWSHOT,
         #"two_shot": STATE_SPACE_PROMPT_PERMISSIVE_TWOSHOT,
         #"cot": STATE_SPACE_PROMPT_PERMISSIVE_COT,
@@ -313,13 +516,16 @@ if __name__ == "__main__":
                 try:
                     candidates = generate_candidates(text, llm, prompt_template)
                     filtered, report = filter_state_space(candidates)
-                    deduped, dedup_report = deduplicate_state_space(filtered)
+                    with_groups, exclusive_report = generate_exclusive_groups(text, filtered, llm)
+                    deduped, dedup_report = deduplicate_state_space(with_groups)
                 except Exception as e:
                     candidates, filtered, report = {"error": str(e)}, {}, {}
+                    exclusive_report = {"accepted": [], "rejected": []}
                     deduped, dedup_report = {}, {"merged": {}, "ambiguous_not_merged": {}}
                 results[prompt_name][model_name][case_name] = {
                     "candidates": candidates,
                     "validation_report": report,
+                    "exclusive_groups_report": exclusive_report,
                     "state_space": deduped,
                     "state_space_dedup": dedup_report,
                 }

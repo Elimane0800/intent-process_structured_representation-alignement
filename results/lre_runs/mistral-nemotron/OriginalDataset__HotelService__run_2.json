@@ -1,0 +1,1616 @@
+{
+  "case_name": "OriginalDataset/HotelService",
+  "text": "The Evanstonian is an upscale independent hotel. When a guest calls room service at The Evanstonian, the room-service manager\n takes down the order. She then submits an order ticket to the kitchen to begin preparing the food. She also gives an order\n  to the sommelier (i.e., the wine waiter) to fetch wine from the cellar and to prepare any other alcoholic beverages. \n  Eighty percent of room-service orders include wine or some other alcoholic beverage. Finally, she assigns the order to\n   the waiter. While the kitchen and the sommelier are doing their tasks, the waiter readies a cart (i.e., puts a tablecloth\n    on the cart and gathers silverware). The waiter is also responsible for non-alcoholic drinks. Once the food, wine, and cart are\n     ready, the waiter delivers it to the guests room. After returning to the room-service station, the waiter debits the guest's\n      account. The waiter may wait to do the billing if he has another order to prepare or deliver.",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "mistral-nemotron",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "mistral-nemotron",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/../datasets/lre/alignment_model_text-master/datasets/OriginalDataset/Models/HotelService.bpmn",
+  "report_model": "mistral-nemotron",
+  "candidates": {
+    "room_service_order": {
+      "states": [
+        "received",
+        "submitted_to_kitchen",
+        "assigned_to_waiter",
+        "delivered",
+        "billed"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": [
+        "food_preparation",
+        "wine_preparation",
+        "cart_preparation"
+      ]
+    },
+    "food_preparation": {
+      "states": [
+        "in_progress",
+        "ready"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": [
+        "room_service_order",
+        "wine_preparation",
+        "cart_preparation"
+      ]
+    },
+    "wine_preparation": {
+      "states": [
+        "in_progress",
+        "ready"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": [
+        "room_service_order",
+        "food_preparation",
+        "cart_preparation"
+      ]
+    },
+    "cart_preparation": {
+      "states": [
+        "in_progress",
+        "ready"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": [
+        "room_service_order",
+        "food_preparation",
+        "wine_preparation"
+      ]
+    },
+    "guest_account": {
+      "states": [
+        "debited"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    }
+  },
+  "validation_report": {
+    "room_service_order": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "order"
+    },
+    "food_preparation": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "preparation"
+    },
+    "wine_preparation": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "preparation"
+    },
+    "cart_preparation": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "preparation"
+    },
+    "guest_account": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "account"
+    },
+    "__meta__": {
+      "total_candidates": 5,
+      "indeterminate_kept_count": 0
+    }
+  },
+  "exclusive_groups_report": {
+    "accepted": [],
+    "rejected": []
+  },
+  "state_space": {
+    "room_service_order": {
+      "states": [
+        "received",
+        "submitted_to_kitchen",
+        "assigned_to_waiter",
+        "delivered",
+        "billed"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": [
+        "food_preparation",
+        "wine_preparation",
+        "cart_preparation"
+      ]
+    },
+    "food_preparation": {
+      "states": [
+        "in_progress",
+        "ready"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": [
+        "room_service_order",
+        "wine_preparation",
+        "cart_preparation"
+      ]
+    },
+    "wine_preparation": {
+      "states": [
+        "in_progress",
+        "ready"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": [
+        "room_service_order",
+        "food_preparation",
+        "cart_preparation"
+      ]
+    },
+    "cart_preparation": {
+      "states": [
+        "in_progress",
+        "ready"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": [
+        "room_service_order",
+        "food_preparation",
+        "wine_preparation"
+      ]
+    },
+    "guest_account": {
+      "states": [
+        "debited"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    }
+  },
+  "state_space_dedup": {
+    "merged": {},
+    "ambiguous_not_merged": {}
+  },
+  "raw_preconditions": {
+    "room_service_order.received": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "room_service_order.submitted_to_kitchen": {
+      "precondition": "room_service_order.received",
+      "quote": "the room-service manager takes down the order. She then submits an order ticket to the kitchen"
+    },
+    "room_service_order.assigned_to_waiter": {
+      "precondition": "room_service_order.received",
+      "quote": "she assigns the order to the waiter"
+    },
+    "room_service_order.delivered": {
+      "precondition": "(food_preparation.ready AND wine_preparation.ready AND cart_preparation.ready) OR (food_preparation.ready AND cart_preparation.ready)",
+      "quote": [
+        "Once the food, wine, and cart are ready, the waiter delivers it to the guests room",
+        "Eighty percent of room-service orders include wine or some other alcoholic beverage"
+      ]
+    },
+    "room_service_order.billed": {
+      "precondition": "room_service_order.delivered",
+      "quote": "After returning to the room-service station, the waiter debits the guest's account"
+    },
+    "food_preparation.in_progress": {
+      "precondition": "room_service_order.submitted_to_kitchen",
+      "quote": "submits an order ticket to the kitchen to begin preparing the food"
+    },
+    "food_preparation.ready": {
+      "precondition": "food_preparation.in_progress",
+      "quote": "Once the food, wine, and cart are ready"
+    },
+    "wine_preparation.in_progress": {
+      "precondition": "room_service_order.received",
+      "quote": "gives an order to the sommelier to fetch wine from the cellar and to prepare any other alcoholic beverages"
+    },
+    "wine_preparation.ready": {
+      "precondition": "wine_preparation.in_progress",
+      "quote": "Once the food, wine, and cart are ready"
+    },
+    "cart_preparation.in_progress": {
+      "precondition": "room_service_order.assigned_to_waiter",
+      "quote": "the waiter readies a cart"
+    },
+    "cart_preparation.ready": {
+      "precondition": "cart_preparation.in_progress",
+      "quote": "Once the food, wine, and cart are ready"
+    },
+    "guest_account.debited": {
+      "precondition": "room_service_order.billed",
+      "quote": "the waiter debits the guest's account"
+    }
+  },
+  "validated_preconditions": {
+    "room_service_order.received": {
+      "precondition": "INITIAL",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "room_service_order.submitted_to_kitchen": {
+      "precondition": "room_service_order.received",
+      "quote": "the room-service manager takes down the order. She then submits an order ticket to the kitchen",
+      "status": "OK",
+      "reason": null
+    },
+    "room_service_order.assigned_to_waiter": {
+      "precondition": "room_service_order.received",
+      "quote": "she assigns the order to the waiter",
+      "status": "OK",
+      "reason": null
+    },
+    "room_service_order.delivered": {
+      "precondition": "food_preparation.ready AND wine_preparation.ready AND cart_preparation.ready",
+      "quote": "Once the food, wine, and cart are ready, the waiter delivers it to the guests room.",
+      "status": "OK",
+      "reason": null,
+      "retried": true
+    },
+    "room_service_order.billed": {
+      "precondition": "room_service_order.delivered",
+      "quote": "After returning to the room-service station, the waiter debits the guest's account",
+      "status": "OK",
+      "reason": null
+    },
+    "food_preparation.in_progress": {
+      "precondition": "room_service_order.submitted_to_kitchen",
+      "quote": "submits an order ticket to the kitchen to begin preparing the food",
+      "status": "OK",
+      "reason": null
+    },
+    "food_preparation.ready": {
+      "precondition": "food_preparation.in_progress",
+      "quote": "Once the food, wine, and cart are ready",
+      "status": "OK",
+      "reason": null
+    },
+    "wine_preparation.in_progress": {
+      "precondition": "room_service_order.submitted_to_kitchen",
+      "quote": "She then submits an order ticket to the kitchen to begin preparing the food. She also gives an order to the sommelier (i.e., the wine waiter) to fetch wine from the cellar and to prepare any other alcoholic beverages.",
+      "status": "OK",
+      "reason": null,
+      "retried": true
+    },
+    "wine_preparation.ready": {
+      "precondition": "wine_preparation.in_progress",
+      "quote": "Once the food, wine, and cart are ready",
+      "status": "OK",
+      "reason": null
+    },
+    "cart_preparation.in_progress": {
+      "precondition": "room_service_order.assigned_to_waiter",
+      "quote": "the waiter readies a cart",
+      "status": "OK",
+      "reason": null
+    },
+    "cart_preparation.ready": {
+      "precondition": "cart_preparation.in_progress",
+      "quote": "Once the food, wine, and cart are ready",
+      "status": "OK",
+      "reason": null
+    },
+    "guest_account.debited": {
+      "precondition": "room_service_order.billed",
+      "quote": "the waiter debits the guest's account",
+      "status": "OK",
+      "reason": null
+    }
+  },
+  "precondition_cycles": [],
+  "branch_conflicts": [],
+  "reference_graph": {
+    "nodes": [
+      {
+        "id": "room_service_order.received",
+        "weight": 0.5
+      },
+      {
+        "id": "room_service_order.submitted_to_kitchen",
+        "weight": 0.75
+      },
+      {
+        "id": "room_service_order.assigned_to_waiter",
+        "weight": 0.5
+      },
+      {
+        "id": "room_service_order.delivered",
+        "weight": 1.0
+      },
+      {
+        "id": "room_service_order.billed",
+        "weight": 0.5
+      },
+      {
+        "id": "food_preparation.in_progress",
+        "weight": 0.5
+      },
+      {
+        "id": "food_preparation.ready",
+        "weight": 0.5
+      },
+      {
+        "id": "wine_preparation.in_progress",
+        "weight": 0.5
+      },
+      {
+        "id": "wine_preparation.ready",
+        "weight": 0.5
+      },
+      {
+        "id": "cart_preparation.in_progress",
+        "weight": 0.5
+      },
+      {
+        "id": "cart_preparation.ready",
+        "weight": 0.5
+      },
+      {
+        "id": "guest_account.debited",
+        "weight": 0.25
+      }
+    ],
+    "edges": [
+      {
+        "from": "room_service_order.received",
+        "to": "room_service_order.submitted_to_kitchen",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "the room-service manager takes down the order. She then submits an order ticket to the kitchen",
+        "negated": false
+      },
+      {
+        "from": "room_service_order.received",
+        "to": "room_service_order.assigned_to_waiter",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "she assigns the order to the waiter",
+        "negated": false
+      },
+      {
+        "from": "food_preparation.ready",
+        "to": "room_service_order.delivered",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "Once the food, wine, and cart are ready, the waiter delivers it to the guests room.",
+        "negated": false
+      },
+      {
+        "from": "wine_preparation.ready",
+        "to": "room_service_order.delivered",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "Once the food, wine, and cart are ready, the waiter delivers it to the guests room.",
+        "negated": false
+      },
+      {
+        "from": "cart_preparation.ready",
+        "to": "room_service_order.delivered",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "Once the food, wine, and cart are ready, the waiter delivers it to the guests room.",
+        "negated": false
+      },
+      {
+        "from": "room_service_order.delivered",
+        "to": "room_service_order.billed",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "After returning to the room-service station, the waiter debits the guest's account",
+        "negated": false
+      },
+      {
+        "from": "room_service_order.submitted_to_kitchen",
+        "to": "food_preparation.in_progress",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "submits an order ticket to the kitchen to begin preparing the food",
+        "negated": false
+      },
+      {
+        "from": "food_preparation.in_progress",
+        "to": "food_preparation.ready",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "Once the food, wine, and cart are ready",
+        "negated": false
+      },
+      {
+        "from": "room_service_order.submitted_to_kitchen",
+        "to": "wine_preparation.in_progress",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "She then submits an order ticket to the kitchen to begin preparing the food. She also gives an order to the sommelier (i.e., the wine waiter) to fetch wine from the cellar and to prepare any other alcoholic beverages.",
+        "negated": false
+      },
+      {
+        "from": "wine_preparation.in_progress",
+        "to": "wine_preparation.ready",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "Once the food, wine, and cart are ready",
+        "negated": false
+      },
+      {
+        "from": "room_service_order.assigned_to_waiter",
+        "to": "cart_preparation.in_progress",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "the waiter readies a cart",
+        "negated": false
+      },
+      {
+        "from": "cart_preparation.in_progress",
+        "to": "cart_preparation.ready",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "Once the food, wine, and cart are ready",
+        "negated": false
+      },
+      {
+        "from": "room_service_order.billed",
+        "to": "guest_account.debited",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "the waiter debits the guest's account",
+        "negated": false
+      }
+    ],
+    "cycles": [],
+    "branch_conflicts": [],
+    "exclusive_pairs": []
+  },
+  "dfg_edges": [
+    {
+      "source_id": "Task_5",
+      "source_label": "Return to room-service ",
+      "target_id": "Task_6",
+      "target_label": "Debit guest's account",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_1",
+      "source_label": "Prepare alcoholic beverages",
+      "target_id": "Task_4",
+      "target_label": "Deliver to guest's room",
+      "gateway_context": [
+        "InclusiveGateway",
+        "ExclusiveGateway",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "Task_9",
+      "source_label": "Assign order to waiter",
+      "target_id": "Task_4",
+      "target_label": "Deliver to guest's room",
+      "gateway_context": [
+        "ParallelGateway",
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "Task_9",
+      "source_label": "Assign order to waiter",
+      "target_id": "Task_7",
+      "target_label": "Prepare non-alcoholic drinks",
+      "gateway_context": [
+        "ParallelGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_9",
+      "source_label": "Assign order to waiter",
+      "target_id": "Task_3",
+      "target_label": "Ready cart",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "Task_7",
+      "source_label": "Prepare non-alcoholic drinks",
+      "target_id": "Task_4",
+      "target_label": "Deliver to guest's room",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "Task_8",
+      "source_label": "Take down order ",
+      "target_id": "Task_9",
+      "target_label": "Assign order to waiter",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "Task_8",
+      "source_label": "Take down order ",
+      "target_id": "Task_11",
+      "target_label": "Give order to sommelier",
+      "gateway_context": [
+        "ParallelGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_8",
+      "source_label": "Take down order ",
+      "target_id": "Task_4",
+      "target_label": "Deliver to guest's room",
+      "gateway_context": [
+        "ParallelGateway",
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "Task_8",
+      "source_label": "Take down order ",
+      "target_id": "Task_10",
+      "target_label": "Submit order ticket to kitchen",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "Task_4",
+      "source_label": "Deliver to guest's room",
+      "target_id": "Task_5",
+      "target_label": "Return to room-service ",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_10",
+      "source_label": "Submit order ticket to kitchen",
+      "target_id": "Task_2",
+      "target_label": "Prepare meal",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_2",
+      "source_label": "Prepare meal",
+      "target_id": "Task_4",
+      "target_label": "Deliver to guest's room",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "Task_3",
+      "source_label": "Ready cart",
+      "target_id": "Task_4",
+      "target_label": "Deliver to guest's room",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "Task_0",
+      "source_label": "Fetch wine from cellar",
+      "target_id": "Task_4",
+      "target_label": "Deliver to guest's room",
+      "gateway_context": [
+        "InclusiveGateway",
+        "ExclusiveGateway",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "Task_11",
+      "source_label": "Give order to sommelier",
+      "target_id": "Task_1",
+      "target_label": "Prepare alcoholic beverages",
+      "gateway_context": [
+        "InclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_11",
+      "source_label": "Give order to sommelier",
+      "target_id": "Task_0",
+      "target_label": "Fetch wine from cellar",
+      "gateway_context": [
+        "InclusiveGateway"
+      ]
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "Return to room-service ",
+      "subject_id": "Task_5",
+      "predicate": "follows",
+      "object": "Debit guest's account",
+      "object_id": "Task_6"
+    },
+    {
+      "subject": "Prepare alcoholic beverages",
+      "subject_id": "Task_1",
+      "predicate": "follows",
+      "object": "Deliver to guest's room",
+      "object_id": "Task_4"
+    },
+    {
+      "subject": "Assign order to waiter",
+      "subject_id": "Task_9",
+      "predicate": "follows",
+      "object": "Deliver to guest's room",
+      "object_id": "Task_4"
+    },
+    {
+      "subject": "Assign order to waiter",
+      "subject_id": "Task_9",
+      "predicate": "follows",
+      "object": "Prepare non-alcoholic drinks",
+      "object_id": "Task_7"
+    },
+    {
+      "subject": "Assign order to waiter",
+      "subject_id": "Task_9",
+      "predicate": "follows",
+      "object": "Ready cart",
+      "object_id": "Task_3"
+    },
+    {
+      "subject": "Prepare non-alcoholic drinks",
+      "subject_id": "Task_7",
+      "predicate": "follows",
+      "object": "Deliver to guest's room",
+      "object_id": "Task_4"
+    },
+    {
+      "subject": "Take down order ",
+      "subject_id": "Task_8",
+      "predicate": "follows",
+      "object": "Assign order to waiter",
+      "object_id": "Task_9"
+    },
+    {
+      "subject": "Take down order ",
+      "subject_id": "Task_8",
+      "predicate": "follows",
+      "object": "Give order to sommelier",
+      "object_id": "Task_11"
+    },
+    {
+      "subject": "Take down order ",
+      "subject_id": "Task_8",
+      "predicate": "follows",
+      "object": "Deliver to guest's room",
+      "object_id": "Task_4"
+    },
+    {
+      "subject": "Take down order ",
+      "subject_id": "Task_8",
+      "predicate": "follows",
+      "object": "Submit order ticket to kitchen",
+      "object_id": "Task_10"
+    },
+    {
+      "subject": "Deliver to guest's room",
+      "subject_id": "Task_4",
+      "predicate": "follows",
+      "object": "Return to room-service ",
+      "object_id": "Task_5"
+    },
+    {
+      "subject": "Submit order ticket to kitchen",
+      "subject_id": "Task_10",
+      "predicate": "follows",
+      "object": "Prepare meal",
+      "object_id": "Task_2"
+    },
+    {
+      "subject": "Prepare meal",
+      "subject_id": "Task_2",
+      "predicate": "follows",
+      "object": "Deliver to guest's room",
+      "object_id": "Task_4"
+    },
+    {
+      "subject": "Ready cart",
+      "subject_id": "Task_3",
+      "predicate": "follows",
+      "object": "Deliver to guest's room",
+      "object_id": "Task_4"
+    },
+    {
+      "subject": "Fetch wine from cellar",
+      "subject_id": "Task_0",
+      "predicate": "follows",
+      "object": "Deliver to guest's room",
+      "object_id": "Task_4"
+    },
+    {
+      "subject": "Give order to sommelier",
+      "subject_id": "Task_11",
+      "predicate": "follows",
+      "object": "Prepare alcoholic beverages",
+      "object_id": "Task_1"
+    },
+    {
+      "subject": "Give order to sommelier",
+      "subject_id": "Task_11",
+      "predicate": "follows",
+      "object": "Fetch wine from cellar",
+      "object_id": "Task_0"
+    }
+  ],
+  "activity_guards": {
+    "activities": {
+      "Take down order": {
+        "status": "OK",
+        "clauses": [
+          []
+        ]
+      },
+      "Assign order to waiter": {
+        "status": "OK",
+        "clauses": [
+          [
+            "Take down order"
+          ]
+        ]
+      },
+      "Submit order ticket to kitchen": {
+        "status": "OK",
+        "clauses": [
+          [
+            "Take down order"
+          ]
+        ]
+      },
+      "Give order to sommelier": {
+        "status": "OK",
+        "clauses": [
+          [
+            "Take down order"
+          ]
+        ]
+      },
+      "Prepare meal": {
+        "status": "OK",
+        "clauses": [
+          [
+            "Submit order ticket to kitchen",
+            "Take down order"
+          ]
+        ]
+      },
+      "Ready cart": {
+        "status": "STRUCTURE_UNRESOLVED"
+      },
+      "Prepare non-alcoholic drinks": {
+        "status": "STRUCTURE_UNRESOLVED"
+      },
+      "Prepare alcoholic beverages": {
+        "status": "OK",
+        "clauses": [
+          [
+            "Give order to sommelier",
+            "Take down order"
+          ]
+        ]
+      },
+      "Fetch wine from cellar": {
+        "status": "OK",
+        "clauses": [
+          [
+            "Give order to sommelier",
+            "Take down order"
+          ]
+        ]
+      },
+      "Deliver to guest's room": {
+        "status": "STRUCTURE_UNRESOLVED"
+      },
+      "Return to room-service": {
+        "status": "STRUCTURE_UNRESOLVED"
+      },
+      "Debit guest's account": {
+        "status": "STRUCTURE_UNRESOLVED"
+      }
+    },
+    "undeclared_splits": []
+  },
+  "matches": {
+    "Task_5": {
+      "activity_label": "Return to room-service ",
+      "matches": [
+        {
+          "match": "room_service_order.delivered",
+          "score": 0.5754
+        },
+        {
+          "match": "room_service_order.received",
+          "score": 0.5663
+        },
+        {
+          "match": "room_service_order.billed",
+          "score": 0.5539
+        },
+        {
+          "match": "room_service_order.submitted_to_kitchen",
+          "score": 0.5415
+        }
+      ],
+      "clusters": [
+        [
+          "room_service_order.delivered",
+          "room_service_order.received",
+          "room_service_order.billed",
+          "room_service_order.submitted_to_kitchen"
+        ]
+      ]
+    },
+    "Task_6": {
+      "activity_label": "Debit guest's account",
+      "matches": [
+        {
+          "match": "guest_account.debited",
+          "score": 0.813
+        }
+      ],
+      "clusters": [
+        [
+          "guest_account.debited"
+        ]
+      ]
+    },
+    "Task_1": {
+      "activity_label": "Prepare alcoholic beverages",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_4": {
+      "activity_label": "Deliver to guest's room",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_9": {
+      "activity_label": "Assign order to waiter",
+      "matches": [
+        {
+          "match": "room_service_order.assigned_to_waiter",
+          "score": 0.3953
+        }
+      ],
+      "clusters": [
+        [
+          "room_service_order.assigned_to_waiter"
+        ]
+      ]
+    },
+    "Task_7": {
+      "activity_label": "Prepare non-alcoholic drinks",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_3": {
+      "activity_label": "Ready cart",
+      "matches": [
+        {
+          "match": "cart_preparation.ready",
+          "score": 0.4541
+        }
+      ],
+      "clusters": [
+        [
+          "cart_preparation.ready"
+        ]
+      ]
+    },
+    "Task_8": {
+      "activity_label": "Take down order ",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_11": {
+      "activity_label": "Give order to sommelier",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_10": {
+      "activity_label": "Submit order ticket to kitchen",
+      "matches": [
+        {
+          "match": "room_service_order.submitted_to_kitchen",
+          "score": 0.4978
+        }
+      ],
+      "clusters": [
+        [
+          "room_service_order.submitted_to_kitchen"
+        ]
+      ]
+    },
+    "Task_2": {
+      "activity_label": "Prepare meal",
+      "matches": [
+        {
+          "match": "food_preparation.in_progress",
+          "score": 0.4577
+        },
+        {
+          "match": "food_preparation.ready",
+          "score": 0.4144
+        }
+      ],
+      "clusters": [
+        [
+          "food_preparation.in_progress"
+        ],
+        [
+          "food_preparation.ready"
+        ]
+      ]
+    },
+    "Task_0": {
+      "activity_label": "Fetch wine from cellar",
+      "matches": [],
+      "clusters": []
+    }
+  },
+  "process_graph": [
+    {
+      "from": "room_service_order.delivered",
+      "to": "guest_account.debited",
+      "activity_from": "Return to room-service ",
+      "activity_to": "Debit guest's account",
+      "source_id": "Task_5",
+      "target_id": "Task_6"
+    },
+    {
+      "from": "room_service_order.received",
+      "to": "guest_account.debited",
+      "activity_from": "Return to room-service ",
+      "activity_to": "Debit guest's account",
+      "source_id": "Task_5",
+      "target_id": "Task_6"
+    },
+    {
+      "from": "room_service_order.billed",
+      "to": "guest_account.debited",
+      "activity_from": "Return to room-service ",
+      "activity_to": "Debit guest's account",
+      "source_id": "Task_5",
+      "target_id": "Task_6"
+    },
+    {
+      "from": "room_service_order.submitted_to_kitchen",
+      "to": "guest_account.debited",
+      "activity_from": "Return to room-service ",
+      "activity_to": "Debit guest's account",
+      "source_id": "Task_5",
+      "target_id": "Task_6"
+    },
+    {
+      "from": "room_service_order.assigned_to_waiter",
+      "to": "cart_preparation.ready",
+      "activity_from": "Assign order to waiter",
+      "activity_to": "Ready cart",
+      "source_id": "Task_9",
+      "target_id": "Task_3"
+    },
+    {
+      "from": "room_service_order.submitted_to_kitchen",
+      "to": "food_preparation.in_progress",
+      "activity_from": "Submit order ticket to kitchen",
+      "activity_to": "Prepare meal",
+      "source_id": "Task_10",
+      "target_id": "Task_2"
+    },
+    {
+      "from": "room_service_order.submitted_to_kitchen",
+      "to": "food_preparation.ready",
+      "activity_from": "Submit order ticket to kitchen",
+      "activity_to": "Prepare meal",
+      "source_id": "Task_10",
+      "target_id": "Task_2"
+    }
+  ],
+  "alignment": {
+    "room_service_order.submitted_to_kitchen": {
+      "operator": "AND",
+      "quote": "the room-service manager takes down the order. She then submits an order ticket to the kitchen",
+      "terms": [
+        {
+          "term": "room_service_order.received",
+          "status": "VIOLATED",
+          "reason": "both states matched, no path in process",
+          "missing": []
+        }
+      ],
+      "status": "VIOLATED",
+      "clauses": [
+        {
+          "terms": [
+            "room_service_order.received"
+          ],
+          "status": "VIOLATED"
+        }
+      ]
+    },
+    "room_service_order.assigned_to_waiter": {
+      "operator": "AND",
+      "quote": "she assigns the order to the waiter",
+      "terms": [
+        {
+          "term": "room_service_order.received",
+          "status": "VIOLATED",
+          "reason": "both states matched, no path in process",
+          "missing": []
+        }
+      ],
+      "status": "VIOLATED",
+      "clauses": [
+        {
+          "terms": [
+            "room_service_order.received"
+          ],
+          "status": "VIOLATED"
+        }
+      ]
+    },
+    "room_service_order.delivered": {
+      "operator": "AND",
+      "quote": "Once the food, wine, and cart are ready, the waiter delivers it to the guests room.",
+      "terms": [
+        {
+          "term": "food_preparation.ready",
+          "status": "VIOLATED",
+          "reason": "both states matched, no path in process",
+          "missing": []
+        },
+        {
+          "term": "wine_preparation.ready",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['wine_preparation.ready']",
+          "missing": [
+            "wine_preparation.ready"
+          ]
+        },
+        {
+          "term": "cart_preparation.ready",
+          "status": "VIOLATED",
+          "reason": "both states matched, no path in process",
+          "missing": []
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "food_preparation.ready",
+            "wine_preparation.ready",
+            "cart_preparation.ready"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "room_service_order.billed": {
+      "operator": "AND",
+      "quote": "After returning to the room-service station, the waiter debits the guest's account",
+      "terms": [
+        {
+          "term": "room_service_order.delivered",
+          "status": "VIOLATED",
+          "reason": "both states matched, no path in process",
+          "missing": []
+        }
+      ],
+      "status": "VIOLATED",
+      "clauses": [
+        {
+          "terms": [
+            "room_service_order.delivered"
+          ],
+          "status": "VIOLATED"
+        }
+      ]
+    },
+    "food_preparation.in_progress": {
+      "operator": "AND",
+      "quote": "submits an order ticket to the kitchen to begin preparing the food",
+      "terms": [
+        {
+          "term": "room_service_order.submitted_to_kitchen",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED",
+      "clauses": [
+        {
+          "terms": [
+            "room_service_order.submitted_to_kitchen"
+          ],
+          "status": "SATISFIED"
+        }
+      ]
+    },
+    "food_preparation.ready": {
+      "operator": "AND",
+      "quote": "Once the food, wine, and cart are ready",
+      "terms": [
+        {
+          "term": "food_preparation.in_progress",
+          "status": "VIOLATED",
+          "reason": "both states matched, no path in process",
+          "missing": []
+        }
+      ],
+      "status": "VIOLATED",
+      "clauses": [
+        {
+          "terms": [
+            "food_preparation.in_progress"
+          ],
+          "status": "VIOLATED"
+        }
+      ]
+    },
+    "wine_preparation.in_progress": {
+      "operator": "AND",
+      "quote": "She then submits an order ticket to the kitchen to begin preparing the food. She also gives an order to the sommelier (i.e., the wine waiter) to fetch wine from the cellar and to prepare any other alcoholic beverages.",
+      "terms": [
+        {
+          "term": "room_service_order.submitted_to_kitchen",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['wine_preparation.in_progress']",
+          "missing": [
+            "wine_preparation.in_progress"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "room_service_order.submitted_to_kitchen"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "wine_preparation.ready": {
+      "operator": "AND",
+      "quote": "Once the food, wine, and cart are ready",
+      "terms": [
+        {
+          "term": "wine_preparation.in_progress",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['wine_preparation.in_progress', 'wine_preparation.ready']",
+          "missing": [
+            "wine_preparation.in_progress",
+            "wine_preparation.ready"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "wine_preparation.in_progress"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "cart_preparation.in_progress": {
+      "operator": "AND",
+      "quote": "the waiter readies a cart",
+      "terms": [
+        {
+          "term": "room_service_order.assigned_to_waiter",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['cart_preparation.in_progress']",
+          "missing": [
+            "cart_preparation.in_progress"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "room_service_order.assigned_to_waiter"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "cart_preparation.ready": {
+      "operator": "AND",
+      "quote": "Once the food, wine, and cart are ready",
+      "terms": [
+        {
+          "term": "cart_preparation.in_progress",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['cart_preparation.in_progress']",
+          "missing": [
+            "cart_preparation.in_progress"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "cart_preparation.in_progress"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "guest_account.debited": {
+      "operator": "AND",
+      "quote": "the waiter debits the guest's account",
+      "terms": [
+        {
+          "term": "room_service_order.billed",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED",
+      "clauses": [
+        {
+          "terms": [
+            "room_service_order.billed"
+          ],
+          "status": "SATISFIED"
+        }
+      ]
+    }
+  },
+  "report": {
+    "verdict": {
+      "verdict": "NOT_FAITHFUL",
+      "justification": "3 gap(s) found between the source text's requirements and the observed process -- at least one precondition asserted by the text is contradicted by the model's actual sequence of activities.",
+      "scope": "This verdict covers the causal reachability of the requirements expressed in the source text, not the general quality of the process model -- a multiplicity defect (an activity executed more than once due to a mismatched branching structure) is not covered by this verdict, even if the process is otherwise well-formed."
+    },
+    "summary": {
+      "ecarts": 3,
+      "non_verifiable": 2,
+      "conforme": 2
+    },
+    "ecarts": [
+      {
+        "root_cause": "Return to room-service ",
+        "quote": "the room-service manager takes down the order. She then submits an order ticket to the kitchen",
+        "explanation": "The process requires that \"Return to room-service\" must happen before \"Return to room-service\" can occur, but the current flow does not enforce this sequence. The source text states: *\"the room-service manager takes down the order. She then submits an order ticket to the kitchen\"*, which indicates a condition is needed, but does not specify the exact timing requirement. (This same root cause also affects: Assign order to waiter.)",
+        "quote_verbatim": true,
+        "affected_activities": [
+          "Assign order to waiter",
+          "Return to room-service "
+        ],
+        "affected_count": 2
+      },
+      {
+        "root_cause": "Prepare meal",
+        "quote": "Once the food, wine, and cart are ready, the waiter delivers it to the guests room.",
+        "explanation": "The process requires that \"Prepare meal\" must happen before \"Return to room-service,\" but the current flow does not enforce this order.\n\nThe source text states: *\"Once the food, wine, and cart are ready, the waiter delivers it to the guests room.\"* (This same root cause also affects: Prepare meal.)",
+        "quote_verbatim": true,
+        "affected_activities": [
+          "Prepare meal",
+          "Return to room-service "
+        ],
+        "affected_count": 2
+      },
+      {
+        "root_cause": "Return to room-service ",
+        "quote": "After returning to the room-service station, the waiter debits the guest's account",
+        "explanation": "The process requires that the activity \"Return to room-service\" must happen before the same activity can occur again. The source text states: \"After returning to the room-service station, the waiter debits the guest's account.\" However, the observed process does not show any step ensuring this sequence.",
+        "quote_verbatim": true,
+        "affected_activities": [
+          "Return to room-service "
+        ],
+        "affected_count": 1
+      }
+    ],
+    "non_verifiable": [
+      {
+        "root_cause": "wine preparation in progress",
+        "quote": "Once the food, wine, and cart are ready, the waiter delivers it to the guests room.",
+        "explanation": "The activity \"Return to room-service\" requires that wine preparation be in progress beforehand, as stated in the source text: \"Once the food, wine, and cart are ready, the waiter delivers it to the guests room.\" However, the observed process does not clearly show any activity related to wine preparation, so we cannot confirm whether this condition was met or not. (This same root cause also affects: wine preparation in progress, wine preparation ready.)",
+        "quote_verbatim": true,
+        "affected_activities": [
+          "Return to room-service ",
+          "wine preparation in progress",
+          "wine preparation ready"
+        ],
+        "affected_count": 4
+      },
+      {
+        "root_cause": "cart preparation in progress",
+        "quote": "Once the food, wine, and cart are ready, the waiter delivers it to the guests room.",
+        "explanation": "The activity \"Return to room-service\" requires that cart preparation be in progress beforehand, as stated in the source text: \"Once the food, wine, and cart are ready, the waiter delivers it to the guests room.\" However, the observed process does not clearly show when or how this preparation happens, so we cannot confirm whether this condition was met. (This same root cause also affects: Ready cart, cart preparation in progress.)",
+        "quote_verbatim": true,
+        "affected_activities": [
+          "Ready cart",
+          "Return to room-service ",
+          "cart preparation in progress"
+        ],
+        "affected_count": 3
+      }
+    ],
+    "conforme": [
+      {
+        "target": "Prepare meal",
+        "term": "Return to room-service "
+      },
+      {
+        "target": "Debit guest's account",
+        "term": "Return to room-service "
+      }
+    ],
+    "piece_jointe_alignement_brut": {
+      "room_service_order.submitted_to_kitchen": {
+        "operator": "AND",
+        "quote": "the room-service manager takes down the order. She then submits an order ticket to the kitchen",
+        "terms": [
+          {
+            "term": "room_service_order.received",
+            "status": "VIOLATED",
+            "reason": "both states matched, no path in process",
+            "missing": []
+          }
+        ],
+        "status": "VIOLATED",
+        "clauses": [
+          {
+            "terms": [
+              "room_service_order.received"
+            ],
+            "status": "VIOLATED"
+          }
+        ]
+      },
+      "room_service_order.assigned_to_waiter": {
+        "operator": "AND",
+        "quote": "she assigns the order to the waiter",
+        "terms": [
+          {
+            "term": "room_service_order.received",
+            "status": "VIOLATED",
+            "reason": "both states matched, no path in process",
+            "missing": []
+          }
+        ],
+        "status": "VIOLATED",
+        "clauses": [
+          {
+            "terms": [
+              "room_service_order.received"
+            ],
+            "status": "VIOLATED"
+          }
+        ]
+      },
+      "room_service_order.delivered": {
+        "operator": "AND",
+        "quote": "Once the food, wine, and cart are ready, the waiter delivers it to the guests room.",
+        "terms": [
+          {
+            "term": "food_preparation.ready",
+            "status": "VIOLATED",
+            "reason": "both states matched, no path in process",
+            "missing": []
+          },
+          {
+            "term": "wine_preparation.ready",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['wine_preparation.ready']",
+            "missing": [
+              "wine_preparation.ready"
+            ]
+          },
+          {
+            "term": "cart_preparation.ready",
+            "status": "VIOLATED",
+            "reason": "both states matched, no path in process",
+            "missing": []
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "food_preparation.ready",
+              "wine_preparation.ready",
+              "cart_preparation.ready"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "room_service_order.billed": {
+        "operator": "AND",
+        "quote": "After returning to the room-service station, the waiter debits the guest's account",
+        "terms": [
+          {
+            "term": "room_service_order.delivered",
+            "status": "VIOLATED",
+            "reason": "both states matched, no path in process",
+            "missing": []
+          }
+        ],
+        "status": "VIOLATED",
+        "clauses": [
+          {
+            "terms": [
+              "room_service_order.delivered"
+            ],
+            "status": "VIOLATED"
+          }
+        ]
+      },
+      "food_preparation.in_progress": {
+        "operator": "AND",
+        "quote": "submits an order ticket to the kitchen to begin preparing the food",
+        "terms": [
+          {
+            "term": "room_service_order.submitted_to_kitchen",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED",
+        "clauses": [
+          {
+            "terms": [
+              "room_service_order.submitted_to_kitchen"
+            ],
+            "status": "SATISFIED"
+          }
+        ]
+      },
+      "food_preparation.ready": {
+        "operator": "AND",
+        "quote": "Once the food, wine, and cart are ready",
+        "terms": [
+          {
+            "term": "food_preparation.in_progress",
+            "status": "VIOLATED",
+            "reason": "both states matched, no path in process",
+            "missing": []
+          }
+        ],
+        "status": "VIOLATED",
+        "clauses": [
+          {
+            "terms": [
+              "food_preparation.in_progress"
+            ],
+            "status": "VIOLATED"
+          }
+        ]
+      },
+      "wine_preparation.in_progress": {
+        "operator": "AND",
+        "quote": "She then submits an order ticket to the kitchen to begin preparing the food. She also gives an order to the sommelier (i.e., the wine waiter) to fetch wine from the cellar and to prepare any other alcoholic beverages.",
+        "terms": [
+          {
+            "term": "room_service_order.submitted_to_kitchen",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['wine_preparation.in_progress']",
+            "missing": [
+              "wine_preparation.in_progress"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "room_service_order.submitted_to_kitchen"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "wine_preparation.ready": {
+        "operator": "AND",
+        "quote": "Once the food, wine, and cart are ready",
+        "terms": [
+          {
+            "term": "wine_preparation.in_progress",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['wine_preparation.in_progress', 'wine_preparation.ready']",
+            "missing": [
+              "wine_preparation.in_progress",
+              "wine_preparation.ready"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "wine_preparation.in_progress"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "cart_preparation.in_progress": {
+        "operator": "AND",
+        "quote": "the waiter readies a cart",
+        "terms": [
+          {
+            "term": "room_service_order.assigned_to_waiter",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['cart_preparation.in_progress']",
+            "missing": [
+              "cart_preparation.in_progress"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "room_service_order.assigned_to_waiter"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "cart_preparation.ready": {
+        "operator": "AND",
+        "quote": "Once the food, wine, and cart are ready",
+        "terms": [
+          {
+            "term": "cart_preparation.in_progress",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['cart_preparation.in_progress']",
+            "missing": [
+              "cart_preparation.in_progress"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "cart_preparation.in_progress"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "guest_account.debited": {
+        "operator": "AND",
+        "quote": "the waiter debits the guest's account",
+        "terms": [
+          {
+            "term": "room_service_order.billed",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED",
+        "clauses": [
+          {
+            "terms": [
+              "room_service_order.billed"
+            ],
+            "status": "SATISFIED"
+          }
+        ]
+      }
+    }
+  },
+  "errors": []
+}

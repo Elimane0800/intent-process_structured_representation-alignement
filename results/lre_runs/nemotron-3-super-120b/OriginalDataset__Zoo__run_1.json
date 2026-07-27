@@ -1,0 +1,3018 @@
+{
+  "case_name": "OriginalDataset/Zoo",
+  "text": "When a visitor wants to become a member of Barcelona's ZooClub, the following steps must be taken.\nFirst of all, the customer must decide whether he wants an individual or family membership.\nIf he wants an individual membership, he must prepare his personal information.\nIf he wants a family membership instead, he should prepare the information for its spouse and spawn as well.\nThe customer must then give this information to the ZooClub department.\nThe ZooClub department introduces the visitor's personal data into the system and takes the payment request to the Billing department.\nThe ZooClub department also forwards the visitor's information to the marketing department.\nThe billing department sends the payment request to the bank.\nThe bank processes the payment information and, if everything is correct, charges the payment into user's account.\nOnce the payment is confirmed, the ZooClub department can print the card and deliver it to the visitor.\nIn the meantime, the Marketing department makes a request to mail the Zoo Club's magazine to the visitor's home. Once the visitor receives the card, he can go home.\n",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "nemotron-3-super-120b",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "nemotron-3-super-120b",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/../datasets/lre/alignment_model_text-master/datasets/OriginalDataset/Models/Zoo.bpmn",
+  "report_model": "nemotron-3-super-120b",
+  "candidates": {
+    "visitor": {
+      "states": [
+        "wants_to_become_member",
+        "decided_membership_type",
+        "prepared_information",
+        "gave_information",
+        "received_card",
+        "went_home"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "customer": {
+      "states": [
+        "wants_to_become_member",
+        "decided_membership_type",
+        "prepared_information",
+        "gave_information",
+        "received_card",
+        "went_home"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "personal_information": {
+      "states": [
+        "prepared",
+        "given_to_department",
+        "introduced_into_system",
+        "forwarded_to_marketing"
+      ],
+      "exclusive_groups": [
+        [
+          "prepared",
+          "prepared"
+        ]
+      ],
+      "concurrent_with": []
+    },
+    "family_membership_information": {
+      "states": [
+        "prepared",
+        "given_to_department"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "spouse_and_spawn_information": {
+      "states": [
+        "prepared",
+        "given_to_department"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "zooclub_department": {
+      "states": [
+        "receiving_information",
+        "introducing_data",
+        "taking_payment_request",
+        "forwarding_to_marketing",
+        "printing_card",
+        "delivering_card"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": [
+        "marketing_department"
+      ]
+    },
+    "billing_department": {
+      "states": [
+        "receiving_payment_request",
+        "sending_to_bank"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "marketing_department": {
+      "states": [
+        "receiving_information",
+        "making_mail_request"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": [
+        "zooclub_department"
+      ]
+    },
+    "bank": {
+      "states": [
+        "receiving_payment_request",
+        "processing_payment",
+        "charging_account"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "payment": {
+      "states": [
+        "requested",
+        "processed",
+        "confirmed",
+        "charged"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "card": {
+      "states": [
+        "printed",
+        "delivered",
+        "received"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "zoo_club_magazine": {
+      "states": [
+        "mailed"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    }
+  },
+  "validation_report": {
+    "visitor": {
+      "f_lex": "ACTOR",
+      "kept": false,
+      "head_used": "visitor"
+    },
+    "customer": {
+      "f_lex": "ACTOR",
+      "kept": false,
+      "head_used": "customer"
+    },
+    "personal_information": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "information"
+    },
+    "family_membership_information": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "information"
+    },
+    "spouse_and_spawn_information": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "information"
+    },
+    "zooclub_department": {
+      "f_lex": "INDETERMINATE",
+      "kept": true,
+      "head_used": "department"
+    },
+    "billing_department": {
+      "f_lex": "INDETERMINATE",
+      "kept": true,
+      "head_used": "department"
+    },
+    "marketing_department": {
+      "f_lex": "INDETERMINATE",
+      "kept": true,
+      "head_used": "department"
+    },
+    "bank": {
+      "f_lex": "ACTOR",
+      "kept": false,
+      "head_used": "bank"
+    },
+    "payment": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "payment"
+    },
+    "card": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "card"
+    },
+    "zoo_club_magazine": {
+      "f_lex": "INDETERMINATE",
+      "kept": true,
+      "head_used": "magazine"
+    },
+    "__meta__": {
+      "total_candidates": 12,
+      "indeterminate_kept_count": 4
+    }
+  },
+  "exclusive_groups_report": {
+    "accepted": [
+      {
+        "entity": "personal_information",
+        "states": [
+          "prepared",
+          "prepared"
+        ],
+        "quote": "If he wants an individual membership, he must prepare his personal information. If he wants a family membership instead, he should prepare the information for its spouse and spawn as well."
+      }
+    ],
+    "rejected": []
+  },
+  "state_space": {
+    "personal_information": {
+      "states": [
+        "prepared",
+        "given_to_department",
+        "introduced_into_system",
+        "forwarded_to_marketing"
+      ],
+      "exclusive_groups": [
+        [
+          "prepared",
+          "prepared"
+        ]
+      ],
+      "concurrent_with": []
+    },
+    "family_membership_information": {
+      "states": [
+        "prepared",
+        "given_to_department"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "spouse_and_spawn_information": {
+      "states": [
+        "prepared",
+        "given_to_department"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "zooclub_department": {
+      "states": [
+        "receiving_information",
+        "introducing_data",
+        "taking_payment_request",
+        "forwarding_to_marketing",
+        "printing_card",
+        "delivering_card"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": [
+        "marketing_department"
+      ]
+    },
+    "billing_department": {
+      "states": [
+        "receiving_payment_request",
+        "sending_to_bank"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "marketing_department": {
+      "states": [
+        "receiving_information",
+        "making_mail_request"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": [
+        "zooclub_department"
+      ]
+    },
+    "payment": {
+      "states": [
+        "requested",
+        "processed",
+        "confirmed",
+        "charged"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "card": {
+      "states": [
+        "printed",
+        "delivered",
+        "received"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "zoo_club_magazine": {
+      "states": [
+        "mailed"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    }
+  },
+  "state_space_dedup": {
+    "merged": {},
+    "ambiguous_not_merged": {}
+  },
+  "raw_preconditions": {
+    "personal_information.prepared": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "personal_information.given_to_department": {
+      "precondition": "personal_information.prepared",
+      "quote": "If he wants an individual membership, he must prepare his personal information."
+    },
+    "personal_information.introduced_into_system": {
+      "precondition": "zooclub_department.receiving_information",
+      "quote": "The ZooClub department introduces the visitor's personal data into the system and takes the payment request to the Billing department."
+    },
+    "personal_information.forwarded_to_marketing": {
+      "precondition": "zooclub_department.receiving_information",
+      "quote": "The ZooClub department also forwards the visitor's information to the marketing department."
+    },
+    "family_membership_information.prepared": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "family_membership_information.given_to_department": {
+      "precondition": "family_membership_information.prepared",
+      "quote": "If he wants a family membership instead, he should prepare the information for its spouse and spawn as well."
+    },
+    "spouse_and_spawn_information.prepared": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "spouse_and_spawn_information.given_to_department": {
+      "precondition": "spouse_and_spawn_information.prepared",
+      "quote": "If he wants a family membership instead, he should prepare the information for its spouse and spawn as well."
+    },
+    "zooclub_department.receiving_information": {
+      "precondition": "personal_information.given_to_department OR family_membership_information.given_to_department",
+      "quote": "The customer must then give this information to the ZooClub department."
+    },
+    "zooclub_department.introducing_data": {
+      "precondition": "zooclub_department.receiving_information",
+      "quote": "The ZooClub department introduces the visitor's personal data into the system and takes the payment request to the Billing department."
+    },
+    "zooclub_department.taking_payment_request": {
+      "precondition": "zooclub_department.receiving_information",
+      "quote": "The ZooClub department introduces the visitor's personal data into the system and takes the payment request to the Billing department."
+    },
+    "zooclub_department.forwarding_to_marketing": {
+      "precondition": "zooclub_department.receiving_information",
+      "quote": "The ZooClub department also forwards the visitor's information to the marketing department."
+    },
+    "zooclub_department.printing_card": {
+      "precondition": "payment.confirmed",
+      "quote": "Once the payment is confirmed, the ZooClub department can print the card and deliver it to the visitor."
+    },
+    "zooclub_department.delivering_card": {
+      "precondition": "payment.confirmed",
+      "quote": "Once the payment is confirmed, the ZooClub department can print the card and deliver it to the visitor."
+    },
+    "billing_department.receiving_payment_request": {
+      "precondition": "zooclub_department.taking_payment_request",
+      "quote": "The ZooClub department introduces the visitor's personal data into the system and takes the payment request to the Billing department."
+    },
+    "billing_department.sending_to_bank": {
+      "precondition": "billing_department.receiving_payment_request",
+      "quote": "The billing department sends the payment request to the bank."
+    },
+    "marketing_department.receiving_information": {
+      "precondition": "zooclub_department.forwarding_to_marketing",
+      "quote": "The ZooClub department also forwards the visitor's information to the marketing department."
+    },
+    "marketing_department.making_mail_request": {
+      "precondition": "marketing_department.receiving_information",
+      "quote": "In the meantime, the Marketing department makes a request to mail the Zoo Club's magazine to the visitor's home."
+    },
+    "payment.requested": {
+      "precondition": "zooclub_department.taking_payment_request",
+      "quote": "The ZooClub department introduces the visitor's personal data into the system and takes the payment request to the Billing department."
+    },
+    "payment.processed": {
+      "precondition": "billing_department.sending_to_bank",
+      "quote": "The bank processes the payment information and, if everything is correct, charges the payment into user's account."
+    },
+    "payment.confirmed": {
+      "precondition": "payment.processed",
+      "quote": "The bank processes the payment information and, if everything is correct, charges the payment into user's account."
+    },
+    "payment.charged": {
+      "precondition": "payment.confirmed",
+      "quote": "The bank processes the payment information and, if everything is correct, charges the payment into user's account."
+    },
+    "card.printed": {
+      "precondition": "payment.confirmed",
+      "quote": "Once the payment is confirmed, the ZooClub department can print the card and deliver it to the visitor."
+    },
+    "card.delivered": {
+      "precondition": "payment.confirmed",
+      "quote": "Once the payment is confirmed, the ZooClub department can print the card and deliver it to the visitor."
+    },
+    "card.received": {
+      "precondition": "card.delivered",
+      "quote": "Once the visitor receives the card, he can go home."
+    },
+    "zoo_club_magazine.mailed": {
+      "precondition": "marketing_department.making_mail_request",
+      "quote": "In the meantime, the Marketing department makes a request to mail the Zoo Club's magazine to the visitor's home."
+    }
+  },
+  "validated_preconditions": {
+    "personal_information.prepared": {
+      "precondition": "INITIAL",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "personal_information.given_to_department": {
+      "precondition": "personal_information.prepared",
+      "quote": "If he wants an individual membership, he must prepare his personal information.",
+      "status": "OK",
+      "reason": null
+    },
+    "personal_information.introduced_into_system": {
+      "precondition": "zooclub_department.receiving_information",
+      "quote": "The ZooClub department introduces the visitor's personal data into the system and takes the payment request to the Billing department.",
+      "status": "OK",
+      "reason": null
+    },
+    "personal_information.forwarded_to_marketing": {
+      "precondition": "zooclub_department.receiving_information",
+      "quote": "The ZooClub department also forwards the visitor's information to the marketing department.",
+      "status": "OK",
+      "reason": null
+    },
+    "family_membership_information.prepared": {
+      "precondition": "INITIAL",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "family_membership_information.given_to_department": {
+      "precondition": "family_membership_information.prepared",
+      "quote": "If he wants a family membership instead, he should prepare the information for its spouse and spawn as well.",
+      "status": "OK",
+      "reason": null
+    },
+    "spouse_and_spawn_information.prepared": {
+      "precondition": "INITIAL",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "spouse_and_spawn_information.given_to_department": {
+      "precondition": "spouse_and_spawn_information.prepared",
+      "quote": "If he wants a family membership instead, he should prepare the information for its spouse and spawn as well.",
+      "status": "OK",
+      "reason": null
+    },
+    "zooclub_department.receiving_information": {
+      "precondition": "personal_information.given_to_department OR family_membership_information.given_to_department",
+      "quote": "The customer must then give this information to the ZooClub department.",
+      "status": "OK",
+      "reason": null
+    },
+    "zooclub_department.introducing_data": {
+      "precondition": "zooclub_department.receiving_information",
+      "quote": "The ZooClub department introduces the visitor's personal data into the system and takes the payment request to the Billing department.",
+      "status": "OK",
+      "reason": null
+    },
+    "zooclub_department.taking_payment_request": {
+      "precondition": "zooclub_department.receiving_information",
+      "quote": "The ZooClub department introduces the visitor's personal data into the system and takes the payment request to the Billing department.",
+      "status": "OK",
+      "reason": null
+    },
+    "zooclub_department.forwarding_to_marketing": {
+      "precondition": "zooclub_department.receiving_information",
+      "quote": "The ZooClub department also forwards the visitor's information to the marketing department.",
+      "status": "OK",
+      "reason": null
+    },
+    "zooclub_department.printing_card": {
+      "precondition": "payment.confirmed",
+      "quote": "Once the payment is confirmed, the ZooClub department can print the card and deliver it to the visitor.",
+      "status": "OK",
+      "reason": null
+    },
+    "zooclub_department.delivering_card": {
+      "precondition": "payment.confirmed",
+      "quote": "Once the payment is confirmed, the ZooClub department can print the card and deliver it to the visitor.",
+      "status": "OK",
+      "reason": null
+    },
+    "billing_department.receiving_payment_request": {
+      "precondition": "zooclub_department.taking_payment_request",
+      "quote": "The ZooClub department introduces the visitor's personal data into the system and takes the payment request to the Billing department.",
+      "status": "OK",
+      "reason": null
+    },
+    "billing_department.sending_to_bank": {
+      "precondition": "billing_department.receiving_payment_request",
+      "quote": "The billing department sends the payment request to the bank.",
+      "status": "OK",
+      "reason": null
+    },
+    "marketing_department.receiving_information": {
+      "precondition": "zooclub_department.forwarding_to_marketing",
+      "quote": "The ZooClub department also forwards the visitor's information to the marketing department.",
+      "status": "OK",
+      "reason": null
+    },
+    "marketing_department.making_mail_request": {
+      "precondition": "marketing_department.receiving_information",
+      "quote": "In the meantime, the Marketing department makes a request to mail the Zoo Club's magazine to the visitor's home.",
+      "status": "OK",
+      "reason": null
+    },
+    "payment.requested": {
+      "precondition": "zooclub_department.taking_payment_request",
+      "quote": "The ZooClub department introduces the visitor's personal data into the system and takes the payment request to the Billing department.",
+      "status": "OK",
+      "reason": null
+    },
+    "payment.processed": {
+      "precondition": "billing_department.sending_to_bank",
+      "quote": "The bank processes the payment information and, if everything is correct, charges the payment into user's account.",
+      "status": "OK",
+      "reason": null
+    },
+    "payment.confirmed": {
+      "precondition": "payment.processed",
+      "quote": "The bank processes the payment information and, if everything is correct, charges the payment into user's account.",
+      "status": "OK",
+      "reason": null
+    },
+    "payment.charged": {
+      "precondition": "payment.confirmed",
+      "quote": "The bank processes the payment information and, if everything is correct, charges the payment into user's account.",
+      "status": "OK",
+      "reason": null
+    },
+    "card.printed": {
+      "precondition": "payment.confirmed",
+      "quote": "Once the payment is confirmed, the ZooClub department can print the card and deliver it to the visitor.",
+      "status": "OK",
+      "reason": null
+    },
+    "card.delivered": {
+      "precondition": "payment.confirmed",
+      "quote": "Once the payment is confirmed, the ZooClub department can print the card and deliver it to the visitor.",
+      "status": "OK",
+      "reason": null
+    },
+    "card.received": {
+      "precondition": "card.delivered",
+      "quote": "Once the visitor receives the card, he can go home.",
+      "status": "OK",
+      "reason": null
+    },
+    "zoo_club_magazine.mailed": {
+      "precondition": "marketing_department.making_mail_request",
+      "quote": "In the meantime, the Marketing department makes a request to mail the Zoo Club's magazine to the visitor's home.",
+      "status": "OK",
+      "reason": null
+    }
+  },
+  "precondition_cycles": [],
+  "branch_conflicts": [],
+  "reference_graph": {
+    "nodes": [
+      {
+        "id": "personal_information.prepared",
+        "weight": 0.143
+      },
+      {
+        "id": "personal_information.given_to_department",
+        "weight": 0.286
+      },
+      {
+        "id": "personal_information.introduced_into_system",
+        "weight": 0.143
+      },
+      {
+        "id": "personal_information.forwarded_to_marketing",
+        "weight": 0.143
+      },
+      {
+        "id": "family_membership_information.prepared",
+        "weight": 0.143
+      },
+      {
+        "id": "family_membership_information.given_to_department",
+        "weight": 0.286
+      },
+      {
+        "id": "spouse_and_spawn_information.prepared",
+        "weight": 0.143
+      },
+      {
+        "id": "spouse_and_spawn_information.given_to_department",
+        "weight": 0.143
+      },
+      {
+        "id": "zooclub_department.receiving_information",
+        "weight": 1.0
+      },
+      {
+        "id": "zooclub_department.introducing_data",
+        "weight": 0.143
+      },
+      {
+        "id": "zooclub_department.taking_payment_request",
+        "weight": 0.429
+      },
+      {
+        "id": "zooclub_department.forwarding_to_marketing",
+        "weight": 0.286
+      },
+      {
+        "id": "zooclub_department.printing_card",
+        "weight": 0.143
+      },
+      {
+        "id": "zooclub_department.delivering_card",
+        "weight": 0.143
+      },
+      {
+        "id": "billing_department.receiving_payment_request",
+        "weight": 0.286
+      },
+      {
+        "id": "billing_department.sending_to_bank",
+        "weight": 0.286
+      },
+      {
+        "id": "marketing_department.receiving_information",
+        "weight": 0.286
+      },
+      {
+        "id": "marketing_department.making_mail_request",
+        "weight": 0.286
+      },
+      {
+        "id": "payment.requested",
+        "weight": 0.143
+      },
+      {
+        "id": "payment.processed",
+        "weight": 0.286
+      },
+      {
+        "id": "payment.confirmed",
+        "weight": 0.857
+      },
+      {
+        "id": "payment.charged",
+        "weight": 0.143
+      },
+      {
+        "id": "card.printed",
+        "weight": 0.143
+      },
+      {
+        "id": "card.delivered",
+        "weight": 0.286
+      },
+      {
+        "id": "card.received",
+        "weight": 0.143
+      },
+      {
+        "id": "zoo_club_magazine.mailed",
+        "weight": 0.143
+      }
+    ],
+    "edges": [
+      {
+        "from": "personal_information.prepared",
+        "to": "personal_information.given_to_department",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "If he wants an individual membership, he must prepare his personal information.",
+        "negated": false
+      },
+      {
+        "from": "zooclub_department.receiving_information",
+        "to": "personal_information.introduced_into_system",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "The ZooClub department introduces the visitor's personal data into the system and takes the payment request to the Billing department.",
+        "negated": false
+      },
+      {
+        "from": "zooclub_department.receiving_information",
+        "to": "personal_information.forwarded_to_marketing",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "The ZooClub department also forwards the visitor's information to the marketing department.",
+        "negated": false
+      },
+      {
+        "from": "family_membership_information.prepared",
+        "to": "family_membership_information.given_to_department",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "If he wants a family membership instead, he should prepare the information for its spouse and spawn as well.",
+        "negated": false
+      },
+      {
+        "from": "spouse_and_spawn_information.prepared",
+        "to": "spouse_and_spawn_information.given_to_department",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "If he wants a family membership instead, he should prepare the information for its spouse and spawn as well.",
+        "negated": false
+      },
+      {
+        "from": "personal_information.given_to_department",
+        "to": "zooclub_department.receiving_information",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "The customer must then give this information to the ZooClub department.",
+        "negated": false
+      },
+      {
+        "from": "family_membership_information.given_to_department",
+        "to": "zooclub_department.receiving_information",
+        "clause": 1,
+        "type": "cross_entity_guard",
+        "quote": "The customer must then give this information to the ZooClub department.",
+        "negated": false
+      },
+      {
+        "from": "zooclub_department.receiving_information",
+        "to": "zooclub_department.introducing_data",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "The ZooClub department introduces the visitor's personal data into the system and takes the payment request to the Billing department.",
+        "negated": false
+      },
+      {
+        "from": "zooclub_department.receiving_information",
+        "to": "zooclub_department.taking_payment_request",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "The ZooClub department introduces the visitor's personal data into the system and takes the payment request to the Billing department.",
+        "negated": false
+      },
+      {
+        "from": "zooclub_department.receiving_information",
+        "to": "zooclub_department.forwarding_to_marketing",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "The ZooClub department also forwards the visitor's information to the marketing department.",
+        "negated": false
+      },
+      {
+        "from": "payment.confirmed",
+        "to": "zooclub_department.printing_card",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "Once the payment is confirmed, the ZooClub department can print the card and deliver it to the visitor.",
+        "negated": false
+      },
+      {
+        "from": "payment.confirmed",
+        "to": "zooclub_department.delivering_card",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "Once the payment is confirmed, the ZooClub department can print the card and deliver it to the visitor.",
+        "negated": false
+      },
+      {
+        "from": "zooclub_department.taking_payment_request",
+        "to": "billing_department.receiving_payment_request",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "The ZooClub department introduces the visitor's personal data into the system and takes the payment request to the Billing department.",
+        "negated": false
+      },
+      {
+        "from": "billing_department.receiving_payment_request",
+        "to": "billing_department.sending_to_bank",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "The billing department sends the payment request to the bank.",
+        "negated": false
+      },
+      {
+        "from": "zooclub_department.forwarding_to_marketing",
+        "to": "marketing_department.receiving_information",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "The ZooClub department also forwards the visitor's information to the marketing department.",
+        "negated": false
+      },
+      {
+        "from": "marketing_department.receiving_information",
+        "to": "marketing_department.making_mail_request",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "In the meantime, the Marketing department makes a request to mail the Zoo Club's magazine to the visitor's home.",
+        "negated": false
+      },
+      {
+        "from": "zooclub_department.taking_payment_request",
+        "to": "payment.requested",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "The ZooClub department introduces the visitor's personal data into the system and takes the payment request to the Billing department.",
+        "negated": false
+      },
+      {
+        "from": "billing_department.sending_to_bank",
+        "to": "payment.processed",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "The bank processes the payment information and, if everything is correct, charges the payment into user's account.",
+        "negated": false
+      },
+      {
+        "from": "payment.processed",
+        "to": "payment.confirmed",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "The bank processes the payment information and, if everything is correct, charges the payment into user's account.",
+        "negated": false
+      },
+      {
+        "from": "payment.confirmed",
+        "to": "payment.charged",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "The bank processes the payment information and, if everything is correct, charges the payment into user's account.",
+        "negated": false
+      },
+      {
+        "from": "payment.confirmed",
+        "to": "card.printed",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "Once the payment is confirmed, the ZooClub department can print the card and deliver it to the visitor.",
+        "negated": false
+      },
+      {
+        "from": "payment.confirmed",
+        "to": "card.delivered",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "Once the payment is confirmed, the ZooClub department can print the card and deliver it to the visitor.",
+        "negated": false
+      },
+      {
+        "from": "card.delivered",
+        "to": "card.received",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "Once the visitor receives the card, he can go home.",
+        "negated": false
+      },
+      {
+        "from": "marketing_department.making_mail_request",
+        "to": "zoo_club_magazine.mailed",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "In the meantime, the Marketing department makes a request to mail the Zoo Club's magazine to the visitor's home.",
+        "negated": false
+      }
+    ],
+    "cycles": [],
+    "branch_conflicts": [],
+    "exclusive_pairs": [
+      {
+        "entity": "personal_information",
+        "nodes": [
+          "personal_information.prepared",
+          "personal_information.prepared"
+        ]
+      }
+    ]
+  },
+  "dfg_edges": [
+    {
+      "source_id": "IntermediateCatchEvent_1dgnju9",
+      "source_label": "Payment confirmed",
+      "target_id": "Task_02qz4bj",
+      "target_label": "Deliver ZooClub card",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_1qrcrh7",
+      "source_label": "Wait for payment",
+      "target_id": "IntermediateCatchEvent_1dgnju9",
+      "target_label": "Payment confirmed",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "Task_02qz4bj",
+      "source_label": "Deliver ZooClub card",
+      "target_id": "IntermediateCatchEvent_1pyp6o5",
+      "target_label": "Card received?",
+      "gateway_context": []
+    },
+    {
+      "source_id": "IntermediateCatchEvent_1pyp6o5",
+      "source_label": "Card received?",
+      "target_id": "Task_0ssja9k",
+      "target_label": "Go home",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_064spq4",
+      "source_label": "Prepare personal information",
+      "target_id": "Task_0wrm9ya",
+      "target_label": "Send information to the ZooClub department",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_0qrzi4y",
+      "source_label": "Enter information into the system",
+      "target_id": "Task_106edn4",
+      "target_label": "Send request to billing department",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "Task_0qrzi4y",
+      "source_label": "Enter information into the system",
+      "target_id": "Task_1gst9f9",
+      "target_label": "Forward information to Marketing department",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "Task_0420rk1",
+      "source_label": "Process payment information",
+      "target_id": "Task_0oz8hjr",
+      "target_label": "Charge account",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_0w3czw9",
+      "source_label": "Wait for card",
+      "target_id": "IntermediateCatchEvent_1pyp6o5",
+      "target_label": "Card received?",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_0oih0sg",
+      "source_label": "Send payment request",
+      "target_id": "IntermediateCatchEvent_1dgnju9",
+      "target_label": "Payment confirmed",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "Task_0oih0sg",
+      "source_label": "Send payment request",
+      "target_id": "Task_0420rk1",
+      "target_label": "Process payment information",
+      "gateway_context": [
+        "MessageStartEvent"
+      ]
+    },
+    {
+      "source_id": "Task_0wrm9ya",
+      "source_label": "Send information to the ZooClub department",
+      "target_id": "Task_0qrzi4y",
+      "target_label": "Enter information into the system",
+      "gateway_context": [
+        "MessageStartEvent"
+      ]
+    },
+    {
+      "source_id": "Task_0wrm9ya",
+      "source_label": "Send information to the ZooClub department",
+      "target_id": "Task_0w3czw9",
+      "target_label": "Wait for card",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_1gst9f9",
+      "source_label": "Forward information to Marketing department",
+      "target_id": "Task_0j4npun",
+      "target_label": "Mail ZooClub magazine",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_0oz8hjr",
+      "source_label": "Charge account",
+      "target_id": "IntermediateCatchEvent_1dgnju9",
+      "target_label": "Payment confirmed",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_106edn4",
+      "source_label": "Send request to billing department",
+      "target_id": "Task_1qrcrh7",
+      "target_label": "Wait for payment",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "Task_106edn4",
+      "source_label": "Send request to billing department",
+      "target_id": "Task_0oih0sg",
+      "target_label": "Send payment request",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "Task_14zetua",
+      "source_label": "Prepare family's information",
+      "target_id": "Task_0wrm9ya",
+      "target_label": "Send information to the ZooClub department",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_17x20z3",
+      "source_label": "Decide individual or family ticket",
+      "target_id": "Task_064spq4",
+      "target_label": "Prepare personal information",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "Yes"
+      ]
+    },
+    {
+      "source_id": "Task_17x20z3",
+      "source_label": "Decide individual or family ticket",
+      "target_id": "Task_14zetua",
+      "target_label": "Prepare family's information",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "No"
+      ]
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "Payment confirmed",
+      "subject_id": "IntermediateCatchEvent_1dgnju9",
+      "predicate": "follows",
+      "object": "Deliver ZooClub card",
+      "object_id": "Task_02qz4bj"
+    },
+    {
+      "subject": "Wait for payment",
+      "subject_id": "Task_1qrcrh7",
+      "predicate": "follows",
+      "object": "Payment confirmed",
+      "object_id": "IntermediateCatchEvent_1dgnju9"
+    },
+    {
+      "subject": "Deliver ZooClub card",
+      "subject_id": "Task_02qz4bj",
+      "predicate": "follows",
+      "object": "Card received?",
+      "object_id": "IntermediateCatchEvent_1pyp6o5"
+    },
+    {
+      "subject": "Card received?",
+      "subject_id": "IntermediateCatchEvent_1pyp6o5",
+      "predicate": "follows",
+      "object": "Go home",
+      "object_id": "Task_0ssja9k"
+    },
+    {
+      "subject": "Prepare personal information",
+      "subject_id": "Task_064spq4",
+      "predicate": "follows",
+      "object": "Send information to the ZooClub department",
+      "object_id": "Task_0wrm9ya"
+    },
+    {
+      "subject": "Enter information into the system",
+      "subject_id": "Task_0qrzi4y",
+      "predicate": "follows",
+      "object": "Send request to billing department",
+      "object_id": "Task_106edn4"
+    },
+    {
+      "subject": "Enter information into the system",
+      "subject_id": "Task_0qrzi4y",
+      "predicate": "follows",
+      "object": "Forward information to Marketing department",
+      "object_id": "Task_1gst9f9"
+    },
+    {
+      "subject": "Process payment information",
+      "subject_id": "Task_0420rk1",
+      "predicate": "follows",
+      "object": "Charge account",
+      "object_id": "Task_0oz8hjr"
+    },
+    {
+      "subject": "Wait for card",
+      "subject_id": "Task_0w3czw9",
+      "predicate": "follows",
+      "object": "Card received?",
+      "object_id": "IntermediateCatchEvent_1pyp6o5"
+    },
+    {
+      "subject": "Send payment request",
+      "subject_id": "Task_0oih0sg",
+      "predicate": "follows",
+      "object": "Payment confirmed",
+      "object_id": "IntermediateCatchEvent_1dgnju9"
+    },
+    {
+      "subject": "Send payment request",
+      "subject_id": "Task_0oih0sg",
+      "predicate": "follows",
+      "object": "Process payment information",
+      "object_id": "Task_0420rk1"
+    },
+    {
+      "subject": "Send information to the ZooClub department",
+      "subject_id": "Task_0wrm9ya",
+      "predicate": "follows",
+      "object": "Enter information into the system",
+      "object_id": "Task_0qrzi4y"
+    },
+    {
+      "subject": "Send information to the ZooClub department",
+      "subject_id": "Task_0wrm9ya",
+      "predicate": "follows",
+      "object": "Wait for card",
+      "object_id": "Task_0w3czw9"
+    },
+    {
+      "subject": "Forward information to Marketing department",
+      "subject_id": "Task_1gst9f9",
+      "predicate": "follows",
+      "object": "Mail ZooClub magazine",
+      "object_id": "Task_0j4npun"
+    },
+    {
+      "subject": "Charge account",
+      "subject_id": "Task_0oz8hjr",
+      "predicate": "follows",
+      "object": "Payment confirmed",
+      "object_id": "IntermediateCatchEvent_1dgnju9"
+    },
+    {
+      "subject": "Send request to billing department",
+      "subject_id": "Task_106edn4",
+      "predicate": "follows",
+      "object": "Wait for payment",
+      "object_id": "Task_1qrcrh7"
+    },
+    {
+      "subject": "Send request to billing department",
+      "subject_id": "Task_106edn4",
+      "predicate": "follows",
+      "object": "Send payment request",
+      "object_id": "Task_0oih0sg"
+    },
+    {
+      "subject": "Prepare family's information",
+      "subject_id": "Task_14zetua",
+      "predicate": "follows",
+      "object": "Send information to the ZooClub department",
+      "object_id": "Task_0wrm9ya"
+    },
+    {
+      "subject": "Decide individual or family ticket",
+      "subject_id": "Task_17x20z3",
+      "predicate": "follows",
+      "object": "Prepare personal information",
+      "object_id": "Task_064spq4"
+    },
+    {
+      "subject": "Decide individual or family ticket",
+      "subject_id": "Task_17x20z3",
+      "predicate": "follows",
+      "object": "Prepare family's information",
+      "object_id": "Task_14zetua"
+    }
+  ],
+  "matches": {
+    "IntermediateCatchEvent_1dgnju9": {
+      "activity_label": "Payment confirmed",
+      "matches": [
+        {
+          "match": "payment.confirmed",
+          "score": 0.5479
+        }
+      ],
+      "clusters": [
+        [
+          "payment.confirmed"
+        ]
+      ]
+    },
+    "Task_02qz4bj": {
+      "activity_label": "Deliver ZooClub card",
+      "matches": [
+        {
+          "match": "zooclub_department.delivering_card",
+          "score": 0.7057
+        }
+      ],
+      "clusters": [
+        [
+          "zooclub_department.delivering_card"
+        ]
+      ]
+    },
+    "Task_1qrcrh7": {
+      "activity_label": "Wait for payment",
+      "matches": [
+        {
+          "match": "payment.processed",
+          "score": 0.4213
+        },
+        {
+          "match": "payment.confirmed",
+          "score": 0.4082
+        }
+      ],
+      "clusters": [
+        [
+          "payment.processed"
+        ],
+        [
+          "payment.confirmed"
+        ]
+      ]
+    },
+    "IntermediateCatchEvent_1pyp6o5": {
+      "activity_label": "Card received?",
+      "matches": [
+        {
+          "match": "card.received",
+          "score": 0.9203
+        }
+      ],
+      "clusters": [
+        [
+          "card.received"
+        ]
+      ]
+    },
+    "Task_0ssja9k": {
+      "activity_label": "Go home",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_064spq4": {
+      "activity_label": "Prepare personal information",
+      "matches": [
+        {
+          "match": "personal_information.prepared",
+          "score": 0.4806
+        }
+      ],
+      "clusters": [
+        [
+          "personal_information.prepared"
+        ]
+      ]
+    },
+    "Task_0wrm9ya": {
+      "activity_label": "Send information to the ZooClub department",
+      "matches": [
+        {
+          "match": "zooclub_department.receiving_information",
+          "score": 0.5236
+        }
+      ],
+      "clusters": [
+        [
+          "zooclub_department.receiving_information"
+        ]
+      ]
+    },
+    "Task_0qrzi4y": {
+      "activity_label": "Enter information into the system",
+      "matches": [
+        {
+          "match": "personal_information.introduced_into_system",
+          "score": 0.387
+        }
+      ],
+      "clusters": [
+        [
+          "personal_information.introduced_into_system"
+        ]
+      ]
+    },
+    "Task_106edn4": {
+      "activity_label": "Send request to billing department",
+      "matches": [
+        {
+          "match": "billing_department.receiving_payment_request",
+          "score": 0.5447
+        },
+        {
+          "match": "billing_department.sending_to_bank",
+          "score": 0.5437
+        }
+      ],
+      "clusters": [
+        [
+          "billing_department.receiving_payment_request"
+        ],
+        [
+          "billing_department.sending_to_bank"
+        ]
+      ]
+    },
+    "Task_1gst9f9": {
+      "activity_label": "Forward information to Marketing department",
+      "matches": [
+        {
+          "match": "personal_information.forwarded_to_marketing",
+          "score": 0.5188
+        },
+        {
+          "match": "marketing_department.receiving_information",
+          "score": 0.4951
+        },
+        {
+          "match": "zooclub_department.forwarding_to_marketing",
+          "score": 0.4921
+        }
+      ],
+      "clusters": [
+        [
+          "personal_information.forwarded_to_marketing"
+        ],
+        [
+          "marketing_department.receiving_information"
+        ],
+        [
+          "zooclub_department.forwarding_to_marketing"
+        ]
+      ]
+    },
+    "Task_0420rk1": {
+      "activity_label": "Process payment information",
+      "matches": [
+        {
+          "match": "payment.processed",
+          "score": 0.521
+        }
+      ],
+      "clusters": [
+        [
+          "payment.processed"
+        ]
+      ]
+    },
+    "Task_0oz8hjr": {
+      "activity_label": "Charge account",
+      "matches": [
+        {
+          "match": "payment.charged",
+          "score": 0.4326
+        }
+      ],
+      "clusters": [
+        [
+          "payment.charged"
+        ]
+      ]
+    },
+    "Task_0w3czw9": {
+      "activity_label": "Wait for card",
+      "matches": [
+        {
+          "match": "card.received",
+          "score": 0.4966
+        },
+        {
+          "match": "card.printed",
+          "score": 0.4709
+        },
+        {
+          "match": "card.delivered",
+          "score": 0.4507
+        }
+      ],
+      "clusters": [
+        [
+          "card.received"
+        ],
+        [
+          "card.printed"
+        ],
+        [
+          "card.delivered"
+        ]
+      ]
+    },
+    "Task_0oih0sg": {
+      "activity_label": "Send payment request",
+      "matches": [
+        {
+          "match": "payment.requested",
+          "score": 0.391
+        },
+        {
+          "match": "payment.processed",
+          "score": 0.3834
+        },
+        {
+          "match": "billing_department.receiving_payment_request",
+          "score": 0.3774
+        },
+        {
+          "match": "payment.confirmed",
+          "score": 0.3698
+        }
+      ],
+      "clusters": [
+        [
+          "payment.requested"
+        ],
+        [
+          "payment.processed"
+        ],
+        [
+          "billing_department.receiving_payment_request"
+        ],
+        [
+          "payment.confirmed"
+        ]
+      ]
+    },
+    "Task_0j4npun": {
+      "activity_label": "Mail ZooClub magazine",
+      "matches": [
+        {
+          "match": "zoo_club_magazine.mailed",
+          "score": 0.7673
+        }
+      ],
+      "clusters": [
+        [
+          "zoo_club_magazine.mailed"
+        ]
+      ]
+    },
+    "Task_14zetua": {
+      "activity_label": "Prepare family's information",
+      "matches": [
+        {
+          "match": "family_membership_information.prepared",
+          "score": 0.4728
+        }
+      ],
+      "clusters": [
+        [
+          "family_membership_information.prepared"
+        ]
+      ]
+    },
+    "Task_17x20z3": {
+      "activity_label": "Decide individual or family ticket",
+      "matches": [],
+      "clusters": []
+    }
+  },
+  "process_graph": [
+    {
+      "from": "payment.confirmed",
+      "to": "zooclub_department.delivering_card",
+      "activity_from": "Payment confirmed",
+      "activity_to": "Deliver ZooClub card",
+      "source_id": "IntermediateCatchEvent_1dgnju9",
+      "target_id": "Task_02qz4bj"
+    },
+    {
+      "from": "payment.processed",
+      "to": "payment.confirmed",
+      "activity_from": "Wait for payment",
+      "activity_to": "Payment confirmed",
+      "source_id": "Task_1qrcrh7",
+      "target_id": "IntermediateCatchEvent_1dgnju9"
+    },
+    {
+      "from": "payment.confirmed",
+      "to": "payment.confirmed",
+      "activity_from": "Wait for payment",
+      "activity_to": "Payment confirmed",
+      "source_id": "Task_1qrcrh7",
+      "target_id": "IntermediateCatchEvent_1dgnju9"
+    },
+    {
+      "from": "zooclub_department.delivering_card",
+      "to": "card.received",
+      "activity_from": "Deliver ZooClub card",
+      "activity_to": "Card received?",
+      "source_id": "Task_02qz4bj",
+      "target_id": "IntermediateCatchEvent_1pyp6o5"
+    },
+    {
+      "from": "personal_information.prepared",
+      "to": "zooclub_department.receiving_information",
+      "activity_from": "Prepare personal information",
+      "activity_to": "Send information to the ZooClub department",
+      "source_id": "Task_064spq4",
+      "target_id": "Task_0wrm9ya"
+    },
+    {
+      "from": "personal_information.introduced_into_system",
+      "to": "billing_department.receiving_payment_request",
+      "activity_from": "Enter information into the system",
+      "activity_to": "Send request to billing department",
+      "source_id": "Task_0qrzi4y",
+      "target_id": "Task_106edn4"
+    },
+    {
+      "from": "personal_information.introduced_into_system",
+      "to": "billing_department.sending_to_bank",
+      "activity_from": "Enter information into the system",
+      "activity_to": "Send request to billing department",
+      "source_id": "Task_0qrzi4y",
+      "target_id": "Task_106edn4"
+    },
+    {
+      "from": "personal_information.introduced_into_system",
+      "to": "personal_information.forwarded_to_marketing",
+      "activity_from": "Enter information into the system",
+      "activity_to": "Forward information to Marketing department",
+      "source_id": "Task_0qrzi4y",
+      "target_id": "Task_1gst9f9"
+    },
+    {
+      "from": "personal_information.introduced_into_system",
+      "to": "marketing_department.receiving_information",
+      "activity_from": "Enter information into the system",
+      "activity_to": "Forward information to Marketing department",
+      "source_id": "Task_0qrzi4y",
+      "target_id": "Task_1gst9f9"
+    },
+    {
+      "from": "personal_information.introduced_into_system",
+      "to": "zooclub_department.forwarding_to_marketing",
+      "activity_from": "Enter information into the system",
+      "activity_to": "Forward information to Marketing department",
+      "source_id": "Task_0qrzi4y",
+      "target_id": "Task_1gst9f9"
+    },
+    {
+      "from": "payment.processed",
+      "to": "payment.charged",
+      "activity_from": "Process payment information",
+      "activity_to": "Charge account",
+      "source_id": "Task_0420rk1",
+      "target_id": "Task_0oz8hjr"
+    },
+    {
+      "from": "card.received",
+      "to": "card.received",
+      "activity_from": "Wait for card",
+      "activity_to": "Card received?",
+      "source_id": "Task_0w3czw9",
+      "target_id": "IntermediateCatchEvent_1pyp6o5"
+    },
+    {
+      "from": "card.printed",
+      "to": "card.received",
+      "activity_from": "Wait for card",
+      "activity_to": "Card received?",
+      "source_id": "Task_0w3czw9",
+      "target_id": "IntermediateCatchEvent_1pyp6o5"
+    },
+    {
+      "from": "card.delivered",
+      "to": "card.received",
+      "activity_from": "Wait for card",
+      "activity_to": "Card received?",
+      "source_id": "Task_0w3czw9",
+      "target_id": "IntermediateCatchEvent_1pyp6o5"
+    },
+    {
+      "from": "payment.requested",
+      "to": "payment.confirmed",
+      "activity_from": "Send payment request",
+      "activity_to": "Payment confirmed",
+      "source_id": "Task_0oih0sg",
+      "target_id": "IntermediateCatchEvent_1dgnju9"
+    },
+    {
+      "from": "payment.processed",
+      "to": "payment.confirmed",
+      "activity_from": "Send payment request",
+      "activity_to": "Payment confirmed",
+      "source_id": "Task_0oih0sg",
+      "target_id": "IntermediateCatchEvent_1dgnju9"
+    },
+    {
+      "from": "billing_department.receiving_payment_request",
+      "to": "payment.confirmed",
+      "activity_from": "Send payment request",
+      "activity_to": "Payment confirmed",
+      "source_id": "Task_0oih0sg",
+      "target_id": "IntermediateCatchEvent_1dgnju9"
+    },
+    {
+      "from": "payment.confirmed",
+      "to": "payment.confirmed",
+      "activity_from": "Send payment request",
+      "activity_to": "Payment confirmed",
+      "source_id": "Task_0oih0sg",
+      "target_id": "IntermediateCatchEvent_1dgnju9"
+    },
+    {
+      "from": "payment.requested",
+      "to": "payment.processed",
+      "activity_from": "Send payment request",
+      "activity_to": "Process payment information",
+      "source_id": "Task_0oih0sg",
+      "target_id": "Task_0420rk1"
+    },
+    {
+      "from": "payment.processed",
+      "to": "payment.processed",
+      "activity_from": "Send payment request",
+      "activity_to": "Process payment information",
+      "source_id": "Task_0oih0sg",
+      "target_id": "Task_0420rk1"
+    },
+    {
+      "from": "billing_department.receiving_payment_request",
+      "to": "payment.processed",
+      "activity_from": "Send payment request",
+      "activity_to": "Process payment information",
+      "source_id": "Task_0oih0sg",
+      "target_id": "Task_0420rk1"
+    },
+    {
+      "from": "payment.confirmed",
+      "to": "payment.processed",
+      "activity_from": "Send payment request",
+      "activity_to": "Process payment information",
+      "source_id": "Task_0oih0sg",
+      "target_id": "Task_0420rk1"
+    },
+    {
+      "from": "zooclub_department.receiving_information",
+      "to": "personal_information.introduced_into_system",
+      "activity_from": "Send information to the ZooClub department",
+      "activity_to": "Enter information into the system",
+      "source_id": "Task_0wrm9ya",
+      "target_id": "Task_0qrzi4y"
+    },
+    {
+      "from": "zooclub_department.receiving_information",
+      "to": "card.received",
+      "activity_from": "Send information to the ZooClub department",
+      "activity_to": "Wait for card",
+      "source_id": "Task_0wrm9ya",
+      "target_id": "Task_0w3czw9"
+    },
+    {
+      "from": "zooclub_department.receiving_information",
+      "to": "card.printed",
+      "activity_from": "Send information to the ZooClub department",
+      "activity_to": "Wait for card",
+      "source_id": "Task_0wrm9ya",
+      "target_id": "Task_0w3czw9"
+    },
+    {
+      "from": "zooclub_department.receiving_information",
+      "to": "card.delivered",
+      "activity_from": "Send information to the ZooClub department",
+      "activity_to": "Wait for card",
+      "source_id": "Task_0wrm9ya",
+      "target_id": "Task_0w3czw9"
+    },
+    {
+      "from": "personal_information.forwarded_to_marketing",
+      "to": "zoo_club_magazine.mailed",
+      "activity_from": "Forward information to Marketing department",
+      "activity_to": "Mail ZooClub magazine",
+      "source_id": "Task_1gst9f9",
+      "target_id": "Task_0j4npun"
+    },
+    {
+      "from": "marketing_department.receiving_information",
+      "to": "zoo_club_magazine.mailed",
+      "activity_from": "Forward information to Marketing department",
+      "activity_to": "Mail ZooClub magazine",
+      "source_id": "Task_1gst9f9",
+      "target_id": "Task_0j4npun"
+    },
+    {
+      "from": "zooclub_department.forwarding_to_marketing",
+      "to": "zoo_club_magazine.mailed",
+      "activity_from": "Forward information to Marketing department",
+      "activity_to": "Mail ZooClub magazine",
+      "source_id": "Task_1gst9f9",
+      "target_id": "Task_0j4npun"
+    },
+    {
+      "from": "payment.charged",
+      "to": "payment.confirmed",
+      "activity_from": "Charge account",
+      "activity_to": "Payment confirmed",
+      "source_id": "Task_0oz8hjr",
+      "target_id": "IntermediateCatchEvent_1dgnju9"
+    },
+    {
+      "from": "billing_department.receiving_payment_request",
+      "to": "payment.processed",
+      "activity_from": "Send request to billing department",
+      "activity_to": "Wait for payment",
+      "source_id": "Task_106edn4",
+      "target_id": "Task_1qrcrh7"
+    },
+    {
+      "from": "billing_department.receiving_payment_request",
+      "to": "payment.confirmed",
+      "activity_from": "Send request to billing department",
+      "activity_to": "Wait for payment",
+      "source_id": "Task_106edn4",
+      "target_id": "Task_1qrcrh7"
+    },
+    {
+      "from": "billing_department.sending_to_bank",
+      "to": "payment.processed",
+      "activity_from": "Send request to billing department",
+      "activity_to": "Wait for payment",
+      "source_id": "Task_106edn4",
+      "target_id": "Task_1qrcrh7"
+    },
+    {
+      "from": "billing_department.sending_to_bank",
+      "to": "payment.confirmed",
+      "activity_from": "Send request to billing department",
+      "activity_to": "Wait for payment",
+      "source_id": "Task_106edn4",
+      "target_id": "Task_1qrcrh7"
+    },
+    {
+      "from": "billing_department.receiving_payment_request",
+      "to": "payment.requested",
+      "activity_from": "Send request to billing department",
+      "activity_to": "Send payment request",
+      "source_id": "Task_106edn4",
+      "target_id": "Task_0oih0sg"
+    },
+    {
+      "from": "billing_department.receiving_payment_request",
+      "to": "payment.processed",
+      "activity_from": "Send request to billing department",
+      "activity_to": "Send payment request",
+      "source_id": "Task_106edn4",
+      "target_id": "Task_0oih0sg"
+    },
+    {
+      "from": "billing_department.receiving_payment_request",
+      "to": "billing_department.receiving_payment_request",
+      "activity_from": "Send request to billing department",
+      "activity_to": "Send payment request",
+      "source_id": "Task_106edn4",
+      "target_id": "Task_0oih0sg"
+    },
+    {
+      "from": "billing_department.receiving_payment_request",
+      "to": "payment.confirmed",
+      "activity_from": "Send request to billing department",
+      "activity_to": "Send payment request",
+      "source_id": "Task_106edn4",
+      "target_id": "Task_0oih0sg"
+    },
+    {
+      "from": "billing_department.sending_to_bank",
+      "to": "payment.requested",
+      "activity_from": "Send request to billing department",
+      "activity_to": "Send payment request",
+      "source_id": "Task_106edn4",
+      "target_id": "Task_0oih0sg"
+    },
+    {
+      "from": "billing_department.sending_to_bank",
+      "to": "payment.processed",
+      "activity_from": "Send request to billing department",
+      "activity_to": "Send payment request",
+      "source_id": "Task_106edn4",
+      "target_id": "Task_0oih0sg"
+    },
+    {
+      "from": "billing_department.sending_to_bank",
+      "to": "billing_department.receiving_payment_request",
+      "activity_from": "Send request to billing department",
+      "activity_to": "Send payment request",
+      "source_id": "Task_106edn4",
+      "target_id": "Task_0oih0sg"
+    },
+    {
+      "from": "billing_department.sending_to_bank",
+      "to": "payment.confirmed",
+      "activity_from": "Send request to billing department",
+      "activity_to": "Send payment request",
+      "source_id": "Task_106edn4",
+      "target_id": "Task_0oih0sg"
+    },
+    {
+      "from": "family_membership_information.prepared",
+      "to": "zooclub_department.receiving_information",
+      "activity_from": "Prepare family's information",
+      "activity_to": "Send information to the ZooClub department",
+      "source_id": "Task_14zetua",
+      "target_id": "Task_0wrm9ya"
+    }
+  ],
+  "alignment": {
+    "personal_information.given_to_department": {
+      "operator": "AND",
+      "quote": "If he wants an individual membership, he must prepare his personal information.",
+      "terms": [
+        {
+          "term": "personal_information.prepared",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['personal_information.given_to_department']",
+          "missing": [
+            "personal_information.given_to_department"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "personal_information.prepared"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "personal_information.introduced_into_system": {
+      "operator": "AND",
+      "quote": "The ZooClub department introduces the visitor's personal data into the system and takes the payment request to the Billing department.",
+      "terms": [
+        {
+          "term": "zooclub_department.receiving_information",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED",
+      "clauses": [
+        {
+          "terms": [
+            "zooclub_department.receiving_information"
+          ],
+          "status": "SATISFIED"
+        }
+      ]
+    },
+    "personal_information.forwarded_to_marketing": {
+      "operator": "AND",
+      "quote": "The ZooClub department also forwards the visitor's information to the marketing department.",
+      "terms": [
+        {
+          "term": "zooclub_department.receiving_information",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED",
+      "clauses": [
+        {
+          "terms": [
+            "zooclub_department.receiving_information"
+          ],
+          "status": "SATISFIED"
+        }
+      ]
+    },
+    "family_membership_information.given_to_department": {
+      "operator": "AND",
+      "quote": "If he wants a family membership instead, he should prepare the information for its spouse and spawn as well.",
+      "terms": [
+        {
+          "term": "family_membership_information.prepared",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['family_membership_information.given_to_department']",
+          "missing": [
+            "family_membership_information.given_to_department"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "family_membership_information.prepared"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "spouse_and_spawn_information.given_to_department": {
+      "operator": "AND",
+      "quote": "If he wants a family membership instead, he should prepare the information for its spouse and spawn as well.",
+      "terms": [
+        {
+          "term": "spouse_and_spawn_information.prepared",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['spouse_and_spawn_information.prepared', 'spouse_and_spawn_information.given_to_department']",
+          "missing": [
+            "spouse_and_spawn_information.prepared",
+            "spouse_and_spawn_information.given_to_department"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "spouse_and_spawn_information.prepared"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "zooclub_department.receiving_information": {
+      "operator": "OR",
+      "quote": "The customer must then give this information to the ZooClub department.",
+      "terms": [
+        {
+          "term": "personal_information.given_to_department",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['personal_information.given_to_department']",
+          "missing": [
+            "personal_information.given_to_department"
+          ]
+        },
+        {
+          "term": "family_membership_information.given_to_department",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['family_membership_information.given_to_department']",
+          "missing": [
+            "family_membership_information.given_to_department"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "personal_information.given_to_department"
+          ],
+          "status": "UNRESOLVABLE"
+        },
+        {
+          "terms": [
+            "family_membership_information.given_to_department"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "zooclub_department.introducing_data": {
+      "operator": "AND",
+      "quote": "The ZooClub department introduces the visitor's personal data into the system and takes the payment request to the Billing department.",
+      "terms": [
+        {
+          "term": "zooclub_department.receiving_information",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['zooclub_department.introducing_data']",
+          "missing": [
+            "zooclub_department.introducing_data"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "zooclub_department.receiving_information"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "zooclub_department.taking_payment_request": {
+      "operator": "AND",
+      "quote": "The ZooClub department introduces the visitor's personal data into the system and takes the payment request to the Billing department.",
+      "terms": [
+        {
+          "term": "zooclub_department.receiving_information",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['zooclub_department.taking_payment_request']",
+          "missing": [
+            "zooclub_department.taking_payment_request"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "zooclub_department.receiving_information"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "zooclub_department.forwarding_to_marketing": {
+      "operator": "AND",
+      "quote": "The ZooClub department also forwards the visitor's information to the marketing department.",
+      "terms": [
+        {
+          "term": "zooclub_department.receiving_information",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED",
+      "clauses": [
+        {
+          "terms": [
+            "zooclub_department.receiving_information"
+          ],
+          "status": "SATISFIED"
+        }
+      ]
+    },
+    "zooclub_department.printing_card": {
+      "operator": "AND",
+      "quote": "Once the payment is confirmed, the ZooClub department can print the card and deliver it to the visitor.",
+      "terms": [
+        {
+          "term": "payment.confirmed",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['zooclub_department.printing_card']",
+          "missing": [
+            "zooclub_department.printing_card"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "payment.confirmed"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "zooclub_department.delivering_card": {
+      "operator": "AND",
+      "quote": "Once the payment is confirmed, the ZooClub department can print the card and deliver it to the visitor.",
+      "terms": [
+        {
+          "term": "payment.confirmed",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED",
+      "clauses": [
+        {
+          "terms": [
+            "payment.confirmed"
+          ],
+          "status": "SATISFIED"
+        }
+      ]
+    },
+    "billing_department.receiving_payment_request": {
+      "operator": "AND",
+      "quote": "The ZooClub department introduces the visitor's personal data into the system and takes the payment request to the Billing department.",
+      "terms": [
+        {
+          "term": "zooclub_department.taking_payment_request",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['zooclub_department.taking_payment_request']",
+          "missing": [
+            "zooclub_department.taking_payment_request"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "zooclub_department.taking_payment_request"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "billing_department.sending_to_bank": {
+      "operator": "AND",
+      "quote": "The billing department sends the payment request to the bank.",
+      "terms": [
+        {
+          "term": "billing_department.receiving_payment_request",
+          "status": "VIOLATED",
+          "reason": "both states matched, no path in process",
+          "missing": []
+        }
+      ],
+      "status": "VIOLATED",
+      "clauses": [
+        {
+          "terms": [
+            "billing_department.receiving_payment_request"
+          ],
+          "status": "VIOLATED"
+        }
+      ]
+    },
+    "marketing_department.receiving_information": {
+      "operator": "AND",
+      "quote": "The ZooClub department also forwards the visitor's information to the marketing department.",
+      "terms": [
+        {
+          "term": "zooclub_department.forwarding_to_marketing",
+          "status": "VIOLATED",
+          "reason": "both states matched, no path in process",
+          "missing": []
+        }
+      ],
+      "status": "VIOLATED",
+      "clauses": [
+        {
+          "terms": [
+            "zooclub_department.forwarding_to_marketing"
+          ],
+          "status": "VIOLATED"
+        }
+      ]
+    },
+    "marketing_department.making_mail_request": {
+      "operator": "AND",
+      "quote": "In the meantime, the Marketing department makes a request to mail the Zoo Club's magazine to the visitor's home.",
+      "terms": [
+        {
+          "term": "marketing_department.receiving_information",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['marketing_department.making_mail_request']",
+          "missing": [
+            "marketing_department.making_mail_request"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "marketing_department.receiving_information"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "payment.requested": {
+      "operator": "AND",
+      "quote": "The ZooClub department introduces the visitor's personal data into the system and takes the payment request to the Billing department.",
+      "terms": [
+        {
+          "term": "zooclub_department.taking_payment_request",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['zooclub_department.taking_payment_request']",
+          "missing": [
+            "zooclub_department.taking_payment_request"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "zooclub_department.taking_payment_request"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "payment.processed": {
+      "operator": "AND",
+      "quote": "The bank processes the payment information and, if everything is correct, charges the payment into user's account.",
+      "terms": [
+        {
+          "term": "billing_department.sending_to_bank",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED",
+      "clauses": [
+        {
+          "terms": [
+            "billing_department.sending_to_bank"
+          ],
+          "status": "SATISFIED"
+        }
+      ]
+    },
+    "payment.confirmed": {
+      "operator": "AND",
+      "quote": "The bank processes the payment information and, if everything is correct, charges the payment into user's account.",
+      "terms": [
+        {
+          "term": "payment.processed",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED",
+      "clauses": [
+        {
+          "terms": [
+            "payment.processed"
+          ],
+          "status": "SATISFIED"
+        }
+      ]
+    },
+    "payment.charged": {
+      "operator": "AND",
+      "quote": "The bank processes the payment information and, if everything is correct, charges the payment into user's account.",
+      "terms": [
+        {
+          "term": "payment.confirmed",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED",
+      "clauses": [
+        {
+          "terms": [
+            "payment.confirmed"
+          ],
+          "status": "SATISFIED"
+        }
+      ]
+    },
+    "card.printed": {
+      "operator": "AND",
+      "quote": "Once the payment is confirmed, the ZooClub department can print the card and deliver it to the visitor.",
+      "terms": [
+        {
+          "term": "payment.confirmed",
+          "status": "VIOLATED",
+          "reason": "both states matched, no path in process",
+          "missing": []
+        }
+      ],
+      "status": "VIOLATED",
+      "clauses": [
+        {
+          "terms": [
+            "payment.confirmed"
+          ],
+          "status": "VIOLATED"
+        }
+      ]
+    },
+    "card.delivered": {
+      "operator": "AND",
+      "quote": "Once the payment is confirmed, the ZooClub department can print the card and deliver it to the visitor.",
+      "terms": [
+        {
+          "term": "payment.confirmed",
+          "status": "VIOLATED",
+          "reason": "both states matched, no path in process",
+          "missing": []
+        }
+      ],
+      "status": "VIOLATED",
+      "clauses": [
+        {
+          "terms": [
+            "payment.confirmed"
+          ],
+          "status": "VIOLATED"
+        }
+      ]
+    },
+    "card.received": {
+      "operator": "AND",
+      "quote": "Once the visitor receives the card, he can go home.",
+      "terms": [
+        {
+          "term": "card.delivered",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED",
+      "clauses": [
+        {
+          "terms": [
+            "card.delivered"
+          ],
+          "status": "SATISFIED"
+        }
+      ]
+    },
+    "zoo_club_magazine.mailed": {
+      "operator": "AND",
+      "quote": "In the meantime, the Marketing department makes a request to mail the Zoo Club's magazine to the visitor's home.",
+      "terms": [
+        {
+          "term": "marketing_department.making_mail_request",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['marketing_department.making_mail_request']",
+          "missing": [
+            "marketing_department.making_mail_request"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "marketing_department.making_mail_request"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    }
+  },
+  "report": {
+    "verdict": {
+      "verdict": "NOT_FAITHFUL",
+      "justification": "1 gap(s) found between the source text's requirements and the observed process -- at least one precondition asserted by the text is contradicted by the model's actual sequence of activities.",
+      "scope": "This verdict covers the causal reachability of the requirements expressed in the source text, not the general quality of the process model -- a multiplicity defect (an activity executed more than once due to a mismatched branching structure) is not covered by this verdict, even if the process is otherwise well-formed."
+    },
+    "summary": {
+      "ecarts": 1,
+      "non_verifiable": 8,
+      "conforme": 8
+    },
+    "ecarts": [
+      {
+        "root_cause": "Forward information to Marketing department",
+        "quote": "The ZooClub department also forwards the visitor's information to the marketing department.",
+        "explanation": "The source text states: \"The ZooClub department also forwards the visitor's information to the marketing department.\" This indicates that forwarding information to the marketing department is required to happen before the same activity can occur again. However, in the observed process, there is no indication that this activity precedes itself — it appears only once, with no prior instance of the same activity taking place. Therefore, the required sequence is not fulfilled.",
+        "quote_verbatim": true,
+        "affected_activities": [
+          "Forward information to Marketing department"
+        ],
+        "affected_count": 1
+      }
+    ],
+    "non_verifiable": [
+      {
+        "root_cause": "personal information given to department",
+        "quote": "If he wants an individual membership, he must prepare his personal information.",
+        "explanation": "The requirement states that personal information must be prepared before it can be given to the department, as shown by the quote: \"If he wants an individual membership, he must prepare his personal information.\" However, no activity in the observed process clearly corresponds to preparing personal information, so it is impossible to verify whether this condition is met or not. This does not mean the requirement is satisfied or violated — only that we cannot confirm either way based on the available information. (This same root cause also affects: Send information to the ZooClub department.)",
+        "quote_verbatim": true,
+        "affected_activities": [
+          "Send information to the ZooClub department",
+          "personal information given to department"
+        ],
+        "affected_count": 2
+      },
+      {
+        "root_cause": "family membership information given to department",
+        "quote": "If he wants a family membership instead, he should prepare the information for its spouse and spawn as well.",
+        "explanation": "The activity \"family membership information given to department\" requires a condition to be met first, as indicated by the source text: \"If he wants a family membership instead, he should prepare the information for its spouse and spawn as well.\" However, this condition cannot be linked to any specific activity in the observed process, so it is impossible to determine whether the requirement has been satisfied or not. This does not mean the process is correct or incorrect — only that verification is not possible based on the available information. (This same root cause also affects: Send information to the ZooClub department.)",
+        "quote_verbatim": true,
+        "affected_activities": [
+          "Send information to the ZooClub department",
+          "family membership information given to department"
+        ],
+        "affected_count": 2
+      },
+      {
+        "root_cause": "spouse and spawn information prepared",
+        "quote": "If he wants a family membership instead, he should prepare the information for its spouse and spawn as well.",
+        "explanation": "The activity \"spouse and spawn information given to department\" requires that \"spouse and spawn information prepared\" be completed first.  \nThe source text states: \"If he wants a family membership instead, he should prepare the information for its spouse and spawn as well.\"  \nNo activity matching \"spouse and spawn information prepared\" appears in the observed process, so it cannot be confirmed whether this condition was met.  \nTherefore, it is impossible to verify whether the requirement for \"spouse and spawn information given to department\" is satisfied.  \nThis is not a confirmation or refutation of conformance — only a statement that verification is not possible due to missing information.",
+        "quote_verbatim": true,
+        "affected_activities": [
+          "spouse and spawn information given to department"
+        ],
+        "affected_count": 2
+      },
+      {
+        "root_cause": "zooclub department introducing data",
+        "quote": "The ZooClub department introduces the visitor's personal data into the system and takes the payment request to the Billing department.",
+        "explanation": "The activity \"zooclub department introducing data\" requires a condition to be met first, as stated in the source text: \"The ZooClub department introduces the visitor's personal data into the system and takes the payment request to the Billing department.\" However, this condition cannot be linked to any specific activity in the observed process, so it is not possible to check whether it is satisfied or not. This means we cannot confirm or deny whether the requirement is met — only that we lack the information to verify it.",
+        "quote_verbatim": true,
+        "affected_activities": [
+          "zooclub department introducing data"
+        ],
+        "affected_count": 1
+      },
+      {
+        "root_cause": "zooclub department taking payment request",
+        "quote": "The ZooClub department introduces the visitor's personal data into the system and takes the payment request to the Billing department.",
+        "explanation": "The activity \"zooclub department taking payment request\" requires a condition to be met first, as stated in the source text: \"The ZooClub department introduces the visitor's personal data into the system and takes the payment request to the Billing department.\" However, no clear activity in the observed process matches this condition, so it cannot be confirmed whether the requirement is satisfied or not. This means we are unable to verify conformance for this step based on the available information. (This same root cause also affects: Send payment request, Send request to billing department.)",
+        "quote_verbatim": true,
+        "affected_activities": [
+          "Send payment request",
+          "Send request to billing department",
+          "zooclub department taking payment request"
+        ],
+        "affected_count": 4
+      },
+      {
+        "root_cause": "zooclub department printing card",
+        "quote": "Once the payment is confirmed, the ZooClub department can print the card and deliver it to the visitor.",
+        "explanation": "The activity \"zooclub department printing card\" requires that a condition be met before it can occur, as stated in the source text: \"Once the payment is confirmed, the ZooClub department can print the card and deliver it to the visitor.\"  \nHowever, no activity in the observed process clearly corresponds to confirming the payment, so it is impossible to verify whether this condition is satisfied or not.",
+        "quote_verbatim": true,
+        "affected_activities": [
+          "zooclub department printing card"
+        ],
+        "affected_count": 1
+      },
+      {
+        "root_cause": "marketing department making mail request",
+        "quote": "In the meantime, the Marketing department makes a request to mail the Zoo Club's magazine to the visitor's home.",
+        "explanation": "The activity \"marketing department making mail request\" requires a condition to be met first, as stated in the source text: \"In the meantime, the Marketing department makes a request to mail the Zoo Club's magazine to the visitor's home.\" However, no clear activity in the observed process can be linked to this required condition. Because the condition cannot be identified or observed, it is impossible to verify whether it has been satisfied or not. This does not mean the process conforms or fails — it only means we cannot determine the status based on the available information. (This same root cause also affects: Mail ZooClub magazine.)",
+        "quote_verbatim": true,
+        "affected_activities": [
+          "Mail ZooClub magazine",
+          "marketing department making mail request"
+        ],
+        "affected_count": 2
+      },
+      {
+        "root_cause": "Payment confirmed",
+        "quote": "Once the payment is confirmed, the ZooClub department can print the card and deliver it to the visitor.",
+        "explanation": "The requirement states that the activity \"Wait for card\" can only occur after the condition \"Payment confirmed\" is met. The source text confirms this condition with the quote: \"Once the payment is confirmed, the ZooClub department can print the card and deliver it to the visitor.\" However, no activity in the observed process clearly corresponds to \"Payment confirmed,\" so it is impossible to verify whether this condition is actually met before \"Wait for card\" occurs. This does not mean the process is correct or incorrect — only that the necessary information to check this specific requirement is missing.",
+        "quote_verbatim": true,
+        "affected_activities": [
+          "Wait for card"
+        ],
+        "affected_count": 2
+      }
+    ],
+    "conforme": [
+      {
+        "target": "Enter information into the system",
+        "term": "Send information to the ZooClub department"
+      },
+      {
+        "target": "Forward information to Marketing department",
+        "term": "Send information to the ZooClub department"
+      },
+      {
+        "target": "Forward information to Marketing department",
+        "term": "Send information to the ZooClub department"
+      },
+      {
+        "target": "Deliver ZooClub card",
+        "term": "Payment confirmed"
+      },
+      {
+        "target": "Process payment information",
+        "term": "Send request to billing department"
+      },
+      {
+        "target": "Payment confirmed",
+        "term": "Process payment information"
+      },
+      {
+        "target": "Charge account",
+        "term": "Payment confirmed"
+      },
+      {
+        "target": "Card received?",
+        "term": "Wait for card"
+      }
+    ],
+    "piece_jointe_alignement_brut": {
+      "personal_information.given_to_department": {
+        "operator": "AND",
+        "quote": "If he wants an individual membership, he must prepare his personal information.",
+        "terms": [
+          {
+            "term": "personal_information.prepared",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['personal_information.given_to_department']",
+            "missing": [
+              "personal_information.given_to_department"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "personal_information.prepared"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "personal_information.introduced_into_system": {
+        "operator": "AND",
+        "quote": "The ZooClub department introduces the visitor's personal data into the system and takes the payment request to the Billing department.",
+        "terms": [
+          {
+            "term": "zooclub_department.receiving_information",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED",
+        "clauses": [
+          {
+            "terms": [
+              "zooclub_department.receiving_information"
+            ],
+            "status": "SATISFIED"
+          }
+        ]
+      },
+      "personal_information.forwarded_to_marketing": {
+        "operator": "AND",
+        "quote": "The ZooClub department also forwards the visitor's information to the marketing department.",
+        "terms": [
+          {
+            "term": "zooclub_department.receiving_information",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED",
+        "clauses": [
+          {
+            "terms": [
+              "zooclub_department.receiving_information"
+            ],
+            "status": "SATISFIED"
+          }
+        ]
+      },
+      "family_membership_information.given_to_department": {
+        "operator": "AND",
+        "quote": "If he wants a family membership instead, he should prepare the information for its spouse and spawn as well.",
+        "terms": [
+          {
+            "term": "family_membership_information.prepared",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['family_membership_information.given_to_department']",
+            "missing": [
+              "family_membership_information.given_to_department"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "family_membership_information.prepared"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "spouse_and_spawn_information.given_to_department": {
+        "operator": "AND",
+        "quote": "If he wants a family membership instead, he should prepare the information for its spouse and spawn as well.",
+        "terms": [
+          {
+            "term": "spouse_and_spawn_information.prepared",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['spouse_and_spawn_information.prepared', 'spouse_and_spawn_information.given_to_department']",
+            "missing": [
+              "spouse_and_spawn_information.prepared",
+              "spouse_and_spawn_information.given_to_department"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "spouse_and_spawn_information.prepared"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "zooclub_department.receiving_information": {
+        "operator": "OR",
+        "quote": "The customer must then give this information to the ZooClub department.",
+        "terms": [
+          {
+            "term": "personal_information.given_to_department",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['personal_information.given_to_department']",
+            "missing": [
+              "personal_information.given_to_department"
+            ]
+          },
+          {
+            "term": "family_membership_information.given_to_department",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['family_membership_information.given_to_department']",
+            "missing": [
+              "family_membership_information.given_to_department"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "personal_information.given_to_department"
+            ],
+            "status": "UNRESOLVABLE"
+          },
+          {
+            "terms": [
+              "family_membership_information.given_to_department"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "zooclub_department.introducing_data": {
+        "operator": "AND",
+        "quote": "The ZooClub department introduces the visitor's personal data into the system and takes the payment request to the Billing department.",
+        "terms": [
+          {
+            "term": "zooclub_department.receiving_information",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['zooclub_department.introducing_data']",
+            "missing": [
+              "zooclub_department.introducing_data"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "zooclub_department.receiving_information"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "zooclub_department.taking_payment_request": {
+        "operator": "AND",
+        "quote": "The ZooClub department introduces the visitor's personal data into the system and takes the payment request to the Billing department.",
+        "terms": [
+          {
+            "term": "zooclub_department.receiving_information",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['zooclub_department.taking_payment_request']",
+            "missing": [
+              "zooclub_department.taking_payment_request"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "zooclub_department.receiving_information"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "zooclub_department.forwarding_to_marketing": {
+        "operator": "AND",
+        "quote": "The ZooClub department also forwards the visitor's information to the marketing department.",
+        "terms": [
+          {
+            "term": "zooclub_department.receiving_information",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED",
+        "clauses": [
+          {
+            "terms": [
+              "zooclub_department.receiving_information"
+            ],
+            "status": "SATISFIED"
+          }
+        ]
+      },
+      "zooclub_department.printing_card": {
+        "operator": "AND",
+        "quote": "Once the payment is confirmed, the ZooClub department can print the card and deliver it to the visitor.",
+        "terms": [
+          {
+            "term": "payment.confirmed",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['zooclub_department.printing_card']",
+            "missing": [
+              "zooclub_department.printing_card"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "payment.confirmed"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "zooclub_department.delivering_card": {
+        "operator": "AND",
+        "quote": "Once the payment is confirmed, the ZooClub department can print the card and deliver it to the visitor.",
+        "terms": [
+          {
+            "term": "payment.confirmed",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED",
+        "clauses": [
+          {
+            "terms": [
+              "payment.confirmed"
+            ],
+            "status": "SATISFIED"
+          }
+        ]
+      },
+      "billing_department.receiving_payment_request": {
+        "operator": "AND",
+        "quote": "The ZooClub department introduces the visitor's personal data into the system and takes the payment request to the Billing department.",
+        "terms": [
+          {
+            "term": "zooclub_department.taking_payment_request",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['zooclub_department.taking_payment_request']",
+            "missing": [
+              "zooclub_department.taking_payment_request"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "zooclub_department.taking_payment_request"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "billing_department.sending_to_bank": {
+        "operator": "AND",
+        "quote": "The billing department sends the payment request to the bank.",
+        "terms": [
+          {
+            "term": "billing_department.receiving_payment_request",
+            "status": "VIOLATED",
+            "reason": "both states matched, no path in process",
+            "missing": []
+          }
+        ],
+        "status": "VIOLATED",
+        "clauses": [
+          {
+            "terms": [
+              "billing_department.receiving_payment_request"
+            ],
+            "status": "VIOLATED"
+          }
+        ]
+      },
+      "marketing_department.receiving_information": {
+        "operator": "AND",
+        "quote": "The ZooClub department also forwards the visitor's information to the marketing department.",
+        "terms": [
+          {
+            "term": "zooclub_department.forwarding_to_marketing",
+            "status": "VIOLATED",
+            "reason": "both states matched, no path in process",
+            "missing": []
+          }
+        ],
+        "status": "VIOLATED",
+        "clauses": [
+          {
+            "terms": [
+              "zooclub_department.forwarding_to_marketing"
+            ],
+            "status": "VIOLATED"
+          }
+        ]
+      },
+      "marketing_department.making_mail_request": {
+        "operator": "AND",
+        "quote": "In the meantime, the Marketing department makes a request to mail the Zoo Club's magazine to the visitor's home.",
+        "terms": [
+          {
+            "term": "marketing_department.receiving_information",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['marketing_department.making_mail_request']",
+            "missing": [
+              "marketing_department.making_mail_request"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "marketing_department.receiving_information"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "payment.requested": {
+        "operator": "AND",
+        "quote": "The ZooClub department introduces the visitor's personal data into the system and takes the payment request to the Billing department.",
+        "terms": [
+          {
+            "term": "zooclub_department.taking_payment_request",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['zooclub_department.taking_payment_request']",
+            "missing": [
+              "zooclub_department.taking_payment_request"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "zooclub_department.taking_payment_request"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "payment.processed": {
+        "operator": "AND",
+        "quote": "The bank processes the payment information and, if everything is correct, charges the payment into user's account.",
+        "terms": [
+          {
+            "term": "billing_department.sending_to_bank",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED",
+        "clauses": [
+          {
+            "terms": [
+              "billing_department.sending_to_bank"
+            ],
+            "status": "SATISFIED"
+          }
+        ]
+      },
+      "payment.confirmed": {
+        "operator": "AND",
+        "quote": "The bank processes the payment information and, if everything is correct, charges the payment into user's account.",
+        "terms": [
+          {
+            "term": "payment.processed",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED",
+        "clauses": [
+          {
+            "terms": [
+              "payment.processed"
+            ],
+            "status": "SATISFIED"
+          }
+        ]
+      },
+      "payment.charged": {
+        "operator": "AND",
+        "quote": "The bank processes the payment information and, if everything is correct, charges the payment into user's account.",
+        "terms": [
+          {
+            "term": "payment.confirmed",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED",
+        "clauses": [
+          {
+            "terms": [
+              "payment.confirmed"
+            ],
+            "status": "SATISFIED"
+          }
+        ]
+      },
+      "card.printed": {
+        "operator": "AND",
+        "quote": "Once the payment is confirmed, the ZooClub department can print the card and deliver it to the visitor.",
+        "terms": [
+          {
+            "term": "payment.confirmed",
+            "status": "VIOLATED",
+            "reason": "both states matched, no path in process",
+            "missing": []
+          }
+        ],
+        "status": "VIOLATED",
+        "clauses": [
+          {
+            "terms": [
+              "payment.confirmed"
+            ],
+            "status": "VIOLATED"
+          }
+        ]
+      },
+      "card.delivered": {
+        "operator": "AND",
+        "quote": "Once the payment is confirmed, the ZooClub department can print the card and deliver it to the visitor.",
+        "terms": [
+          {
+            "term": "payment.confirmed",
+            "status": "VIOLATED",
+            "reason": "both states matched, no path in process",
+            "missing": []
+          }
+        ],
+        "status": "VIOLATED",
+        "clauses": [
+          {
+            "terms": [
+              "payment.confirmed"
+            ],
+            "status": "VIOLATED"
+          }
+        ]
+      },
+      "card.received": {
+        "operator": "AND",
+        "quote": "Once the visitor receives the card, he can go home.",
+        "terms": [
+          {
+            "term": "card.delivered",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED",
+        "clauses": [
+          {
+            "terms": [
+              "card.delivered"
+            ],
+            "status": "SATISFIED"
+          }
+        ]
+      },
+      "zoo_club_magazine.mailed": {
+        "operator": "AND",
+        "quote": "In the meantime, the Marketing department makes a request to mail the Zoo Club's magazine to the visitor's home.",
+        "terms": [
+          {
+            "term": "marketing_department.making_mail_request",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['marketing_department.making_mail_request']",
+            "missing": [
+              "marketing_department.making_mail_request"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "marketing_department.making_mail_request"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      }
+    }
+  },
+  "errors": []
+}

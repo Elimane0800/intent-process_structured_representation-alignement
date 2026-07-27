@@ -10,38 +10,55 @@ CHEMIN (pas une arete directe -- le texte n'affirme jamais que rien d'autre ne p
 entre les deux), avant l'etat cible, dans G_process ?
 
 Source de G : graph_construction (pas precondition_extraction_with_retry directement) --
-build_edges() y tague desormais chaque arete avec l'operateur ('AND'/'OR') qui l'a produite
-(fix graph_node.py). La grammaire de Pre interdisant tout melange AND/OR pour une meme cible,
-toutes les aretes pointant vers une meme cible partagent necessairement le meme operateur : un
-seul groupe par cible, donc regrouper par 'to' suffit a reconstruire Pre(u) exactement, sans
-retourner au validated Pre brut.
+build_edges() y tague desormais chaque arete avec un index de CLAUSE (fix graph_node.py, v3).
+
+MISE A JOUR v3 : la grammaire de Pre n'interdit plus le melange AND/OR pour une meme cible --
+restriction levee (cf. precondition_prompt.py, tgms_solver.py::Guard) car elle etait injustifiee,
+pas une vraie limite du domaine (le texte exprime authentiquement des regles du type
+"(A AND B) OR C"). Une cible peut donc desormais porter PLUSIEURS groupes d'aretes (une clause
+= un groupe d'aretes partageant le meme index 'clause', plusieurs clauses pour une meme cible
+= les OR-alternatives d'une DNF a un niveau). Regrouper par 'to' NE suffit PLUS a lui seul --
+il faut regrouper par 'to' PUIS par 'clause' pour reconstruire Pre(u) exactement ; c'est ce que
+fait tgms_solver.py::tgms_from_pipeline (avec repli explicite sur l'ancienne semantique a
+groupe unique pour tout graphe deja genere avant ce changement, cf. sa docstring).
 
 Trois issues par terme, jamais reduites a deux :
 - SATISFIED    : chemin trouve dans G_process.
-- VIOLATED     : les deux etats existent dans G_process, aucun chemin entre eux.
-- UNRESOLVABLE : un des deux etats n'a aucun correspondant dans G_process -- ambigu entre deux
-  causes qu'on a explicitement choisi de ne PAS demeler ici (sous-specification legitime du
-  texte, vs. echec d'extraction en amont, Protocole 3) ; reporte tel quel, jamais force vers
-  SATISFIED ou VIOLATED.
+- VIOLATED     : les deux etats existent dans G_process, aucun chemin entre eux, ancrage
+                  suffisamment confiant des deux cotes (cf. demotion ci-dessous).
+- UNRESOLVABLE : soit un des deux etats n'a aucun correspondant dans G_process (ambigu entre
+                  sous-specification legitime du texte et echec d'extraction en amont, jamais
+                  demele automatiquement), soit un candidat VIOLATED a ete retrograde parce
+                  qu'un de ses deux ancrages repose sur un appariement trop incertain (voir
+                  CONFIDENCE_THRESHOLD ci-dessous). Jamais force vers SATISFIED ou VIOLATED.
 
-Demotion par confiance (ajoutee apres l'inspection qualitative des 61 VIOLATED du run dataset,
-cf. violated_cases_dump.md) : un VIOLATED dont l'un des deux etats repose sur un match de score
-< CONFIDENCE_THRESHOLD est retrograde en UNRESOLVABLE, avec la raison exacte et les scores
-conserves. Justification, coherente avec la semantique des trois issues : VIOLATED est la seule
-issue accusatoire (elle affirme un desordre reel du processus) -- l'affirmer sur un appariement
-incertain produit exactement les artefacts observes (ex. 'Brag to friends' a 0.08 accuse un
-desordre inexistant). Un match incertain signifie litteralement "on ne peut pas conclure", ce
-qui est la definition d'UNRESOLVABLE. SATISFIED n'est volontairement PAS retrograde par ce
-mecanisme : c'est un constat de non-contradiction, pas une accusation, et le retrograder
-exploserait le taux d'UNRESOLVABLE sans corriger aucun artefact observe -- asymetrie assumee,
-a documenter comme telle. Le seuil (0.35) est celui valide comme le plus prudent par le test
-GMM + inspection manuelle (dataset_run_observations.md, sections 18-19) -- PAS le seuil GMM
-(~0.48), invalide par cette meme inspection.
-"""
+=== Refactoring TGMS (cf. note de formalisme dediee "A Twin-Graph Milestone System") ===
+
+La logique de verification (groupement des guards, atteignabilite, agregation AND/OR,
+demotion par confiance) est desormais deleguee a tgms_solver.py, qui formalise ce mecanisme
+comme instance d'un objet TGMS = (M, G, A, Gproc, phi, c) et prouve deux theoremes de
+monotonie (en confiance, en enrichissement du graphe process) -- voir la note pour les
+preuves completes. Ce fichier ne fait plus que l'adaptation format-dict <-> TGMS et
+l'orchestration ; check_alignment() garde une signature ET un comportement de sortie
+STRICTEMENT identiques a la version precedente (verifie par test d'equivalence stricte sur
+donnees reelles v1/v2, cf. tgms_solver tests) -- aucun autre node du pipeline n'a besoin de
+changer (graph.py importe toujours `check_alignment` seul).
+
+Demotion par confiance (deja presente avant ce refactoring, desormais formalisee) : un
+candidat VIOLATED dont un des deux etats repose sur un score de matching < CONFIDENCE_THRESHOLD
+est retrograde en UNRESOLVABLE -- calibre empiriquement sur le run dataset (215x3, voir
+dataset_run_observations.md), confirme par test de controle direct (le seuil GMM statistique
+a ete teste et rejete par inspection manuelle, cf. meme document). SATISFIED n'est jamais
+retrograde par ce mecanisme (asymetrie assumee, prouvee necessaire par le Theoreme de
+monotonie en confiance : un SATISFIED est invariant a tau, un VIOLATED ne peut migrer que
+vers UNRESOLVABLE quand tau monte -- gater SATISFIED n'ajouterait donc aucune protection que
+le theoreme ne garantit deja)."""
 
 import json
 import os
 import re
+
+from agent.nodes.tgms_solver import solve, tgms_from_pipeline, verdicts_to_pipeline_alignment
 
 GRAPH_DIR = os.path.join(os.path.dirname(__file__), "..", "..", "results", "graph_construction")
 MATCHING_DIR = os.path.join(os.path.dirname(__file__), "..", "..", "results", "state_matching")
@@ -49,147 +66,42 @@ RESULTS_DIR = os.path.join(os.path.dirname(__file__), "..", "..", "results", "al
 
 # Seuil sous lequel un match est juge trop incertain pour porter une accusation VIOLATED --
 # calibre en deux temps sur le run dataset (215x3) : seuil initial pose sur le seul cas faux
-# confirme (0.29), puis conserve apres que le seuil GMM (~0.48) a ete invalide par inspection
+# confirme (0.29), conserve apres que le seuil GMM (~0.48) a ete invalide par inspection
 # manuelle (il flaggait majoritairement des paraphrases correctes). Cf. docstring de tete.
 CONFIDENCE_THRESHOLD = 0.35
 
 
-def build_state_scores(matches: dict) -> dict:
-    """entity.state -> meilleur score de matching parmi toutes les activites qui y ont ete
-    appariees. Le meilleur (pas la moyenne) : c'est le score de l'activite effectivement
-    retenue par label_for_state() cote rapport, et un seul bon appariement suffit a rendre
-    l'etat fiable comme point d'ancrage dans G_process."""
-    scores = {}
-    for m in matches.values():
-        state = m["match"]
-        scores[state] = max(scores.get(state, 0.0), m["score"])
-    return scores
-
-
-def group_edges_by_target(edges: list[dict]) -> dict:
-    """Regroupe les aretes de graph_construction par cible -- un seul groupe par cible possible
-    (grammaire AND/OR pure garantie par Pre), donc l'operateur et la citation du groupe sont
-    simplement ceux de la premiere arete rencontree (identiques sur toutes les aretes d'un meme
-    groupe, la citation justifie toute la precondition, pas un terme isole)."""
-    groups = {}
-    for edge in edges:
-        target = edge["to"]
-        groups.setdefault(target, {"operator": edge["operator"], "quote": edge.get("quote"), "terms": []})
-        groups[target]["terms"].append(edge["from"])
-    return groups
-
-
-def build_process_adjacency(process_graph: list[dict]) -> dict:
-    adj = {}
-    for edge in process_graph:
-        adj.setdefault(edge["from"], []).append(edge["to"])
-    return adj
-
-
-def path_exists(adjacency: dict, source: str, target: str) -> bool:
-    """BFS. source == target compte comme un chemin trivial (le meme etat matche des deux
-    cotes). Protection contre les cycles deja documentes comme possibles cote G_process."""
-    if source == target:
-        return True
-    visited = {source}
-    queue = [source]
-    while queue:
-        node = queue.pop(0)
-        for neighbor in adjacency.get(node, []):
-            if neighbor == target:
-                return True
-            if neighbor not in visited:
-                visited.add(neighbor)
-                queue.append(neighbor)
-    return False
-
-
-def check_term(term: str, target: str, matched_states: set, adjacency: dict,
-               state_scores: dict | None = None,
-               confidence_threshold: float = CONFIDENCE_THRESHOLD) -> dict:
-    """state_scores=None conserve exactement l'ancien comportement (aucune demotion) -- les
-    appels existants sans scores restent valides et comparables aux anciens runs."""
-    missing = [s for s in (term, target) if s not in matched_states]
-    if missing:
-        return {"term": term, "status": "UNRESOLVABLE", "reason": f"no match in process for: {missing}", "missing": missing}
-    if path_exists(adjacency, term, target):
-        return {"term": term, "status": "SATISFIED", "reason": None, "missing": []}
-    # Candidat VIOLATED -- demotion si l'un des deux points d'ancrage repose sur un match trop
-    # incertain : accuser un desordre sur un appariement douteux produit les artefacts
-    # documentes (cf. docstring de tete). missing reste [] : les deux etats EXISTENT dans
-    # G_process, c'est la conclusion qui est indecidable, pas la presence -- report_node
-    # retombe alors sur le terme lui-meme pour la remontee de cause, comme pour un VIOLATED.
-    if state_scores is not None:
-        weak = [s for s in (term, target) if state_scores.get(s, 0.0) < confidence_threshold]
-        if weak:
-            detail = ", ".join(f"{s}={state_scores.get(s, 0.0):.3f}" for s in weak)
-            return {
-                "term": term,
-                "status": "UNRESOLVABLE",
-                "reason": f"would be VIOLATED, but match confidence below "
-                          f"{confidence_threshold} for: {detail} -- cannot conclude on an "
-                          f"uncertain match",
-                "missing": [],
-                "low_confidence": weak,
-            }
-    return {"term": term, "status": "VIOLATED", "reason": "both states matched, no path in process", "missing": []}
-
-
-def aggregate(term_results: list[dict], operator: str) -> str:
-    """AND : un seul UNRESOLVABLE rend l'ensemble UNRESOLVABLE (on ne peut rien conclure), sinon
-    un seul VIOLATED suffit a rendre l'ensemble VIOLATED. OR : un seul SATISFIED suffit ; sinon
-    UNRESOLVABLE si au moins un terme ne peut etre tranche, VIOLATED seulement si tous les termes
-    sont resolus et tous violes."""
-    statuses = [r["status"] for r in term_results]
-    if operator == "AND":
-        if "UNRESOLVABLE" in statuses:
-            return "UNRESOLVABLE"
-        if "VIOLATED" in statuses:
-            return "VIOLATED"
-        return "SATISFIED"
-    else:  # OR
-        if "SATISFIED" in statuses:
-            return "SATISFIED"
-        if "UNRESOLVABLE" in statuses:
-            return "UNRESOLVABLE"
-        return "VIOLATED"
-
-
 def check_alignment(reference_graph: dict, process_graph: list[dict], matches: dict,
-                    confidence_threshold: float = CONFIDENCE_THRESHOLD) -> dict:
+                    confidence_threshold: float = CONFIDENCE_THRESHOLD,
+                    activity_guards: dict | None = None) -> dict:
     """Point d'entree : une observation par cible non triviale de G (graph_construction).
-    matched_states = tout entity.state ayant recu au moins une activite matchee (issu de
-    state_matching_node). Les scores de matching servent uniquement a la demotion des
-    VIOLATED incertains (cf. check_term) -- jamais a departager SATISFIED/UNRESOLVABLE."""
-    matched_states = {m["match"] for m in matches.values()}
-    state_scores = build_state_scores(matches)
-    adjacency = build_process_adjacency(process_graph)
-    groups = group_edges_by_target(reference_graph["edges"])
+    Delegue au solveur TGMS (tgms_solver.solve) -- ce corps n'est plus que l'adaptation
+    format-dict et le passage du seuil de confiance ; toute la logique de verification vit
+    dans tgms_solver.py, formalisee et testee independamment.
 
-    results = {}
-    for target, group in groups.items():
-        term_results = [
-            check_term(t, target, matched_states, adjacency, state_scores, confidence_threshold)
-            for t in group["terms"]
-        ]
-        results[target] = {
-            "operator": group["operator"],
-            "quote": group["quote"],
-            "terms": term_results,
-            "status": aggregate(term_results, group["operator"]),
-        }
-    return results
+    activity_guards (proposition 2, additif) : sortie de bpmn_guards_node.compute_activity_
+    guards -- {"activities": {...}, "undeclared_splits": [...]}, calculee par analyse de
+    dominance/post-dominance, jamais par un LLM. None si absente (bpmn_to_spo a echoue avant de
+    l'ecrire) -- le solveur retombe alors sur l'atteignabilite seule, comportement identique a
+    avant cet ajout. Quand fournie, elle ne fait jamais gagner un SATISFIED qui n'existait pas
+    deja par atteignabilite -- elle peut seulement RETROGRADER un SATISFIED douteux vers
+    UNRESOLVABLE quand l'analyse structurelle independante ne peut elle-meme pas confirmer
+    l'exclusivite qu'un chemin qui evite un terme nie semble suggerer (cf. tgms_solver.
+    status_of_negated_term) -- jamais invente vers VIOLATED."""
+    tgms, quotes = tgms_from_pipeline(reference_graph, process_graph, matches, activity_guards)
+    verdicts = solve(tgms, tau=confidence_threshold)
+    return verdicts_to_pipeline_alignment(verdicts, quotes)
 
 
 if __name__ == "__main__":
     from agent.nodes.precondition_node_with_retry import load_state_spaces
 
     # graph_construction/run_N.json mirrors precondition_extraction_with_retry/run_N.json 1:1
-    # (meme nom de fichier, cf. graph_node.py) -- qui lui-meme pin run_filename="run_17.json"
-    # pour U dans son propre __main__. Donc N'IMPORTE QUEL run_N.json ici a ete construit avec
-    # le U de run_17, par construction, pas par supposition. Le vrai choix ici, c'est quel run
-    # (quel modele/prompt) aligner, pas s'il correspond a run_17 -- ca, c'est garanti.
-    GRAPH_RUN = "run_1.json"
+    # (meme nom de fichier, cf. graph_node.py) -- on aligne donc le run_22 (celui qu'on
+    # travaille actuellement, cf. precondition_node_with_retry.py). Le vrai choix ici, c'est
+    # quel run (quel modele/prompt) aligner, pas quel U il utilise -- ca, c'est garanti par
+    # construction en amont, pas suppose ici.
+    GRAPH_RUN = "run_22.json"
     CASE_NAME = "job_application"
 
     with open(os.path.join(GRAPH_DIR, GRAPH_RUN)) as f:
@@ -204,16 +116,24 @@ if __name__ == "__main__":
           f"({len(reference_graph['edges'])} edges)")
 
     # Sanity check garde quand meme -- verifie que ce run precis a bien ete produit avec le
-    # meme U que run_17, au cas ou le hardcode en amont aurait change depuis sa generation.
-    reference_state_spaces = load_state_spaces(run_filename="run_17.json")
+    # meme U que run_32/meta-llama-3.1-8b-instruct, au cas ou le hardcode en amont aurait
+    # change depuis sa generation. model_name est desormais OBLIGATOIRE ici : run_32.json
+    # contient plusieurs modeles pour prompt_name="one_shot" (cf. load_state_spaces, qui leve
+    # une ValueError explicite plutot que de choisir silencieusement le premier du dict si
+    # model_name est omis et que plusieurs modeles sont presents -- meme discipline que partout
+    # ailleurs dans ce pipeline : jamais un choix implicite ou l'ordre d'un dict).
+    reference_state_spaces = load_state_spaces(
+        run_filename="run_32.json", model_name="meta/llama-3.1-8b-instruct"
+    )
     reference_states = {
         f"{e}.{s}" for e, states in reference_state_spaces.get(CASE_NAME, {}).items() for s in states
     }
     graph_node_ids = {n["id"] for n in reference_graph["nodes"]}
     unknown_nodes = graph_node_ids - reference_states
     if unknown_nodes:
-        print(f"    [alignment] WARNING: {len(unknown_nodes)} node(s) in {GRAPH_RUN} not in run_17's U "
-              f"-- may not match run_17. First few: {sorted(unknown_nodes)[:5]}")
+        print(f"    [alignment] WARNING: {len(unknown_nodes)} node(s) in {GRAPH_RUN} not in "
+              f"run_32/meta-llama-3.1-8b-instruct's U -- may not match. "
+              f"First few: {sorted(unknown_nodes)[:5]}")
 
     # state_matching produit un run_N.json unique par execution (structure imbriquee
     # {prompt_name: {spo_filename: {...}}}) -- on prend le plus recent par defaut.
@@ -229,17 +149,19 @@ if __name__ == "__main__":
 
     # Un seul run_N.json par execution, structure imbriquee {prompt_name: {spo_filename: {...}}}
     # -- jamais d'ecrasement d'un run precedent.
-    # BUG CORRIGE : precondition_node_with_retry.py charge STATE_SPACES = load_state_spaces(
-    # run_filename="run_17.json") UNE SEULE FOIS, avec le prompt_name par defaut de la fonction
-    # ("one_shot"). Les cles "zero_shot"/"one_shot"/"two_shot"/"cot" de PROMPTS designent le
-    # prompt utilise pour GENERER LES PRECONDITIONS, pas celui utilise pour generer U -- U est
-    # TOUJOURS celui de run_17 en one_shot (vocabulaire singulier "job_application"), quelle que
-    # soit la cle du run_N.json de precondition_extraction_with_retry. state_matching_node.py,
-    # lui, charge bien un U different par prompt (zero_shot -> vocabulaire pluriel
-    # "job_applications", different de celui de G). Comparer G au bucket "zero_shot" du matching
-    # revient donc a comparer deux vocabulaires qui ne se recouvrent jamais -- tout ressortait
-    # UNRESOLVABLE, identique quel que soit le modele BPMN teste, sans rien mesurer. Seul le
-    # bucket "one_shot" du matching partage le vocabulaire de G ; c'est le seul valide ici.
+    # PIN A JOUR (etait run_17/model implicite, desormais perime) : precondition_node_with_
+    # retry.py charge STATE_SPACES = load_state_spaces(run_filename="run_32.json",
+    # model_name="meta/llama-3.1-8b-instruct") UNE SEULE FOIS, avec le prompt_name par defaut
+    # de la fonction ("one_shot"). Les cles "zero_shot"/"one_shot"/"two_shot"/"cot" de PROMPTS
+    # designent le prompt utilise pour GENERER LES PRECONDITIONS, pas celui utilise pour
+    # generer U -- U est TOUJOURS celui de run_32/meta-llama-3.1-8b-instruct en one_shot, quelle
+    # que soit la cle du run_N.json de precondition_extraction_with_retry. state_matching_node.py,
+    # lui, charge bien un U different par prompt s'il varie -- mais son propre __main__ est
+    # desormais pin explicitement sur ce meme run_32/meme modele en one_shot (cf. son code),
+    # donc le vocabulaire reste partage avec G tant que ce pin ne change pas des deux cotes en
+    # meme temps. Comparer G a un autre bucket reviendrait a comparer deux vocabulaires qui ne
+    # se recouvrent jamais -- tout ressortirait UNRESOLVABLE, sans rien mesurer. Seul le bucket
+    # "one_shot" du matching partage le vocabulaire de G ; c'est le seul valide ici.
     if "one_shot" not in matching_data:
         raise SystemExit(f"[alignment] no 'one_shot' bucket in {latest_matching_run} -- "
                           f"G's U is always one_shot-sourced, nothing else is comparable")

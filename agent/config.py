@@ -9,7 +9,11 @@ from typing import NotRequired, TypedDict
 class ModelConfig(TypedDict):
     name: str            # identifiant exact attendu par l'API du provider (agent/models/base_llm.py)
     max_tokens: int
-    temperature: float
+    # float normalement -- None pour les modeles qui REJETTENT purement et simplement ce
+    # parametre (erreur 400 "temperature does not support X, only default (1) is supported") :
+    # famille OpenAI GPT-5.x reasoning (verifie juillet 2026, meme comportement que o1/o3).
+    # base_llm.py omet alors totalement le kwarg plutot que d'envoyer 1 en dur.
+    temperature: float | None
     # Provider d'inference (cle de PROVIDERS ci-dessous). Absent = "nvidia" -- les deux
     # exposent une API compatible OpenAI, donc le meme ChatOpenAI sert partout : ajouter un
     # provider = une entree dans PROVIDERS + une variable d'environnement, zero changement
@@ -34,6 +38,12 @@ class ModelConfig(TypedDict):
     #     balises <think>. NB : mecanisme verifie via la doc RAG NVIDIA/vLLM -- a confirmer
     #     par smoke test sur l'endpoint integrate.api.nvidia.com avant run complet.
     extra_body: NotRequired[dict]
+    # (4) famille OpenAI GPT-5.x : verbosity est, comme reasoning_effort, un champ plat de
+    #     l'API Chat Completions (low/medium/high) -- distinct de reasoning_effort donc son
+    #     propre champ de config, mais transmis par le meme canal (extra_body) dans base_llm.
+    #     N'a d'equivalent chez aucun autre provider du catalogue, d'ou un champ dedie plutot
+    #     que de le glisser dans extra_body directement ici.
+    verbosity: NotRequired[str]
 
 
 # Providers d'inference -- tous compatibles OpenAI, differencies uniquement par l'URL et la
@@ -43,6 +53,7 @@ PROVIDERS: dict[str, dict[str, str]] = {
     "nvidia": {"base_url": "https://integrate.api.nvidia.com/v1", "api_key_env": "NVIDIA_API_KEY"},
     "groq": {"base_url": "https://api.groq.com/openai/v1", "api_key_env": "GROQ_API_KEY"},
     "openrouter": {"base_url": "https://openrouter.ai/api/v1", "api_key_env": "OPENROUTER_API_KEY"},
+    "openai": {"base_url": "https://api.openai.com/v1", "api_key_env": "OPENAI_API_KEY"},
 }
 
 
@@ -91,6 +102,43 @@ MODELS: dict[str, ModelConfig] = {
     "gemma-4-31b-it": {"name": "google/gemma-4-31b-it:free", "provider": "openrouter",
                          "max_tokens": 4096, "temperature": 0,
                          "extra_body": {"reasoning": {"enabled": False}}},
+
+    # --- Famille OpenAI GPT-5.x (provider "openai", API officielle) -----------------------
+    # Ces modeles REJETTENT le parametre temperature (erreur 400 des que la valeur differe du
+    # defaut =1) -- d'ou temperature=None ici : base_llm.py n'envoie alors pas le kwarg du
+    # tout, plutot que de forcer 1 en dur (le champ "temperature" du ModelConfig devient
+    # denue de sens pour ces modeles ; seuls reasoning_effort/verbosity pilotent le style de
+    # sortie). reasoning_effort et verbosity mis au minimum partout, cf. demande explicite :
+    # low pour les deux (l'API expose aussi "none" pour l'effort, strictement plus bas, mais
+    # low est garde par coherence avec le reste du catalogue qui ne desactive jamais
+    # completement le reasoning -- passer a "none" si un run confirme que c'est souhaitable).
+    "gpt-5.5": {"name": "gpt-5.5", "provider": "openai",
+                "max_tokens": 8192, "temperature": None,
+                "reasoning_effort": "low", "verbosity": "low"},
+    # gpt-5.5-pro : le "mode" pro (raisonnement etendu) est baked-in dans ce nom de modele
+    # meme (pas un parametre a part comme reasoning.mode sur gpt-5.6-sol/terra) -- seul
+    # reasoning_effort reste pilotable, mis au plus bas comme demande.
+    "gpt-5.5-pro": {"name": "gpt-5.5-pro", "provider": "openai",
+                    "max_tokens": 8192, "temperature": None,
+                    #"reasoning_effort": "low", 
+                    "verbosity": "low"},
+    # gpt-5.4-nano : plus petit modele de la famille 5.4 (mini/nano), memes contraintes
+    # temperature/reasoning que 5.5. A CONFIRMER par smoke test : la doc consultee (juillet
+    # 2026) detaille surtout 5.5/5.6, pas la liste exacte des valeurs reasoning_effort
+    # acceptees par ce modele specifique -- si "low" est rejete, replier sur "minimal" (nom
+    # utilise par l'ancienne generation gpt-5) ou "medium".
+    "gpt-5.4-nano": {"name": "gpt-5.4-nano", "provider": "openai",
+                      "max_tokens": 8192, "temperature": None,
+                      "reasoning_effort": "low", "verbosity": "low"},
+    # gpt-5.6-sol : flagship de la famille 5.6 (alias "gpt-5.6" y route par defaut cote API).
+    "gpt-5.6-sol": {"name": "gpt-5.6-sol", "provider": "openai",
+                     "max_tokens": 8192, "temperature": None,
+                     "reasoning_effort": "low", "verbosity": "low"},
+    # gpt-5.6-terra : variante 5.6 equilibree cout/intelligence (vs sol = flagship, luna =
+    # volume) -- memes reglages minimaux.
+    "gpt-5.6-terra": {"name": "gpt-5.6-terra", "provider": "openai",
+                       "max_tokens": 8192, "temperature": None,
+                       "reasoning_effort": "low", "verbosity": "low"},
 }
 
 # Modele d'embedding -- config separee car les parametres pertinents sont differents
@@ -110,9 +158,26 @@ DEFAULT_REPORT_MODEL_KEY = "llama-3.1-8b"
 # peuvent etre indisponibles ou instables cote fournisseur (cf. state_space_observation.md,
 # section sur les modeles non deployes/instables). A etendre au fur et a mesure.
 MODELS_TO_RUN: list[str] = [
-    #"llama-3.1-8b",
+    "llama-3.1-8b",
     "mistral-nemotron",
     "gpt-oss-20b",
+    #"llama-3.3-70b",
+    #"mistral-large-3",
+    #"nemotron-super-49b",
+    #"nemotron-3-nano-30b",
+    "nemotron-3-super-120b",
+    #"qwen3.6-27b",
+    #"north-mini-code",
+   # "gemma-4-31b-it"
+
+    # Nouveaux modeles OpenAI -- commentes en attendant le smoke test (necessite
+    # OPENAI_API_KEY dans l'environnement/.env) et la confirmation des valeurs
+    # reasoning_effort acceptees par gpt-5.4-nano. Decommenter au fur et a mesure.
+    "gpt-5.5",
+    "gpt-5.5-pro",
+    # "gpt-5.4-nano",
+    # "gpt-5.6-sol",
+    # "gpt-5.6-terra",
 ]
 
 

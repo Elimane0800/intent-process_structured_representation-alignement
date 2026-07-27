@@ -1,0 +1,1050 @@
+{
+  "case_name": "OriginalDataset/Model10-9",
+  "text": "The SP/PU/GO request changes of the MPO or the MPO himself causes a change. The MPO reviews the change request. The MPO rejects the change of the measuring point by the SP/PU/GO or the MPO confirms the request of the SP/PU/GO. The MPO performs the measuring point change. The MPO reports the implementation to the SP/PU/GO or notifies the SP/PU/GO about the failure of the changes.\n",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "mistral-nemotron",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "mistral-nemotron",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/../datasets/lre/alignment_model_text-master/datasets/OriginalDataset/Models/Model10-9.bpmn",
+  "report_model": "mistral-nemotron",
+  "candidates": {
+    "sp_pu_go_request": {
+      "states": [
+        "submitted",
+        "rejected",
+        "confirmed"
+      ],
+      "exclusive_groups": [
+        [
+          "rejected",
+          "confirmed"
+        ]
+      ],
+      "concurrent_with": []
+    },
+    "mpo": {
+      "states": [
+        "reviewing",
+        "rejecting",
+        "confirming",
+        "performing_change",
+        "reporting",
+        "notifying"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "measuring_point": {
+      "states": [
+        "changed",
+        "failed_to_change"
+      ],
+      "exclusive_groups": [
+        [
+          "changed",
+          "failed_to_change"
+        ]
+      ],
+      "concurrent_with": []
+    }
+  },
+  "validation_report": {
+    "sp_pu_go_request": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "request"
+    },
+    "mpo": {
+      "f_lex": "INDETERMINATE",
+      "kept": true,
+      "head_used": "mpo"
+    },
+    "measuring_point": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "point"
+    },
+    "__meta__": {
+      "total_candidates": 3,
+      "indeterminate_kept_count": 1
+    }
+  },
+  "exclusive_groups_report": {
+    "accepted": [
+      {
+        "entity": "sp_pu_go_request",
+        "states": [
+          "rejected",
+          "confirmed"
+        ],
+        "quote": "rejects the change or confirms the request"
+      },
+      {
+        "entity": "measuring_point",
+        "states": [
+          "changed",
+          "failed_to_change"
+        ],
+        "quote": "reports the implementation or notifies about the failure"
+      }
+    ],
+    "rejected": []
+  },
+  "state_space": {
+    "sp_pu_go_request": {
+      "states": [
+        "submitted",
+        "rejected",
+        "confirmed"
+      ],
+      "exclusive_groups": [
+        [
+          "rejected",
+          "confirmed"
+        ]
+      ],
+      "concurrent_with": []
+    },
+    "mpo": {
+      "states": [
+        "reviewing",
+        "rejecting",
+        "confirming",
+        "performing_change",
+        "reporting",
+        "notifying"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "measuring_point": {
+      "states": [
+        "changed",
+        "failed_to_change"
+      ],
+      "exclusive_groups": [
+        [
+          "changed",
+          "failed_to_change"
+        ]
+      ],
+      "concurrent_with": []
+    }
+  },
+  "state_space_dedup": {
+    "merged": {},
+    "ambiguous_not_merged": {}
+  },
+  "raw_preconditions": {
+    "sp_pu_go_request.submitted": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "sp_pu_go_request.rejected": {
+      "precondition": "mpo.rejecting",
+      "quote": "The MPO rejects the change of the measuring point by the SP/PU/GO"
+    },
+    "sp_pu_go_request.confirmed": {
+      "precondition": "mpo.confirming",
+      "quote": "the MPO confirms the request of the SP/PU/GO"
+    },
+    "mpo.reviewing": {
+      "precondition": "sp_pu_go_request.submitted",
+      "quote": "The MPO reviews the change request."
+    },
+    "mpo.rejecting": {
+      "precondition": "mpo.reviewing",
+      "quote": "The MPO rejects the change of the measuring point by the SP/PU/GO"
+    },
+    "mpo.confirming": {
+      "precondition": "mpo.reviewing",
+      "quote": "the MPO confirms the request of the SP/PU/GO"
+    },
+    "mpo.performing_change": {
+      "precondition": "sp_pu_go_request.confirmed",
+      "quote": "The MPO performs the measuring point change."
+    },
+    "mpo.reporting": {
+      "precondition": "measuring_point.changed",
+      "quote": "The MPO reports the implementation to the SP/PU/GO"
+    },
+    "mpo.notifying": {
+      "precondition": "measuring_point.failed_to_change",
+      "quote": "notifies the SP/PU/GO about the failure of the changes"
+    },
+    "measuring_point.changed": {
+      "precondition": "mpo.performing_change",
+      "quote": "The MPO performs the measuring point change."
+    },
+    "measuring_point.failed_to_change": {
+      "precondition": "UNRESOLVED",
+      "quote": null
+    }
+  },
+  "validated_preconditions": {
+    "sp_pu_go_request.submitted": {
+      "precondition": "INITIAL",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "sp_pu_go_request.rejected": {
+      "precondition": "mpo.rejecting",
+      "quote": "The MPO rejects the change of the measuring point by the SP/PU/GO",
+      "status": "OK",
+      "reason": null
+    },
+    "sp_pu_go_request.confirmed": {
+      "precondition": "mpo.confirming",
+      "quote": "the MPO confirms the request of the SP/PU/GO",
+      "status": "OK",
+      "reason": null
+    },
+    "mpo.reviewing": {
+      "precondition": "sp_pu_go_request.submitted",
+      "quote": "The MPO reviews the change request.",
+      "status": "OK",
+      "reason": null
+    },
+    "mpo.rejecting": {
+      "precondition": "mpo.reviewing",
+      "quote": "The MPO rejects the change of the measuring point by the SP/PU/GO",
+      "status": "OK",
+      "reason": null
+    },
+    "mpo.confirming": {
+      "precondition": "mpo.reviewing",
+      "quote": "the MPO confirms the request of the SP/PU/GO",
+      "status": "OK",
+      "reason": null
+    },
+    "mpo.performing_change": {
+      "precondition": "sp_pu_go_request.confirmed",
+      "quote": "The MPO performs the measuring point change.",
+      "status": "OK",
+      "reason": null
+    },
+    "mpo.reporting": {
+      "precondition": "measuring_point.changed",
+      "quote": "The MPO reports the implementation to the SP/PU/GO",
+      "status": "OK",
+      "reason": null
+    },
+    "mpo.notifying": {
+      "precondition": "measuring_point.failed_to_change",
+      "quote": "notifies the SP/PU/GO about the failure of the changes",
+      "status": "OK",
+      "reason": null
+    },
+    "measuring_point.changed": {
+      "precondition": "mpo.performing_change",
+      "quote": "The MPO performs the measuring point change.",
+      "status": "OK",
+      "reason": null
+    },
+    "measuring_point.failed_to_change": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    }
+  },
+  "precondition_cycles": [],
+  "branch_conflicts": [],
+  "reference_graph": {
+    "nodes": [
+      {
+        "id": "sp_pu_go_request.submitted",
+        "weight": 0.333
+      },
+      {
+        "id": "sp_pu_go_request.rejected",
+        "weight": 0.333
+      },
+      {
+        "id": "sp_pu_go_request.confirmed",
+        "weight": 0.667
+      },
+      {
+        "id": "mpo.reviewing",
+        "weight": 1.0
+      },
+      {
+        "id": "mpo.rejecting",
+        "weight": 0.667
+      },
+      {
+        "id": "mpo.confirming",
+        "weight": 0.667
+      },
+      {
+        "id": "mpo.performing_change",
+        "weight": 0.667
+      },
+      {
+        "id": "mpo.reporting",
+        "weight": 0.333
+      },
+      {
+        "id": "mpo.notifying",
+        "weight": 0.333
+      },
+      {
+        "id": "measuring_point.changed",
+        "weight": 0.667
+      },
+      {
+        "id": "measuring_point.failed_to_change",
+        "weight": 0.333
+      }
+    ],
+    "edges": [
+      {
+        "from": "mpo.rejecting",
+        "to": "sp_pu_go_request.rejected",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "The MPO rejects the change of the measuring point by the SP/PU/GO",
+        "negated": false
+      },
+      {
+        "from": "mpo.confirming",
+        "to": "sp_pu_go_request.confirmed",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "the MPO confirms the request of the SP/PU/GO",
+        "negated": false
+      },
+      {
+        "from": "sp_pu_go_request.submitted",
+        "to": "mpo.reviewing",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "The MPO reviews the change request.",
+        "negated": false
+      },
+      {
+        "from": "mpo.reviewing",
+        "to": "mpo.rejecting",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "The MPO rejects the change of the measuring point by the SP/PU/GO",
+        "negated": false
+      },
+      {
+        "from": "mpo.reviewing",
+        "to": "mpo.confirming",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "the MPO confirms the request of the SP/PU/GO",
+        "negated": false
+      },
+      {
+        "from": "sp_pu_go_request.confirmed",
+        "to": "mpo.performing_change",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "The MPO performs the measuring point change.",
+        "negated": false
+      },
+      {
+        "from": "measuring_point.changed",
+        "to": "mpo.reporting",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "The MPO reports the implementation to the SP/PU/GO",
+        "negated": false
+      },
+      {
+        "from": "measuring_point.failed_to_change",
+        "to": "mpo.notifying",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "notifies the SP/PU/GO about the failure of the changes",
+        "negated": false
+      },
+      {
+        "from": "mpo.performing_change",
+        "to": "measuring_point.changed",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "The MPO performs the measuring point change.",
+        "negated": false
+      }
+    ],
+    "cycles": [],
+    "branch_conflicts": [],
+    "exclusive_pairs": [
+      {
+        "entity": "sp_pu_go_request",
+        "nodes": [
+          "sp_pu_go_request.rejected",
+          "sp_pu_go_request.confirmed"
+        ]
+      },
+      {
+        "entity": "measuring_point",
+        "nodes": [
+          "measuring_point.changed",
+          "measuring_point.failed_to_change"
+        ]
+      }
+    ]
+  },
+  "dfg_edges": [
+    {
+      "source_id": "Task_3",
+      "source_label": "Cause change by itself",
+      "target_id": "Task_5",
+      "target_label": "Review",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_1",
+      "source_label": "Confirm the request",
+      "target_id": "Task_2",
+      "target_label": "Perform the measuring point change",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_5",
+      "source_label": "Review",
+      "target_id": "Task_0",
+      "target_label": "Reject the request",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_5",
+      "source_label": "Review",
+      "target_id": "Task_1",
+      "target_label": "Confirm the request",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_2",
+      "source_label": "Perform the measuring point change",
+      "target_id": "Task_6",
+      "target_label": "Send implementation report",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_2",
+      "source_label": "Perform the measuring point change",
+      "target_id": "Task_7",
+      "target_label": "Inform about failure of the changes",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_4",
+      "source_label": "Request a change",
+      "target_id": "Task_5",
+      "target_label": "Review",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "Cause change by itself",
+      "subject_id": "Task_3",
+      "predicate": "follows",
+      "object": "Review",
+      "object_id": "Task_5"
+    },
+    {
+      "subject": "Confirm the request",
+      "subject_id": "Task_1",
+      "predicate": "follows",
+      "object": "Perform the measuring point change",
+      "object_id": "Task_2"
+    },
+    {
+      "subject": "Review",
+      "subject_id": "Task_5",
+      "predicate": "follows",
+      "object": "Reject the request",
+      "object_id": "Task_0"
+    },
+    {
+      "subject": "Review",
+      "subject_id": "Task_5",
+      "predicate": "follows",
+      "object": "Confirm the request",
+      "object_id": "Task_1"
+    },
+    {
+      "subject": "Perform the measuring point change",
+      "subject_id": "Task_2",
+      "predicate": "follows",
+      "object": "Send implementation report",
+      "object_id": "Task_6"
+    },
+    {
+      "subject": "Perform the measuring point change",
+      "subject_id": "Task_2",
+      "predicate": "follows",
+      "object": "Inform about failure of the changes",
+      "object_id": "Task_7"
+    },
+    {
+      "subject": "Request a change",
+      "subject_id": "Task_4",
+      "predicate": "follows",
+      "object": "Review",
+      "object_id": "Task_5"
+    }
+  ],
+  "matches": {
+    "Task_3": {
+      "activity_label": "Cause change by itself",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_5": {
+      "activity_label": "Review",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_1": {
+      "activity_label": "Confirm the request",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_2": {
+      "activity_label": "Perform the measuring point change",
+      "matches": [
+        {
+          "match": "measuring_point.failed_to_change",
+          "score": 0.5126
+        },
+        {
+          "match": "measuring_point.changed",
+          "score": 0.485
+        }
+      ],
+      "clusters": [
+        [
+          "measuring_point.failed_to_change"
+        ],
+        [
+          "measuring_point.changed"
+        ]
+      ]
+    },
+    "Task_0": {
+      "activity_label": "Reject the request",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_6": {
+      "activity_label": "Send implementation report",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_7": {
+      "activity_label": "Inform about failure of the changes",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_4": {
+      "activity_label": "Request a change",
+      "matches": [],
+      "clusters": []
+    }
+  },
+  "process_graph": [],
+  "alignment": {
+    "sp_pu_go_request.rejected": {
+      "operator": "AND",
+      "quote": "The MPO rejects the change of the measuring point by the SP/PU/GO",
+      "terms": [
+        {
+          "term": "mpo.rejecting",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['mpo.rejecting', 'sp_pu_go_request.rejected']",
+          "missing": [
+            "mpo.rejecting",
+            "sp_pu_go_request.rejected"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "mpo.rejecting"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "sp_pu_go_request.confirmed": {
+      "operator": "AND",
+      "quote": "the MPO confirms the request of the SP/PU/GO",
+      "terms": [
+        {
+          "term": "mpo.confirming",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['mpo.confirming', 'sp_pu_go_request.confirmed']",
+          "missing": [
+            "mpo.confirming",
+            "sp_pu_go_request.confirmed"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "mpo.confirming"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "mpo.reviewing": {
+      "operator": "AND",
+      "quote": "The MPO reviews the change request.",
+      "terms": [
+        {
+          "term": "sp_pu_go_request.submitted",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['sp_pu_go_request.submitted', 'mpo.reviewing']",
+          "missing": [
+            "sp_pu_go_request.submitted",
+            "mpo.reviewing"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "sp_pu_go_request.submitted"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "mpo.rejecting": {
+      "operator": "AND",
+      "quote": "The MPO rejects the change of the measuring point by the SP/PU/GO",
+      "terms": [
+        {
+          "term": "mpo.reviewing",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['mpo.reviewing', 'mpo.rejecting']",
+          "missing": [
+            "mpo.reviewing",
+            "mpo.rejecting"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "mpo.reviewing"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "mpo.confirming": {
+      "operator": "AND",
+      "quote": "the MPO confirms the request of the SP/PU/GO",
+      "terms": [
+        {
+          "term": "mpo.reviewing",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['mpo.reviewing', 'mpo.confirming']",
+          "missing": [
+            "mpo.reviewing",
+            "mpo.confirming"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "mpo.reviewing"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "mpo.performing_change": {
+      "operator": "AND",
+      "quote": "The MPO performs the measuring point change.",
+      "terms": [
+        {
+          "term": "sp_pu_go_request.confirmed",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['sp_pu_go_request.confirmed', 'mpo.performing_change']",
+          "missing": [
+            "sp_pu_go_request.confirmed",
+            "mpo.performing_change"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "sp_pu_go_request.confirmed"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "mpo.reporting": {
+      "operator": "AND",
+      "quote": "The MPO reports the implementation to the SP/PU/GO",
+      "terms": [
+        {
+          "term": "measuring_point.changed",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['mpo.reporting']",
+          "missing": [
+            "mpo.reporting"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "measuring_point.changed"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "mpo.notifying": {
+      "operator": "AND",
+      "quote": "notifies the SP/PU/GO about the failure of the changes",
+      "terms": [
+        {
+          "term": "measuring_point.failed_to_change",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['mpo.notifying']",
+          "missing": [
+            "mpo.notifying"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "measuring_point.failed_to_change"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "measuring_point.changed": {
+      "operator": "AND",
+      "quote": "The MPO performs the measuring point change.",
+      "terms": [
+        {
+          "term": "mpo.performing_change",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['mpo.performing_change']",
+          "missing": [
+            "mpo.performing_change"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "mpo.performing_change"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    }
+  },
+  "report": {
+    "verdict": {
+      "verdict": "FAITHFUL_WITH_RESERVATIONS",
+      "justification": "No gap found, but 3 requirement(s) from the text could not be associated with any clear activity in the observed process -- neither confirmed nor refuted. This verdict is NOT a confirmation of full faithfulness.",
+      "scope": "This verdict covers the causal reachability of the requirements expressed in the source text, not the general quality of the process model -- a multiplicity defect (an activity executed more than once due to a mismatched branching structure) is not covered by this verdict, even if the process is otherwise well-formed."
+    },
+    "summary": {
+      "ecarts": 0,
+      "non_verifiable": 3,
+      "conforme": 0
+    },
+    "ecarts": [],
+    "non_verifiable": [
+      {
+        "root_cause": "sp pu go request submitted",
+        "quote": "The MPO rejects the change of the measuring point by the SP/PU/GO",
+        "explanation": "The activity \"sp pu go request rejected\" can only happen if the request was first submitted, but the process does not clearly show when or how this submission occurs. The source text states: \"The MPO rejects the change of the measuring point by the SP/PU/GO,\" which confirms that a condition is required, but does not explain what that condition is. Without knowing when the request is submitted, we cannot check if this step follows the correct order. (This same root cause also affects: Perform the measuring point change, mpo confirming, mpo performing change, mpo rejecting, mpo reviewing, sp pu go request confirmed.)",
+        "quote_verbatim": true,
+        "affected_activities": [
+          "Perform the measuring point change",
+          "mpo confirming",
+          "mpo performing change",
+          "mpo rejecting",
+          "mpo reviewing",
+          "sp pu go request confirmed",
+          "sp pu go request rejected"
+        ],
+        "affected_count": 13
+      },
+      {
+        "root_cause": "mpo reporting",
+        "quote": "The MPO reports the implementation to the SP/PU/GO",
+        "explanation": "The requirement states that \"The MPO reports the implementation to the SP/PU/GO\" before the activity \"mpo reporting\" can occur. However, the observed process does not clearly show when or how this condition is met, making it impossible to confirm whether this step was properly followed.",
+        "quote_verbatim": true,
+        "affected_activities": [
+          "mpo reporting"
+        ],
+        "affected_count": 1
+      },
+      {
+        "root_cause": "mpo notifying",
+        "quote": "notifies the SP/PU/GO about the failure of the changes",
+        "explanation": "The requirement states that \"mpo notifying\" can only occur if a specific condition is met, as indicated by the quote: \"notifies the SP/PU/GO about the failure of the changes.\" However, the observed process does not clearly show any activity that would confirm whether this condition has been met. Because of this missing information, it is impossible to determine if the requirement is being followed or not.",
+        "quote_verbatim": true,
+        "affected_activities": [
+          "mpo notifying"
+        ],
+        "affected_count": 1
+      }
+    ],
+    "conforme": [],
+    "piece_jointe_alignement_brut": {
+      "sp_pu_go_request.rejected": {
+        "operator": "AND",
+        "quote": "The MPO rejects the change of the measuring point by the SP/PU/GO",
+        "terms": [
+          {
+            "term": "mpo.rejecting",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['mpo.rejecting', 'sp_pu_go_request.rejected']",
+            "missing": [
+              "mpo.rejecting",
+              "sp_pu_go_request.rejected"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "mpo.rejecting"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "sp_pu_go_request.confirmed": {
+        "operator": "AND",
+        "quote": "the MPO confirms the request of the SP/PU/GO",
+        "terms": [
+          {
+            "term": "mpo.confirming",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['mpo.confirming', 'sp_pu_go_request.confirmed']",
+            "missing": [
+              "mpo.confirming",
+              "sp_pu_go_request.confirmed"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "mpo.confirming"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "mpo.reviewing": {
+        "operator": "AND",
+        "quote": "The MPO reviews the change request.",
+        "terms": [
+          {
+            "term": "sp_pu_go_request.submitted",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['sp_pu_go_request.submitted', 'mpo.reviewing']",
+            "missing": [
+              "sp_pu_go_request.submitted",
+              "mpo.reviewing"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "sp_pu_go_request.submitted"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "mpo.rejecting": {
+        "operator": "AND",
+        "quote": "The MPO rejects the change of the measuring point by the SP/PU/GO",
+        "terms": [
+          {
+            "term": "mpo.reviewing",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['mpo.reviewing', 'mpo.rejecting']",
+            "missing": [
+              "mpo.reviewing",
+              "mpo.rejecting"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "mpo.reviewing"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "mpo.confirming": {
+        "operator": "AND",
+        "quote": "the MPO confirms the request of the SP/PU/GO",
+        "terms": [
+          {
+            "term": "mpo.reviewing",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['mpo.reviewing', 'mpo.confirming']",
+            "missing": [
+              "mpo.reviewing",
+              "mpo.confirming"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "mpo.reviewing"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "mpo.performing_change": {
+        "operator": "AND",
+        "quote": "The MPO performs the measuring point change.",
+        "terms": [
+          {
+            "term": "sp_pu_go_request.confirmed",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['sp_pu_go_request.confirmed', 'mpo.performing_change']",
+            "missing": [
+              "sp_pu_go_request.confirmed",
+              "mpo.performing_change"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "sp_pu_go_request.confirmed"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "mpo.reporting": {
+        "operator": "AND",
+        "quote": "The MPO reports the implementation to the SP/PU/GO",
+        "terms": [
+          {
+            "term": "measuring_point.changed",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['mpo.reporting']",
+            "missing": [
+              "mpo.reporting"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "measuring_point.changed"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "mpo.notifying": {
+        "operator": "AND",
+        "quote": "notifies the SP/PU/GO about the failure of the changes",
+        "terms": [
+          {
+            "term": "measuring_point.failed_to_change",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['mpo.notifying']",
+            "missing": [
+              "mpo.notifying"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "measuring_point.failed_to_change"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "measuring_point.changed": {
+        "operator": "AND",
+        "quote": "The MPO performs the measuring point change.",
+        "terms": [
+          {
+            "term": "mpo.performing_change",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['mpo.performing_change']",
+            "missing": [
+              "mpo.performing_change"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "mpo.performing_change"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      }
+    }
+  },
+  "errors": []
+}

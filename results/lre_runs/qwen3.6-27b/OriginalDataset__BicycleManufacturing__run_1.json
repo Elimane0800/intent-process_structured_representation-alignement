@@ -1,0 +1,1198 @@
+{
+  "case_name": "OriginalDataset/BicycleManufacturing",
+  "text": "A small company manufactures customized bicycles. Whenever the sales department receives an order, a new process instance is created. A member of the sales department can then reject or accept the order for a customized bike. In the former case, the process instance is finished. In the latter case, the storehouse and the engineering department are informed. The storehouse immediately processes the part list of the order and checks the required quantity of each part. If the part is available in-house, it is reserved. If it is not available, it is back-ordered. This procedure is repeated for each item on the part list. In the meantime, the engineering department prepares everything for the assembling of the ordered bicycle. If the storehouse has successfully reserved or back-ordered every item of the part list and the preparation activity has finished, the engineering department assembles the bicycle. Afterwards, the sales department ships the bicycle to the customer and finishes the process instance.\n",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "qwen3.6-27b",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "qwen3.6-27b",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/../datasets/lre/alignment_model_text-master/datasets/OriginalDataset/Models/BicycleManufacturing.bpmn",
+  "report_model": "qwen3.6-27b",
+  "candidates": {
+    "process_instance": {
+      "states": [
+        "created",
+        "finished"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "order": {
+      "states": [
+        "received",
+        "rejected",
+        "accepted"
+      ],
+      "exclusive_groups": [
+        [
+          "rejected",
+          "accepted"
+        ]
+      ],
+      "concurrent_with": []
+    },
+    "part": {
+      "states": [
+        "available",
+        "reserved",
+        "back-ordered"
+      ],
+      "exclusive_groups": [
+        [
+          "available",
+          "back-ordered"
+        ]
+      ],
+      "concurrent_with": []
+    },
+    "part_list": {
+      "states": [
+        "processed",
+        "complete"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": [
+        "preparation_activity"
+      ]
+    },
+    "preparation_activity": {
+      "states": [
+        "finished"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": [
+        "part_list"
+      ]
+    },
+    "bicycle": {
+      "states": [
+        "assembled",
+        "shipped"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    }
+  },
+  "validation_report": {
+    "process_instance": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "instance"
+    },
+    "order": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "order"
+    },
+    "part": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "part"
+    },
+    "part_list": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "list"
+    },
+    "preparation_activity": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "activity"
+    },
+    "bicycle": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "bicycle"
+    },
+    "__meta__": {
+      "total_candidates": 6,
+      "indeterminate_kept_count": 0
+    }
+  },
+  "exclusive_groups_report": {
+    "accepted": [
+      {
+        "entity": "order",
+        "states": [
+          "rejected",
+          "accepted"
+        ],
+        "quote": "reject or accept the order"
+      },
+      {
+        "entity": "part",
+        "states": [
+          "available",
+          "back-ordered"
+        ],
+        "quote": "If the part is available... If it is not available, it is back-ordered"
+      }
+    ],
+    "rejected": []
+  },
+  "state_space": {
+    "process_instance": {
+      "states": [
+        "created",
+        "finished"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "order": {
+      "states": [
+        "received",
+        "rejected",
+        "accepted"
+      ],
+      "exclusive_groups": [
+        [
+          "rejected",
+          "accepted"
+        ]
+      ],
+      "concurrent_with": []
+    },
+    "part": {
+      "states": [
+        "available",
+        "reserved",
+        "back-ordered"
+      ],
+      "exclusive_groups": [
+        [
+          "available",
+          "back-ordered"
+        ]
+      ],
+      "concurrent_with": []
+    },
+    "part_list": {
+      "states": [
+        "processed",
+        "complete"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": [
+        "preparation_activity"
+      ]
+    },
+    "preparation_activity": {
+      "states": [
+        "finished"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": [
+        "part_list"
+      ]
+    },
+    "bicycle": {
+      "states": [
+        "assembled",
+        "shipped"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    }
+  },
+  "state_space_dedup": {
+    "merged": {},
+    "ambiguous_not_merged": {}
+  },
+  "raw_preconditions": {
+    "process_instance.created": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "process_instance.finished": {
+      "precondition": "order.rejected OR bicycle.shipped",
+      "quote": "In the former case, the process instance is finished. ... Afterwards, the sales department ships the bicycle to the customer and finishes the process instance."
+    },
+    "order.received": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "order.rejected": {
+      "precondition": "order.received",
+      "quote": "Whenever the sales department receives an order, a new process instance is created. A member of the sales department can then reject or accept the order for a customized bike."
+    },
+    "order.accepted": {
+      "precondition": "order.received",
+      "quote": "Whenever the sales department receives an order, a new process instance is created. A member of the sales department can then reject or accept the order for a customized bike."
+    },
+    "part.available": {
+      "precondition": "UNRESOLVED",
+      "quote": null
+    },
+    "part.reserved": {
+      "precondition": "part.available",
+      "quote": "If the part is available in-house, it is reserved."
+    },
+    "part.back-ordered": {
+      "precondition": "NOT part.available",
+      "quote": "If it is not available, it is back-ordered."
+    },
+    "part_list.processed": {
+      "precondition": "order.accepted",
+      "quote": "In the latter case, the storehouse and the engineering department are informed. The storehouse immediately processes the part list of the order"
+    },
+    "part_list.complete": {
+      "precondition": "part_list.processed",
+      "quote": "This procedure is repeated for each item on the part list."
+    },
+    "preparation_activity.finished": {
+      "precondition": "order.accepted",
+      "quote": "In the meantime, the engineering department prepares everything for the assembling of the ordered bicycle."
+    },
+    "bicycle.assembled": {
+      "precondition": "part_list.complete AND preparation_activity.finished",
+      "quote": "If the storehouse has successfully reserved or back-ordered every item of the part list and the preparation activity has finished, the engineering department assembles the bicycle."
+    },
+    "bicycle.shipped": {
+      "precondition": "bicycle.assembled",
+      "quote": "Afterwards, the sales department ships the bicycle to the customer"
+    }
+  },
+  "validated_preconditions": {
+    "process_instance.created": {
+      "precondition": "INITIAL",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "process_instance.finished": {
+      "precondition": "order.rejected OR (part_list.complete AND preparation_activity.finished AND bicycle.assembled AND bicycle.shipped)",
+      "quote": [
+        "In the former case, the process instance is finished.",
+        "If the storehouse has successfully reserved or back-ordered every item of the part list and the preparation activity has finished, the engineering department assembles the bicycle.",
+        "Afterwards, the sales department ships the bicycle to the customer and finishes the process instance."
+      ],
+      "status": "OK",
+      "reason": null,
+      "retried": true
+    },
+    "order.received": {
+      "precondition": "INITIAL",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "order.rejected": {
+      "precondition": "order.received",
+      "quote": "Whenever the sales department receives an order, a new process instance is created. A member of the sales department can then reject or accept the order for a customized bike.",
+      "status": "OK",
+      "reason": null
+    },
+    "order.accepted": {
+      "precondition": "order.received",
+      "quote": "Whenever the sales department receives an order, a new process instance is created. A member of the sales department can then reject or accept the order for a customized bike.",
+      "status": "OK",
+      "reason": null
+    },
+    "part.available": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "part.reserved": {
+      "precondition": "part.available",
+      "quote": "If the part is available in-house, it is reserved.",
+      "status": "OK",
+      "reason": null
+    },
+    "part.back-ordered": {
+      "precondition": "NOT part.available",
+      "quote": "If it is not available, it is back-ordered.",
+      "status": "OK",
+      "reason": null
+    },
+    "part_list.processed": {
+      "precondition": "order.accepted",
+      "quote": "In the latter case, the storehouse and the engineering department are informed. The storehouse immediately processes the part list of the order",
+      "status": "OK",
+      "reason": null
+    },
+    "part_list.complete": {
+      "precondition": "part_list.processed",
+      "quote": "This procedure is repeated for each item on the part list.",
+      "status": "OK",
+      "reason": null
+    },
+    "preparation_activity.finished": {
+      "precondition": "order.accepted",
+      "quote": "In the meantime, the engineering department prepares everything for the assembling of the ordered bicycle.",
+      "status": "OK",
+      "reason": null
+    },
+    "bicycle.assembled": {
+      "precondition": "part_list.complete AND preparation_activity.finished",
+      "quote": "If the storehouse has successfully reserved or back-ordered every item of the part list and the preparation activity has finished, the engineering department assembles the bicycle.",
+      "status": "OK",
+      "reason": null
+    },
+    "bicycle.shipped": {
+      "precondition": "bicycle.assembled",
+      "quote": "Afterwards, the sales department ships the bicycle to the customer",
+      "status": "OK",
+      "reason": null
+    }
+  },
+  "precondition_cycles": [],
+  "branch_conflicts": [
+    {
+      "entity": "order",
+      "exclusive_group": [
+        "rejected",
+        "accepted"
+      ],
+      "conflicting_targets": [
+        "order.rejected",
+        "order.accepted"
+      ],
+      "shared_precondition": "order.received",
+      "reason": "targets marked mutually exclusive in the state space share the exact same accepted precondition -- reaching it would trigger both branches at once"
+    }
+  ],
+  "reference_graph": {
+    "nodes": [
+      {
+        "id": "process_instance.created",
+        "weight": 0.0
+      },
+      {
+        "id": "process_instance.finished",
+        "weight": 1.0
+      },
+      {
+        "id": "order.received",
+        "weight": 0.4
+      },
+      {
+        "id": "order.rejected",
+        "weight": 0.4
+      },
+      {
+        "id": "order.accepted",
+        "weight": 0.6
+      },
+      {
+        "id": "part.available",
+        "weight": 0.4
+      },
+      {
+        "id": "part.reserved",
+        "weight": 0.2
+      },
+      {
+        "id": "part.back-ordered",
+        "weight": 0.2
+      },
+      {
+        "id": "part_list.processed",
+        "weight": 0.4
+      },
+      {
+        "id": "part_list.complete",
+        "weight": 0.6
+      },
+      {
+        "id": "preparation_activity.finished",
+        "weight": 0.6
+      },
+      {
+        "id": "bicycle.assembled",
+        "weight": 0.8
+      },
+      {
+        "id": "bicycle.shipped",
+        "weight": 0.4
+      }
+    ],
+    "edges": [
+      {
+        "from": "order.rejected",
+        "to": "process_instance.finished",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": [
+          "In the former case, the process instance is finished.",
+          "If the storehouse has successfully reserved or back-ordered every item of the part list and the preparation activity has finished, the engineering department assembles the bicycle.",
+          "Afterwards, the sales department ships the bicycle to the customer and finishes the process instance."
+        ],
+        "negated": false
+      },
+      {
+        "from": "part_list.complete",
+        "to": "process_instance.finished",
+        "clause": 1,
+        "type": "cross_entity_guard",
+        "quote": [
+          "In the former case, the process instance is finished.",
+          "If the storehouse has successfully reserved or back-ordered every item of the part list and the preparation activity has finished, the engineering department assembles the bicycle.",
+          "Afterwards, the sales department ships the bicycle to the customer and finishes the process instance."
+        ],
+        "negated": false
+      },
+      {
+        "from": "preparation_activity.finished",
+        "to": "process_instance.finished",
+        "clause": 1,
+        "type": "cross_entity_guard",
+        "quote": [
+          "In the former case, the process instance is finished.",
+          "If the storehouse has successfully reserved or back-ordered every item of the part list and the preparation activity has finished, the engineering department assembles the bicycle.",
+          "Afterwards, the sales department ships the bicycle to the customer and finishes the process instance."
+        ],
+        "negated": false
+      },
+      {
+        "from": "bicycle.assembled",
+        "to": "process_instance.finished",
+        "clause": 1,
+        "type": "cross_entity_guard",
+        "quote": [
+          "In the former case, the process instance is finished.",
+          "If the storehouse has successfully reserved or back-ordered every item of the part list and the preparation activity has finished, the engineering department assembles the bicycle.",
+          "Afterwards, the sales department ships the bicycle to the customer and finishes the process instance."
+        ],
+        "negated": false
+      },
+      {
+        "from": "bicycle.shipped",
+        "to": "process_instance.finished",
+        "clause": 1,
+        "type": "cross_entity_guard",
+        "quote": [
+          "In the former case, the process instance is finished.",
+          "If the storehouse has successfully reserved or back-ordered every item of the part list and the preparation activity has finished, the engineering department assembles the bicycle.",
+          "Afterwards, the sales department ships the bicycle to the customer and finishes the process instance."
+        ],
+        "negated": false
+      },
+      {
+        "from": "order.received",
+        "to": "order.rejected",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "Whenever the sales department receives an order, a new process instance is created. A member of the sales department can then reject or accept the order for a customized bike.",
+        "negated": false
+      },
+      {
+        "from": "order.received",
+        "to": "order.accepted",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "Whenever the sales department receives an order, a new process instance is created. A member of the sales department can then reject or accept the order for a customized bike.",
+        "negated": false
+      },
+      {
+        "from": "part.available",
+        "to": "part.reserved",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "If the part is available in-house, it is reserved.",
+        "negated": false
+      },
+      {
+        "from": "part.available",
+        "to": "part.back-ordered",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "If it is not available, it is back-ordered.",
+        "negated": true
+      },
+      {
+        "from": "order.accepted",
+        "to": "part_list.processed",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "In the latter case, the storehouse and the engineering department are informed. The storehouse immediately processes the part list of the order",
+        "negated": false
+      },
+      {
+        "from": "part_list.processed",
+        "to": "part_list.complete",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "This procedure is repeated for each item on the part list.",
+        "negated": false
+      },
+      {
+        "from": "order.accepted",
+        "to": "preparation_activity.finished",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "In the meantime, the engineering department prepares everything for the assembling of the ordered bicycle.",
+        "negated": false
+      },
+      {
+        "from": "part_list.complete",
+        "to": "bicycle.assembled",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "If the storehouse has successfully reserved or back-ordered every item of the part list and the preparation activity has finished, the engineering department assembles the bicycle.",
+        "negated": false
+      },
+      {
+        "from": "preparation_activity.finished",
+        "to": "bicycle.assembled",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "If the storehouse has successfully reserved or back-ordered every item of the part list and the preparation activity has finished, the engineering department assembles the bicycle.",
+        "negated": false
+      },
+      {
+        "from": "bicycle.assembled",
+        "to": "bicycle.shipped",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "Afterwards, the sales department ships the bicycle to the customer",
+        "negated": false
+      }
+    ],
+    "cycles": [],
+    "branch_conflicts": [
+      {
+        "entity": "order",
+        "exclusive_group": [
+          "rejected",
+          "accepted"
+        ],
+        "conflicting_targets": [
+          "order.rejected",
+          "order.accepted"
+        ],
+        "shared_precondition": "order.received",
+        "reason": "targets marked mutually exclusive in the state space share the exact same accepted precondition -- reaching it would trigger both branches at once"
+      }
+    ],
+    "exclusive_pairs": [
+      {
+        "entity": "order",
+        "nodes": [
+          "order.rejected",
+          "order.accepted"
+        ]
+      },
+      {
+        "entity": "part",
+        "nodes": [
+          "part.available",
+          "part.back-ordered"
+        ]
+      }
+    ]
+  },
+  "dfg_edges": [
+    {
+      "source_id": "Task_5",
+      "source_label": "Check part quantity",
+      "target_id": "Task_7",
+      "target_label": "Reserve part",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_5",
+      "source_label": "Check part quantity",
+      "target_id": "Task_6",
+      "target_label": "Back-order part",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_8",
+      "source_label": "Select unchecked part",
+      "target_id": "Task_5",
+      "target_label": "Check part quantity",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_0",
+      "source_label": "Prepare for assembling",
+      "target_id": "Task_1",
+      "target_label": "Assemble bicycle",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "Task_3",
+      "source_label": "Inform storehouse and engineering department",
+      "target_id": "Task_0",
+      "target_label": "Prepare for assembling",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "Task_3",
+      "source_label": "Inform storehouse and engineering department",
+      "target_id": "Task_5",
+      "target_label": "Check part quantity",
+      "gateway_context": [
+        "ParallelGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_6",
+      "source_label": "Back-order part",
+      "target_id": "Task_1",
+      "target_label": "Assemble bicycle",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "Task_6",
+      "source_label": "Back-order part",
+      "target_id": "Task_8",
+      "target_label": "Select unchecked part",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_1",
+      "source_label": "Assemble bicycle",
+      "target_id": "Task_4",
+      "target_label": "Ship bicycle to customer",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_7",
+      "source_label": "Reserve part",
+      "target_id": "Task_1",
+      "target_label": "Assemble bicycle",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "Task_7",
+      "source_label": "Reserve part",
+      "target_id": "Task_8",
+      "target_label": "Select unchecked part",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_2",
+      "source_label": "Receive order",
+      "target_id": "Task_3",
+      "target_label": "Inform storehouse and engineering department",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "Check part quantity",
+      "subject_id": "Task_5",
+      "predicate": "follows",
+      "object": "Reserve part",
+      "object_id": "Task_7"
+    },
+    {
+      "subject": "Check part quantity",
+      "subject_id": "Task_5",
+      "predicate": "follows",
+      "object": "Back-order part",
+      "object_id": "Task_6"
+    },
+    {
+      "subject": "Select unchecked part",
+      "subject_id": "Task_8",
+      "predicate": "follows",
+      "object": "Check part quantity",
+      "object_id": "Task_5"
+    },
+    {
+      "subject": "Prepare for assembling",
+      "subject_id": "Task_0",
+      "predicate": "follows",
+      "object": "Assemble bicycle",
+      "object_id": "Task_1"
+    },
+    {
+      "subject": "Inform storehouse and engineering department",
+      "subject_id": "Task_3",
+      "predicate": "follows",
+      "object": "Prepare for assembling",
+      "object_id": "Task_0"
+    },
+    {
+      "subject": "Inform storehouse and engineering department",
+      "subject_id": "Task_3",
+      "predicate": "follows",
+      "object": "Check part quantity",
+      "object_id": "Task_5"
+    },
+    {
+      "subject": "Back-order part",
+      "subject_id": "Task_6",
+      "predicate": "follows",
+      "object": "Assemble bicycle",
+      "object_id": "Task_1"
+    },
+    {
+      "subject": "Back-order part",
+      "subject_id": "Task_6",
+      "predicate": "follows",
+      "object": "Select unchecked part",
+      "object_id": "Task_8"
+    },
+    {
+      "subject": "Assemble bicycle",
+      "subject_id": "Task_1",
+      "predicate": "follows",
+      "object": "Ship bicycle to customer",
+      "object_id": "Task_4"
+    },
+    {
+      "subject": "Reserve part",
+      "subject_id": "Task_7",
+      "predicate": "follows",
+      "object": "Assemble bicycle",
+      "object_id": "Task_1"
+    },
+    {
+      "subject": "Reserve part",
+      "subject_id": "Task_7",
+      "predicate": "follows",
+      "object": "Select unchecked part",
+      "object_id": "Task_8"
+    },
+    {
+      "subject": "Receive order",
+      "subject_id": "Task_2",
+      "predicate": "follows",
+      "object": "Inform storehouse and engineering department",
+      "object_id": "Task_3"
+    }
+  ],
+  "matches": {
+    "Task_5": {
+      "activity_label": "Check part quantity",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_7": {
+      "activity_label": "Reserve part",
+      "matches": [
+        {
+          "match": "part.reserved",
+          "score": 0.4526
+        }
+      ],
+      "clusters": [
+        [
+          "part.reserved"
+        ]
+      ]
+    },
+    "Task_6": {
+      "activity_label": "Back-order part",
+      "matches": [
+        {
+          "match": "part.back-ordered",
+          "score": 0.4759
+        }
+      ],
+      "clusters": [
+        [
+          "part.back-ordered"
+        ]
+      ]
+    },
+    "Task_8": {
+      "activity_label": "Select unchecked part",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_0": {
+      "activity_label": "Prepare for assembling",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_1": {
+      "activity_label": "Assemble bicycle",
+      "matches": [
+        {
+          "match": "bicycle.assembled",
+          "score": 0.417
+        }
+      ],
+      "clusters": [
+        [
+          "bicycle.assembled"
+        ]
+      ]
+    },
+    "Task_3": {
+      "activity_label": "Inform storehouse and engineering department",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_4": {
+      "activity_label": "Ship bicycle to customer",
+      "matches": [
+        {
+          "match": "bicycle.shipped",
+          "score": 0.7223
+        }
+      ],
+      "clusters": [
+        [
+          "bicycle.shipped"
+        ]
+      ]
+    },
+    "Task_2": {
+      "activity_label": "Receive order",
+      "matches": [
+        {
+          "match": "order.received",
+          "score": 0.4193
+        }
+      ],
+      "clusters": [
+        [
+          "order.received"
+        ]
+      ]
+    }
+  },
+  "process_graph": [
+    {
+      "from": "part.back-ordered",
+      "to": "bicycle.assembled",
+      "activity_from": "Back-order part",
+      "activity_to": "Assemble bicycle",
+      "source_id": "Task_6",
+      "target_id": "Task_1"
+    },
+    {
+      "from": "bicycle.assembled",
+      "to": "bicycle.shipped",
+      "activity_from": "Assemble bicycle",
+      "activity_to": "Ship bicycle to customer",
+      "source_id": "Task_1",
+      "target_id": "Task_4"
+    },
+    {
+      "from": "part.reserved",
+      "to": "bicycle.assembled",
+      "activity_from": "Reserve part",
+      "activity_to": "Assemble bicycle",
+      "source_id": "Task_7",
+      "target_id": "Task_1"
+    }
+  ],
+  "alignment": {
+    "process_instance.finished": {
+      "operator": "MIXED",
+      "quote": [
+        "In the former case, the process instance is finished.",
+        "If the storehouse has successfully reserved or back-ordered every item of the part list and the preparation activity has finished, the engineering department assembles the bicycle.",
+        "Afterwards, the sales department ships the bicycle to the customer and finishes the process instance."
+      ],
+      "terms": [
+        {
+          "term": "order.rejected",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['order.rejected', 'process_instance.finished']",
+          "missing": [
+            "order.rejected",
+            "process_instance.finished"
+          ]
+        },
+        {
+          "term": "part_list.complete",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['part_list.complete', 'process_instance.finished']",
+          "missing": [
+            "part_list.complete",
+            "process_instance.finished"
+          ]
+        },
+        {
+          "term": "preparation_activity.finished",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['preparation_activity.finished', 'process_instance.finished']",
+          "missing": [
+            "preparation_activity.finished",
+            "process_instance.finished"
+          ]
+        },
+        {
+          "term": "bicycle.assembled",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['process_instance.finished']",
+          "missing": [
+            "process_instance.finished"
+          ]
+        },
+        {
+          "term": "bicycle.shipped",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['process_instance.finished']",
+          "missing": [
+            "process_instance.finished"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "order.rejected"
+          ],
+          "status": "UNRESOLVABLE"
+        },
+        {
+          "terms": [
+            "part_list.complete",
+            "preparation_activity.finished",
+            "bicycle.assembled",
+            "bicycle.shipped"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "order.rejected": {
+      "operator": "AND",
+      "quote": "Whenever the sales department receives an order, a new process instance is created. A member of the sales department can then reject or accept the order for a customized bike.",
+      "terms": [
+        {
+          "term": "order.received",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['order.rejected']",
+          "missing": [
+            "order.rejected"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "order.received"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "order.accepted": {
+      "operator": "AND",
+      "quote": "Whenever the sales department receives an order, a new process instance is created. A member of the sales department can then reject or accept the order for a customized bike.",
+      "terms": [
+        {
+          "term": "order.received",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['order.accepted']",
+          "missing": [
+            "order.accepted"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "order.received"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "part.reserved": {
+      "operator": "AND",
+      "quote": "If the part is available in-house, it is reserved.",
+      "terms": [
+        {
+          "term": "part.available",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['part.available']",
+          "missing": [
+            "part.available"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "part.available"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "part.back-ordered": {
+      "operator": "AND",
+      "quote": "If it is not available, it is back-ordered.",
+      "terms": [
+        {
+          "term": "NOT part.available",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['part.available']",
+          "missing": [
+            "part.available"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "NOT part.available"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "part_list.processed": {
+      "operator": "AND",
+      "quote": "In the latter case, the storehouse and the engineering department are informed. The storehouse immediately processes the part list of the order",
+      "terms": [
+        {
+          "term": "order.accepted",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['order.accepted', 'part_list.processed']",
+          "missing": [
+            "order.accepted",
+            "part_list.processed"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "order.accepted"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "part_list.complete": {
+      "operator": "AND",
+      "quote": "This procedure is repeated for each item on the part list.",
+      "terms": [
+        {
+          "term": "part_list.processed",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['part_list.processed', 'part_list.complete']",
+          "missing": [
+            "part_list.processed",
+            "part_list.complete"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "part_list.processed"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "preparation_activity.finished": {
+      "operator": "AND",
+      "quote": "In the meantime, the engineering department prepares everything for the assembling of the ordered bicycle.",
+      "terms": [
+        {
+          "term": "order.accepted",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['order.accepted', 'preparation_activity.finished']",
+          "missing": [
+            "order.accepted",
+            "preparation_activity.finished"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "order.accepted"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "bicycle.assembled": {
+      "operator": "AND",
+      "quote": "If the storehouse has successfully reserved or back-ordered every item of the part list and the preparation activity has finished, the engineering department assembles the bicycle.",
+      "terms": [
+        {
+          "term": "part_list.complete",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['part_list.complete']",
+          "missing": [
+            "part_list.complete"
+          ]
+        },
+        {
+          "term": "preparation_activity.finished",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['preparation_activity.finished']",
+          "missing": [
+            "preparation_activity.finished"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "part_list.complete",
+            "preparation_activity.finished"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "bicycle.shipped": {
+      "operator": "AND",
+      "quote": "Afterwards, the sales department ships the bicycle to the customer",
+      "terms": [
+        {
+          "term": "bicycle.assembled",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED",
+      "clauses": [
+        {
+          "terms": [
+            "bicycle.assembled"
+          ],
+          "status": "SATISFIED"
+        }
+      ]
+    }
+  },
+  "errors": [
+    "report: 'list' object has no attribute 'split'"
+  ]
+}

@@ -1,0 +1,710 @@
+{
+  "case_name": "OriginalDataset/Model10-10",
+  "text": "The fault detector reports a failure to the user or user has a suspicion of their own fault. \nThe user shall examine the failure. \nThe user rejects the failure of the fault detector or the user confirms the failure of the fault detector. \nIf the user confirms the failure of the fault detector, he informs the customer and the manager. \nThe user fixes the fault at the measuring device. \nThe user shares the results of the repairs carried out with the fault detector. \nThe user will inform the customer about the resolution of the interference. \nThe user will inform the manager about the resolution of the interference.\n",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "llama-3.1-8b",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "llama-3.1-8b",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/../datasets/lre/alignment_model_text-master/datasets/OriginalDataset/Models/Model10-10.bpmn",
+  "report_model": "llama-3.1-8b",
+  "candidates": {
+    "fault_detector": {
+      "states": [
+        "working",
+        "failed"
+      ],
+      "exclusive_groups": [
+        [
+          "failed",
+          "working"
+        ]
+      ],
+      "concurrent_with": []
+    },
+    "user": {
+      "states": [
+        "examining",
+        "rejecting",
+        "confirming",
+        "informing",
+        "fixing",
+        "sharing"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "measuring_device": {
+      "states": [
+        "faulty",
+        "fixed"
+      ],
+      "exclusive_groups": [
+        [
+          "fixed",
+          "faulty"
+        ]
+      ],
+      "concurrent_with": []
+    },
+    "interference": {
+      "states": [
+        "resolved"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "customer": {
+      "states": [
+        "informed"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "manager": {
+      "states": [
+        "informed"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    }
+  },
+  "validation_report": {
+    "fault_detector": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "detector"
+    },
+    "user": {
+      "f_lex": "ACTOR",
+      "kept": false,
+      "head_used": "user"
+    },
+    "measuring_device": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "device"
+    },
+    "interference": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "interference"
+    },
+    "customer": {
+      "f_lex": "ACTOR",
+      "kept": false,
+      "head_used": "customer"
+    },
+    "manager": {
+      "f_lex": "ACTOR",
+      "kept": false,
+      "head_used": "manager"
+    },
+    "__meta__": {
+      "total_candidates": 6,
+      "indeterminate_kept_count": 0
+    }
+  },
+  "exclusive_groups_report": {
+    "accepted": [
+      {
+        "entity": "fault_detector",
+        "states": [
+          "failed",
+          "working"
+        ],
+        "quote": "The user rejects the failure of the fault detector or the user confirms the failure of the fault detector."
+      },
+      {
+        "entity": "measuring_device",
+        "states": [
+          "fixed",
+          "faulty"
+        ],
+        "quote": "The user fixes the fault at the measuring device."
+      }
+    ],
+    "rejected": []
+  },
+  "state_space": {
+    "fault_detector": {
+      "states": [
+        "working",
+        "failed"
+      ],
+      "exclusive_groups": [
+        [
+          "failed",
+          "working"
+        ]
+      ],
+      "concurrent_with": []
+    },
+    "measuring_device": {
+      "states": [
+        "faulty",
+        "fixed"
+      ],
+      "exclusive_groups": [
+        [
+          "fixed",
+          "faulty"
+        ]
+      ],
+      "concurrent_with": []
+    },
+    "interference": {
+      "states": [
+        "resolved"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    }
+  },
+  "state_space_dedup": {
+    "merged": {},
+    "ambiguous_not_merged": {}
+  },
+  "dfg_edges": [
+    {
+      "source_id": "Task_5",
+      "source_label": "Inform the MSP about the failure",
+      "target_id": "Task_6",
+      "target_label": "Repair the fault",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_6",
+      "source_label": "Repair the fault",
+      "target_id": "Task_7",
+      "target_label": "Inform about the results of the repair of the fault",
+      "gateway_context": []
+    },
+    {
+      "source_id": "IntermediateMessageEventCatching_0",
+      "source_label": "",
+      "target_id": "Task_3",
+      "target_label": "Examine failure report",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_1",
+      "source_label": "Confirm failure report",
+      "target_id": "Task_4",
+      "target_label": "Inform the GO about the failure",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_9",
+      "source_label": "Report failure",
+      "target_id": "IntermediateMessageEventThrowing_0",
+      "target_label": "",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_7",
+      "source_label": "Inform about the results of the repair of the fault",
+      "target_id": "Task_8",
+      "target_label": "Inform about the resolution of the inference",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_7",
+      "source_label": "Inform about the results of the repair of the fault",
+      "target_id": "IntermediateMessageEventCatching_1",
+      "target_label": "",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_4",
+      "source_label": "Inform the GO about the failure",
+      "target_id": "Task_5",
+      "target_label": "Inform the MSP about the failure",
+      "gateway_context": []
+    },
+    {
+      "source_id": "IntermediateMessageEventThrowing_0",
+      "source_label": "",
+      "target_id": "IntermediateMessageEventCatching_1",
+      "target_label": "",
+      "gateway_context": []
+    },
+    {
+      "source_id": "IntermediateMessageEventThrowing_0",
+      "source_label": "",
+      "target_id": "IntermediateMessageEventCatching_0",
+      "target_label": "",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_2",
+      "source_label": "Suspect fault",
+      "target_id": "Task_3",
+      "target_label": "Examine failure report",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_3",
+      "source_label": "Examine failure report",
+      "target_id": "Task_1",
+      "target_label": "Confirm failure report",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_3",
+      "source_label": "Examine failure report",
+      "target_id": "Task_0",
+      "target_label": "Reject failure report",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_0",
+      "source_label": "Reject failure report",
+      "target_id": "Task_4",
+      "target_label": "Inform the GO about the failure",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "Inform the MSP about the failure",
+      "subject_id": "Task_5",
+      "predicate": "follows",
+      "object": "Repair the fault",
+      "object_id": "Task_6"
+    },
+    {
+      "subject": "Repair the fault",
+      "subject_id": "Task_6",
+      "predicate": "follows",
+      "object": "Inform about the results of the repair of the fault",
+      "object_id": "Task_7"
+    },
+    {
+      "subject": "",
+      "subject_id": "IntermediateMessageEventCatching_0",
+      "predicate": "follows",
+      "object": "Examine failure report",
+      "object_id": "Task_3"
+    },
+    {
+      "subject": "Confirm failure report",
+      "subject_id": "Task_1",
+      "predicate": "follows",
+      "object": "Inform the GO about the failure",
+      "object_id": "Task_4"
+    },
+    {
+      "subject": "Report failure",
+      "subject_id": "Task_9",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "IntermediateMessageEventThrowing_0"
+    },
+    {
+      "subject": "Inform about the results of the repair of the fault",
+      "subject_id": "Task_7",
+      "predicate": "follows",
+      "object": "Inform about the resolution of the inference",
+      "object_id": "Task_8"
+    },
+    {
+      "subject": "Inform about the results of the repair of the fault",
+      "subject_id": "Task_7",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "IntermediateMessageEventCatching_1"
+    },
+    {
+      "subject": "Inform the GO about the failure",
+      "subject_id": "Task_4",
+      "predicate": "follows",
+      "object": "Inform the MSP about the failure",
+      "object_id": "Task_5"
+    },
+    {
+      "subject": "",
+      "subject_id": "IntermediateMessageEventThrowing_0",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "IntermediateMessageEventCatching_1"
+    },
+    {
+      "subject": "",
+      "subject_id": "IntermediateMessageEventThrowing_0",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "IntermediateMessageEventCatching_0"
+    },
+    {
+      "subject": "Suspect fault",
+      "subject_id": "Task_2",
+      "predicate": "follows",
+      "object": "Examine failure report",
+      "object_id": "Task_3"
+    },
+    {
+      "subject": "Examine failure report",
+      "subject_id": "Task_3",
+      "predicate": "follows",
+      "object": "Confirm failure report",
+      "object_id": "Task_1"
+    },
+    {
+      "subject": "Examine failure report",
+      "subject_id": "Task_3",
+      "predicate": "follows",
+      "object": "Reject failure report",
+      "object_id": "Task_0"
+    },
+    {
+      "subject": "Reject failure report",
+      "subject_id": "Task_0",
+      "predicate": "follows",
+      "object": "Inform the GO about the failure",
+      "object_id": "Task_4"
+    }
+  ],
+  "activity_guards": {
+    "activities": {
+      "Report failure": {
+        "status": "OK",
+        "clauses": [
+          []
+        ]
+      },
+      "Suspect fault": {
+        "status": "OK",
+        "clauses": [
+          []
+        ]
+      },
+      "Examine failure report": {
+        "status": "OK",
+        "clauses": [
+          [
+            "Suspect fault"
+          ]
+        ]
+      },
+      "Confirm failure report": {
+        "status": "OK",
+        "clauses": [
+          [
+            "Examine failure report"
+          ],
+          [
+            "Examine failure report",
+            "Suspect fault"
+          ]
+        ]
+      },
+      "Reject failure report": {
+        "status": "OK",
+        "clauses": [
+          [
+            "Examine failure report"
+          ],
+          [
+            "Examine failure report",
+            "Suspect fault"
+          ]
+        ]
+      },
+      "Inform the GO about the failure": {
+        "status": "OK",
+        "clauses": [
+          [
+            "Confirm failure report",
+            "Examine failure report"
+          ],
+          [
+            "Confirm failure report",
+            "Examine failure report",
+            "Suspect fault"
+          ],
+          [
+            "Examine failure report",
+            "Reject failure report"
+          ],
+          [
+            "Examine failure report",
+            "Reject failure report",
+            "Suspect fault"
+          ]
+        ]
+      },
+      "Inform the MSP about the failure": {
+        "status": "OK",
+        "clauses": [
+          [
+            "Confirm failure report",
+            "Examine failure report",
+            "Inform the GO about the failure"
+          ],
+          [
+            "Confirm failure report",
+            "Examine failure report",
+            "Inform the GO about the failure",
+            "Suspect fault"
+          ],
+          [
+            "Examine failure report",
+            "Inform the GO about the failure",
+            "Reject failure report"
+          ],
+          [
+            "Examine failure report",
+            "Inform the GO about the failure",
+            "Reject failure report",
+            "Suspect fault"
+          ]
+        ]
+      },
+      "Repair the fault": {
+        "status": "OK",
+        "clauses": [
+          [
+            "Confirm failure report",
+            "Examine failure report",
+            "Inform the GO about the failure",
+            "Inform the MSP about the failure"
+          ],
+          [
+            "Confirm failure report",
+            "Examine failure report",
+            "Inform the GO about the failure",
+            "Inform the MSP about the failure",
+            "Suspect fault"
+          ],
+          [
+            "Examine failure report",
+            "Inform the GO about the failure",
+            "Inform the MSP about the failure",
+            "Reject failure report"
+          ],
+          [
+            "Examine failure report",
+            "Inform the GO about the failure",
+            "Inform the MSP about the failure",
+            "Reject failure report",
+            "Suspect fault"
+          ]
+        ]
+      },
+      "Inform about the results of the repair of the fault": {
+        "status": "OK",
+        "clauses": [
+          [
+            "Confirm failure report",
+            "Examine failure report",
+            "Inform the GO about the failure",
+            "Inform the MSP about the failure",
+            "Repair the fault"
+          ],
+          [
+            "Confirm failure report",
+            "Examine failure report",
+            "Inform the GO about the failure",
+            "Inform the MSP about the failure",
+            "Repair the fault",
+            "Suspect fault"
+          ],
+          [
+            "Examine failure report",
+            "Inform the GO about the failure",
+            "Inform the MSP about the failure",
+            "Reject failure report",
+            "Repair the fault"
+          ],
+          [
+            "Examine failure report",
+            "Inform the GO about the failure",
+            "Inform the MSP about the failure",
+            "Reject failure report",
+            "Repair the fault",
+            "Suspect fault"
+          ]
+        ]
+      },
+      "Inform about the resolution of the inference": {
+        "status": "OK",
+        "clauses": [
+          [
+            "Confirm failure report",
+            "Examine failure report",
+            "Inform about the results of the repair of the fault",
+            "Inform the GO about the failure",
+            "Inform the MSP about the failure",
+            "Repair the fault"
+          ],
+          [
+            "Confirm failure report",
+            "Examine failure report",
+            "Inform about the results of the repair of the fault",
+            "Inform the GO about the failure",
+            "Inform the MSP about the failure",
+            "Repair the fault",
+            "Suspect fault"
+          ],
+          [
+            "Examine failure report",
+            "Inform about the results of the repair of the fault",
+            "Inform the GO about the failure",
+            "Inform the MSP about the failure",
+            "Reject failure report",
+            "Repair the fault"
+          ],
+          [
+            "Examine failure report",
+            "Inform about the results of the repair of the fault",
+            "Inform the GO about the failure",
+            "Inform the MSP about the failure",
+            "Reject failure report",
+            "Repair the fault",
+            "Suspect fault"
+          ]
+        ]
+      }
+    },
+    "undeclared_splits": []
+  },
+  "matches": {
+    "Task_5": {
+      "activity_label": "Inform the MSP about the failure",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_6": {
+      "activity_label": "Repair the fault",
+      "matches": [
+        {
+          "match": "fault_detector.failed",
+          "score": 0.4345
+        },
+        {
+          "match": "fault_detector.working",
+          "score": 0.4086
+        }
+      ],
+      "clusters": [
+        [
+          "fault_detector.failed"
+        ],
+        [
+          "fault_detector.working"
+        ]
+      ]
+    },
+    "Task_7": {
+      "activity_label": "Inform about the results of the repair of the fault",
+      "matches": [
+        {
+          "match": "fault_detector.failed",
+          "score": 0.3836
+        }
+      ],
+      "clusters": [
+        [
+          "fault_detector.failed"
+        ]
+      ]
+    },
+    "Task_3": {
+      "activity_label": "Examine failure report",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_1": {
+      "activity_label": "Confirm failure report",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_4": {
+      "activity_label": "Inform the GO about the failure",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_9": {
+      "activity_label": "Report failure",
+      "matches": [
+        {
+          "match": "fault_detector.failed",
+          "score": 0.3672
+        }
+      ],
+      "clusters": [
+        [
+          "fault_detector.failed"
+        ]
+      ]
+    },
+    "Task_8": {
+      "activity_label": "Inform about the resolution of the inference",
+      "matches": [
+        {
+          "match": "interference.resolved",
+          "score": 0.387
+        }
+      ],
+      "clusters": [
+        [
+          "interference.resolved"
+        ]
+      ]
+    },
+    "Task_2": {
+      "activity_label": "Suspect fault",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_0": {
+      "activity_label": "Reject failure report",
+      "matches": [],
+      "clusters": []
+    }
+  },
+  "process_graph": [
+    {
+      "from": "fault_detector.failed",
+      "to": "fault_detector.failed",
+      "activity_from": "Repair the fault",
+      "activity_to": "Inform about the results of the repair of the fault",
+      "source_id": "Task_6",
+      "target_id": "Task_7"
+    },
+    {
+      "from": "fault_detector.working",
+      "to": "fault_detector.failed",
+      "activity_from": "Repair the fault",
+      "activity_to": "Inform about the results of the repair of the fault",
+      "source_id": "Task_6",
+      "target_id": "Task_7"
+    },
+    {
+      "from": "fault_detector.failed",
+      "to": "interference.resolved",
+      "activity_from": "Inform about the results of the repair of the fault",
+      "activity_to": "Inform about the resolution of the inference",
+      "source_id": "Task_7",
+      "target_id": "Task_8"
+    }
+  ],
+  "errors": [
+    "precondition: parse failed, raw response='{\"fault_detector\": {\"precondition\": \"fault_detector.failed OR user.suspicion\", \"quote\": [\"The fault detector reports a failure to the user or user has a suspicion of their own fault.\"]}, \\n\"measuring_device\": {\"precondition\": \"INITIAL\", \"quote\": null}, \\n\"interference\": {\"precondition\": \"INITIAL\", \"quote\": null}, \\n\"user\": {\"precondition\": \"user.suspicion OR fault_detector.failed\", \"quote\": [\"The fault detector reports a failure to the user or user has a suspicion of their own fault.\"]}, \\n\"fault_detector.working\": {\"precondition\": \"UNRESOLVED\", \"quote\": null}, \\n\"fault_detector.failed\": {\"precondition\": \"fault_detector.failed OR user.suspicion\", \"quote\": [\"The fault detector reports a failure to the user or user has a suspicion of their own fault.\"]}, \\n\"measuring_device.faulty\": {\"precondition\": \"measuring_device.faulty\", \"quote\": [\"The user fixes the fault at the measuring device.\"]}, \\n\"measuring_device.fixed\": {\"precondition\": \"measuring_device.fixed\", \"quote\": [\"The user fixes the fault at the measuring device.\"]}, \\n\"interference.resolved\": {\"precondition\": \"user.informed_customer AND user.informed_manager\", \"quote\": [\"If the user confirms the failure of the fault detector, he informs the customer and the manager.\"]}, \\n\"user.informed_customer\": {\"precondition\": \"user.confirmed_failure\", \"quote\": [\"If the user confirms the failure of the fault detector, he informs the customer and the manager.\"]}, \\n\"user.informed_manager\": {\"precondition\": \"user.confirmed_failure\", \"quote\": [\"If the user confirms the failure of the fault detector, he informs the customer and the manager.\"]}, \\n\"user.confirmed_failure\": {\"precondition\": \"user.confirmed_failure\", \"quote\": [\"The user rejects the failure of the fault detector or the user confirms the failure of the fault detector.\"]}, \\n\"user.rejected_failure\": {\"precondition\": \"user.rejected_failure\", \"quote\": [\"The user rejects the failure of the fault detector or the user confirms the failure of the fault detector.\"]}, \\n\"user.suspicion\": {\"precondition\": \"user.suspicion\", \"quote\": [\"The fault detector reports a failure to the user or user has a suspicion of their own fault.\"]}, \\n\"user.examine_failure\": {\"precondition\": \"user.suspicion OR fault_detector.failed\", \"quote\": [\"The user shall examine the failure.\"]}, \\n\"user.inform_customer\": {\"precondition\": \"user.informed_customer\", \"quote\": [\"The user will inform the customer about the resolution of the interference.\"]}, \\n\"user.inform_manager\": {\"precondition\": \"user.informed_manager\", \"quote\": [\"The user will inform the manager about the resolution of the interference.\"]}, \\n\"user.share_results\": {\"precondition\": \"measuring_device.fixed\", \"quote\": [\"The user shares the results of the repairs carried out with the fault detector.\"]}, \\n\"fault_detector.working\": {\"precondition\": \"UNRESOLVED\", \"quote\": null}, \\n\"fault_detector.failed\": {\"precondition\": \"fault_detector.failed OR user.suspicion\", \"quote\": [\"The fault detector reports a failure to the user or user has a suspicion of their own fault.\"]}, \\n\"measuring_device.faulty\": {\"precondition\": \"measuring_device.faulty\", \"quote\": [\"The user fixes the fault at the measuring device.\"]}, \\n\"measuring_device.fixed\": {\"precondition\": \"measuring_device.fixed\", \"quote\": [\"The user fixes the fault at the measuring device.\"]}, \\n\"interference.resolved\": {\"precondition\": \"user.informed_customer AND user.informed_manager\", \"quote\": [\"If the user confirms the failure of the fault detector, he informs the customer and the manager.\"]}, \\n\"user.informed_customer\": {\"precondition\": \"user.confirmed_failure\", \"quote\": [\"If the user confirms the failure of the fault detector, he informs the customer and the manager.\"]}, \\n\"user.informed_manager\": {\"precondition\": \"user.confirmed_failure\", \"quote\": [\"If the user confirms the failure of the fault detector, he informs the customer and the manager.\"]}, \\n\"user.confirmed_failure\": {\"precondition\": \"user.confirmed_failure\", \"quote\": [\"The user rejects the failure of the fault detector or the user confirms the failure of the fault detector.\"]}, \\n\"user.rejected_failure\": {\"precondition\": \"user.rejected_failure\", \"quote\": [\"The user rejects the failure of the fault detector or the user confirms the failure of the fault detector.\"]}, \\n\"user.suspicion\": {\"precondition\": \"user.suspicion\", \"quote\": [\"The fault detector reports a failure to the user or user has a suspicion of their own fault.\"]}, \\n\"user.examine_failure\": {\"precondition\": \"user.suspicion OR fault_detector.failed\", \"quote\": [\"The user shall examine the failure.\"]}, \\n\"user.inform_customer\": {\"precondition\": \"user.informed_customer\", \"quote\": [\"The user will inform the customer about the resolution of the interference.\"]}, \\n\"user.inform_manager\": {\"precondition\": \"user.informed_manager\", \"quote\": [\"The user will inform the manager about the resolution of the interference.\"]}, \\n\"user.share_results\": {\"precondition\": \"measuring_device.fixed\", \"quote\": [\"The user shares the results of the repairs carried out with the fault detector.\"]}'",
+    "graph_construction: 'validated_preconditions'",
+    "alignment: 'reference_graph'",
+    "report: 'alignment'"
+  ]
+}

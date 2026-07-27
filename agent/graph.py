@@ -26,7 +26,9 @@ from langgraph.graph import StateGraph, START, END
 from agent.state import PipelineState
 from agent.models.base_llm import get_llm
 
-from agent.nodes.state_space_node_v3 import generate_candidates, filter_state_space, deduplicate_state_space
+from agent.nodes.state_space_node_v3 import (
+    generate_candidates, filter_state_space, generate_exclusive_groups, deduplicate_state_space,
+)
 from agent.prompt.state_space_prompt_permissive import (
     STATE_SPACE_PROMPT_PERMISSIVE,
     STATE_SPACE_PROMPT_PERMISSIVE_FEWSHOT,
@@ -44,7 +46,8 @@ from agent.prompt.precondition_prompt import (
 
 from agent.nodes.graph_node import build_graph
 from agent.nodes.bpmn_to_spo_node import parse_bpmn, resolve_dfg, dfg_to_spo
-from agent.nodes.state_matching_node import match_spo_to_u
+from agent.nodes.bpmn_guards_node import compute_activity_guards
+from agent.nodes.state_matching_node import match_dfg_to_u
 from agent.nodes.alignment_node import check_alignment
 from agent.nodes.report_node import build_report
 
@@ -91,14 +94,23 @@ def state_space_node(state: PipelineState) -> dict:
         else get_llm(temperature=0)
     candidates = generate_candidates(state["text"], llm, template)
     filtered, report = filter_state_space(candidates)
+    # Etape A2 (Protocol 3.2) -- second appel LLM decouple pour exclusive_groups, absent de ce
+    # wrapper jusqu'ici (integration jamais faite alors que state_space_node_v3.py la produit
+    # depuis plusieurs revisions). Ordre etabli et jamais improvise : APRES le filtrage lexical
+    # (Etape B, jamais de raisonnement sur des acteurs sur le point d'etre ecartes), AVANT la
+    # dedup (Etape C, dont la logique de fusion absorbe deja exclusive_groups exactement comme
+    # elle absorbe "states"). Sans cet appel, exclusive_groups restait silencieusement vide sur
+    # tout run reel passant par ce graphe -- desactivant du meme coup branch_conflicts en aval.
+    with_groups, exclusive_groups_report = generate_exclusive_groups(state["text"], filtered, llm)
     # Etape C (deduplication referentielle deterministe) -- fusionne les formes de surface d'un
     # meme referent AVANT que Pre/matching ne voient U, pour que les deux branches partagent un
     # vocabulaire unique. Chaque fusion/ambiguite est tracee dans state_space_dedup, jamais
     # silencieuse -- cf. state_space_node_v3.deduplicate_state_space.
-    deduped, dedup_report = deduplicate_state_space(filtered)
+    deduped, dedup_report = deduplicate_state_space(with_groups)
     return {
         "candidates": candidates,
         "validation_report": report,
+        "exclusive_groups_report": exclusive_groups_report,
         "state_space": deduped,
         "state_space_dedup": dedup_report,
     }
@@ -114,37 +126,64 @@ def precondition_node(state: PipelineState) -> dict:
         "raw_preconditions": output["raw"],
         "validated_preconditions": output["validated"],
         "precondition_cycles": output["cycles"],
+        # Jusqu'ici jamais extrait de la sortie du node alors que run_naive_with_retry le
+        # produit depuis l'ajout de check_branch_coherence -- perdu silencieusement avant meme
+        # d'atteindre graph_construction_node, qui sait pourtant deja le consommer (troisieme
+        # parametre optionnel de build_graph).
+        "branch_conflicts": output["branch_conflicts"],
     }
 
 
 def graph_construction_node(state: PipelineState) -> dict:
-    graph = build_graph(state["state_space"], state["validated_preconditions"])
+    graph = build_graph(
+        state["state_space"], state["validated_preconditions"], state.get("branch_conflicts", [])
+    )
     return {"reference_graph": graph}
 
 
 # --- Branche droite : BPMN -> DFG -> SPO ---
 
 def bpmn_to_spo(state: PipelineState) -> dict:
+    # Calcule aussi activity_guards ici, PAS dans un node separe -- reutilise le meme objet
+    # bpmn deja parse par parse_bpmn() une seule fois (jamais un second parsing). L'objet BPMN
+    # brut de pm4py n'est jamais mis dans l'etat (non serialisable proprement en JSON, cf.
+    # json.dump(..., default=str) dans run.py -- une stringification avec default=str serait
+    # perdue/irrecuperable) ; seul le resultat structure et serialisable de
+    # compute_activity_guards() y entre.
     bpmn = parse_bpmn(state["bpmn_path"])
     dfg = resolve_dfg(bpmn)
     spo = dfg_to_spo(dfg)
-    return {"dfg_edges": dfg, "spo_triples": spo}
+    activity_guards = compute_activity_guards(bpmn)
+    return {"dfg_edges": dfg, "spo_triples": spo, "activity_guards": activity_guards}
 
 
 # --- Jointure 1 : U (branche gauche) + SPO (branche droite) -- symetrique, pas de defer ---
 
 def state_matching_node(state: PipelineState) -> dict:
-    # spo_triples garde les IDs BPMN (necessaire pour desambiguer des labels identiques) --
-    # match_spo_to_u() consomme une projection en tuples (subject, predicate, object).
-    spo_tuples = [(t["subject"], t["predicate"], t["object"]) for t in state["spo_triples"]]
-    matches, process_graph = match_spo_to_u(spo_tuples, state["state_space"])
+    # CORRECTIF (bloquant) : match_dfg_to_u() attend le DFG riche (source_id/source_label/
+    # target_id/target_label/gateway_context), PAS une projection en triplets SPO aplatis --
+    # c'est meme la raison d'etre de ce fichier ("Exploite le DFG complet pour recuperer le
+    # gateway_context", cf. state_matching_node.py). L'ancien code projetait spo_triples en
+    # tuples (subject, predicate, object) et appelait une fonction match_spo_to_u() qui
+    # n'existe nulle part dans le code reel -- ImportError au chargement du module, avant meme
+    # qu'un seul node ne tourne. dfg_edges (calcule par bpmn_to_spo, jamais utilise jusqu'ici en
+    # aval) est la seule entree correcte ici ; spo_triples reste calcule et stocke dans l'etat
+    # pour tracabilite, mais n'est consomme par aucun node de ce graphe.
+    matches, process_graph = match_dfg_to_u(state["dfg_edges"], state["state_space"])
     return {"matches": matches, "process_graph": process_graph}
 
 
 # --- Jointure : G (branche gauche) + matches/G_process (state_matching) ---
 
 def alignment_node(state: PipelineState) -> dict:
-    alignment = check_alignment(state["reference_graph"], state["process_graph"], state["matches"])
+    # .get() plutot que [] -- activity_guards peut etre absent si bpmn_to_spo a echoue avant
+    # de l'ecrire (cf. _with_error_capture) ; check_alignment le traite comme None (renforcement
+    # structurel simplement indisponible, jamais un blocage -- meme discipline que partout
+    # ailleurs : une absence est un statut legitime, jamais une exception).
+    alignment = check_alignment(
+        state["reference_graph"], state["process_graph"], state["matches"],
+        activity_guards=state.get("activity_guards"),
+    )
     return {"alignment": alignment}
 
 

@@ -1,0 +1,1312 @@
+{
+  "case_name": "OriginalDataset/Model10-13",
+  "text": "The INQ transmits the transaction data request to the IP. The IP checks the request of the INQ. The IP answers the question of the INQ depending on the outcome of the examination, i.e. Transmission of data or rejected.",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "llama-3.1-8b",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "llama-3.1-8b",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/../datasets/lre/alignment_model_text-master/datasets/OriginalDataset/Models/Model10-13.bpmn",
+  "report_model": "llama-3.1-8b",
+  "candidates": {
+    "inq": {
+      "states": [
+        "transmitting",
+        "checking",
+        "answering",
+        "transmitting_data",
+        "rejected"
+      ],
+      "exclusive_groups": [
+        [
+          "transmitting_data",
+          "rejected"
+        ]
+      ],
+      "concurrent_with": []
+    },
+    "ip": {
+      "states": [
+        "checking",
+        "answering",
+        "transmitting_data",
+        "rejecting"
+      ],
+      "exclusive_groups": [
+        [
+          "transmitting_data",
+          "rejecting"
+        ]
+      ],
+      "concurrent_with": []
+    },
+    "transaction_data_request": {
+      "states": [
+        "transmitted",
+        "checked",
+        "answered"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "examination": {
+      "states": [
+        "ongoing"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    }
+  },
+  "validation_report": {
+    "inq": {
+      "f_lex": "INDETERMINATE",
+      "kept": true,
+      "head_used": "inq"
+    },
+    "ip": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "ip"
+    },
+    "transaction_data_request": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "request"
+    },
+    "examination": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "examination"
+    },
+    "__meta__": {
+      "total_candidates": 4,
+      "indeterminate_kept_count": 1
+    }
+  },
+  "exclusive_groups_report": {
+    "accepted": [
+      {
+        "entity": "inq",
+        "states": [
+          "transmitting_data",
+          "rejected"
+        ],
+        "quote": "Transmission of data or rejected"
+      },
+      {
+        "entity": "ip",
+        "states": [
+          "transmitting_data",
+          "rejecting"
+        ],
+        "quote": "Transmission of data or rejected"
+      }
+    ],
+    "rejected": []
+  },
+  "state_space": {
+    "inq": {
+      "states": [
+        "transmitting",
+        "checking",
+        "answering",
+        "transmitting_data",
+        "rejected"
+      ],
+      "exclusive_groups": [
+        [
+          "transmitting_data",
+          "rejected"
+        ]
+      ],
+      "concurrent_with": []
+    },
+    "ip": {
+      "states": [
+        "checking",
+        "answering",
+        "transmitting_data",
+        "rejecting"
+      ],
+      "exclusive_groups": [
+        [
+          "transmitting_data",
+          "rejecting"
+        ]
+      ],
+      "concurrent_with": []
+    },
+    "transaction_data_request": {
+      "states": [
+        "transmitted",
+        "checked",
+        "answered"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "examination": {
+      "states": [
+        "ongoing"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    }
+  },
+  "state_space_dedup": {
+    "merged": {},
+    "ambiguous_not_merged": {}
+  },
+  "raw_preconditions": {
+    "inq.transmitting": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "inq.checking": {
+      "precondition": "inq.transmitting",
+      "quote": "The INQ transmits the transaction data request to the IP. The IP checks the request of the INQ."
+    },
+    "inq.answering": {
+      "precondition": "inq.checking",
+      "quote": "The IP checks the request of the INQ. The IP answers the question of the INQ depending on the outcome of the examination,"
+    },
+    "inq.transmitting_data": {
+      "precondition": "inq.answering AND ip.transmitting_data",
+      "quote": "i.e. Transmission of data or rejected."
+    },
+    "inq.rejected": {
+      "precondition": "inq.answering AND ip.rejecting",
+      "quote": "i.e. Transmission of data or rejected."
+    },
+    "ip.checking": {
+      "precondition": "inq.transmitting",
+      "quote": "The INQ transmits the transaction data request to the IP. The IP checks the request of the INQ."
+    },
+    "ip.answering": {
+      "precondition": "inq.checking",
+      "quote": "The IP checks the request of the INQ. The IP answers the question of the INQ depending on the outcome of the examination,"
+    },
+    "ip.transmitting_data": {
+      "precondition": "inq.answering AND ip.answering",
+      "quote": "i.e. Transmission of data or rejected."
+    },
+    "ip.rejecting": {
+      "precondition": "inq.answering",
+      "quote": "i.e. Transmission of data or rejected."
+    },
+    "transaction_data_request.transmitted": {
+      "precondition": "inq.transmitting",
+      "quote": "The INQ transmits the transaction data request to the IP."
+    },
+    "transaction_data_request.checked": {
+      "precondition": "inq.checking",
+      "quote": "The IP checks the request of the INQ."
+    },
+    "transaction_data_request.answered": {
+      "precondition": "inq.answering",
+      "quote": "The IP answers the question of the INQ depending on the outcome of the examination,"
+    },
+    "examination.ongoing": {
+      "precondition": "inq.answering",
+      "quote": "The IP answers the question of the INQ depending on the outcome of the examination,"
+    }
+  },
+  "validated_preconditions": {
+    "inq.transmitting": {
+      "precondition": "INITIAL",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "inq.checking": {
+      "precondition": "inq.transmitting",
+      "quote": "The INQ transmits the transaction data request to the IP. The IP checks the request of the INQ.",
+      "status": "OK",
+      "reason": null
+    },
+    "inq.answering": {
+      "precondition": "inq.checking",
+      "quote": "The IP checks the request of the INQ. The IP answers the question of the INQ depending on the outcome of the examination,",
+      "status": "OK",
+      "reason": null
+    },
+    "inq.transmitting_data": {
+      "precondition": "inq.answering AND ip.transmitting_data",
+      "quote": "i.e. Transmission of data or rejected.",
+      "status": "OK",
+      "reason": null
+    },
+    "inq.rejected": {
+      "precondition": "inq.answering AND ip.rejecting",
+      "quote": "i.e. Transmission of data or rejected.",
+      "status": "OK",
+      "reason": null
+    },
+    "ip.checking": {
+      "precondition": "inq.transmitting",
+      "quote": "The INQ transmits the transaction data request to the IP. The IP checks the request of the INQ.",
+      "status": "OK",
+      "reason": null
+    },
+    "ip.answering": {
+      "precondition": "inq.checking",
+      "quote": "The IP checks the request of the INQ. The IP answers the question of the INQ depending on the outcome of the examination,",
+      "status": "OK",
+      "reason": null
+    },
+    "ip.transmitting_data": {
+      "precondition": "inq.answering AND ip.answering",
+      "quote": "i.e. Transmission of data or rejected.",
+      "status": "OK",
+      "reason": null
+    },
+    "ip.rejecting": {
+      "precondition": "inq.answering",
+      "quote": "i.e. Transmission of data or rejected.",
+      "status": "OK",
+      "reason": null
+    },
+    "transaction_data_request.transmitted": {
+      "precondition": "inq.transmitting",
+      "quote": "The INQ transmits the transaction data request to the IP.",
+      "status": "OK",
+      "reason": null
+    },
+    "transaction_data_request.checked": {
+      "precondition": "inq.checking",
+      "quote": "The IP checks the request of the INQ.",
+      "status": "OK",
+      "reason": null
+    },
+    "transaction_data_request.answered": {
+      "precondition": "inq.answering",
+      "quote": "The IP answers the question of the INQ depending on the outcome of the examination,",
+      "status": "OK",
+      "reason": null
+    },
+    "examination.ongoing": {
+      "precondition": "inq.answering",
+      "quote": "The IP answers the question of the INQ depending on the outcome of the examination,",
+      "status": "OK",
+      "reason": null
+    }
+  },
+  "precondition_cycles": [],
+  "branch_conflicts": [],
+  "reference_graph": {
+    "nodes": [
+      {
+        "id": "inq.transmitting",
+        "weight": 0.429
+      },
+      {
+        "id": "inq.checking",
+        "weight": 0.571
+      },
+      {
+        "id": "inq.answering",
+        "weight": 1.0
+      },
+      {
+        "id": "inq.transmitting_data",
+        "weight": 0.286
+      },
+      {
+        "id": "inq.rejected",
+        "weight": 0.286
+      },
+      {
+        "id": "ip.checking",
+        "weight": 0.143
+      },
+      {
+        "id": "ip.answering",
+        "weight": 0.286
+      },
+      {
+        "id": "ip.transmitting_data",
+        "weight": 0.429
+      },
+      {
+        "id": "ip.rejecting",
+        "weight": 0.286
+      },
+      {
+        "id": "transaction_data_request.transmitted",
+        "weight": 0.143
+      },
+      {
+        "id": "transaction_data_request.checked",
+        "weight": 0.143
+      },
+      {
+        "id": "transaction_data_request.answered",
+        "weight": 0.143
+      },
+      {
+        "id": "examination.ongoing",
+        "weight": 0.143
+      }
+    ],
+    "edges": [
+      {
+        "from": "inq.transmitting",
+        "to": "inq.checking",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "The INQ transmits the transaction data request to the IP. The IP checks the request of the INQ.",
+        "negated": false
+      },
+      {
+        "from": "inq.checking",
+        "to": "inq.answering",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "The IP checks the request of the INQ. The IP answers the question of the INQ depending on the outcome of the examination,",
+        "negated": false
+      },
+      {
+        "from": "inq.answering",
+        "to": "inq.transmitting_data",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "i.e. Transmission of data or rejected.",
+        "negated": false
+      },
+      {
+        "from": "ip.transmitting_data",
+        "to": "inq.transmitting_data",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "i.e. Transmission of data or rejected.",
+        "negated": false
+      },
+      {
+        "from": "inq.answering",
+        "to": "inq.rejected",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "i.e. Transmission of data or rejected.",
+        "negated": false
+      },
+      {
+        "from": "ip.rejecting",
+        "to": "inq.rejected",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "i.e. Transmission of data or rejected.",
+        "negated": false
+      },
+      {
+        "from": "inq.transmitting",
+        "to": "ip.checking",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "The INQ transmits the transaction data request to the IP. The IP checks the request of the INQ.",
+        "negated": false
+      },
+      {
+        "from": "inq.checking",
+        "to": "ip.answering",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "The IP checks the request of the INQ. The IP answers the question of the INQ depending on the outcome of the examination,",
+        "negated": false
+      },
+      {
+        "from": "inq.answering",
+        "to": "ip.transmitting_data",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "i.e. Transmission of data or rejected.",
+        "negated": false
+      },
+      {
+        "from": "ip.answering",
+        "to": "ip.transmitting_data",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "i.e. Transmission of data or rejected.",
+        "negated": false
+      },
+      {
+        "from": "inq.answering",
+        "to": "ip.rejecting",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "i.e. Transmission of data or rejected.",
+        "negated": false
+      },
+      {
+        "from": "inq.transmitting",
+        "to": "transaction_data_request.transmitted",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "The INQ transmits the transaction data request to the IP.",
+        "negated": false
+      },
+      {
+        "from": "inq.checking",
+        "to": "transaction_data_request.checked",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "The IP checks the request of the INQ.",
+        "negated": false
+      },
+      {
+        "from": "inq.answering",
+        "to": "transaction_data_request.answered",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "The IP answers the question of the INQ depending on the outcome of the examination,",
+        "negated": false
+      },
+      {
+        "from": "inq.answering",
+        "to": "examination.ongoing",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "The IP answers the question of the INQ depending on the outcome of the examination,",
+        "negated": false
+      }
+    ],
+    "cycles": [],
+    "branch_conflicts": [],
+    "exclusive_pairs": [
+      {
+        "entity": "inq",
+        "nodes": [
+          "inq.transmitting_data",
+          "inq.rejected"
+        ]
+      },
+      {
+        "entity": "ip",
+        "nodes": [
+          "ip.transmitting_data",
+          "ip.rejecting"
+        ]
+      }
+    ]
+  },
+  "dfg_edges": [
+    {
+      "source_id": "Task_3",
+      "source_label": "Check",
+      "target_id": "Task_1",
+      "target_label": "Transmit data",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_3",
+      "source_label": "Check",
+      "target_id": "Task_2",
+      "target_label": "Reject",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_2",
+      "source_label": "Reject",
+      "target_id": "IntermediateMessageEventCatching_0",
+      "target_label": "",
+      "gateway_context": []
+    },
+    {
+      "source_id": "IntermediateMessageEventThrowing_0",
+      "source_label": "",
+      "target_id": "IntermediateMessageEventCatching_0",
+      "target_label": "",
+      "gateway_context": []
+    },
+    {
+      "source_id": "IntermediateMessageEventThrowing_0",
+      "source_label": "",
+      "target_id": "Task_3",
+      "target_label": "Check",
+      "gateway_context": [
+        "NormalStartEvent"
+      ]
+    },
+    {
+      "source_id": "Task_0",
+      "source_label": "Request",
+      "target_id": "IntermediateMessageEventThrowing_0",
+      "target_label": "",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_1",
+      "source_label": "Transmit data",
+      "target_id": "IntermediateMessageEventCatching_0",
+      "target_label": "",
+      "gateway_context": []
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "Check",
+      "subject_id": "Task_3",
+      "predicate": "follows",
+      "object": "Transmit data",
+      "object_id": "Task_1"
+    },
+    {
+      "subject": "Check",
+      "subject_id": "Task_3",
+      "predicate": "follows",
+      "object": "Reject",
+      "object_id": "Task_2"
+    },
+    {
+      "subject": "Reject",
+      "subject_id": "Task_2",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "IntermediateMessageEventCatching_0"
+    },
+    {
+      "subject": "",
+      "subject_id": "IntermediateMessageEventThrowing_0",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "IntermediateMessageEventCatching_0"
+    },
+    {
+      "subject": "",
+      "subject_id": "IntermediateMessageEventThrowing_0",
+      "predicate": "follows",
+      "object": "Check",
+      "object_id": "Task_3"
+    },
+    {
+      "subject": "Request",
+      "subject_id": "Task_0",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "IntermediateMessageEventThrowing_0"
+    },
+    {
+      "subject": "Transmit data",
+      "subject_id": "Task_1",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "IntermediateMessageEventCatching_0"
+    }
+  ],
+  "matches": {
+    "Task_3": {
+      "activity_label": "Check",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_1": {
+      "activity_label": "Transmit data",
+      "matches": [
+        {
+          "match": "inq.transmitting_data",
+          "score": 0.3653
+        }
+      ],
+      "clusters": [
+        [
+          "inq.transmitting_data"
+        ]
+      ]
+    },
+    "Task_2": {
+      "activity_label": "Reject",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_0": {
+      "activity_label": "Request",
+      "matches": [
+        {
+          "match": "transaction_data_request.transmitted",
+          "score": 0.487
+        }
+      ],
+      "clusters": [
+        [
+          "transaction_data_request.transmitted"
+        ]
+      ]
+    }
+  },
+  "process_graph": [],
+  "alignment": {
+    "inq.checking": {
+      "operator": "AND",
+      "quote": "The INQ transmits the transaction data request to the IP. The IP checks the request of the INQ.",
+      "terms": [
+        {
+          "term": "inq.transmitting",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['inq.transmitting', 'inq.checking']",
+          "missing": [
+            "inq.transmitting",
+            "inq.checking"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "inq.transmitting"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "inq.answering": {
+      "operator": "AND",
+      "quote": "The IP checks the request of the INQ. The IP answers the question of the INQ depending on the outcome of the examination,",
+      "terms": [
+        {
+          "term": "inq.checking",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['inq.checking', 'inq.answering']",
+          "missing": [
+            "inq.checking",
+            "inq.answering"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "inq.checking"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "inq.transmitting_data": {
+      "operator": "AND",
+      "quote": "i.e. Transmission of data or rejected.",
+      "terms": [
+        {
+          "term": "inq.answering",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['inq.answering']",
+          "missing": [
+            "inq.answering"
+          ]
+        },
+        {
+          "term": "ip.transmitting_data",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['ip.transmitting_data']",
+          "missing": [
+            "ip.transmitting_data"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "inq.answering",
+            "ip.transmitting_data"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "inq.rejected": {
+      "operator": "AND",
+      "quote": "i.e. Transmission of data or rejected.",
+      "terms": [
+        {
+          "term": "inq.answering",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['inq.answering', 'inq.rejected']",
+          "missing": [
+            "inq.answering",
+            "inq.rejected"
+          ]
+        },
+        {
+          "term": "ip.rejecting",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['ip.rejecting', 'inq.rejected']",
+          "missing": [
+            "ip.rejecting",
+            "inq.rejected"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "inq.answering",
+            "ip.rejecting"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "ip.checking": {
+      "operator": "AND",
+      "quote": "The INQ transmits the transaction data request to the IP. The IP checks the request of the INQ.",
+      "terms": [
+        {
+          "term": "inq.transmitting",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['inq.transmitting', 'ip.checking']",
+          "missing": [
+            "inq.transmitting",
+            "ip.checking"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "inq.transmitting"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "ip.answering": {
+      "operator": "AND",
+      "quote": "The IP checks the request of the INQ. The IP answers the question of the INQ depending on the outcome of the examination,",
+      "terms": [
+        {
+          "term": "inq.checking",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['inq.checking', 'ip.answering']",
+          "missing": [
+            "inq.checking",
+            "ip.answering"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "inq.checking"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "ip.transmitting_data": {
+      "operator": "AND",
+      "quote": "i.e. Transmission of data or rejected.",
+      "terms": [
+        {
+          "term": "inq.answering",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['inq.answering', 'ip.transmitting_data']",
+          "missing": [
+            "inq.answering",
+            "ip.transmitting_data"
+          ]
+        },
+        {
+          "term": "ip.answering",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['ip.answering', 'ip.transmitting_data']",
+          "missing": [
+            "ip.answering",
+            "ip.transmitting_data"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "inq.answering",
+            "ip.answering"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "ip.rejecting": {
+      "operator": "AND",
+      "quote": "i.e. Transmission of data or rejected.",
+      "terms": [
+        {
+          "term": "inq.answering",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['inq.answering', 'ip.rejecting']",
+          "missing": [
+            "inq.answering",
+            "ip.rejecting"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "inq.answering"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "transaction_data_request.transmitted": {
+      "operator": "AND",
+      "quote": "The INQ transmits the transaction data request to the IP.",
+      "terms": [
+        {
+          "term": "inq.transmitting",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['inq.transmitting']",
+          "missing": [
+            "inq.transmitting"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "inq.transmitting"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "transaction_data_request.checked": {
+      "operator": "AND",
+      "quote": "The IP checks the request of the INQ.",
+      "terms": [
+        {
+          "term": "inq.checking",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['inq.checking', 'transaction_data_request.checked']",
+          "missing": [
+            "inq.checking",
+            "transaction_data_request.checked"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "inq.checking"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "transaction_data_request.answered": {
+      "operator": "AND",
+      "quote": "The IP answers the question of the INQ depending on the outcome of the examination,",
+      "terms": [
+        {
+          "term": "inq.answering",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['inq.answering', 'transaction_data_request.answered']",
+          "missing": [
+            "inq.answering",
+            "transaction_data_request.answered"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "inq.answering"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "examination.ongoing": {
+      "operator": "AND",
+      "quote": "The IP answers the question of the INQ depending on the outcome of the examination,",
+      "terms": [
+        {
+          "term": "inq.answering",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['inq.answering', 'examination.ongoing']",
+          "missing": [
+            "inq.answering",
+            "examination.ongoing"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "inq.answering"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    }
+  },
+  "report": {
+    "verdict": {
+      "verdict": "FAITHFUL_WITH_RESERVATIONS",
+      "justification": "No gap found, but 1 requirement(s) from the text could not be associated with any clear activity in the observed process -- neither confirmed nor refuted. This verdict is NOT a confirmation of full faithfulness.",
+      "scope": "This verdict covers the causal reachability of the requirements expressed in the source text, not the general quality of the process model -- a multiplicity defect (an activity executed more than once due to a mismatched branching structure) is not covered by this verdict, even if the process is otherwise well-formed."
+    },
+    "summary": {
+      "ecarts": 0,
+      "non_verifiable": 1,
+      "conforme": 0
+    },
+    "ecarts": [],
+    "non_verifiable": [
+      {
+        "root_cause": "inq transmitting",
+        "quote": "The INQ transmits the transaction data request to the IP. The IP checks the request of the INQ.",
+        "explanation": "The source text states that \"The INQ transmits the transaction data request to the IP. The IP checks the request of the INQ.\" This quote shows that a condition is required before the activity \"inq checking\" can occur.\n\nHowever, the quote does not describe what this condition is. It only confirms that a condition exists. Without more information, it's impossible to determine if this condition is met or not. (This same root cause also affects: Request, Transmit data, examination ongoing, inq answering, inq rejected, ip answering, ip checking, ip rejecting, ip transmitting data, transaction data request answered, transaction data request checked.)",
+        "quote_verbatim": true,
+        "affected_activities": [
+          "Request",
+          "Transmit data",
+          "examination ongoing",
+          "inq answering",
+          "inq checking",
+          "inq rejected",
+          "ip answering",
+          "ip checking",
+          "ip rejecting",
+          "ip transmitting data",
+          "transaction data request answered",
+          "transaction data request checked"
+        ],
+        "affected_count": 27
+      }
+    ],
+    "conforme": [],
+    "piece_jointe_alignement_brut": {
+      "inq.checking": {
+        "operator": "AND",
+        "quote": "The INQ transmits the transaction data request to the IP. The IP checks the request of the INQ.",
+        "terms": [
+          {
+            "term": "inq.transmitting",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['inq.transmitting', 'inq.checking']",
+            "missing": [
+              "inq.transmitting",
+              "inq.checking"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "inq.transmitting"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "inq.answering": {
+        "operator": "AND",
+        "quote": "The IP checks the request of the INQ. The IP answers the question of the INQ depending on the outcome of the examination,",
+        "terms": [
+          {
+            "term": "inq.checking",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['inq.checking', 'inq.answering']",
+            "missing": [
+              "inq.checking",
+              "inq.answering"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "inq.checking"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "inq.transmitting_data": {
+        "operator": "AND",
+        "quote": "i.e. Transmission of data or rejected.",
+        "terms": [
+          {
+            "term": "inq.answering",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['inq.answering']",
+            "missing": [
+              "inq.answering"
+            ]
+          },
+          {
+            "term": "ip.transmitting_data",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['ip.transmitting_data']",
+            "missing": [
+              "ip.transmitting_data"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "inq.answering",
+              "ip.transmitting_data"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "inq.rejected": {
+        "operator": "AND",
+        "quote": "i.e. Transmission of data or rejected.",
+        "terms": [
+          {
+            "term": "inq.answering",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['inq.answering', 'inq.rejected']",
+            "missing": [
+              "inq.answering",
+              "inq.rejected"
+            ]
+          },
+          {
+            "term": "ip.rejecting",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['ip.rejecting', 'inq.rejected']",
+            "missing": [
+              "ip.rejecting",
+              "inq.rejected"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "inq.answering",
+              "ip.rejecting"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "ip.checking": {
+        "operator": "AND",
+        "quote": "The INQ transmits the transaction data request to the IP. The IP checks the request of the INQ.",
+        "terms": [
+          {
+            "term": "inq.transmitting",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['inq.transmitting', 'ip.checking']",
+            "missing": [
+              "inq.transmitting",
+              "ip.checking"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "inq.transmitting"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "ip.answering": {
+        "operator": "AND",
+        "quote": "The IP checks the request of the INQ. The IP answers the question of the INQ depending on the outcome of the examination,",
+        "terms": [
+          {
+            "term": "inq.checking",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['inq.checking', 'ip.answering']",
+            "missing": [
+              "inq.checking",
+              "ip.answering"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "inq.checking"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "ip.transmitting_data": {
+        "operator": "AND",
+        "quote": "i.e. Transmission of data or rejected.",
+        "terms": [
+          {
+            "term": "inq.answering",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['inq.answering', 'ip.transmitting_data']",
+            "missing": [
+              "inq.answering",
+              "ip.transmitting_data"
+            ]
+          },
+          {
+            "term": "ip.answering",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['ip.answering', 'ip.transmitting_data']",
+            "missing": [
+              "ip.answering",
+              "ip.transmitting_data"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "inq.answering",
+              "ip.answering"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "ip.rejecting": {
+        "operator": "AND",
+        "quote": "i.e. Transmission of data or rejected.",
+        "terms": [
+          {
+            "term": "inq.answering",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['inq.answering', 'ip.rejecting']",
+            "missing": [
+              "inq.answering",
+              "ip.rejecting"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "inq.answering"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "transaction_data_request.transmitted": {
+        "operator": "AND",
+        "quote": "The INQ transmits the transaction data request to the IP.",
+        "terms": [
+          {
+            "term": "inq.transmitting",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['inq.transmitting']",
+            "missing": [
+              "inq.transmitting"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "inq.transmitting"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "transaction_data_request.checked": {
+        "operator": "AND",
+        "quote": "The IP checks the request of the INQ.",
+        "terms": [
+          {
+            "term": "inq.checking",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['inq.checking', 'transaction_data_request.checked']",
+            "missing": [
+              "inq.checking",
+              "transaction_data_request.checked"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "inq.checking"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "transaction_data_request.answered": {
+        "operator": "AND",
+        "quote": "The IP answers the question of the INQ depending on the outcome of the examination,",
+        "terms": [
+          {
+            "term": "inq.answering",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['inq.answering', 'transaction_data_request.answered']",
+            "missing": [
+              "inq.answering",
+              "transaction_data_request.answered"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "inq.answering"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "examination.ongoing": {
+        "operator": "AND",
+        "quote": "The IP answers the question of the INQ depending on the outcome of the examination,",
+        "terms": [
+          {
+            "term": "inq.answering",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['inq.answering', 'examination.ongoing']",
+            "missing": [
+              "inq.answering",
+              "examination.ongoing"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "inq.answering"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      }
+    }
+  },
+  "errors": []
+}

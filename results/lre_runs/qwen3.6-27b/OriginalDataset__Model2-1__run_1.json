@@ -1,0 +1,560 @@
+{
+  "case_name": "OriginalDataset/Model2-1",
+  "text": "At the beginning the customer perceives that her subscribed service has degraded.\n\nA list with all the problem parameters is then sent to the Customer Service department of TELECO.\n\nAt the customer service an employee enters (based on the received data) a problem report into system T.\n\nThen the problem report is compared to the customer SLA to identify what the extent and the details of the service degradation are.\n\nBased on this, the necessary counter measures are determined including their respective priorities.\n\nAn electronic service then determines the significance of the customer based on information that has been collected during the history of the contractual relationship.\n\nIn case the customer is premium, the process will link to an extra problem fix process (this process will not be detailed here).\n\nIn case the customer is of certain significance which would affect the counter measures previously decided upon, the process goes back to re-prioritize these measures otherwise the process continues.\n\nTaking together the information (i.e. contract commitment data + prioritized actions) a detailed problem report is created.\n\nThe detailed problem report is then sent to Service Management.\n\nService Management deals on a first level with violations of quality in services that are provided to customers.\n\nAfter receiving the detailed problem report, Service management investigates whether the problem is analyzable at the level of their department or whether the problem may be located at Resource Provisioning.\n\nIn case Service Management assesses the problem to be not analyzable by themselves, the detailed problem report is sent out to Resource Provisioning.\n\nIf Service Management is sure they can analyze it, they perform the analysis and based on the outcome they create a trouble report that indicates the type of problem.\n\nAfter Resource Provisioning receives the detailed problem report, it is checked whether there are any possible problems.\n\nIf no problems are detected, a notification about the normal service execution is created.\n\nIf a problem is detected this will be analyzed by Resource Provisioning and a trouble report is created.\n\nEither trouble report or the normal execution notification will be included in a status report and sent back to Service Management.\n\nService Management then prepares the final status report based on the received information.\n\nSubsequently it has to be determined what counter measures should be taken depending on the information in the final status report.\n\nThree alternative process paths may be taken.\n\nFor the case that no problem was detected at all, the actual service performance is sent back to the Customer Service.\n\nFor the case that minor corrective actions are required, Service Management will undertake corrective actions by themselves.\n\nSubsequently, the problem resolution report is created and then sent out to Customer Service.\n\nAfter sending, this process path of Service Management ends.\n\nFor the case that automatic resource restoration from Resource Provisioning is required, Service Management must create a request for automatic resource restoration.\n\nThis message is then sent to Resource Provisioning.\n\nResource Provisioning has been on-hold and waiting for a restoration request but this must happen within 2 days after the status report was sent out, otherwise Resource Provisioning terminates the process.\n\nAfter the restoration request is received, all possible errors are tracked.\n\nBased on the tracked errors, all necessary corrective actions are undertaken by Resource Provisioning.\n\nThen a trouble-shooting report is created.\n\nThis report is sent out to Service Management; then the process ends.\n\nThe trouble-shooting report is received by Service Management and this information goes then into the creation of the problem resolution report just as described for ii).\n\nCustomer Service either receives the actual service performance (if there was no problem) or the problem resolution report.\n\nThen, two concurrent activities are triggered, i.e. i) a report is created for the customer which details the current service performance and the resolution of the problem, and ii) an SLA violation rebate is reported to Billing & Collections who will adjust the billing.\n\nThe report for the customer is sent out to her.\n\nAfter all three activities are completed the process ends within Customer Service.\n\nAfter the customer then receives the report about service performance and problem resolution from Customer Service, the process flow at the customer also ends.\n",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "qwen3.6-27b",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "qwen3.6-27b",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/../datasets/lre/alignment_model_text-master/datasets/OriginalDataset/Models/Model2-1.bpmn",
+  "report_model": "qwen3.6-27b",
+  "dfg_edges": [
+    {
+      "source_id": "Task_23",
+      "source_label": "Track errors",
+      "target_id": "Task_24",
+      "target_label": "Undertake corrective actions",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_20",
+      "source_label": "Analyze problem causes in detail",
+      "target_id": "Task_21",
+      "target_label": "Create trouble report",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_19",
+      "source_label": "Create notification of normal service execution",
+      "target_id": "Task_22",
+      "target_label": "Create status report",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_8",
+      "source_label": "Send list of problem parameters",
+      "target_id": "IntermediateMessageEventCatching_1",
+      "target_label": "",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_5",
+      "source_label": "Create detailed problem report incl. contract commitment data and actions",
+      "target_id": "IntermediateMessageEventThrowing_0",
+      "target_label": "",
+      "gateway_context": []
+    },
+    {
+      "source_id": "IntermediateMessageEventThrowing_3",
+      "source_label": "",
+      "target_id": "IntermediateMessageEventCatching_4",
+      "target_label": "",
+      "gateway_context": [
+        "EventBasedGateway"
+      ]
+    },
+    {
+      "source_id": "IntermediateMessageEventThrowing_3",
+      "source_label": "",
+      "target_id": "IntermediateTimerEvent_0",
+      "target_label": "",
+      "gateway_context": [
+        "EventBasedGateway"
+      ]
+    },
+    {
+      "source_id": "IntermediateMessageEventCatching_0",
+      "source_label": "",
+      "target_id": "Task_7",
+      "target_label": "Report SLA violation rebate to billing & collections for billing adjustment",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "IntermediateMessageEventCatching_0",
+      "source_label": "",
+      "target_id": "Task_6",
+      "target_label": "Create report for customer about performance and problem resolution",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "Task_0",
+      "source_label": "Enter problem report",
+      "target_id": "Task_1",
+      "target_label": "Perform plausibility check",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_13",
+      "source_label": "Determine counter measures based on the final status report",
+      "target_id": "Task_16",
+      "target_label": "Create report for automatic resource restoration",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_13",
+      "source_label": "Determine counter measures based on the final status report",
+      "target_id": "Task_14",
+      "target_label": "Send out actual service performance",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_13",
+      "source_label": "Determine counter measures based on the final status report",
+      "target_id": "Task_15",
+      "target_label": "Undertake corrective actions",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_25",
+      "source_label": "Create trouble-shooting report",
+      "target_id": "IntermediateMessageEventThrowing_4",
+      "target_label": "",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_10",
+      "source_label": "Perform  problem  analysis",
+      "target_id": "Task_11",
+      "target_label": "Create trouble report indicating the type of problem",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_3",
+      "source_label": "Compare customer SLA and problem report",
+      "target_id": "Task_4",
+      "target_label": "Determine counter measures incl. priorities",
+      "gateway_context": []
+    },
+    {
+      "source_id": "IntermediateMessageEventThrowing_1",
+      "source_label": "",
+      "target_id": "IntermediateMessageEventCatching_3",
+      "target_label": "",
+      "gateway_context": []
+    },
+    {
+      "source_id": "IntermediateMessageEventCatching_3",
+      "source_label": "",
+      "target_id": "Task_17",
+      "target_label": "Create problem  resolution report",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_9",
+      "source_label": "Investigate whether problem is analyzable at this level",
+      "target_id": "Task_10",
+      "target_label": "Perform  problem  analysis",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_22",
+      "source_label": "Create status report",
+      "target_id": "IntermediateMessageEventThrowing_3",
+      "target_label": "",
+      "gateway_context": []
+    },
+    {
+      "source_id": "IntermediateMessageEventCatching_2",
+      "source_label": "",
+      "target_id": "Task_12",
+      "target_label": "Prepare final status report",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_12",
+      "source_label": "Prepare final status report",
+      "target_id": "Task_13",
+      "target_label": "Determine counter measures based on the final status report",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_1",
+      "source_label": "Perform plausibility check",
+      "target_id": "Task_2",
+      "target_label": "Determine significance of the customer",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_1",
+      "source_label": "Perform plausibility check",
+      "target_id": "Task_0",
+      "target_label": "Enter problem report",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_18",
+      "source_label": "Check for possible problems",
+      "target_id": "Task_20",
+      "target_label": "Analyze problem causes in detail",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_18",
+      "source_label": "Check for possible problems",
+      "target_id": "Task_19",
+      "target_label": "Create notification of normal service execution",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_21",
+      "source_label": "Create trouble report",
+      "target_id": "Task_22",
+      "target_label": "Create status report",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_4",
+      "source_label": "Determine counter measures incl. priorities",
+      "target_id": "Task_5",
+      "target_label": "Create detailed problem report incl. contract commitment data and actions",
+      "gateway_context": []
+    },
+    {
+      "source_id": "IntermediateMessageEventCatching_4",
+      "source_label": "",
+      "target_id": "Task_23",
+      "target_label": "Track errors",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_24",
+      "source_label": "Undertake corrective actions",
+      "target_id": "Task_25",
+      "target_label": "Create trouble-shooting report",
+      "gateway_context": []
+    },
+    {
+      "source_id": "IntermediateMessageEventThrowing_0",
+      "source_label": "",
+      "target_id": "IntermediateMessageEventCatching_0",
+      "target_label": "",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_15",
+      "source_label": "Undertake corrective actions",
+      "target_id": "Task_17",
+      "target_label": "Create problem  resolution report",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_2",
+      "source_label": "Determine significance of the customer",
+      "target_id": "Task_3",
+      "target_label": "Compare customer SLA and problem report",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_16",
+      "source_label": "Create report for automatic resource restoration",
+      "target_id": "IntermediateMessageEventThrowing_1",
+      "target_label": "",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_17",
+      "source_label": "Create problem  resolution report",
+      "target_id": "IntermediateMessageEventThrowing_2",
+      "target_label": "",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_11",
+      "source_label": "Create trouble report indicating the type of problem",
+      "target_id": "IntermediateMessageEventCatching_2",
+      "target_label": "",
+      "gateway_context": []
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "Track errors",
+      "subject_id": "Task_23",
+      "predicate": "follows",
+      "object": "Undertake corrective actions",
+      "object_id": "Task_24"
+    },
+    {
+      "subject": "Analyze problem causes in detail",
+      "subject_id": "Task_20",
+      "predicate": "follows",
+      "object": "Create trouble report",
+      "object_id": "Task_21"
+    },
+    {
+      "subject": "Create notification of normal service execution",
+      "subject_id": "Task_19",
+      "predicate": "follows",
+      "object": "Create status report",
+      "object_id": "Task_22"
+    },
+    {
+      "subject": "Send list of problem parameters",
+      "subject_id": "Task_8",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "IntermediateMessageEventCatching_1"
+    },
+    {
+      "subject": "Create detailed problem report incl. contract commitment data and actions",
+      "subject_id": "Task_5",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "IntermediateMessageEventThrowing_0"
+    },
+    {
+      "subject": "",
+      "subject_id": "IntermediateMessageEventThrowing_3",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "IntermediateMessageEventCatching_4"
+    },
+    {
+      "subject": "",
+      "subject_id": "IntermediateMessageEventThrowing_3",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "IntermediateTimerEvent_0"
+    },
+    {
+      "subject": "",
+      "subject_id": "IntermediateMessageEventCatching_0",
+      "predicate": "follows",
+      "object": "Report SLA violation rebate to billing & collections for billing adjustment",
+      "object_id": "Task_7"
+    },
+    {
+      "subject": "",
+      "subject_id": "IntermediateMessageEventCatching_0",
+      "predicate": "follows",
+      "object": "Create report for customer about performance and problem resolution",
+      "object_id": "Task_6"
+    },
+    {
+      "subject": "Enter problem report",
+      "subject_id": "Task_0",
+      "predicate": "follows",
+      "object": "Perform plausibility check",
+      "object_id": "Task_1"
+    },
+    {
+      "subject": "Determine counter measures based on the final status report",
+      "subject_id": "Task_13",
+      "predicate": "follows",
+      "object": "Create report for automatic resource restoration",
+      "object_id": "Task_16"
+    },
+    {
+      "subject": "Determine counter measures based on the final status report",
+      "subject_id": "Task_13",
+      "predicate": "follows",
+      "object": "Send out actual service performance",
+      "object_id": "Task_14"
+    },
+    {
+      "subject": "Determine counter measures based on the final status report",
+      "subject_id": "Task_13",
+      "predicate": "follows",
+      "object": "Undertake corrective actions",
+      "object_id": "Task_15"
+    },
+    {
+      "subject": "Create trouble-shooting report",
+      "subject_id": "Task_25",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "IntermediateMessageEventThrowing_4"
+    },
+    {
+      "subject": "Perform  problem  analysis",
+      "subject_id": "Task_10",
+      "predicate": "follows",
+      "object": "Create trouble report indicating the type of problem",
+      "object_id": "Task_11"
+    },
+    {
+      "subject": "Compare customer SLA and problem report",
+      "subject_id": "Task_3",
+      "predicate": "follows",
+      "object": "Determine counter measures incl. priorities",
+      "object_id": "Task_4"
+    },
+    {
+      "subject": "",
+      "subject_id": "IntermediateMessageEventThrowing_1",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "IntermediateMessageEventCatching_3"
+    },
+    {
+      "subject": "",
+      "subject_id": "IntermediateMessageEventCatching_3",
+      "predicate": "follows",
+      "object": "Create problem  resolution report",
+      "object_id": "Task_17"
+    },
+    {
+      "subject": "Investigate whether problem is analyzable at this level",
+      "subject_id": "Task_9",
+      "predicate": "follows",
+      "object": "Perform  problem  analysis",
+      "object_id": "Task_10"
+    },
+    {
+      "subject": "Create status report",
+      "subject_id": "Task_22",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "IntermediateMessageEventThrowing_3"
+    },
+    {
+      "subject": "",
+      "subject_id": "IntermediateMessageEventCatching_2",
+      "predicate": "follows",
+      "object": "Prepare final status report",
+      "object_id": "Task_12"
+    },
+    {
+      "subject": "Prepare final status report",
+      "subject_id": "Task_12",
+      "predicate": "follows",
+      "object": "Determine counter measures based on the final status report",
+      "object_id": "Task_13"
+    },
+    {
+      "subject": "Perform plausibility check",
+      "subject_id": "Task_1",
+      "predicate": "follows",
+      "object": "Determine significance of the customer",
+      "object_id": "Task_2"
+    },
+    {
+      "subject": "Perform plausibility check",
+      "subject_id": "Task_1",
+      "predicate": "follows",
+      "object": "Enter problem report",
+      "object_id": "Task_0"
+    },
+    {
+      "subject": "Check for possible problems",
+      "subject_id": "Task_18",
+      "predicate": "follows",
+      "object": "Analyze problem causes in detail",
+      "object_id": "Task_20"
+    },
+    {
+      "subject": "Check for possible problems",
+      "subject_id": "Task_18",
+      "predicate": "follows",
+      "object": "Create notification of normal service execution",
+      "object_id": "Task_19"
+    },
+    {
+      "subject": "Create trouble report",
+      "subject_id": "Task_21",
+      "predicate": "follows",
+      "object": "Create status report",
+      "object_id": "Task_22"
+    },
+    {
+      "subject": "Determine counter measures incl. priorities",
+      "subject_id": "Task_4",
+      "predicate": "follows",
+      "object": "Create detailed problem report incl. contract commitment data and actions",
+      "object_id": "Task_5"
+    },
+    {
+      "subject": "",
+      "subject_id": "IntermediateMessageEventCatching_4",
+      "predicate": "follows",
+      "object": "Track errors",
+      "object_id": "Task_23"
+    },
+    {
+      "subject": "Undertake corrective actions",
+      "subject_id": "Task_24",
+      "predicate": "follows",
+      "object": "Create trouble-shooting report",
+      "object_id": "Task_25"
+    },
+    {
+      "subject": "",
+      "subject_id": "IntermediateMessageEventThrowing_0",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "IntermediateMessageEventCatching_0"
+    },
+    {
+      "subject": "Undertake corrective actions",
+      "subject_id": "Task_15",
+      "predicate": "follows",
+      "object": "Create problem  resolution report",
+      "object_id": "Task_17"
+    },
+    {
+      "subject": "Determine significance of the customer",
+      "subject_id": "Task_2",
+      "predicate": "follows",
+      "object": "Compare customer SLA and problem report",
+      "object_id": "Task_3"
+    },
+    {
+      "subject": "Create report for automatic resource restoration",
+      "subject_id": "Task_16",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "IntermediateMessageEventThrowing_1"
+    },
+    {
+      "subject": "Create problem  resolution report",
+      "subject_id": "Task_17",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "IntermediateMessageEventThrowing_2"
+    },
+    {
+      "subject": "Create trouble report indicating the type of problem",
+      "subject_id": "Task_11",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "IntermediateMessageEventCatching_2"
+    }
+  ],
+  "errors": [
+    "state_space: Error code: 429 - {'error': {'message': 'Rate limit reached for model `qwen/qwen3.6-27b` in organization `org_01ky59z3mqfq0aqbqb6mk55vxr` service tier `on_demand` on tokens per day (TPD): Limit 200000, Used 198100, Requested 2628. Please try again in 5m14.496s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}",
+    "precondition: 'state_space'",
+    "state_matching: 'state_space'",
+    "graph_construction: 'state_space'",
+    "alignment: 'reference_graph'",
+    "report: 'alignment'"
+  ]
+}

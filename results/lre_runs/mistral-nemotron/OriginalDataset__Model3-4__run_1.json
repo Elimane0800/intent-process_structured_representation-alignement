@@ -1,0 +1,568 @@
+{
+  "case_name": "OriginalDataset/Model3-4",
+  "text": "In the context of a claim handling process, it is sometimes necessary to send a questionnaire to the claimant to gather additional information. The claimant is expected to return the questionnaire within five days. If no response is received after five days, a reminder is sent to the claimant. If after another five days there is still no response, another reminder is sent and so on until the completed questionnaire is received.\n",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "mistral-nemotron",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "mistral-nemotron",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/../datasets/lre/alignment_model_text-master/datasets/OriginalDataset/Models/Model3-4.bpmn",
+  "report_model": "mistral-nemotron",
+  "candidates": {
+    "questionnaire": {
+      "states": [
+        "sent",
+        "returned",
+        "completed"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "reminder": {
+      "states": [
+        "sent"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "claimant": {
+      "states": [
+        "responded",
+        "not_responded"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    }
+  },
+  "validation_report": {
+    "questionnaire": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "questionnaire"
+    },
+    "reminder": {
+      "f_lex": "INDETERMINATE",
+      "kept": true,
+      "head_used": "reminder"
+    },
+    "claimant": {
+      "f_lex": "ACTOR",
+      "kept": false,
+      "head_used": "claimant"
+    },
+    "__meta__": {
+      "total_candidates": 3,
+      "indeterminate_kept_count": 1
+    }
+  },
+  "exclusive_groups_report": {
+    "accepted": [],
+    "rejected": []
+  },
+  "state_space": {
+    "questionnaire": {
+      "states": [
+        "sent",
+        "returned",
+        "completed"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "reminder": {
+      "states": [
+        "sent"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    }
+  },
+  "state_space_dedup": {
+    "merged": {},
+    "ambiguous_not_merged": {}
+  },
+  "raw_preconditions": {
+    "questionnaire.sent": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "questionnaire.returned": {
+      "precondition": "questionnaire.sent",
+      "quote": "The claimant is expected to return the questionnaire within five days."
+    },
+    "questionnaire.completed": {
+      "precondition": "questionnaire.returned",
+      "quote": "until the completed questionnaire is received."
+    },
+    "reminder.sent": {
+      "precondition": "questionnaire.sent AND NOT questionnaire.returned",
+      "quote": "If no response is received after five days, a reminder is sent to the claimant."
+    }
+  },
+  "validated_preconditions": {
+    "questionnaire.sent": {
+      "precondition": "INITIAL",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "questionnaire.returned": {
+      "precondition": "questionnaire.sent",
+      "quote": "The claimant is expected to return the questionnaire within five days.",
+      "status": "OK",
+      "reason": null
+    },
+    "questionnaire.completed": {
+      "precondition": "questionnaire.returned",
+      "quote": "until the completed questionnaire is received.",
+      "status": "OK",
+      "reason": null
+    },
+    "reminder.sent": {
+      "precondition": "questionnaire.sent AND NOT questionnaire.returned",
+      "quote": "If no response is received after five days, a reminder is sent to the claimant.",
+      "status": "OK",
+      "reason": null
+    }
+  },
+  "precondition_cycles": [],
+  "branch_conflicts": [],
+  "reference_graph": {
+    "nodes": [
+      {
+        "id": "questionnaire.sent",
+        "weight": 0.667
+      },
+      {
+        "id": "questionnaire.returned",
+        "weight": 1.0
+      },
+      {
+        "id": "questionnaire.completed",
+        "weight": 0.333
+      },
+      {
+        "id": "reminder.sent",
+        "weight": 0.667
+      }
+    ],
+    "edges": [
+      {
+        "from": "questionnaire.sent",
+        "to": "questionnaire.returned",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "The claimant is expected to return the questionnaire within five days.",
+        "negated": false
+      },
+      {
+        "from": "questionnaire.returned",
+        "to": "questionnaire.completed",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "until the completed questionnaire is received.",
+        "negated": false
+      },
+      {
+        "from": "questionnaire.sent",
+        "to": "reminder.sent",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "If no response is received after five days, a reminder is sent to the claimant.",
+        "negated": false
+      },
+      {
+        "from": "questionnaire.returned",
+        "to": "reminder.sent",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "If no response is received after five days, a reminder is sent to the claimant.",
+        "negated": true
+      }
+    ],
+    "cycles": [],
+    "branch_conflicts": [],
+    "exclusive_pairs": []
+  },
+  "dfg_edges": [
+    {
+      "source_id": "Task_0",
+      "source_label": "Send questionnaire",
+      "target_id": "IntermediateMessageEventCatching_0",
+      "target_label": "Filled  questionnaire  received",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "EventBasedGateway"
+      ]
+    },
+    {
+      "source_id": "Task_0",
+      "source_label": "Send questionnaire",
+      "target_id": "IntermediateTimerEvent_0",
+      "target_label": "After 5 Days",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "EventBasedGateway"
+      ]
+    },
+    {
+      "source_id": "Task_1",
+      "source_label": "Send reminder",
+      "target_id": "IntermediateMessageEventCatching_0",
+      "target_label": "Filled  questionnaire  received",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "EventBasedGateway"
+      ]
+    },
+    {
+      "source_id": "Task_1",
+      "source_label": "Send reminder",
+      "target_id": "IntermediateTimerEvent_0",
+      "target_label": "After 5 Days",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "EventBasedGateway"
+      ]
+    },
+    {
+      "source_id": "IntermediateTimerEvent_0",
+      "source_label": "After 5 Days",
+      "target_id": "Task_1",
+      "target_label": "Send reminder",
+      "gateway_context": []
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "Send questionnaire",
+      "subject_id": "Task_0",
+      "predicate": "follows",
+      "object": "Filled  questionnaire  received",
+      "object_id": "IntermediateMessageEventCatching_0"
+    },
+    {
+      "subject": "Send questionnaire",
+      "subject_id": "Task_0",
+      "predicate": "follows",
+      "object": "After 5 Days",
+      "object_id": "IntermediateTimerEvent_0"
+    },
+    {
+      "subject": "Send reminder",
+      "subject_id": "Task_1",
+      "predicate": "follows",
+      "object": "Filled  questionnaire  received",
+      "object_id": "IntermediateMessageEventCatching_0"
+    },
+    {
+      "subject": "Send reminder",
+      "subject_id": "Task_1",
+      "predicate": "follows",
+      "object": "After 5 Days",
+      "object_id": "IntermediateTimerEvent_0"
+    },
+    {
+      "subject": "After 5 Days",
+      "subject_id": "IntermediateTimerEvent_0",
+      "predicate": "follows",
+      "object": "Send reminder",
+      "object_id": "Task_1"
+    }
+  ],
+  "matches": {
+    "Task_0": {
+      "activity_label": "Send questionnaire",
+      "matches": [
+        {
+          "match": "questionnaire.sent",
+          "score": 0.4691
+        }
+      ],
+      "clusters": [
+        [
+          "questionnaire.sent"
+        ]
+      ]
+    },
+    "IntermediateMessageEventCatching_0": {
+      "activity_label": "Filled  questionnaire  received",
+      "matches": [
+        {
+          "match": "questionnaire.returned",
+          "score": 0.4255
+        },
+        {
+          "match": "questionnaire.sent",
+          "score": 0.4212
+        },
+        {
+          "match": "questionnaire.completed",
+          "score": 0.4153
+        }
+      ],
+      "clusters": [
+        [
+          "questionnaire.returned",
+          "questionnaire.sent",
+          "questionnaire.completed"
+        ]
+      ]
+    },
+    "IntermediateTimerEvent_0": {
+      "activity_label": "After 5 Days",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_1": {
+      "activity_label": "Send reminder",
+      "matches": [
+        {
+          "match": "reminder.sent",
+          "score": 0.4811
+        }
+      ],
+      "clusters": [
+        [
+          "reminder.sent"
+        ]
+      ]
+    }
+  },
+  "process_graph": [
+    {
+      "from": "questionnaire.sent",
+      "to": "questionnaire.returned",
+      "activity_from": "Send questionnaire",
+      "activity_to": "Filled  questionnaire  received",
+      "source_id": "Task_0",
+      "target_id": "IntermediateMessageEventCatching_0"
+    },
+    {
+      "from": "questionnaire.sent",
+      "to": "questionnaire.sent",
+      "activity_from": "Send questionnaire",
+      "activity_to": "Filled  questionnaire  received",
+      "source_id": "Task_0",
+      "target_id": "IntermediateMessageEventCatching_0"
+    },
+    {
+      "from": "questionnaire.sent",
+      "to": "questionnaire.completed",
+      "activity_from": "Send questionnaire",
+      "activity_to": "Filled  questionnaire  received",
+      "source_id": "Task_0",
+      "target_id": "IntermediateMessageEventCatching_0"
+    },
+    {
+      "from": "reminder.sent",
+      "to": "questionnaire.returned",
+      "activity_from": "Send reminder",
+      "activity_to": "Filled  questionnaire  received",
+      "source_id": "Task_1",
+      "target_id": "IntermediateMessageEventCatching_0"
+    },
+    {
+      "from": "reminder.sent",
+      "to": "questionnaire.sent",
+      "activity_from": "Send reminder",
+      "activity_to": "Filled  questionnaire  received",
+      "source_id": "Task_1",
+      "target_id": "IntermediateMessageEventCatching_0"
+    },
+    {
+      "from": "reminder.sent",
+      "to": "questionnaire.completed",
+      "activity_from": "Send reminder",
+      "activity_to": "Filled  questionnaire  received",
+      "source_id": "Task_1",
+      "target_id": "IntermediateMessageEventCatching_0"
+    }
+  ],
+  "alignment": {
+    "questionnaire.returned": {
+      "operator": "AND",
+      "quote": "The claimant is expected to return the questionnaire within five days.",
+      "terms": [
+        {
+          "term": "questionnaire.sent",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED",
+      "clauses": [
+        {
+          "terms": [
+            "questionnaire.sent"
+          ],
+          "status": "SATISFIED"
+        }
+      ]
+    },
+    "questionnaire.completed": {
+      "operator": "AND",
+      "quote": "until the completed questionnaire is received.",
+      "terms": [
+        {
+          "term": "questionnaire.returned",
+          "status": "VIOLATED",
+          "reason": "both states matched, no path in process",
+          "missing": []
+        }
+      ],
+      "status": "VIOLATED",
+      "clauses": [
+        {
+          "terms": [
+            "questionnaire.returned"
+          ],
+          "status": "VIOLATED"
+        }
+      ]
+    },
+    "reminder.sent": {
+      "operator": "AND",
+      "quote": "If no response is received after five days, a reminder is sent to the claimant.",
+      "terms": [
+        {
+          "term": "questionnaire.sent",
+          "status": "VIOLATED",
+          "reason": "both states matched, no path in process",
+          "missing": []
+        },
+        {
+          "term": "NOT questionnaire.returned",
+          "status": "VIOLATED",
+          "reason": "every path from an anchored co-term to the target requires 'questionnaire.returned' to occur first -- the process forces what the text says must not happen",
+          "missing": []
+        }
+      ],
+      "status": "VIOLATED",
+      "clauses": [
+        {
+          "terms": [
+            "questionnaire.sent",
+            "NOT questionnaire.returned"
+          ],
+          "status": "VIOLATED"
+        }
+      ]
+    }
+  },
+  "report": {
+    "verdict": {
+      "verdict": "NOT_FAITHFUL",
+      "justification": "2 gap(s) found between the source text's requirements and the observed process -- at least one precondition asserted by the text is contradicted by the model's actual sequence of activities.",
+      "scope": "This verdict covers the causal reachability of the requirements expressed in the source text, not the general quality of the process model -- a multiplicity defect (an activity executed more than once due to a mismatched branching structure) is not covered by this verdict, even if the process is otherwise well-formed."
+    },
+    "summary": {
+      "ecarts": 2,
+      "non_verifiable": 0,
+      "conforme": 1
+    },
+    "ecarts": [
+      {
+        "root_cause": "Filled  questionnaire  received",
+        "quote": "until the completed questionnaire is received.",
+        "explanation": "The process requires that the activity \"Filled questionnaire received\" must happen before the same activity can occur again, as indicated by the requirement: \"until the completed questionnaire is received.\" However, the observed process does not show any step ensuring this condition is met. (This same root cause also affects: Send reminder.)",
+        "quote_verbatim": true,
+        "affected_activities": [
+          "Filled  questionnaire  received",
+          "Send reminder"
+        ],
+        "affected_count": 2
+      },
+      {
+        "root_cause": "Send questionnaire",
+        "quote": "If no response is received after five days, a reminder is sent to the claimant.",
+        "explanation": "The process requires that the activity \"Send questionnaire\" must happen before \"Send reminder\" can occur. However, the current process flow does not enforce this order.\n\nThe source text states: *\"If no response is received after five days, a reminder is sent to the claimant.\"*",
+        "quote_verbatim": true,
+        "affected_activities": [
+          "Send reminder"
+        ],
+        "affected_count": 1
+      }
+    ],
+    "non_verifiable": [],
+    "conforme": [
+      {
+        "target": "Filled  questionnaire  received",
+        "term": "Send questionnaire"
+      }
+    ],
+    "piece_jointe_alignement_brut": {
+      "questionnaire.returned": {
+        "operator": "AND",
+        "quote": "The claimant is expected to return the questionnaire within five days.",
+        "terms": [
+          {
+            "term": "questionnaire.sent",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED",
+        "clauses": [
+          {
+            "terms": [
+              "questionnaire.sent"
+            ],
+            "status": "SATISFIED"
+          }
+        ]
+      },
+      "questionnaire.completed": {
+        "operator": "AND",
+        "quote": "until the completed questionnaire is received.",
+        "terms": [
+          {
+            "term": "questionnaire.returned",
+            "status": "VIOLATED",
+            "reason": "both states matched, no path in process",
+            "missing": []
+          }
+        ],
+        "status": "VIOLATED",
+        "clauses": [
+          {
+            "terms": [
+              "questionnaire.returned"
+            ],
+            "status": "VIOLATED"
+          }
+        ]
+      },
+      "reminder.sent": {
+        "operator": "AND",
+        "quote": "If no response is received after five days, a reminder is sent to the claimant.",
+        "terms": [
+          {
+            "term": "questionnaire.sent",
+            "status": "VIOLATED",
+            "reason": "both states matched, no path in process",
+            "missing": []
+          },
+          {
+            "term": "NOT questionnaire.returned",
+            "status": "VIOLATED",
+            "reason": "every path from an anchored co-term to the target requires 'questionnaire.returned' to occur first -- the process forces what the text says must not happen",
+            "missing": []
+          }
+        ],
+        "status": "VIOLATED",
+        "clauses": [
+          {
+            "terms": [
+              "questionnaire.sent",
+              "NOT questionnaire.returned"
+            ],
+            "status": "VIOLATED"
+          }
+        ]
+      }
+    }
+  },
+  "errors": []
+}

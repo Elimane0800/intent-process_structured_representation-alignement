@@ -1,0 +1,208 @@
+{
+  "case_name": "OriginalDataset/Recourse",
+  "text": "If an insurant could be possibly subrogated against, I get information about that.\nI check that case and if the possibility is really there, I send a request for payment to the insurant and make me a reminder.\nIf recourse is not possible, I close the case.\nWhen we receive the money, I make a booking and close the case.\nIf the insurant disagrees with the recourse, I’ll have to check the reasoning of that.\nIf he is right, I simply close the case. \nIf he is wrong, I forward the case to a collection agency.\nIt the deadline for disagreement is reached and we haven’t received any money, I forward the case to the collection agency as well.\n",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "gpt-oss-20b",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "gpt-oss-20b",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/../datasets/lre/alignment_model_text-master/datasets/OriginalDataset/Models/Recourse.bpmn",
+  "report_model": "gpt-oss-20b",
+  "dfg_edges": [
+    {
+      "source_id": "Task_12lthpj",
+      "source_label": "send reminder",
+      "target_id": "IntermediateCatchEvent_1ias0p2",
+      "target_label": "disagreement letter received",
+      "gateway_context": [
+        "EventBasedGateway"
+      ]
+    },
+    {
+      "source_id": "Task_12lthpj",
+      "source_label": "send reminder",
+      "target_id": "IntermediateCatchEvent_037r6f2",
+      "target_label": "Reminder  is due",
+      "gateway_context": [
+        "EventBasedGateway"
+      ]
+    },
+    {
+      "source_id": "Task_12lthpj",
+      "source_label": "send reminder",
+      "target_id": "IntermediateCatchEvent_0d430z1",
+      "target_label": "Money received",
+      "gateway_context": [
+        "EventBasedGateway"
+      ]
+    },
+    {
+      "source_id": "Task_1bwmf45",
+      "source_label": "make booking",
+      "target_id": "Task_0yan60f",
+      "target_label": "close case",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_02fdytg",
+      "source_label": "send request for payment",
+      "target_id": "Task_12lthpj",
+      "target_label": "send reminder",
+      "gateway_context": []
+    },
+    {
+      "source_id": "IntermediateCatchEvent_1ias0p2",
+      "source_label": "disagreement letter received",
+      "target_id": "Task_0eti3m2",
+      "target_label": "check reasoning",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_0iirfhd",
+      "source_label": "check case",
+      "target_id": "Task_04aofbe",
+      "target_label": "close case",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "no"
+      ]
+    },
+    {
+      "source_id": "Task_0iirfhd",
+      "source_label": "check case",
+      "target_id": "Task_02fdytg",
+      "target_label": "send request for payment",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "yes"
+      ]
+    },
+    {
+      "source_id": "IntermediateCatchEvent_0d430z1",
+      "source_label": "Money received",
+      "target_id": "Task_1bwmf45",
+      "target_label": "make booking",
+      "gateway_context": []
+    },
+    {
+      "source_id": "IntermediateCatchEvent_037r6f2",
+      "source_label": "Reminder  is due",
+      "target_id": "Task_1w7bb1w",
+      "target_label": "hand over to collection agency",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_0eti3m2",
+      "source_label": "check reasoning",
+      "target_id": "Task_1w7bb1w",
+      "target_label": "hand over to collection agency",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "no"
+      ]
+    },
+    {
+      "source_id": "Task_0eti3m2",
+      "source_label": "check reasoning",
+      "target_id": "Task_1qlbv5i",
+      "target_label": "close case",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "yes"
+      ]
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "send reminder",
+      "subject_id": "Task_12lthpj",
+      "predicate": "follows",
+      "object": "disagreement letter received",
+      "object_id": "IntermediateCatchEvent_1ias0p2"
+    },
+    {
+      "subject": "send reminder",
+      "subject_id": "Task_12lthpj",
+      "predicate": "follows",
+      "object": "Reminder  is due",
+      "object_id": "IntermediateCatchEvent_037r6f2"
+    },
+    {
+      "subject": "send reminder",
+      "subject_id": "Task_12lthpj",
+      "predicate": "follows",
+      "object": "Money received",
+      "object_id": "IntermediateCatchEvent_0d430z1"
+    },
+    {
+      "subject": "make booking",
+      "subject_id": "Task_1bwmf45",
+      "predicate": "follows",
+      "object": "close case",
+      "object_id": "Task_0yan60f"
+    },
+    {
+      "subject": "send request for payment",
+      "subject_id": "Task_02fdytg",
+      "predicate": "follows",
+      "object": "send reminder",
+      "object_id": "Task_12lthpj"
+    },
+    {
+      "subject": "disagreement letter received",
+      "subject_id": "IntermediateCatchEvent_1ias0p2",
+      "predicate": "follows",
+      "object": "check reasoning",
+      "object_id": "Task_0eti3m2"
+    },
+    {
+      "subject": "check case",
+      "subject_id": "Task_0iirfhd",
+      "predicate": "follows",
+      "object": "close case",
+      "object_id": "Task_04aofbe"
+    },
+    {
+      "subject": "check case",
+      "subject_id": "Task_0iirfhd",
+      "predicate": "follows",
+      "object": "send request for payment",
+      "object_id": "Task_02fdytg"
+    },
+    {
+      "subject": "Money received",
+      "subject_id": "IntermediateCatchEvent_0d430z1",
+      "predicate": "follows",
+      "object": "make booking",
+      "object_id": "Task_1bwmf45"
+    },
+    {
+      "subject": "Reminder  is due",
+      "subject_id": "IntermediateCatchEvent_037r6f2",
+      "predicate": "follows",
+      "object": "hand over to collection agency",
+      "object_id": "Task_1w7bb1w"
+    },
+    {
+      "subject": "check reasoning",
+      "subject_id": "Task_0eti3m2",
+      "predicate": "follows",
+      "object": "hand over to collection agency",
+      "object_id": "Task_1w7bb1w"
+    },
+    {
+      "subject": "check reasoning",
+      "subject_id": "Task_0eti3m2",
+      "predicate": "follows",
+      "object": "close case",
+      "object_id": "Task_1qlbv5i"
+    }
+  ],
+  "errors": [
+    "state_space: Request timed out.",
+    "precondition: 'state_space'",
+    "state_matching: 'state_space'",
+    "graph_construction: 'state_space'",
+    "alignment: 'reference_graph'",
+    "report: 'alignment'"
+  ]
+}

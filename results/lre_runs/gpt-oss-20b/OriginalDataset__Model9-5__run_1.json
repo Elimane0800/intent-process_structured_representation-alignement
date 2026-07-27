@@ -1,0 +1,158 @@
+{
+  "case_name": "OriginalDataset/Model9-5",
+  "text": "After the Expense Report is received, a new account must be created if the employee does not already have one. The report is then reviewed for automatic approval. Amounts under $200 are automatically approved, whereas amounts equal to or over $200 require approval of the supervisor. In case of rejection, the employee must receive a rejection notice by email. Otherwise, the reimbursement goes to the employees direct deposit bank account. If the request is not completed in 7 days, then the employee must receive an approval in progress email. If the request is not finished within 30 days, then the process is stopped and the employee receives an email cancellation notice and must re-submit the expense report.",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "gpt-oss-20b",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "gpt-oss-20b",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/../datasets/lre/alignment_model_text-master/datasets/OriginalDataset/Models/Model9-5.bpmn",
+  "report_model": "gpt-oss-20b",
+  "dfg_edges": [
+    {
+      "source_id": "Task_0",
+      "source_label": "Approve in progress email",
+      "target_id": "IntermediateTimerEvent_1",
+      "target_label": "23 days",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_6",
+      "source_label": "Conduct supervisor review",
+      "target_id": "Task_7",
+      "target_label": "Notify  employee",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_6",
+      "source_label": "Conduct supervisor review",
+      "target_id": "Task_4",
+      "target_label": "Send for payment",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_3",
+      "source_label": "Create account",
+      "target_id": "Task_2",
+      "target_label": "Review for pre-approval",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_2",
+      "source_label": "Review for pre-approval",
+      "target_id": "Task_6",
+      "target_label": "Conduct supervisor review",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_2",
+      "source_label": "Review for pre-approval",
+      "target_id": "Task_4",
+      "target_label": "Send for payment",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "IntermediateTimerEvent_1",
+      "source_label": "23 days",
+      "target_id": "Task_1",
+      "target_label": "Advise employee to start again",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_4",
+      "source_label": "Send for payment",
+      "target_id": "Task_5",
+      "target_label": "Transfer to employee account",
+      "gateway_context": []
+    },
+    {
+      "source_id": "IntermediateTimerEvent_0",
+      "source_label": "7 days",
+      "target_id": "Task_0",
+      "target_label": "Approve in progress email",
+      "gateway_context": []
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "Approve in progress email",
+      "subject_id": "Task_0",
+      "predicate": "follows",
+      "object": "23 days",
+      "object_id": "IntermediateTimerEvent_1"
+    },
+    {
+      "subject": "Conduct supervisor review",
+      "subject_id": "Task_6",
+      "predicate": "follows",
+      "object": "Notify  employee",
+      "object_id": "Task_7"
+    },
+    {
+      "subject": "Conduct supervisor review",
+      "subject_id": "Task_6",
+      "predicate": "follows",
+      "object": "Send for payment",
+      "object_id": "Task_4"
+    },
+    {
+      "subject": "Create account",
+      "subject_id": "Task_3",
+      "predicate": "follows",
+      "object": "Review for pre-approval",
+      "object_id": "Task_2"
+    },
+    {
+      "subject": "Review for pre-approval",
+      "subject_id": "Task_2",
+      "predicate": "follows",
+      "object": "Conduct supervisor review",
+      "object_id": "Task_6"
+    },
+    {
+      "subject": "Review for pre-approval",
+      "subject_id": "Task_2",
+      "predicate": "follows",
+      "object": "Send for payment",
+      "object_id": "Task_4"
+    },
+    {
+      "subject": "23 days",
+      "subject_id": "IntermediateTimerEvent_1",
+      "predicate": "follows",
+      "object": "Advise employee to start again",
+      "object_id": "Task_1"
+    },
+    {
+      "subject": "Send for payment",
+      "subject_id": "Task_4",
+      "predicate": "follows",
+      "object": "Transfer to employee account",
+      "object_id": "Task_5"
+    },
+    {
+      "subject": "7 days",
+      "subject_id": "IntermediateTimerEvent_0",
+      "predicate": "follows",
+      "object": "Approve in progress email",
+      "object_id": "Task_0"
+    }
+  ],
+  "errors": [
+    "state_space: Request timed out.",
+    "precondition: 'state_space'",
+    "state_matching: 'state_space'",
+    "graph_construction: 'state_space'",
+    "alignment: 'reference_graph'",
+    "report: 'alignment'"
+  ]
+}

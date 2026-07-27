@@ -22,23 +22,56 @@ import os
 import re
 
 from agent.models.base_llm import get_llm
-from agent.prompt.report_prompt import REPORT_PROMPT_VIOLATED, REPORT_PROMPT_UNRESOLVABLE
+from agent.prompt.report_prompt import (
+    REPORT_PROMPT_VIOLATED,
+    REPORT_PROMPT_UNRESOLVABLE,
+    REPORT_PROMPT_VIOLATED_NEGATED,
+    REPORT_PROMPT_UNRESOLVABLE_NEGATED,
+)
 
 ALIGNMENT_DIR = os.path.join(os.path.dirname(__file__), "..", "..", "results", "alignment")
 MATCHING_DIR = os.path.join(os.path.dirname(__file__), "..", "..", "results", "state_matching")
 RESULTS_DIR = os.path.join(os.path.dirname(__file__), "..", "..", "results", "report")
 
-_MISSING_PLACEHOLDER = "(aucune activite du processus ne correspond clairement a cela)"
-_NO_QUOTE_PLACEHOLDER = "(aucune citation disponible)"
+_MISSING_PLACEHOLDER = "(no clear process activity corresponds to this)"
+_NO_QUOTE_PLACEHOLDER = "(no quote available)"
+
+
+def _is_negated(term: str) -> bool:
+    return term.startswith("NOT ")
+
+
+def _strip_not(term: str) -> str:
+    """Copie locale du meme helper que precondition_node_with_retry.py / graph_node.py /
+    tgms_solver.py -- meme discipline de duplication assumee dans tout ce projet. Necessaire
+    ICI specifiquement parce qu'un terme de precondition niee ('NOT job.continued') traverse
+    tgms_solver.py jusqu'a alignment_node.py SANS jamais etre reintegre a un vrai nom d'etat --
+    'term' dans une entree TermVerdict porte le prefixe "NOT " tel quel (par design, cf.
+    status_of_negated_term), et ce fichier est le premier maillon de la chaine qui produit du
+    texte destine a un lecteur humain plutot que des donnees structurees pour un autre node.
+    Sans ce strip systematique, "NOT " fuit litteralement dans le rapport metier -- exactement
+    le jargon interne que _REPORT_RULES interdit explicitement."""
+    return term[len("NOT "):] if _is_negated(term) else term
 
 
 def reverse_labels(matches: dict) -> dict:
     """entity.state -> liste (label, score) des activites BPMN qui y ont ete matchees (peut
     etre vide). Garde le score pour permettre de choisir le candidat le plus confiant quand
-    plusieurs activites matchent le meme etat, plutot que de les concatener dans le rapport."""
-    reverse = {}
-    for activity_label, m in matches.items():
-        reverse.setdefault(m["match"], []).append((activity_label, m["score"]))
+    plusieurs activites matchent le meme etat, plutot que de les concatener dans le rapport.
+
+    CORRECTIF (bug bloquant, meme categorie que celui deja trouve et corrige dans
+    tgms_from_pipeline) : state_matching_node.py ne renvoie plus, par activite, un match unique
+    a plat ({"match": ..., "score": ...}) -- il renvoie desormais {"activity_label": ...,
+    "matches": [{"match", "score"}, ...], "clusters": [...]} (top-k relatif + clustering
+    additif). L'ancien code (`m["match"]` directement sur une entree de matches.values())
+    levait un KeyError des la premiere execution avec ce nouveau format -- corrige en iterant
+    explicitement sur la liste "matches" de chaque activite, meme structure que
+    tgms_from_pipeline."""
+    reverse: dict = {}
+    for activity_id, entry in matches.items():
+        activity_label = entry.get("activity_label", activity_id)
+        for m in entry.get("matches", []):
+            reverse.setdefault(m["match"], []).append((activity_label, m["score"]))
     return reverse
 
 
@@ -110,7 +143,20 @@ def find_root_term(term: str, alignment: dict, seen: set | None = None) -> str:
     la CIBLE de son propre contrde (la cle `term` elle-meme, une entree du dict alignment) ne
     l'est pas. Suivre ce sous-terme comme s'il etait la cause menait a accuser la mauvaise
     activite (observe concretement : 'job_offer.sent' introuvable, la cause remontait a tort
-    vers 'job_application.received', qui etait pourtant bien matche)."""
+    vers 'job_application.received', qui etait pourtant bien matche).
+
+    CORRECTIF (bug de traversee, pas seulement d'affichage) : `term` est desormais
+    systematiquement deprefixe de "NOT " des l'entree, ET dans sa propre boucle de recursion
+    avant toute comparaison. Sans ce strip, deux problemes distincts se produisaient pour un
+    terme nie ('NOT review.visible') : (1) `alignment.get("NOT review.visible")` ne trouve
+    jamais de cle (les cibles du dict alignment ne sont jamais prefixees), donc `entry` est
+    toujours None et la fonction retourne prematurement le terme encore prefixe comme "racine",
+    sans jamais chercher plus loin ; (2) plus insidieux, `t["term"] in missing` comparait un
+    terme prefixe ("NOT review.visible") a une liste `missing` qui contient toujours des noms
+    d'etat propres (cf. status_of_negated_term), donc cette comparaison echouait TOUJOURS pour
+    un sous-terme nie meme quand il etait reellement la bonne piste a suivre -- pas juste une
+    fuite d'affichage, une vraie fausse negative dans la logique de remontee."""
+    term = _strip_not(term)
     seen = seen if seen is not None else set()
     if term in seen:
         return term  # garde-fou anti-cycle, ne devrait pas arriver sur un G bien forme
@@ -124,12 +170,15 @@ def find_root_term(term: str, alignment: dict, seen: set | None = None) -> str:
     for t in entry["terms"]:
         if t["status"] == "SATISFIED":
             continue
+        clean_subterm = _strip_not(t["term"])
         missing = t.get("missing", [])
         # Un sous-terme n'est une piste a remonter que s'il est LUI-MEME dans sa propre liste
         # missing -- sinon c'est la cible de son controle (donc `term` lui-meme) qui est en
-        # cause, pas ce sous-terme, et le suivre serait une fausse piste.
-        if not missing or t["term"] in missing:
-            failing_subterms.append(t["term"])
+        # cause, pas ce sous-terme, et le suivre serait une fausse piste. Comparaison sur la
+        # forme deprefixee des deux cotes (missing l'est deja par construction, t["term"] ne
+        # l'etait pas -- cf. note ci-dessus).
+        if not missing or clean_subterm in missing:
+            failing_subterms.append(clean_subterm)
 
     if not failing_subterms:
         return term
@@ -149,20 +198,34 @@ def status_for_root(root: str, failures: list[dict], alignment: dict) -> str:
 
 def collect_failures(alignment: dict) -> list[dict]:
     """Une entree par element reellement manquant (pas une entree par terme non satisfait --
-    quand la cible elle-meme est ce qui manque, pas le terme, c'est elle qu'il faut tracer)."""
+    quand la cible elle-meme est ce qui manque, pas le terme, c'est elle qu'il faut tracer).
+
+    Porte desormais un flag "negated" par entree -- ne PAS le confondre avec un simple
+    probleme d'etiquette : une precondition niee ("NOT X") n'a pas seulement besoin d'un label
+    different plus loin dans le pipeline, elle a besoin d'une PHRASE differente
+    (REPORT_PROMPT_VIOLATED_NEGATED / REPORT_PROMPT_UNRESOLVABLE_NEGATED), parce que "X doit
+    avoir eu lieu avant Y" et "X ne doit PAS avoir eu lieu avant Y" ne sont pas la meme
+    affirmation. "term"/"root" sont toujours deprefixes ici -- plus jamais de "NOT " dans les
+    donnees qui circulent en aval vers l'affichage (cf. _strip_not, find_root_term)."""
     failures = []
     for target, entry in alignment.items():
         for term_result in entry["terms"]:
             if term_result["status"] == "SATISFIED":
                 continue
+            raw_term = term_result["term"]
+            negated = _is_negated(raw_term)
+            clean_term = _strip_not(raw_term)
             missing = term_result.get("missing", [])
             # VIOLATED n'a pas de 'missing' (les deux etats existent, juste pas de chemin) --
-            # dans ce cas on retombe sur le terme lui-meme, comportement inchange.
-            elements = missing if missing else [term_result["term"]]
+            # dans ce cas on retombe sur le terme lui-meme (deja deprefixe), comportement
+            # inchange pour le cas positif ; missing est deja deprefixe par construction pour
+            # le cas negatif (cf. status_of_negated_term dans tgms_solver.py).
+            elements = missing if missing else [clean_term]
             for element in elements:
                 failures.append({
                     "target": target,
-                    "term": term_result["term"],
+                    "term": clean_term,
+                    "negated": negated,
                     "status": term_result["status"],
                     "root": find_root_term(element, alignment),
                     "quote": entry.get("quote"),
@@ -177,16 +240,90 @@ def cluster_by_root(failures: list[dict]) -> dict:
     return clusters
 
 
-def generate_cluster_explanation(root: str, representative_target: str, status: str, quote: str, reverse: dict, llm) -> str:
+def generate_cluster_explanation(
+    root: str, representative_target: str, status: str, quote: str, negated: bool, reverse: dict, llm
+) -> str:
+    """Choisit le gabarit NEGATED plutot que standard des que la cause racine correspond a une
+    exigence d'ABSENCE ("NOT X") plutot que de presence -- jamais un simple choix d'etiquette,
+    cf. docstring de collect_failures. Utiliser le mauvais gabarit produirait une explication
+    grammaticalement correcte mais affirmant l'inverse exact de ce que le texte source exige."""
     root_label = display_label_for_state(root, reverse)
     target_label = display_label_for_state(representative_target, reverse)
     if status == "VIOLATED":
-        prompt = REPORT_PROMPT_VIOLATED.format(target_label=target_label, term_label=root_label, quote=quote)
+        template = REPORT_PROMPT_VIOLATED_NEGATED if negated else REPORT_PROMPT_VIOLATED
+        prompt = template.format(target_label=target_label, term_label=root_label, quote=quote)
     else:
-        prompt = REPORT_PROMPT_UNRESOLVABLE.format(
+        template = REPORT_PROMPT_UNRESOLVABLE_NEGATED if negated else REPORT_PROMPT_UNRESOLVABLE
+        prompt = template.format(
             target_label=target_label, missing_description=root_label, quote=quote
         )
     return llm.invoke(prompt).content.strip()
+
+
+def compute_verdict(summary: dict) -> dict:
+    """Verdict calcule par du code deterministe, jamais demande au LLM -- coherent avec tout ce
+    projet (le LLM-as-judge a ete identifie tot comme non fiable pour ce role). Trois valeurs,
+    jamais reduites a un score continu ni a une moyenne ponderee -- c'est precisement le defaut
+    reproche a la grille Mangler des le debut de ce projet : un score 0-5 agregeant plusieurs
+    criteres (couverture, parallelisme, bonne formation) sans ponderation documentee, donc
+    invisible et non falsifiable. Ici, un seul ecart suffit a faire basculer le verdict --
+    aucun seuil de tolerance ni poids de gravite invente, meme discipline que
+    CONFIDENCE_THRESHOLD/CLUSTER_SIMILARITY_THRESHOLD (calibres empiriquement, jamais poses
+    comme des poids de gravite a priori) :
+
+      - FIDELE : aucun ecart, aucun cas non verifiable -- chaque precondition non triviale du
+        texte a ete confirmee dans le processus observe.
+      - FIDELE_SOUS_RESERVE : aucun ecart, mais au moins une precondition n'a pu etre rattachee
+        a aucune activite du processus -- ni confirmee, ni infirmee. Ne jamais confondre avec
+        une confirmation de fidelite complete (meme prudence que le statut UNRESOLVABLE
+        lui-meme, jamais force vers SATISFIED ou VIOLATED en amont).
+      - NON_FIDELE : au moins un ecart -- un seul suffit.
+
+    Le champ "perimetre" rappelle explicitement, dans le rapport lui-meme, une limite posee des
+    le debut de ce projet par inspection manuelle du corpus (cf. l'analyse du modele Camunda 42) :
+    cette fidelite porte sur l'atteignabilite causale des exigences du texte, pas sur la qualite
+    generale du modele -- un defaut de multiplicite (une activite qui s'execute deux fois a
+    cause d'un AND-split/XOR-join mal apparie) reste hors champ, meme si le processus reste par
+    ailleurs bien forme.
+
+    Valeurs de sortie (verdict/justification/perimetre) en anglais, comme le reste du rapport
+    depuis le changement de langue de report_prompt.py -- seule cette docstring developpeur
+    reste en francais, meme convention que partout ailleurs dans ce projet."""
+    ecarts = summary["ecarts"]
+    non_verifiable = summary["non_verifiable"]
+
+    if ecarts > 0:
+        verdict = "NOT_FAITHFUL"
+        justification = (
+            f"{ecarts} gap(s) found between the source text's requirements and the observed "
+            f"process -- at least one precondition asserted by the text is contradicted by "
+            f"the model's actual sequence of activities."
+        )
+    elif non_verifiable > 0:
+        verdict = "FAITHFUL_WITH_RESERVATIONS"
+        justification = (
+            f"No gap found, but {non_verifiable} requirement(s) from the text could not be "
+            f"associated with any clear activity in the observed process -- neither confirmed "
+            f"nor refuted. This verdict is NOT a confirmation of full faithfulness."
+        )
+    else:
+        verdict = "FAITHFUL"
+        justification = (
+            "Every non-trivial precondition asserted by the source text was confirmed in the "
+            "observed process's sequence of activities."
+        )
+
+    return {
+        "verdict": verdict,
+        "justification": justification,
+        "scope": (
+            "This verdict covers the causal reachability of the requirements expressed in the "
+            "source text, not the general quality of the process model -- a multiplicity "
+            "defect (an activity executed more than once due to a mismatched branching "
+            "structure) is not covered by this verdict, even if the process is otherwise "
+            "well-formed."
+        ),
+    }
 
 
 def build_report(alignment: dict, matches: dict, llm) -> dict:
@@ -201,16 +338,22 @@ def build_report(alignment: dict, matches: dict, llm) -> dict:
         if quote == _NO_QUOTE_PLACEHOLDER:
             print(f"    [report] WARNING: no quote available for root cause {root!r} -- "
                   f"graph_construction may not have been regenerated with the quote fix")
+        # Meme idiome que la selection de `quote` juste au-dessus : un representant parmi les
+        # items de ce cluster, pas un nouveau calcul separe. Determine si l'EXPLICATION de ce
+        # cluster doit utiliser le gabarit NEGATED (exigence d'absence) ou standard.
+        negated = next((i["negated"] for i in items if i["root"] == root), False)
 
         representative_target = items[0]["target"]
-        explanation = generate_cluster_explanation(root, representative_target, status, quote, reverse, llm)
+        explanation = generate_cluster_explanation(
+            root, representative_target, status, quote, negated, reverse, llm
+        )
         affected = sorted({display_label_for_state(i["target"], reverse) for i in items})
         if len(affected) > 1:
             # Ajoute par du code, jamais par le LLM -- la liste des cibles affectees ne doit
             # jamais dependre d'une reformulation libre.
             others = [a for a in affected if a != display_label_for_state(representative_target, reverse)]
             if others:
-                explanation += f" (Cette meme cause affecte aussi : {', '.join(others)}.)"
+                explanation += f" (This same root cause also affects: {', '.join(others)}.)"
 
         entry = {
             "root_cause": display_label_for_state(root, reverse),
@@ -229,17 +372,27 @@ def build_report(alignment: dict, matches: dict, llm) -> dict:
     for target, entry in alignment.items():
         for term_result in entry["terms"]:
             if term_result["status"] == "SATISFIED":
+                # Un terme NIE peut tout a fait etre SATISFIED (cf. tgms_solver.py) -- meme
+                # discipline que collect_failures : deprefixer avant tout lookup de label, et
+                # marquer l'absence par du code (jamais par le LLM, cette section reste "groupee
+                # et breve", sans generation de prose) plutot que de laisser fuir "NOT" tel quel.
+                raw_term = term_result["term"]
+                term_label = display_label_for_state(_strip_not(raw_term), reverse)
+                if _is_negated(raw_term):
+                    term_label = f"absence of: {term_label}"
                 satisfied.append({
                     "target": display_label_for_state(target, reverse),
-                    "term": display_label_for_state(term_result["term"], reverse),
+                    "term": term_label,
                 })
 
+    summary = {
+        "ecarts": len(violated),
+        "non_verifiable": len(unresolvable),
+        "conforme": len(satisfied),
+    }
     return {
-        "summary": {
-            "ecarts": len(violated),
-            "non_verifiable": len(unresolvable),
-            "conforme": len(satisfied),
-        },
+        "verdict": compute_verdict(summary),
+        "summary": summary,
         "ecarts": violated,
         "non_verifiable": unresolvable,
         "conforme": satisfied,
@@ -264,7 +417,7 @@ if __name__ == "__main__":
     with open(os.path.join(MATCHING_DIR, latest_matching_run)) as f:
         matching_data = json.load(f)
 
-    REPORT_MODEL = "openai/gpt-oss-120b"  # explicite : herite du defaut de base_llm.py sinon,
+    REPORT_MODEL = "gpt-5.5"  # explicite : herite du defaut de base_llm.py sinon,
                                             # sans rapport avec le modele "sous test" aligne.
     print(f"Report writer model: {REPORT_MODEL}")
     llm = get_llm(temperature=0, model=REPORT_MODEL)
@@ -279,6 +432,7 @@ if __name__ == "__main__":
             results[prompt_name][spo_filename] = report
 
             print(f"\n########## {spo_filename} [{prompt_name}] ##########")
+            print(f"VERDICT: {report['verdict']['verdict']} -- {report['verdict']['justification']}")
             print(f"Ecarts: {report['summary']['ecarts']}  "
                   f"Non verifiable: {report['summary']['non_verifiable']}  "
                   f"Conforme: {report['summary']['conforme']}")

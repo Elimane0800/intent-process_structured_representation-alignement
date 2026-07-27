@@ -52,12 +52,18 @@ def get_llm(temperature: float | None = None, model: str | None = None,
     resout vers une config connue (par cle OU par nom brut), temperature/max_tokens et le
     controle du reasoning en sont tires ; sinon, replis sur les anciens defauts.
 
-    Trois mecanismes de controle du reasoning, selectionnes par la config du modele (cf.
+    Quatre mecanismes de controle du reasoning, selectionnes par la config du modele (cf.
     agent/config.py, jamais envoyes aux modeles qui ne les exposent pas) :
-    - reasoning_effort (gpt-oss, mistral-medium) -> extra_body {'reasoning_effort': ...}
+    - reasoning_effort (gpt-oss, mistral-medium, OpenAI GPT-5.x) -> extra_body {'reasoning_effort': ...}
     - reasoning_system_prompt (llama-nemotron v1.x) -> wrapper _ReasoningSafeChat
     - extra_body (nemotron-3) -> transmis tel quel (ex. chat_template_kwargs.enable_thinking)
-    Retour : ChatOpenAI, ou _ReasoningSafeChat (meme contrat .invoke(...).content)."""
+    - verbosity (OpenAI GPT-5.x uniquement) -> extra_body {'verbosity': ...}
+    Retour : ChatOpenAI, ou _ReasoningSafeChat (meme contrat .invoke(...).content).
+
+    Cas particulier OpenAI GPT-5.x (reasoning) : ces modeles rejettent le parametre
+    temperature avec une erreur 400 des qu'il differe du defaut (=1). Quand la config du
+    modele porte temperature=None (cf. agent/config.py), le kwarg temperature n'est pas
+    transmis du tout a ChatOpenAI plutot que d'y forcer une valeur."""
     config = MODELS.get(model) or _CONFIG_BY_NAME.get(model)
     if config is not None:
         resolved_name = config["name"]
@@ -74,6 +80,12 @@ def get_llm(temperature: float | None = None, model: str | None = None,
         else config.get("reasoning_effort")
     if resolved_reasoning is not None:
         extra_body["reasoning_effort"] = resolved_reasoning
+    # Mecanisme 4 (OpenAI GPT-5.x) : verbosity n'a pas d'override par argument de get_llm
+    # comme reasoning_effort en a un -- pas de besoin identifie a ce jour, cf. seul le
+    # catalogue de config.py le pilote pour l'instant.
+    resolved_verbosity = config.get("verbosity")
+    if resolved_verbosity is not None:
+        extra_body["verbosity"] = resolved_verbosity
 
     # Resolution du provider : "nvidia" par defaut (aucune entree existante a modifier),
     # sinon la config du modele designe son provider dans PROVIDERS (base_url + variable
@@ -92,11 +104,23 @@ def get_llm(temperature: float | None = None, model: str | None = None,
         # model_kwargs fonctionne aussi mais declenche un UserWarning et un deplacement
         # automatique vers ce champ ; autant etre direct.
         kwargs["extra_body"] = extra_body
+    # default_temperature is None signale un modele qui REJETTE ce parametre (GPT-5.x
+    # reasoning cote OpenAI, erreur 400 "temperature does not support X, only default (1) is
+    # supported" -- verifie juillet 2026). C'est prioritaire sur l'argument `temperature` de
+    # get_llm : les sites d'appel existants (state_space_node_v3.py,
+    # precondition_node_with_retry.py) appellent tous get_llm(temperature=0, model=...) --
+    # sans cette priorite, ce 0 explicite ecraserait le None de la config et ferait planter
+    # l'appel pour ces modeles precis, silencieusement pour l'appelant.
+    if default_temperature is None:
+        resolved_temperature = None
+    else:
+        resolved_temperature = temperature if temperature is not None else default_temperature
+    if resolved_temperature is not None:
+        kwargs["temperature"] = resolved_temperature
     llm = ChatOpenAI(
         model=resolved_name,
         openai_api_key=api_key,
         base_url=provider["base_url"],
-        temperature=temperature if temperature is not None else default_temperature,
         max_tokens=max_tokens if max_tokens is not None else default_max_tokens,
         **kwargs,
     )

@@ -1,0 +1,1135 @@
+{
+  "case_name": "OriginalDataset/Model3-6",
+  "text": "When a claim is received, it is first checked whether the claimant is insured by the organization. If not, the claimant is informed that the claim must be rejected. Otherwise, the severity of the claim is evaluated. Based on the outcome (simple or complex claims), relevant forms are sent to the claimant. Once the forms are returned, they are checked for completeness. If the forms provide all relevant details, the claim is registered in the Claims Management system, which ends the Claims Notification process. Otherwise, the claimant is informed to update the forms. Upon reception of the updated forms, they are checked again.\n",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "mistral-nemotron",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "mistral-nemotron",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/../datasets/lre/alignment_model_text-master/datasets/OriginalDataset/Models/Model3-6.bpmn",
+  "report_model": "mistral-nemotron",
+  "candidates": {
+    "claim": {
+      "states": [
+        "received",
+        "rejected",
+        "evaluated",
+        "registered"
+      ],
+      "exclusive_groups": [
+        [
+          "rejected",
+          "evaluated"
+        ]
+      ],
+      "concurrent_with": [
+        "claimant"
+      ]
+    },
+    "claimant": {
+      "states": [
+        "informed",
+        "updated_forms"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": [
+        "claim"
+      ]
+    },
+    "forms": {
+      "states": [
+        "sent",
+        "returned",
+        "checked",
+        "complete",
+        "incomplete",
+        "updated"
+      ],
+      "exclusive_groups": [
+        [
+          "complete",
+          "incomplete"
+        ]
+      ],
+      "concurrent_with": []
+    },
+    "claims_management_system": {
+      "states": [
+        "registered"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    }
+  },
+  "validation_report": {
+    "claim": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "claim"
+    },
+    "claimant": {
+      "f_lex": "ACTOR",
+      "kept": false,
+      "head_used": "claimant"
+    },
+    "forms": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "forms"
+    },
+    "claims_management_system": {
+      "f_lex": "INDETERMINATE",
+      "kept": true,
+      "head_used": "system"
+    },
+    "__meta__": {
+      "total_candidates": 4,
+      "indeterminate_kept_count": 1
+    }
+  },
+  "exclusive_groups_report": {
+    "accepted": [
+      {
+        "entity": "claim",
+        "states": [
+          "rejected",
+          "evaluated"
+        ],
+        "quote": "the claim must be rejected. Otherwise, the severity of the claim is evaluated"
+      },
+      {
+        "entity": "forms",
+        "states": [
+          "complete",
+          "incomplete"
+        ],
+        "quote": "If the forms provide all relevant details... Otherwise, the claimant is informed to update the forms"
+      }
+    ],
+    "rejected": []
+  },
+  "state_space": {
+    "claim": {
+      "states": [
+        "received",
+        "rejected",
+        "evaluated",
+        "registered"
+      ],
+      "exclusive_groups": [
+        [
+          "rejected",
+          "evaluated"
+        ]
+      ],
+      "concurrent_with": []
+    },
+    "form": {
+      "states": [
+        "sent",
+        "returned",
+        "checked",
+        "complete",
+        "incomplete",
+        "updated"
+      ],
+      "exclusive_groups": [
+        [
+          "complete",
+          "incomplete"
+        ]
+      ],
+      "concurrent_with": []
+    },
+    "claim_management_system": {
+      "states": [
+        "registered"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    }
+  },
+  "state_space_dedup": {
+    "merged": {},
+    "ambiguous_not_merged": {}
+  },
+  "raw_preconditions": {
+    "claim.received": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "claim.rejected": {
+      "precondition": "NOT claimant.insured",
+      "quote": "If not, the claimant is informed that the claim must be rejected."
+    },
+    "claim.evaluated": {
+      "precondition": "claim.received",
+      "quote": "If not, the claimant is informed that the claim must be rejected. Otherwise, the severity of the claim is evaluated."
+    },
+    "claim.registered": {
+      "precondition": "form.complete",
+      "quote": "If the forms provide all relevant details, the claim is registered in the Claims Management system, which ends the Claims Notification process."
+    },
+    "form.sent": {
+      "precondition": "claim.evaluated",
+      "quote": "Based on the outcome (simple or complex claims), relevant forms are sent to the claimant."
+    },
+    "form.returned": {
+      "precondition": "form.sent",
+      "quote": "Once the forms are returned, they are checked for completeness."
+    },
+    "form.checked": {
+      "precondition": "form.returned",
+      "quote": "Once the forms are returned, they are checked for completeness."
+    },
+    "form.complete": {
+      "precondition": "form.checked",
+      "quote": "If the forms provide all relevant details, the claim is registered in the Claims Management system, which ends the Claims Notification process."
+    },
+    "form.incomplete": {
+      "precondition": "form.checked",
+      "quote": "If the forms provide all relevant details, the claim is registered in the Claims Management system, which ends the Claims Notification process. Otherwise, the claimant is informed to update the forms."
+    },
+    "form.updated": {
+      "precondition": "form.incomplete",
+      "quote": "Otherwise, the claimant is informed to update the forms. Upon reception of the updated forms, they are checked again."
+    },
+    "claim_management_system.registered": {
+      "precondition": "claim.registered",
+      "quote": "the claim is registered in the Claims Management system, which ends the Claims Notification process."
+    }
+  },
+  "validated_preconditions": {
+    "claim.received": {
+      "precondition": "INITIAL",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "claim.rejected": {
+      "precondition": "form.incomplete",
+      "quote": "If the forms provide all relevant details, the claim is registered in the Claims Management system, which ends the Claims Notification process. Otherwise, the claimant is informed to update the forms.",
+      "status": "OK",
+      "reason": null,
+      "retried": true
+    },
+    "claim.evaluated": {
+      "precondition": "claim.received",
+      "quote": "If not, the claimant is informed that the claim must be rejected. Otherwise, the severity of the claim is evaluated.",
+      "status": "OK",
+      "reason": null
+    },
+    "claim.registered": {
+      "precondition": "form.complete",
+      "quote": "If the forms provide all relevant details, the claim is registered in the Claims Management system, which ends the Claims Notification process.",
+      "status": "OK",
+      "reason": null
+    },
+    "form.sent": {
+      "precondition": "claim.evaluated",
+      "quote": "Based on the outcome (simple or complex claims), relevant forms are sent to the claimant.",
+      "status": "OK",
+      "reason": null
+    },
+    "form.returned": {
+      "precondition": "form.sent",
+      "quote": "Once the forms are returned, they are checked for completeness.",
+      "status": "OK",
+      "reason": null
+    },
+    "form.checked": {
+      "precondition": "form.returned",
+      "quote": "Once the forms are returned, they are checked for completeness.",
+      "status": "OK",
+      "reason": null
+    },
+    "form.complete": {
+      "precondition": "form.checked",
+      "quote": "If the forms provide all relevant details, the claim is registered in the Claims Management system, which ends the Claims Notification process.",
+      "status": "OK",
+      "reason": null
+    },
+    "form.incomplete": {
+      "precondition": "form.checked",
+      "quote": "If the forms provide all relevant details, the claim is registered in the Claims Management system, which ends the Claims Notification process. Otherwise, the claimant is informed to update the forms.",
+      "status": "OK",
+      "reason": null
+    },
+    "form.updated": {
+      "precondition": "form.incomplete",
+      "quote": "Otherwise, the claimant is informed to update the forms. Upon reception of the updated forms, they are checked again.",
+      "status": "OK",
+      "reason": null
+    },
+    "claim_management_system.registered": {
+      "precondition": "claim.registered",
+      "quote": "the claim is registered in the Claims Management system, which ends the Claims Notification process.",
+      "status": "OK",
+      "reason": null
+    }
+  },
+  "precondition_cycles": [],
+  "branch_conflicts": [
+    {
+      "entity": "form",
+      "exclusive_group": [
+        "complete",
+        "incomplete"
+      ],
+      "conflicting_targets": [
+        "form.complete",
+        "form.incomplete"
+      ],
+      "shared_precondition": "form.checked",
+      "reason": "targets marked mutually exclusive in the state space share the exact same accepted precondition -- reaching it would trigger both branches at once"
+    }
+  ],
+  "reference_graph": {
+    "nodes": [
+      {
+        "id": "claim.received",
+        "weight": 0.333
+      },
+      {
+        "id": "claim.rejected",
+        "weight": 0.333
+      },
+      {
+        "id": "claim.evaluated",
+        "weight": 0.667
+      },
+      {
+        "id": "claim.registered",
+        "weight": 0.667
+      },
+      {
+        "id": "form.sent",
+        "weight": 0.667
+      },
+      {
+        "id": "form.returned",
+        "weight": 0.667
+      },
+      {
+        "id": "form.checked",
+        "weight": 1.0
+      },
+      {
+        "id": "form.complete",
+        "weight": 0.667
+      },
+      {
+        "id": "form.incomplete",
+        "weight": 1.0
+      },
+      {
+        "id": "form.updated",
+        "weight": 0.333
+      },
+      {
+        "id": "claim_management_system.registered",
+        "weight": 0.333
+      }
+    ],
+    "edges": [
+      {
+        "from": "form.incomplete",
+        "to": "claim.rejected",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "If the forms provide all relevant details, the claim is registered in the Claims Management system, which ends the Claims Notification process. Otherwise, the claimant is informed to update the forms.",
+        "negated": false
+      },
+      {
+        "from": "claim.received",
+        "to": "claim.evaluated",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "If not, the claimant is informed that the claim must be rejected. Otherwise, the severity of the claim is evaluated.",
+        "negated": false
+      },
+      {
+        "from": "form.complete",
+        "to": "claim.registered",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "If the forms provide all relevant details, the claim is registered in the Claims Management system, which ends the Claims Notification process.",
+        "negated": false
+      },
+      {
+        "from": "claim.evaluated",
+        "to": "form.sent",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "Based on the outcome (simple or complex claims), relevant forms are sent to the claimant.",
+        "negated": false
+      },
+      {
+        "from": "form.sent",
+        "to": "form.returned",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "Once the forms are returned, they are checked for completeness.",
+        "negated": false
+      },
+      {
+        "from": "form.returned",
+        "to": "form.checked",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "Once the forms are returned, they are checked for completeness.",
+        "negated": false
+      },
+      {
+        "from": "form.checked",
+        "to": "form.complete",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "If the forms provide all relevant details, the claim is registered in the Claims Management system, which ends the Claims Notification process.",
+        "negated": false
+      },
+      {
+        "from": "form.checked",
+        "to": "form.incomplete",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "If the forms provide all relevant details, the claim is registered in the Claims Management system, which ends the Claims Notification process. Otherwise, the claimant is informed to update the forms.",
+        "negated": false
+      },
+      {
+        "from": "form.incomplete",
+        "to": "form.updated",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "Otherwise, the claimant is informed to update the forms. Upon reception of the updated forms, they are checked again.",
+        "negated": false
+      },
+      {
+        "from": "claim.registered",
+        "to": "claim_management_system.registered",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "the claim is registered in the Claims Management system, which ends the Claims Notification process.",
+        "negated": false
+      }
+    ],
+    "cycles": [],
+    "branch_conflicts": [
+      {
+        "entity": "form",
+        "exclusive_group": [
+          "complete",
+          "incomplete"
+        ],
+        "conflicting_targets": [
+          "form.complete",
+          "form.incomplete"
+        ],
+        "shared_precondition": "form.checked",
+        "reason": "targets marked mutually exclusive in the state space share the exact same accepted precondition -- reaching it would trigger both branches at once"
+      }
+    ],
+    "exclusive_pairs": [
+      {
+        "entity": "claim",
+        "nodes": [
+          "claim.rejected",
+          "claim.evaluated"
+        ]
+      },
+      {
+        "entity": "form",
+        "nodes": [
+          "form.complete",
+          "form.incomplete"
+        ]
+      }
+    ]
+  },
+  "dfg_edges": [
+    {
+      "source_id": "Task_0",
+      "source_label": "Check customer  details",
+      "target_id": "Task_1",
+      "target_label": "Reject claim",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_0",
+      "source_label": "Check customer  details",
+      "target_id": "Task_2",
+      "target_label": "Evaluate severity",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_3",
+      "source_label": "Send relevant forms",
+      "target_id": "Task_4",
+      "target_label": "Check for completeness",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_2",
+      "source_label": "Evaluate severity",
+      "target_id": "Task_3",
+      "target_label": "Send relevant forms",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_4",
+      "source_label": "Check for completeness",
+      "target_id": "Task_5",
+      "target_label": "Register claim",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_4",
+      "source_label": "Check for completeness",
+      "target_id": "Task_3",
+      "target_label": "Send relevant forms",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway"
+      ]
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "Check customer  details",
+      "subject_id": "Task_0",
+      "predicate": "follows",
+      "object": "Reject claim",
+      "object_id": "Task_1"
+    },
+    {
+      "subject": "Check customer  details",
+      "subject_id": "Task_0",
+      "predicate": "follows",
+      "object": "Evaluate severity",
+      "object_id": "Task_2"
+    },
+    {
+      "subject": "Send relevant forms",
+      "subject_id": "Task_3",
+      "predicate": "follows",
+      "object": "Check for completeness",
+      "object_id": "Task_4"
+    },
+    {
+      "subject": "Evaluate severity",
+      "subject_id": "Task_2",
+      "predicate": "follows",
+      "object": "Send relevant forms",
+      "object_id": "Task_3"
+    },
+    {
+      "subject": "Check for completeness",
+      "subject_id": "Task_4",
+      "predicate": "follows",
+      "object": "Register claim",
+      "object_id": "Task_5"
+    },
+    {
+      "subject": "Check for completeness",
+      "subject_id": "Task_4",
+      "predicate": "follows",
+      "object": "Send relevant forms",
+      "object_id": "Task_3"
+    }
+  ],
+  "matches": {
+    "Task_0": {
+      "activity_label": "Check customer  details",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_1": {
+      "activity_label": "Reject claim",
+      "matches": [
+        {
+          "match": "claim.rejected",
+          "score": 0.5062
+        }
+      ],
+      "clusters": [
+        [
+          "claim.rejected"
+        ]
+      ]
+    },
+    "Task_2": {
+      "activity_label": "Evaluate severity",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_3": {
+      "activity_label": "Send relevant forms",
+      "matches": [
+        {
+          "match": "form.sent",
+          "score": 0.3704
+        }
+      ],
+      "clusters": [
+        [
+          "form.sent"
+        ]
+      ]
+    },
+    "Task_4": {
+      "activity_label": "Check for completeness",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_5": {
+      "activity_label": "Register claim",
+      "matches": [
+        {
+          "match": "claim.registered",
+          "score": 0.5299
+        }
+      ],
+      "clusters": [
+        [
+          "claim.registered"
+        ]
+      ]
+    }
+  },
+  "process_graph": [],
+  "alignment": {
+    "claim.rejected": {
+      "operator": "AND",
+      "quote": "If the forms provide all relevant details, the claim is registered in the Claims Management system, which ends the Claims Notification process. Otherwise, the claimant is informed to update the forms.",
+      "terms": [
+        {
+          "term": "form.incomplete",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['form.incomplete']",
+          "missing": [
+            "form.incomplete"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "form.incomplete"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "claim.evaluated": {
+      "operator": "AND",
+      "quote": "If not, the claimant is informed that the claim must be rejected. Otherwise, the severity of the claim is evaluated.",
+      "terms": [
+        {
+          "term": "claim.received",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['claim.received', 'claim.evaluated']",
+          "missing": [
+            "claim.received",
+            "claim.evaluated"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "claim.received"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "claim.registered": {
+      "operator": "AND",
+      "quote": "If the forms provide all relevant details, the claim is registered in the Claims Management system, which ends the Claims Notification process.",
+      "terms": [
+        {
+          "term": "form.complete",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['form.complete']",
+          "missing": [
+            "form.complete"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "form.complete"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "form.sent": {
+      "operator": "AND",
+      "quote": "Based on the outcome (simple or complex claims), relevant forms are sent to the claimant.",
+      "terms": [
+        {
+          "term": "claim.evaluated",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['claim.evaluated']",
+          "missing": [
+            "claim.evaluated"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "claim.evaluated"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "form.returned": {
+      "operator": "AND",
+      "quote": "Once the forms are returned, they are checked for completeness.",
+      "terms": [
+        {
+          "term": "form.sent",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['form.returned']",
+          "missing": [
+            "form.returned"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "form.sent"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "form.checked": {
+      "operator": "AND",
+      "quote": "Once the forms are returned, they are checked for completeness.",
+      "terms": [
+        {
+          "term": "form.returned",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['form.returned', 'form.checked']",
+          "missing": [
+            "form.returned",
+            "form.checked"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "form.returned"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "form.complete": {
+      "operator": "AND",
+      "quote": "If the forms provide all relevant details, the claim is registered in the Claims Management system, which ends the Claims Notification process.",
+      "terms": [
+        {
+          "term": "form.checked",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['form.checked', 'form.complete']",
+          "missing": [
+            "form.checked",
+            "form.complete"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "form.checked"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "form.incomplete": {
+      "operator": "AND",
+      "quote": "If the forms provide all relevant details, the claim is registered in the Claims Management system, which ends the Claims Notification process. Otherwise, the claimant is informed to update the forms.",
+      "terms": [
+        {
+          "term": "form.checked",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['form.checked', 'form.incomplete']",
+          "missing": [
+            "form.checked",
+            "form.incomplete"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "form.checked"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "form.updated": {
+      "operator": "AND",
+      "quote": "Otherwise, the claimant is informed to update the forms. Upon reception of the updated forms, they are checked again.",
+      "terms": [
+        {
+          "term": "form.incomplete",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['form.incomplete', 'form.updated']",
+          "missing": [
+            "form.incomplete",
+            "form.updated"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "form.incomplete"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "claim_management_system.registered": {
+      "operator": "AND",
+      "quote": "the claim is registered in the Claims Management system, which ends the Claims Notification process.",
+      "terms": [
+        {
+          "term": "claim.registered",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['claim_management_system.registered']",
+          "missing": [
+            "claim_management_system.registered"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "claim.registered"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    }
+  },
+  "report": {
+    "verdict": {
+      "verdict": "FAITHFUL_WITH_RESERVATIONS",
+      "justification": "No gap found, but 3 requirement(s) from the text could not be associated with any clear activity in the observed process -- neither confirmed nor refuted. This verdict is NOT a confirmation of full faithfulness.",
+      "scope": "This verdict covers the causal reachability of the requirements expressed in the source text, not the general quality of the process model -- a multiplicity defect (an activity executed more than once due to a mismatched branching structure) is not covered by this verdict, even if the process is otherwise well-formed."
+    },
+    "summary": {
+      "ecarts": 0,
+      "non_verifiable": 3,
+      "conforme": 0
+    },
+    "ecarts": [],
+    "non_verifiable": [
+      {
+        "root_cause": "form returned",
+        "quote": "If the forms provide all relevant details, the claim is registered in the Claims Management system, which ends the Claims Notification process. Otherwise, the claimant is informed to update the forms.",
+        "explanation": "The process requires that the form be returned before the activity \"Reject claim\" can occur, but the observed process does not clearly show this step. The source text states: \"If the forms provide all relevant details, the claim is registered in the Claims Management system, which ends the Claims Notification process. Otherwise, the claimant is informed to update the forms.\" Since the condition is not linked to any visible activity in the process, it is impossible to confirm whether this requirement is met. (This same root cause also affects: Register claim, form checked, form complete, form incomplete, form returned, form updated.)",
+        "quote_verbatim": true,
+        "affected_activities": [
+          "Register claim",
+          "Reject claim",
+          "form checked",
+          "form complete",
+          "form incomplete",
+          "form returned",
+          "form updated"
+        ],
+        "affected_count": 11
+      },
+      {
+        "root_cause": "claim received",
+        "quote": "If not, the claimant is informed that the claim must be rejected. Otherwise, the severity of the claim is evaluated.",
+        "explanation": "The process requires that a claim must be received before it can be evaluated for severity, as stated in the source text: \"If not, the claimant is informed that the claim must be rejected. Otherwise, the severity of the claim is evaluated.\"\n\nHowever, the observed process does not clearly show when or how a claim is received, making it impossible to check whether this condition is met before the \"claim evaluated\" step. (This same root cause also affects: Send relevant forms.)",
+        "quote_verbatim": true,
+        "affected_activities": [
+          "Send relevant forms",
+          "claim evaluated"
+        ],
+        "affected_count": 3
+      },
+      {
+        "root_cause": "claim management system registered",
+        "quote": "the claim is registered in the Claims Management system, which ends the Claims Notification process.",
+        "explanation": "The process requires that a condition be met before the activity \"claim management system registered\" can occur, as stated in the source text: \"the claim is registered in the Claims Management system, which ends the Claims Notification process.\"\n\nHowever, the observed process does not clearly show which activity ensures this condition is met, making it impossible to confirm whether the requirement is fulfilled.",
+        "quote_verbatim": true,
+        "affected_activities": [
+          "claim management system registered"
+        ],
+        "affected_count": 1
+      }
+    ],
+    "conforme": [],
+    "piece_jointe_alignement_brut": {
+      "claim.rejected": {
+        "operator": "AND",
+        "quote": "If the forms provide all relevant details, the claim is registered in the Claims Management system, which ends the Claims Notification process. Otherwise, the claimant is informed to update the forms.",
+        "terms": [
+          {
+            "term": "form.incomplete",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['form.incomplete']",
+            "missing": [
+              "form.incomplete"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "form.incomplete"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "claim.evaluated": {
+        "operator": "AND",
+        "quote": "If not, the claimant is informed that the claim must be rejected. Otherwise, the severity of the claim is evaluated.",
+        "terms": [
+          {
+            "term": "claim.received",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['claim.received', 'claim.evaluated']",
+            "missing": [
+              "claim.received",
+              "claim.evaluated"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "claim.received"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "claim.registered": {
+        "operator": "AND",
+        "quote": "If the forms provide all relevant details, the claim is registered in the Claims Management system, which ends the Claims Notification process.",
+        "terms": [
+          {
+            "term": "form.complete",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['form.complete']",
+            "missing": [
+              "form.complete"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "form.complete"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "form.sent": {
+        "operator": "AND",
+        "quote": "Based on the outcome (simple or complex claims), relevant forms are sent to the claimant.",
+        "terms": [
+          {
+            "term": "claim.evaluated",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['claim.evaluated']",
+            "missing": [
+              "claim.evaluated"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "claim.evaluated"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "form.returned": {
+        "operator": "AND",
+        "quote": "Once the forms are returned, they are checked for completeness.",
+        "terms": [
+          {
+            "term": "form.sent",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['form.returned']",
+            "missing": [
+              "form.returned"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "form.sent"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "form.checked": {
+        "operator": "AND",
+        "quote": "Once the forms are returned, they are checked for completeness.",
+        "terms": [
+          {
+            "term": "form.returned",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['form.returned', 'form.checked']",
+            "missing": [
+              "form.returned",
+              "form.checked"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "form.returned"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "form.complete": {
+        "operator": "AND",
+        "quote": "If the forms provide all relevant details, the claim is registered in the Claims Management system, which ends the Claims Notification process.",
+        "terms": [
+          {
+            "term": "form.checked",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['form.checked', 'form.complete']",
+            "missing": [
+              "form.checked",
+              "form.complete"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "form.checked"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "form.incomplete": {
+        "operator": "AND",
+        "quote": "If the forms provide all relevant details, the claim is registered in the Claims Management system, which ends the Claims Notification process. Otherwise, the claimant is informed to update the forms.",
+        "terms": [
+          {
+            "term": "form.checked",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['form.checked', 'form.incomplete']",
+            "missing": [
+              "form.checked",
+              "form.incomplete"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "form.checked"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "form.updated": {
+        "operator": "AND",
+        "quote": "Otherwise, the claimant is informed to update the forms. Upon reception of the updated forms, they are checked again.",
+        "terms": [
+          {
+            "term": "form.incomplete",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['form.incomplete', 'form.updated']",
+            "missing": [
+              "form.incomplete",
+              "form.updated"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "form.incomplete"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "claim_management_system.registered": {
+        "operator": "AND",
+        "quote": "the claim is registered in the Claims Management system, which ends the Claims Notification process.",
+        "terms": [
+          {
+            "term": "claim.registered",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['claim_management_system.registered']",
+            "missing": [
+              "claim_management_system.registered"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "claim.registered"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      }
+    }
+  },
+  "errors": []
+}

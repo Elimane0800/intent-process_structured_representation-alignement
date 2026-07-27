@@ -1,0 +1,1157 @@
+{
+  "case_name": "OriginalDataset/Model8-3",
+  "text": "When I have detected a number of personnel requirements, I report the vacancy to the Personnel Department. Then I wait to get the job description for review before it is advertized. Under certain circumstances, I must ask for corrections again, otherwise I approve the job description. Sometimes it also happens that the colleague from the HR department still has questions about the tasks and requirements before he can describe the job. Then I am available for clarifications, of course.\n",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "llama-3.1-8b",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "llama-3.1-8b",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/../datasets/lre/alignment_model_text-master/datasets/OriginalDataset/Models/Model8-3.bpmn",
+  "report_model": "llama-3.1-8b",
+  "candidates": {
+    "vacancy": {
+      "states": [
+        "reported",
+        "advertized",
+        "approved"
+      ],
+      "exclusive_groups": [
+        [
+          "approved",
+          "advertized"
+        ]
+      ],
+      "concurrent_with": []
+    },
+    "job_description": {
+      "states": [
+        "awaiting_review",
+        "advertized",
+        "approved"
+      ],
+      "exclusive_groups": [
+        [
+          "approved",
+          "awaiting_review"
+        ],
+        [
+          "advertized",
+          "awaiting_review"
+        ]
+      ],
+      "concurrent_with": []
+    },
+    "colleague": {
+      "states": [
+        "awaiting_clarifications"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "personnel_requirements": {
+      "states": [
+        "detected"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "tasks": {
+      "states": [
+        "clarified"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "requirements": {
+      "states": [
+        "clarified"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    }
+  },
+  "validation_report": {
+    "vacancy": {
+      "f_lex": "INDETERMINATE",
+      "kept": true,
+      "head_used": "vacancy"
+    },
+    "job_description": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "description"
+    },
+    "colleague": {
+      "f_lex": "ACTOR",
+      "kept": false,
+      "head_used": "colleague"
+    },
+    "personnel_requirements": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "requirements"
+    },
+    "tasks": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "tasks"
+    },
+    "requirements": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "requirements"
+    },
+    "__meta__": {
+      "total_candidates": 6,
+      "indeterminate_kept_count": 1
+    }
+  },
+  "exclusive_groups_report": {
+    "accepted": [
+      {
+        "entity": "vacancy",
+        "states": [
+          "approved",
+          "advertized"
+        ],
+        "quote": "otherwise I approve the job description"
+      },
+      {
+        "entity": "job_description",
+        "states": [
+          "approved",
+          "awaiting_review"
+        ],
+        "quote": "otherwise I approve the job description"
+      },
+      {
+        "entity": "job_description",
+        "states": [
+          "advertized",
+          "awaiting_review"
+        ],
+        "quote": "before it is advertized"
+      }
+    ],
+    "rejected": []
+  },
+  "state_space": {
+    "vacancy": {
+      "states": [
+        "reported",
+        "advertized",
+        "approved"
+      ],
+      "exclusive_groups": [
+        [
+          "approved",
+          "advertized"
+        ]
+      ],
+      "concurrent_with": []
+    },
+    "job_description": {
+      "states": [
+        "awaiting_review",
+        "advertized",
+        "approved"
+      ],
+      "exclusive_groups": [
+        [
+          "approved",
+          "awaiting_review"
+        ],
+        [
+          "advertized",
+          "awaiting_review"
+        ]
+      ],
+      "concurrent_with": []
+    },
+    "personnel_requirement": {
+      "states": [
+        "detected"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "task": {
+      "states": [
+        "clarified"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "requirement": {
+      "states": [
+        "clarified"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    }
+  },
+  "state_space_dedup": {
+    "merged": {},
+    "ambiguous_not_merged": {
+      "requirement": [
+        "personnel_requirement"
+      ]
+    }
+  },
+  "raw_preconditions": {
+    "vacancy.reported": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "vacancy.advertized": {
+      "precondition": "vacancy.reported",
+      "quote": "When I have detected a number of personnel requirements, I report the vacancy to the Personnel Department."
+    },
+    "vacancy.approved": {
+      "precondition": "vacancy.advertized OR (vacancy.advertized AND NOT vacancy.approved)",
+      "quote": "Under certain circumstances, I must ask for corrections again, otherwise I approve the job description."
+    },
+    "job_description.awaiting_review": {
+      "precondition": "vacancy.reported",
+      "quote": "Then I wait to get the job description for review before it is advertized."
+    },
+    "job_description.advertized": {
+      "precondition": "job_description.awaiting_review",
+      "quote": "Then I wait to get the job description for review before it is advertized."
+    },
+    "job_description.approved": {
+      "precondition": "job_description.advertized OR (job_description.advertized AND NOT job_description.approved)",
+      "quote": "Under certain circumstances, I must ask for corrections again, otherwise I approve the job description."
+    },
+    "personnel_requirement.detected": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "task.clarified": {
+      "precondition": "vacancy.approved OR (vacancy.approved AND NOT task.clarified)",
+      "quote": "Sometimes it also happens that the colleague from the HR department still has questions about the tasks and requirements before he can describe the job."
+    },
+    "requirement.clarified": {
+      "precondition": "task.clarified",
+      "quote": "Sometimes it also happens that the colleague from the HR department still has questions about the tasks and requirements before he can describe the job."
+    }
+  },
+  "validated_preconditions": {
+    "vacancy.reported": {
+      "precondition": "INITIAL",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "vacancy.advertized": {
+      "precondition": "vacancy.reported",
+      "quote": "When I have detected a number of personnel requirements, I report the vacancy to the Personnel Department.",
+      "status": "OK",
+      "reason": null
+    },
+    "vacancy.approved": {
+      "precondition": "vacancy.reported AND personnel_requirement.detected",
+      "quote": "When I have detected a number of personnel requirements, I report the vacancy to the Personnel Department.",
+      "status": "OK",
+      "reason": null,
+      "retried": true
+    },
+    "job_description.awaiting_review": {
+      "precondition": "vacancy.reported",
+      "quote": "Then I wait to get the job description for review before it is advertized.",
+      "status": "OK",
+      "reason": null
+    },
+    "job_description.advertized": {
+      "precondition": "job_description.awaiting_review",
+      "quote": "Then I wait to get the job description for review before it is advertized.",
+      "status": "OK",
+      "reason": null
+    },
+    "job_description.approved": {
+      "precondition": "job_description.awaiting_review OR (job_description.awaiting_review AND NOT vacancy.reported)",
+      "quote": [
+        "When I have detected a number of personnel requirements, I report the vacancy to the Personnel Department.",
+        "Then I wait to get the job description for review before it is advertized."
+      ],
+      "status": "OK",
+      "reason": null,
+      "retried": true
+    },
+    "personnel_requirement.detected": {
+      "precondition": "INITIAL",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "task.clarified": {
+      "precondition": "vacancy.reported AND personnel_requirement.detected",
+      "quote": [
+        "When I have detected a number of personnel requirements, I report the vacancy to the Personnel Department.",
+        "Then I wait to get the job description for review before it is advertized."
+      ],
+      "status": "OK",
+      "reason": null,
+      "retried": true
+    },
+    "requirement.clarified": {
+      "precondition": "task.clarified",
+      "quote": "Sometimes it also happens that the colleague from the HR department still has questions about the tasks and requirements before he can describe the job.",
+      "status": "OK",
+      "reason": null
+    }
+  },
+  "precondition_cycles": [],
+  "branch_conflicts": [],
+  "reference_graph": {
+    "nodes": [
+      {
+        "id": "vacancy.reported",
+        "weight": 1.0
+      },
+      {
+        "id": "vacancy.advertized",
+        "weight": 0.2
+      },
+      {
+        "id": "vacancy.approved",
+        "weight": 0.4
+      },
+      {
+        "id": "job_description.awaiting_review",
+        "weight": 0.8
+      },
+      {
+        "id": "job_description.advertized",
+        "weight": 0.2
+      },
+      {
+        "id": "job_description.approved",
+        "weight": 0.6
+      },
+      {
+        "id": "personnel_requirement.detected",
+        "weight": 0.4
+      },
+      {
+        "id": "task.clarified",
+        "weight": 0.6
+      },
+      {
+        "id": "requirement.clarified",
+        "weight": 0.2
+      }
+    ],
+    "edges": [
+      {
+        "from": "vacancy.reported",
+        "to": "vacancy.advertized",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "When I have detected a number of personnel requirements, I report the vacancy to the Personnel Department.",
+        "negated": false
+      },
+      {
+        "from": "vacancy.reported",
+        "to": "vacancy.approved",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "When I have detected a number of personnel requirements, I report the vacancy to the Personnel Department.",
+        "negated": false
+      },
+      {
+        "from": "personnel_requirement.detected",
+        "to": "vacancy.approved",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "When I have detected a number of personnel requirements, I report the vacancy to the Personnel Department.",
+        "negated": false
+      },
+      {
+        "from": "vacancy.reported",
+        "to": "job_description.awaiting_review",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "Then I wait to get the job description for review before it is advertized.",
+        "negated": false
+      },
+      {
+        "from": "job_description.awaiting_review",
+        "to": "job_description.advertized",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "Then I wait to get the job description for review before it is advertized.",
+        "negated": false
+      },
+      {
+        "from": "job_description.awaiting_review",
+        "to": "job_description.approved",
+        "clause": 0,
+        "type": "sequence",
+        "quote": [
+          "When I have detected a number of personnel requirements, I report the vacancy to the Personnel Department.",
+          "Then I wait to get the job description for review before it is advertized."
+        ],
+        "negated": false
+      },
+      {
+        "from": "job_description.awaiting_review",
+        "to": "job_description.approved",
+        "clause": 1,
+        "type": "sequence",
+        "quote": [
+          "When I have detected a number of personnel requirements, I report the vacancy to the Personnel Department.",
+          "Then I wait to get the job description for review before it is advertized."
+        ],
+        "negated": false
+      },
+      {
+        "from": "vacancy.reported",
+        "to": "job_description.approved",
+        "clause": 1,
+        "type": "cross_entity_guard",
+        "quote": [
+          "When I have detected a number of personnel requirements, I report the vacancy to the Personnel Department.",
+          "Then I wait to get the job description for review before it is advertized."
+        ],
+        "negated": true
+      },
+      {
+        "from": "vacancy.reported",
+        "to": "task.clarified",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": [
+          "When I have detected a number of personnel requirements, I report the vacancy to the Personnel Department.",
+          "Then I wait to get the job description for review before it is advertized."
+        ],
+        "negated": false
+      },
+      {
+        "from": "personnel_requirement.detected",
+        "to": "task.clarified",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": [
+          "When I have detected a number of personnel requirements, I report the vacancy to the Personnel Department.",
+          "Then I wait to get the job description for review before it is advertized."
+        ],
+        "negated": false
+      },
+      {
+        "from": "task.clarified",
+        "to": "requirement.clarified",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "Sometimes it also happens that the colleague from the HR department still has questions about the tasks and requirements before he can describe the job.",
+        "negated": false
+      }
+    ],
+    "cycles": [],
+    "branch_conflicts": [],
+    "exclusive_pairs": [
+      {
+        "entity": "vacancy",
+        "nodes": [
+          "vacancy.approved",
+          "vacancy.advertized"
+        ]
+      },
+      {
+        "entity": "job_description",
+        "nodes": [
+          "job_description.approved",
+          "job_description.awaiting_review"
+        ]
+      },
+      {
+        "entity": "job_description",
+        "nodes": [
+          "job_description.advertized",
+          "job_description.awaiting_review"
+        ]
+      }
+    ]
+  },
+  "dfg_edges": [
+    {
+      "source_id": "Task_0",
+      "source_label": "Report vacancy",
+      "target_id": "IntermediateMessageEventCatching_1",
+      "target_label": "",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_0",
+      "source_label": "Report vacancy",
+      "target_id": "IntermediateMessageEventCatching_0",
+      "target_label": "More  information  required",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_3",
+      "source_label": "Ask for corrections",
+      "target_id": "IntermediateMessageEventCatching_1",
+      "target_label": "",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_1",
+      "source_label": "Communicate tasks and requirements",
+      "target_id": "IntermediateMessageEventCatching_1",
+      "target_label": "",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_2",
+      "source_label": "Review job description",
+      "target_id": "Task_4",
+      "target_label": "Approve job description",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_2",
+      "source_label": "Review job description",
+      "target_id": "Task_3",
+      "target_label": "Ask for corrections",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "IntermediateMessageEventCatching_0",
+      "source_label": "More  information  required",
+      "target_id": "Task_1",
+      "target_label": "Communicate tasks and requirements",
+      "gateway_context": []
+    },
+    {
+      "source_id": "IntermediateMessageEventCatching_1",
+      "source_label": "",
+      "target_id": "Task_2",
+      "target_label": "Review job description",
+      "gateway_context": []
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "Report vacancy",
+      "subject_id": "Task_0",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "IntermediateMessageEventCatching_1"
+    },
+    {
+      "subject": "Report vacancy",
+      "subject_id": "Task_0",
+      "predicate": "follows",
+      "object": "More  information  required",
+      "object_id": "IntermediateMessageEventCatching_0"
+    },
+    {
+      "subject": "Ask for corrections",
+      "subject_id": "Task_3",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "IntermediateMessageEventCatching_1"
+    },
+    {
+      "subject": "Communicate tasks and requirements",
+      "subject_id": "Task_1",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "IntermediateMessageEventCatching_1"
+    },
+    {
+      "subject": "Review job description",
+      "subject_id": "Task_2",
+      "predicate": "follows",
+      "object": "Approve job description",
+      "object_id": "Task_4"
+    },
+    {
+      "subject": "Review job description",
+      "subject_id": "Task_2",
+      "predicate": "follows",
+      "object": "Ask for corrections",
+      "object_id": "Task_3"
+    },
+    {
+      "subject": "More  information  required",
+      "subject_id": "IntermediateMessageEventCatching_0",
+      "predicate": "follows",
+      "object": "Communicate tasks and requirements",
+      "object_id": "Task_1"
+    },
+    {
+      "subject": "",
+      "subject_id": "IntermediateMessageEventCatching_1",
+      "predicate": "follows",
+      "object": "Review job description",
+      "object_id": "Task_2"
+    }
+  ],
+  "matches": {
+    "Task_0": {
+      "activity_label": "Report vacancy",
+      "matches": [
+        {
+          "match": "vacancy.reported",
+          "score": 0.523
+        }
+      ],
+      "clusters": [
+        [
+          "vacancy.reported"
+        ]
+      ]
+    },
+    "IntermediateMessageEventCatching_0": {
+      "activity_label": "More  information  required",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_3": {
+      "activity_label": "Ask for corrections",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_1": {
+      "activity_label": "Communicate tasks and requirements",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_2": {
+      "activity_label": "Review job description",
+      "matches": [
+        {
+          "match": "job_description.awaiting_review",
+          "score": 0.4982
+        }
+      ],
+      "clusters": [
+        [
+          "job_description.awaiting_review"
+        ]
+      ]
+    },
+    "Task_4": {
+      "activity_label": "Approve job description",
+      "matches": [
+        {
+          "match": "job_description.approved",
+          "score": 0.5791
+        }
+      ],
+      "clusters": [
+        [
+          "job_description.approved"
+        ]
+      ]
+    }
+  },
+  "process_graph": [
+    {
+      "from": "job_description.awaiting_review",
+      "to": "job_description.approved",
+      "activity_from": "Review job description",
+      "activity_to": "Approve job description",
+      "source_id": "Task_2",
+      "target_id": "Task_4"
+    }
+  ],
+  "alignment": {
+    "vacancy.advertized": {
+      "operator": "AND",
+      "quote": "When I have detected a number of personnel requirements, I report the vacancy to the Personnel Department.",
+      "terms": [
+        {
+          "term": "vacancy.reported",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['vacancy.advertized']",
+          "missing": [
+            "vacancy.advertized"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "vacancy.reported"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "vacancy.approved": {
+      "operator": "AND",
+      "quote": "When I have detected a number of personnel requirements, I report the vacancy to the Personnel Department.",
+      "terms": [
+        {
+          "term": "vacancy.reported",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['vacancy.approved']",
+          "missing": [
+            "vacancy.approved"
+          ]
+        },
+        {
+          "term": "personnel_requirement.detected",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['personnel_requirement.detected', 'vacancy.approved']",
+          "missing": [
+            "personnel_requirement.detected",
+            "vacancy.approved"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "vacancy.reported",
+            "personnel_requirement.detected"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "job_description.awaiting_review": {
+      "operator": "AND",
+      "quote": "Then I wait to get the job description for review before it is advertized.",
+      "terms": [
+        {
+          "term": "vacancy.reported",
+          "status": "VIOLATED",
+          "reason": "both states matched, no path in process",
+          "missing": []
+        }
+      ],
+      "status": "VIOLATED",
+      "clauses": [
+        {
+          "terms": [
+            "vacancy.reported"
+          ],
+          "status": "VIOLATED"
+        }
+      ]
+    },
+    "job_description.advertized": {
+      "operator": "AND",
+      "quote": "Then I wait to get the job description for review before it is advertized.",
+      "terms": [
+        {
+          "term": "job_description.awaiting_review",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['job_description.advertized']",
+          "missing": [
+            "job_description.advertized"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "job_description.awaiting_review"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "job_description.approved": {
+      "operator": "MIXED",
+      "quote": [
+        "When I have detected a number of personnel requirements, I report the vacancy to the Personnel Department.",
+        "Then I wait to get the job description for review before it is advertized."
+      ],
+      "terms": [
+        {
+          "term": "job_description.awaiting_review",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        },
+        {
+          "term": "job_description.awaiting_review",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        },
+        {
+          "term": "NOT vacancy.reported",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED",
+      "clauses": [
+        {
+          "terms": [
+            "job_description.awaiting_review"
+          ],
+          "status": "SATISFIED"
+        },
+        {
+          "terms": [
+            "job_description.awaiting_review",
+            "NOT vacancy.reported"
+          ],
+          "status": "SATISFIED"
+        }
+      ]
+    },
+    "task.clarified": {
+      "operator": "AND",
+      "quote": [
+        "When I have detected a number of personnel requirements, I report the vacancy to the Personnel Department.",
+        "Then I wait to get the job description for review before it is advertized."
+      ],
+      "terms": [
+        {
+          "term": "vacancy.reported",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['task.clarified']",
+          "missing": [
+            "task.clarified"
+          ]
+        },
+        {
+          "term": "personnel_requirement.detected",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['personnel_requirement.detected', 'task.clarified']",
+          "missing": [
+            "personnel_requirement.detected",
+            "task.clarified"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "vacancy.reported",
+            "personnel_requirement.detected"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "requirement.clarified": {
+      "operator": "AND",
+      "quote": "Sometimes it also happens that the colleague from the HR department still has questions about the tasks and requirements before he can describe the job.",
+      "terms": [
+        {
+          "term": "task.clarified",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['task.clarified', 'requirement.clarified']",
+          "missing": [
+            "task.clarified",
+            "requirement.clarified"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "task.clarified"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    }
+  },
+  "report": {
+    "verdict": {
+      "verdict": "FAITHFUL_WITH_RESERVATIONS",
+      "justification": "No gap found, but 4 requirement(s) from the text could not be associated with any clear activity in the observed process -- neither confirmed nor refuted. This verdict is NOT a confirmation of full faithfulness.",
+      "scope": "This verdict covers the causal reachability of the requirements expressed in the source text, not the general quality of the process model -- a multiplicity defect (an activity executed more than once due to a mismatched branching structure) is not covered by this verdict, even if the process is otherwise well-formed."
+    },
+    "summary": {
+      "ecarts": 0,
+      "non_verifiable": 4,
+      "conforme": 3
+    },
+    "ecarts": [],
+    "non_verifiable": [
+      {
+        "root_cause": "vacancy advertized",
+        "quote": "When I have detected a number of personnel requirements, I report the vacancy to the Personnel Department.",
+        "explanation": "The condition required before the activity \"vacancy advertized\" can occur is that a number of personnel requirements have been detected. This is stated in the source text as: \"When I have detected a number of personnel requirements, I report the vacancy to the Personnel Department.\"\n\nThis condition cannot be associated with any clear activity in the observed process, making it impossible to verify whether it is met or not.",
+        "quote_verbatim": true,
+        "affected_activities": [
+          "vacancy advertized"
+        ],
+        "affected_count": 1
+      },
+      {
+        "root_cause": "personnel requirement detected",
+        "quote": "When I have detected a number of personnel requirements, I report the vacancy to the Personnel Department.",
+        "explanation": "The source text states that a specific condition must be met before the activity \"vacancy approved\" can occur. This condition is that a \"personnel requirement\" has been detected. \n\nThe quote from the source text confirms that this condition is required: \"When I have detected a number of personnel requirements, I report the vacancy to the Personnel Department.\"\n\nHowever, it's not possible to verify whether this condition is met or not because there's no clear activity associated with it in the observed process. This means we can't confirm if the condition is met or not, and therefore, we can't say for sure if the requirement is met before the activity \"vacancy approved\" occurs. (This same root cause also affects: requirement clarified, task clarified.)",
+        "quote_verbatim": true,
+        "affected_activities": [
+          "requirement clarified",
+          "task clarified",
+          "vacancy approved"
+        ],
+        "affected_count": 8
+      },
+      {
+        "root_cause": "Report vacancy",
+        "quote": "Then I wait to get the job description for review before it is advertized.",
+        "explanation": "The source text states that a specific condition must be met before the activity \"Review job description\" can occur. This condition is mentioned in the quote: \"Then I wait to get the job description for review before it is advertized.\"\n\nThe problem is that this condition is not clearly associated with any specific activity in the process. As a result, it's impossible to determine whether this condition has been met or not. This doesn't necessarily mean the process is incorrect, but rather that we can't verify this specific requirement.",
+        "quote_verbatim": true,
+        "affected_activities": [
+          "Review job description"
+        ],
+        "affected_count": 1
+      },
+      {
+        "root_cause": "job description advertized",
+        "quote": "Then I wait to get the job description for review before it is advertized.",
+        "explanation": "The activity \"job description advertized\" requires a specific condition to be met before it can occur. This condition is mentioned in the source text as: \"Then I wait to get the job description for review before it is advertized.\"\n\nThis condition cannot be associated with any clear activity in the observed process, making it impossible to verify whether the requirement is met or not.",
+        "quote_verbatim": true,
+        "affected_activities": [
+          "job description advertized"
+        ],
+        "affected_count": 1
+      }
+    ],
+    "conforme": [
+      {
+        "target": "Approve job description",
+        "term": "Review job description"
+      },
+      {
+        "target": "Approve job description",
+        "term": "Review job description"
+      },
+      {
+        "target": "Approve job description",
+        "term": "absence of: Report vacancy"
+      }
+    ],
+    "piece_jointe_alignement_brut": {
+      "vacancy.advertized": {
+        "operator": "AND",
+        "quote": "When I have detected a number of personnel requirements, I report the vacancy to the Personnel Department.",
+        "terms": [
+          {
+            "term": "vacancy.reported",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['vacancy.advertized']",
+            "missing": [
+              "vacancy.advertized"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "vacancy.reported"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "vacancy.approved": {
+        "operator": "AND",
+        "quote": "When I have detected a number of personnel requirements, I report the vacancy to the Personnel Department.",
+        "terms": [
+          {
+            "term": "vacancy.reported",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['vacancy.approved']",
+            "missing": [
+              "vacancy.approved"
+            ]
+          },
+          {
+            "term": "personnel_requirement.detected",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['personnel_requirement.detected', 'vacancy.approved']",
+            "missing": [
+              "personnel_requirement.detected",
+              "vacancy.approved"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "vacancy.reported",
+              "personnel_requirement.detected"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "job_description.awaiting_review": {
+        "operator": "AND",
+        "quote": "Then I wait to get the job description for review before it is advertized.",
+        "terms": [
+          {
+            "term": "vacancy.reported",
+            "status": "VIOLATED",
+            "reason": "both states matched, no path in process",
+            "missing": []
+          }
+        ],
+        "status": "VIOLATED",
+        "clauses": [
+          {
+            "terms": [
+              "vacancy.reported"
+            ],
+            "status": "VIOLATED"
+          }
+        ]
+      },
+      "job_description.advertized": {
+        "operator": "AND",
+        "quote": "Then I wait to get the job description for review before it is advertized.",
+        "terms": [
+          {
+            "term": "job_description.awaiting_review",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['job_description.advertized']",
+            "missing": [
+              "job_description.advertized"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "job_description.awaiting_review"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "job_description.approved": {
+        "operator": "MIXED",
+        "quote": [
+          "When I have detected a number of personnel requirements, I report the vacancy to the Personnel Department.",
+          "Then I wait to get the job description for review before it is advertized."
+        ],
+        "terms": [
+          {
+            "term": "job_description.awaiting_review",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          },
+          {
+            "term": "job_description.awaiting_review",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          },
+          {
+            "term": "NOT vacancy.reported",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED",
+        "clauses": [
+          {
+            "terms": [
+              "job_description.awaiting_review"
+            ],
+            "status": "SATISFIED"
+          },
+          {
+            "terms": [
+              "job_description.awaiting_review",
+              "NOT vacancy.reported"
+            ],
+            "status": "SATISFIED"
+          }
+        ]
+      },
+      "task.clarified": {
+        "operator": "AND",
+        "quote": [
+          "When I have detected a number of personnel requirements, I report the vacancy to the Personnel Department.",
+          "Then I wait to get the job description for review before it is advertized."
+        ],
+        "terms": [
+          {
+            "term": "vacancy.reported",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['task.clarified']",
+            "missing": [
+              "task.clarified"
+            ]
+          },
+          {
+            "term": "personnel_requirement.detected",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['personnel_requirement.detected', 'task.clarified']",
+            "missing": [
+              "personnel_requirement.detected",
+              "task.clarified"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "vacancy.reported",
+              "personnel_requirement.detected"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "requirement.clarified": {
+        "operator": "AND",
+        "quote": "Sometimes it also happens that the colleague from the HR department still has questions about the tasks and requirements before he can describe the job.",
+        "terms": [
+          {
+            "term": "task.clarified",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['task.clarified', 'requirement.clarified']",
+            "missing": [
+              "task.clarified",
+              "requirement.clarified"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "task.clarified"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      }
+    }
+  },
+  "errors": []
+}

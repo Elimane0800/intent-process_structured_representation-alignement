@@ -1,0 +1,667 @@
+{
+  "case_name": "OriginalDataset/Model6-4",
+  "text": "The first step is to determine contact details of potential customers. This can be achieved in several ways. Sometimes, we buy details for cold calls, sometimes, our marketing staff participates in exhibitions and sometimes, you just happen to know somebody, who is interested in the product. Then we start calling the customer. That is done by the call center staff. They are determining the contact person and the budget which would be available for the project. Of course, asking the customer whether he is generally interested is also important. If this is not the case, we leave him alone, except if the potential project budget is huge. Then the head of development personally tries to acquire the customer. If the customer is interested in the end, the next step is a detailed online presentation. It is given either by a sales representative or by a pre-sales employee in case of a more technical presentation. Afterwards we are waiting for the customer to come back to us. If we are not contacted within 2 weeks, a sales representative is calling the customer. The last phase is the creation of a quotation.",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "llama-3.1-8b",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "llama-3.1-8b",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/../datasets/lre/alignment_model_text-master/datasets/OriginalDataset/Models/Model6-4.bpmn",
+  "report_model": "llama-3.1-8b",
+  "candidates": {
+    "potential_customer": {
+      "states": [
+        "unknown",
+        "cold_call",
+        "interested",
+        "uninterested",
+        "acquired"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "call_center_staff": {
+      "states": [
+        "determining_contact_person",
+        "determining_budget"
+      ],
+      "exclusive_groups": [
+        [
+          "determining_contact_person",
+          "determining_budget"
+        ]
+      ],
+      "concurrent_with": []
+    },
+    "customer": {
+      "states": [
+        "interested",
+        "uninterested",
+        "acquired"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "sales_representative": {
+      "states": [
+        "giving_online_presentation"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "pre_sales_employee": {
+      "states": [
+        "giving_online_presentation"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "head_of_development": {
+      "states": [
+        "trying_to_acquire_customer"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "project": {
+      "states": [
+        "huge"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    }
+  },
+  "validation_report": {
+    "potential_customer": {
+      "f_lex": "ACTOR",
+      "kept": false,
+      "head_used": "customer"
+    },
+    "call_center_staff": {
+      "f_lex": "INDETERMINATE",
+      "kept": true,
+      "head_used": "staff"
+    },
+    "customer": {
+      "f_lex": "ACTOR",
+      "kept": false,
+      "head_used": "customer"
+    },
+    "sales_representative": {
+      "f_lex": "ACTOR",
+      "kept": false,
+      "head_used": "representative"
+    },
+    "pre_sales_employee": {
+      "f_lex": "ACTOR",
+      "kept": false,
+      "head_used": "employee"
+    },
+    "head_of_development": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "development"
+    },
+    "project": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "project"
+    },
+    "__meta__": {
+      "total_candidates": 7,
+      "indeterminate_kept_count": 1
+    }
+  },
+  "exclusive_groups_report": {
+    "accepted": [
+      {
+        "entity": "call_center_staff",
+        "states": [
+          "determining_contact_person",
+          "determining_budget"
+        ],
+        "quote": "They are determining the contact person and the budget which would be available for the project."
+      }
+    ],
+    "rejected": [
+      {
+        "entity": "project",
+        "states": [
+          "huge"
+        ],
+        "quote": "If the potential project budget is huge.",
+        "reason": "missing or too-short states list"
+      },
+      {
+        "entity": "head_of_development",
+        "states": [
+          "trying_to_acquire_customer"
+        ],
+        "quote": "Then the head of development personally tries to acquire the customer.",
+        "reason": "missing or too-short states list"
+      }
+    ]
+  },
+  "state_space": {
+    "call_center_staff": {
+      "states": [
+        "determining_contact_person",
+        "determining_budget"
+      ],
+      "exclusive_groups": [
+        [
+          "determining_contact_person",
+          "determining_budget"
+        ]
+      ],
+      "concurrent_with": []
+    },
+    "head_of_development": {
+      "states": [
+        "trying_to_acquire_customer"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "project": {
+      "states": [
+        "huge"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    }
+  },
+  "state_space_dedup": {
+    "merged": {},
+    "ambiguous_not_merged": {}
+  },
+  "raw_preconditions": {
+    "call_center_staff": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "head_of_development": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "project": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "determining_contact_person": {
+      "precondition": "determining_contact_person OR determining_budget",
+      "quote": [
+        "This can be achieved in several ways.",
+        "Sometimes, we buy details for cold calls,"
+      ]
+    },
+    "determining_budget": {
+      "precondition": "determining_contact_person OR determining_budget",
+      "quote": [
+        "Sometimes, our marketing staff participates in exhibitions and sometimes, you just happen to know somebody, who is interested in the product.",
+        "Then we start calling the customer."
+      ]
+    },
+    "trying_to_acquire_customer": {
+      "precondition": "NOT determining_contact_person AND NOT determining_budget AND project.huge",
+      "quote": [
+        "If the customer is not interested in the end, we leave him alone, except if the potential project budget is huge."
+      ]
+    },
+    "interested_customer": {
+      "precondition": "determining_contact_person OR determining_budget",
+      "quote": [
+        "If the customer is interested in the end, the next step is a detailed online presentation."
+      ]
+    },
+    "online_presentation": {
+      "precondition": "interested_customer",
+      "quote": [
+        "It is given either by a sales representative or by a pre-sales employee in case of a more technical presentation."
+      ]
+    },
+    "waiting_for_customer": {
+      "precondition": "online_presentation",
+      "quote": [
+        "Afterwards we are waiting for the customer to come back to us."
+      ]
+    },
+    "follow_up_call": {
+      "precondition": "NOT waiting_for_customer AND online_presentation",
+      "quote": [
+        "If we are not contacted within 2 weeks, a sales representative is calling the customer."
+      ]
+    },
+    "quotation_creation": {
+      "precondition": "follow_up_call",
+      "quote": [
+        "The last phase is the creation of a quotation."
+      ]
+    }
+  },
+  "validated_preconditions": {
+    "call_center_staff": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "DOWNGRADED",
+      "reason": "malformed or unknown target key: 'call_center_staff' is not a valid entity.state of the state space"
+    },
+    "head_of_development": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "DOWNGRADED",
+      "reason": "malformed or unknown target key: 'head_of_development' is not a valid entity.state of the state space"
+    },
+    "project": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "DOWNGRADED",
+      "reason": "malformed or unknown target key: 'project' is not a valid entity.state of the state space"
+    },
+    "determining_contact_person": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "DOWNGRADED",
+      "reason": "malformed or unknown target key: 'determining_contact_person' is not a valid entity.state of the state space"
+    },
+    "determining_budget": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "DOWNGRADED",
+      "reason": "malformed or unknown target key: 'determining_budget' is not a valid entity.state of the state space"
+    },
+    "trying_to_acquire_customer": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "DOWNGRADED",
+      "reason": "malformed or unknown target key: 'trying_to_acquire_customer' is not a valid entity.state of the state space"
+    },
+    "interested_customer": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "DOWNGRADED",
+      "reason": "malformed or unknown target key: 'interested_customer' is not a valid entity.state of the state space"
+    },
+    "online_presentation": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "DOWNGRADED",
+      "reason": "malformed or unknown target key: 'online_presentation' is not a valid entity.state of the state space"
+    },
+    "waiting_for_customer": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "DOWNGRADED",
+      "reason": "malformed or unknown target key: 'waiting_for_customer' is not a valid entity.state of the state space"
+    },
+    "follow_up_call": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "DOWNGRADED",
+      "reason": "malformed or unknown target key: 'follow_up_call' is not a valid entity.state of the state space"
+    },
+    "quotation_creation": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "DOWNGRADED",
+      "reason": "malformed or unknown target key: 'quotation_creation' is not a valid entity.state of the state space"
+    }
+  },
+  "precondition_cycles": [],
+  "branch_conflicts": [],
+  "reference_graph": {
+    "nodes": [
+      {
+        "id": "call_center_staff.determining_contact_person",
+        "weight": 0.0
+      },
+      {
+        "id": "call_center_staff.determining_budget",
+        "weight": 0.0
+      },
+      {
+        "id": "head_of_development.trying_to_acquire_customer",
+        "weight": 0.0
+      },
+      {
+        "id": "project.huge",
+        "weight": 0.0
+      }
+    ],
+    "edges": [],
+    "cycles": [],
+    "branch_conflicts": [],
+    "exclusive_pairs": [
+      {
+        "entity": "call_center_staff",
+        "nodes": [
+          "call_center_staff.determining_contact_person",
+          "call_center_staff.determining_budget"
+        ]
+      }
+    ]
+  },
+  "dfg_edges": [
+    {
+      "source_id": "Task_0yasbbh",
+      "source_label": "Contact customer",
+      "target_id": "Task_1oshr8b",
+      "target_label": "Give technical presentation",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "aroused in request",
+        "ExclusiveGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_0yasbbh",
+      "source_label": "Contact customer",
+      "target_id": "Task_1n5augf",
+      "target_label": "Give sales presentation",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "aroused in request",
+        "ExclusiveGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_0k8j1jy",
+      "source_label": "Buy data",
+      "target_id": "Task_1la91ms",
+      "target_label": "Determine contact person",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_1n5augf",
+      "source_label": "Give sales presentation",
+      "target_id": "IntermediateCatchEvent_0az5gqy",
+      "target_label": "",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "EventBasedGateway"
+      ]
+    },
+    {
+      "source_id": "Task_1n5augf",
+      "source_label": "Give sales presentation",
+      "target_id": "IntermediateCatchEvent_1hsqzfa",
+      "target_label": "Customer comes back",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "EventBasedGateway"
+      ]
+    },
+    {
+      "source_id": "Task_0lzccjb",
+      "source_label": "Visit exhibition",
+      "target_id": "Task_11kc93s",
+      "target_label": "Import excel-sheet with customer data",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_17xq7m5",
+      "source_label": "Use other sources",
+      "target_id": "Task_1la91ms",
+      "target_label": "Determine contact person",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_1psfmbe",
+      "source_label": "Determine available project budget",
+      "target_id": "Task_0yasbbh",
+      "target_label": "Contact customer",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "not interested"
+      ]
+    },
+    {
+      "source_id": "Task_1psfmbe",
+      "source_label": "Determine available project budget",
+      "target_id": "Task_1oshr8b",
+      "target_label": "Give technical presentation",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "is interested",
+        "ExclusiveGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_1psfmbe",
+      "source_label": "Determine available project budget",
+      "target_id": "Task_1n5augf",
+      "target_label": "Give sales presentation",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "is interested",
+        "ExclusiveGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_11kc93s",
+      "source_label": "Import excel-sheet with customer data",
+      "target_id": "Task_1la91ms",
+      "target_label": "Determine contact person",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_1la91ms",
+      "source_label": "Determine contact person",
+      "target_id": "Task_1psfmbe",
+      "target_label": "Determine available project budget",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "Ok"
+      ]
+    },
+    {
+      "source_id": "Task_1oshr8b",
+      "source_label": "Give technical presentation",
+      "target_id": "IntermediateCatchEvent_0az5gqy",
+      "target_label": "",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "EventBasedGateway"
+      ]
+    },
+    {
+      "source_id": "Task_1oshr8b",
+      "source_label": "Give technical presentation",
+      "target_id": "IntermediateCatchEvent_1hsqzfa",
+      "target_label": "Customer comes back",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "EventBasedGateway"
+      ]
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "Contact customer",
+      "subject_id": "Task_0yasbbh",
+      "predicate": "follows",
+      "object": "Give technical presentation",
+      "object_id": "Task_1oshr8b"
+    },
+    {
+      "subject": "Contact customer",
+      "subject_id": "Task_0yasbbh",
+      "predicate": "follows",
+      "object": "Give sales presentation",
+      "object_id": "Task_1n5augf"
+    },
+    {
+      "subject": "Buy data",
+      "subject_id": "Task_0k8j1jy",
+      "predicate": "follows",
+      "object": "Determine contact person",
+      "object_id": "Task_1la91ms"
+    },
+    {
+      "subject": "Give sales presentation",
+      "subject_id": "Task_1n5augf",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "IntermediateCatchEvent_0az5gqy"
+    },
+    {
+      "subject": "Give sales presentation",
+      "subject_id": "Task_1n5augf",
+      "predicate": "follows",
+      "object": "Customer comes back",
+      "object_id": "IntermediateCatchEvent_1hsqzfa"
+    },
+    {
+      "subject": "Visit exhibition",
+      "subject_id": "Task_0lzccjb",
+      "predicate": "follows",
+      "object": "Import excel-sheet with customer data",
+      "object_id": "Task_11kc93s"
+    },
+    {
+      "subject": "Use other sources",
+      "subject_id": "Task_17xq7m5",
+      "predicate": "follows",
+      "object": "Determine contact person",
+      "object_id": "Task_1la91ms"
+    },
+    {
+      "subject": "Determine available project budget",
+      "subject_id": "Task_1psfmbe",
+      "predicate": "follows",
+      "object": "Contact customer",
+      "object_id": "Task_0yasbbh"
+    },
+    {
+      "subject": "Determine available project budget",
+      "subject_id": "Task_1psfmbe",
+      "predicate": "follows",
+      "object": "Give technical presentation",
+      "object_id": "Task_1oshr8b"
+    },
+    {
+      "subject": "Determine available project budget",
+      "subject_id": "Task_1psfmbe",
+      "predicate": "follows",
+      "object": "Give sales presentation",
+      "object_id": "Task_1n5augf"
+    },
+    {
+      "subject": "Import excel-sheet with customer data",
+      "subject_id": "Task_11kc93s",
+      "predicate": "follows",
+      "object": "Determine contact person",
+      "object_id": "Task_1la91ms"
+    },
+    {
+      "subject": "Determine contact person",
+      "subject_id": "Task_1la91ms",
+      "predicate": "follows",
+      "object": "Determine available project budget",
+      "object_id": "Task_1psfmbe"
+    },
+    {
+      "subject": "Give technical presentation",
+      "subject_id": "Task_1oshr8b",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "IntermediateCatchEvent_0az5gqy"
+    },
+    {
+      "subject": "Give technical presentation",
+      "subject_id": "Task_1oshr8b",
+      "predicate": "follows",
+      "object": "Customer comes back",
+      "object_id": "IntermediateCatchEvent_1hsqzfa"
+    }
+  ],
+  "matches": {
+    "Task_0yasbbh": {
+      "activity_label": "Contact customer",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_1oshr8b": {
+      "activity_label": "Give technical presentation",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_1n5augf": {
+      "activity_label": "Give sales presentation",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_0k8j1jy": {
+      "activity_label": "Buy data",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_1la91ms": {
+      "activity_label": "Determine contact person",
+      "matches": [
+        {
+          "match": "call_center_staff.determining_contact_person",
+          "score": 0.4609
+        }
+      ],
+      "clusters": [
+        [
+          "call_center_staff.determining_contact_person"
+        ]
+      ]
+    },
+    "IntermediateCatchEvent_1hsqzfa": {
+      "activity_label": "Customer comes back",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_0lzccjb": {
+      "activity_label": "Visit exhibition",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_11kc93s": {
+      "activity_label": "Import excel-sheet with customer data",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_17xq7m5": {
+      "activity_label": "Use other sources",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_1psfmbe": {
+      "activity_label": "Determine available project budget",
+      "matches": [],
+      "clusters": []
+    }
+  },
+  "process_graph": [],
+  "alignment": {},
+  "report": {
+    "verdict": {
+      "verdict": "FAITHFUL",
+      "justification": "Every non-trivial precondition asserted by the source text was confirmed in the observed process's sequence of activities.",
+      "scope": "This verdict covers the causal reachability of the requirements expressed in the source text, not the general quality of the process model -- a multiplicity defect (an activity executed more than once due to a mismatched branching structure) is not covered by this verdict, even if the process is otherwise well-formed."
+    },
+    "summary": {
+      "ecarts": 0,
+      "non_verifiable": 0,
+      "conforme": 0
+    },
+    "ecarts": [],
+    "non_verifiable": [],
+    "conforme": [],
+    "piece_jointe_alignement_brut": {}
+  },
+  "errors": []
+}

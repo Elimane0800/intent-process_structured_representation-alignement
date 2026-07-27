@@ -1,0 +1,777 @@
+{
+  "case_name": "OriginalDataset/Model3-2",
+  "text": "Each morning, the files which have yet to be processed need to be checked, to make sure they are in order for the court hearing that day. If some files are missing, a search is initiated, otherwise the files can be physically tracked to the intended location. Once all the files are ready, these are handed to the Associate, and meantime the Judges Lawlist is distributed to the relevant people. Afterwards, the directions hearings are conducted.",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "nemotron-3-super-120b",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "nemotron-3-super-120b",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/../datasets/lre/alignment_model_text-master/datasets/OriginalDataset/Models/Model3-2.bpmn",
+  "report_model": "nemotron-3-super-120b",
+  "candidates": {
+    "files": {
+      "states": [
+        "unprocessed",
+        "missing",
+        "ready",
+        "tracked",
+        "handed_to_associate"
+      ],
+      "exclusive_groups": [
+        [
+          "missing",
+          "ready"
+        ]
+      ],
+      "concurrent_with": [
+        "judges_lawlist"
+      ]
+    },
+    "judges_lawlist": {
+      "states": [
+        "distributed"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": [
+        "files"
+      ]
+    },
+    "directions_hearings": {
+      "states": [
+        "conducted"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    }
+  },
+  "validation_report": {
+    "files": {
+      "f_lex": "INDETERMINATE",
+      "kept": true,
+      "head_used": "files"
+    },
+    "judges_lawlist": {
+      "f_lex": "INDETERMINATE",
+      "kept": true,
+      "head_used": "lawlist"
+    },
+    "directions_hearings": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "hearings"
+    },
+    "__meta__": {
+      "total_candidates": 3,
+      "indeterminate_kept_count": 2
+    }
+  },
+  "exclusive_groups_report": {
+    "accepted": [
+      {
+        "entity": "files",
+        "states": [
+          "missing",
+          "ready"
+        ],
+        "quote": "If some files are missing, a search is initiated, otherwise the files can be physically tracked to the intended location. Once all the files are ready"
+      }
+    ],
+    "rejected": []
+  },
+  "state_space": {
+    "file": {
+      "states": [
+        "unprocessed",
+        "missing",
+        "ready",
+        "tracked",
+        "handed_to_associate"
+      ],
+      "exclusive_groups": [
+        [
+          "missing",
+          "ready"
+        ]
+      ],
+      "concurrent_with": [
+        "judge_lawlist"
+      ]
+    },
+    "judge_lawlist": {
+      "states": [
+        "distributed"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": [
+        "file"
+      ]
+    },
+    "direction_hearing": {
+      "states": [
+        "conducted"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    }
+  },
+  "state_space_dedup": {
+    "merged": {},
+    "ambiguous_not_merged": {}
+  },
+  "raw_preconditions": {
+    "file.unprocessed": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "file.missing": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "file.ready": {
+      "precondition": "file.unprocessed AND file.missing",
+      "quote": "Each morning, the files which have yet to be processed need to be checked, to make sure they are in order for the court hearing that day. If some files are missing, a search is initiated, otherwise the files can be physically tracked to the intended location. Once all the files are ready, these are handed to the Associate, and meantime the Judges Lawlist is distributed to the relevant people."
+    },
+    "file.tracked": {
+      "precondition": "file.unprocessed AND NOT file.missing",
+      "quote": "Each morning, the files which have yet to be processed need to be checked, to make sure they are in order for the court hearing that day. If some files are missing, a search is initiated, otherwise the files can be physically tracked to the intended location."
+    },
+    "file.hand_to_associate": {
+      "precondition": "file.ready",
+      "quote": "Once all the files are ready, these are handed to the Associate, and meantime the Judges Lawlist is distributed to the relevant people."
+    },
+    "judge_lawlist.distributed": {
+      "precondition": "file.ready",
+      "quote": "Once all the files are ready, these are handed to the Associate, and meantime the Judges Lawlist is distributed to the relevant people."
+    },
+    "direction_hearing.conducted": {
+      "precondition": "file.hand_to_associate",
+      "quote": "Afterwards, the directions hearings are conducted."
+    }
+  },
+  "validated_preconditions": {
+    "file.unprocessed": {
+      "precondition": "INITIAL",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "file.missing": {
+      "precondition": "INITIAL",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "file.ready": {
+      "precondition": "file.unprocessed AND file.missing",
+      "quote": "Each morning, the files which have yet to be processed need to be checked, to make sure they are in order for the court hearing that day. If some files are missing, a search is initiated, otherwise the files can be physically tracked to the intended location. Once all the files are ready, these are handed to the Associate, and meantime the Judges Lawlist is distributed to the relevant people.",
+      "status": "OK",
+      "reason": null
+    },
+    "file.tracked": {
+      "precondition": "file.unprocessed AND NOT file.missing",
+      "quote": "Each morning, the files which have yet to be processed need to be checked, to make sure they are in order for the court hearing that day. If some files are missing, a search is initiated, otherwise the files can be physically tracked to the intended location.",
+      "status": "OK",
+      "reason": null
+    },
+    "file.hand_to_associate": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "DOWNGRADED",
+      "reason": "malformed or unknown target key: 'file.hand_to_associate' is not a valid entity.state of the state space"
+    },
+    "judge_lawlist.distributed": {
+      "precondition": "file.ready",
+      "quote": "Once all the files are ready, these are handed to the Associate, and meantime the Judges Lawlist is distributed to the relevant people.",
+      "status": "OK",
+      "reason": null
+    },
+    "direction_hearing.conducted": {
+      "precondition": "file.handed_to_associate",
+      "quote": "Once all the files are ready, these are handed to the Associate",
+      "status": "OK",
+      "reason": null,
+      "retried": true
+    }
+  },
+  "precondition_cycles": [],
+  "branch_conflicts": [],
+  "reference_graph": {
+    "nodes": [
+      {
+        "id": "file.unprocessed",
+        "weight": 0.667
+      },
+      {
+        "id": "file.missing",
+        "weight": 0.667
+      },
+      {
+        "id": "file.ready",
+        "weight": 1.0
+      },
+      {
+        "id": "file.tracked",
+        "weight": 0.667
+      },
+      {
+        "id": "file.handed_to_associate",
+        "weight": 0.333
+      },
+      {
+        "id": "judge_lawlist.distributed",
+        "weight": 0.333
+      },
+      {
+        "id": "direction_hearing.conducted",
+        "weight": 0.333
+      }
+    ],
+    "edges": [
+      {
+        "from": "file.unprocessed",
+        "to": "file.ready",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "Each morning, the files which have yet to be processed need to be checked, to make sure they are in order for the court hearing that day. If some files are missing, a search is initiated, otherwise the files can be physically tracked to the intended location. Once all the files are ready, these are handed to the Associate, and meantime the Judges Lawlist is distributed to the relevant people.",
+        "negated": false
+      },
+      {
+        "from": "file.missing",
+        "to": "file.ready",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "Each morning, the files which have yet to be processed need to be checked, to make sure they are in order for the court hearing that day. If some files are missing, a search is initiated, otherwise the files can be physically tracked to the intended location. Once all the files are ready, these are handed to the Associate, and meantime the Judges Lawlist is distributed to the relevant people.",
+        "negated": false
+      },
+      {
+        "from": "file.unprocessed",
+        "to": "file.tracked",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "Each morning, the files which have yet to be processed need to be checked, to make sure they are in order for the court hearing that day. If some files are missing, a search is initiated, otherwise the files can be physically tracked to the intended location.",
+        "negated": false
+      },
+      {
+        "from": "file.missing",
+        "to": "file.tracked",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "Each morning, the files which have yet to be processed need to be checked, to make sure they are in order for the court hearing that day. If some files are missing, a search is initiated, otherwise the files can be physically tracked to the intended location.",
+        "negated": true
+      },
+      {
+        "from": "file.ready",
+        "to": "judge_lawlist.distributed",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "Once all the files are ready, these are handed to the Associate, and meantime the Judges Lawlist is distributed to the relevant people.",
+        "negated": false
+      },
+      {
+        "from": "file.handed_to_associate",
+        "to": "direction_hearing.conducted",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "Once all the files are ready, these are handed to the Associate",
+        "negated": false
+      }
+    ],
+    "cycles": [],
+    "branch_conflicts": [],
+    "exclusive_pairs": [
+      {
+        "entity": "file",
+        "nodes": [
+          "file.missing",
+          "file.ready"
+        ]
+      }
+    ]
+  },
+  "dfg_edges": [
+    {
+      "source_id": "Task_2",
+      "source_label": "Track physical files",
+      "target_id": "Task_3",
+      "target_label": "Hand files to associate",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "Task_2",
+      "source_label": "Track physical files",
+      "target_id": "Task_4",
+      "target_label": "Distribute judge's lawlist",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "Task_4",
+      "source_label": "Distribute judge's lawlist",
+      "target_id": "Task_5",
+      "target_label": "Conduct directions hearings",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "Task_1",
+      "source_label": "Initiate search",
+      "target_id": "Task_2",
+      "target_label": "Track physical files",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_0",
+      "source_label": "Check files",
+      "target_id": "Task_2",
+      "target_label": "Track physical files",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_0",
+      "source_label": "Check files",
+      "target_id": "Task_1",
+      "target_label": "Initiate search",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_3",
+      "source_label": "Hand files to associate",
+      "target_id": "Task_5",
+      "target_label": "Conduct directions hearings",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "Track physical files",
+      "subject_id": "Task_2",
+      "predicate": "follows",
+      "object": "Hand files to associate",
+      "object_id": "Task_3"
+    },
+    {
+      "subject": "Track physical files",
+      "subject_id": "Task_2",
+      "predicate": "follows",
+      "object": "Distribute judge's lawlist",
+      "object_id": "Task_4"
+    },
+    {
+      "subject": "Distribute judge's lawlist",
+      "subject_id": "Task_4",
+      "predicate": "follows",
+      "object": "Conduct directions hearings",
+      "object_id": "Task_5"
+    },
+    {
+      "subject": "Initiate search",
+      "subject_id": "Task_1",
+      "predicate": "follows",
+      "object": "Track physical files",
+      "object_id": "Task_2"
+    },
+    {
+      "subject": "Check files",
+      "subject_id": "Task_0",
+      "predicate": "follows",
+      "object": "Track physical files",
+      "object_id": "Task_2"
+    },
+    {
+      "subject": "Check files",
+      "subject_id": "Task_0",
+      "predicate": "follows",
+      "object": "Initiate search",
+      "object_id": "Task_1"
+    },
+    {
+      "subject": "Hand files to associate",
+      "subject_id": "Task_3",
+      "predicate": "follows",
+      "object": "Conduct directions hearings",
+      "object_id": "Task_5"
+    }
+  ],
+  "matches": {
+    "Task_2": {
+      "activity_label": "Track physical files",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_3": {
+      "activity_label": "Hand files to associate",
+      "matches": [
+        {
+          "match": "file.handed_to_associate",
+          "score": 0.4852
+        }
+      ],
+      "clusters": [
+        [
+          "file.handed_to_associate"
+        ]
+      ]
+    },
+    "Task_4": {
+      "activity_label": "Distribute judge's lawlist",
+      "matches": [
+        {
+          "match": "judge_lawlist.distributed",
+          "score": 0.5527
+        }
+      ],
+      "clusters": [
+        [
+          "judge_lawlist.distributed"
+        ]
+      ]
+    },
+    "Task_5": {
+      "activity_label": "Conduct directions hearings",
+      "matches": [
+        {
+          "match": "direction_hearing.conducted",
+          "score": 0.5722
+        }
+      ],
+      "clusters": [
+        [
+          "direction_hearing.conducted"
+        ]
+      ]
+    },
+    "Task_1": {
+      "activity_label": "Initiate search",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_0": {
+      "activity_label": "Check files",
+      "matches": [],
+      "clusters": []
+    }
+  },
+  "process_graph": [
+    {
+      "from": "judge_lawlist.distributed",
+      "to": "direction_hearing.conducted",
+      "activity_from": "Distribute judge's lawlist",
+      "activity_to": "Conduct directions hearings",
+      "source_id": "Task_4",
+      "target_id": "Task_5"
+    },
+    {
+      "from": "file.handed_to_associate",
+      "to": "direction_hearing.conducted",
+      "activity_from": "Hand files to associate",
+      "activity_to": "Conduct directions hearings",
+      "source_id": "Task_3",
+      "target_id": "Task_5"
+    }
+  ],
+  "alignment": {
+    "file.ready": {
+      "operator": "AND",
+      "quote": "Each morning, the files which have yet to be processed need to be checked, to make sure they are in order for the court hearing that day. If some files are missing, a search is initiated, otherwise the files can be physically tracked to the intended location. Once all the files are ready, these are handed to the Associate, and meantime the Judges Lawlist is distributed to the relevant people.",
+      "terms": [
+        {
+          "term": "file.unprocessed",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['file.unprocessed', 'file.ready']",
+          "missing": [
+            "file.unprocessed",
+            "file.ready"
+          ]
+        },
+        {
+          "term": "file.missing",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['file.missing', 'file.ready']",
+          "missing": [
+            "file.missing",
+            "file.ready"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "file.unprocessed",
+            "file.missing"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "file.tracked": {
+      "operator": "AND",
+      "quote": "Each morning, the files which have yet to be processed need to be checked, to make sure they are in order for the court hearing that day. If some files are missing, a search is initiated, otherwise the files can be physically tracked to the intended location.",
+      "terms": [
+        {
+          "term": "file.unprocessed",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['file.unprocessed', 'file.tracked']",
+          "missing": [
+            "file.unprocessed",
+            "file.tracked"
+          ]
+        },
+        {
+          "term": "NOT file.missing",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['file.missing', 'file.tracked']",
+          "missing": [
+            "file.missing",
+            "file.tracked"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "file.unprocessed",
+            "NOT file.missing"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "judge_lawlist.distributed": {
+      "operator": "AND",
+      "quote": "Once all the files are ready, these are handed to the Associate, and meantime the Judges Lawlist is distributed to the relevant people.",
+      "terms": [
+        {
+          "term": "file.ready",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['file.ready']",
+          "missing": [
+            "file.ready"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "file.ready"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "direction_hearing.conducted": {
+      "operator": "AND",
+      "quote": "Once all the files are ready, these are handed to the Associate",
+      "terms": [
+        {
+          "term": "file.handed_to_associate",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED",
+      "clauses": [
+        {
+          "terms": [
+            "file.handed_to_associate"
+          ],
+          "status": "SATISFIED"
+        }
+      ]
+    }
+  },
+  "report": {
+    "verdict": {
+      "verdict": "FAITHFUL_WITH_RESERVATIONS",
+      "justification": "No gap found, but 4 requirement(s) from the text could not be associated with any clear activity in the observed process -- neither confirmed nor refuted. This verdict is NOT a confirmation of full faithfulness.",
+      "scope": "This verdict covers the causal reachability of the requirements expressed in the source text, not the general quality of the process model -- a multiplicity defect (an activity executed more than once due to a mismatched branching structure) is not covered by this verdict, even if the process is otherwise well-formed."
+    },
+    "summary": {
+      "ecarts": 0,
+      "non_verifiable": 4,
+      "conforme": 1
+    },
+    "ecarts": [],
+    "non_verifiable": [
+      {
+        "root_cause": "file unprocessed",
+        "quote": "Each morning, the files which have yet to be processed need to be checked, to make sure they are in order for the court hearing that day. If some files are missing, a search is initiated, otherwise the files can be physically tracked to the intended location. Once all the files are ready, these are handed to the Associate, and meantime the Judges Lawlist is distributed to the relevant people.",
+        "explanation": "The source text states that a condition must be met before the activity \"file ready\" can occur: file unprocessed. The quote provided confirms that a requirement exists before this step, but does not describe what \"file unprocessed\" means in practice. Since no clear activity in the observed process corresponds to this condition, it is not possible to verify whether it is satisfied or not. This lack of observable activity means we cannot confirm or deny conformance — only that verification is not possible based on the given information. (This same root cause also affects: file tracked.)",
+        "quote_verbatim": false,
+        "affected_activities": [
+          "file ready",
+          "file tracked"
+        ],
+        "affected_count": 2
+      },
+      {
+        "root_cause": "file ready",
+        "quote": "Each morning, the files which have yet to be processed need to be checked, to make sure they are in order for the court hearing that day. If some files are missing, a search is initiated, otherwise the files can be physically tracked to the intended location. Once all the files are ready, these are handed to the Associate, and meantime the Judges Lawlist is distributed to the relevant people.",
+        "explanation": "The source text states that a condition must be met before the activity \"file ready\" can occur, as shown by the quote: \"Each morning, the files which have yet to be processed need to be checked, to make sure they are in order for the court hearing that day. If some files are missing, a search is initiated, otherwise the files can be physically tracked to the intended location. Once all the files are ready, these are handed to the Associate, and meantime the Judges Lawlist is distributed to the relevant people.\" However, this condition cannot be linked to any specific activity in the observed process, so it is not possible to verify whether it is satisfied or not. This does not mean the requirement is met or violated — only that verification is not possible based on the available information. (This same root cause also affects: Distribute judge's lawlist.)",
+        "quote_verbatim": true,
+        "affected_activities": [
+          "Distribute judge's lawlist",
+          "file ready"
+        ],
+        "affected_count": 3
+      },
+      {
+        "root_cause": "file missing",
+        "quote": "Each morning, the files which have yet to be processed need to be checked, to make sure they are in order for the court hearing that day. If some files are missing, a search is initiated, otherwise the files can be physically tracked to the intended location. Once all the files are ready, these are handed to the Associate, and meantime the Judges Lawlist is distributed to the relevant people.",
+        "explanation": "The source text states that a condition must be met before the activity \"file ready\" can occur: file missing. The quote provided confirms that a requirement exists: \"Each morning, the files which have yet to be processed need to be checked, to make sure they are in order for the court hearing that day. If some files are missing, a search is initiated, otherwise the files can be physically tracked to the intended location. Once all the files are ready, these are handed to the Associate, and meantime the Judges Lawlist is distributed to the relevant people.\" However, no clear activity in the observed process corresponds to the condition \"file missing,\" so it is impossible to verify whether this condition is met or not. This is neither a confirmation nor a refutation of conformance — only an inability to verify due to missing information. (This same root cause also affects: file tracked.)",
+        "quote_verbatim": true,
+        "affected_activities": [
+          "file ready",
+          "file tracked"
+        ],
+        "affected_count": 2
+      },
+      {
+        "root_cause": "file tracked",
+        "quote": "Each morning, the files which have yet to be processed need to be checked, to make sure they are in order for the court hearing that day. If some files are missing, a search is initiated, otherwise the files can be physically tracked to the intended location.",
+        "explanation": "The requirement states that a condition must be met before the activity \"file tracked\" can occur. The source text says: \"Each morning, the files which have yet to be processed need to be checked, to make sure they are in order for the court hearing that day. If some files are missing, a search is initiated, otherwise the files can be physically tracked to the intended location.\" This shows that a condition is required before tracking files, but it does not clearly link that condition to any specific activity in the observed process. Because no clear activity in the process matches this condition, it is impossible to verify whether the requirement is satisfied or not. This is not a confirmation or refutation of conformance — only an acknowledgment that verification cannot be made due to missing information.",
+        "quote_verbatim": true,
+        "affected_activities": [
+          "file tracked"
+        ],
+        "affected_count": 2
+      }
+    ],
+    "conforme": [
+      {
+        "target": "Conduct directions hearings",
+        "term": "Hand files to associate"
+      }
+    ],
+    "piece_jointe_alignement_brut": {
+      "file.ready": {
+        "operator": "AND",
+        "quote": "Each morning, the files which have yet to be processed need to be checked, to make sure they are in order for the court hearing that day. If some files are missing, a search is initiated, otherwise the files can be physically tracked to the intended location. Once all the files are ready, these are handed to the Associate, and meantime the Judges Lawlist is distributed to the relevant people.",
+        "terms": [
+          {
+            "term": "file.unprocessed",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['file.unprocessed', 'file.ready']",
+            "missing": [
+              "file.unprocessed",
+              "file.ready"
+            ]
+          },
+          {
+            "term": "file.missing",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['file.missing', 'file.ready']",
+            "missing": [
+              "file.missing",
+              "file.ready"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "file.unprocessed",
+              "file.missing"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "file.tracked": {
+        "operator": "AND",
+        "quote": "Each morning, the files which have yet to be processed need to be checked, to make sure they are in order for the court hearing that day. If some files are missing, a search is initiated, otherwise the files can be physically tracked to the intended location.",
+        "terms": [
+          {
+            "term": "file.unprocessed",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['file.unprocessed', 'file.tracked']",
+            "missing": [
+              "file.unprocessed",
+              "file.tracked"
+            ]
+          },
+          {
+            "term": "NOT file.missing",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['file.missing', 'file.tracked']",
+            "missing": [
+              "file.missing",
+              "file.tracked"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "file.unprocessed",
+              "NOT file.missing"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "judge_lawlist.distributed": {
+        "operator": "AND",
+        "quote": "Once all the files are ready, these are handed to the Associate, and meantime the Judges Lawlist is distributed to the relevant people.",
+        "terms": [
+          {
+            "term": "file.ready",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['file.ready']",
+            "missing": [
+              "file.ready"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "file.ready"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "direction_hearing.conducted": {
+        "operator": "AND",
+        "quote": "Once all the files are ready, these are handed to the Associate",
+        "terms": [
+          {
+            "term": "file.handed_to_associate",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED",
+        "clauses": [
+          {
+            "terms": [
+              "file.handed_to_associate"
+            ],
+            "status": "SATISFIED"
+          }
+        ]
+      }
+    }
+  },
+  "errors": []
+}

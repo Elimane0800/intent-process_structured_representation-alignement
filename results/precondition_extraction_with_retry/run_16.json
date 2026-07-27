@@ -1,0 +1,1536 @@
+{
+  "zero_shot": {
+    "meta/llama-3.1-8b-instruct": {
+      "job_application": {
+        "state_space_used": {
+          "job_application": {
+            "states": [
+              "sent",
+              "confirmed",
+              "rated",
+              "negotiated",
+              "in_probation",
+              "rated_by_applicant",
+              "rated_by_company"
+            ],
+            "exclusive_groups": [
+              [
+                "confirmed",
+                "rated"
+              ]
+            ],
+            "concurrent_with": []
+          },
+          "job_offer": {
+            "states": [
+              "sent"
+            ],
+            "exclusive_groups": [],
+            "concurrent_with": []
+          },
+          "job_interview": {
+            "states": [
+              "negotiated"
+            ],
+            "exclusive_groups": [],
+            "concurrent_with": []
+          },
+          "job": {
+            "states": [
+              "permanent",
+              "not_permanent"
+            ],
+            "exclusive_groups": [
+              [
+                "permanent",
+                "not_permanent"
+              ]
+            ],
+            "concurrent_with": []
+          },
+          "review": {
+            "states": [
+              "visible",
+              "invisible"
+            ],
+            "exclusive_groups": [],
+            "concurrent_with": []
+          }
+        },
+        "raw": {
+          "job_application.sent": {
+            "precondition": "INITIAL",
+            "quote": null
+          },
+          "job_offer.sent": {
+            "precondition": "job_application.rated",
+            "quote": "Based on your job applications, new potential job offers are sent to you"
+          },
+          "job_interview.negotiated": {
+            "precondition": "INITIAL",
+            "quote": null
+          },
+          "job.permanent": {
+            "precondition": "job_application.rated_by_applicant OR job_application.rated_by_company",
+            "quote": "If a job becomes permanent, the process ends"
+          },
+          "job.not_permanent": {
+            "precondition": "job_application.rated_by_applicant OR job_application.rated_by_company AND job_application.rated_by_applicant.state = 'C' OR job_application.rated_by_applicant.state = 'less'",
+            "quote": "unless you rated the company C or less, then you continue to receive job offers, but no longer have to report"
+          },
+          "review.visible": {
+            "precondition": "review.invisible AND time > 1 year",
+            "quote": "Reviews for a company can only be seen (by job applicants) after 1 year."
+          },
+          "review.invisible": {
+            "precondition": "INITIAL",
+            "quote": null
+          },
+          "job_application.confirmed": {
+            "precondition": "job_application.sent",
+            "quote": "Companies have to confirm that they received job applications"
+          },
+          "job_application.rated": {
+            "precondition": "job_application.confirmed",
+            "quote": "Companies have to confirm that they received job applications and rate the application"
+          },
+          "job_application.negotiated": {
+            "precondition": "job_application.sent AND job_interview.negotiated",
+            "quote": "A job interview can be negotiated"
+          },
+          "job_application.in_probation": {
+            "precondition": "job_application.negotiated AND job_application.sent",
+            "quote": "When a company wants you to work for them, you enter the probation phase"
+          },
+          "job_application.rated_by_applicant": {
+            "precondition": "job_application.in_probation",
+            "quote": "After probation phase, you can rate the company"
+          },
+          "job_application.rated_by_company": {
+            "precondition": "job_application.in_probation",
+            "quote": "After probation phase, you can rate the company and the company can rate you"
+          }
+        },
+        "validated": {
+          "job_application.sent": {
+            "precondition": "UNRESOLVED",
+            "quote": null,
+            "status": "DOWNGRADED",
+            "reason": "malformed or unknown target key: 'job_application.sent' is not a valid entity.state of the state space"
+          },
+          "job_offer.sent": {
+            "precondition": "UNRESOLVED",
+            "quote": null,
+            "status": "DOWNGRADED",
+            "reason": "malformed or unknown target key: 'job_offer.sent' is not a valid entity.state of the state space"
+          },
+          "job_interview.negotiated": {
+            "precondition": "UNRESOLVED",
+            "quote": null,
+            "status": "DOWNGRADED",
+            "reason": "malformed or unknown target key: 'job_interview.negotiated' is not a valid entity.state of the state space"
+          },
+          "job.permanent": {
+            "precondition": "UNRESOLVED",
+            "quote": null,
+            "status": "DOWNGRADED",
+            "reason": "malformed or unknown target key: 'job.permanent' is not a valid entity.state of the state space"
+          },
+          "job.not_permanent": {
+            "precondition": "UNRESOLVED",
+            "quote": null,
+            "status": "DOWNGRADED",
+            "reason": "malformed or unknown target key: 'job.not_permanent' is not a valid entity.state of the state space"
+          },
+          "review.visible": {
+            "precondition": "UNRESOLVED",
+            "quote": null,
+            "status": "DOWNGRADED",
+            "reason": "malformed or unknown target key: 'review.visible' is not a valid entity.state of the state space"
+          },
+          "review.invisible": {
+            "precondition": "UNRESOLVED",
+            "quote": null,
+            "status": "DOWNGRADED",
+            "reason": "malformed or unknown target key: 'review.invisible' is not a valid entity.state of the state space"
+          },
+          "job_application.confirmed": {
+            "precondition": "UNRESOLVED",
+            "quote": null,
+            "status": "DOWNGRADED",
+            "reason": "malformed or unknown target key: 'job_application.confirmed' is not a valid entity.state of the state space"
+          },
+          "job_application.rated": {
+            "precondition": "UNRESOLVED",
+            "quote": null,
+            "status": "DOWNGRADED",
+            "reason": "malformed or unknown target key: 'job_application.rated' is not a valid entity.state of the state space"
+          },
+          "job_application.negotiated": {
+            "precondition": "UNRESOLVED",
+            "quote": null,
+            "status": "DOWNGRADED",
+            "reason": "malformed or unknown target key: 'job_application.negotiated' is not a valid entity.state of the state space"
+          },
+          "job_application.in_probation": {
+            "precondition": "UNRESOLVED",
+            "quote": null,
+            "status": "DOWNGRADED",
+            "reason": "malformed or unknown target key: 'job_application.in_probation' is not a valid entity.state of the state space"
+          },
+          "job_application.rated_by_applicant": {
+            "precondition": "UNRESOLVED",
+            "quote": null,
+            "status": "DOWNGRADED",
+            "reason": "malformed or unknown target key: 'job_application.rated_by_applicant' is not a valid entity.state of the state space"
+          },
+          "job_application.rated_by_company": {
+            "precondition": "UNRESOLVED",
+            "quote": null,
+            "status": "DOWNGRADED",
+            "reason": "malformed or unknown target key: 'job_application.rated_by_company' is not a valid entity.state of the state space"
+          }
+        },
+        "cycles": []
+      }
+    },
+    "mistralai/mistral-nemotron": {
+      "job_application": {
+        "state_space_used": {
+          "job_application": {
+            "states": [
+              "sent",
+              "confirmed",
+              "rated",
+              "negotiated",
+              "in_probation",
+              "rated_by_applicant",
+              "rated_by_company"
+            ],
+            "exclusive_groups": [
+              [
+                "confirmed",
+                "rated"
+              ]
+            ],
+            "concurrent_with": []
+          },
+          "job_offer": {
+            "states": [
+              "sent"
+            ],
+            "exclusive_groups": [],
+            "concurrent_with": []
+          },
+          "job_interview": {
+            "states": [
+              "negotiated"
+            ],
+            "exclusive_groups": [],
+            "concurrent_with": []
+          },
+          "job": {
+            "states": [
+              "permanent",
+              "not_permanent"
+            ],
+            "exclusive_groups": [
+              [
+                "permanent",
+                "not_permanent"
+              ]
+            ],
+            "concurrent_with": []
+          },
+          "review": {
+            "states": [
+              "visible",
+              "invisible"
+            ],
+            "exclusive_groups": [],
+            "concurrent_with": []
+          }
+        },
+        "raw": {
+          "job_application.sent": {
+            "precondition": "INITIAL",
+            "quote": null
+          },
+          "job_application.confirmed": {
+            "precondition": "job_application.sent",
+            "quote": "Companies have to confirm that they received job applications"
+          },
+          "job_application.rated": {
+            "precondition": "job_application.confirmed",
+            "quote": "Companies have to confirm that they received job applications and rate the application"
+          },
+          "job_application.negotiated": {
+            "precondition": "job_application.rated",
+            "quote": "A job interview can be negotiated"
+          },
+          "job_application.in_probation": {
+            "precondition": "job_application.negotiated",
+            "quote": "When a company wants you to work for them, you enter the probation phase"
+          },
+          "job_application.rated_by_applicant": {
+            "precondition": "job_application.in_probation",
+            "quote": "After probation phase, you can rate the company"
+          },
+          "job_application.rated_by_company": {
+            "precondition": "job_application.in_probation",
+            "quote": "After probation phase, you can rate the company and the company can rate you"
+          },
+          "job_offer.sent": {
+            "precondition": "job_application.sent",
+            "quote": "Based on your job applications, new potential job offers are sent to you"
+          },
+          "job_interview.negotiated": {
+            "precondition": "job_application.negotiated",
+            "quote": "A job interview can be negotiated"
+          },
+          "job.permanent": {
+            "precondition": "job_application.in_probation",
+            "quote": "If a job becomes permanent, the process ends"
+          },
+          "job.not_permanent": {
+            "precondition": "INITIAL",
+            "quote": null
+          },
+          "review.visible": {
+            "precondition": "review.invisible",
+            "quote": "Reviews for a company can only be seen (by job applicants) after 1 year"
+          },
+          "review.invisible": {
+            "precondition": "job_application.rated_by_applicant",
+            "quote": "Reviews for a company can only be seen (by job applicants) after 1 year"
+          }
+        },
+        "validated": {
+          "job_application.sent": {
+            "precondition": "UNRESOLVED",
+            "quote": null,
+            "status": "DOWNGRADED",
+            "reason": "malformed or unknown target key: 'job_application.sent' is not a valid entity.state of the state space"
+          },
+          "job_application.confirmed": {
+            "precondition": "UNRESOLVED",
+            "quote": null,
+            "status": "DOWNGRADED",
+            "reason": "malformed or unknown target key: 'job_application.confirmed' is not a valid entity.state of the state space"
+          },
+          "job_application.rated": {
+            "precondition": "UNRESOLVED",
+            "quote": null,
+            "status": "DOWNGRADED",
+            "reason": "malformed or unknown target key: 'job_application.rated' is not a valid entity.state of the state space"
+          },
+          "job_application.negotiated": {
+            "precondition": "UNRESOLVED",
+            "quote": null,
+            "status": "DOWNGRADED",
+            "reason": "malformed or unknown target key: 'job_application.negotiated' is not a valid entity.state of the state space"
+          },
+          "job_application.in_probation": {
+            "precondition": "UNRESOLVED",
+            "quote": null,
+            "status": "DOWNGRADED",
+            "reason": "malformed or unknown target key: 'job_application.in_probation' is not a valid entity.state of the state space"
+          },
+          "job_application.rated_by_applicant": {
+            "precondition": "UNRESOLVED",
+            "quote": null,
+            "status": "DOWNGRADED",
+            "reason": "malformed or unknown target key: 'job_application.rated_by_applicant' is not a valid entity.state of the state space"
+          },
+          "job_application.rated_by_company": {
+            "precondition": "UNRESOLVED",
+            "quote": null,
+            "status": "DOWNGRADED",
+            "reason": "malformed or unknown target key: 'job_application.rated_by_company' is not a valid entity.state of the state space"
+          },
+          "job_offer.sent": {
+            "precondition": "UNRESOLVED",
+            "quote": null,
+            "status": "DOWNGRADED",
+            "reason": "malformed or unknown target key: 'job_offer.sent' is not a valid entity.state of the state space"
+          },
+          "job_interview.negotiated": {
+            "precondition": "UNRESOLVED",
+            "quote": null,
+            "status": "DOWNGRADED",
+            "reason": "malformed or unknown target key: 'job_interview.negotiated' is not a valid entity.state of the state space"
+          },
+          "job.permanent": {
+            "precondition": "UNRESOLVED",
+            "quote": null,
+            "status": "DOWNGRADED",
+            "reason": "malformed or unknown target key: 'job.permanent' is not a valid entity.state of the state space"
+          },
+          "job.not_permanent": {
+            "precondition": "UNRESOLVED",
+            "quote": null,
+            "status": "DOWNGRADED",
+            "reason": "malformed or unknown target key: 'job.not_permanent' is not a valid entity.state of the state space"
+          },
+          "review.visible": {
+            "precondition": "UNRESOLVED",
+            "quote": null,
+            "status": "DOWNGRADED",
+            "reason": "malformed or unknown target key: 'review.visible' is not a valid entity.state of the state space"
+          },
+          "review.invisible": {
+            "precondition": "UNRESOLVED",
+            "quote": null,
+            "status": "DOWNGRADED",
+            "reason": "malformed or unknown target key: 'review.invisible' is not a valid entity.state of the state space"
+          }
+        },
+        "cycles": []
+      }
+    },
+    "openai/gpt-oss-20b": {
+      "job_application": {
+        "state_space_used": {
+          "job_application": {
+            "states": [
+              "sent",
+              "confirmed",
+              "rated",
+              "negotiated",
+              "in_probation",
+              "rated_by_applicant",
+              "rated_by_company"
+            ],
+            "exclusive_groups": [
+              [
+                "confirmed",
+                "rated"
+              ]
+            ],
+            "concurrent_with": []
+          },
+          "job_offer": {
+            "states": [
+              "sent"
+            ],
+            "exclusive_groups": [],
+            "concurrent_with": []
+          },
+          "job_interview": {
+            "states": [
+              "negotiated"
+            ],
+            "exclusive_groups": [],
+            "concurrent_with": []
+          },
+          "job": {
+            "states": [
+              "permanent",
+              "not_permanent"
+            ],
+            "exclusive_groups": [
+              [
+                "permanent",
+                "not_permanent"
+              ]
+            ],
+            "concurrent_with": []
+          },
+          "review": {
+            "states": [
+              "visible",
+              "invisible"
+            ],
+            "exclusive_groups": [],
+            "concurrent_with": []
+          }
+        },
+        "raw": {
+          "job_application.sent": {
+            "precondition": "INITIAL",
+            "quote": null
+          },
+          "job_application.confirmed": {
+            "precondition": "job_application.sent",
+            "quote": "Companies have to confirm that they received job applications"
+          },
+          "job_application.rated": {
+            "precondition": "job_application.confirmed",
+            "quote": "and rate the application."
+          },
+          "job_application.negotiated": {
+            "precondition": "job_application.sent",
+            "quote": "A job interview can be negotiated."
+          },
+          "job_application.in_probation": {
+            "precondition": "job_application.negotiated",
+            "quote": "When a company wants you to work for them, you enter the probation phase."
+          },
+          "job_application.rated_by_applicant": {
+            "precondition": "job_application.in_probation",
+            "quote": "After probation phase, you can rate the company and the company can rate you."
+          },
+          "job_application.rated_by_company": {
+            "precondition": "job_application.in_probation",
+            "quote": "After probation phase, you can rate the company and the company can rate you."
+          },
+          "job_offer.sent": {
+            "precondition": "job_application.sent",
+            "quote": "Based on your job applications, new potential job offers are sent to you."
+          },
+          "job_interview.negotiated": {
+            "precondition": "job_application.negotiated",
+            "quote": "A job interview can be negotiated."
+          },
+          "job.permanent": {
+            "precondition": "job_application.rated_by_applicant",
+            "quote": "If a job becomes permanent, the process ends"
+          },
+          "job.not_permanent": {
+            "precondition": "job_application.rated_by_applicant",
+            "quote": "If a job becomes permanent, the process ends"
+          },
+          "review.visible": {
+            "precondition": "job_application.rated_by_applicant",
+            "quote": "Reviews for a company can only be seen (by job applicants) after 1 year."
+          },
+          "review.invisible": {
+            "precondition": "INITIAL",
+            "quote": null
+          }
+        },
+        "validated": {
+          "job_application.sent": {
+            "precondition": "UNRESOLVED",
+            "quote": null,
+            "status": "DOWNGRADED",
+            "reason": "malformed or unknown target key: 'job_application.sent' is not a valid entity.state of the state space"
+          },
+          "job_application.confirmed": {
+            "precondition": "UNRESOLVED",
+            "quote": null,
+            "status": "DOWNGRADED",
+            "reason": "malformed or unknown target key: 'job_application.confirmed' is not a valid entity.state of the state space"
+          },
+          "job_application.rated": {
+            "precondition": "UNRESOLVED",
+            "quote": null,
+            "status": "DOWNGRADED",
+            "reason": "malformed or unknown target key: 'job_application.rated' is not a valid entity.state of the state space"
+          },
+          "job_application.negotiated": {
+            "precondition": "UNRESOLVED",
+            "quote": null,
+            "status": "DOWNGRADED",
+            "reason": "malformed or unknown target key: 'job_application.negotiated' is not a valid entity.state of the state space"
+          },
+          "job_application.in_probation": {
+            "precondition": "UNRESOLVED",
+            "quote": null,
+            "status": "DOWNGRADED",
+            "reason": "malformed or unknown target key: 'job_application.in_probation' is not a valid entity.state of the state space"
+          },
+          "job_application.rated_by_applicant": {
+            "precondition": "UNRESOLVED",
+            "quote": null,
+            "status": "DOWNGRADED",
+            "reason": "malformed or unknown target key: 'job_application.rated_by_applicant' is not a valid entity.state of the state space"
+          },
+          "job_application.rated_by_company": {
+            "precondition": "UNRESOLVED",
+            "quote": null,
+            "status": "DOWNGRADED",
+            "reason": "malformed or unknown target key: 'job_application.rated_by_company' is not a valid entity.state of the state space"
+          },
+          "job_offer.sent": {
+            "precondition": "UNRESOLVED",
+            "quote": null,
+            "status": "DOWNGRADED",
+            "reason": "malformed or unknown target key: 'job_offer.sent' is not a valid entity.state of the state space"
+          },
+          "job_interview.negotiated": {
+            "precondition": "UNRESOLVED",
+            "quote": null,
+            "status": "DOWNGRADED",
+            "reason": "malformed or unknown target key: 'job_interview.negotiated' is not a valid entity.state of the state space"
+          },
+          "job.permanent": {
+            "precondition": "UNRESOLVED",
+            "quote": null,
+            "status": "DOWNGRADED",
+            "reason": "malformed or unknown target key: 'job.permanent' is not a valid entity.state of the state space"
+          },
+          "job.not_permanent": {
+            "precondition": "UNRESOLVED",
+            "quote": null,
+            "status": "DOWNGRADED",
+            "reason": "malformed or unknown target key: 'job.not_permanent' is not a valid entity.state of the state space"
+          },
+          "review.visible": {
+            "precondition": "UNRESOLVED",
+            "quote": null,
+            "status": "DOWNGRADED",
+            "reason": "malformed or unknown target key: 'review.visible' is not a valid entity.state of the state space"
+          },
+          "review.invisible": {
+            "precondition": "UNRESOLVED",
+            "quote": null,
+            "status": "DOWNGRADED",
+            "reason": "malformed or unknown target key: 'review.invisible' is not a valid entity.state of the state space"
+          }
+        },
+        "cycles": []
+      }
+    },
+    "nvidia/nemotron-3-super-120b-a12b": {
+      "job_application": {
+        "state_space_used": {
+          "job_application": {
+            "states": [
+              "sent",
+              "confirmed",
+              "rated",
+              "negotiated",
+              "in_probation",
+              "rated_by_applicant",
+              "rated_by_company"
+            ],
+            "exclusive_groups": [
+              [
+                "confirmed",
+                "rated"
+              ]
+            ],
+            "concurrent_with": []
+          },
+          "job_offer": {
+            "states": [
+              "sent"
+            ],
+            "exclusive_groups": [],
+            "concurrent_with": []
+          },
+          "job_interview": {
+            "states": [
+              "negotiated"
+            ],
+            "exclusive_groups": [],
+            "concurrent_with": []
+          },
+          "job": {
+            "states": [
+              "permanent",
+              "not_permanent"
+            ],
+            "exclusive_groups": [
+              [
+                "permanent",
+                "not_permanent"
+              ]
+            ],
+            "concurrent_with": []
+          },
+          "review": {
+            "states": [
+              "visible",
+              "invisible"
+            ],
+            "exclusive_groups": [],
+            "concurrent_with": []
+          }
+        },
+        "raw": {
+          "job_application.sent": {
+            "precondition": "INITIAL",
+            "quote": null
+          },
+          "job_application.confirmed": {
+            "precondition": "job_application.sent",
+            "quote": "Companies have to confirm that they received job applications"
+          },
+          "job_application.rated": {
+            "precondition": "job_application.confirmed",
+            "quote": "Companies have to confirm that they received job applications and rate the application"
+          },
+          "job_application.negotiated": {
+            "precondition": "job_application.rated",
+            "quote": "A job interview can be negotiated"
+          },
+          "job_application.in_probation": {
+            "precondition": "job_application.negotiated",
+            "quote": "When a company wants you to work for them, you enter the probation phase"
+          },
+          "job_application.rated_by_applicant": {
+            "precondition": "job_application.in_probation",
+            "quote": "After probation phase, you can rate the company and the company can rate you"
+          },
+          "job_application.rated_by_company": {
+            "precondition": "job_application.in_probation",
+            "quote": "After probation phase, you can rate the company and the company can rate you"
+          },
+          "job_offer.sent": {
+            "precondition": "job_application.rated",
+            "quote": "Based on your job applications, new potential job offers are sent to you"
+          },
+          "job_interview.negotiated": {
+            "precondition": "job_application.rated",
+            "quote": "A job interview can be negotiated"
+          },
+          "job.permanent": {
+            "precondition": "job_application.in_probation",
+            "quote": "When a company wants you to work for them, you enter the probation phase"
+          },
+          "job.not_permanent": {
+            "precondition": "INITIAL",
+            "quote": null
+          },
+          "review.visible": {
+            "precondition": "job_application.rated_by_applicant AND review.invisible",
+            "quote": "Reviews for a company can only be seen (by job applicants) after 1 year"
+          },
+          "review.invisible": {
+            "precondition": "INITIAL",
+            "quote": null
+          }
+        },
+        "validated": {
+          "job_application.sent": {
+            "precondition": "UNRESOLVED",
+            "quote": null,
+            "status": "DOWNGRADED",
+            "reason": "malformed or unknown target key: 'job_application.sent' is not a valid entity.state of the state space"
+          },
+          "job_application.confirmed": {
+            "precondition": "UNRESOLVED",
+            "quote": null,
+            "status": "DOWNGRADED",
+            "reason": "malformed or unknown target key: 'job_application.confirmed' is not a valid entity.state of the state space"
+          },
+          "job_application.rated": {
+            "precondition": "UNRESOLVED",
+            "quote": null,
+            "status": "DOWNGRADED",
+            "reason": "malformed or unknown target key: 'job_application.rated' is not a valid entity.state of the state space"
+          },
+          "job_application.negotiated": {
+            "precondition": "UNRESOLVED",
+            "quote": null,
+            "status": "DOWNGRADED",
+            "reason": "malformed or unknown target key: 'job_application.negotiated' is not a valid entity.state of the state space"
+          },
+          "job_application.in_probation": {
+            "precondition": "UNRESOLVED",
+            "quote": null,
+            "status": "DOWNGRADED",
+            "reason": "malformed or unknown target key: 'job_application.in_probation' is not a valid entity.state of the state space"
+          },
+          "job_application.rated_by_applicant": {
+            "precondition": "UNRESOLVED",
+            "quote": null,
+            "status": "DOWNGRADED",
+            "reason": "malformed or unknown target key: 'job_application.rated_by_applicant' is not a valid entity.state of the state space"
+          },
+          "job_application.rated_by_company": {
+            "precondition": "UNRESOLVED",
+            "quote": null,
+            "status": "DOWNGRADED",
+            "reason": "malformed or unknown target key: 'job_application.rated_by_company' is not a valid entity.state of the state space"
+          },
+          "job_offer.sent": {
+            "precondition": "UNRESOLVED",
+            "quote": null,
+            "status": "DOWNGRADED",
+            "reason": "malformed or unknown target key: 'job_offer.sent' is not a valid entity.state of the state space"
+          },
+          "job_interview.negotiated": {
+            "precondition": "UNRESOLVED",
+            "quote": null,
+            "status": "DOWNGRADED",
+            "reason": "malformed or unknown target key: 'job_interview.negotiated' is not a valid entity.state of the state space"
+          },
+          "job.permanent": {
+            "precondition": "UNRESOLVED",
+            "quote": null,
+            "status": "DOWNGRADED",
+            "reason": "malformed or unknown target key: 'job.permanent' is not a valid entity.state of the state space"
+          },
+          "job.not_permanent": {
+            "precondition": "UNRESOLVED",
+            "quote": null,
+            "status": "DOWNGRADED",
+            "reason": "malformed or unknown target key: 'job.not_permanent' is not a valid entity.state of the state space"
+          },
+          "review.visible": {
+            "precondition": "UNRESOLVED",
+            "quote": null,
+            "status": "DOWNGRADED",
+            "reason": "malformed or unknown target key: 'review.visible' is not a valid entity.state of the state space"
+          },
+          "review.invisible": {
+            "precondition": "UNRESOLVED",
+            "quote": null,
+            "status": "DOWNGRADED",
+            "reason": "malformed or unknown target key: 'review.invisible' is not a valid entity.state of the state space"
+          }
+        },
+        "cycles": []
+      }
+    },
+    "nvidia/nemotron-3-nano-30b-a3b": {
+      "job_application": {
+        "state_space_used": {
+          "job_application": {
+            "states": [
+              "sent",
+              "confirmed",
+              "rated",
+              "negotiated",
+              "in_probation",
+              "rated_by_applicant",
+              "rated_by_company"
+            ],
+            "exclusive_groups": [
+              [
+                "confirmed",
+                "rated"
+              ]
+            ],
+            "concurrent_with": []
+          },
+          "job_offer": {
+            "states": [
+              "sent"
+            ],
+            "exclusive_groups": [],
+            "concurrent_with": []
+          },
+          "job_interview": {
+            "states": [
+              "negotiated"
+            ],
+            "exclusive_groups": [],
+            "concurrent_with": []
+          },
+          "job": {
+            "states": [
+              "permanent",
+              "not_permanent"
+            ],
+            "exclusive_groups": [
+              [
+                "permanent",
+                "not_permanent"
+              ]
+            ],
+            "concurrent_with": []
+          },
+          "review": {
+            "states": [
+              "visible",
+              "invisible"
+            ],
+            "exclusive_groups": [],
+            "concurrent_with": []
+          }
+        },
+        "raw": {
+          "job_application": {
+            "precondition": "INITIAL",
+            "quote": null
+          },
+          "job_offer": {
+            "precondition": "INITIAL",
+            "quote": null
+          },
+          "job_interview": {
+            "precondition": "INITIAL",
+            "quote": null
+          },
+          "job": {
+            "precondition": "INITIAL",
+            "quote": null
+          },
+          "review": {
+            "precondition": "INITIAL",
+            "quote": null
+          }
+        },
+        "validated": {
+          "job_application": {
+            "precondition": "UNRESOLVED",
+            "quote": null,
+            "status": "DOWNGRADED",
+            "reason": "malformed or unknown target key: 'job_application' is not a valid entity.state of the state space"
+          },
+          "job_offer": {
+            "precondition": "UNRESOLVED",
+            "quote": null,
+            "status": "DOWNGRADED",
+            "reason": "malformed or unknown target key: 'job_offer' is not a valid entity.state of the state space"
+          },
+          "job_interview": {
+            "precondition": "UNRESOLVED",
+            "quote": null,
+            "status": "DOWNGRADED",
+            "reason": "malformed or unknown target key: 'job_interview' is not a valid entity.state of the state space"
+          },
+          "job": {
+            "precondition": "UNRESOLVED",
+            "quote": null,
+            "status": "DOWNGRADED",
+            "reason": "malformed or unknown target key: 'job' is not a valid entity.state of the state space"
+          },
+          "review": {
+            "precondition": "UNRESOLVED",
+            "quote": null,
+            "status": "DOWNGRADED",
+            "reason": "malformed or unknown target key: 'review' is not a valid entity.state of the state space"
+          }
+        },
+        "cycles": []
+      }
+    },
+    "qwen/qwen3.6-27b": {
+      "job_application": {
+        "state_space_used": {
+          "job_application": {
+            "states": [
+              "sent",
+              "confirmed",
+              "rated",
+              "negotiated",
+              "in_probation",
+              "rated_by_applicant",
+              "rated_by_company"
+            ],
+            "exclusive_groups": [
+              [
+                "confirmed",
+                "rated"
+              ]
+            ],
+            "concurrent_with": []
+          },
+          "job_offer": {
+            "states": [
+              "sent"
+            ],
+            "exclusive_groups": [],
+            "concurrent_with": []
+          },
+          "job_interview": {
+            "states": [
+              "negotiated"
+            ],
+            "exclusive_groups": [],
+            "concurrent_with": []
+          },
+          "job": {
+            "states": [
+              "permanent",
+              "not_permanent"
+            ],
+            "exclusive_groups": [
+              [
+                "permanent",
+                "not_permanent"
+              ]
+            ],
+            "concurrent_with": []
+          },
+          "review": {
+            "states": [
+              "visible",
+              "invisible"
+            ],
+            "exclusive_groups": [],
+            "concurrent_with": []
+          }
+        },
+        "raw": {
+          "job_application.sent": {
+            "precondition": "INITIAL",
+            "quote": null
+          },
+          "job_application.confirmed": {
+            "precondition": "job_application.sent",
+            "quote": "Companies have to confirm that they received job applications"
+          },
+          "job_application.rated": {
+            "precondition": "job_application.sent",
+            "quote": "Companies have to confirm that they received job applications and rate the application."
+          },
+          "job_application.negotiated": {
+            "precondition": "job_application.sent",
+            "quote": "Based on your job applications, new potential job offers are sent to you. ... A job interview can be negotiated."
+          },
+          "job_application.in_probation": {
+            "precondition": "job_application.sent",
+            "quote": "When a company wants you to work for them, you enter the probation phase."
+          },
+          "job_application.rated_by_applicant": {
+            "precondition": "job_application.in_probation",
+            "quote": "After probation phase, you can rate the company"
+          },
+          "job_application.rated_by_company": {
+            "precondition": "job_application.in_probation",
+            "quote": "After probation phase, ... the company can rate you."
+          },
+          "job_offer.sent": {
+            "precondition": "job_application.sent",
+            "quote": "Based on your job applications, new potential job offers are sent to you."
+          },
+          "job_interview.negotiated": {
+            "precondition": "job_application.sent",
+            "quote": "Based on your job applications, new potential job offers are sent to you. ... A job interview can be negotiated."
+          },
+          "job.permanent": {
+            "precondition": "job_application.in_probation",
+            "quote": "If a job becomes permanent, the process ends"
+          },
+          "job.not_permanent": {
+            "precondition": "INITIAL",
+            "quote": null
+          },
+          "review.visible": {
+            "precondition": "job_application.rated_by_applicant",
+            "quote": "Reviews for a company can only be seen (by job applicants) after 1 year."
+          },
+          "review.invisible": {
+            "precondition": "INITIAL",
+            "quote": null
+          }
+        },
+        "validated": {
+          "job_application.sent": {
+            "precondition": "UNRESOLVED",
+            "quote": null,
+            "status": "DOWNGRADED",
+            "reason": "malformed or unknown target key: 'job_application.sent' is not a valid entity.state of the state space"
+          },
+          "job_application.confirmed": {
+            "precondition": "UNRESOLVED",
+            "quote": null,
+            "status": "DOWNGRADED",
+            "reason": "malformed or unknown target key: 'job_application.confirmed' is not a valid entity.state of the state space"
+          },
+          "job_application.rated": {
+            "precondition": "UNRESOLVED",
+            "quote": null,
+            "status": "DOWNGRADED",
+            "reason": "malformed or unknown target key: 'job_application.rated' is not a valid entity.state of the state space"
+          },
+          "job_application.negotiated": {
+            "precondition": "UNRESOLVED",
+            "quote": null,
+            "status": "DOWNGRADED",
+            "reason": "malformed or unknown target key: 'job_application.negotiated' is not a valid entity.state of the state space"
+          },
+          "job_application.in_probation": {
+            "precondition": "UNRESOLVED",
+            "quote": null,
+            "status": "DOWNGRADED",
+            "reason": "malformed or unknown target key: 'job_application.in_probation' is not a valid entity.state of the state space"
+          },
+          "job_application.rated_by_applicant": {
+            "precondition": "UNRESOLVED",
+            "quote": null,
+            "status": "DOWNGRADED",
+            "reason": "malformed or unknown target key: 'job_application.rated_by_applicant' is not a valid entity.state of the state space"
+          },
+          "job_application.rated_by_company": {
+            "precondition": "UNRESOLVED",
+            "quote": null,
+            "status": "DOWNGRADED",
+            "reason": "malformed or unknown target key: 'job_application.rated_by_company' is not a valid entity.state of the state space"
+          },
+          "job_offer.sent": {
+            "precondition": "UNRESOLVED",
+            "quote": null,
+            "status": "DOWNGRADED",
+            "reason": "malformed or unknown target key: 'job_offer.sent' is not a valid entity.state of the state space"
+          },
+          "job_interview.negotiated": {
+            "precondition": "UNRESOLVED",
+            "quote": null,
+            "status": "DOWNGRADED",
+            "reason": "malformed or unknown target key: 'job_interview.negotiated' is not a valid entity.state of the state space"
+          },
+          "job.permanent": {
+            "precondition": "UNRESOLVED",
+            "quote": null,
+            "status": "DOWNGRADED",
+            "reason": "malformed or unknown target key: 'job.permanent' is not a valid entity.state of the state space"
+          },
+          "job.not_permanent": {
+            "precondition": "UNRESOLVED",
+            "quote": null,
+            "status": "DOWNGRADED",
+            "reason": "malformed or unknown target key: 'job.not_permanent' is not a valid entity.state of the state space"
+          },
+          "review.visible": {
+            "precondition": "UNRESOLVED",
+            "quote": null,
+            "status": "DOWNGRADED",
+            "reason": "malformed or unknown target key: 'review.visible' is not a valid entity.state of the state space"
+          },
+          "review.invisible": {
+            "precondition": "UNRESOLVED",
+            "quote": null,
+            "status": "DOWNGRADED",
+            "reason": "malformed or unknown target key: 'review.invisible' is not a valid entity.state of the state space"
+          }
+        },
+        "cycles": []
+      }
+    },
+    "cohere/north-mini-code:free": {
+      "job_application": {
+        "state_space_used": {
+          "job_application": {
+            "states": [
+              "sent",
+              "confirmed",
+              "rated",
+              "negotiated",
+              "in_probation",
+              "rated_by_applicant",
+              "rated_by_company"
+            ],
+            "exclusive_groups": [
+              [
+                "confirmed",
+                "rated"
+              ]
+            ],
+            "concurrent_with": []
+          },
+          "job_offer": {
+            "states": [
+              "sent"
+            ],
+            "exclusive_groups": [],
+            "concurrent_with": []
+          },
+          "job_interview": {
+            "states": [
+              "negotiated"
+            ],
+            "exclusive_groups": [],
+            "concurrent_with": []
+          },
+          "job": {
+            "states": [
+              "permanent",
+              "not_permanent"
+            ],
+            "exclusive_groups": [
+              [
+                "permanent",
+                "not_permanent"
+              ]
+            ],
+            "concurrent_with": []
+          },
+          "review": {
+            "states": [
+              "visible",
+              "invisible"
+            ],
+            "exclusive_groups": [],
+            "concurrent_with": []
+          }
+        },
+        "raw": {
+          "job_application.sent": {
+            "precondition": "INITIAL",
+            "quote": null
+          },
+          "job_application.confirmed": {
+            "precondition": "job_application.sent",
+            "quote": "Companies have to confirm that they received job applications and rate the application."
+          },
+          "job_application.rated": {
+            "precondition": "job_application.confirmed",
+            "quote": "Companies have to confirm that they received job applications and rate the application."
+          },
+          "job_application.negotiated": {
+            "precondition": "job_application.rated",
+            "quote": "A job interview can be negotiated."
+          },
+          "job_application.in_probation": {
+            "precondition": "job_application.negotiated",
+            "quote": "When a company wants you to work for them, you enter the probation phase."
+          },
+          "job_application.rated_by_applicant": {
+            "precondition": "job_application.in_probation",
+            "quote": "After probation phase, you can rate the company and the company can rate you."
+          },
+          "job_application.rated_by_company": {
+            "precondition": "job_application.in_probation",
+            "quote": "After probation phase, you can rate the company and the company can rate you."
+          },
+          "job_offer.sent": {
+            "precondition": "job_application.sent",
+            "quote": "Based on your job applications, new potential job offers are sent to you."
+          },
+          "job_interview.negotiated": {
+            "precondition": "job_offer.sent",
+            "quote": "A job interview can be negotiated."
+          },
+          "job.permanent": {
+            "precondition": "job_application.rated_by_applicant AND job_application.rated_by_company",
+            "quote": "If a job becomes permanent, the process ends, unless you rated the company C or less, then you continue to receive job offers, but no longer have to report."
+          },
+          "job.not_permanent": {
+            "precondition": "(job_application.rated_by_applicant AND NOT job_application.rated_by_company) OR (job_application.rated_by_applicant AND job_application.rated_by_company AND NOT job_application.rated_by_applicant)",
+            "quote": "If a job becomes permanent, the process ends, unless you rated the company C or less, then you continue to receive job offers, but no longer have to report."
+          },
+          "review.visible": {
+            "precondition": "job.permanent",
+            "quote": "Reviews for a company can only be seen (by job applicants) after 1 year."
+          },
+          "review.invisible": {
+            "precondition": "NOT job.permanent",
+            "quote": "Reviews for a company can only be seen (by job applicants) after 1 year."
+          }
+        },
+        "validated": {
+          "job_application.sent": {
+            "precondition": "UNRESOLVED",
+            "quote": null,
+            "status": "DOWNGRADED",
+            "reason": "malformed or unknown target key: 'job_application.sent' is not a valid entity.state of the state space"
+          },
+          "job_application.confirmed": {
+            "precondition": "UNRESOLVED",
+            "quote": null,
+            "status": "DOWNGRADED",
+            "reason": "malformed or unknown target key: 'job_application.confirmed' is not a valid entity.state of the state space"
+          },
+          "job_application.rated": {
+            "precondition": "UNRESOLVED",
+            "quote": null,
+            "status": "DOWNGRADED",
+            "reason": "malformed or unknown target key: 'job_application.rated' is not a valid entity.state of the state space"
+          },
+          "job_application.negotiated": {
+            "precondition": "UNRESOLVED",
+            "quote": null,
+            "status": "DOWNGRADED",
+            "reason": "malformed or unknown target key: 'job_application.negotiated' is not a valid entity.state of the state space"
+          },
+          "job_application.in_probation": {
+            "precondition": "UNRESOLVED",
+            "quote": null,
+            "status": "DOWNGRADED",
+            "reason": "malformed or unknown target key: 'job_application.in_probation' is not a valid entity.state of the state space"
+          },
+          "job_application.rated_by_applicant": {
+            "precondition": "UNRESOLVED",
+            "quote": null,
+            "status": "DOWNGRADED",
+            "reason": "malformed or unknown target key: 'job_application.rated_by_applicant' is not a valid entity.state of the state space"
+          },
+          "job_application.rated_by_company": {
+            "precondition": "UNRESOLVED",
+            "quote": null,
+            "status": "DOWNGRADED",
+            "reason": "malformed or unknown target key: 'job_application.rated_by_company' is not a valid entity.state of the state space"
+          },
+          "job_offer.sent": {
+            "precondition": "UNRESOLVED",
+            "quote": null,
+            "status": "DOWNGRADED",
+            "reason": "malformed or unknown target key: 'job_offer.sent' is not a valid entity.state of the state space"
+          },
+          "job_interview.negotiated": {
+            "precondition": "UNRESOLVED",
+            "quote": null,
+            "status": "DOWNGRADED",
+            "reason": "malformed or unknown target key: 'job_interview.negotiated' is not a valid entity.state of the state space"
+          },
+          "job.permanent": {
+            "precondition": "UNRESOLVED",
+            "quote": null,
+            "status": "DOWNGRADED",
+            "reason": "malformed or unknown target key: 'job.permanent' is not a valid entity.state of the state space"
+          },
+          "job.not_permanent": {
+            "precondition": "UNRESOLVED",
+            "quote": null,
+            "status": "DOWNGRADED",
+            "reason": "malformed or unknown target key: 'job.not_permanent' is not a valid entity.state of the state space"
+          },
+          "review.visible": {
+            "precondition": "UNRESOLVED",
+            "quote": null,
+            "status": "DOWNGRADED",
+            "reason": "malformed or unknown target key: 'review.visible' is not a valid entity.state of the state space"
+          },
+          "review.invisible": {
+            "precondition": "UNRESOLVED",
+            "quote": null,
+            "status": "DOWNGRADED",
+            "reason": "malformed or unknown target key: 'review.invisible' is not a valid entity.state of the state space"
+          }
+        },
+        "cycles": []
+      }
+    },
+    "gpt-5.5": {
+      "job_application": {
+        "state_space_used": {
+          "job_application": {
+            "states": [
+              "sent",
+              "confirmed",
+              "rated",
+              "negotiated",
+              "in_probation",
+              "rated_by_applicant",
+              "rated_by_company"
+            ],
+            "exclusive_groups": [
+              [
+                "confirmed",
+                "rated"
+              ]
+            ],
+            "concurrent_with": []
+          },
+          "job_offer": {
+            "states": [
+              "sent"
+            ],
+            "exclusive_groups": [],
+            "concurrent_with": []
+          },
+          "job_interview": {
+            "states": [
+              "negotiated"
+            ],
+            "exclusive_groups": [],
+            "concurrent_with": []
+          },
+          "job": {
+            "states": [
+              "permanent",
+              "not_permanent"
+            ],
+            "exclusive_groups": [
+              [
+                "permanent",
+                "not_permanent"
+              ]
+            ],
+            "concurrent_with": []
+          },
+          "review": {
+            "states": [
+              "visible",
+              "invisible"
+            ],
+            "exclusive_groups": [],
+            "concurrent_with": []
+          }
+        },
+        "raw": {
+          "job_application.sent": {
+            "precondition": "INITIAL",
+            "quote": null
+          },
+          "job_application.confirmed": {
+            "precondition": "job_application.sent",
+            "quote": "Companies have to confirm that they received job applications"
+          },
+          "job_application.rated": {
+            "precondition": "job_application.sent",
+            "quote": "Companies have to confirm that they received job applications and rate the application."
+          },
+          "job_application.negotiated": {
+            "precondition": "UNRESOLVED",
+            "quote": null
+          },
+          "job_application.in_probation": {
+            "precondition": "UNRESOLVED",
+            "quote": null
+          },
+          "job_application.rated_by_applicant": {
+            "precondition": "job_application.in_probation",
+            "quote": "After probation phase, you can rate the company and the company can rate you."
+          },
+          "job_application.rated_by_company": {
+            "precondition": "job_application.in_probation",
+            "quote": "After probation phase, you can rate the company and the company can rate you."
+          },
+          "job_offer.sent": {
+            "precondition": "job_application.sent",
+            "quote": "Based on your job applications, new potential job offers are sent to you."
+          },
+          "job_interview.negotiated": {
+            "precondition": "UNRESOLVED",
+            "quote": null
+          },
+          "job.permanent": {
+            "precondition": "job.not_permanent",
+            "quote": "If a job becomes permanent"
+          },
+          "job.not_permanent": {
+            "precondition": "INITIAL",
+            "quote": null
+          },
+          "review.visible": {
+            "precondition": "UNRESOLVED",
+            "quote": null
+          },
+          "review.invisible": {
+            "precondition": "INITIAL",
+            "quote": null
+          }
+        },
+        "validated": {
+          "job_application.sent": {
+            "precondition": "UNRESOLVED",
+            "quote": null,
+            "status": "DOWNGRADED",
+            "reason": "malformed or unknown target key: 'job_application.sent' is not a valid entity.state of the state space"
+          },
+          "job_application.confirmed": {
+            "precondition": "UNRESOLVED",
+            "quote": null,
+            "status": "DOWNGRADED",
+            "reason": "malformed or unknown target key: 'job_application.confirmed' is not a valid entity.state of the state space"
+          },
+          "job_application.rated": {
+            "precondition": "UNRESOLVED",
+            "quote": null,
+            "status": "DOWNGRADED",
+            "reason": "malformed or unknown target key: 'job_application.rated' is not a valid entity.state of the state space"
+          },
+          "job_application.negotiated": {
+            "precondition": "UNRESOLVED",
+            "quote": null,
+            "status": "DOWNGRADED",
+            "reason": "malformed or unknown target key: 'job_application.negotiated' is not a valid entity.state of the state space"
+          },
+          "job_application.in_probation": {
+            "precondition": "UNRESOLVED",
+            "quote": null,
+            "status": "DOWNGRADED",
+            "reason": "malformed or unknown target key: 'job_application.in_probation' is not a valid entity.state of the state space"
+          },
+          "job_application.rated_by_applicant": {
+            "precondition": "UNRESOLVED",
+            "quote": null,
+            "status": "DOWNGRADED",
+            "reason": "malformed or unknown target key: 'job_application.rated_by_applicant' is not a valid entity.state of the state space"
+          },
+          "job_application.rated_by_company": {
+            "precondition": "UNRESOLVED",
+            "quote": null,
+            "status": "DOWNGRADED",
+            "reason": "malformed or unknown target key: 'job_application.rated_by_company' is not a valid entity.state of the state space"
+          },
+          "job_offer.sent": {
+            "precondition": "UNRESOLVED",
+            "quote": null,
+            "status": "DOWNGRADED",
+            "reason": "malformed or unknown target key: 'job_offer.sent' is not a valid entity.state of the state space"
+          },
+          "job_interview.negotiated": {
+            "precondition": "UNRESOLVED",
+            "quote": null,
+            "status": "DOWNGRADED",
+            "reason": "malformed or unknown target key: 'job_interview.negotiated' is not a valid entity.state of the state space"
+          },
+          "job.permanent": {
+            "precondition": "UNRESOLVED",
+            "quote": null,
+            "status": "DOWNGRADED",
+            "reason": "malformed or unknown target key: 'job.permanent' is not a valid entity.state of the state space"
+          },
+          "job.not_permanent": {
+            "precondition": "UNRESOLVED",
+            "quote": null,
+            "status": "DOWNGRADED",
+            "reason": "malformed or unknown target key: 'job.not_permanent' is not a valid entity.state of the state space"
+          },
+          "review.visible": {
+            "precondition": "UNRESOLVED",
+            "quote": null,
+            "status": "DOWNGRADED",
+            "reason": "malformed or unknown target key: 'review.visible' is not a valid entity.state of the state space"
+          },
+          "review.invisible": {
+            "precondition": "UNRESOLVED",
+            "quote": null,
+            "status": "DOWNGRADED",
+            "reason": "malformed or unknown target key: 'review.invisible' is not a valid entity.state of the state space"
+          }
+        },
+        "cycles": []
+      }
+    },
+    "gpt-5.5-pro": {
+      "job_application": {
+        "state_space_used": {
+          "job_application": {
+            "states": [
+              "sent",
+              "confirmed",
+              "rated",
+              "negotiated",
+              "in_probation",
+              "rated_by_applicant",
+              "rated_by_company"
+            ],
+            "exclusive_groups": [
+              [
+                "confirmed",
+                "rated"
+              ]
+            ],
+            "concurrent_with": []
+          },
+          "job_offer": {
+            "states": [
+              "sent"
+            ],
+            "exclusive_groups": [],
+            "concurrent_with": []
+          },
+          "job_interview": {
+            "states": [
+              "negotiated"
+            ],
+            "exclusive_groups": [],
+            "concurrent_with": []
+          },
+          "job": {
+            "states": [
+              "permanent",
+              "not_permanent"
+            ],
+            "exclusive_groups": [
+              [
+                "permanent",
+                "not_permanent"
+              ]
+            ],
+            "concurrent_with": []
+          },
+          "review": {
+            "states": [
+              "visible",
+              "invisible"
+            ],
+            "exclusive_groups": [],
+            "concurrent_with": []
+          }
+        },
+        "error": "Error code: 400 - {'error': {'message': \"Unsupported parameter: 'reasoning_effort'. In the Responses API, this parameter has moved to 'reasoning.effort'. Try again with the new parameter. See the API documentation for more information: https://platform.openai.com/docs/api-reference/responses/create.\", 'type': 'invalid_request_error', 'param': None, 'code': 'unsupported_parameter'}}"
+      }
+    }
+  }
+}

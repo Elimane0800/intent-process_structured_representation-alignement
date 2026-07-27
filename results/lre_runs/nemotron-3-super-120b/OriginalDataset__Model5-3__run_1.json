@@ -1,0 +1,2589 @@
+{
+  "case_name": "OriginalDataset/Model5-3",
+  "text": "The process of an Office Supply Request starts when any employee of the organization submits an office supply request. Once the requirement is registered, the request is received by the immediate supervisor of the employee requesting the office supplies. The supervisor must approve or ask for a change, or reject the request. If the request is rejected the process will end. If the request is asked to make a change then it is returned to the petitioner/employee who can review the comments for the change request. If the request is approved it will go to the purchase department that will be in charge of making quotations (using a subprocess) and select a vendor. If the vendor is not valid in the system the purchase department will have to choose a different vendor. After a vendor is selected and confirmed, the system will generate and send a purchase order and wait for the product to be delivered and the invoice received. In any case the system will send a notification to let the user know what the result was. In any of the cases, approval, rejection or change required the system will send the user a notification.",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "nemotron-3-super-120b",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "nemotron-3-super-120b",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/../datasets/lre/alignment_model_text-master/datasets/OriginalDataset/Models/Model5-3.bpmn",
+  "report_model": "nemotron-3-super-120b",
+  "candidates": {
+    "office_supply_request": {
+      "states": [
+        "submitted",
+        "received",
+        "approved",
+        "rejected",
+        "change_requested",
+        "quotation_made",
+        "vendor_selected",
+        "vendor_confirmed",
+        "purchase_order_sent",
+        "product_delivered",
+        "invoice_received",
+        "notification_sent"
+      ],
+      "exclusive_groups": [
+        [
+          "approved",
+          "rejected"
+        ],
+        [
+          "approved",
+          "change_requested"
+        ],
+        [
+          "rejected",
+          "change_requested"
+        ]
+      ],
+      "concurrent_with": []
+    },
+    "purchase_department": {
+      "states": [
+        "in_charge",
+        "making_quotations",
+        "selecting_vendor",
+        "choosing_different_vendor"
+      ],
+      "exclusive_groups": [
+        [
+          "selecting_vendor",
+          "choosing_different_vendor"
+        ]
+      ],
+      "concurrent_with": []
+    },
+    "system": {
+      "states": [
+        "generating_purchase_order",
+        "sending_purchase_order",
+        "waiting_for_delivery",
+        "waiting_for_invoice",
+        "sending_notification"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "vendor": {
+      "states": [
+        "selected",
+        "confirmed",
+        "not_valid",
+        "different_vendor_chosen"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "employee": {
+      "states": [
+        "requesting",
+        "reviewing_comments",
+        "receiving_notification"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "supervisor": {
+      "states": [
+        "approving",
+        "asking_for_change",
+        "rejecting"
+      ],
+      "exclusive_groups": [
+        [
+          "approving",
+          "asking_for_change"
+        ],
+        [
+          "approving",
+          "rejecting"
+        ],
+        [
+          "asking_for_change",
+          "rejecting"
+        ]
+      ],
+      "concurrent_with": []
+    }
+  },
+  "validation_report": {
+    "office_supply_request": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "request"
+    },
+    "purchase_department": {
+      "f_lex": "INDETERMINATE",
+      "kept": true,
+      "head_used": "department"
+    },
+    "system": {
+      "f_lex": "INDETERMINATE",
+      "kept": true,
+      "head_used": "system"
+    },
+    "vendor": {
+      "f_lex": "ACTOR",
+      "kept": false,
+      "head_used": "vendor"
+    },
+    "employee": {
+      "f_lex": "ACTOR",
+      "kept": false,
+      "head_used": "employee"
+    },
+    "supervisor": {
+      "f_lex": "INDETERMINATE",
+      "kept": true,
+      "head_used": "supervisor"
+    },
+    "__meta__": {
+      "total_candidates": 6,
+      "indeterminate_kept_count": 3
+    }
+  },
+  "exclusive_groups_report": {
+    "accepted": [
+      {
+        "entity": "office_supply_request",
+        "states": [
+          "approved",
+          "rejected"
+        ],
+        "quote": "The supervisor must approve or ask for a change, or reject the request."
+      },
+      {
+        "entity": "office_supply_request",
+        "states": [
+          "approved",
+          "change_requested"
+        ],
+        "quote": "The supervisor must approve or ask for a change, or reject the request."
+      },
+      {
+        "entity": "office_supply_request",
+        "states": [
+          "rejected",
+          "change_requested"
+        ],
+        "quote": "The supervisor must approve or ask for a change, or reject the request."
+      },
+      {
+        "entity": "purchase_department",
+        "states": [
+          "selecting_vendor",
+          "choosing_different_vendor"
+        ],
+        "quote": "If the vendor is not valid in the system the purchase department will have to choose a different vendor."
+      },
+      {
+        "entity": "supervisor",
+        "states": [
+          "approving",
+          "asking_for_change"
+        ],
+        "quote": "The supervisor must approve or ask for a change, or reject the request."
+      },
+      {
+        "entity": "supervisor",
+        "states": [
+          "approving",
+          "rejecting"
+        ],
+        "quote": "The supervisor must approve or ask for a change, or reject the request."
+      },
+      {
+        "entity": "supervisor",
+        "states": [
+          "asking_for_change",
+          "rejecting"
+        ],
+        "quote": "The supervisor must approve or ask for a change, or reject the request."
+      }
+    ],
+    "rejected": []
+  },
+  "state_space": {
+    "office_supply_request": {
+      "states": [
+        "submitted",
+        "received",
+        "approved",
+        "rejected",
+        "change_requested",
+        "quotation_made",
+        "vendor_selected",
+        "vendor_confirmed",
+        "purchase_order_sent",
+        "product_delivered",
+        "invoice_received",
+        "notification_sent"
+      ],
+      "exclusive_groups": [
+        [
+          "approved",
+          "rejected"
+        ],
+        [
+          "approved",
+          "change_requested"
+        ],
+        [
+          "rejected",
+          "change_requested"
+        ]
+      ],
+      "concurrent_with": []
+    },
+    "purchase_department": {
+      "states": [
+        "in_charge",
+        "making_quotations",
+        "selecting_vendor",
+        "choosing_different_vendor"
+      ],
+      "exclusive_groups": [
+        [
+          "selecting_vendor",
+          "choosing_different_vendor"
+        ]
+      ],
+      "concurrent_with": []
+    },
+    "system": {
+      "states": [
+        "generating_purchase_order",
+        "sending_purchase_order",
+        "waiting_for_delivery",
+        "waiting_for_invoice",
+        "sending_notification"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "supervisor": {
+      "states": [
+        "approving",
+        "asking_for_change",
+        "rejecting"
+      ],
+      "exclusive_groups": [
+        [
+          "approving",
+          "asking_for_change"
+        ],
+        [
+          "approving",
+          "rejecting"
+        ],
+        [
+          "asking_for_change",
+          "rejecting"
+        ]
+      ],
+      "concurrent_with": []
+    }
+  },
+  "state_space_dedup": {
+    "merged": {},
+    "ambiguous_not_merged": {}
+  },
+  "raw_preconditions": {
+    "office_supply_request.submitted": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "office_supply_request.received": {
+      "precondition": "office_supply_request.submitted",
+      "quote": "Once the requirement is registered, the request is received by the immediate supervisor of the employee requesting the office supplies."
+    },
+    "office_supply_request.approved": {
+      "precondition": "supervisor.approving",
+      "quote": "If the request is approved it will go to the purchase department that will be in charge of making quotations (using a subprocess) and select a vendor."
+    },
+    "office_supply_request.rejected": {
+      "precondition": "supervisor.rejecting",
+      "quote": "If the request is rejected the process will end."
+    },
+    "office_supply_request.change_requested": {
+      "precondition": "supervisor.asking_for_change",
+      "quote": "If the request is asked to make a change then it is returned to the petitioner/employee who can review the comments for the change request."
+    },
+    "office_supply_request.quotation_made": {
+      "precondition": "purchase_department.making_quotations",
+      "quote": "If the request is approved it will go to the purchase department that will be in charge of making quotations (using a subprocess) and select a vendor."
+    },
+    "office_supply_request.vendor_selected": {
+      "precondition": "purchase_department.selecting_vendor",
+      "quote": "If the request is approved it will go to the purchase department that will be in charge of making quotations (using a subprocess) and select a vendor."
+    },
+    "office_supply_request.vendor_confirmed": {
+      "precondition": "office_supply_request.vendor_selected",
+      "quote": "After a vendor is selected and confirmed, the system will generate and send a purchase order and wait for the product to be delivered and the invoice received."
+    },
+    "office_supply_request.purchase_order_sent": {
+      "precondition": "system.generating_purchase_order AND system.sending_purchase_order",
+      "quote": "After a vendor is selected and confirmed, the system will generate and send a purchase order and wait for the product to be delivered and the invoice received."
+    },
+    "office_supply_request.product_delivered": {
+      "precondition": "system.waiting_for_delivery",
+      "quote": "After a vendor is selected and confirmed, the system will generate and send a purchase order and wait for the product to be delivered and the invoice received."
+    },
+    "office_supply_request.invoice_received": {
+      "precondition": "system.waiting_for_invoice",
+      "quote": "After a vendor is selected and confirmed, the system will generate and send a purchase order and wait for the product to be delivered and the invoice received."
+    },
+    "office_supply_request.notification_sent": {
+      "precondition": "system.sending_notification",
+      "quote": "In any case the system will send a notification to let the user know what the result was."
+    },
+    "purchase_department.in_charge": {
+      "precondition": "office_supply_request.approved",
+      "quote": "If the request is approved it will go to the purchase department that will be in charge of making quotations (using a subprocess) and select a vendor."
+    },
+    "purchase_department.making_quotations": {
+      "precondition": "purchase_department.in_charge",
+      "quote": "If the request is approved it will go to the purchase department that will be in charge of making quotations (using a subprocess) and select a vendor."
+    },
+    "purchase_department.selecting_vendor": {
+      "precondition": "purchase_department.making_quotations",
+      "quote": "If the request is approved it will go to the purchase department that will be in charge of making quotations (using a subprocess) and select a vendor."
+    },
+    "purchase_department.choosing_different_vendor": {
+      "precondition": "office_supply_request.vendor_selected",
+      "quote": "If the vendor is not valid in the system the purchase department will have to choose a different vendor."
+    },
+    "system.generating_purchase_order": {
+      "precondition": "office_supply_request.vendor_confirmed",
+      "quote": "After a vendor is selected and confirmed, the system will generate and send a purchase order and wait for the product to be delivered and the invoice received."
+    },
+    "system.sending_purchase_order": {
+      "precondition": "system.generating_purchase_order",
+      "quote": "After a vendor is selected and confirmed, the system will generate and send a purchase order and wait for the product to be delivered and the invoice received."
+    },
+    "system.waiting_for_delivery": {
+      "precondition": "system.sending_purchase_order",
+      "quote": "After a vendor is selected and confirmed, the system will generate and send a purchase order and wait for the product to be delivered and the invoice received."
+    },
+    "system.waiting_for_invoice": {
+      "precondition": "system.waiting_for_delivery",
+      "quote": "After a vendor is selected and confirmed, the system will generate and send a purchase order and wait for the product to be delivered and the invoice received."
+    },
+    "system.sending_notification": {
+      "precondition": "office_supply_request.approved OR office_supply_request.rejected OR office_supply_request.change_requested",
+      "quote": "In any of the cases, approval, rejection or change required the system will send the user a notification."
+    },
+    "supervisor.approving": {
+      "precondition": "office_supply_request.received",
+      "quote": "The supervisor must approve or ask for a change, or reject the request."
+    },
+    "supervisor.asking_for_change": {
+      "precondition": "office_supply_request.received",
+      "quote": "The supervisor must approve or ask for a change, or reject the request."
+    },
+    "supervisor.rejecting": {
+      "precondition": "office_supply_request.received",
+      "quote": "The supervisor must approve or ask for a change, or reject the request."
+    }
+  },
+  "validated_preconditions": {
+    "office_supply_request.submitted": {
+      "precondition": "INITIAL",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "office_supply_request.received": {
+      "precondition": "office_supply_request.submitted",
+      "quote": "Once the requirement is registered, the request is received by the immediate supervisor of the employee requesting the office supplies.",
+      "status": "OK",
+      "reason": null
+    },
+    "office_supply_request.approved": {
+      "precondition": "supervisor.approving",
+      "quote": "If the request is approved it will go to the purchase department that will be in charge of making quotations (using a subprocess) and select a vendor.",
+      "status": "OK",
+      "reason": null
+    },
+    "office_supply_request.rejected": {
+      "precondition": "supervisor.rejecting",
+      "quote": "If the request is rejected the process will end.",
+      "status": "OK",
+      "reason": null
+    },
+    "office_supply_request.change_requested": {
+      "precondition": "supervisor.asking_for_change",
+      "quote": "If the request is asked to make a change then it is returned to the petitioner/employee who can review the comments for the change request.",
+      "status": "OK",
+      "reason": null
+    },
+    "office_supply_request.quotation_made": {
+      "precondition": "purchase_department.making_quotations",
+      "quote": "If the request is approved it will go to the purchase department that will be in charge of making quotations (using a subprocess) and select a vendor.",
+      "status": "OK",
+      "reason": null
+    },
+    "office_supply_request.vendor_selected": {
+      "precondition": "purchase_department.selecting_vendor",
+      "quote": "If the request is approved it will go to the purchase department that will be in charge of making quotations (using a subprocess) and select a vendor.",
+      "status": "OK",
+      "reason": null
+    },
+    "office_supply_request.vendor_confirmed": {
+      "precondition": "office_supply_request.vendor_selected",
+      "quote": "After a vendor is selected and confirmed, the system will generate and send a purchase order and wait for the product to be delivered and the invoice received.",
+      "status": "OK",
+      "reason": null
+    },
+    "office_supply_request.purchase_order_sent": {
+      "precondition": "system.generating_purchase_order AND system.sending_purchase_order",
+      "quote": "After a vendor is selected and confirmed, the system will generate and send a purchase order and wait for the product to be delivered and the invoice received.",
+      "status": "OK",
+      "reason": null
+    },
+    "office_supply_request.product_delivered": {
+      "precondition": "system.waiting_for_delivery",
+      "quote": "After a vendor is selected and confirmed, the system will generate and send a purchase order and wait for the product to be delivered and the invoice received.",
+      "status": "OK",
+      "reason": null
+    },
+    "office_supply_request.invoice_received": {
+      "precondition": "system.waiting_for_invoice",
+      "quote": "After a vendor is selected and confirmed, the system will generate and send a purchase order and wait for the product to be delivered and the invoice received.",
+      "status": "OK",
+      "reason": null
+    },
+    "office_supply_request.notification_sent": {
+      "precondition": "system.sending_notification",
+      "quote": "In any case the system will send a notification to let the user know what the result was.",
+      "status": "OK",
+      "reason": null
+    },
+    "purchase_department.in_charge": {
+      "precondition": "office_supply_request.approved",
+      "quote": "If the request is approved it will go to the purchase department that will be in charge of making quotations (using a subprocess) and select a vendor.",
+      "status": "OK",
+      "reason": null
+    },
+    "purchase_department.making_quotations": {
+      "precondition": "purchase_department.in_charge",
+      "quote": "If the request is approved it will go to the purchase department that will be in charge of making quotations (using a subprocess) and select a vendor.",
+      "status": "OK",
+      "reason": null
+    },
+    "purchase_department.selecting_vendor": {
+      "precondition": "purchase_department.making_quotations",
+      "quote": "If the request is approved it will go to the purchase department that will be in charge of making quotations (using a subprocess) and select a vendor.",
+      "status": "OK",
+      "reason": null
+    },
+    "purchase_department.choosing_different_vendor": {
+      "precondition": "office_supply_request.vendor_selected",
+      "quote": "If the vendor is not valid in the system the purchase department will have to choose a different vendor.",
+      "status": "OK",
+      "reason": null
+    },
+    "system.generating_purchase_order": {
+      "precondition": "office_supply_request.vendor_confirmed",
+      "quote": "After a vendor is selected and confirmed, the system will generate and send a purchase order and wait for the product to be delivered and the invoice received.",
+      "status": "OK",
+      "reason": null
+    },
+    "system.sending_purchase_order": {
+      "precondition": "system.generating_purchase_order",
+      "quote": "After a vendor is selected and confirmed, the system will generate and send a purchase order and wait for the product to be delivered and the invoice received.",
+      "status": "OK",
+      "reason": null
+    },
+    "system.waiting_for_delivery": {
+      "precondition": "system.sending_purchase_order",
+      "quote": "After a vendor is selected and confirmed, the system will generate and send a purchase order and wait for the product to be delivered and the invoice received.",
+      "status": "OK",
+      "reason": null
+    },
+    "system.waiting_for_invoice": {
+      "precondition": "system.waiting_for_delivery",
+      "quote": "After a vendor is selected and confirmed, the system will generate and send a purchase order and wait for the product to be delivered and the invoice received.",
+      "status": "OK",
+      "reason": null
+    },
+    "system.sending_notification": {
+      "precondition": "office_supply_request.approved OR office_supply_request.rejected OR office_supply_request.change_requested",
+      "quote": "In any of the cases, approval, rejection or change required the system will send the user a notification.",
+      "status": "OK",
+      "reason": null
+    },
+    "supervisor.approving": {
+      "precondition": "office_supply_request.received",
+      "quote": "The supervisor must approve or ask for a change, or reject the request.",
+      "status": "OK",
+      "reason": null
+    },
+    "supervisor.asking_for_change": {
+      "precondition": "office_supply_request.received",
+      "quote": "The supervisor must approve or ask for a change, or reject the request.",
+      "status": "OK",
+      "reason": null
+    },
+    "supervisor.rejecting": {
+      "precondition": "office_supply_request.received",
+      "quote": "The supervisor must approve or ask for a change, or reject the request.",
+      "status": "OK",
+      "reason": null
+    }
+  },
+  "precondition_cycles": [],
+  "branch_conflicts": [
+    {
+      "entity": "supervisor",
+      "exclusive_group": [
+        "approving",
+        "asking_for_change"
+      ],
+      "conflicting_targets": [
+        "supervisor.approving",
+        "supervisor.asking_for_change"
+      ],
+      "shared_precondition": "office_supply_request.received",
+      "reason": "targets marked mutually exclusive in the state space share the exact same accepted precondition -- reaching it would trigger both branches at once"
+    },
+    {
+      "entity": "supervisor",
+      "exclusive_group": [
+        "approving",
+        "rejecting"
+      ],
+      "conflicting_targets": [
+        "supervisor.approving",
+        "supervisor.rejecting"
+      ],
+      "shared_precondition": "office_supply_request.received",
+      "reason": "targets marked mutually exclusive in the state space share the exact same accepted precondition -- reaching it would trigger both branches at once"
+    },
+    {
+      "entity": "supervisor",
+      "exclusive_group": [
+        "asking_for_change",
+        "rejecting"
+      ],
+      "conflicting_targets": [
+        "supervisor.asking_for_change",
+        "supervisor.rejecting"
+      ],
+      "shared_precondition": "office_supply_request.received",
+      "reason": "targets marked mutually exclusive in the state space share the exact same accepted precondition -- reaching it would trigger both branches at once"
+    }
+  ],
+  "reference_graph": {
+    "nodes": [
+      {
+        "id": "office_supply_request.submitted",
+        "weight": 0.25
+      },
+      {
+        "id": "office_supply_request.received",
+        "weight": 1.0
+      },
+      {
+        "id": "office_supply_request.approved",
+        "weight": 0.75
+      },
+      {
+        "id": "office_supply_request.rejected",
+        "weight": 0.5
+      },
+      {
+        "id": "office_supply_request.change_requested",
+        "weight": 0.5
+      },
+      {
+        "id": "office_supply_request.quotation_made",
+        "weight": 0.25
+      },
+      {
+        "id": "office_supply_request.vendor_selected",
+        "weight": 0.75
+      },
+      {
+        "id": "office_supply_request.vendor_confirmed",
+        "weight": 0.5
+      },
+      {
+        "id": "office_supply_request.purchase_order_sent",
+        "weight": 0.5
+      },
+      {
+        "id": "office_supply_request.product_delivered",
+        "weight": 0.25
+      },
+      {
+        "id": "office_supply_request.invoice_received",
+        "weight": 0.25
+      },
+      {
+        "id": "office_supply_request.notification_sent",
+        "weight": 0.25
+      },
+      {
+        "id": "purchase_department.in_charge",
+        "weight": 0.5
+      },
+      {
+        "id": "purchase_department.making_quotations",
+        "weight": 0.75
+      },
+      {
+        "id": "purchase_department.selecting_vendor",
+        "weight": 0.5
+      },
+      {
+        "id": "purchase_department.choosing_different_vendor",
+        "weight": 0.25
+      },
+      {
+        "id": "system.generating_purchase_order",
+        "weight": 0.75
+      },
+      {
+        "id": "system.sending_purchase_order",
+        "weight": 0.75
+      },
+      {
+        "id": "system.waiting_for_delivery",
+        "weight": 0.75
+      },
+      {
+        "id": "system.waiting_for_invoice",
+        "weight": 0.5
+      },
+      {
+        "id": "system.sending_notification",
+        "weight": 1.0
+      },
+      {
+        "id": "supervisor.approving",
+        "weight": 0.5
+      },
+      {
+        "id": "supervisor.asking_for_change",
+        "weight": 0.5
+      },
+      {
+        "id": "supervisor.rejecting",
+        "weight": 0.5
+      }
+    ],
+    "edges": [
+      {
+        "from": "office_supply_request.submitted",
+        "to": "office_supply_request.received",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "Once the requirement is registered, the request is received by the immediate supervisor of the employee requesting the office supplies.",
+        "negated": false
+      },
+      {
+        "from": "supervisor.approving",
+        "to": "office_supply_request.approved",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "If the request is approved it will go to the purchase department that will be in charge of making quotations (using a subprocess) and select a vendor.",
+        "negated": false
+      },
+      {
+        "from": "supervisor.rejecting",
+        "to": "office_supply_request.rejected",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "If the request is rejected the process will end.",
+        "negated": false
+      },
+      {
+        "from": "supervisor.asking_for_change",
+        "to": "office_supply_request.change_requested",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "If the request is asked to make a change then it is returned to the petitioner/employee who can review the comments for the change request.",
+        "negated": false
+      },
+      {
+        "from": "purchase_department.making_quotations",
+        "to": "office_supply_request.quotation_made",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "If the request is approved it will go to the purchase department that will be in charge of making quotations (using a subprocess) and select a vendor.",
+        "negated": false
+      },
+      {
+        "from": "purchase_department.selecting_vendor",
+        "to": "office_supply_request.vendor_selected",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "If the request is approved it will go to the purchase department that will be in charge of making quotations (using a subprocess) and select a vendor.",
+        "negated": false
+      },
+      {
+        "from": "office_supply_request.vendor_selected",
+        "to": "office_supply_request.vendor_confirmed",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "After a vendor is selected and confirmed, the system will generate and send a purchase order and wait for the product to be delivered and the invoice received.",
+        "negated": false
+      },
+      {
+        "from": "system.generating_purchase_order",
+        "to": "office_supply_request.purchase_order_sent",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "After a vendor is selected and confirmed, the system will generate and send a purchase order and wait for the product to be delivered and the invoice received.",
+        "negated": false
+      },
+      {
+        "from": "system.sending_purchase_order",
+        "to": "office_supply_request.purchase_order_sent",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "After a vendor is selected and confirmed, the system will generate and send a purchase order and wait for the product to be delivered and the invoice received.",
+        "negated": false
+      },
+      {
+        "from": "system.waiting_for_delivery",
+        "to": "office_supply_request.product_delivered",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "After a vendor is selected and confirmed, the system will generate and send a purchase order and wait for the product to be delivered and the invoice received.",
+        "negated": false
+      },
+      {
+        "from": "system.waiting_for_invoice",
+        "to": "office_supply_request.invoice_received",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "After a vendor is selected and confirmed, the system will generate and send a purchase order and wait for the product to be delivered and the invoice received.",
+        "negated": false
+      },
+      {
+        "from": "system.sending_notification",
+        "to": "office_supply_request.notification_sent",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "In any case the system will send a notification to let the user know what the result was.",
+        "negated": false
+      },
+      {
+        "from": "office_supply_request.approved",
+        "to": "purchase_department.in_charge",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "If the request is approved it will go to the purchase department that will be in charge of making quotations (using a subprocess) and select a vendor.",
+        "negated": false
+      },
+      {
+        "from": "purchase_department.in_charge",
+        "to": "purchase_department.making_quotations",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "If the request is approved it will go to the purchase department that will be in charge of making quotations (using a subprocess) and select a vendor.",
+        "negated": false
+      },
+      {
+        "from": "purchase_department.making_quotations",
+        "to": "purchase_department.selecting_vendor",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "If the request is approved it will go to the purchase department that will be in charge of making quotations (using a subprocess) and select a vendor.",
+        "negated": false
+      },
+      {
+        "from": "office_supply_request.vendor_selected",
+        "to": "purchase_department.choosing_different_vendor",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "If the vendor is not valid in the system the purchase department will have to choose a different vendor.",
+        "negated": false
+      },
+      {
+        "from": "office_supply_request.vendor_confirmed",
+        "to": "system.generating_purchase_order",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "After a vendor is selected and confirmed, the system will generate and send a purchase order and wait for the product to be delivered and the invoice received.",
+        "negated": false
+      },
+      {
+        "from": "system.generating_purchase_order",
+        "to": "system.sending_purchase_order",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "After a vendor is selected and confirmed, the system will generate and send a purchase order and wait for the product to be delivered and the invoice received.",
+        "negated": false
+      },
+      {
+        "from": "system.sending_purchase_order",
+        "to": "system.waiting_for_delivery",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "After a vendor is selected and confirmed, the system will generate and send a purchase order and wait for the product to be delivered and the invoice received.",
+        "negated": false
+      },
+      {
+        "from": "system.waiting_for_delivery",
+        "to": "system.waiting_for_invoice",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "After a vendor is selected and confirmed, the system will generate and send a purchase order and wait for the product to be delivered and the invoice received.",
+        "negated": false
+      },
+      {
+        "from": "office_supply_request.approved",
+        "to": "system.sending_notification",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "In any of the cases, approval, rejection or change required the system will send the user a notification.",
+        "negated": false
+      },
+      {
+        "from": "office_supply_request.rejected",
+        "to": "system.sending_notification",
+        "clause": 1,
+        "type": "cross_entity_guard",
+        "quote": "In any of the cases, approval, rejection or change required the system will send the user a notification.",
+        "negated": false
+      },
+      {
+        "from": "office_supply_request.change_requested",
+        "to": "system.sending_notification",
+        "clause": 2,
+        "type": "cross_entity_guard",
+        "quote": "In any of the cases, approval, rejection or change required the system will send the user a notification.",
+        "negated": false
+      },
+      {
+        "from": "office_supply_request.received",
+        "to": "supervisor.approving",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "The supervisor must approve or ask for a change, or reject the request.",
+        "negated": false
+      },
+      {
+        "from": "office_supply_request.received",
+        "to": "supervisor.asking_for_change",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "The supervisor must approve or ask for a change, or reject the request.",
+        "negated": false
+      },
+      {
+        "from": "office_supply_request.received",
+        "to": "supervisor.rejecting",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "The supervisor must approve or ask for a change, or reject the request.",
+        "negated": false
+      }
+    ],
+    "cycles": [],
+    "branch_conflicts": [
+      {
+        "entity": "supervisor",
+        "exclusive_group": [
+          "approving",
+          "asking_for_change"
+        ],
+        "conflicting_targets": [
+          "supervisor.approving",
+          "supervisor.asking_for_change"
+        ],
+        "shared_precondition": "office_supply_request.received",
+        "reason": "targets marked mutually exclusive in the state space share the exact same accepted precondition -- reaching it would trigger both branches at once"
+      },
+      {
+        "entity": "supervisor",
+        "exclusive_group": [
+          "approving",
+          "rejecting"
+        ],
+        "conflicting_targets": [
+          "supervisor.approving",
+          "supervisor.rejecting"
+        ],
+        "shared_precondition": "office_supply_request.received",
+        "reason": "targets marked mutually exclusive in the state space share the exact same accepted precondition -- reaching it would trigger both branches at once"
+      },
+      {
+        "entity": "supervisor",
+        "exclusive_group": [
+          "asking_for_change",
+          "rejecting"
+        ],
+        "conflicting_targets": [
+          "supervisor.asking_for_change",
+          "supervisor.rejecting"
+        ],
+        "shared_precondition": "office_supply_request.received",
+        "reason": "targets marked mutually exclusive in the state space share the exact same accepted precondition -- reaching it would trigger both branches at once"
+      }
+    ],
+    "exclusive_pairs": [
+      {
+        "entity": "office_supply_request",
+        "nodes": [
+          "office_supply_request.approved",
+          "office_supply_request.rejected"
+        ]
+      },
+      {
+        "entity": "office_supply_request",
+        "nodes": [
+          "office_supply_request.approved",
+          "office_supply_request.change_requested"
+        ]
+      },
+      {
+        "entity": "office_supply_request",
+        "nodes": [
+          "office_supply_request.rejected",
+          "office_supply_request.change_requested"
+        ]
+      },
+      {
+        "entity": "purchase_department",
+        "nodes": [
+          "purchase_department.selecting_vendor",
+          "purchase_department.choosing_different_vendor"
+        ]
+      },
+      {
+        "entity": "supervisor",
+        "nodes": [
+          "supervisor.approving",
+          "supervisor.asking_for_change"
+        ]
+      },
+      {
+        "entity": "supervisor",
+        "nodes": [
+          "supervisor.approving",
+          "supervisor.rejecting"
+        ]
+      },
+      {
+        "entity": "supervisor",
+        "nodes": [
+          "supervisor.asking_for_change",
+          "supervisor.rejecting"
+        ]
+      }
+    ]
+  },
+  "dfg_edges": [
+    {
+      "source_id": "Task_7",
+      "source_label": "Receive products",
+      "target_id": "IntermediateEvent_0",
+      "target_label": "Products  Received",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_2",
+      "source_label": "Approve office supply request",
+      "target_id": "Task_5",
+      "target_label": "Notify about approval",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_2",
+      "source_label": "Approve office supply request",
+      "target_id": "Task_4",
+      "target_label": "Notify about rejection",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_2",
+      "source_label": "Approve office supply request",
+      "target_id": "Task_3",
+      "target_label": "Notify about required change",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "CollapsedSubprocess_0",
+      "source_label": "Quote",
+      "target_id": "Task_0",
+      "target_label": "Generate purchase order",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_5",
+      "source_label": "Notify about approval",
+      "target_id": "CollapsedSubprocess_0",
+      "target_label": "Quote",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_0",
+      "source_label": "Generate purchase order",
+      "target_id": "Task_7",
+      "target_label": "Receive products",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_6",
+      "source_label": "Register office supply request",
+      "target_id": "Task_2",
+      "target_label": "Approve office supply request",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_3",
+      "source_label": "Notify about required change",
+      "target_id": "Task_6",
+      "target_label": "Register office supply request",
+      "gateway_context": []
+    },
+    {
+      "source_id": "IntermediateEvent_0",
+      "source_label": "Products  Received",
+      "target_id": "Task_1",
+      "target_label": "Process invoice",
+      "gateway_context": []
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "Receive products",
+      "subject_id": "Task_7",
+      "predicate": "follows",
+      "object": "Products  Received",
+      "object_id": "IntermediateEvent_0"
+    },
+    {
+      "subject": "Approve office supply request",
+      "subject_id": "Task_2",
+      "predicate": "follows",
+      "object": "Notify about approval",
+      "object_id": "Task_5"
+    },
+    {
+      "subject": "Approve office supply request",
+      "subject_id": "Task_2",
+      "predicate": "follows",
+      "object": "Notify about rejection",
+      "object_id": "Task_4"
+    },
+    {
+      "subject": "Approve office supply request",
+      "subject_id": "Task_2",
+      "predicate": "follows",
+      "object": "Notify about required change",
+      "object_id": "Task_3"
+    },
+    {
+      "subject": "Quote",
+      "subject_id": "CollapsedSubprocess_0",
+      "predicate": "follows",
+      "object": "Generate purchase order",
+      "object_id": "Task_0"
+    },
+    {
+      "subject": "Notify about approval",
+      "subject_id": "Task_5",
+      "predicate": "follows",
+      "object": "Quote",
+      "object_id": "CollapsedSubprocess_0"
+    },
+    {
+      "subject": "Generate purchase order",
+      "subject_id": "Task_0",
+      "predicate": "follows",
+      "object": "Receive products",
+      "object_id": "Task_7"
+    },
+    {
+      "subject": "Register office supply request",
+      "subject_id": "Task_6",
+      "predicate": "follows",
+      "object": "Approve office supply request",
+      "object_id": "Task_2"
+    },
+    {
+      "subject": "Notify about required change",
+      "subject_id": "Task_3",
+      "predicate": "follows",
+      "object": "Register office supply request",
+      "object_id": "Task_6"
+    },
+    {
+      "subject": "Products  Received",
+      "subject_id": "IntermediateEvent_0",
+      "predicate": "follows",
+      "object": "Process invoice",
+      "object_id": "Task_1"
+    }
+  ],
+  "matches": {
+    "Task_7": {
+      "activity_label": "Receive products",
+      "matches": [
+        {
+          "match": "office_supply_request.product_delivered",
+          "score": 0.4578
+        }
+      ],
+      "clusters": [
+        [
+          "office_supply_request.product_delivered"
+        ]
+      ]
+    },
+    "IntermediateEvent_0": {
+      "activity_label": "Products  Received",
+      "matches": [
+        {
+          "match": "office_supply_request.product_delivered",
+          "score": 0.4491
+        },
+        {
+          "match": "office_supply_request.received",
+          "score": 0.4031
+        }
+      ],
+      "clusters": [
+        [
+          "office_supply_request.product_delivered",
+          "office_supply_request.received"
+        ]
+      ]
+    },
+    "Task_2": {
+      "activity_label": "Approve office supply request",
+      "matches": [
+        {
+          "match": "office_supply_request.approved",
+          "score": 0.6106
+        }
+      ],
+      "clusters": [
+        [
+          "office_supply_request.approved"
+        ]
+      ]
+    },
+    "Task_5": {
+      "activity_label": "Notify about approval",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_4": {
+      "activity_label": "Notify about rejection",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_3": {
+      "activity_label": "Notify about required change",
+      "matches": [],
+      "clusters": []
+    },
+    "CollapsedSubprocess_0": {
+      "activity_label": "Quote",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_0": {
+      "activity_label": "Generate purchase order",
+      "matches": [
+        {
+          "match": "system.generating_purchase_order",
+          "score": 0.8383
+        }
+      ],
+      "clusters": [
+        [
+          "system.generating_purchase_order"
+        ]
+      ]
+    },
+    "Task_6": {
+      "activity_label": "Register office supply request",
+      "matches": [
+        {
+          "match": "office_supply_request.submitted",
+          "score": 0.7413
+        },
+        {
+          "match": "office_supply_request.received",
+          "score": 0.7344
+        },
+        {
+          "match": "office_supply_request.notification_sent",
+          "score": 0.7159
+        }
+      ],
+      "clusters": [
+        [
+          "office_supply_request.submitted",
+          "office_supply_request.received",
+          "office_supply_request.notification_sent"
+        ]
+      ]
+    },
+    "Task_1": {
+      "activity_label": "Process invoice",
+      "matches": [
+        {
+          "match": "system.waiting_for_invoice",
+          "score": 0.5598
+        }
+      ],
+      "clusters": [
+        [
+          "system.waiting_for_invoice"
+        ]
+      ]
+    }
+  },
+  "process_graph": [
+    {
+      "from": "office_supply_request.product_delivered",
+      "to": "office_supply_request.product_delivered",
+      "activity_from": "Receive products",
+      "activity_to": "Products  Received",
+      "source_id": "Task_7",
+      "target_id": "IntermediateEvent_0"
+    },
+    {
+      "from": "office_supply_request.product_delivered",
+      "to": "office_supply_request.received",
+      "activity_from": "Receive products",
+      "activity_to": "Products  Received",
+      "source_id": "Task_7",
+      "target_id": "IntermediateEvent_0"
+    },
+    {
+      "from": "system.generating_purchase_order",
+      "to": "office_supply_request.product_delivered",
+      "activity_from": "Generate purchase order",
+      "activity_to": "Receive products",
+      "source_id": "Task_0",
+      "target_id": "Task_7"
+    },
+    {
+      "from": "office_supply_request.submitted",
+      "to": "office_supply_request.approved",
+      "activity_from": "Register office supply request",
+      "activity_to": "Approve office supply request",
+      "source_id": "Task_6",
+      "target_id": "Task_2"
+    },
+    {
+      "from": "office_supply_request.received",
+      "to": "office_supply_request.approved",
+      "activity_from": "Register office supply request",
+      "activity_to": "Approve office supply request",
+      "source_id": "Task_6",
+      "target_id": "Task_2"
+    },
+    {
+      "from": "office_supply_request.notification_sent",
+      "to": "office_supply_request.approved",
+      "activity_from": "Register office supply request",
+      "activity_to": "Approve office supply request",
+      "source_id": "Task_6",
+      "target_id": "Task_2"
+    },
+    {
+      "from": "office_supply_request.product_delivered",
+      "to": "system.waiting_for_invoice",
+      "activity_from": "Products  Received",
+      "activity_to": "Process invoice",
+      "source_id": "IntermediateEvent_0",
+      "target_id": "Task_1"
+    },
+    {
+      "from": "office_supply_request.received",
+      "to": "system.waiting_for_invoice",
+      "activity_from": "Products  Received",
+      "activity_to": "Process invoice",
+      "source_id": "IntermediateEvent_0",
+      "target_id": "Task_1"
+    }
+  ],
+  "alignment": {
+    "office_supply_request.received": {
+      "operator": "AND",
+      "quote": "Once the requirement is registered, the request is received by the immediate supervisor of the employee requesting the office supplies.",
+      "terms": [
+        {
+          "term": "office_supply_request.submitted",
+          "status": "VIOLATED",
+          "reason": "both states matched, no path in process",
+          "missing": []
+        }
+      ],
+      "status": "VIOLATED",
+      "clauses": [
+        {
+          "terms": [
+            "office_supply_request.submitted"
+          ],
+          "status": "VIOLATED"
+        }
+      ]
+    },
+    "office_supply_request.approved": {
+      "operator": "AND",
+      "quote": "If the request is approved it will go to the purchase department that will be in charge of making quotations (using a subprocess) and select a vendor.",
+      "terms": [
+        {
+          "term": "supervisor.approving",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['supervisor.approving']",
+          "missing": [
+            "supervisor.approving"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "supervisor.approving"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "office_supply_request.rejected": {
+      "operator": "AND",
+      "quote": "If the request is rejected the process will end.",
+      "terms": [
+        {
+          "term": "supervisor.rejecting",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['supervisor.rejecting', 'office_supply_request.rejected']",
+          "missing": [
+            "supervisor.rejecting",
+            "office_supply_request.rejected"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "supervisor.rejecting"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "office_supply_request.change_requested": {
+      "operator": "AND",
+      "quote": "If the request is asked to make a change then it is returned to the petitioner/employee who can review the comments for the change request.",
+      "terms": [
+        {
+          "term": "supervisor.asking_for_change",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['supervisor.asking_for_change', 'office_supply_request.change_requested']",
+          "missing": [
+            "supervisor.asking_for_change",
+            "office_supply_request.change_requested"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "supervisor.asking_for_change"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "office_supply_request.quotation_made": {
+      "operator": "AND",
+      "quote": "If the request is approved it will go to the purchase department that will be in charge of making quotations (using a subprocess) and select a vendor.",
+      "terms": [
+        {
+          "term": "purchase_department.making_quotations",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['purchase_department.making_quotations', 'office_supply_request.quotation_made']",
+          "missing": [
+            "purchase_department.making_quotations",
+            "office_supply_request.quotation_made"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "purchase_department.making_quotations"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "office_supply_request.vendor_selected": {
+      "operator": "AND",
+      "quote": "If the request is approved it will go to the purchase department that will be in charge of making quotations (using a subprocess) and select a vendor.",
+      "terms": [
+        {
+          "term": "purchase_department.selecting_vendor",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['purchase_department.selecting_vendor', 'office_supply_request.vendor_selected']",
+          "missing": [
+            "purchase_department.selecting_vendor",
+            "office_supply_request.vendor_selected"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "purchase_department.selecting_vendor"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "office_supply_request.vendor_confirmed": {
+      "operator": "AND",
+      "quote": "After a vendor is selected and confirmed, the system will generate and send a purchase order and wait for the product to be delivered and the invoice received.",
+      "terms": [
+        {
+          "term": "office_supply_request.vendor_selected",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['office_supply_request.vendor_selected', 'office_supply_request.vendor_confirmed']",
+          "missing": [
+            "office_supply_request.vendor_selected",
+            "office_supply_request.vendor_confirmed"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "office_supply_request.vendor_selected"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "office_supply_request.purchase_order_sent": {
+      "operator": "AND",
+      "quote": "After a vendor is selected and confirmed, the system will generate and send a purchase order and wait for the product to be delivered and the invoice received.",
+      "terms": [
+        {
+          "term": "system.generating_purchase_order",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['office_supply_request.purchase_order_sent']",
+          "missing": [
+            "office_supply_request.purchase_order_sent"
+          ]
+        },
+        {
+          "term": "system.sending_purchase_order",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['system.sending_purchase_order', 'office_supply_request.purchase_order_sent']",
+          "missing": [
+            "system.sending_purchase_order",
+            "office_supply_request.purchase_order_sent"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "system.generating_purchase_order",
+            "system.sending_purchase_order"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "office_supply_request.product_delivered": {
+      "operator": "AND",
+      "quote": "After a vendor is selected and confirmed, the system will generate and send a purchase order and wait for the product to be delivered and the invoice received.",
+      "terms": [
+        {
+          "term": "system.waiting_for_delivery",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['system.waiting_for_delivery']",
+          "missing": [
+            "system.waiting_for_delivery"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "system.waiting_for_delivery"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "office_supply_request.invoice_received": {
+      "operator": "AND",
+      "quote": "After a vendor is selected and confirmed, the system will generate and send a purchase order and wait for the product to be delivered and the invoice received.",
+      "terms": [
+        {
+          "term": "system.waiting_for_invoice",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['office_supply_request.invoice_received']",
+          "missing": [
+            "office_supply_request.invoice_received"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "system.waiting_for_invoice"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "office_supply_request.notification_sent": {
+      "operator": "AND",
+      "quote": "In any case the system will send a notification to let the user know what the result was.",
+      "terms": [
+        {
+          "term": "system.sending_notification",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['system.sending_notification']",
+          "missing": [
+            "system.sending_notification"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "system.sending_notification"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "purchase_department.in_charge": {
+      "operator": "AND",
+      "quote": "If the request is approved it will go to the purchase department that will be in charge of making quotations (using a subprocess) and select a vendor.",
+      "terms": [
+        {
+          "term": "office_supply_request.approved",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['purchase_department.in_charge']",
+          "missing": [
+            "purchase_department.in_charge"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "office_supply_request.approved"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "purchase_department.making_quotations": {
+      "operator": "AND",
+      "quote": "If the request is approved it will go to the purchase department that will be in charge of making quotations (using a subprocess) and select a vendor.",
+      "terms": [
+        {
+          "term": "purchase_department.in_charge",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['purchase_department.in_charge', 'purchase_department.making_quotations']",
+          "missing": [
+            "purchase_department.in_charge",
+            "purchase_department.making_quotations"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "purchase_department.in_charge"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "purchase_department.selecting_vendor": {
+      "operator": "AND",
+      "quote": "If the request is approved it will go to the purchase department that will be in charge of making quotations (using a subprocess) and select a vendor.",
+      "terms": [
+        {
+          "term": "purchase_department.making_quotations",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['purchase_department.making_quotations', 'purchase_department.selecting_vendor']",
+          "missing": [
+            "purchase_department.making_quotations",
+            "purchase_department.selecting_vendor"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "purchase_department.making_quotations"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "purchase_department.choosing_different_vendor": {
+      "operator": "AND",
+      "quote": "If the vendor is not valid in the system the purchase department will have to choose a different vendor.",
+      "terms": [
+        {
+          "term": "office_supply_request.vendor_selected",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['office_supply_request.vendor_selected', 'purchase_department.choosing_different_vendor']",
+          "missing": [
+            "office_supply_request.vendor_selected",
+            "purchase_department.choosing_different_vendor"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "office_supply_request.vendor_selected"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "system.generating_purchase_order": {
+      "operator": "AND",
+      "quote": "After a vendor is selected and confirmed, the system will generate and send a purchase order and wait for the product to be delivered and the invoice received.",
+      "terms": [
+        {
+          "term": "office_supply_request.vendor_confirmed",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['office_supply_request.vendor_confirmed']",
+          "missing": [
+            "office_supply_request.vendor_confirmed"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "office_supply_request.vendor_confirmed"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "system.sending_purchase_order": {
+      "operator": "AND",
+      "quote": "After a vendor is selected and confirmed, the system will generate and send a purchase order and wait for the product to be delivered and the invoice received.",
+      "terms": [
+        {
+          "term": "system.generating_purchase_order",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['system.sending_purchase_order']",
+          "missing": [
+            "system.sending_purchase_order"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "system.generating_purchase_order"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "system.waiting_for_delivery": {
+      "operator": "AND",
+      "quote": "After a vendor is selected and confirmed, the system will generate and send a purchase order and wait for the product to be delivered and the invoice received.",
+      "terms": [
+        {
+          "term": "system.sending_purchase_order",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['system.sending_purchase_order', 'system.waiting_for_delivery']",
+          "missing": [
+            "system.sending_purchase_order",
+            "system.waiting_for_delivery"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "system.sending_purchase_order"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "system.waiting_for_invoice": {
+      "operator": "AND",
+      "quote": "After a vendor is selected and confirmed, the system will generate and send a purchase order and wait for the product to be delivered and the invoice received.",
+      "terms": [
+        {
+          "term": "system.waiting_for_delivery",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['system.waiting_for_delivery']",
+          "missing": [
+            "system.waiting_for_delivery"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "system.waiting_for_delivery"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "system.sending_notification": {
+      "operator": "OR",
+      "quote": "In any of the cases, approval, rejection or change required the system will send the user a notification.",
+      "terms": [
+        {
+          "term": "office_supply_request.approved",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['system.sending_notification']",
+          "missing": [
+            "system.sending_notification"
+          ]
+        },
+        {
+          "term": "office_supply_request.rejected",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['office_supply_request.rejected', 'system.sending_notification']",
+          "missing": [
+            "office_supply_request.rejected",
+            "system.sending_notification"
+          ]
+        },
+        {
+          "term": "office_supply_request.change_requested",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['office_supply_request.change_requested', 'system.sending_notification']",
+          "missing": [
+            "office_supply_request.change_requested",
+            "system.sending_notification"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "office_supply_request.approved"
+          ],
+          "status": "UNRESOLVABLE"
+        },
+        {
+          "terms": [
+            "office_supply_request.rejected"
+          ],
+          "status": "UNRESOLVABLE"
+        },
+        {
+          "terms": [
+            "office_supply_request.change_requested"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "supervisor.approving": {
+      "operator": "AND",
+      "quote": "The supervisor must approve or ask for a change, or reject the request.",
+      "terms": [
+        {
+          "term": "office_supply_request.received",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['supervisor.approving']",
+          "missing": [
+            "supervisor.approving"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "office_supply_request.received"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "supervisor.asking_for_change": {
+      "operator": "AND",
+      "quote": "The supervisor must approve or ask for a change, or reject the request.",
+      "terms": [
+        {
+          "term": "office_supply_request.received",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['supervisor.asking_for_change']",
+          "missing": [
+            "supervisor.asking_for_change"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "office_supply_request.received"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "supervisor.rejecting": {
+      "operator": "AND",
+      "quote": "The supervisor must approve or ask for a change, or reject the request.",
+      "terms": [
+        {
+          "term": "office_supply_request.received",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['supervisor.rejecting']",
+          "missing": [
+            "supervisor.rejecting"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "office_supply_request.received"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    }
+  },
+  "report": {
+    "verdict": {
+      "verdict": "NOT_FAITHFUL",
+      "justification": "1 gap(s) found between the source text's requirements and the observed process -- at least one precondition asserted by the text is contradicted by the model's actual sequence of activities.",
+      "scope": "This verdict covers the causal reachability of the requirements expressed in the source text, not the general quality of the process model -- a multiplicity defect (an activity executed more than once due to a mismatched branching structure) is not covered by this verdict, even if the process is otherwise well-formed."
+    },
+    "summary": {
+      "ecarts": 1,
+      "non_verifiable": 7,
+      "conforme": 0
+    },
+    "ecarts": [
+      {
+        "root_cause": "Register office supply request",
+        "quote": "Once the requirement is registered, the request is received by the immediate supervisor of the employee requesting the office supplies.",
+        "explanation": "The process requires that \"Register office supply request\" must occur before \"Register office supply request\" can happen, as stated in the source text: \"Once the requirement is registered, the request is received by the immediate supervisor of the employee requesting the office supplies.\" However, in the observed process, there is no indication that one instance of this activity precedes the other — both exist, but no sequence ensures the required order.",
+        "quote_verbatim": true,
+        "affected_activities": [
+          "Register office supply request"
+        ],
+        "affected_count": 1
+      }
+    ],
+    "non_verifiable": [
+      {
+        "root_cause": "supervisor approving",
+        "quote": "If the request is approved it will go to the purchase department that will be in charge of making quotations (using a subprocess) and select a vendor.",
+        "explanation": "The source text states that a condition must be met before the activity \"Approve office supply request\" can occur, specifically that the supervisor must approve. The quote provided, \"If the request is approved it will go to the purchase department that will be in charge of making quotations (using a subprocess) and select a vendor,\" confirms that approval is required before proceeding, but it does not describe or identify any specific activity in the observed process that corresponds to the supervisor's approval. Since no such activity is visible or described in the observed process, it is not possible to check whether this condition is actually met. Therefore, we cannot confirm or deny that the requirement is satisfied — we simply lack the information needed to verify it. (This same root cause also affects: supervisor approving.)",
+        "quote_verbatim": false,
+        "affected_activities": [
+          "Approve office supply request",
+          "supervisor approving"
+        ],
+        "affected_count": 2
+      },
+      {
+        "root_cause": "supervisor rejecting",
+        "quote": "If the request is rejected the process will end.",
+        "explanation": "The requirement states that the activity \"office supply request rejected\" can only occur if a specific condition is met, as indicated by the quote: \"If the request is rejected the process will end.\" However, this condition could not be linked to any clear activity in the observed process. Because there is no observable activity that corresponds to this condition, it is not possible to determine whether the requirement is satisfied or not. This does not mean the process is correct or incorrect — only that verification is not possible based on the available information. (This same root cause also affects: supervisor rejecting, system sending notification.)",
+        "quote_verbatim": true,
+        "affected_activities": [
+          "office supply request rejected",
+          "supervisor rejecting",
+          "system sending notification"
+        ],
+        "affected_count": 4
+      },
+      {
+        "root_cause": "supervisor asking for change",
+        "quote": "If the request is asked to make a change then it is returned to the petitioner/employee who can review the comments for the change request.",
+        "explanation": "The activity \"office supply request change requested\" requires that a supervisor ask for a change before it can occur.  \nThe source text states: \"If the request is asked to make a change then it is returned to the petitioner/employee who can review the comments for the change request.\"  \nThis condition — a supervisor asking for a change — could not be linked to any clear activity in the observed process, so it is impossible to verify whether it is met or not.  \nNo conclusion about conformance can be drawn; only that verification is not possible based on the available information. (This same root cause also affects: supervisor asking for change, system sending notification.)",
+        "quote_verbatim": true,
+        "affected_activities": [
+          "office supply request change requested",
+          "supervisor asking for change",
+          "system sending notification"
+        ],
+        "affected_count": 4
+      },
+      {
+        "root_cause": "purchase department in charge",
+        "quote": "If the request is approved it will go to the purchase department that will be in charge of making quotations (using a subprocess) and select a vendor.",
+        "explanation": "The requirement states that the activity \"office supply request quotation made\" can only occur if the purchase department is in charge. The source text says: \"If the request is approved it will go to the purchase department that will be in charge of making quotations (using a subprocess) and select a vendor.\" This confirms that a condition — the purchase department being in charge — is required before the quotation activity can happen. However, no clear activity in the observed process shows when or how the purchase department takes charge, so it is impossible to verify whether this condition is actually met before the quotation step occurs. This is not a confirmation or refutation of conformance — only an inability to verify due to missing information. (This same root cause also affects: Generate purchase order, office supply request vendor confirmed, office supply request vendor selected, purchase department choosing different vendor, purchase department in charge, purchase department making quotations, purchase department selecting vendor.)",
+        "quote_verbatim": true,
+        "affected_activities": [
+          "Generate purchase order",
+          "office supply request quotation made",
+          "office supply request vendor confirmed",
+          "office supply request vendor selected",
+          "purchase department choosing different vendor",
+          "purchase department in charge",
+          "purchase department making quotations",
+          "purchase department selecting vendor"
+        ],
+        "affected_count": 14
+      },
+      {
+        "root_cause": "system sending purchase order",
+        "quote": "After a vendor is selected and confirmed, the system will generate and send a purchase order and wait for the product to be delivered and the invoice received.",
+        "explanation": "The requirement states that a vendor must be selected and confirmed before the system can send a purchase order. The source text confirms this condition with the quote: \"After a vendor is selected and confirmed, the system will generate and send a purchase order and wait for the product to be delivered and the invoice received.\" However, no activity in the observed process clearly shows when or how a vendor is selected and confirmed. Because this specific condition cannot be seen or verified in the process steps provided, it is impossible to determine whether the requirement is met or not. This is not a confirmation or refutation of conformance — only an acknowledgment that the necessary information to check it is missing. (This same root cause also affects: Process invoice, Receive products, system sending purchase order, system waiting for delivery.)",
+        "quote_verbatim": true,
+        "affected_activities": [
+          "Process invoice",
+          "Receive products",
+          "office supply request purchase order sent",
+          "system sending purchase order",
+          "system waiting for delivery"
+        ],
+        "affected_count": 8
+      },
+      {
+        "root_cause": "office supply request invoice received",
+        "quote": "After a vendor is selected and confirmed, the system will generate and send a purchase order and wait for the product to be delivered and the invoice received.",
+        "explanation": "The activity \"office supply request invoice received\" requires a condition to be met first, as stated in the source text: \"After a vendor is selected and confirmed, the system will generate and send a purchase order and wait for the product to be delivered and the invoice received.\" However, no clear activity in the observed process corresponds to the necessary condition that must occur before this step. Because the required condition cannot be linked to any observable activity, it is impossible to determine whether it has been satisfied or not. This lack of traceability means we cannot confirm or deny conformance — only that verification is not possible based on the available information.",
+        "quote_verbatim": true,
+        "affected_activities": [
+          "office supply request invoice received"
+        ],
+        "affected_count": 1
+      },
+      {
+        "root_cause": "system sending notification",
+        "quote": "In any case the system will send a notification to let the user know what the result was.",
+        "explanation": "The requirement states that a system notification must be sent before the activity \"Register office supply request\" can occur. The source text includes the quote: \"In any case the system will send a notification to let the user know what the result was.\" This quote confirms that a notification is expected, but it does not specify when or under what circumstances it is sent relative to the activity. Since no clear activity in the observed process can be linked to this notification, it is not possible to verify whether the condition is met before \"Register office supply request\" happens. Therefore, conformance cannot be confirmed or denied based on the available information. (This same root cause also affects: system sending notification.)",
+        "quote_verbatim": true,
+        "affected_activities": [
+          "Register office supply request",
+          "system sending notification"
+        ],
+        "affected_count": 4
+      }
+    ],
+    "conforme": [],
+    "piece_jointe_alignement_brut": {
+      "office_supply_request.received": {
+        "operator": "AND",
+        "quote": "Once the requirement is registered, the request is received by the immediate supervisor of the employee requesting the office supplies.",
+        "terms": [
+          {
+            "term": "office_supply_request.submitted",
+            "status": "VIOLATED",
+            "reason": "both states matched, no path in process",
+            "missing": []
+          }
+        ],
+        "status": "VIOLATED",
+        "clauses": [
+          {
+            "terms": [
+              "office_supply_request.submitted"
+            ],
+            "status": "VIOLATED"
+          }
+        ]
+      },
+      "office_supply_request.approved": {
+        "operator": "AND",
+        "quote": "If the request is approved it will go to the purchase department that will be in charge of making quotations (using a subprocess) and select a vendor.",
+        "terms": [
+          {
+            "term": "supervisor.approving",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['supervisor.approving']",
+            "missing": [
+              "supervisor.approving"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "supervisor.approving"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "office_supply_request.rejected": {
+        "operator": "AND",
+        "quote": "If the request is rejected the process will end.",
+        "terms": [
+          {
+            "term": "supervisor.rejecting",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['supervisor.rejecting', 'office_supply_request.rejected']",
+            "missing": [
+              "supervisor.rejecting",
+              "office_supply_request.rejected"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "supervisor.rejecting"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "office_supply_request.change_requested": {
+        "operator": "AND",
+        "quote": "If the request is asked to make a change then it is returned to the petitioner/employee who can review the comments for the change request.",
+        "terms": [
+          {
+            "term": "supervisor.asking_for_change",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['supervisor.asking_for_change', 'office_supply_request.change_requested']",
+            "missing": [
+              "supervisor.asking_for_change",
+              "office_supply_request.change_requested"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "supervisor.asking_for_change"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "office_supply_request.quotation_made": {
+        "operator": "AND",
+        "quote": "If the request is approved it will go to the purchase department that will be in charge of making quotations (using a subprocess) and select a vendor.",
+        "terms": [
+          {
+            "term": "purchase_department.making_quotations",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['purchase_department.making_quotations', 'office_supply_request.quotation_made']",
+            "missing": [
+              "purchase_department.making_quotations",
+              "office_supply_request.quotation_made"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "purchase_department.making_quotations"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "office_supply_request.vendor_selected": {
+        "operator": "AND",
+        "quote": "If the request is approved it will go to the purchase department that will be in charge of making quotations (using a subprocess) and select a vendor.",
+        "terms": [
+          {
+            "term": "purchase_department.selecting_vendor",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['purchase_department.selecting_vendor', 'office_supply_request.vendor_selected']",
+            "missing": [
+              "purchase_department.selecting_vendor",
+              "office_supply_request.vendor_selected"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "purchase_department.selecting_vendor"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "office_supply_request.vendor_confirmed": {
+        "operator": "AND",
+        "quote": "After a vendor is selected and confirmed, the system will generate and send a purchase order and wait for the product to be delivered and the invoice received.",
+        "terms": [
+          {
+            "term": "office_supply_request.vendor_selected",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['office_supply_request.vendor_selected', 'office_supply_request.vendor_confirmed']",
+            "missing": [
+              "office_supply_request.vendor_selected",
+              "office_supply_request.vendor_confirmed"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "office_supply_request.vendor_selected"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "office_supply_request.purchase_order_sent": {
+        "operator": "AND",
+        "quote": "After a vendor is selected and confirmed, the system will generate and send a purchase order and wait for the product to be delivered and the invoice received.",
+        "terms": [
+          {
+            "term": "system.generating_purchase_order",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['office_supply_request.purchase_order_sent']",
+            "missing": [
+              "office_supply_request.purchase_order_sent"
+            ]
+          },
+          {
+            "term": "system.sending_purchase_order",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['system.sending_purchase_order', 'office_supply_request.purchase_order_sent']",
+            "missing": [
+              "system.sending_purchase_order",
+              "office_supply_request.purchase_order_sent"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "system.generating_purchase_order",
+              "system.sending_purchase_order"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "office_supply_request.product_delivered": {
+        "operator": "AND",
+        "quote": "After a vendor is selected and confirmed, the system will generate and send a purchase order and wait for the product to be delivered and the invoice received.",
+        "terms": [
+          {
+            "term": "system.waiting_for_delivery",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['system.waiting_for_delivery']",
+            "missing": [
+              "system.waiting_for_delivery"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "system.waiting_for_delivery"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "office_supply_request.invoice_received": {
+        "operator": "AND",
+        "quote": "After a vendor is selected and confirmed, the system will generate and send a purchase order and wait for the product to be delivered and the invoice received.",
+        "terms": [
+          {
+            "term": "system.waiting_for_invoice",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['office_supply_request.invoice_received']",
+            "missing": [
+              "office_supply_request.invoice_received"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "system.waiting_for_invoice"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "office_supply_request.notification_sent": {
+        "operator": "AND",
+        "quote": "In any case the system will send a notification to let the user know what the result was.",
+        "terms": [
+          {
+            "term": "system.sending_notification",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['system.sending_notification']",
+            "missing": [
+              "system.sending_notification"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "system.sending_notification"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "purchase_department.in_charge": {
+        "operator": "AND",
+        "quote": "If the request is approved it will go to the purchase department that will be in charge of making quotations (using a subprocess) and select a vendor.",
+        "terms": [
+          {
+            "term": "office_supply_request.approved",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['purchase_department.in_charge']",
+            "missing": [
+              "purchase_department.in_charge"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "office_supply_request.approved"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "purchase_department.making_quotations": {
+        "operator": "AND",
+        "quote": "If the request is approved it will go to the purchase department that will be in charge of making quotations (using a subprocess) and select a vendor.",
+        "terms": [
+          {
+            "term": "purchase_department.in_charge",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['purchase_department.in_charge', 'purchase_department.making_quotations']",
+            "missing": [
+              "purchase_department.in_charge",
+              "purchase_department.making_quotations"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "purchase_department.in_charge"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "purchase_department.selecting_vendor": {
+        "operator": "AND",
+        "quote": "If the request is approved it will go to the purchase department that will be in charge of making quotations (using a subprocess) and select a vendor.",
+        "terms": [
+          {
+            "term": "purchase_department.making_quotations",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['purchase_department.making_quotations', 'purchase_department.selecting_vendor']",
+            "missing": [
+              "purchase_department.making_quotations",
+              "purchase_department.selecting_vendor"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "purchase_department.making_quotations"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "purchase_department.choosing_different_vendor": {
+        "operator": "AND",
+        "quote": "If the vendor is not valid in the system the purchase department will have to choose a different vendor.",
+        "terms": [
+          {
+            "term": "office_supply_request.vendor_selected",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['office_supply_request.vendor_selected', 'purchase_department.choosing_different_vendor']",
+            "missing": [
+              "office_supply_request.vendor_selected",
+              "purchase_department.choosing_different_vendor"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "office_supply_request.vendor_selected"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "system.generating_purchase_order": {
+        "operator": "AND",
+        "quote": "After a vendor is selected and confirmed, the system will generate and send a purchase order and wait for the product to be delivered and the invoice received.",
+        "terms": [
+          {
+            "term": "office_supply_request.vendor_confirmed",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['office_supply_request.vendor_confirmed']",
+            "missing": [
+              "office_supply_request.vendor_confirmed"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "office_supply_request.vendor_confirmed"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "system.sending_purchase_order": {
+        "operator": "AND",
+        "quote": "After a vendor is selected and confirmed, the system will generate and send a purchase order and wait for the product to be delivered and the invoice received.",
+        "terms": [
+          {
+            "term": "system.generating_purchase_order",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['system.sending_purchase_order']",
+            "missing": [
+              "system.sending_purchase_order"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "system.generating_purchase_order"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "system.waiting_for_delivery": {
+        "operator": "AND",
+        "quote": "After a vendor is selected and confirmed, the system will generate and send a purchase order and wait for the product to be delivered and the invoice received.",
+        "terms": [
+          {
+            "term": "system.sending_purchase_order",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['system.sending_purchase_order', 'system.waiting_for_delivery']",
+            "missing": [
+              "system.sending_purchase_order",
+              "system.waiting_for_delivery"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "system.sending_purchase_order"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "system.waiting_for_invoice": {
+        "operator": "AND",
+        "quote": "After a vendor is selected and confirmed, the system will generate and send a purchase order and wait for the product to be delivered and the invoice received.",
+        "terms": [
+          {
+            "term": "system.waiting_for_delivery",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['system.waiting_for_delivery']",
+            "missing": [
+              "system.waiting_for_delivery"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "system.waiting_for_delivery"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "system.sending_notification": {
+        "operator": "OR",
+        "quote": "In any of the cases, approval, rejection or change required the system will send the user a notification.",
+        "terms": [
+          {
+            "term": "office_supply_request.approved",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['system.sending_notification']",
+            "missing": [
+              "system.sending_notification"
+            ]
+          },
+          {
+            "term": "office_supply_request.rejected",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['office_supply_request.rejected', 'system.sending_notification']",
+            "missing": [
+              "office_supply_request.rejected",
+              "system.sending_notification"
+            ]
+          },
+          {
+            "term": "office_supply_request.change_requested",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['office_supply_request.change_requested', 'system.sending_notification']",
+            "missing": [
+              "office_supply_request.change_requested",
+              "system.sending_notification"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "office_supply_request.approved"
+            ],
+            "status": "UNRESOLVABLE"
+          },
+          {
+            "terms": [
+              "office_supply_request.rejected"
+            ],
+            "status": "UNRESOLVABLE"
+          },
+          {
+            "terms": [
+              "office_supply_request.change_requested"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "supervisor.approving": {
+        "operator": "AND",
+        "quote": "The supervisor must approve or ask for a change, or reject the request.",
+        "terms": [
+          {
+            "term": "office_supply_request.received",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['supervisor.approving']",
+            "missing": [
+              "supervisor.approving"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "office_supply_request.received"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "supervisor.asking_for_change": {
+        "operator": "AND",
+        "quote": "The supervisor must approve or ask for a change, or reject the request.",
+        "terms": [
+          {
+            "term": "office_supply_request.received",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['supervisor.asking_for_change']",
+            "missing": [
+              "supervisor.asking_for_change"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "office_supply_request.received"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "supervisor.rejecting": {
+        "operator": "AND",
+        "quote": "The supervisor must approve or ask for a change, or reject the request.",
+        "terms": [
+          {
+            "term": "office_supply_request.received",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['supervisor.rejecting']",
+            "missing": [
+              "supervisor.rejecting"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "office_supply_request.received"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      }
+    }
+  },
+  "errors": []
+}

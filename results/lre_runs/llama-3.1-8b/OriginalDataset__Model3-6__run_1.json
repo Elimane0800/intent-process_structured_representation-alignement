@@ -1,0 +1,385 @@
+{
+  "case_name": "OriginalDataset/Model3-6",
+  "text": "When a claim is received, it is first checked whether the claimant is insured by the organization. If not, the claimant is informed that the claim must be rejected. Otherwise, the severity of the claim is evaluated. Based on the outcome (simple or complex claims), relevant forms are sent to the claimant. Once the forms are returned, they are checked for completeness. If the forms provide all relevant details, the claim is registered in the Claims Management system, which ends the Claims Notification process. Otherwise, the claimant is informed to update the forms. Upon reception of the updated forms, they are checked again.\n",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "llama-3.1-8b",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "llama-3.1-8b",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/../datasets/lre/alignment_model_text-master/datasets/OriginalDataset/Models/Model3-6.bpmn",
+  "report_model": "llama-3.1-8b",
+  "candidates": {
+    "claim": {
+      "states": [
+        "simple",
+        "complex"
+      ],
+      "exclusive_groups": [
+        [
+          "simple",
+          "complex"
+        ]
+      ],
+      "concurrent_with": []
+    },
+    "claimant": {
+      "states": [
+        "insured",
+        "informed"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "claimant_forms": {
+      "states": [],
+      "exclusive_groups": [],
+      "concurrent_with": [
+        "claim"
+      ]
+    },
+    "Claims_Notification_process": {
+      "states": [
+        "in_progress",
+        "complete"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "Claims_Management_system": {
+      "states": [
+        "active"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    }
+  },
+  "validation_report": {
+    "claim": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "claim"
+    },
+    "claimant": {
+      "f_lex": "ACTOR",
+      "kept": false,
+      "head_used": "claimant"
+    },
+    "claimant_forms": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "forms"
+    },
+    "Claims_Notification_process": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "process"
+    },
+    "Claims_Management_system": {
+      "f_lex": "INDETERMINATE",
+      "kept": true,
+      "head_used": "system"
+    },
+    "__meta__": {
+      "total_candidates": 5,
+      "indeterminate_kept_count": 1
+    }
+  },
+  "exclusive_groups_report": {
+    "accepted": [
+      {
+        "entity": "claim",
+        "states": [
+          "simple",
+          "complex"
+        ],
+        "quote": "Based on the outcome (simple or complex claims)"
+      }
+    ],
+    "rejected": [
+      {
+        "entity": "claim",
+        "states": [
+          "rejected",
+          "registered"
+        ],
+        "quote": "If not, the claimant is informed that the claim must be rejected. Otherwise, the claim is registered",
+        "reason": "references a state outside this entity's own states list"
+      }
+    ]
+  },
+  "state_space": {
+    "claim": {
+      "states": [
+        "simple",
+        "complex"
+      ],
+      "exclusive_groups": [
+        [
+          "simple",
+          "complex"
+        ]
+      ],
+      "concurrent_with": []
+    },
+    "claimant_form": {
+      "states": [],
+      "exclusive_groups": [],
+      "concurrent_with": [
+        "claim"
+      ]
+    },
+    "claim_notification_process": {
+      "states": [
+        "in_progress",
+        "complete"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "claim_management_system": {
+      "states": [
+        "active"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    }
+  },
+  "state_space_dedup": {
+    "merged": {},
+    "ambiguous_not_merged": {}
+  },
+  "raw_preconditions": {
+    "claim": {
+      "precondition": "claimant.insured OR claim_notification_process.complete",
+      "quote": [
+        "If not, the claimant is informed that the claim must be rejected.",
+        "Otherwise, the severity of the claim is evaluated."
+      ]
+    },
+    "claimant_form": {
+      "precondition": "UNRESOLVED",
+      "quote": null
+    },
+    "claim_management_system": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "claim_notification_process": {
+      "precondition": "INITIAL",
+      "quote": null
+    }
+  },
+  "validated_preconditions": {
+    "claim": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "DOWNGRADED",
+      "reason": "malformed or unknown target key: 'claim' is not a valid entity.state of the state space"
+    },
+    "claimant_form": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "DOWNGRADED",
+      "reason": "malformed or unknown target key: 'claimant_form' is not a valid entity.state of the state space"
+    },
+    "claim_management_system": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "DOWNGRADED",
+      "reason": "malformed or unknown target key: 'claim_management_system' is not a valid entity.state of the state space"
+    },
+    "claim_notification_process": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "DOWNGRADED",
+      "reason": "malformed or unknown target key: 'claim_notification_process' is not a valid entity.state of the state space"
+    }
+  },
+  "precondition_cycles": [],
+  "branch_conflicts": [],
+  "reference_graph": {
+    "nodes": [
+      {
+        "id": "claim.simple",
+        "weight": 0.0
+      },
+      {
+        "id": "claim.complex",
+        "weight": 0.0
+      },
+      {
+        "id": "claim_notification_process.in_progress",
+        "weight": 0.0
+      },
+      {
+        "id": "claim_notification_process.complete",
+        "weight": 0.0
+      },
+      {
+        "id": "claim_management_system.active",
+        "weight": 0.0
+      }
+    ],
+    "edges": [],
+    "cycles": [],
+    "branch_conflicts": [],
+    "exclusive_pairs": [
+      {
+        "entity": "claim",
+        "nodes": [
+          "claim.simple",
+          "claim.complex"
+        ]
+      }
+    ]
+  },
+  "dfg_edges": [
+    {
+      "source_id": "Task_3",
+      "source_label": "Send relevant forms",
+      "target_id": "Task_4",
+      "target_label": "Check for completeness",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_2",
+      "source_label": "Evaluate severity",
+      "target_id": "Task_3",
+      "target_label": "Send relevant forms",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_0",
+      "source_label": "Check customer  details",
+      "target_id": "Task_2",
+      "target_label": "Evaluate severity",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_0",
+      "source_label": "Check customer  details",
+      "target_id": "Task_1",
+      "target_label": "Reject claim",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_4",
+      "source_label": "Check for completeness",
+      "target_id": "Task_3",
+      "target_label": "Send relevant forms",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_4",
+      "source_label": "Check for completeness",
+      "target_id": "Task_5",
+      "target_label": "Register claim",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "Send relevant forms",
+      "subject_id": "Task_3",
+      "predicate": "follows",
+      "object": "Check for completeness",
+      "object_id": "Task_4"
+    },
+    {
+      "subject": "Evaluate severity",
+      "subject_id": "Task_2",
+      "predicate": "follows",
+      "object": "Send relevant forms",
+      "object_id": "Task_3"
+    },
+    {
+      "subject": "Check customer  details",
+      "subject_id": "Task_0",
+      "predicate": "follows",
+      "object": "Evaluate severity",
+      "object_id": "Task_2"
+    },
+    {
+      "subject": "Check customer  details",
+      "subject_id": "Task_0",
+      "predicate": "follows",
+      "object": "Reject claim",
+      "object_id": "Task_1"
+    },
+    {
+      "subject": "Check for completeness",
+      "subject_id": "Task_4",
+      "predicate": "follows",
+      "object": "Send relevant forms",
+      "object_id": "Task_3"
+    },
+    {
+      "subject": "Check for completeness",
+      "subject_id": "Task_4",
+      "predicate": "follows",
+      "object": "Register claim",
+      "object_id": "Task_5"
+    }
+  ],
+  "matches": {
+    "Task_3": {
+      "activity_label": "Send relevant forms",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_4": {
+      "activity_label": "Check for completeness",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_2": {
+      "activity_label": "Evaluate severity",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_0": {
+      "activity_label": "Check customer  details",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_1": {
+      "activity_label": "Reject claim",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_5": {
+      "activity_label": "Register claim",
+      "matches": [],
+      "clusters": []
+    }
+  },
+  "process_graph": [],
+  "alignment": {},
+  "report": {
+    "verdict": {
+      "verdict": "FAITHFUL",
+      "justification": "Every non-trivial precondition asserted by the source text was confirmed in the observed process's sequence of activities.",
+      "scope": "This verdict covers the causal reachability of the requirements expressed in the source text, not the general quality of the process model -- a multiplicity defect (an activity executed more than once due to a mismatched branching structure) is not covered by this verdict, even if the process is otherwise well-formed."
+    },
+    "summary": {
+      "ecarts": 0,
+      "non_verifiable": 0,
+      "conforme": 0
+    },
+    "ecarts": [],
+    "non_verifiable": [],
+    "conforme": [],
+    "piece_jointe_alignement_brut": {}
+  },
+  "errors": []
+}

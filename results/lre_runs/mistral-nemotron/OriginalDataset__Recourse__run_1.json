@@ -1,0 +1,1353 @@
+{
+  "case_name": "OriginalDataset/Recourse",
+  "text": "If an insurant could be possibly subrogated against, I get information about that.\nI check that case and if the possibility is really there, I send a request for payment to the insurant and make me a reminder.\nIf recourse is not possible, I close the case.\nWhen we receive the money, I make a booking and close the case.\nIf the insurant disagrees with the recourse, I’ll have to check the reasoning of that.\nIf he is right, I simply close the case. \nIf he is wrong, I forward the case to a collection agency.\nIt the deadline for disagreement is reached and we haven’t received any money, I forward the case to the collection agency as well.\n",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "mistral-nemotron",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "mistral-nemotron",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/../datasets/lre/alignment_model_text-master/datasets/OriginalDataset/Models/Recourse.bpmn",
+  "report_model": "mistral-nemotron",
+  "candidates": {
+    "insurant": {
+      "states": [
+        "subrogated_against",
+        "requested_for_payment",
+        "disagreed",
+        "right",
+        "wrong"
+      ],
+      "exclusive_groups": [
+        [
+          "subrogated_against",
+          "disagreed"
+        ],
+        [
+          "right",
+          "wrong"
+        ]
+      ],
+      "concurrent_with": []
+    },
+    "case": {
+      "states": [
+        "checked",
+        "closed",
+        "forwarded_to_collection_agency"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": [
+        "reminder"
+      ]
+    },
+    "request_for_payment": {
+      "states": [
+        "sent"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "reminder": {
+      "states": [
+        "made"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": [
+        "case"
+      ]
+    },
+    "booking": {
+      "states": [
+        "made"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "collection_agency": {
+      "states": [
+        "forwarded_to"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    }
+  },
+  "validation_report": {
+    "insurant": {
+      "f_lex": "INDETERMINATE",
+      "kept": true,
+      "head_used": "insurant"
+    },
+    "case": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "case"
+    },
+    "request_for_payment": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "payment"
+    },
+    "reminder": {
+      "f_lex": "INDETERMINATE",
+      "kept": true,
+      "head_used": "reminder"
+    },
+    "booking": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "booking"
+    },
+    "collection_agency": {
+      "f_lex": "ACTOR",
+      "kept": false,
+      "head_used": "agency"
+    },
+    "__meta__": {
+      "total_candidates": 6,
+      "indeterminate_kept_count": 2
+    }
+  },
+  "exclusive_groups_report": {
+    "accepted": [
+      {
+        "entity": "insurant",
+        "states": [
+          "subrogated_against",
+          "disagreed"
+        ],
+        "quote": "If an insurant could be possibly subrogated against"
+      },
+      {
+        "entity": "insurant",
+        "states": [
+          "right",
+          "wrong"
+        ],
+        "quote": "If he is right, I simply close the case. If he is wrong"
+      }
+    ],
+    "rejected": []
+  },
+  "state_space": {
+    "insurant": {
+      "states": [
+        "subrogated_against",
+        "requested_for_payment",
+        "disagreed",
+        "right",
+        "wrong"
+      ],
+      "exclusive_groups": [
+        [
+          "subrogated_against",
+          "disagreed"
+        ],
+        [
+          "right",
+          "wrong"
+        ]
+      ],
+      "concurrent_with": []
+    },
+    "case": {
+      "states": [
+        "checked",
+        "closed",
+        "forwarded_to_collection_agency"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": [
+        "reminder"
+      ]
+    },
+    "request_for_payment": {
+      "states": [
+        "sent"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "reminder": {
+      "states": [
+        "made"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": [
+        "case"
+      ]
+    },
+    "booking": {
+      "states": [
+        "made"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    }
+  },
+  "state_space_dedup": {
+    "merged": {},
+    "ambiguous_not_merged": {}
+  },
+  "raw_preconditions": {
+    "insurant.subrogated_against": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "insurant.requested_for_payment": {
+      "precondition": "insurant.subrogated_against AND case.checked",
+      "quote": "I check that case and if the possibility is really there, I send a request for payment to the insurant and make me a reminder."
+    },
+    "insurant.disagreed": {
+      "precondition": "request_for_payment.sent",
+      "quote": "If the insurant disagrees with the recourse, I’ll have to check the reasoning of that."
+    },
+    "insurant.right": {
+      "precondition": "insurant.disagreed",
+      "quote": "If he is right, I simply close the case."
+    },
+    "insurant.wrong": {
+      "precondition": "insurant.disagreed",
+      "quote": "If he is wrong, I forward the case to a collection agency."
+    },
+    "case.checked": {
+      "precondition": "insurant.subrogated_against",
+      "quote": "I check that case and if the possibility is really there, I send a request for payment to the insurant and make me a reminder."
+    },
+    "case.closed": {
+      "precondition": "(insurant.right) OR (NOT insurant.subrogated_against) OR (booking.made)",
+      "quote": [
+        "If he is right, I simply close the case.",
+        "If recourse is not possible, I close the case.",
+        "When we receive the money, I make a booking and close the case."
+      ]
+    },
+    "case.forwarded_to_collection_agency": {
+      "precondition": "(insurant.wrong) OR (NOT booking.made AND NOT insurant.disagreed AND request_for_payment.sent)",
+      "quote": [
+        "If he is wrong, I forward the case to a collection agency.",
+        "It the deadline for disagreement is reached and we haven’t received any money, I forward the case to the collection agency as well."
+      ]
+    },
+    "request_for_payment.sent": {
+      "precondition": "insurant.subrogated_against AND case.checked",
+      "quote": "I check that case and if the possibility is really there, I send a request for payment to the insurant and make me a reminder."
+    },
+    "reminder.made": {
+      "precondition": "insurant.subrogated_against AND case.checked",
+      "quote": "I check that case and if the possibility is really there, I send a request for payment to the insurant and make me a reminder."
+    },
+    "booking.made": {
+      "precondition": "request_for_payment.sent",
+      "quote": "When we receive the money, I make a booking and close the case."
+    }
+  },
+  "validated_preconditions": {
+    "insurant.subrogated_against": {
+      "precondition": "INITIAL",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "insurant.requested_for_payment": {
+      "precondition": "insurant.subrogated_against AND case.checked",
+      "quote": "I check that case and if the possibility is really there, I send a request for payment to the insurant and make me a reminder.",
+      "status": "OK",
+      "reason": null
+    },
+    "insurant.disagreed": {
+      "precondition": "request_for_payment.sent",
+      "quote": "If the insurant disagrees with the recourse, I’ll have to check the reasoning of that.",
+      "status": "OK",
+      "reason": null
+    },
+    "insurant.right": {
+      "precondition": "insurant.disagreed",
+      "quote": "If he is right, I simply close the case.",
+      "status": "OK",
+      "reason": null
+    },
+    "insurant.wrong": {
+      "precondition": "insurant.disagreed",
+      "quote": "If he is wrong, I forward the case to a collection agency.",
+      "status": "OK",
+      "reason": null
+    },
+    "case.checked": {
+      "precondition": "insurant.subrogated_against",
+      "quote": "I check that case and if the possibility is really there, I send a request for payment to the insurant and make me a reminder.",
+      "status": "OK",
+      "reason": null
+    },
+    "case.closed": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "DOWNGRADED",
+      "reason": "parenthesized clause must contain at least two AND-terms: '(insurant.right)'",
+      "retried": true
+    },
+    "case.forwarded_to_collection_agency": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "DOWNGRADED",
+      "reason": "parenthesized clause must contain at least two AND-terms: '(insurant.wrong)'"
+    },
+    "request_for_payment.sent": {
+      "precondition": "insurant.subrogated_against AND case.checked",
+      "quote": "I check that case and if the possibility is really there, I send a request for payment to the insurant and make me a reminder.",
+      "status": "OK",
+      "reason": null
+    },
+    "reminder.made": {
+      "precondition": "insurant.subrogated_against AND case.checked",
+      "quote": "I check that case and if the possibility is really there, I send a request for payment to the insurant and make me a reminder.",
+      "status": "OK",
+      "reason": null
+    },
+    "booking.made": {
+      "precondition": "request_for_payment.sent",
+      "quote": "When we receive the money, I make a booking and close the case.",
+      "status": "OK",
+      "reason": null
+    }
+  },
+  "precondition_cycles": [],
+  "branch_conflicts": [
+    {
+      "entity": "insurant",
+      "exclusive_group": [
+        "right",
+        "wrong"
+      ],
+      "conflicting_targets": [
+        "insurant.right",
+        "insurant.wrong"
+      ],
+      "shared_precondition": "insurant.disagreed",
+      "reason": "targets marked mutually exclusive in the state space share the exact same accepted precondition -- reaching it would trigger both branches at once"
+    }
+  ],
+  "reference_graph": {
+    "nodes": [
+      {
+        "id": "insurant.subrogated_against",
+        "weight": 1.0
+      },
+      {
+        "id": "insurant.requested_for_payment",
+        "weight": 0.5
+      },
+      {
+        "id": "insurant.disagreed",
+        "weight": 0.75
+      },
+      {
+        "id": "insurant.right",
+        "weight": 0.25
+      },
+      {
+        "id": "insurant.wrong",
+        "weight": 0.25
+      },
+      {
+        "id": "case.checked",
+        "weight": 1.0
+      },
+      {
+        "id": "case.closed",
+        "weight": 0.0
+      },
+      {
+        "id": "case.forwarded_to_collection_agency",
+        "weight": 0.0
+      },
+      {
+        "id": "request_for_payment.sent",
+        "weight": 1.0
+      },
+      {
+        "id": "reminder.made",
+        "weight": 0.5
+      },
+      {
+        "id": "booking.made",
+        "weight": 0.25
+      }
+    ],
+    "edges": [
+      {
+        "from": "insurant.subrogated_against",
+        "to": "insurant.requested_for_payment",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "I check that case and if the possibility is really there, I send a request for payment to the insurant and make me a reminder.",
+        "negated": false
+      },
+      {
+        "from": "case.checked",
+        "to": "insurant.requested_for_payment",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "I check that case and if the possibility is really there, I send a request for payment to the insurant and make me a reminder.",
+        "negated": false
+      },
+      {
+        "from": "request_for_payment.sent",
+        "to": "insurant.disagreed",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "If the insurant disagrees with the recourse, I’ll have to check the reasoning of that.",
+        "negated": false
+      },
+      {
+        "from": "insurant.disagreed",
+        "to": "insurant.right",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "If he is right, I simply close the case.",
+        "negated": false
+      },
+      {
+        "from": "insurant.disagreed",
+        "to": "insurant.wrong",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "If he is wrong, I forward the case to a collection agency.",
+        "negated": false
+      },
+      {
+        "from": "insurant.subrogated_against",
+        "to": "case.checked",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "I check that case and if the possibility is really there, I send a request for payment to the insurant and make me a reminder.",
+        "negated": false
+      },
+      {
+        "from": "insurant.subrogated_against",
+        "to": "request_for_payment.sent",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "I check that case and if the possibility is really there, I send a request for payment to the insurant and make me a reminder.",
+        "negated": false
+      },
+      {
+        "from": "case.checked",
+        "to": "request_for_payment.sent",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "I check that case and if the possibility is really there, I send a request for payment to the insurant and make me a reminder.",
+        "negated": false
+      },
+      {
+        "from": "insurant.subrogated_against",
+        "to": "reminder.made",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "I check that case and if the possibility is really there, I send a request for payment to the insurant and make me a reminder.",
+        "negated": false
+      },
+      {
+        "from": "case.checked",
+        "to": "reminder.made",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "I check that case and if the possibility is really there, I send a request for payment to the insurant and make me a reminder.",
+        "negated": false
+      },
+      {
+        "from": "request_for_payment.sent",
+        "to": "booking.made",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "When we receive the money, I make a booking and close the case.",
+        "negated": false
+      }
+    ],
+    "cycles": [],
+    "branch_conflicts": [
+      {
+        "entity": "insurant",
+        "exclusive_group": [
+          "right",
+          "wrong"
+        ],
+        "conflicting_targets": [
+          "insurant.right",
+          "insurant.wrong"
+        ],
+        "shared_precondition": "insurant.disagreed",
+        "reason": "targets marked mutually exclusive in the state space share the exact same accepted precondition -- reaching it would trigger both branches at once"
+      }
+    ],
+    "exclusive_pairs": [
+      {
+        "entity": "insurant",
+        "nodes": [
+          "insurant.subrogated_against",
+          "insurant.disagreed"
+        ]
+      },
+      {
+        "entity": "insurant",
+        "nodes": [
+          "insurant.right",
+          "insurant.wrong"
+        ]
+      }
+    ]
+  },
+  "dfg_edges": [
+    {
+      "source_id": "Task_12lthpj",
+      "source_label": "send reminder",
+      "target_id": "IntermediateCatchEvent_037r6f2",
+      "target_label": "Reminder  is due",
+      "gateway_context": [
+        "EventBasedGateway"
+      ]
+    },
+    {
+      "source_id": "Task_12lthpj",
+      "source_label": "send reminder",
+      "target_id": "IntermediateCatchEvent_1ias0p2",
+      "target_label": "disagreement letter received",
+      "gateway_context": [
+        "EventBasedGateway"
+      ]
+    },
+    {
+      "source_id": "Task_12lthpj",
+      "source_label": "send reminder",
+      "target_id": "IntermediateCatchEvent_0d430z1",
+      "target_label": "Money received",
+      "gateway_context": [
+        "EventBasedGateway"
+      ]
+    },
+    {
+      "source_id": "Task_1bwmf45",
+      "source_label": "make booking",
+      "target_id": "Task_0yan60f",
+      "target_label": "close case",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_02fdytg",
+      "source_label": "send request for payment",
+      "target_id": "Task_12lthpj",
+      "target_label": "send reminder",
+      "gateway_context": []
+    },
+    {
+      "source_id": "IntermediateCatchEvent_1ias0p2",
+      "source_label": "disagreement letter received",
+      "target_id": "Task_0eti3m2",
+      "target_label": "check reasoning",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_0iirfhd",
+      "source_label": "check case",
+      "target_id": "Task_02fdytg",
+      "target_label": "send request for payment",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "yes"
+      ]
+    },
+    {
+      "source_id": "Task_0iirfhd",
+      "source_label": "check case",
+      "target_id": "Task_04aofbe",
+      "target_label": "close case",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "no"
+      ]
+    },
+    {
+      "source_id": "IntermediateCatchEvent_0d430z1",
+      "source_label": "Money received",
+      "target_id": "Task_1bwmf45",
+      "target_label": "make booking",
+      "gateway_context": []
+    },
+    {
+      "source_id": "IntermediateCatchEvent_037r6f2",
+      "source_label": "Reminder  is due",
+      "target_id": "Task_1w7bb1w",
+      "target_label": "hand over to collection agency",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_0eti3m2",
+      "source_label": "check reasoning",
+      "target_id": "Task_1w7bb1w",
+      "target_label": "hand over to collection agency",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "no"
+      ]
+    },
+    {
+      "source_id": "Task_0eti3m2",
+      "source_label": "check reasoning",
+      "target_id": "Task_1qlbv5i",
+      "target_label": "close case",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "yes"
+      ]
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "send reminder",
+      "subject_id": "Task_12lthpj",
+      "predicate": "follows",
+      "object": "Reminder  is due",
+      "object_id": "IntermediateCatchEvent_037r6f2"
+    },
+    {
+      "subject": "send reminder",
+      "subject_id": "Task_12lthpj",
+      "predicate": "follows",
+      "object": "disagreement letter received",
+      "object_id": "IntermediateCatchEvent_1ias0p2"
+    },
+    {
+      "subject": "send reminder",
+      "subject_id": "Task_12lthpj",
+      "predicate": "follows",
+      "object": "Money received",
+      "object_id": "IntermediateCatchEvent_0d430z1"
+    },
+    {
+      "subject": "make booking",
+      "subject_id": "Task_1bwmf45",
+      "predicate": "follows",
+      "object": "close case",
+      "object_id": "Task_0yan60f"
+    },
+    {
+      "subject": "send request for payment",
+      "subject_id": "Task_02fdytg",
+      "predicate": "follows",
+      "object": "send reminder",
+      "object_id": "Task_12lthpj"
+    },
+    {
+      "subject": "disagreement letter received",
+      "subject_id": "IntermediateCatchEvent_1ias0p2",
+      "predicate": "follows",
+      "object": "check reasoning",
+      "object_id": "Task_0eti3m2"
+    },
+    {
+      "subject": "check case",
+      "subject_id": "Task_0iirfhd",
+      "predicate": "follows",
+      "object": "send request for payment",
+      "object_id": "Task_02fdytg"
+    },
+    {
+      "subject": "check case",
+      "subject_id": "Task_0iirfhd",
+      "predicate": "follows",
+      "object": "close case",
+      "object_id": "Task_04aofbe"
+    },
+    {
+      "subject": "Money received",
+      "subject_id": "IntermediateCatchEvent_0d430z1",
+      "predicate": "follows",
+      "object": "make booking",
+      "object_id": "Task_1bwmf45"
+    },
+    {
+      "subject": "Reminder  is due",
+      "subject_id": "IntermediateCatchEvent_037r6f2",
+      "predicate": "follows",
+      "object": "hand over to collection agency",
+      "object_id": "Task_1w7bb1w"
+    },
+    {
+      "subject": "check reasoning",
+      "subject_id": "Task_0eti3m2",
+      "predicate": "follows",
+      "object": "hand over to collection agency",
+      "object_id": "Task_1w7bb1w"
+    },
+    {
+      "subject": "check reasoning",
+      "subject_id": "Task_0eti3m2",
+      "predicate": "follows",
+      "object": "close case",
+      "object_id": "Task_1qlbv5i"
+    }
+  ],
+  "matches": {
+    "Task_12lthpj": {
+      "activity_label": "send reminder",
+      "matches": [
+        {
+          "match": "reminder.made",
+          "score": 0.4355
+        }
+      ],
+      "clusters": [
+        [
+          "reminder.made"
+        ]
+      ]
+    },
+    "IntermediateCatchEvent_037r6f2": {
+      "activity_label": "Reminder  is due",
+      "matches": [
+        {
+          "match": "reminder.made",
+          "score": 0.4236
+        }
+      ],
+      "clusters": [
+        [
+          "reminder.made"
+        ]
+      ]
+    },
+    "IntermediateCatchEvent_1ias0p2": {
+      "activity_label": "disagreement letter received",
+      "matches": [],
+      "clusters": []
+    },
+    "IntermediateCatchEvent_0d430z1": {
+      "activity_label": "Money received",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_1bwmf45": {
+      "activity_label": "make booking",
+      "matches": [
+        {
+          "match": "booking.made",
+          "score": 0.829
+        }
+      ],
+      "clusters": [
+        [
+          "booking.made"
+        ]
+      ]
+    },
+    "Task_0yan60f": {
+      "activity_label": "close case",
+      "matches": [
+        {
+          "match": "case.closed",
+          "score": 0.732
+        }
+      ],
+      "clusters": [
+        [
+          "case.closed"
+        ]
+      ]
+    },
+    "Task_02fdytg": {
+      "activity_label": "send request for payment",
+      "matches": [
+        {
+          "match": "request_for_payment.sent",
+          "score": 0.5109
+        }
+      ],
+      "clusters": [
+        [
+          "request_for_payment.sent"
+        ]
+      ]
+    },
+    "Task_0eti3m2": {
+      "activity_label": "check reasoning",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_0iirfhd": {
+      "activity_label": "check case",
+      "matches": [
+        {
+          "match": "case.checked",
+          "score": 0.3873
+        }
+      ],
+      "clusters": [
+        [
+          "case.checked"
+        ]
+      ]
+    },
+    "Task_04aofbe": {
+      "activity_label": "close case",
+      "matches": [
+        {
+          "match": "case.closed",
+          "score": 0.3588
+        }
+      ],
+      "clusters": [
+        [
+          "case.closed"
+        ]
+      ]
+    },
+    "Task_1w7bb1w": {
+      "activity_label": "hand over to collection agency",
+      "matches": [
+        {
+          "match": "case.forwarded_to_collection_agency",
+          "score": 0.4992
+        }
+      ],
+      "clusters": [
+        [
+          "case.forwarded_to_collection_agency"
+        ]
+      ]
+    },
+    "Task_1qlbv5i": {
+      "activity_label": "close case",
+      "matches": [
+        {
+          "match": "case.closed",
+          "score": 0.3987
+        }
+      ],
+      "clusters": [
+        [
+          "case.closed"
+        ]
+      ]
+    }
+  },
+  "process_graph": [
+    {
+      "from": "reminder.made",
+      "to": "reminder.made",
+      "activity_from": "send reminder",
+      "activity_to": "Reminder  is due",
+      "source_id": "Task_12lthpj",
+      "target_id": "IntermediateCatchEvent_037r6f2"
+    },
+    {
+      "from": "booking.made",
+      "to": "case.closed",
+      "activity_from": "make booking",
+      "activity_to": "close case",
+      "source_id": "Task_1bwmf45",
+      "target_id": "Task_0yan60f"
+    },
+    {
+      "from": "request_for_payment.sent",
+      "to": "reminder.made",
+      "activity_from": "send request for payment",
+      "activity_to": "send reminder",
+      "source_id": "Task_02fdytg",
+      "target_id": "Task_12lthpj"
+    },
+    {
+      "from": "case.checked",
+      "to": "request_for_payment.sent",
+      "activity_from": "check case",
+      "activity_to": "send request for payment",
+      "source_id": "Task_0iirfhd",
+      "target_id": "Task_02fdytg"
+    },
+    {
+      "from": "case.checked",
+      "to": "case.closed",
+      "activity_from": "check case",
+      "activity_to": "close case",
+      "source_id": "Task_0iirfhd",
+      "target_id": "Task_04aofbe"
+    },
+    {
+      "from": "reminder.made",
+      "to": "case.forwarded_to_collection_agency",
+      "activity_from": "Reminder  is due",
+      "activity_to": "hand over to collection agency",
+      "source_id": "IntermediateCatchEvent_037r6f2",
+      "target_id": "Task_1w7bb1w"
+    }
+  ],
+  "alignment": {
+    "insurant.requested_for_payment": {
+      "operator": "AND",
+      "quote": "I check that case and if the possibility is really there, I send a request for payment to the insurant and make me a reminder.",
+      "terms": [
+        {
+          "term": "insurant.subrogated_against",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['insurant.subrogated_against', 'insurant.requested_for_payment']",
+          "missing": [
+            "insurant.subrogated_against",
+            "insurant.requested_for_payment"
+          ]
+        },
+        {
+          "term": "case.checked",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['insurant.requested_for_payment']",
+          "missing": [
+            "insurant.requested_for_payment"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "insurant.subrogated_against",
+            "case.checked"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "insurant.disagreed": {
+      "operator": "AND",
+      "quote": "If the insurant disagrees with the recourse, I’ll have to check the reasoning of that.",
+      "terms": [
+        {
+          "term": "request_for_payment.sent",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['insurant.disagreed']",
+          "missing": [
+            "insurant.disagreed"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "request_for_payment.sent"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "insurant.right": {
+      "operator": "AND",
+      "quote": "If he is right, I simply close the case.",
+      "terms": [
+        {
+          "term": "insurant.disagreed",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['insurant.disagreed', 'insurant.right']",
+          "missing": [
+            "insurant.disagreed",
+            "insurant.right"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "insurant.disagreed"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "insurant.wrong": {
+      "operator": "AND",
+      "quote": "If he is wrong, I forward the case to a collection agency.",
+      "terms": [
+        {
+          "term": "insurant.disagreed",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['insurant.disagreed', 'insurant.wrong']",
+          "missing": [
+            "insurant.disagreed",
+            "insurant.wrong"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "insurant.disagreed"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "case.checked": {
+      "operator": "AND",
+      "quote": "I check that case and if the possibility is really there, I send a request for payment to the insurant and make me a reminder.",
+      "terms": [
+        {
+          "term": "insurant.subrogated_against",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['insurant.subrogated_against']",
+          "missing": [
+            "insurant.subrogated_against"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "insurant.subrogated_against"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "request_for_payment.sent": {
+      "operator": "AND",
+      "quote": "I check that case and if the possibility is really there, I send a request for payment to the insurant and make me a reminder.",
+      "terms": [
+        {
+          "term": "insurant.subrogated_against",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['insurant.subrogated_against']",
+          "missing": [
+            "insurant.subrogated_against"
+          ]
+        },
+        {
+          "term": "case.checked",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "insurant.subrogated_against",
+            "case.checked"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "reminder.made": {
+      "operator": "AND",
+      "quote": "I check that case and if the possibility is really there, I send a request for payment to the insurant and make me a reminder.",
+      "terms": [
+        {
+          "term": "insurant.subrogated_against",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['insurant.subrogated_against']",
+          "missing": [
+            "insurant.subrogated_against"
+          ]
+        },
+        {
+          "term": "case.checked",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "insurant.subrogated_against",
+            "case.checked"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "booking.made": {
+      "operator": "AND",
+      "quote": "When we receive the money, I make a booking and close the case.",
+      "terms": [
+        {
+          "term": "request_for_payment.sent",
+          "status": "VIOLATED",
+          "reason": "both states matched, no path in process",
+          "missing": []
+        }
+      ],
+      "status": "VIOLATED",
+      "clauses": [
+        {
+          "terms": [
+            "request_for_payment.sent"
+          ],
+          "status": "VIOLATED"
+        }
+      ]
+    }
+  },
+  "report": {
+    "verdict": {
+      "verdict": "FAITHFUL_WITH_RESERVATIONS",
+      "justification": "No gap found, but 2 requirement(s) from the text could not be associated with any clear activity in the observed process -- neither confirmed nor refuted. This verdict is NOT a confirmation of full faithfulness.",
+      "scope": "This verdict covers the causal reachability of the requirements expressed in the source text, not the general quality of the process model -- a multiplicity defect (an activity executed more than once due to a mismatched branching structure) is not covered by this verdict, even if the process is otherwise well-formed."
+    },
+    "summary": {
+      "ecarts": 0,
+      "non_verifiable": 2,
+      "conforme": 2
+    },
+    "ecarts": [],
+    "non_verifiable": [
+      {
+        "root_cause": "insurant subrogated against",
+        "quote": "I check that case and if the possibility is really there, I send a request for payment to the insurant and make me a reminder.",
+        "explanation": "The activity \"insurant requested for payment\" requires that the insurant has already been \"subrogated against,\" but the observed process does not clearly show when or how this condition is met.\n\nThe source text states: *\"I check that case and if the possibility is really there, I send a request for payment to the insurant and make me a reminder.\"* This confirms that a condition must be checked before requesting payment, but it does not explain what that condition precisely means.\n\nSince the process does not show how or when the insurant is \"subrogated against,\" it is impossible to verify whether this requirement is met. (This same root cause also affects: check case, make booking, send reminder, send request for payment.)",
+        "quote_verbatim": true,
+        "affected_activities": [
+          "check case",
+          "insurant requested for payment",
+          "make booking",
+          "send reminder",
+          "send request for payment"
+        ],
+        "affected_count": 7
+      },
+      {
+        "root_cause": "insurant disagreed",
+        "quote": "If the insurant disagrees with the recourse, I’ll have to check the reasoning of that.",
+        "explanation": "The activity \"insurant disagreed\" requires a condition to be met beforehand, as stated in the source text: *\"If the insurant disagrees with the recourse, I’ll have to check the reasoning of that.\"*\n\nHowever, the observed process does not show any clear activity that would fulfill this condition, so it is impossible to confirm whether this requirement is met or not. (This same root cause also affects: insurant right, insurant wrong.)",
+        "quote_verbatim": true,
+        "affected_activities": [
+          "insurant disagreed",
+          "insurant right",
+          "insurant wrong"
+        ],
+        "affected_count": 5
+      }
+    ],
+    "conforme": [
+      {
+        "target": "send request for payment",
+        "term": "check case"
+      },
+      {
+        "target": "send reminder",
+        "term": "check case"
+      }
+    ],
+    "piece_jointe_alignement_brut": {
+      "insurant.requested_for_payment": {
+        "operator": "AND",
+        "quote": "I check that case and if the possibility is really there, I send a request for payment to the insurant and make me a reminder.",
+        "terms": [
+          {
+            "term": "insurant.subrogated_against",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['insurant.subrogated_against', 'insurant.requested_for_payment']",
+            "missing": [
+              "insurant.subrogated_against",
+              "insurant.requested_for_payment"
+            ]
+          },
+          {
+            "term": "case.checked",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['insurant.requested_for_payment']",
+            "missing": [
+              "insurant.requested_for_payment"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "insurant.subrogated_against",
+              "case.checked"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "insurant.disagreed": {
+        "operator": "AND",
+        "quote": "If the insurant disagrees with the recourse, I’ll have to check the reasoning of that.",
+        "terms": [
+          {
+            "term": "request_for_payment.sent",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['insurant.disagreed']",
+            "missing": [
+              "insurant.disagreed"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "request_for_payment.sent"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "insurant.right": {
+        "operator": "AND",
+        "quote": "If he is right, I simply close the case.",
+        "terms": [
+          {
+            "term": "insurant.disagreed",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['insurant.disagreed', 'insurant.right']",
+            "missing": [
+              "insurant.disagreed",
+              "insurant.right"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "insurant.disagreed"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "insurant.wrong": {
+        "operator": "AND",
+        "quote": "If he is wrong, I forward the case to a collection agency.",
+        "terms": [
+          {
+            "term": "insurant.disagreed",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['insurant.disagreed', 'insurant.wrong']",
+            "missing": [
+              "insurant.disagreed",
+              "insurant.wrong"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "insurant.disagreed"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "case.checked": {
+        "operator": "AND",
+        "quote": "I check that case and if the possibility is really there, I send a request for payment to the insurant and make me a reminder.",
+        "terms": [
+          {
+            "term": "insurant.subrogated_against",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['insurant.subrogated_against']",
+            "missing": [
+              "insurant.subrogated_against"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "insurant.subrogated_against"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "request_for_payment.sent": {
+        "operator": "AND",
+        "quote": "I check that case and if the possibility is really there, I send a request for payment to the insurant and make me a reminder.",
+        "terms": [
+          {
+            "term": "insurant.subrogated_against",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['insurant.subrogated_against']",
+            "missing": [
+              "insurant.subrogated_against"
+            ]
+          },
+          {
+            "term": "case.checked",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "insurant.subrogated_against",
+              "case.checked"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "reminder.made": {
+        "operator": "AND",
+        "quote": "I check that case and if the possibility is really there, I send a request for payment to the insurant and make me a reminder.",
+        "terms": [
+          {
+            "term": "insurant.subrogated_against",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['insurant.subrogated_against']",
+            "missing": [
+              "insurant.subrogated_against"
+            ]
+          },
+          {
+            "term": "case.checked",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "insurant.subrogated_against",
+              "case.checked"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "booking.made": {
+        "operator": "AND",
+        "quote": "When we receive the money, I make a booking and close the case.",
+        "terms": [
+          {
+            "term": "request_for_payment.sent",
+            "status": "VIOLATED",
+            "reason": "both states matched, no path in process",
+            "missing": []
+          }
+        ],
+        "status": "VIOLATED",
+        "clauses": [
+          {
+            "terms": [
+              "request_for_payment.sent"
+            ],
+            "status": "VIOLATED"
+          }
+        ]
+      }
+    }
+  },
+  "errors": []
+}

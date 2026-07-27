@@ -1,0 +1,539 @@
+{
+  "case_name": "OriginalDataset/Model3-4",
+  "text": "In the context of a claim handling process, it is sometimes necessary to send a questionnaire to the claimant to gather additional information. The claimant is expected to return the questionnaire within five days. If no response is received after five days, a reminder is sent to the claimant. If after another five days there is still no response, another reminder is sent and so on until the completed questionnaire is received.\n",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "llama-3.1-8b",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "llama-3.1-8b",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/../datasets/lre/alignment_model_text-master/datasets/OriginalDataset/Models/Model3-4.bpmn",
+  "report_model": "llama-3.1-8b",
+  "candidates": {
+    "claim_handling_process": {
+      "states": [
+        "in_progress",
+        "completed"
+      ],
+      "exclusive_groups": [
+        [
+          "in_progress",
+          "completed"
+        ]
+      ],
+      "concurrent_with": []
+    },
+    "claimant": {
+      "states": [
+        "sent_questionnaire",
+        "received_questionnaire"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "questionnaire": {
+      "states": [
+        "sent",
+        "received"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    }
+  },
+  "validation_report": {
+    "claim_handling_process": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "process"
+    },
+    "claimant": {
+      "f_lex": "ACTOR",
+      "kept": false,
+      "head_used": "claimant"
+    },
+    "questionnaire": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "questionnaire"
+    },
+    "__meta__": {
+      "total_candidates": 3,
+      "indeterminate_kept_count": 0
+    }
+  },
+  "exclusive_groups_report": {
+    "accepted": [
+      {
+        "entity": "claim_handling_process",
+        "states": [
+          "in_progress",
+          "completed"
+        ],
+        "quote": "If no response is received after five days, a reminder is sent to the claimant."
+      }
+    ],
+    "rejected": []
+  },
+  "state_space": {
+    "claim_handling_process": {
+      "states": [
+        "in_progress",
+        "completed"
+      ],
+      "exclusive_groups": [
+        [
+          "in_progress",
+          "completed"
+        ]
+      ],
+      "concurrent_with": []
+    },
+    "questionnaire": {
+      "states": [
+        "sent",
+        "received"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    }
+  },
+  "state_space_dedup": {
+    "merged": {},
+    "ambiguous_not_merged": {}
+  },
+  "raw_preconditions": {
+    "claim_handling_process.in_progress": {
+      "precondition": "claim_handling_process.in_progress AND questionnaire.sent",
+      "quote": "In the context of a claim handling process, it is sometimes necessary to send a questionnaire to the claimant to gather additional information."
+    },
+    "claim_handling_process.completed": {
+      "precondition": "claim_handling_process.in_progress AND questionnaire.received",
+      "quote": "The claimant is expected to return the questionnaire within five days."
+    },
+    "questionnaire.sent": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "questionnaire.received": {
+      "precondition": "questionnaire.sent AND NOT (questionnaire.sent OR questionnaire.received)",
+      "quote": "If no response is received after five days, a reminder is sent to the claimant."
+    }
+  },
+  "validated_preconditions": {
+    "claim_handling_process.in_progress": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "DOWNGRADED",
+      "reason": "self-reference",
+      "retried": true
+    },
+    "claim_handling_process.completed": {
+      "precondition": "claim_handling_process.in_progress AND questionnaire.received",
+      "quote": "The claimant is expected to return the questionnaire within five days.",
+      "status": "OK",
+      "reason": null
+    },
+    "questionnaire.sent": {
+      "precondition": "INITIAL",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "questionnaire.received": {
+      "precondition": "questionnaire.sent AND NOT claim_handling_process.completed",
+      "quote": "If no response is received after five days, a reminder is sent to the claimant.",
+      "status": "OK",
+      "reason": null,
+      "retried": true
+    }
+  },
+  "precondition_cycles": [
+    [
+      "claim_handling_process.completed",
+      "questionnaire.received",
+      "claim_handling_process.completed"
+    ]
+  ],
+  "branch_conflicts": [],
+  "reference_graph": {
+    "nodes": [
+      {
+        "id": "claim_handling_process.in_progress",
+        "weight": 0.333
+      },
+      {
+        "id": "claim_handling_process.completed",
+        "weight": 1.0
+      },
+      {
+        "id": "questionnaire.sent",
+        "weight": 0.333
+      },
+      {
+        "id": "questionnaire.received",
+        "weight": 1.0
+      }
+    ],
+    "edges": [
+      {
+        "from": "claim_handling_process.in_progress",
+        "to": "claim_handling_process.completed",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "The claimant is expected to return the questionnaire within five days.",
+        "negated": false
+      },
+      {
+        "from": "questionnaire.received",
+        "to": "claim_handling_process.completed",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "The claimant is expected to return the questionnaire within five days.",
+        "negated": false
+      },
+      {
+        "from": "questionnaire.sent",
+        "to": "questionnaire.received",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "If no response is received after five days, a reminder is sent to the claimant.",
+        "negated": false
+      },
+      {
+        "from": "claim_handling_process.completed",
+        "to": "questionnaire.received",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "If no response is received after five days, a reminder is sent to the claimant.",
+        "negated": true
+      }
+    ],
+    "cycles": [
+      [
+        "claim_handling_process.completed",
+        "questionnaire.received",
+        "claim_handling_process.completed"
+      ]
+    ],
+    "branch_conflicts": [],
+    "exclusive_pairs": [
+      {
+        "entity": "claim_handling_process",
+        "nodes": [
+          "claim_handling_process.in_progress",
+          "claim_handling_process.completed"
+        ]
+      }
+    ]
+  },
+  "dfg_edges": [
+    {
+      "source_id": "IntermediateTimerEvent_0",
+      "source_label": "After 5 Days",
+      "target_id": "Task_1",
+      "target_label": "Send reminder",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_0",
+      "source_label": "Send questionnaire",
+      "target_id": "IntermediateMessageEventCatching_0",
+      "target_label": "Filled  questionnaire  received",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "EventBasedGateway"
+      ]
+    },
+    {
+      "source_id": "Task_0",
+      "source_label": "Send questionnaire",
+      "target_id": "IntermediateTimerEvent_0",
+      "target_label": "After 5 Days",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "EventBasedGateway"
+      ]
+    },
+    {
+      "source_id": "Task_1",
+      "source_label": "Send reminder",
+      "target_id": "IntermediateMessageEventCatching_0",
+      "target_label": "Filled  questionnaire  received",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "EventBasedGateway"
+      ]
+    },
+    {
+      "source_id": "Task_1",
+      "source_label": "Send reminder",
+      "target_id": "IntermediateTimerEvent_0",
+      "target_label": "After 5 Days",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "EventBasedGateway"
+      ]
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "After 5 Days",
+      "subject_id": "IntermediateTimerEvent_0",
+      "predicate": "follows",
+      "object": "Send reminder",
+      "object_id": "Task_1"
+    },
+    {
+      "subject": "Send questionnaire",
+      "subject_id": "Task_0",
+      "predicate": "follows",
+      "object": "Filled  questionnaire  received",
+      "object_id": "IntermediateMessageEventCatching_0"
+    },
+    {
+      "subject": "Send questionnaire",
+      "subject_id": "Task_0",
+      "predicate": "follows",
+      "object": "After 5 Days",
+      "object_id": "IntermediateTimerEvent_0"
+    },
+    {
+      "subject": "Send reminder",
+      "subject_id": "Task_1",
+      "predicate": "follows",
+      "object": "Filled  questionnaire  received",
+      "object_id": "IntermediateMessageEventCatching_0"
+    },
+    {
+      "subject": "Send reminder",
+      "subject_id": "Task_1",
+      "predicate": "follows",
+      "object": "After 5 Days",
+      "object_id": "IntermediateTimerEvent_0"
+    }
+  ],
+  "matches": {
+    "IntermediateTimerEvent_0": {
+      "activity_label": "After 5 Days",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_1": {
+      "activity_label": "Send reminder",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_0": {
+      "activity_label": "Send questionnaire",
+      "matches": [
+        {
+          "match": "questionnaire.sent",
+          "score": 0.4691
+        }
+      ],
+      "clusters": [
+        [
+          "questionnaire.sent"
+        ]
+      ]
+    },
+    "IntermediateMessageEventCatching_0": {
+      "activity_label": "Filled  questionnaire  received",
+      "matches": [
+        {
+          "match": "questionnaire.received",
+          "score": 0.4496
+        },
+        {
+          "match": "questionnaire.sent",
+          "score": 0.4212
+        }
+      ],
+      "clusters": [
+        [
+          "questionnaire.received",
+          "questionnaire.sent"
+        ]
+      ]
+    }
+  },
+  "process_graph": [
+    {
+      "from": "questionnaire.sent",
+      "to": "questionnaire.received",
+      "activity_from": "Send questionnaire",
+      "activity_to": "Filled  questionnaire  received",
+      "source_id": "Task_0",
+      "target_id": "IntermediateMessageEventCatching_0"
+    },
+    {
+      "from": "questionnaire.sent",
+      "to": "questionnaire.sent",
+      "activity_from": "Send questionnaire",
+      "activity_to": "Filled  questionnaire  received",
+      "source_id": "Task_0",
+      "target_id": "IntermediateMessageEventCatching_0"
+    }
+  ],
+  "alignment": {
+    "claim_handling_process.completed": {
+      "operator": "AND",
+      "quote": "The claimant is expected to return the questionnaire within five days.",
+      "terms": [
+        {
+          "term": "claim_handling_process.in_progress",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['claim_handling_process.in_progress', 'claim_handling_process.completed']",
+          "missing": [
+            "claim_handling_process.in_progress",
+            "claim_handling_process.completed"
+          ]
+        },
+        {
+          "term": "questionnaire.received",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['claim_handling_process.completed']",
+          "missing": [
+            "claim_handling_process.completed"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "claim_handling_process.in_progress",
+            "questionnaire.received"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "questionnaire.received": {
+      "operator": "AND",
+      "quote": "If no response is received after five days, a reminder is sent to the claimant.",
+      "terms": [
+        {
+          "term": "questionnaire.sent",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        },
+        {
+          "term": "NOT claim_handling_process.completed",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['claim_handling_process.completed']",
+          "missing": [
+            "claim_handling_process.completed"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "questionnaire.sent",
+            "NOT claim_handling_process.completed"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    }
+  },
+  "report": {
+    "verdict": {
+      "verdict": "FAITHFUL_WITH_RESERVATIONS",
+      "justification": "No gap found, but 1 requirement(s) from the text could not be associated with any clear activity in the observed process -- neither confirmed nor refuted. This verdict is NOT a confirmation of full faithfulness.",
+      "scope": "This verdict covers the causal reachability of the requirements expressed in the source text, not the general quality of the process model -- a multiplicity defect (an activity executed more than once due to a mismatched branching structure) is not covered by this verdict, even if the process is otherwise well-formed."
+    },
+    "summary": {
+      "ecarts": 0,
+      "non_verifiable": 1,
+      "conforme": 1
+    },
+    "ecarts": [],
+    "non_verifiable": [
+      {
+        "root_cause": "claim handling process in progress",
+        "quote": "The claimant is expected to return the questionnaire within five days.",
+        "explanation": "The condition \"claim handling process in progress\" is required before the activity \"claim handling process completed\" can occur. However, this condition cannot be verified because it is associated with a clear activity in the observed process. \n\nThe source text mentions that \"The claimant is expected to return the questionnaire within five days.\" This quote only justifies the fact that a condition is required before the step \"claim handling process completed\" can occur, but it does not describe what that condition precisely means.\n\nTherefore, it is impossible to verify whether the requirement is met or not. (This same root cause also affects: Filled  questionnaire  received.)",
+        "quote_verbatim": true,
+        "affected_activities": [
+          "Filled  questionnaire  received",
+          "claim handling process completed"
+        ],
+        "affected_count": 4
+      }
+    ],
+    "conforme": [
+      {
+        "target": "Filled  questionnaire  received",
+        "term": "Send questionnaire"
+      }
+    ],
+    "piece_jointe_alignement_brut": {
+      "claim_handling_process.completed": {
+        "operator": "AND",
+        "quote": "The claimant is expected to return the questionnaire within five days.",
+        "terms": [
+          {
+            "term": "claim_handling_process.in_progress",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['claim_handling_process.in_progress', 'claim_handling_process.completed']",
+            "missing": [
+              "claim_handling_process.in_progress",
+              "claim_handling_process.completed"
+            ]
+          },
+          {
+            "term": "questionnaire.received",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['claim_handling_process.completed']",
+            "missing": [
+              "claim_handling_process.completed"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "claim_handling_process.in_progress",
+              "questionnaire.received"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "questionnaire.received": {
+        "operator": "AND",
+        "quote": "If no response is received after five days, a reminder is sent to the claimant.",
+        "terms": [
+          {
+            "term": "questionnaire.sent",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          },
+          {
+            "term": "NOT claim_handling_process.completed",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['claim_handling_process.completed']",
+            "missing": [
+              "claim_handling_process.completed"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "questionnaire.sent",
+              "NOT claim_handling_process.completed"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      }
+    }
+  },
+  "errors": []
+}

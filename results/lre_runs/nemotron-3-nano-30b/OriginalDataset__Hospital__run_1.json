@@ -1,0 +1,277 @@
+{
+  "case_name": "OriginalDataset/Hospital",
+  "text": "The examination process can be summarised as follows. The process starts\nwhen the female patient is examined by an outpatient physician, who decides\nwhether she is healthy or needs to undertake an additional examination. In the\nformer case, the physician fills out the examination form and the patient can\nleave. In the latter case, an examination and follow-up treatment order is placed\nby the physician who additionally fills out a request form. Beyond information\nabout the patient, the request form includes details about the examination \nrequested and refers to a suitable lab. Furthermore, the outpatient physician\ninforms the patient about potential risks. If the patient signs an informed consent\nand agrees to continue with the procedure, a delegate of the physician\narranges an appointment of the patient with one of the wards. The latter is\nthen responsible for taking a sample to be analysed in the lab later. Before the\nappointment, the required examination and sampling is prepared by a nurse of\nthe ward based on the information provided by the outpatient section. Then, a\nward physician takes the sample requested. He further sends it to the lab indicated\nin the request form and conducts the follow-up treatment of the patient.\nAfter receiving the sample, a physician of the lab validates its state and decides\nwhether the sample can be used for analysis or whether it is contaminated and\na new sample is required. After the analysis is performed by a medical technical\nassistant of the lab, a lab physician validates the results. Finally, a physician\nfrom the outpatient department makes the diagnosis and prescribes the therapy\nfor the patient.\n",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "nemotron-3-nano-30b",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "nemotron-3-nano-30b",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/../datasets/lre/alignment_model_text-master/datasets/OriginalDataset/Models/Hospital.bpmn",
+  "report_model": "nemotron-3-nano-30b",
+  "dfg_edges": [
+    {
+      "source_id": "Task10",
+      "source_label": "Validate sample state",
+      "target_id": "Task11",
+      "target_label": "Analyse sample",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "Yes"
+      ]
+    },
+    {
+      "source_id": "Task10",
+      "source_label": "Validate sample state",
+      "target_id": "Task7",
+      "target_label": "Take sample",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "No",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task9",
+      "source_label": "Send sample",
+      "target_id": "Task10",
+      "target_label": "Validate sample state",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "Task11",
+      "source_label": "Analyse sample",
+      "target_id": "Task12",
+      "target_label": "Validate results",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task3",
+      "source_label": "Inform about risks",
+      "target_id": "Task4",
+      "target_label": "Release patient",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "No",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task3",
+      "source_label": "Inform about risks",
+      "target_id": "Task5",
+      "target_label": "Make appointment",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "Yes"
+      ]
+    },
+    {
+      "source_id": "Task12",
+      "source_label": "Validate results",
+      "target_id": "Task13",
+      "target_label": "Make diagnosis",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task13",
+      "source_label": "Make diagnosis",
+      "target_id": "Task14",
+      "target_label": "Describe therapy",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task5",
+      "source_label": "Make appointment",
+      "target_id": "Task6",
+      "target_label": "Prepare examination",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task1",
+      "source_label": "Examine patient",
+      "target_id": "Task2",
+      "target_label": "Order examination & follow-up treatment",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "Yes"
+      ]
+    },
+    {
+      "source_id": "Task1",
+      "source_label": "Examine patient",
+      "target_id": "Task4",
+      "target_label": "Release patient",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "No",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task2",
+      "source_label": "Order examination & follow-up treatment",
+      "target_id": "Task3",
+      "target_label": "Inform about risks",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task6",
+      "source_label": "Prepare examination",
+      "target_id": "Task7",
+      "target_label": "Take sample",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task8",
+      "source_label": "Perform follow-up treatment",
+      "target_id": "Task10",
+      "target_label": "Validate sample state",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "Task7",
+      "source_label": "Take sample",
+      "target_id": "Task9",
+      "target_label": "Send sample",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "Task7",
+      "source_label": "Take sample",
+      "target_id": "Task8",
+      "target_label": "Perform follow-up treatment",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "Validate sample state",
+      "subject_id": "Task10",
+      "predicate": "follows",
+      "object": "Analyse sample",
+      "object_id": "Task11"
+    },
+    {
+      "subject": "Validate sample state",
+      "subject_id": "Task10",
+      "predicate": "follows",
+      "object": "Take sample",
+      "object_id": "Task7"
+    },
+    {
+      "subject": "Send sample",
+      "subject_id": "Task9",
+      "predicate": "follows",
+      "object": "Validate sample state",
+      "object_id": "Task10"
+    },
+    {
+      "subject": "Analyse sample",
+      "subject_id": "Task11",
+      "predicate": "follows",
+      "object": "Validate results",
+      "object_id": "Task12"
+    },
+    {
+      "subject": "Inform about risks",
+      "subject_id": "Task3",
+      "predicate": "follows",
+      "object": "Release patient",
+      "object_id": "Task4"
+    },
+    {
+      "subject": "Inform about risks",
+      "subject_id": "Task3",
+      "predicate": "follows",
+      "object": "Make appointment",
+      "object_id": "Task5"
+    },
+    {
+      "subject": "Validate results",
+      "subject_id": "Task12",
+      "predicate": "follows",
+      "object": "Make diagnosis",
+      "object_id": "Task13"
+    },
+    {
+      "subject": "Make diagnosis",
+      "subject_id": "Task13",
+      "predicate": "follows",
+      "object": "Describe therapy",
+      "object_id": "Task14"
+    },
+    {
+      "subject": "Make appointment",
+      "subject_id": "Task5",
+      "predicate": "follows",
+      "object": "Prepare examination",
+      "object_id": "Task6"
+    },
+    {
+      "subject": "Examine patient",
+      "subject_id": "Task1",
+      "predicate": "follows",
+      "object": "Order examination & follow-up treatment",
+      "object_id": "Task2"
+    },
+    {
+      "subject": "Examine patient",
+      "subject_id": "Task1",
+      "predicate": "follows",
+      "object": "Release patient",
+      "object_id": "Task4"
+    },
+    {
+      "subject": "Order examination & follow-up treatment",
+      "subject_id": "Task2",
+      "predicate": "follows",
+      "object": "Inform about risks",
+      "object_id": "Task3"
+    },
+    {
+      "subject": "Prepare examination",
+      "subject_id": "Task6",
+      "predicate": "follows",
+      "object": "Take sample",
+      "object_id": "Task7"
+    },
+    {
+      "subject": "Perform follow-up treatment",
+      "subject_id": "Task8",
+      "predicate": "follows",
+      "object": "Validate sample state",
+      "object_id": "Task10"
+    },
+    {
+      "subject": "Take sample",
+      "subject_id": "Task7",
+      "predicate": "follows",
+      "object": "Send sample",
+      "object_id": "Task9"
+    },
+    {
+      "subject": "Take sample",
+      "subject_id": "Task7",
+      "predicate": "follows",
+      "object": "Perform follow-up treatment",
+      "object_id": "Task8"
+    }
+  ],
+  "errors": [
+    "state_space: Request timed out.",
+    "precondition: 'state_space'",
+    "state_matching: 'state_space'",
+    "graph_construction: 'state_space'",
+    "alignment: 'reference_graph'",
+    "report: 'alignment'"
+  ]
+}

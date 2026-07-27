@@ -1,0 +1,1433 @@
+{
+  "case_name": "OriginalDataset/Hospital",
+  "text": "The examination process can be summarised as follows. The process starts\nwhen the female patient is examined by an outpatient physician, who decides\nwhether she is healthy or needs to undertake an additional examination. In the\nformer case, the physician fills out the examination form and the patient can\nleave. In the latter case, an examination and follow-up treatment order is placed\nby the physician who additionally fills out a request form. Beyond information\nabout the patient, the request form includes details about the examination \nrequested and refers to a suitable lab. Furthermore, the outpatient physician\ninforms the patient about potential risks. If the patient signs an informed consent\nand agrees to continue with the procedure, a delegate of the physician\narranges an appointment of the patient with one of the wards. The latter is\nthen responsible for taking a sample to be analysed in the lab later. Before the\nappointment, the required examination and sampling is prepared by a nurse of\nthe ward based on the information provided by the outpatient section. Then, a\nward physician takes the sample requested. He further sends it to the lab indicated\nin the request form and conducts the follow-up treatment of the patient.\nAfter receiving the sample, a physician of the lab validates its state and decides\nwhether the sample can be used for analysis or whether it is contaminated and\na new sample is required. After the analysis is performed by a medical technical\nassistant of the lab, a lab physician validates the results. Finally, a physician\nfrom the outpatient department makes the diagnosis and prescribes the therapy\nfor the patient.\n",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "gpt-oss-20b",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "gpt-oss-20b",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/../datasets/lre/alignment_model_text-master/datasets/OriginalDataset/Models/Hospital.bpmn",
+  "report_model": "gpt-oss-20b",
+  "candidates": {
+    "female_patient": {
+      "states": [
+        "examined",
+        "healthy",
+        "needs_additional_examination",
+        "left"
+      ],
+      "exclusive_groups": [
+        [
+          "healthy",
+          "needs_additional_examination"
+        ]
+      ],
+      "concurrent_with": []
+    },
+    "outpatient_physician": {
+      "states": [
+        "examined",
+        "decided",
+        "filled_out",
+        "informed"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "examination_form": {
+      "states": [
+        "filled_out"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "request_form": {
+      "states": [
+        "filled_out",
+        "included_details",
+        "referenced_lab"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "ward": {
+      "states": [
+        "responsible_for_sample_collection"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "nurse": {
+      "states": [
+        "prepared_examination_and_sampling"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "ward_physician": {
+      "states": [
+        "took_sample",
+        "sent_sample",
+        "conducted_follow_up_treatment"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "lab": {
+      "states": [
+        "validated_sample_state",
+        "decided_on_sample_use",
+        "validated_results"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "sample": {
+      "states": [
+        "prepared",
+        "sent",
+        "validated",
+        "contaminated",
+        "new_sample_required"
+      ],
+      "exclusive_groups": [
+        [
+          "validated",
+          "contaminated"
+        ]
+      ],
+      "concurrent_with": []
+    },
+    "lab_physician": {
+      "states": [
+        "validated_results"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "medical_technical_assistant": {
+      "states": [
+        "performed_analysis"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "outpatient_department_physician": {
+      "states": [
+        "made_diagnosis",
+        "prescribed_therapy"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    }
+  },
+  "validation_report": {
+    "female_patient": {
+      "f_lex": "INDETERMINATE",
+      "kept": true,
+      "head_used": "patient"
+    },
+    "outpatient_physician": {
+      "f_lex": "ACTOR",
+      "kept": false,
+      "head_used": "physician"
+    },
+    "examination_form": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "form"
+    },
+    "request_form": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "form"
+    },
+    "ward": {
+      "f_lex": "INDETERMINATE",
+      "kept": true,
+      "head_used": "ward"
+    },
+    "nurse": {
+      "f_lex": "ACTOR",
+      "kept": false,
+      "head_used": "nurse"
+    },
+    "ward_physician": {
+      "f_lex": "ACTOR",
+      "kept": false,
+      "head_used": "physician"
+    },
+    "lab": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "lab"
+    },
+    "sample": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "sample"
+    },
+    "lab_physician": {
+      "f_lex": "ACTOR",
+      "kept": false,
+      "head_used": "physician"
+    },
+    "medical_technical_assistant": {
+      "f_lex": "ACTOR",
+      "kept": false,
+      "head_used": "assistant"
+    },
+    "outpatient_department_physician": {
+      "f_lex": "ACTOR",
+      "kept": false,
+      "head_used": "physician"
+    },
+    "__meta__": {
+      "total_candidates": 12,
+      "indeterminate_kept_count": 2
+    }
+  },
+  "exclusive_groups_report": {
+    "accepted": [
+      {
+        "entity": "female_patient",
+        "states": [
+          "healthy",
+          "needs_additional_examination"
+        ],
+        "quote": "whether she is healthy or needs to undertake an additional examination."
+      },
+      {
+        "entity": "sample",
+        "states": [
+          "validated",
+          "contaminated"
+        ],
+        "quote": "decides whether the sample can be used for analysis or whether it is contaminated"
+      }
+    ],
+    "rejected": []
+  },
+  "state_space": {
+    "female_patient": {
+      "states": [
+        "examined",
+        "healthy",
+        "needs_additional_examination",
+        "left"
+      ],
+      "exclusive_groups": [
+        [
+          "healthy",
+          "needs_additional_examination"
+        ]
+      ],
+      "concurrent_with": []
+    },
+    "examination_form": {
+      "states": [
+        "filled_out"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "request_form": {
+      "states": [
+        "filled_out",
+        "included_details",
+        "referenced_lab"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "ward": {
+      "states": [
+        "responsible_for_sample_collection"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "lab": {
+      "states": [
+        "validated_sample_state",
+        "decided_on_sample_use",
+        "validated_results"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "sample": {
+      "states": [
+        "prepared",
+        "sent",
+        "validated",
+        "contaminated",
+        "new_sample_required"
+      ],
+      "exclusive_groups": [
+        [
+          "validated",
+          "contaminated"
+        ]
+      ],
+      "concurrent_with": []
+    }
+  },
+  "state_space_dedup": {
+    "merged": {},
+    "ambiguous_not_merged": {}
+  },
+  "raw_preconditions": {
+    "female_patient.examined": "INITIAL",
+    "female_patient.healthy": "examination_form.filled_out",
+    "female_patient.needs_additional_examination": "examination_form.filled_out",
+    "female_patient.left": "female_patient.healthy",
+    "examination_form.filled_out": "UNRESOLVED",
+    "request_form.filled_out": "female_patient.needs_additional_examination",
+    "request_form.included_details": "UNRESOLVED",
+    "request_form.referenced_lab": "UNRESOLVED",
+    "ward.responsible_for_sample_collection": "female_patient.needs_additional_examination",
+    "lab.validated_sample_state": "sample.sent",
+    "lab.decided_on_sample_use": "UNRESOLVED",
+    "lab.validated_results": "UNRESOLVED",
+    "sample.prepared": "UNRESOLVED",
+    "sample.sent": "UNRESOLVED",
+    "sample.validated": "lab.validated_sample_state",
+    "sample.contaminated": "UNRESOLVED",
+    "sample.new_sample_required": "UNRESOLVED",
+    "quote": {
+      "female_patient.healthy": "the physician fills out the examination form and the patient can leave.",
+      "female_patient.needs_additional_examination": "the physician decides whether she is healthy or needs to undertake an additional examination.",
+      "female_patient.left": "and the patient can leave.",
+      "request_form.filled_out": "In the latter case, an examination and follow-up treatment order is placed by the physician who additionally fills out a request form.",
+      "ward.responsible_for_sample_collection": "a delegate of the physician arranges an appointment of the patient with one of the wards. The latter is then responsible for taking a sample",
+      "lab.validated_sample_state": "After receiving the sample, a physician of the lab validates its state",
+      "sample.validated": "After receiving the sample, a physician of the lab validates its state"
+    }
+  },
+  "validated_preconditions": {
+    "female_patient.examined": {
+      "precondition": "INITIAL",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "female_patient.healthy": {
+      "precondition": "examination_form.filled_out",
+      "quote": "the physician fills out the examination form and the patient can leave.",
+      "status": "OK",
+      "reason": null,
+      "retried": true
+    },
+    "female_patient.needs_additional_examination": {
+      "precondition": "female_patient.examined",
+      "quote": "The process starts when the female patient is examined by an outpatient physician, who decides whether she is healthy or needs to undertake an additional examination.",
+      "status": "OK",
+      "reason": null,
+      "retried": true
+    },
+    "female_patient.left": {
+      "precondition": "examination_form.filled_out",
+      "quote": "the physician fills out the examination form and the patient can leave.",
+      "status": "OK",
+      "reason": null,
+      "retried": true
+    },
+    "examination_form.filled_out": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "request_form.filled_out": {
+      "precondition": "female_patient.needs_additional_examination",
+      "quote": "In the latter case, an examination and follow-up treatment order is placed by the physician who additionally fills out a request form.",
+      "status": "OK",
+      "reason": null,
+      "retried": true
+    },
+    "request_form.included_details": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "request_form.referenced_lab": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "ward.responsible_for_sample_collection": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "DOWNGRADED",
+      "reason": "quote(s) not found verbatim in text, out of order, or spanning a disjunctive marker under an AND rule",
+      "retried": true
+    },
+    "lab.validated_sample_state": {
+      "precondition": "lab.decided_on_sample_use AND NOT sample.contaminated",
+      "quote": "After receiving the sample, a physician of the lab validates its state and decides whether the sample can be used for analysis or whether it is contaminated and a new sample is required.",
+      "status": "OK",
+      "reason": null,
+      "retried": true
+    },
+    "lab.decided_on_sample_use": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "lab.validated_results": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "sample.prepared": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "sample.sent": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "sample.validated": {
+      "precondition": "sample.sent AND lab.decided_on_sample_use",
+      "quote": [
+        "\"He further sends it to the lab indicated in the request form\"",
+        "\"After receiving the sample, a physician of the lab validates its state and decides whether the sample can be used for analysis or whether it is contaminated and a new sample is required.\""
+      ],
+      "status": "OK",
+      "reason": null,
+      "retried": true
+    },
+    "sample.contaminated": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "sample.new_sample_required": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "quote": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "DOWNGRADED",
+      "reason": "malformed or unknown target key: 'quote' is not a valid entity.state of the state space"
+    }
+  },
+  "precondition_cycles": [],
+  "branch_conflicts": [],
+  "reference_graph": {
+    "nodes": [
+      {
+        "id": "female_patient.examined",
+        "weight": 0.5
+      },
+      {
+        "id": "female_patient.healthy",
+        "weight": 0.5
+      },
+      {
+        "id": "female_patient.needs_additional_examination",
+        "weight": 1.0
+      },
+      {
+        "id": "female_patient.left",
+        "weight": 0.5
+      },
+      {
+        "id": "examination_form.filled_out",
+        "weight": 1.0
+      },
+      {
+        "id": "request_form.filled_out",
+        "weight": 0.5
+      },
+      {
+        "id": "request_form.included_details",
+        "weight": 0.0
+      },
+      {
+        "id": "request_form.referenced_lab",
+        "weight": 0.0
+      },
+      {
+        "id": "ward.responsible_for_sample_collection",
+        "weight": 0.0
+      },
+      {
+        "id": "lab.validated_sample_state",
+        "weight": 1.0
+      },
+      {
+        "id": "lab.decided_on_sample_use",
+        "weight": 1.0
+      },
+      {
+        "id": "lab.validated_results",
+        "weight": 0.0
+      },
+      {
+        "id": "sample.prepared",
+        "weight": 0.0
+      },
+      {
+        "id": "sample.sent",
+        "weight": 0.5
+      },
+      {
+        "id": "sample.validated",
+        "weight": 1.0
+      },
+      {
+        "id": "sample.contaminated",
+        "weight": 0.5
+      },
+      {
+        "id": "sample.new_sample_required",
+        "weight": 0.0
+      }
+    ],
+    "edges": [
+      {
+        "from": "examination_form.filled_out",
+        "to": "female_patient.healthy",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "the physician fills out the examination form and the patient can leave.",
+        "negated": false
+      },
+      {
+        "from": "female_patient.examined",
+        "to": "female_patient.needs_additional_examination",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "The process starts when the female patient is examined by an outpatient physician, who decides whether she is healthy or needs to undertake an additional examination.",
+        "negated": false
+      },
+      {
+        "from": "examination_form.filled_out",
+        "to": "female_patient.left",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "the physician fills out the examination form and the patient can leave.",
+        "negated": false
+      },
+      {
+        "from": "female_patient.needs_additional_examination",
+        "to": "request_form.filled_out",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "In the latter case, an examination and follow-up treatment order is placed by the physician who additionally fills out a request form.",
+        "negated": false
+      },
+      {
+        "from": "lab.decided_on_sample_use",
+        "to": "lab.validated_sample_state",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "After receiving the sample, a physician of the lab validates its state and decides whether the sample can be used for analysis or whether it is contaminated and a new sample is required.",
+        "negated": false
+      },
+      {
+        "from": "sample.contaminated",
+        "to": "lab.validated_sample_state",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "After receiving the sample, a physician of the lab validates its state and decides whether the sample can be used for analysis or whether it is contaminated and a new sample is required.",
+        "negated": true
+      },
+      {
+        "from": "sample.sent",
+        "to": "sample.validated",
+        "clause": 0,
+        "type": "sequence",
+        "quote": [
+          "\"He further sends it to the lab indicated in the request form\"",
+          "\"After receiving the sample, a physician of the lab validates its state and decides whether the sample can be used for analysis or whether it is contaminated and a new sample is required.\""
+        ],
+        "negated": false
+      },
+      {
+        "from": "lab.decided_on_sample_use",
+        "to": "sample.validated",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": [
+          "\"He further sends it to the lab indicated in the request form\"",
+          "\"After receiving the sample, a physician of the lab validates its state and decides whether the sample can be used for analysis or whether it is contaminated and a new sample is required.\""
+        ],
+        "negated": false
+      }
+    ],
+    "cycles": [],
+    "branch_conflicts": [],
+    "exclusive_pairs": [
+      {
+        "entity": "female_patient",
+        "nodes": [
+          "female_patient.healthy",
+          "female_patient.needs_additional_examination"
+        ]
+      },
+      {
+        "entity": "sample",
+        "nodes": [
+          "sample.validated",
+          "sample.contaminated"
+        ]
+      }
+    ]
+  },
+  "dfg_edges": [
+    {
+      "source_id": "Task1",
+      "source_label": "Examine patient",
+      "target_id": "Task4",
+      "target_label": "Release patient",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "No",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task1",
+      "source_label": "Examine patient",
+      "target_id": "Task2",
+      "target_label": "Order examination & follow-up treatment",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "Yes"
+      ]
+    },
+    {
+      "source_id": "Task8",
+      "source_label": "Perform follow-up treatment",
+      "target_id": "Task10",
+      "target_label": "Validate sample state",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "Task6",
+      "source_label": "Prepare examination",
+      "target_id": "Task7",
+      "target_label": "Take sample",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task10",
+      "source_label": "Validate sample state",
+      "target_id": "Task11",
+      "target_label": "Analyse sample",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "Yes"
+      ]
+    },
+    {
+      "source_id": "Task10",
+      "source_label": "Validate sample state",
+      "target_id": "Task7",
+      "target_label": "Take sample",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "No",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task5",
+      "source_label": "Make appointment",
+      "target_id": "Task6",
+      "target_label": "Prepare examination",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task2",
+      "source_label": "Order examination & follow-up treatment",
+      "target_id": "Task3",
+      "target_label": "Inform about risks",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task9",
+      "source_label": "Send sample",
+      "target_id": "Task10",
+      "target_label": "Validate sample state",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "Task12",
+      "source_label": "Validate results",
+      "target_id": "Task13",
+      "target_label": "Make diagnosis",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task13",
+      "source_label": "Make diagnosis",
+      "target_id": "Task14",
+      "target_label": "Describe therapy",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task11",
+      "source_label": "Analyse sample",
+      "target_id": "Task12",
+      "target_label": "Validate results",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task7",
+      "source_label": "Take sample",
+      "target_id": "Task8",
+      "target_label": "Perform follow-up treatment",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "Task7",
+      "source_label": "Take sample",
+      "target_id": "Task9",
+      "target_label": "Send sample",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "Task3",
+      "source_label": "Inform about risks",
+      "target_id": "Task5",
+      "target_label": "Make appointment",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "Yes"
+      ]
+    },
+    {
+      "source_id": "Task3",
+      "source_label": "Inform about risks",
+      "target_id": "Task4",
+      "target_label": "Release patient",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "No",
+        "ExclusiveGateway"
+      ]
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "Examine patient",
+      "subject_id": "Task1",
+      "predicate": "follows",
+      "object": "Release patient",
+      "object_id": "Task4"
+    },
+    {
+      "subject": "Examine patient",
+      "subject_id": "Task1",
+      "predicate": "follows",
+      "object": "Order examination & follow-up treatment",
+      "object_id": "Task2"
+    },
+    {
+      "subject": "Perform follow-up treatment",
+      "subject_id": "Task8",
+      "predicate": "follows",
+      "object": "Validate sample state",
+      "object_id": "Task10"
+    },
+    {
+      "subject": "Prepare examination",
+      "subject_id": "Task6",
+      "predicate": "follows",
+      "object": "Take sample",
+      "object_id": "Task7"
+    },
+    {
+      "subject": "Validate sample state",
+      "subject_id": "Task10",
+      "predicate": "follows",
+      "object": "Analyse sample",
+      "object_id": "Task11"
+    },
+    {
+      "subject": "Validate sample state",
+      "subject_id": "Task10",
+      "predicate": "follows",
+      "object": "Take sample",
+      "object_id": "Task7"
+    },
+    {
+      "subject": "Make appointment",
+      "subject_id": "Task5",
+      "predicate": "follows",
+      "object": "Prepare examination",
+      "object_id": "Task6"
+    },
+    {
+      "subject": "Order examination & follow-up treatment",
+      "subject_id": "Task2",
+      "predicate": "follows",
+      "object": "Inform about risks",
+      "object_id": "Task3"
+    },
+    {
+      "subject": "Send sample",
+      "subject_id": "Task9",
+      "predicate": "follows",
+      "object": "Validate sample state",
+      "object_id": "Task10"
+    },
+    {
+      "subject": "Validate results",
+      "subject_id": "Task12",
+      "predicate": "follows",
+      "object": "Make diagnosis",
+      "object_id": "Task13"
+    },
+    {
+      "subject": "Make diagnosis",
+      "subject_id": "Task13",
+      "predicate": "follows",
+      "object": "Describe therapy",
+      "object_id": "Task14"
+    },
+    {
+      "subject": "Analyse sample",
+      "subject_id": "Task11",
+      "predicate": "follows",
+      "object": "Validate results",
+      "object_id": "Task12"
+    },
+    {
+      "subject": "Take sample",
+      "subject_id": "Task7",
+      "predicate": "follows",
+      "object": "Perform follow-up treatment",
+      "object_id": "Task8"
+    },
+    {
+      "subject": "Take sample",
+      "subject_id": "Task7",
+      "predicate": "follows",
+      "object": "Send sample",
+      "object_id": "Task9"
+    },
+    {
+      "subject": "Inform about risks",
+      "subject_id": "Task3",
+      "predicate": "follows",
+      "object": "Make appointment",
+      "object_id": "Task5"
+    },
+    {
+      "subject": "Inform about risks",
+      "subject_id": "Task3",
+      "predicate": "follows",
+      "object": "Release patient",
+      "object_id": "Task4"
+    }
+  ],
+  "activity_guards": {
+    "activities": {
+      "Examine patient": {
+        "status": "OK",
+        "clauses": [
+          []
+        ]
+      },
+      "Order examination & follow-up treatment": {
+        "status": "STRUCTURE_UNRESOLVED"
+      },
+      "Inform about risks": {
+        "status": "STRUCTURE_UNRESOLVED"
+      },
+      "Make appointment": {
+        "status": "STRUCTURE_UNRESOLVED"
+      },
+      "Prepare examination": {
+        "status": "STRUCTURE_UNRESOLVED"
+      },
+      "Release patient": {
+        "status": "STRUCTURE_UNRESOLVED"
+      },
+      "Take sample": {
+        "status": "STRUCTURE_UNRESOLVED"
+      },
+      "Perform follow-up treatment": {
+        "status": "STRUCTURE_UNRESOLVED"
+      },
+      "Send sample": {
+        "status": "STRUCTURE_UNRESOLVED"
+      },
+      "Validate sample state": {
+        "status": "STRUCTURE_UNRESOLVED"
+      },
+      "Analyse sample": {
+        "status": "STRUCTURE_UNRESOLVED"
+      },
+      "Validate results": {
+        "status": "STRUCTURE_UNRESOLVED"
+      },
+      "Make diagnosis": {
+        "status": "STRUCTURE_UNRESOLVED"
+      },
+      "Describe therapy": {
+        "status": "STRUCTURE_UNRESOLVED"
+      }
+    },
+    "undeclared_splits": []
+  },
+  "matches": {
+    "Task1": {
+      "activity_label": "Examine patient",
+      "matches": [
+        {
+          "match": "female_patient.examined",
+          "score": 0.4289
+        },
+        {
+          "match": "female_patient.needs_additional_examination",
+          "score": 0.3829
+        }
+      ],
+      "clusters": [
+        [
+          "female_patient.examined"
+        ],
+        [
+          "female_patient.needs_additional_examination"
+        ]
+      ]
+    },
+    "Task4": {
+      "activity_label": "Release patient",
+      "matches": [],
+      "clusters": []
+    },
+    "Task2": {
+      "activity_label": "Order examination & follow-up treatment",
+      "matches": [],
+      "clusters": []
+    },
+    "Task8": {
+      "activity_label": "Perform follow-up treatment",
+      "matches": [],
+      "clusters": []
+    },
+    "Task10": {
+      "activity_label": "Validate sample state",
+      "matches": [
+        {
+          "match": "lab.validated_sample_state",
+          "score": 0.457
+        }
+      ],
+      "clusters": [
+        [
+          "lab.validated_sample_state"
+        ]
+      ]
+    },
+    "Task6": {
+      "activity_label": "Prepare examination",
+      "matches": [
+        {
+          "match": "examination_form.filled_out",
+          "score": 0.3575
+        }
+      ],
+      "clusters": [
+        [
+          "examination_form.filled_out"
+        ]
+      ]
+    },
+    "Task7": {
+      "activity_label": "Take sample",
+      "matches": [],
+      "clusters": []
+    },
+    "Task11": {
+      "activity_label": "Analyse sample",
+      "matches": [],
+      "clusters": []
+    },
+    "Task5": {
+      "activity_label": "Make appointment",
+      "matches": [],
+      "clusters": []
+    },
+    "Task3": {
+      "activity_label": "Inform about risks",
+      "matches": [],
+      "clusters": []
+    },
+    "Task9": {
+      "activity_label": "Send sample",
+      "matches": [
+        {
+          "match": "sample.sent",
+          "score": 0.4726
+        }
+      ],
+      "clusters": [
+        [
+          "sample.sent"
+        ]
+      ]
+    },
+    "Task12": {
+      "activity_label": "Validate results",
+      "matches": [
+        {
+          "match": "lab.validated_results",
+          "score": 0.5908
+        }
+      ],
+      "clusters": [
+        [
+          "lab.validated_results"
+        ]
+      ]
+    },
+    "Task13": {
+      "activity_label": "Make diagnosis",
+      "matches": [],
+      "clusters": []
+    },
+    "Task14": {
+      "activity_label": "Describe therapy",
+      "matches": [],
+      "clusters": []
+    }
+  },
+  "process_graph": [
+    {
+      "from": "sample.sent",
+      "to": "lab.validated_sample_state",
+      "activity_from": "Send sample",
+      "activity_to": "Validate sample state",
+      "source_id": "Task9",
+      "target_id": "Task10"
+    }
+  ],
+  "alignment": {
+    "female_patient.healthy": {
+      "operator": "AND",
+      "quote": "the physician fills out the examination form and the patient can leave.",
+      "terms": [
+        {
+          "term": "examination_form.filled_out",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['female_patient.healthy']",
+          "missing": [
+            "female_patient.healthy"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "examination_form.filled_out"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "female_patient.needs_additional_examination": {
+      "operator": "AND",
+      "quote": "The process starts when the female patient is examined by an outpatient physician, who decides whether she is healthy or needs to undertake an additional examination.",
+      "terms": [
+        {
+          "term": "female_patient.examined",
+          "status": "VIOLATED",
+          "reason": "both states matched, no path in process",
+          "missing": []
+        }
+      ],
+      "status": "VIOLATED",
+      "clauses": [
+        {
+          "terms": [
+            "female_patient.examined"
+          ],
+          "status": "VIOLATED"
+        }
+      ]
+    },
+    "female_patient.left": {
+      "operator": "AND",
+      "quote": "the physician fills out the examination form and the patient can leave.",
+      "terms": [
+        {
+          "term": "examination_form.filled_out",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['female_patient.left']",
+          "missing": [
+            "female_patient.left"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "examination_form.filled_out"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "request_form.filled_out": {
+      "operator": "AND",
+      "quote": "In the latter case, an examination and follow-up treatment order is placed by the physician who additionally fills out a request form.",
+      "terms": [
+        {
+          "term": "female_patient.needs_additional_examination",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['request_form.filled_out']",
+          "missing": [
+            "request_form.filled_out"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "female_patient.needs_additional_examination"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "lab.validated_sample_state": {
+      "operator": "AND",
+      "quote": "After receiving the sample, a physician of the lab validates its state and decides whether the sample can be used for analysis or whether it is contaminated and a new sample is required.",
+      "terms": [
+        {
+          "term": "lab.decided_on_sample_use",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['lab.decided_on_sample_use']",
+          "missing": [
+            "lab.decided_on_sample_use"
+          ]
+        },
+        {
+          "term": "NOT sample.contaminated",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['sample.contaminated']",
+          "missing": [
+            "sample.contaminated"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "lab.decided_on_sample_use",
+            "NOT sample.contaminated"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "sample.validated": {
+      "operator": "AND",
+      "quote": [
+        "\"He further sends it to the lab indicated in the request form\"",
+        "\"After receiving the sample, a physician of the lab validates its state and decides whether the sample can be used for analysis or whether it is contaminated and a new sample is required.\""
+      ],
+      "terms": [
+        {
+          "term": "sample.sent",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['sample.validated']",
+          "missing": [
+            "sample.validated"
+          ]
+        },
+        {
+          "term": "lab.decided_on_sample_use",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['lab.decided_on_sample_use', 'sample.validated']",
+          "missing": [
+            "lab.decided_on_sample_use",
+            "sample.validated"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "sample.sent",
+            "lab.decided_on_sample_use"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    }
+  },
+  "report": {
+    "verdict": {
+      "verdict": "NOT_FAITHFUL",
+      "justification": "1 gap(s) found between the source text's requirements and the observed process -- at least one precondition asserted by the text is contradicted by the model's actual sequence of activities.",
+      "scope": "This verdict covers the causal reachability of the requirements expressed in the source text, not the general quality of the process model -- a multiplicity defect (an activity executed more than once due to a mismatched branching structure) is not covered by this verdict, even if the process is otherwise well-formed."
+    },
+    "summary": {
+      "ecarts": 1,
+      "non_verifiable": 5,
+      "conforme": 0
+    },
+    "ecarts": [
+      {
+        "root_cause": "Examine patient",
+        "quote": "The process starts when the female patient is examined by an outpatient physician, who decides whether she is healthy or needs to undertake an additional examination.",
+        "explanation": "In the process, the activity “Examine patient” appears twice, but the flow does not show that the first “Examine patient” happens before the second one. The source text says: “The process starts when the female patient is examined by an outpatient physician, who decides whether she is healthy or needs to undertake an additional examination.” This statement indicates that an examination must occur before any further steps, but the current process diagram does not reflect that ordering. No other information is provided to explain how the two examinations are related.",
+        "quote_verbatim": true,
+        "affected_activities": [
+          "Examine patient"
+        ],
+        "affected_count": 1
+      }
+    ],
+    "non_verifiable": [
+      {
+        "root_cause": "female patient healthy",
+        "quote": "the physician fills out the examination form and the patient can leave.",
+        "explanation": "The source text says that a condition must already be met before the activity “female patient healthy” can occur. The quote that justifies this requirement is: “the physician fills out the examination form and the patient can leave.”  \nBecause the process record does not show any activity that clearly represents this condition, we cannot determine whether it was satisfied or not. This is an inability to verify, not a confirmation or refutation of conformance.",
+        "quote_verbatim": true,
+        "affected_activities": [
+          "female patient healthy"
+        ],
+        "affected_count": 1
+      },
+      {
+        "root_cause": "female patient left",
+        "quote": "the physician fills out the examination form and the patient can leave.",
+        "explanation": "The source text says that a condition must be met before the activity “female patient left” can happen: “the physician fills out the examination form and the patient can leave.”  \nBecause the observed process does not show any activity that matches this condition, we cannot determine whether the requirement is satisfied or not. This does not confirm or refute conformance; it simply means the condition cannot be verified.",
+        "quote_verbatim": true,
+        "affected_activities": [
+          "female patient left"
+        ],
+        "affected_count": 1
+      },
+      {
+        "root_cause": "request form filled out",
+        "quote": "In the latter case, an examination and follow-up treatment order is placed by the physician who additionally fills out a request form.",
+        "explanation": "The source text says: “In the latter case, an examination and follow‑up treatment order is placed by the physician who additionally fills out a request form.”  \nBecause the text only states that a condition must exist before the activity “request form filled out” can happen, and no clear activity in the observed process matches that condition, we cannot confirm or deny whether the requirement is met.",
+        "quote_verbatim": false,
+        "affected_activities": [
+          "request form filled out"
+        ],
+        "affected_count": 1
+      },
+      {
+        "root_cause": "lab decided on sample use",
+        "quote": "After receiving the sample, a physician of the lab validates its state and decides whether the sample can be used for analysis or whether it is contaminated and a new sample is required.",
+        "explanation": "The requirement says that a condition must already be met before the activity “Validate sample state” can occur.  \nThe source text states: “After receiving the sample, a physician of the lab validates its state and decides whether the sample can be used for analysis or whether it is contaminated and a new sample is required.”  \n\nIn the observed process there is no activity that clearly represents the condition that must be satisfied before “Validate sample state.” Because of this, it is impossible to determine whether the requirement is met or not. This is an inability to verify, not a confirmation or refutation of conformance. (This same root cause also affects: sample validated.)",
+        "quote_verbatim": true,
+        "affected_activities": [
+          "Validate sample state",
+          "sample validated"
+        ],
+        "affected_count": 4
+      },
+      {
+        "root_cause": "sample contaminated",
+        "quote": "After receiving the sample, a physician of the lab validates its state and decides whether the sample can be used for analysis or whether it is contaminated and a new sample is required.",
+        "explanation": "The process says that before “Validate sample state” the sample must not be contaminated. The source text states: “After receiving the sample, a physician of the lab validates its state and decides whether the sample can be used for analysis or whether it is contaminated and a new sample is required.” This quote shows that a check for contamination is required, but the process does not show any activity that records whether the sample is contaminated or not. Therefore, we cannot confirm or refute whether the absence of contamination is respected.",
+        "quote_verbatim": true,
+        "affected_activities": [
+          "Validate sample state"
+        ],
+        "affected_count": 1
+      }
+    ],
+    "conforme": [],
+    "piece_jointe_alignement_brut": {
+      "female_patient.healthy": {
+        "operator": "AND",
+        "quote": "the physician fills out the examination form and the patient can leave.",
+        "terms": [
+          {
+            "term": "examination_form.filled_out",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['female_patient.healthy']",
+            "missing": [
+              "female_patient.healthy"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "examination_form.filled_out"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "female_patient.needs_additional_examination": {
+        "operator": "AND",
+        "quote": "The process starts when the female patient is examined by an outpatient physician, who decides whether she is healthy or needs to undertake an additional examination.",
+        "terms": [
+          {
+            "term": "female_patient.examined",
+            "status": "VIOLATED",
+            "reason": "both states matched, no path in process",
+            "missing": []
+          }
+        ],
+        "status": "VIOLATED",
+        "clauses": [
+          {
+            "terms": [
+              "female_patient.examined"
+            ],
+            "status": "VIOLATED"
+          }
+        ]
+      },
+      "female_patient.left": {
+        "operator": "AND",
+        "quote": "the physician fills out the examination form and the patient can leave.",
+        "terms": [
+          {
+            "term": "examination_form.filled_out",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['female_patient.left']",
+            "missing": [
+              "female_patient.left"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "examination_form.filled_out"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "request_form.filled_out": {
+        "operator": "AND",
+        "quote": "In the latter case, an examination and follow-up treatment order is placed by the physician who additionally fills out a request form.",
+        "terms": [
+          {
+            "term": "female_patient.needs_additional_examination",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['request_form.filled_out']",
+            "missing": [
+              "request_form.filled_out"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "female_patient.needs_additional_examination"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "lab.validated_sample_state": {
+        "operator": "AND",
+        "quote": "After receiving the sample, a physician of the lab validates its state and decides whether the sample can be used for analysis or whether it is contaminated and a new sample is required.",
+        "terms": [
+          {
+            "term": "lab.decided_on_sample_use",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['lab.decided_on_sample_use']",
+            "missing": [
+              "lab.decided_on_sample_use"
+            ]
+          },
+          {
+            "term": "NOT sample.contaminated",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['sample.contaminated']",
+            "missing": [
+              "sample.contaminated"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "lab.decided_on_sample_use",
+              "NOT sample.contaminated"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "sample.validated": {
+        "operator": "AND",
+        "quote": [
+          "\"He further sends it to the lab indicated in the request form\"",
+          "\"After receiving the sample, a physician of the lab validates its state and decides whether the sample can be used for analysis or whether it is contaminated and a new sample is required.\""
+        ],
+        "terms": [
+          {
+            "term": "sample.sent",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['sample.validated']",
+            "missing": [
+              "sample.validated"
+            ]
+          },
+          {
+            "term": "lab.decided_on_sample_use",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['lab.decided_on_sample_use', 'sample.validated']",
+            "missing": [
+              "lab.decided_on_sample_use",
+              "sample.validated"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "sample.sent",
+              "lab.decided_on_sample_use"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      }
+    }
+  },
+  "errors": []
+}

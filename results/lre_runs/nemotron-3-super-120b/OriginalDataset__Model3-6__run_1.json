@@ -1,0 +1,773 @@
+{
+  "case_name": "OriginalDataset/Model3-6",
+  "text": "When a claim is received, it is first checked whether the claimant is insured by the organization. If not, the claimant is informed that the claim must be rejected. Otherwise, the severity of the claim is evaluated. Based on the outcome (simple or complex claims), relevant forms are sent to the claimant. Once the forms are returned, they are checked for completeness. If the forms provide all relevant details, the claim is registered in the Claims Management system, which ends the Claims Notification process. Otherwise, the claimant is informed to update the forms. Upon reception of the updated forms, they are checked again.\n",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "nemotron-3-super-120b",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "nemotron-3-super-120b",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/../datasets/lre/alignment_model_text-master/datasets/OriginalDataset/Models/Model3-6.bpmn",
+  "report_model": "nemotron-3-super-120b",
+  "candidates": {
+    "claim": {
+      "states": [
+        "received",
+        "registered"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "claimant": {
+      "states": [
+        "insured",
+        "not_insured",
+        "informed"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "forms": {
+      "states": [
+        "sent",
+        "returned",
+        "checked_for_completeness",
+        "updated",
+        "checked_again"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    }
+  },
+  "validation_report": {
+    "claim": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "claim"
+    },
+    "claimant": {
+      "f_lex": "ACTOR",
+      "kept": false,
+      "head_used": "claimant"
+    },
+    "forms": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "forms"
+    },
+    "__meta__": {
+      "total_candidates": 3,
+      "indeterminate_kept_count": 0
+    }
+  },
+  "exclusive_groups_report": {
+    "accepted": [],
+    "rejected": []
+  },
+  "state_space": {
+    "claim": {
+      "states": [
+        "received",
+        "registered"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "form": {
+      "states": [
+        "sent",
+        "returned",
+        "checked_for_completeness",
+        "updated",
+        "checked_again"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    }
+  },
+  "state_space_dedup": {
+    "merged": {},
+    "ambiguous_not_merged": {}
+  },
+  "raw_preconditions": {
+    "claim.received": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "claim.registered": {
+      "precondition": "form.checked_for_completeness",
+      "quote": "If the forms provide all relevant details, the claim is registered in the Claims Management system, which ends the Claims Notification process."
+    },
+    "form.sent": {
+      "precondition": "claim.received",
+      "quote": "Based on the outcome (simple or complex claims), relevant forms are sent to the claimant."
+    },
+    "form.returned": {
+      "precondition": "form.sent",
+      "quote": "Once the forms are returned, they are checked for completeness."
+    },
+    "form.checked_for_completeness": {
+      "precondition": "form.returned",
+      "quote": "Once the forms are returned, they are checked for completeness."
+    },
+    "form.updated": {
+      "precondition": "form.checked_for_completeness",
+      "quote": "Otherwise, the claimant is informed to update the forms."
+    },
+    "form.checked_again": {
+      "precondition": "form.updated",
+      "quote": "Upon reception of the updated forms, they are checked again."
+    }
+  },
+  "validated_preconditions": {
+    "claim.received": {
+      "precondition": "INITIAL",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "claim.registered": {
+      "precondition": "form.checked_for_completeness",
+      "quote": "If the forms provide all relevant details, the claim is registered in the Claims Management system, which ends the Claims Notification process.",
+      "status": "OK",
+      "reason": null
+    },
+    "form.sent": {
+      "precondition": "claim.received",
+      "quote": "Based on the outcome (simple or complex claims), relevant forms are sent to the claimant.",
+      "status": "OK",
+      "reason": null
+    },
+    "form.returned": {
+      "precondition": "form.sent",
+      "quote": "Once the forms are returned, they are checked for completeness.",
+      "status": "OK",
+      "reason": null
+    },
+    "form.checked_for_completeness": {
+      "precondition": "form.returned",
+      "quote": "Once the forms are returned, they are checked for completeness.",
+      "status": "OK",
+      "reason": null
+    },
+    "form.updated": {
+      "precondition": "form.checked_for_completeness",
+      "quote": "Otherwise, the claimant is informed to update the forms.",
+      "status": "OK",
+      "reason": null
+    },
+    "form.checked_again": {
+      "precondition": "form.updated",
+      "quote": "Upon reception of the updated forms, they are checked again.",
+      "status": "OK",
+      "reason": null
+    }
+  },
+  "precondition_cycles": [],
+  "branch_conflicts": [],
+  "reference_graph": {
+    "nodes": [
+      {
+        "id": "claim.received",
+        "weight": 0.333
+      },
+      {
+        "id": "claim.registered",
+        "weight": 0.333
+      },
+      {
+        "id": "form.sent",
+        "weight": 0.667
+      },
+      {
+        "id": "form.returned",
+        "weight": 0.667
+      },
+      {
+        "id": "form.checked_for_completeness",
+        "weight": 1.0
+      },
+      {
+        "id": "form.updated",
+        "weight": 0.667
+      },
+      {
+        "id": "form.checked_again",
+        "weight": 0.333
+      }
+    ],
+    "edges": [
+      {
+        "from": "form.checked_for_completeness",
+        "to": "claim.registered",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "If the forms provide all relevant details, the claim is registered in the Claims Management system, which ends the Claims Notification process.",
+        "negated": false
+      },
+      {
+        "from": "claim.received",
+        "to": "form.sent",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "Based on the outcome (simple or complex claims), relevant forms are sent to the claimant.",
+        "negated": false
+      },
+      {
+        "from": "form.sent",
+        "to": "form.returned",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "Once the forms are returned, they are checked for completeness.",
+        "negated": false
+      },
+      {
+        "from": "form.returned",
+        "to": "form.checked_for_completeness",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "Once the forms are returned, they are checked for completeness.",
+        "negated": false
+      },
+      {
+        "from": "form.checked_for_completeness",
+        "to": "form.updated",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "Otherwise, the claimant is informed to update the forms.",
+        "negated": false
+      },
+      {
+        "from": "form.updated",
+        "to": "form.checked_again",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "Upon reception of the updated forms, they are checked again.",
+        "negated": false
+      }
+    ],
+    "cycles": [],
+    "branch_conflicts": [],
+    "exclusive_pairs": []
+  },
+  "dfg_edges": [
+    {
+      "source_id": "Task_2",
+      "source_label": "Evaluate severity",
+      "target_id": "Task_3",
+      "target_label": "Send relevant forms",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_4",
+      "source_label": "Check for completeness",
+      "target_id": "Task_3",
+      "target_label": "Send relevant forms",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_4",
+      "source_label": "Check for completeness",
+      "target_id": "Task_5",
+      "target_label": "Register claim",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_0",
+      "source_label": "Check customer  details",
+      "target_id": "Task_1",
+      "target_label": "Reject claim",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_0",
+      "source_label": "Check customer  details",
+      "target_id": "Task_2",
+      "target_label": "Evaluate severity",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_3",
+      "source_label": "Send relevant forms",
+      "target_id": "Task_4",
+      "target_label": "Check for completeness",
+      "gateway_context": []
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "Evaluate severity",
+      "subject_id": "Task_2",
+      "predicate": "follows",
+      "object": "Send relevant forms",
+      "object_id": "Task_3"
+    },
+    {
+      "subject": "Check for completeness",
+      "subject_id": "Task_4",
+      "predicate": "follows",
+      "object": "Send relevant forms",
+      "object_id": "Task_3"
+    },
+    {
+      "subject": "Check for completeness",
+      "subject_id": "Task_4",
+      "predicate": "follows",
+      "object": "Register claim",
+      "object_id": "Task_5"
+    },
+    {
+      "subject": "Check customer  details",
+      "subject_id": "Task_0",
+      "predicate": "follows",
+      "object": "Reject claim",
+      "object_id": "Task_1"
+    },
+    {
+      "subject": "Check customer  details",
+      "subject_id": "Task_0",
+      "predicate": "follows",
+      "object": "Evaluate severity",
+      "object_id": "Task_2"
+    },
+    {
+      "subject": "Send relevant forms",
+      "subject_id": "Task_3",
+      "predicate": "follows",
+      "object": "Check for completeness",
+      "object_id": "Task_4"
+    }
+  ],
+  "matches": {
+    "Task_2": {
+      "activity_label": "Evaluate severity",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_3": {
+      "activity_label": "Send relevant forms",
+      "matches": [
+        {
+          "match": "form.sent",
+          "score": 0.3704
+        }
+      ],
+      "clusters": [
+        [
+          "form.sent"
+        ]
+      ]
+    },
+    "Task_4": {
+      "activity_label": "Check for completeness",
+      "matches": [
+        {
+          "match": "form.checked_for_completeness",
+          "score": 0.52
+        }
+      ],
+      "clusters": [
+        [
+          "form.checked_for_completeness"
+        ]
+      ]
+    },
+    "Task_5": {
+      "activity_label": "Register claim",
+      "matches": [
+        {
+          "match": "claim.registered",
+          "score": 0.5299
+        }
+      ],
+      "clusters": [
+        [
+          "claim.registered"
+        ]
+      ]
+    },
+    "Task_0": {
+      "activity_label": "Check customer  details",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_1": {
+      "activity_label": "Reject claim",
+      "matches": [
+        {
+          "match": "claim.received",
+          "score": 0.3762
+        }
+      ],
+      "clusters": [
+        [
+          "claim.received"
+        ]
+      ]
+    }
+  },
+  "process_graph": [
+    {
+      "from": "form.checked_for_completeness",
+      "to": "form.sent",
+      "activity_from": "Check for completeness",
+      "activity_to": "Send relevant forms",
+      "source_id": "Task_4",
+      "target_id": "Task_3"
+    },
+    {
+      "from": "form.checked_for_completeness",
+      "to": "claim.registered",
+      "activity_from": "Check for completeness",
+      "activity_to": "Register claim",
+      "source_id": "Task_4",
+      "target_id": "Task_5"
+    },
+    {
+      "from": "form.sent",
+      "to": "form.checked_for_completeness",
+      "activity_from": "Send relevant forms",
+      "activity_to": "Check for completeness",
+      "source_id": "Task_3",
+      "target_id": "Task_4"
+    }
+  ],
+  "alignment": {
+    "claim.registered": {
+      "operator": "AND",
+      "quote": "If the forms provide all relevant details, the claim is registered in the Claims Management system, which ends the Claims Notification process.",
+      "terms": [
+        {
+          "term": "form.checked_for_completeness",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED",
+      "clauses": [
+        {
+          "terms": [
+            "form.checked_for_completeness"
+          ],
+          "status": "SATISFIED"
+        }
+      ]
+    },
+    "form.sent": {
+      "operator": "AND",
+      "quote": "Based on the outcome (simple or complex claims), relevant forms are sent to the claimant.",
+      "terms": [
+        {
+          "term": "claim.received",
+          "status": "VIOLATED",
+          "reason": "both states matched, no path in process",
+          "missing": []
+        }
+      ],
+      "status": "VIOLATED",
+      "clauses": [
+        {
+          "terms": [
+            "claim.received"
+          ],
+          "status": "VIOLATED"
+        }
+      ]
+    },
+    "form.returned": {
+      "operator": "AND",
+      "quote": "Once the forms are returned, they are checked for completeness.",
+      "terms": [
+        {
+          "term": "form.sent",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['form.returned']",
+          "missing": [
+            "form.returned"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "form.sent"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "form.checked_for_completeness": {
+      "operator": "AND",
+      "quote": "Once the forms are returned, they are checked for completeness.",
+      "terms": [
+        {
+          "term": "form.returned",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['form.returned']",
+          "missing": [
+            "form.returned"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "form.returned"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "form.updated": {
+      "operator": "AND",
+      "quote": "Otherwise, the claimant is informed to update the forms.",
+      "terms": [
+        {
+          "term": "form.checked_for_completeness",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['form.updated']",
+          "missing": [
+            "form.updated"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "form.checked_for_completeness"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "form.checked_again": {
+      "operator": "AND",
+      "quote": "Upon reception of the updated forms, they are checked again.",
+      "terms": [
+        {
+          "term": "form.updated",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['form.updated', 'form.checked_again']",
+          "missing": [
+            "form.updated",
+            "form.checked_again"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "form.updated"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    }
+  },
+  "report": {
+    "verdict": {
+      "verdict": "NOT_FAITHFUL",
+      "justification": "1 gap(s) found between the source text's requirements and the observed process -- at least one precondition asserted by the text is contradicted by the model's actual sequence of activities.",
+      "scope": "This verdict covers the causal reachability of the requirements expressed in the source text, not the general quality of the process model -- a multiplicity defect (an activity executed more than once due to a mismatched branching structure) is not covered by this verdict, even if the process is otherwise well-formed."
+    },
+    "summary": {
+      "ecarts": 1,
+      "non_verifiable": 2,
+      "conforme": 1
+    },
+    "ecarts": [
+      {
+        "root_cause": "Reject claim",
+        "quote": "Based on the outcome (simple or complex claims), relevant forms are sent to the claimant.",
+        "explanation": "The process includes both \"Reject claim\" and \"Send relevant forms\" activities, but there is no defined sequence ensuring that \"Reject claim\" occurs before \"Send relevant forms\".  \n\"Based on the outcome (simple or complex claims), relevant forms are sent to the claimant.\"",
+        "quote_verbatim": true,
+        "affected_activities": [
+          "Send relevant forms"
+        ],
+        "affected_count": 1
+      }
+    ],
+    "non_verifiable": [
+      {
+        "root_cause": "form returned",
+        "quote": "Once the forms are returned, they are checked for completeness.",
+        "explanation": "The activity \"form returned\" requires a condition to be met beforehand, as indicated by the statement: \"Once the forms are returned, they are checked for completeness.\" However, no specific activity in the observed process clearly corresponds to this required condition. Because the condition cannot be linked to any observable step, it is not possible to determine whether it has been satisfied or not. This lack of clarity means we cannot confirm or deny whether the requirement is met — only that verification is not possible based on the available information. (This same root cause also affects: Check for completeness.)",
+        "quote_verbatim": true,
+        "affected_activities": [
+          "Check for completeness",
+          "form returned"
+        ],
+        "affected_count": 2
+      },
+      {
+        "root_cause": "form updated",
+        "quote": "Otherwise, the claimant is informed to update the forms.",
+        "explanation": "The requirement states that a condition must be met before the activity \"form updated\" can occur, as indicated by the quote: \"Otherwise, the claimant is informed to update the forms.\" However, no clear activity in the observed process corresponds to this condition, making it impossible to verify whether the condition is satisfied or not. This does not confirm or deny conformance — it simply means the necessary information to check the requirement is not available in the observed process. (This same root cause also affects: form checked again.)",
+        "quote_verbatim": true,
+        "affected_activities": [
+          "form checked again",
+          "form updated"
+        ],
+        "affected_count": 3
+      }
+    ],
+    "conforme": [
+      {
+        "target": "Register claim",
+        "term": "Check for completeness"
+      }
+    ],
+    "piece_jointe_alignement_brut": {
+      "claim.registered": {
+        "operator": "AND",
+        "quote": "If the forms provide all relevant details, the claim is registered in the Claims Management system, which ends the Claims Notification process.",
+        "terms": [
+          {
+            "term": "form.checked_for_completeness",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED",
+        "clauses": [
+          {
+            "terms": [
+              "form.checked_for_completeness"
+            ],
+            "status": "SATISFIED"
+          }
+        ]
+      },
+      "form.sent": {
+        "operator": "AND",
+        "quote": "Based on the outcome (simple or complex claims), relevant forms are sent to the claimant.",
+        "terms": [
+          {
+            "term": "claim.received",
+            "status": "VIOLATED",
+            "reason": "both states matched, no path in process",
+            "missing": []
+          }
+        ],
+        "status": "VIOLATED",
+        "clauses": [
+          {
+            "terms": [
+              "claim.received"
+            ],
+            "status": "VIOLATED"
+          }
+        ]
+      },
+      "form.returned": {
+        "operator": "AND",
+        "quote": "Once the forms are returned, they are checked for completeness.",
+        "terms": [
+          {
+            "term": "form.sent",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['form.returned']",
+            "missing": [
+              "form.returned"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "form.sent"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "form.checked_for_completeness": {
+        "operator": "AND",
+        "quote": "Once the forms are returned, they are checked for completeness.",
+        "terms": [
+          {
+            "term": "form.returned",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['form.returned']",
+            "missing": [
+              "form.returned"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "form.returned"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "form.updated": {
+        "operator": "AND",
+        "quote": "Otherwise, the claimant is informed to update the forms.",
+        "terms": [
+          {
+            "term": "form.checked_for_completeness",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['form.updated']",
+            "missing": [
+              "form.updated"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "form.checked_for_completeness"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "form.checked_again": {
+        "operator": "AND",
+        "quote": "Upon reception of the updated forms, they are checked again.",
+        "terms": [
+          {
+            "term": "form.updated",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['form.updated', 'form.checked_again']",
+            "missing": [
+              "form.updated",
+              "form.checked_again"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "form.updated"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      }
+    }
+  },
+  "errors": []
+}

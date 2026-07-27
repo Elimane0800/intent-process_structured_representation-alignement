@@ -1,0 +1,895 @@
+{
+  "case_name": "OriginalDataset/Model3-2",
+  "text": "Each morning, the files which have yet to be processed need to be checked, to make sure they are in order for the court hearing that day. If some files are missing, a search is initiated, otherwise the files can be physically tracked to the intended location. Once all the files are ready, these are handed to the Associate, and meantime the Judges Lawlist is distributed to the relevant people. Afterwards, the directions hearings are conducted.",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "mistral-nemotron",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "mistral-nemotron",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/../datasets/lre/alignment_model_text-master/datasets/OriginalDataset/Models/Model3-2.bpmn",
+  "report_model": "mistral-nemotron",
+  "candidates": {
+    "file": {
+      "states": [
+        "unprocessed",
+        "in_order",
+        "missing",
+        "found",
+        "tracked",
+        "ready",
+        "handed_to_associate"
+      ],
+      "exclusive_groups": [
+        [
+          "in_order",
+          "missing"
+        ]
+      ],
+      "concurrent_with": []
+    },
+    "search": {
+      "states": [
+        "initiated",
+        "complete"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "judges_lawlist": {
+      "states": [
+        "distributed"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": [
+        "file"
+      ]
+    },
+    "directions_hearings": {
+      "states": [
+        "conducted"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    }
+  },
+  "validation_report": {
+    "file": {
+      "f_lex": "INDETERMINATE",
+      "kept": true,
+      "head_used": "file"
+    },
+    "search": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "search"
+    },
+    "judges_lawlist": {
+      "f_lex": "INDETERMINATE",
+      "kept": true,
+      "head_used": "lawlist"
+    },
+    "directions_hearings": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "hearings"
+    },
+    "__meta__": {
+      "total_candidates": 4,
+      "indeterminate_kept_count": 2
+    }
+  },
+  "exclusive_groups_report": {
+    "accepted": [
+      {
+        "entity": "file",
+        "states": [
+          "in_order",
+          "missing"
+        ],
+        "quote": "If some files are missing, a search is initiated, otherwise the files can be physically tracked to the intended location"
+      }
+    ],
+    "rejected": []
+  },
+  "state_space": {
+    "file": {
+      "states": [
+        "unprocessed",
+        "in_order",
+        "missing",
+        "found",
+        "tracked",
+        "ready",
+        "handed_to_associate"
+      ],
+      "exclusive_groups": [
+        [
+          "in_order",
+          "missing"
+        ]
+      ],
+      "concurrent_with": []
+    },
+    "search": {
+      "states": [
+        "initiated",
+        "complete"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "judge_lawlist": {
+      "states": [
+        "distributed"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": [
+        "file"
+      ]
+    },
+    "direction_hearing": {
+      "states": [
+        "conducted"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    }
+  },
+  "state_space_dedup": {
+    "merged": {},
+    "ambiguous_not_merged": {}
+  },
+  "raw_preconditions": {
+    "file.unprocessed": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "file.in_order": {
+      "precondition": "file.unprocessed",
+      "quote": "the files which have yet to be processed need to be checked, to make sure they are in order for the court hearing that day"
+    },
+    "file.missing": {
+      "precondition": "file.unprocessed",
+      "quote": "If some files are missing"
+    },
+    "file.found": {
+      "precondition": "search.complete",
+      "quote": "a search is initiated"
+    },
+    "file.tracked": {
+      "precondition": "NOT file.missing",
+      "quote": "otherwise the files can be physically tracked to the intended location"
+    },
+    "file.ready": {
+      "precondition": "(file.found AND file.tracked) OR file.in_order",
+      "quote": [
+        "Once all the files are ready",
+        "these are handed to the Associate"
+      ]
+    },
+    "file.handed_to_associate": {
+      "precondition": "file.ready",
+      "quote": "these are handed to the Associate"
+    },
+    "search.initiated": {
+      "precondition": "file.missing",
+      "quote": "a search is initiated"
+    },
+    "search.complete": {
+      "precondition": "UNRESOLVED",
+      "quote": null
+    },
+    "judge_lawlist.distributed": {
+      "precondition": "file.ready",
+      "quote": "meantime the Judges Lawlist is distributed to the relevant people"
+    },
+    "direction_hearing.conducted": {
+      "precondition": "judge_lawlist.distributed",
+      "quote": "Afterwards, the directions hearings are conducted"
+    }
+  },
+  "validated_preconditions": {
+    "file.unprocessed": {
+      "precondition": "INITIAL",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "file.in_order": {
+      "precondition": "file.unprocessed",
+      "quote": "the files which have yet to be processed need to be checked, to make sure they are in order for the court hearing that day",
+      "status": "OK",
+      "reason": null
+    },
+    "file.missing": {
+      "precondition": "file.unprocessed",
+      "quote": "If some files are missing",
+      "status": "OK",
+      "reason": null
+    },
+    "file.found": {
+      "precondition": "search.complete",
+      "quote": "a search is initiated",
+      "status": "OK",
+      "reason": null
+    },
+    "file.tracked": {
+      "precondition": "NOT file.missing",
+      "quote": "otherwise the files can be physically tracked to the intended location",
+      "status": "OK",
+      "reason": null
+    },
+    "file.ready": {
+      "precondition": "(file.found AND file.tracked) OR file.in_order",
+      "quote": [
+        "Once all the files are ready",
+        "these are handed to the Associate"
+      ],
+      "status": "OK",
+      "reason": null
+    },
+    "file.handed_to_associate": {
+      "precondition": "file.ready",
+      "quote": "these are handed to the Associate",
+      "status": "OK",
+      "reason": null
+    },
+    "search.initiated": {
+      "precondition": "file.missing",
+      "quote": "a search is initiated",
+      "status": "OK",
+      "reason": null
+    },
+    "search.complete": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "judge_lawlist.distributed": {
+      "precondition": "file.ready",
+      "quote": "meantime the Judges Lawlist is distributed to the relevant people",
+      "status": "OK",
+      "reason": null
+    },
+    "direction_hearing.conducted": {
+      "precondition": "judge_lawlist.distributed",
+      "quote": "Afterwards, the directions hearings are conducted",
+      "status": "OK",
+      "reason": null
+    }
+  },
+  "precondition_cycles": [],
+  "branch_conflicts": [
+    {
+      "entity": "file",
+      "exclusive_group": [
+        "in_order",
+        "missing"
+      ],
+      "conflicting_targets": [
+        "file.in_order",
+        "file.missing"
+      ],
+      "shared_precondition": "file.unprocessed",
+      "reason": "targets marked mutually exclusive in the state space share the exact same accepted precondition -- reaching it would trigger both branches at once"
+    }
+  ],
+  "reference_graph": {
+    "nodes": [
+      {
+        "id": "file.unprocessed",
+        "weight": 0.4
+      },
+      {
+        "id": "file.in_order",
+        "weight": 0.4
+      },
+      {
+        "id": "file.missing",
+        "weight": 0.6
+      },
+      {
+        "id": "file.found",
+        "weight": 0.4
+      },
+      {
+        "id": "file.tracked",
+        "weight": 0.4
+      },
+      {
+        "id": "file.ready",
+        "weight": 1.0
+      },
+      {
+        "id": "file.handed_to_associate",
+        "weight": 0.2
+      },
+      {
+        "id": "search.initiated",
+        "weight": 0.2
+      },
+      {
+        "id": "search.complete",
+        "weight": 0.2
+      },
+      {
+        "id": "judge_lawlist.distributed",
+        "weight": 0.4
+      },
+      {
+        "id": "direction_hearing.conducted",
+        "weight": 0.2
+      }
+    ],
+    "edges": [
+      {
+        "from": "file.unprocessed",
+        "to": "file.in_order",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "the files which have yet to be processed need to be checked, to make sure they are in order for the court hearing that day",
+        "negated": false
+      },
+      {
+        "from": "file.unprocessed",
+        "to": "file.missing",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "If some files are missing",
+        "negated": false
+      },
+      {
+        "from": "search.complete",
+        "to": "file.found",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "a search is initiated",
+        "negated": false
+      },
+      {
+        "from": "file.missing",
+        "to": "file.tracked",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "otherwise the files can be physically tracked to the intended location",
+        "negated": true
+      },
+      {
+        "from": "file.found",
+        "to": "file.ready",
+        "clause": 0,
+        "type": "sequence",
+        "quote": [
+          "Once all the files are ready",
+          "these are handed to the Associate"
+        ],
+        "negated": false
+      },
+      {
+        "from": "file.tracked",
+        "to": "file.ready",
+        "clause": 0,
+        "type": "sequence",
+        "quote": [
+          "Once all the files are ready",
+          "these are handed to the Associate"
+        ],
+        "negated": false
+      },
+      {
+        "from": "file.in_order",
+        "to": "file.ready",
+        "clause": 1,
+        "type": "sequence",
+        "quote": [
+          "Once all the files are ready",
+          "these are handed to the Associate"
+        ],
+        "negated": false
+      },
+      {
+        "from": "file.ready",
+        "to": "file.handed_to_associate",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "these are handed to the Associate",
+        "negated": false
+      },
+      {
+        "from": "file.missing",
+        "to": "search.initiated",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "a search is initiated",
+        "negated": false
+      },
+      {
+        "from": "file.ready",
+        "to": "judge_lawlist.distributed",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "meantime the Judges Lawlist is distributed to the relevant people",
+        "negated": false
+      },
+      {
+        "from": "judge_lawlist.distributed",
+        "to": "direction_hearing.conducted",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "Afterwards, the directions hearings are conducted",
+        "negated": false
+      }
+    ],
+    "cycles": [],
+    "branch_conflicts": [
+      {
+        "entity": "file",
+        "exclusive_group": [
+          "in_order",
+          "missing"
+        ],
+        "conflicting_targets": [
+          "file.in_order",
+          "file.missing"
+        ],
+        "shared_precondition": "file.unprocessed",
+        "reason": "targets marked mutually exclusive in the state space share the exact same accepted precondition -- reaching it would trigger both branches at once"
+      }
+    ],
+    "exclusive_pairs": [
+      {
+        "entity": "file",
+        "nodes": [
+          "file.in_order",
+          "file.missing"
+        ]
+      }
+    ]
+  },
+  "dfg_edges": [
+    {
+      "source_id": "Task_0",
+      "source_label": "Check files",
+      "target_id": "Task_1",
+      "target_label": "Initiate search",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_0",
+      "source_label": "Check files",
+      "target_id": "Task_2",
+      "target_label": "Track physical files",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_3",
+      "source_label": "Hand files to associate",
+      "target_id": "Task_5",
+      "target_label": "Conduct directions hearings",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "Task_1",
+      "source_label": "Initiate search",
+      "target_id": "Task_2",
+      "target_label": "Track physical files",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_2",
+      "source_label": "Track physical files",
+      "target_id": "Task_4",
+      "target_label": "Distribute judge's lawlist",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "Task_2",
+      "source_label": "Track physical files",
+      "target_id": "Task_3",
+      "target_label": "Hand files to associate",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    },
+    {
+      "source_id": "Task_4",
+      "source_label": "Distribute judge's lawlist",
+      "target_id": "Task_5",
+      "target_label": "Conduct directions hearings",
+      "gateway_context": [
+        "ParallelGateway"
+      ]
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "Check files",
+      "subject_id": "Task_0",
+      "predicate": "follows",
+      "object": "Initiate search",
+      "object_id": "Task_1"
+    },
+    {
+      "subject": "Check files",
+      "subject_id": "Task_0",
+      "predicate": "follows",
+      "object": "Track physical files",
+      "object_id": "Task_2"
+    },
+    {
+      "subject": "Hand files to associate",
+      "subject_id": "Task_3",
+      "predicate": "follows",
+      "object": "Conduct directions hearings",
+      "object_id": "Task_5"
+    },
+    {
+      "subject": "Initiate search",
+      "subject_id": "Task_1",
+      "predicate": "follows",
+      "object": "Track physical files",
+      "object_id": "Task_2"
+    },
+    {
+      "subject": "Track physical files",
+      "subject_id": "Task_2",
+      "predicate": "follows",
+      "object": "Distribute judge's lawlist",
+      "object_id": "Task_4"
+    },
+    {
+      "subject": "Track physical files",
+      "subject_id": "Task_2",
+      "predicate": "follows",
+      "object": "Hand files to associate",
+      "object_id": "Task_3"
+    },
+    {
+      "subject": "Distribute judge's lawlist",
+      "subject_id": "Task_4",
+      "predicate": "follows",
+      "object": "Conduct directions hearings",
+      "object_id": "Task_5"
+    }
+  ],
+  "matches": {
+    "Task_0": {
+      "activity_label": "Check files",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_1": {
+      "activity_label": "Initiate search",
+      "matches": [
+        {
+          "match": "search.initiated",
+          "score": 0.437
+        }
+      ],
+      "clusters": [
+        [
+          "search.initiated"
+        ]
+      ]
+    },
+    "Task_2": {
+      "activity_label": "Track physical files",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_3": {
+      "activity_label": "Hand files to associate",
+      "matches": [
+        {
+          "match": "file.handed_to_associate",
+          "score": 0.4852
+        }
+      ],
+      "clusters": [
+        [
+          "file.handed_to_associate"
+        ]
+      ]
+    },
+    "Task_5": {
+      "activity_label": "Conduct directions hearings",
+      "matches": [
+        {
+          "match": "direction_hearing.conducted",
+          "score": 0.5722
+        }
+      ],
+      "clusters": [
+        [
+          "direction_hearing.conducted"
+        ]
+      ]
+    },
+    "Task_4": {
+      "activity_label": "Distribute judge's lawlist",
+      "matches": [
+        {
+          "match": "judge_lawlist.distributed",
+          "score": 0.5527
+        }
+      ],
+      "clusters": [
+        [
+          "judge_lawlist.distributed"
+        ]
+      ]
+    }
+  },
+  "process_graph": [
+    {
+      "from": "file.handed_to_associate",
+      "to": "direction_hearing.conducted",
+      "activity_from": "Hand files to associate",
+      "activity_to": "Conduct directions hearings",
+      "source_id": "Task_3",
+      "target_id": "Task_5"
+    },
+    {
+      "from": "judge_lawlist.distributed",
+      "to": "direction_hearing.conducted",
+      "activity_from": "Distribute judge's lawlist",
+      "activity_to": "Conduct directions hearings",
+      "source_id": "Task_4",
+      "target_id": "Task_5"
+    }
+  ],
+  "alignment": {
+    "file.in_order": {
+      "operator": "AND",
+      "quote": "the files which have yet to be processed need to be checked, to make sure they are in order for the court hearing that day",
+      "terms": [
+        {
+          "term": "file.unprocessed",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['file.unprocessed', 'file.in_order']",
+          "missing": [
+            "file.unprocessed",
+            "file.in_order"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "file.unprocessed"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "file.missing": {
+      "operator": "AND",
+      "quote": "If some files are missing",
+      "terms": [
+        {
+          "term": "file.unprocessed",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['file.unprocessed', 'file.missing']",
+          "missing": [
+            "file.unprocessed",
+            "file.missing"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "file.unprocessed"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "file.found": {
+      "operator": "AND",
+      "quote": "a search is initiated",
+      "terms": [
+        {
+          "term": "search.complete",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['search.complete', 'file.found']",
+          "missing": [
+            "search.complete",
+            "file.found"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "search.complete"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "file.tracked": {
+      "operator": "AND",
+      "quote": "otherwise the files can be physically tracked to the intended location",
+      "terms": [
+        {
+          "term": "NOT file.missing",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['file.missing', 'file.tracked']",
+          "missing": [
+            "file.missing",
+            "file.tracked"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "NOT file.missing"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "file.ready": {
+      "operator": "MIXED",
+      "quote": [
+        "Once all the files are ready",
+        "these are handed to the Associate"
+      ],
+      "terms": [
+        {
+          "term": "file.found",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['file.found', 'file.ready']",
+          "missing": [
+            "file.found",
+            "file.ready"
+          ]
+        },
+        {
+          "term": "file.tracked",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['file.tracked', 'file.ready']",
+          "missing": [
+            "file.tracked",
+            "file.ready"
+          ]
+        },
+        {
+          "term": "file.in_order",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['file.in_order', 'file.ready']",
+          "missing": [
+            "file.in_order",
+            "file.ready"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "file.found",
+            "file.tracked"
+          ],
+          "status": "UNRESOLVABLE"
+        },
+        {
+          "terms": [
+            "file.in_order"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "file.handed_to_associate": {
+      "operator": "AND",
+      "quote": "these are handed to the Associate",
+      "terms": [
+        {
+          "term": "file.ready",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['file.ready']",
+          "missing": [
+            "file.ready"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "file.ready"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "search.initiated": {
+      "operator": "AND",
+      "quote": "a search is initiated",
+      "terms": [
+        {
+          "term": "file.missing",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['file.missing']",
+          "missing": [
+            "file.missing"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "file.missing"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "judge_lawlist.distributed": {
+      "operator": "AND",
+      "quote": "meantime the Judges Lawlist is distributed to the relevant people",
+      "terms": [
+        {
+          "term": "file.ready",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['file.ready']",
+          "missing": [
+            "file.ready"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "file.ready"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "direction_hearing.conducted": {
+      "operator": "AND",
+      "quote": "Afterwards, the directions hearings are conducted",
+      "terms": [
+        {
+          "term": "judge_lawlist.distributed",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED",
+      "clauses": [
+        {
+          "terms": [
+            "judge_lawlist.distributed"
+          ],
+          "status": "SATISFIED"
+        }
+      ]
+    }
+  },
+  "errors": [
+    "report: 'list' object has no attribute 'split'"
+  ]
+}

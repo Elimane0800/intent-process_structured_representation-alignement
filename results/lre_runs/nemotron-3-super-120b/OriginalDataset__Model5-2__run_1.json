@@ -1,0 +1,759 @@
+{
+  "case_name": "OriginalDataset/Model5-2",
+  "text": "The process of Vacations Request starts when any employee of the organization submits a vacation request. Once the requirement is registered, the request is received by the immediate supervisor of the employee requesting the vacation. The supervisor must approve or reject the request. If the request is rejected, the application is returned to the applicant/employee who can review the rejection reasons. If the request is approved a notification is generated to the Human Resources Representative, who must complete the respective management procedures.\n",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "nemotron-3-super-120b",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "nemotron-3-super-120b",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/../datasets/lre/alignment_model_text-master/datasets/OriginalDataset/Models/Model5-2.bpmn",
+  "report_model": "nemotron-3-super-120b",
+  "candidates": {
+    "vacation_request": {
+      "states": [
+        "submitted",
+        "received",
+        "approved",
+        "rejected"
+      ],
+      "exclusive_groups": [
+        [
+          "approved",
+          "rejected"
+        ]
+      ],
+      "concurrent_with": []
+    },
+    "application": {
+      "states": [
+        "returned"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "notification": {
+      "states": [
+        "generated"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    }
+  },
+  "validation_report": {
+    "vacation_request": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "request"
+    },
+    "application": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "application"
+    },
+    "notification": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "notification"
+    },
+    "__meta__": {
+      "total_candidates": 3,
+      "indeterminate_kept_count": 0
+    }
+  },
+  "exclusive_groups_report": {
+    "accepted": [
+      {
+        "entity": "vacation_request",
+        "states": [
+          "approved",
+          "rejected"
+        ],
+        "quote": "The supervisor must approve or reject the request."
+      }
+    ],
+    "rejected": []
+  },
+  "state_space": {
+    "vacation_request": {
+      "states": [
+        "submitted",
+        "received",
+        "approved",
+        "rejected"
+      ],
+      "exclusive_groups": [
+        [
+          "approved",
+          "rejected"
+        ]
+      ],
+      "concurrent_with": []
+    },
+    "application": {
+      "states": [
+        "returned"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "notification": {
+      "states": [
+        "generated"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    }
+  },
+  "state_space_dedup": {
+    "merged": {},
+    "ambiguous_not_merged": {}
+  },
+  "raw_preconditions": {
+    "vacation_request.submitted": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "vacation_request.received": {
+      "precondition": "vacation_request.submitted",
+      "quote": "Once the requirement is registered, the request is received by the immediate supervisor of the employee requesting the vacation."
+    },
+    "vacation_request.approved": {
+      "precondition": "vacation_request.received",
+      "quote": "The supervisor must approve or reject the request."
+    },
+    "vacation_request.rejected": {
+      "precondition": "vacation_request.received",
+      "quote": "The supervisor must approve or reject the request."
+    },
+    "application.returned": {
+      "precondition": "vacation_request.rejected",
+      "quote": "If the request is rejected, the application is returned to the applicant/employee who can review the rejection reasons."
+    },
+    "notification.generated": {
+      "precondition": "vacation_request.approved",
+      "quote": "If the request is approved a notification is generated to the Human Resources Representative, who must complete the respective management procedures."
+    }
+  },
+  "validated_preconditions": {
+    "vacation_request.submitted": {
+      "precondition": "INITIAL",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "vacation_request.received": {
+      "precondition": "vacation_request.submitted",
+      "quote": "Once the requirement is registered, the request is received by the immediate supervisor of the employee requesting the vacation.",
+      "status": "OK",
+      "reason": null
+    },
+    "vacation_request.approved": {
+      "precondition": "vacation_request.received",
+      "quote": "The supervisor must approve or reject the request.",
+      "status": "OK",
+      "reason": null
+    },
+    "vacation_request.rejected": {
+      "precondition": "vacation_request.received",
+      "quote": "The supervisor must approve or reject the request.",
+      "status": "OK",
+      "reason": null
+    },
+    "application.returned": {
+      "precondition": "vacation_request.rejected",
+      "quote": "If the request is rejected, the application is returned to the applicant/employee who can review the rejection reasons.",
+      "status": "OK",
+      "reason": null
+    },
+    "notification.generated": {
+      "precondition": "vacation_request.approved",
+      "quote": "If the request is approved a notification is generated to the Human Resources Representative, who must complete the respective management procedures.",
+      "status": "OK",
+      "reason": null
+    }
+  },
+  "precondition_cycles": [],
+  "branch_conflicts": [
+    {
+      "entity": "vacation_request",
+      "exclusive_group": [
+        "approved",
+        "rejected"
+      ],
+      "conflicting_targets": [
+        "vacation_request.approved",
+        "vacation_request.rejected"
+      ],
+      "shared_precondition": "vacation_request.received",
+      "reason": "targets marked mutually exclusive in the state space share the exact same accepted precondition -- reaching it would trigger both branches at once"
+    }
+  ],
+  "reference_graph": {
+    "nodes": [
+      {
+        "id": "vacation_request.submitted",
+        "weight": 0.333
+      },
+      {
+        "id": "vacation_request.received",
+        "weight": 1.0
+      },
+      {
+        "id": "vacation_request.approved",
+        "weight": 0.667
+      },
+      {
+        "id": "vacation_request.rejected",
+        "weight": 0.667
+      },
+      {
+        "id": "application.returned",
+        "weight": 0.333
+      },
+      {
+        "id": "notification.generated",
+        "weight": 0.333
+      }
+    ],
+    "edges": [
+      {
+        "from": "vacation_request.submitted",
+        "to": "vacation_request.received",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "Once the requirement is registered, the request is received by the immediate supervisor of the employee requesting the vacation.",
+        "negated": false
+      },
+      {
+        "from": "vacation_request.received",
+        "to": "vacation_request.approved",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "The supervisor must approve or reject the request.",
+        "negated": false
+      },
+      {
+        "from": "vacation_request.received",
+        "to": "vacation_request.rejected",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "The supervisor must approve or reject the request.",
+        "negated": false
+      },
+      {
+        "from": "vacation_request.rejected",
+        "to": "application.returned",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "If the request is rejected, the application is returned to the applicant/employee who can review the rejection reasons.",
+        "negated": false
+      },
+      {
+        "from": "vacation_request.approved",
+        "to": "notification.generated",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "If the request is approved a notification is generated to the Human Resources Representative, who must complete the respective management procedures.",
+        "negated": false
+      }
+    ],
+    "cycles": [],
+    "branch_conflicts": [
+      {
+        "entity": "vacation_request",
+        "exclusive_group": [
+          "approved",
+          "rejected"
+        ],
+        "conflicting_targets": [
+          "vacation_request.approved",
+          "vacation_request.rejected"
+        ],
+        "shared_precondition": "vacation_request.received",
+        "reason": "targets marked mutually exclusive in the state space share the exact same accepted precondition -- reaching it would trigger both branches at once"
+      }
+    ],
+    "exclusive_pairs": [
+      {
+        "entity": "vacation_request",
+        "nodes": [
+          "vacation_request.approved",
+          "vacation_request.rejected"
+        ]
+      }
+    ]
+  },
+  "dfg_edges": [
+    {
+      "source_id": "Task_2",
+      "source_label": "Approve vacation request",
+      "target_id": "Task_0",
+      "target_label": "Make administrative task",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_2",
+      "source_label": "Approve vacation request",
+      "target_id": "Task_3",
+      "target_label": "Inform employee about reject reason",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_4",
+      "source_label": "Register vacation request",
+      "target_id": "Task_1",
+      "target_label": "Verify  available vacation days",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_1",
+      "source_label": "Verify  available vacation days",
+      "target_id": "Task_2",
+      "target_label": "Approve vacation request",
+      "gateway_context": []
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "Approve vacation request",
+      "subject_id": "Task_2",
+      "predicate": "follows",
+      "object": "Make administrative task",
+      "object_id": "Task_0"
+    },
+    {
+      "subject": "Approve vacation request",
+      "subject_id": "Task_2",
+      "predicate": "follows",
+      "object": "Inform employee about reject reason",
+      "object_id": "Task_3"
+    },
+    {
+      "subject": "Register vacation request",
+      "subject_id": "Task_4",
+      "predicate": "follows",
+      "object": "Verify  available vacation days",
+      "object_id": "Task_1"
+    },
+    {
+      "subject": "Verify  available vacation days",
+      "subject_id": "Task_1",
+      "predicate": "follows",
+      "object": "Approve vacation request",
+      "object_id": "Task_2"
+    }
+  ],
+  "matches": {
+    "Task_2": {
+      "activity_label": "Approve vacation request",
+      "matches": [
+        {
+          "match": "vacation_request.approved",
+          "score": 0.5515
+        },
+        {
+          "match": "vacation_request.received",
+          "score": 0.51
+        }
+      ],
+      "clusters": [
+        [
+          "vacation_request.approved",
+          "vacation_request.received"
+        ]
+      ]
+    },
+    "Task_0": {
+      "activity_label": "Make administrative task",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_3": {
+      "activity_label": "Inform employee about reject reason",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_4": {
+      "activity_label": "Register vacation request",
+      "matches": [
+        {
+          "match": "vacation_request.submitted",
+          "score": 0.754
+        },
+        {
+          "match": "vacation_request.received",
+          "score": 0.7472
+        }
+      ],
+      "clusters": [
+        [
+          "vacation_request.submitted",
+          "vacation_request.received"
+        ]
+      ]
+    },
+    "Task_1": {
+      "activity_label": "Verify  available vacation days",
+      "matches": [
+        {
+          "match": "vacation_request.submitted",
+          "score": 0.4902
+        },
+        {
+          "match": "vacation_request.received",
+          "score": 0.483
+        }
+      ],
+      "clusters": [
+        [
+          "vacation_request.submitted",
+          "vacation_request.received"
+        ]
+      ]
+    }
+  },
+  "process_graph": [
+    {
+      "from": "vacation_request.submitted",
+      "to": "vacation_request.submitted",
+      "activity_from": "Register vacation request",
+      "activity_to": "Verify  available vacation days",
+      "source_id": "Task_4",
+      "target_id": "Task_1"
+    },
+    {
+      "from": "vacation_request.submitted",
+      "to": "vacation_request.received",
+      "activity_from": "Register vacation request",
+      "activity_to": "Verify  available vacation days",
+      "source_id": "Task_4",
+      "target_id": "Task_1"
+    },
+    {
+      "from": "vacation_request.received",
+      "to": "vacation_request.submitted",
+      "activity_from": "Register vacation request",
+      "activity_to": "Verify  available vacation days",
+      "source_id": "Task_4",
+      "target_id": "Task_1"
+    },
+    {
+      "from": "vacation_request.received",
+      "to": "vacation_request.received",
+      "activity_from": "Register vacation request",
+      "activity_to": "Verify  available vacation days",
+      "source_id": "Task_4",
+      "target_id": "Task_1"
+    },
+    {
+      "from": "vacation_request.submitted",
+      "to": "vacation_request.approved",
+      "activity_from": "Verify  available vacation days",
+      "activity_to": "Approve vacation request",
+      "source_id": "Task_1",
+      "target_id": "Task_2"
+    },
+    {
+      "from": "vacation_request.submitted",
+      "to": "vacation_request.received",
+      "activity_from": "Verify  available vacation days",
+      "activity_to": "Approve vacation request",
+      "source_id": "Task_1",
+      "target_id": "Task_2"
+    },
+    {
+      "from": "vacation_request.received",
+      "to": "vacation_request.approved",
+      "activity_from": "Verify  available vacation days",
+      "activity_to": "Approve vacation request",
+      "source_id": "Task_1",
+      "target_id": "Task_2"
+    },
+    {
+      "from": "vacation_request.received",
+      "to": "vacation_request.received",
+      "activity_from": "Verify  available vacation days",
+      "activity_to": "Approve vacation request",
+      "source_id": "Task_1",
+      "target_id": "Task_2"
+    }
+  ],
+  "alignment": {
+    "vacation_request.received": {
+      "operator": "AND",
+      "quote": "Once the requirement is registered, the request is received by the immediate supervisor of the employee requesting the vacation.",
+      "terms": [
+        {
+          "term": "vacation_request.submitted",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED",
+      "clauses": [
+        {
+          "terms": [
+            "vacation_request.submitted"
+          ],
+          "status": "SATISFIED"
+        }
+      ]
+    },
+    "vacation_request.approved": {
+      "operator": "AND",
+      "quote": "The supervisor must approve or reject the request.",
+      "terms": [
+        {
+          "term": "vacation_request.received",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED",
+      "clauses": [
+        {
+          "terms": [
+            "vacation_request.received"
+          ],
+          "status": "SATISFIED"
+        }
+      ]
+    },
+    "vacation_request.rejected": {
+      "operator": "AND",
+      "quote": "The supervisor must approve or reject the request.",
+      "terms": [
+        {
+          "term": "vacation_request.received",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['vacation_request.rejected']",
+          "missing": [
+            "vacation_request.rejected"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "vacation_request.received"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "application.returned": {
+      "operator": "AND",
+      "quote": "If the request is rejected, the application is returned to the applicant/employee who can review the rejection reasons.",
+      "terms": [
+        {
+          "term": "vacation_request.rejected",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['vacation_request.rejected', 'application.returned']",
+          "missing": [
+            "vacation_request.rejected",
+            "application.returned"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "vacation_request.rejected"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "notification.generated": {
+      "operator": "AND",
+      "quote": "If the request is approved a notification is generated to the Human Resources Representative, who must complete the respective management procedures.",
+      "terms": [
+        {
+          "term": "vacation_request.approved",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['notification.generated']",
+          "missing": [
+            "notification.generated"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "vacation_request.approved"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    }
+  },
+  "report": {
+    "verdict": {
+      "verdict": "FAITHFUL_WITH_RESERVATIONS",
+      "justification": "No gap found, but 2 requirement(s) from the text could not be associated with any clear activity in the observed process -- neither confirmed nor refuted. This verdict is NOT a confirmation of full faithfulness.",
+      "scope": "This verdict covers the causal reachability of the requirements expressed in the source text, not the general quality of the process model -- a multiplicity defect (an activity executed more than once due to a mismatched branching structure) is not covered by this verdict, even if the process is otherwise well-formed."
+    },
+    "summary": {
+      "ecarts": 0,
+      "non_verifiable": 2,
+      "conforme": 2
+    },
+    "ecarts": [],
+    "non_verifiable": [
+      {
+        "root_cause": "vacation request rejected",
+        "quote": "The supervisor must approve or reject the request.",
+        "explanation": "The requirement states that a condition must be met before the activity \"vacation request rejected\" can occur, as indicated by the quote: \"The supervisor must approve or reject the request.\" However, this condition cannot be linked to any specific activity in the observed process, so it is not possible to check whether it is satisfied or not. Therefore, we cannot confirm or deny whether the process follows this rule — we simply lack the information to verify it. (This same root cause also affects: application returned.)",
+        "quote_verbatim": true,
+        "affected_activities": [
+          "application returned",
+          "vacation request rejected"
+        ],
+        "affected_count": 3
+      },
+      {
+        "root_cause": "notification generated",
+        "quote": "If the request is approved a notification is generated to the Human Resources Representative, who must complete the respective management procedures.",
+        "explanation": "The requirement states that a notification can only be generated if the request is approved, as shown in the quote: \"If the request is approved a notification is generated to the Human Resources Representative, who must complete the respective management procedures.\" However, the observed process does not include any clear activity that confirms whether the request was approved, so it is impossible to verify whether this condition was met before the notification was generated. This does not mean the requirement was followed or broken — only that we cannot tell from the available information.",
+        "quote_verbatim": true,
+        "affected_activities": [
+          "notification generated"
+        ],
+        "affected_count": 1
+      }
+    ],
+    "conforme": [
+      {
+        "target": "Register vacation request",
+        "term": "Register vacation request"
+      },
+      {
+        "target": "Approve vacation request",
+        "term": "Register vacation request"
+      }
+    ],
+    "piece_jointe_alignement_brut": {
+      "vacation_request.received": {
+        "operator": "AND",
+        "quote": "Once the requirement is registered, the request is received by the immediate supervisor of the employee requesting the vacation.",
+        "terms": [
+          {
+            "term": "vacation_request.submitted",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED",
+        "clauses": [
+          {
+            "terms": [
+              "vacation_request.submitted"
+            ],
+            "status": "SATISFIED"
+          }
+        ]
+      },
+      "vacation_request.approved": {
+        "operator": "AND",
+        "quote": "The supervisor must approve or reject the request.",
+        "terms": [
+          {
+            "term": "vacation_request.received",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED",
+        "clauses": [
+          {
+            "terms": [
+              "vacation_request.received"
+            ],
+            "status": "SATISFIED"
+          }
+        ]
+      },
+      "vacation_request.rejected": {
+        "operator": "AND",
+        "quote": "The supervisor must approve or reject the request.",
+        "terms": [
+          {
+            "term": "vacation_request.received",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['vacation_request.rejected']",
+            "missing": [
+              "vacation_request.rejected"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "vacation_request.received"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "application.returned": {
+        "operator": "AND",
+        "quote": "If the request is rejected, the application is returned to the applicant/employee who can review the rejection reasons.",
+        "terms": [
+          {
+            "term": "vacation_request.rejected",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['vacation_request.rejected', 'application.returned']",
+            "missing": [
+              "vacation_request.rejected",
+              "application.returned"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "vacation_request.rejected"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "notification.generated": {
+        "operator": "AND",
+        "quote": "If the request is approved a notification is generated to the Human Resources Representative, who must complete the respective management procedures.",
+        "terms": [
+          {
+            "term": "vacation_request.approved",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['notification.generated']",
+            "missing": [
+              "notification.generated"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "vacation_request.approved"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      }
+    }
+  },
+  "errors": []
+}

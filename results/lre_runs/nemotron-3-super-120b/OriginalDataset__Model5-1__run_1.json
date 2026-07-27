@@ -1,0 +1,784 @@
+{
+  "case_name": "OriginalDataset/Model5-1",
+  "text": "The loan approval process starts by receiving a customer request for a loan amount. The risk assessment Web service is invoked to assess the request. If the loan is small and the customer is low risk, the loan is approved. If the customer is high risk, the loan is denied. If the customer needs further review or the loan amount is for $10,000 or more, the request is sent to the approver Web service. The customer receives feedback from the assessor or approver.\n",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "nemotron-3-super-120b",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "nemotron-3-super-120b",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/../datasets/lre/alignment_model_text-master/datasets/OriginalDataset/Models/Model5-1.bpmn",
+  "report_model": "nemotron-3-super-120b",
+  "candidates": {
+    "loan": {
+      "states": [
+        "approved",
+        "denied",
+        "sent_to_approver"
+      ],
+      "exclusive_groups": [
+        [
+          "approved",
+          "denied"
+        ]
+      ],
+      "concurrent_with": []
+    },
+    "customer_request": {
+      "states": [
+        "received",
+        "sent_to_approver"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "risk_assessment": {
+      "states": [
+        "invoked"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "approver_web_service": {
+      "states": [
+        "invoked"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "customer": {
+      "states": [
+        "receives_feedback"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    }
+  },
+  "validation_report": {
+    "loan": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "loan"
+    },
+    "customer_request": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "request"
+    },
+    "risk_assessment": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "assessment"
+    },
+    "approver_web_service": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "service"
+    },
+    "customer": {
+      "f_lex": "ACTOR",
+      "kept": false,
+      "head_used": "customer"
+    },
+    "__meta__": {
+      "total_candidates": 5,
+      "indeterminate_kept_count": 0
+    }
+  },
+  "exclusive_groups_report": {
+    "accepted": [
+      {
+        "entity": "loan",
+        "states": [
+          "approved",
+          "denied"
+        ],
+        "quote": "If the loan is small and the customer is low risk, the loan is approved. If the customer is high risk, the loan is denied."
+      }
+    ],
+    "rejected": []
+  },
+  "state_space": {
+    "loan": {
+      "states": [
+        "approved",
+        "denied",
+        "sent_to_approver"
+      ],
+      "exclusive_groups": [
+        [
+          "approved",
+          "denied"
+        ]
+      ],
+      "concurrent_with": []
+    },
+    "customer_request": {
+      "states": [
+        "received",
+        "sent_to_approver"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "risk_assessment": {
+      "states": [
+        "invoked"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "approver_web_service": {
+      "states": [
+        "invoked"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    }
+  },
+  "state_space_dedup": {
+    "merged": {},
+    "ambiguous_not_merged": {}
+  },
+  "raw_preconditions": {
+    "loan.approved": {
+      "precondition": "risk_assessment.invoked AND customer_request.received",
+      "quote": "The loan approval process starts by receiving a customer request for a loan amount. The risk assessment Web service is invoked to assess the request. If the loan is small and the customer is low risk, the loan is approved."
+    },
+    "loan.denied": {
+      "precondition": "risk_assessment.invoked AND customer_request.received",
+      "quote": "The loan approval process starts by receiving a customer request for a loan amount. The risk assessment Web service is invoked to assess the request. If the customer is high risk, the loan is denied."
+    },
+    "loan.sent_to_approver": {
+      "precondition": "risk_assessment.invoked AND customer_request.received",
+      "quote": "The loan approval process starts by receiving a customer request for a loan amount. The risk assessment Web service is invoked to assess the request. If the customer needs further review or the loan amount is for $10,000 or more, the request is sent to the approver Web service."
+    },
+    "customer_request.received": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "customer_request.sent_to_approver": {
+      "precondition": "risk_assessment.invoked AND customer_request.received",
+      "quote": "The loan approval process starts by receiving a customer request for a loan amount. The risk assessment Web service is invoked to assess the request. If the customer needs further review or the loan amount is for $10,000 or more, the request is sent to the approver Web service."
+    },
+    "risk_assessment.invoked": {
+      "precondition": "customer_request.received",
+      "quote": "The loan approval process starts by receiving a customer request for a loan amount. The risk assessment Web service is invoked to assess the request."
+    },
+    "approver_web_service.invoked": {
+      "precondition": "risk_assessment.invoked AND customer_request.received",
+      "quote": "The loan approval process starts by receiving a customer request for a loan amount. The risk assessment Web service is invoked to assess the request. If the customer needs further review or the loan amount is for $10,000 or more, the request is sent to the approver Web service."
+    }
+  },
+  "validated_preconditions": {
+    "loan.approved": {
+      "precondition": "risk_assessment.invoked AND customer_request.received",
+      "quote": "The loan approval process starts by receiving a customer request for a loan amount. The risk assessment Web service is invoked to assess the request. If the loan is small and the customer is low risk, the loan is approved.",
+      "status": "OK",
+      "reason": null
+    },
+    "loan.denied": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "OK",
+      "reason": null,
+      "retried": true
+    },
+    "loan.sent_to_approver": {
+      "precondition": "customer_request.received AND risk_assessment.invoked",
+      "quote": [
+        "The loan approval process starts by receiving a customer request for a loan amount.",
+        "The risk assessment Web service is invoked to assess the request."
+      ],
+      "status": "OK",
+      "reason": null,
+      "retried": true
+    },
+    "customer_request.received": {
+      "precondition": "INITIAL",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "customer_request.sent_to_approver": {
+      "precondition": "customer_request.received AND risk_assessment.invoked",
+      "quote": "The loan approval process starts by receiving a customer request for a loan amount. The risk assessment Web service is invoked to assess the request.",
+      "status": "OK",
+      "reason": null,
+      "retried": true
+    },
+    "risk_assessment.invoked": {
+      "precondition": "customer_request.received",
+      "quote": "The loan approval process starts by receiving a customer request for a loan amount. The risk assessment Web service is invoked to assess the request.",
+      "status": "OK",
+      "reason": null
+    },
+    "approver_web_service.invoked": {
+      "precondition": "risk_assessment.invoked AND customer_request.received",
+      "quote": [
+        "The loan approval process starts by receiving a customer request for a loan amount.",
+        "The risk assessment Web service is invoked to assess the request."
+      ],
+      "status": "OK",
+      "reason": null,
+      "retried": true
+    }
+  },
+  "precondition_cycles": [],
+  "branch_conflicts": [],
+  "reference_graph": {
+    "nodes": [
+      {
+        "id": "loan.approved",
+        "weight": 0.4
+      },
+      {
+        "id": "loan.denied",
+        "weight": 0.0
+      },
+      {
+        "id": "loan.sent_to_approver",
+        "weight": 0.4
+      },
+      {
+        "id": "customer_request.received",
+        "weight": 1.0
+      },
+      {
+        "id": "customer_request.sent_to_approver",
+        "weight": 0.4
+      },
+      {
+        "id": "risk_assessment.invoked",
+        "weight": 1.0
+      },
+      {
+        "id": "approver_web_service.invoked",
+        "weight": 0.4
+      }
+    ],
+    "edges": [
+      {
+        "from": "risk_assessment.invoked",
+        "to": "loan.approved",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "The loan approval process starts by receiving a customer request for a loan amount. The risk assessment Web service is invoked to assess the request. If the loan is small and the customer is low risk, the loan is approved.",
+        "negated": false
+      },
+      {
+        "from": "customer_request.received",
+        "to": "loan.approved",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "The loan approval process starts by receiving a customer request for a loan amount. The risk assessment Web service is invoked to assess the request. If the loan is small and the customer is low risk, the loan is approved.",
+        "negated": false
+      },
+      {
+        "from": "customer_request.received",
+        "to": "loan.sent_to_approver",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": [
+          "The loan approval process starts by receiving a customer request for a loan amount.",
+          "The risk assessment Web service is invoked to assess the request."
+        ],
+        "negated": false
+      },
+      {
+        "from": "risk_assessment.invoked",
+        "to": "loan.sent_to_approver",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": [
+          "The loan approval process starts by receiving a customer request for a loan amount.",
+          "The risk assessment Web service is invoked to assess the request."
+        ],
+        "negated": false
+      },
+      {
+        "from": "customer_request.received",
+        "to": "customer_request.sent_to_approver",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "The loan approval process starts by receiving a customer request for a loan amount. The risk assessment Web service is invoked to assess the request.",
+        "negated": false
+      },
+      {
+        "from": "risk_assessment.invoked",
+        "to": "customer_request.sent_to_approver",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "The loan approval process starts by receiving a customer request for a loan amount. The risk assessment Web service is invoked to assess the request.",
+        "negated": false
+      },
+      {
+        "from": "customer_request.received",
+        "to": "risk_assessment.invoked",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "The loan approval process starts by receiving a customer request for a loan amount. The risk assessment Web service is invoked to assess the request.",
+        "negated": false
+      },
+      {
+        "from": "risk_assessment.invoked",
+        "to": "approver_web_service.invoked",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": [
+          "The loan approval process starts by receiving a customer request for a loan amount.",
+          "The risk assessment Web service is invoked to assess the request."
+        ],
+        "negated": false
+      },
+      {
+        "from": "customer_request.received",
+        "to": "approver_web_service.invoked",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": [
+          "The loan approval process starts by receiving a customer request for a loan amount.",
+          "The risk assessment Web service is invoked to assess the request."
+        ],
+        "negated": false
+      }
+    ],
+    "cycles": [],
+    "branch_conflicts": [],
+    "exclusive_pairs": [
+      {
+        "entity": "loan",
+        "nodes": [
+          "loan.approved",
+          "loan.denied"
+        ]
+      }
+    ]
+  },
+  "dfg_edges": [
+    {
+      "source_id": "Task_0",
+      "source_label": "Invoke risk assessor",
+      "target_id": "Task_1",
+      "target_label": "Invoke loan approval",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "Invoke risk assessor",
+      "subject_id": "Task_0",
+      "predicate": "follows",
+      "object": "Invoke loan approval",
+      "object_id": "Task_1"
+    }
+  ],
+  "matches": {
+    "Task_0": {
+      "activity_label": "Invoke risk assessor",
+      "matches": [
+        {
+          "match": "risk_assessment.invoked",
+          "score": 0.5413
+        }
+      ],
+      "clusters": [
+        [
+          "risk_assessment.invoked"
+        ]
+      ]
+    },
+    "Task_1": {
+      "activity_label": "Invoke loan approval",
+      "matches": [
+        {
+          "match": "loan.approved",
+          "score": 0.4827
+        },
+        {
+          "match": "loan.sent_to_approver",
+          "score": 0.4685
+        }
+      ],
+      "clusters": [
+        [
+          "loan.approved"
+        ],
+        [
+          "loan.sent_to_approver"
+        ]
+      ]
+    }
+  },
+  "process_graph": [
+    {
+      "from": "risk_assessment.invoked",
+      "to": "loan.approved",
+      "activity_from": "Invoke risk assessor",
+      "activity_to": "Invoke loan approval",
+      "source_id": "Task_0",
+      "target_id": "Task_1"
+    },
+    {
+      "from": "risk_assessment.invoked",
+      "to": "loan.sent_to_approver",
+      "activity_from": "Invoke risk assessor",
+      "activity_to": "Invoke loan approval",
+      "source_id": "Task_0",
+      "target_id": "Task_1"
+    }
+  ],
+  "alignment": {
+    "loan.approved": {
+      "operator": "AND",
+      "quote": "The loan approval process starts by receiving a customer request for a loan amount. The risk assessment Web service is invoked to assess the request. If the loan is small and the customer is low risk, the loan is approved.",
+      "terms": [
+        {
+          "term": "risk_assessment.invoked",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        },
+        {
+          "term": "customer_request.received",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['customer_request.received']",
+          "missing": [
+            "customer_request.received"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "risk_assessment.invoked",
+            "customer_request.received"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "loan.sent_to_approver": {
+      "operator": "AND",
+      "quote": [
+        "The loan approval process starts by receiving a customer request for a loan amount.",
+        "The risk assessment Web service is invoked to assess the request."
+      ],
+      "terms": [
+        {
+          "term": "customer_request.received",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['customer_request.received']",
+          "missing": [
+            "customer_request.received"
+          ]
+        },
+        {
+          "term": "risk_assessment.invoked",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "customer_request.received",
+            "risk_assessment.invoked"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "customer_request.sent_to_approver": {
+      "operator": "AND",
+      "quote": "The loan approval process starts by receiving a customer request for a loan amount. The risk assessment Web service is invoked to assess the request.",
+      "terms": [
+        {
+          "term": "customer_request.received",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['customer_request.received', 'customer_request.sent_to_approver']",
+          "missing": [
+            "customer_request.received",
+            "customer_request.sent_to_approver"
+          ]
+        },
+        {
+          "term": "risk_assessment.invoked",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['customer_request.sent_to_approver']",
+          "missing": [
+            "customer_request.sent_to_approver"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "customer_request.received",
+            "risk_assessment.invoked"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "risk_assessment.invoked": {
+      "operator": "AND",
+      "quote": "The loan approval process starts by receiving a customer request for a loan amount. The risk assessment Web service is invoked to assess the request.",
+      "terms": [
+        {
+          "term": "customer_request.received",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['customer_request.received']",
+          "missing": [
+            "customer_request.received"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "customer_request.received"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "approver_web_service.invoked": {
+      "operator": "AND",
+      "quote": [
+        "The loan approval process starts by receiving a customer request for a loan amount.",
+        "The risk assessment Web service is invoked to assess the request."
+      ],
+      "terms": [
+        {
+          "term": "risk_assessment.invoked",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['approver_web_service.invoked']",
+          "missing": [
+            "approver_web_service.invoked"
+          ]
+        },
+        {
+          "term": "customer_request.received",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['customer_request.received', 'approver_web_service.invoked']",
+          "missing": [
+            "customer_request.received",
+            "approver_web_service.invoked"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "risk_assessment.invoked",
+            "customer_request.received"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    }
+  },
+  "report": {
+    "verdict": {
+      "verdict": "FAITHFUL_WITH_RESERVATIONS",
+      "justification": "No gap found, but 1 requirement(s) from the text could not be associated with any clear activity in the observed process -- neither confirmed nor refuted. This verdict is NOT a confirmation of full faithfulness.",
+      "scope": "This verdict covers the causal reachability of the requirements expressed in the source text, not the general quality of the process model -- a multiplicity defect (an activity executed more than once due to a mismatched branching structure) is not covered by this verdict, even if the process is otherwise well-formed."
+    },
+    "summary": {
+      "ecarts": 0,
+      "non_verifiable": 1,
+      "conforme": 2
+    },
+    "ecarts": [],
+    "non_verifiable": [
+      {
+        "root_cause": "customer request received",
+        "quote": "The loan approval process starts by receiving a customer request for a loan amount. The risk assessment Web service is invoked to assess the request. If the loan is small and the customer is low risk, the loan is approved.",
+        "explanation": "The requirement states that a customer request must be received before the \"Invoke loan approval\" activity can occur. The source text confirms this condition by stating: \"The loan approval process starts by receiving a customer request for a loan amount. The risk assessment Web service is invoked to assess the request. If the loan is small and the customer is low risk, the loan is approved.\" However, no clear activity in the observed process corresponds to receiving a customer request, so it is impossible to verify whether this condition is met. This is neither a confirmation nor a refutation of conformance — only an inability to verify due to missing information. (This same root cause also affects: Invoke risk assessor, approver web service invoked, customer request sent to approver.)",
+        "quote_verbatim": true,
+        "affected_activities": [
+          "Invoke loan approval",
+          "Invoke risk assessor",
+          "approver web service invoked",
+          "customer request sent to approver"
+        ],
+        "affected_count": 9
+      }
+    ],
+    "conforme": [
+      {
+        "target": "Invoke loan approval",
+        "term": "Invoke risk assessor"
+      },
+      {
+        "target": "Invoke loan approval",
+        "term": "Invoke risk assessor"
+      }
+    ],
+    "piece_jointe_alignement_brut": {
+      "loan.approved": {
+        "operator": "AND",
+        "quote": "The loan approval process starts by receiving a customer request for a loan amount. The risk assessment Web service is invoked to assess the request. If the loan is small and the customer is low risk, the loan is approved.",
+        "terms": [
+          {
+            "term": "risk_assessment.invoked",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          },
+          {
+            "term": "customer_request.received",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['customer_request.received']",
+            "missing": [
+              "customer_request.received"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "risk_assessment.invoked",
+              "customer_request.received"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "loan.sent_to_approver": {
+        "operator": "AND",
+        "quote": [
+          "The loan approval process starts by receiving a customer request for a loan amount.",
+          "The risk assessment Web service is invoked to assess the request."
+        ],
+        "terms": [
+          {
+            "term": "customer_request.received",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['customer_request.received']",
+            "missing": [
+              "customer_request.received"
+            ]
+          },
+          {
+            "term": "risk_assessment.invoked",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "customer_request.received",
+              "risk_assessment.invoked"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "customer_request.sent_to_approver": {
+        "operator": "AND",
+        "quote": "The loan approval process starts by receiving a customer request for a loan amount. The risk assessment Web service is invoked to assess the request.",
+        "terms": [
+          {
+            "term": "customer_request.received",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['customer_request.received', 'customer_request.sent_to_approver']",
+            "missing": [
+              "customer_request.received",
+              "customer_request.sent_to_approver"
+            ]
+          },
+          {
+            "term": "risk_assessment.invoked",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['customer_request.sent_to_approver']",
+            "missing": [
+              "customer_request.sent_to_approver"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "customer_request.received",
+              "risk_assessment.invoked"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "risk_assessment.invoked": {
+        "operator": "AND",
+        "quote": "The loan approval process starts by receiving a customer request for a loan amount. The risk assessment Web service is invoked to assess the request.",
+        "terms": [
+          {
+            "term": "customer_request.received",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['customer_request.received']",
+            "missing": [
+              "customer_request.received"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "customer_request.received"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "approver_web_service.invoked": {
+        "operator": "AND",
+        "quote": [
+          "The loan approval process starts by receiving a customer request for a loan amount.",
+          "The risk assessment Web service is invoked to assess the request."
+        ],
+        "terms": [
+          {
+            "term": "risk_assessment.invoked",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['approver_web_service.invoked']",
+            "missing": [
+              "approver_web_service.invoked"
+            ]
+          },
+          {
+            "term": "customer_request.received",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['customer_request.received', 'approver_web_service.invoked']",
+            "missing": [
+              "customer_request.received",
+              "approver_web_service.invoked"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "risk_assessment.invoked",
+              "customer_request.received"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      }
+    }
+  },
+  "errors": []
+}

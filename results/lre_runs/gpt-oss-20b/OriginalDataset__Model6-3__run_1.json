@@ -1,0 +1,115 @@
+{
+  "case_name": "OriginalDataset/Model6-3",
+  "text": "Every time we get a new order from the sales department, first, one of my masters determines the necessary parts and quantities as well as the delivery date. Once that information is present, it has to be entered into our production planning system (PPS). It optimizes our production processes and creates possibly uniform work packages so that the setup times are minimized. Besides, it creates a list of parts to be procured. Unfortunately it is not coupled correctly to our Enterprise Resource Planning system (ERP), so the data must be transferred manually. By the way, that is the second step. Once all the data is present, we need to decide whether any parts are missing and must be procured or if this is not necessary. Once production is scheduled to start, we receive a notice from the system and an employee takes care of the implementation. Finally, the order will be checked again for its quality.\n",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "gpt-oss-20b",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "gpt-oss-20b",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/../datasets/lre/alignment_model_text-master/datasets/OriginalDataset/Models/Model6-3.bpmn",
+  "report_model": "gpt-oss-20b",
+  "dfg_edges": [
+    {
+      "source_id": "IntermediateThrowEvent_05dtkqw",
+      "source_label": "Ready to start production",
+      "target_id": "Task_0tevh47",
+      "target_label": "Produce order",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_0w0ygw4",
+      "source_label": "Determine parts, amounts, and delivery date",
+      "target_id": "Task_0iuoxbg",
+      "target_label": "Transfer data to PPS",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_0iuoxbg",
+      "source_label": "Transfer data to PPS",
+      "target_id": "Task_1yd0slf",
+      "target_label": "Procure parts",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "Parts are missing"
+      ]
+    },
+    {
+      "source_id": "Task_0iuoxbg",
+      "source_label": "Transfer data to PPS",
+      "target_id": "IntermediateThrowEvent_05dtkqw",
+      "target_label": "Ready to start production",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "All parts available",
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_0tevh47",
+      "source_label": "Produce order",
+      "target_id": "Task_0kamqa8",
+      "target_label": "Review quality",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_1yd0slf",
+      "source_label": "Procure parts",
+      "target_id": "IntermediateThrowEvent_05dtkqw",
+      "target_label": "Ready to start production",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "Ready to start production",
+      "subject_id": "IntermediateThrowEvent_05dtkqw",
+      "predicate": "follows",
+      "object": "Produce order",
+      "object_id": "Task_0tevh47"
+    },
+    {
+      "subject": "Determine parts, amounts, and delivery date",
+      "subject_id": "Task_0w0ygw4",
+      "predicate": "follows",
+      "object": "Transfer data to PPS",
+      "object_id": "Task_0iuoxbg"
+    },
+    {
+      "subject": "Transfer data to PPS",
+      "subject_id": "Task_0iuoxbg",
+      "predicate": "follows",
+      "object": "Procure parts",
+      "object_id": "Task_1yd0slf"
+    },
+    {
+      "subject": "Transfer data to PPS",
+      "subject_id": "Task_0iuoxbg",
+      "predicate": "follows",
+      "object": "Ready to start production",
+      "object_id": "IntermediateThrowEvent_05dtkqw"
+    },
+    {
+      "subject": "Produce order",
+      "subject_id": "Task_0tevh47",
+      "predicate": "follows",
+      "object": "Review quality",
+      "object_id": "Task_0kamqa8"
+    },
+    {
+      "subject": "Procure parts",
+      "subject_id": "Task_1yd0slf",
+      "predicate": "follows",
+      "object": "Ready to start production",
+      "object_id": "IntermediateThrowEvent_05dtkqw"
+    }
+  ],
+  "errors": [
+    "state_space: Request timed out.",
+    "precondition: 'state_space'",
+    "state_matching: 'state_space'",
+    "graph_construction: 'state_space'",
+    "alignment: 'reference_graph'",
+    "report: 'alignment'"
+  ]
+}

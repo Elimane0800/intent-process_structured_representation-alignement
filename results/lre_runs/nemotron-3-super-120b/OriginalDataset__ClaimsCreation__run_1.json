@@ -1,0 +1,793 @@
+{
+  "case_name": "OriginalDataset/ClaimsCreation",
+  "text": "The Police Report related to the car accident is searched within the Police Report database and put in a file together with the Claim Documentation. This file serves as input to a claims handler who calculates an initial claim estimate. Then, the claims handler creates an Action Plan based on an Action Plan Checklist available in the Document Management system. Based on the Action Plan, a claims manager tries to negotiate a settlement on the claim estimate. The claimant is informed of the outcome, which ends the process.",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "nemotron-3-super-120b",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "nemotron-3-super-120b",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/../datasets/lre/alignment_model_text-master/datasets/OriginalDataset/Models/ClaimsCreation.bpmn",
+  "report_model": "nemotron-3-super-120b",
+  "candidates": {
+    "police_report": {
+      "states": [
+        "searched"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "claim_documentation": {
+      "states": [
+        "put_in_file"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "file": {
+      "states": [
+        "serves_as_input_to_claims_handler"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "claims_handler": {
+      "states": [
+        "calculates_initial_estimate",
+        "creates_action_plan"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "action_plan": {
+      "states": [
+        "based_on_checklist",
+        "used_for_negotiation"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "action_plan_checklist": {
+      "states": [
+        "available_in_dms"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "claim_estimate": {
+      "states": [
+        "used_for_negotiation"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "claims_manager": {
+      "states": [
+        "tries_to_negotiate_settlement"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "claimant": {
+      "states": [
+        "informed_of_outcome"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    }
+  },
+  "validation_report": {
+    "police_report": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "report"
+    },
+    "claim_documentation": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "documentation"
+    },
+    "file": {
+      "f_lex": "INDETERMINATE",
+      "kept": true,
+      "head_used": "file"
+    },
+    "claims_handler": {
+      "f_lex": "ACTOR",
+      "kept": false,
+      "head_used": "handler"
+    },
+    "action_plan": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "plan"
+    },
+    "action_plan_checklist": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "checklist"
+    },
+    "claim_estimate": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "estimate"
+    },
+    "claims_manager": {
+      "f_lex": "ACTOR",
+      "kept": false,
+      "head_used": "manager"
+    },
+    "claimant": {
+      "f_lex": "ACTOR",
+      "kept": false,
+      "head_used": "claimant"
+    },
+    "__meta__": {
+      "total_candidates": 9,
+      "indeterminate_kept_count": 1
+    }
+  },
+  "exclusive_groups_report": {
+    "accepted": [],
+    "rejected": []
+  },
+  "state_space": {
+    "police_report": {
+      "states": [
+        "searched"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "claim_documentation": {
+      "states": [
+        "put_in_file"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "file": {
+      "states": [
+        "serves_as_input_to_claims_handler"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "action_plan": {
+      "states": [
+        "based_on_checklist",
+        "used_for_negotiation"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "action_plan_checklist": {
+      "states": [
+        "available_in_dms"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    },
+    "claim_estimate": {
+      "states": [
+        "used_for_negotiation"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    }
+  },
+  "state_space_dedup": {
+    "merged": {},
+    "ambiguous_not_merged": {}
+  },
+  "raw_preconditions": {
+    "police_report.searched": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "claim_documentation.put_in_file": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "file.serves_as_input_to_claims_handler": {
+      "precondition": "police_report.searched AND claim_documentation.put_in_file",
+      "quote": "The Police Report related to the car accident is searched within the Police Report database and put in a file together with the Claim Documentation. This file serves as input to a claims handler who calculates an initial claim estimate."
+    },
+    "action_plan.based_on_checklist": {
+      "precondition": "action_plan_checklist.available_in_dms",
+      "quote": "Then, the claims handler creates an Action Plan based on an Action Plan Checklist available in the Document Management system."
+    },
+    "action_plan.used_for_negotiation": {
+      "precondition": "action_plan.based_on_checklist",
+      "quote": "Based on the Action Plan, a claims manager tries to negotiate a settlement on the claim estimate."
+    },
+    "action_plan_checklist.available_in_dms": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "claim_estimate.used_for_negotiation": {
+      "precondition": "action_plan.based_on_checklist",
+      "quote": "Based on the Action Plan, a claims manager tries to negotiate a settlement on the claim estimate."
+    }
+  },
+  "validated_preconditions": {
+    "police_report.searched": {
+      "precondition": "INITIAL",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "claim_documentation.put_in_file": {
+      "precondition": "INITIAL",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "file.serves_as_input_to_claims_handler": {
+      "precondition": "police_report.searched AND claim_documentation.put_in_file",
+      "quote": "The Police Report related to the car accident is searched within the Police Report database and put in a file together with the Claim Documentation. This file serves as input to a claims handler who calculates an initial claim estimate.",
+      "status": "OK",
+      "reason": null
+    },
+    "action_plan.based_on_checklist": {
+      "precondition": "action_plan_checklist.available_in_dms",
+      "quote": "Then, the claims handler creates an Action Plan based on an Action Plan Checklist available in the Document Management system.",
+      "status": "OK",
+      "reason": null
+    },
+    "action_plan.used_for_negotiation": {
+      "precondition": "action_plan.based_on_checklist",
+      "quote": "Based on the Action Plan, a claims manager tries to negotiate a settlement on the claim estimate.",
+      "status": "OK",
+      "reason": null
+    },
+    "action_plan_checklist.available_in_dms": {
+      "precondition": "INITIAL",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "claim_estimate.used_for_negotiation": {
+      "precondition": "action_plan.based_on_checklist",
+      "quote": "Based on the Action Plan, a claims manager tries to negotiate a settlement on the claim estimate.",
+      "status": "OK",
+      "reason": null
+    }
+  },
+  "precondition_cycles": [],
+  "branch_conflicts": [],
+  "reference_graph": {
+    "nodes": [
+      {
+        "id": "police_report.searched",
+        "weight": 0.333
+      },
+      {
+        "id": "claim_documentation.put_in_file",
+        "weight": 0.333
+      },
+      {
+        "id": "file.serves_as_input_to_claims_handler",
+        "weight": 0.667
+      },
+      {
+        "id": "action_plan.based_on_checklist",
+        "weight": 1.0
+      },
+      {
+        "id": "action_plan.used_for_negotiation",
+        "weight": 0.333
+      },
+      {
+        "id": "action_plan_checklist.available_in_dms",
+        "weight": 0.333
+      },
+      {
+        "id": "claim_estimate.used_for_negotiation",
+        "weight": 0.333
+      }
+    ],
+    "edges": [
+      {
+        "from": "police_report.searched",
+        "to": "file.serves_as_input_to_claims_handler",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "The Police Report related to the car accident is searched within the Police Report database and put in a file together with the Claim Documentation. This file serves as input to a claims handler who calculates an initial claim estimate.",
+        "negated": false
+      },
+      {
+        "from": "claim_documentation.put_in_file",
+        "to": "file.serves_as_input_to_claims_handler",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "The Police Report related to the car accident is searched within the Police Report database and put in a file together with the Claim Documentation. This file serves as input to a claims handler who calculates an initial claim estimate.",
+        "negated": false
+      },
+      {
+        "from": "action_plan_checklist.available_in_dms",
+        "to": "action_plan.based_on_checklist",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "Then, the claims handler creates an Action Plan based on an Action Plan Checklist available in the Document Management system.",
+        "negated": false
+      },
+      {
+        "from": "action_plan.based_on_checklist",
+        "to": "action_plan.used_for_negotiation",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "Based on the Action Plan, a claims manager tries to negotiate a settlement on the claim estimate.",
+        "negated": false
+      },
+      {
+        "from": "action_plan.based_on_checklist",
+        "to": "claim_estimate.used_for_negotiation",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "Based on the Action Plan, a claims manager tries to negotiate a settlement on the claim estimate.",
+        "negated": false
+      }
+    ],
+    "cycles": [],
+    "branch_conflicts": [],
+    "exclusive_pairs": []
+  },
+  "dfg_edges": [
+    {
+      "source_id": "Task_2",
+      "source_label": "Search police report database",
+      "target_id": "Task_3",
+      "target_label": "Compose file",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_4",
+      "source_label": "Negotiate estimate settlement",
+      "target_id": "Task_5",
+      "target_label": "Notify claimant",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_1",
+      "source_label": "Create action plan",
+      "target_id": "Task_4",
+      "target_label": "Negotiate estimate settlement",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_0",
+      "source_label": "Calculate claim estimate",
+      "target_id": "Task_1",
+      "target_label": "Create action plan",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_3",
+      "source_label": "Compose file",
+      "target_id": "Task_0",
+      "target_label": "Calculate claim estimate",
+      "gateway_context": []
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "Search police report database",
+      "subject_id": "Task_2",
+      "predicate": "follows",
+      "object": "Compose file",
+      "object_id": "Task_3"
+    },
+    {
+      "subject": "Negotiate estimate settlement",
+      "subject_id": "Task_4",
+      "predicate": "follows",
+      "object": "Notify claimant",
+      "object_id": "Task_5"
+    },
+    {
+      "subject": "Create action plan",
+      "subject_id": "Task_1",
+      "predicate": "follows",
+      "object": "Negotiate estimate settlement",
+      "object_id": "Task_4"
+    },
+    {
+      "subject": "Calculate claim estimate",
+      "subject_id": "Task_0",
+      "predicate": "follows",
+      "object": "Create action plan",
+      "object_id": "Task_1"
+    },
+    {
+      "subject": "Compose file",
+      "subject_id": "Task_3",
+      "predicate": "follows",
+      "object": "Calculate claim estimate",
+      "object_id": "Task_0"
+    }
+  ],
+  "matches": {
+    "Task_2": {
+      "activity_label": "Search police report database",
+      "matches": [
+        {
+          "match": "police_report.searched",
+          "score": 0.7142
+        }
+      ],
+      "clusters": [
+        [
+          "police_report.searched"
+        ]
+      ]
+    },
+    "Task_3": {
+      "activity_label": "Compose file",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_4": {
+      "activity_label": "Negotiate estimate settlement",
+      "matches": [
+        {
+          "match": "claim_estimate.used_for_negotiation",
+          "score": 0.6532
+        }
+      ],
+      "clusters": [
+        [
+          "claim_estimate.used_for_negotiation"
+        ]
+      ]
+    },
+    "Task_5": {
+      "activity_label": "Notify claimant",
+      "matches": [
+        {
+          "match": "claim_documentation.put_in_file",
+          "score": 0.4056
+        },
+        {
+          "match": "claim_estimate.used_for_negotiation",
+          "score": 0.3856
+        }
+      ],
+      "clusters": [
+        [
+          "claim_documentation.put_in_file"
+        ],
+        [
+          "claim_estimate.used_for_negotiation"
+        ]
+      ]
+    },
+    "Task_1": {
+      "activity_label": "Create action plan",
+      "matches": [
+        {
+          "match": "action_plan.based_on_checklist",
+          "score": 0.6598
+        },
+        {
+          "match": "action_plan.used_for_negotiation",
+          "score": 0.6215
+        }
+      ],
+      "clusters": [
+        [
+          "action_plan.based_on_checklist"
+        ],
+        [
+          "action_plan.used_for_negotiation"
+        ]
+      ]
+    },
+    "Task_0": {
+      "activity_label": "Calculate claim estimate",
+      "matches": [
+        {
+          "match": "claim_estimate.used_for_negotiation",
+          "score": 0.7428
+        }
+      ],
+      "clusters": [
+        [
+          "claim_estimate.used_for_negotiation"
+        ]
+      ]
+    }
+  },
+  "process_graph": [
+    {
+      "from": "claim_estimate.used_for_negotiation",
+      "to": "claim_documentation.put_in_file",
+      "activity_from": "Negotiate estimate settlement",
+      "activity_to": "Notify claimant",
+      "source_id": "Task_4",
+      "target_id": "Task_5"
+    },
+    {
+      "from": "claim_estimate.used_for_negotiation",
+      "to": "claim_estimate.used_for_negotiation",
+      "activity_from": "Negotiate estimate settlement",
+      "activity_to": "Notify claimant",
+      "source_id": "Task_4",
+      "target_id": "Task_5"
+    },
+    {
+      "from": "action_plan.based_on_checklist",
+      "to": "claim_estimate.used_for_negotiation",
+      "activity_from": "Create action plan",
+      "activity_to": "Negotiate estimate settlement",
+      "source_id": "Task_1",
+      "target_id": "Task_4"
+    },
+    {
+      "from": "action_plan.used_for_negotiation",
+      "to": "claim_estimate.used_for_negotiation",
+      "activity_from": "Create action plan",
+      "activity_to": "Negotiate estimate settlement",
+      "source_id": "Task_1",
+      "target_id": "Task_4"
+    },
+    {
+      "from": "claim_estimate.used_for_negotiation",
+      "to": "action_plan.based_on_checklist",
+      "activity_from": "Calculate claim estimate",
+      "activity_to": "Create action plan",
+      "source_id": "Task_0",
+      "target_id": "Task_1"
+    },
+    {
+      "from": "claim_estimate.used_for_negotiation",
+      "to": "action_plan.used_for_negotiation",
+      "activity_from": "Calculate claim estimate",
+      "activity_to": "Create action plan",
+      "source_id": "Task_0",
+      "target_id": "Task_1"
+    }
+  ],
+  "alignment": {
+    "file.serves_as_input_to_claims_handler": {
+      "operator": "AND",
+      "quote": "The Police Report related to the car accident is searched within the Police Report database and put in a file together with the Claim Documentation. This file serves as input to a claims handler who calculates an initial claim estimate.",
+      "terms": [
+        {
+          "term": "police_report.searched",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['file.serves_as_input_to_claims_handler']",
+          "missing": [
+            "file.serves_as_input_to_claims_handler"
+          ]
+        },
+        {
+          "term": "claim_documentation.put_in_file",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['file.serves_as_input_to_claims_handler']",
+          "missing": [
+            "file.serves_as_input_to_claims_handler"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "police_report.searched",
+            "claim_documentation.put_in_file"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "action_plan.based_on_checklist": {
+      "operator": "AND",
+      "quote": "Then, the claims handler creates an Action Plan based on an Action Plan Checklist available in the Document Management system.",
+      "terms": [
+        {
+          "term": "action_plan_checklist.available_in_dms",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['action_plan_checklist.available_in_dms']",
+          "missing": [
+            "action_plan_checklist.available_in_dms"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "action_plan_checklist.available_in_dms"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "action_plan.used_for_negotiation": {
+      "operator": "AND",
+      "quote": "Based on the Action Plan, a claims manager tries to negotiate a settlement on the claim estimate.",
+      "terms": [
+        {
+          "term": "action_plan.based_on_checklist",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED",
+      "clauses": [
+        {
+          "terms": [
+            "action_plan.based_on_checklist"
+          ],
+          "status": "SATISFIED"
+        }
+      ]
+    },
+    "claim_estimate.used_for_negotiation": {
+      "operator": "AND",
+      "quote": "Based on the Action Plan, a claims manager tries to negotiate a settlement on the claim estimate.",
+      "terms": [
+        {
+          "term": "action_plan.based_on_checklist",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED",
+      "clauses": [
+        {
+          "terms": [
+            "action_plan.based_on_checklist"
+          ],
+          "status": "SATISFIED"
+        }
+      ]
+    }
+  },
+  "report": {
+    "verdict": {
+      "verdict": "FAITHFUL_WITH_RESERVATIONS",
+      "justification": "No gap found, but 2 requirement(s) from the text could not be associated with any clear activity in the observed process -- neither confirmed nor refuted. This verdict is NOT a confirmation of full faithfulness.",
+      "scope": "This verdict covers the causal reachability of the requirements expressed in the source text, not the general quality of the process model -- a multiplicity defect (an activity executed more than once due to a mismatched branching structure) is not covered by this verdict, even if the process is otherwise well-formed."
+    },
+    "summary": {
+      "ecarts": 0,
+      "non_verifiable": 2,
+      "conforme": 2
+    },
+    "ecarts": [],
+    "non_verifiable": [
+      {
+        "root_cause": "file serves as input to claims handler",
+        "quote": "The Police Report related to the car accident is searched within the Police Report database and put in a file together with the Claim Documentation. This file serves as input to a claims handler who calculates an initial claim estimate.",
+        "explanation": "The source text states that \"The Police Report related to the car accident is searched within the Police Report database and put in a file together with the Claim Documentation. This file serves as input to a claims handler who calculates an initial claim estimate.\" This indicates that a file must be created before it can serve as input to the claims handler. However, no activity in the observed process clearly describes the creation of this file, so it is impossible to verify whether the required condition is met. This does not confirm or deny conformance — it only reflects that the necessary information to check the condition is not available in the observed process.",
+        "quote_verbatim": true,
+        "affected_activities": [
+          "file serves as input to claims handler"
+        ],
+        "affected_count": 2
+      },
+      {
+        "root_cause": "action plan checklist available in dms",
+        "quote": "Then, the claims handler creates an Action Plan based on an Action Plan Checklist available in the Document Management system.",
+        "explanation": "The source text states that the activity \"Create action plan\" requires an \"Action Plan Checklist available in the Document Management system\" to be in place beforehand. The exact quote is: \"Then, the claims handler creates an Action Plan based on an Action Plan Checklist available in the Document Management system.\"\n\nHowever, no activity in the observed process clearly shows where or how this checklist is accessed, retrieved, or confirmed as available. Because there is no observable step that demonstrates the condition being met, it is not possible to verify whether this requirement is satisfied or not. This lack of observable evidence means we cannot confirm or deny conformance — only that verification is not possible based on what is given.",
+        "quote_verbatim": true,
+        "affected_activities": [
+          "Create action plan"
+        ],
+        "affected_count": 1
+      }
+    ],
+    "conforme": [
+      {
+        "target": "Create action plan",
+        "term": "Create action plan"
+      },
+      {
+        "target": "Calculate claim estimate",
+        "term": "Create action plan"
+      }
+    ],
+    "piece_jointe_alignement_brut": {
+      "file.serves_as_input_to_claims_handler": {
+        "operator": "AND",
+        "quote": "The Police Report related to the car accident is searched within the Police Report database and put in a file together with the Claim Documentation. This file serves as input to a claims handler who calculates an initial claim estimate.",
+        "terms": [
+          {
+            "term": "police_report.searched",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['file.serves_as_input_to_claims_handler']",
+            "missing": [
+              "file.serves_as_input_to_claims_handler"
+            ]
+          },
+          {
+            "term": "claim_documentation.put_in_file",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['file.serves_as_input_to_claims_handler']",
+            "missing": [
+              "file.serves_as_input_to_claims_handler"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "police_report.searched",
+              "claim_documentation.put_in_file"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "action_plan.based_on_checklist": {
+        "operator": "AND",
+        "quote": "Then, the claims handler creates an Action Plan based on an Action Plan Checklist available in the Document Management system.",
+        "terms": [
+          {
+            "term": "action_plan_checklist.available_in_dms",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['action_plan_checklist.available_in_dms']",
+            "missing": [
+              "action_plan_checklist.available_in_dms"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "action_plan_checklist.available_in_dms"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "action_plan.used_for_negotiation": {
+        "operator": "AND",
+        "quote": "Based on the Action Plan, a claims manager tries to negotiate a settlement on the claim estimate.",
+        "terms": [
+          {
+            "term": "action_plan.based_on_checklist",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED",
+        "clauses": [
+          {
+            "terms": [
+              "action_plan.based_on_checklist"
+            ],
+            "status": "SATISFIED"
+          }
+        ]
+      },
+      "claim_estimate.used_for_negotiation": {
+        "operator": "AND",
+        "quote": "Based on the Action Plan, a claims manager tries to negotiate a settlement on the claim estimate.",
+        "terms": [
+          {
+            "term": "action_plan.based_on_checklist",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED",
+        "clauses": [
+          {
+            "terms": [
+              "action_plan.based_on_checklist"
+            ],
+            "status": "SATISFIED"
+          }
+        ]
+      }
+    }
+  },
+  "errors": []
+}

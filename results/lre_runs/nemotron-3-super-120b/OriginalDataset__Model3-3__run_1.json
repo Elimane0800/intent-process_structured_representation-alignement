@@ -1,0 +1,680 @@
+{
+  "case_name": "OriginalDataset/Model3-3",
+  "text": "After a claim is registered, it is examined by a claims officer. The claims officer then writes a settlement recommendation. This recommendation is then checked by a senior claims officer who may mark the claim as OK or Not OK. If the claim is marked as Not OK, it is sent back to the claims officer and the recommendation is repeated. If the claim is OK, the claim handling process proceeds.\n",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "nemotron-3-super-120b",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "nemotron-3-super-120b",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/../datasets/lre/alignment_model_text-master/datasets/OriginalDataset/Models/Model3-3.bpmn",
+  "report_model": "nemotron-3-super-120b",
+  "candidates": {
+    "claim": {
+      "states": [
+        "registered",
+        "examined",
+        "ok",
+        "not_ok"
+      ],
+      "exclusive_groups": [
+        [
+          "ok",
+          "not_ok"
+        ]
+      ],
+      "concurrent_with": []
+    },
+    "recommendation": {
+      "states": [
+        "written",
+        "checked",
+        "repeated"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    }
+  },
+  "validation_report": {
+    "claim": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "claim"
+    },
+    "recommendation": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "recommendation"
+    },
+    "__meta__": {
+      "total_candidates": 2,
+      "indeterminate_kept_count": 0
+    }
+  },
+  "exclusive_groups_report": {
+    "accepted": [
+      {
+        "entity": "claim",
+        "states": [
+          "ok",
+          "not_ok"
+        ],
+        "quote": "who may mark the claim as OK or Not OK"
+      }
+    ],
+    "rejected": []
+  },
+  "state_space": {
+    "claim": {
+      "states": [
+        "registered",
+        "examined",
+        "ok",
+        "not_ok"
+      ],
+      "exclusive_groups": [
+        [
+          "ok",
+          "not_ok"
+        ]
+      ],
+      "concurrent_with": []
+    },
+    "recommendation": {
+      "states": [
+        "written",
+        "checked",
+        "repeated"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": []
+    }
+  },
+  "state_space_dedup": {
+    "merged": {},
+    "ambiguous_not_merged": {}
+  },
+  "raw_preconditions": {
+    "claim.registered": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "claim.examined": {
+      "precondition": "claim.registered",
+      "quote": "After a claim is registered, it is examined by a claims officer."
+    },
+    "recommendation.written": {
+      "precondition": "claim.examined",
+      "quote": "The claims officer then writes a settlement recommendation."
+    },
+    "recommendation.checked": {
+      "precondition": "recommendation.written",
+      "quote": "This recommendation is then checked by a senior claims officer who may mark the claim as OK or Not OK."
+    },
+    "claim.ok": {
+      "precondition": "recommendation.checked",
+      "quote": "If the claim is marked as OK, the claim handling process proceeds."
+    },
+    "claim.not_ok": {
+      "precondition": "recommendation.checked",
+      "quote": "If the claim is marked as Not OK, it is sent back to the claims officer and the recommendation is repeated."
+    },
+    "recommendation.repeated": {
+      "precondition": "claim.not_ok",
+      "quote": null
+    }
+  },
+  "validated_preconditions": {
+    "claim.registered": {
+      "precondition": "INITIAL",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "claim.examined": {
+      "precondition": "claim.registered",
+      "quote": "After a claim is registered, it is examined by a claims officer.",
+      "status": "OK",
+      "reason": null
+    },
+    "recommendation.written": {
+      "precondition": "claim.examined",
+      "quote": "The claims officer then writes a settlement recommendation.",
+      "status": "OK",
+      "reason": null
+    },
+    "recommendation.checked": {
+      "precondition": "recommendation.written",
+      "quote": "This recommendation is then checked by a senior claims officer who may mark the claim as OK or Not OK.",
+      "status": "OK",
+      "reason": null
+    },
+    "claim.ok": {
+      "precondition": "UNRESOLVED",
+      "quote": null,
+      "status": "OK",
+      "reason": null,
+      "retried": true
+    },
+    "claim.not_ok": {
+      "precondition": "recommendation.checked",
+      "quote": "If the claim is marked as Not OK, it is sent back to the claims officer and the recommendation is repeated.",
+      "status": "OK",
+      "reason": null
+    },
+    "recommendation.repeated": {
+      "precondition": "claim.not_ok",
+      "quote": "If the claim is marked as Not OK, it is sent back to the claims officer and the recommendation is repeated.",
+      "status": "OK",
+      "reason": null,
+      "retried": true
+    }
+  },
+  "precondition_cycles": [],
+  "branch_conflicts": [],
+  "reference_graph": {
+    "nodes": [
+      {
+        "id": "claim.registered",
+        "weight": 0.5
+      },
+      {
+        "id": "claim.examined",
+        "weight": 1.0
+      },
+      {
+        "id": "claim.ok",
+        "weight": 0.0
+      },
+      {
+        "id": "claim.not_ok",
+        "weight": 1.0
+      },
+      {
+        "id": "recommendation.written",
+        "weight": 1.0
+      },
+      {
+        "id": "recommendation.checked",
+        "weight": 1.0
+      },
+      {
+        "id": "recommendation.repeated",
+        "weight": 0.5
+      }
+    ],
+    "edges": [
+      {
+        "from": "claim.registered",
+        "to": "claim.examined",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "After a claim is registered, it is examined by a claims officer.",
+        "negated": false
+      },
+      {
+        "from": "claim.examined",
+        "to": "recommendation.written",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "The claims officer then writes a settlement recommendation.",
+        "negated": false
+      },
+      {
+        "from": "recommendation.written",
+        "to": "recommendation.checked",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "This recommendation is then checked by a senior claims officer who may mark the claim as OK or Not OK.",
+        "negated": false
+      },
+      {
+        "from": "recommendation.checked",
+        "to": "claim.not_ok",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "If the claim is marked as Not OK, it is sent back to the claims officer and the recommendation is repeated.",
+        "negated": false
+      },
+      {
+        "from": "claim.not_ok",
+        "to": "recommendation.repeated",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "If the claim is marked as Not OK, it is sent back to the claims officer and the recommendation is repeated.",
+        "negated": false
+      }
+    ],
+    "cycles": [],
+    "branch_conflicts": [],
+    "exclusive_pairs": [
+      {
+        "entity": "claim",
+        "nodes": [
+          "claim.ok",
+          "claim.not_ok"
+        ]
+      }
+    ]
+  },
+  "dfg_edges": [
+    {
+      "source_id": "Task_2",
+      "source_label": "Write recommendation",
+      "target_id": "Task_3",
+      "target_label": "Check recommendation",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_1",
+      "source_label": "Examine claim ",
+      "target_id": "Task_2",
+      "target_label": "Write recommendation",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_0",
+      "source_label": "Register claim",
+      "target_id": "Task_1",
+      "target_label": "Examine claim ",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_3",
+      "source_label": "Check recommendation",
+      "target_id": "Task_2",
+      "target_label": "Write recommendation",
+      "gateway_context": [
+        "ExclusiveGateway",
+        "ExclusiveGateway"
+      ]
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "Write recommendation",
+      "subject_id": "Task_2",
+      "predicate": "follows",
+      "object": "Check recommendation",
+      "object_id": "Task_3"
+    },
+    {
+      "subject": "Examine claim ",
+      "subject_id": "Task_1",
+      "predicate": "follows",
+      "object": "Write recommendation",
+      "object_id": "Task_2"
+    },
+    {
+      "subject": "Register claim",
+      "subject_id": "Task_0",
+      "predicate": "follows",
+      "object": "Examine claim ",
+      "object_id": "Task_1"
+    },
+    {
+      "subject": "Check recommendation",
+      "subject_id": "Task_3",
+      "predicate": "follows",
+      "object": "Write recommendation",
+      "object_id": "Task_2"
+    }
+  ],
+  "matches": {
+    "Task_2": {
+      "activity_label": "Write recommendation",
+      "matches": [
+        {
+          "match": "recommendation.written",
+          "score": 0.5205
+        }
+      ],
+      "clusters": [
+        [
+          "recommendation.written"
+        ]
+      ]
+    },
+    "Task_3": {
+      "activity_label": "Check recommendation",
+      "matches": [
+        {
+          "match": "recommendation.checked",
+          "score": 0.5111
+        }
+      ],
+      "clusters": [
+        [
+          "recommendation.checked"
+        ]
+      ]
+    },
+    "Task_1": {
+      "activity_label": "Examine claim ",
+      "matches": [
+        {
+          "match": "claim.examined",
+          "score": 0.5391
+        }
+      ],
+      "clusters": [
+        [
+          "claim.examined"
+        ]
+      ]
+    },
+    "Task_0": {
+      "activity_label": "Register claim",
+      "matches": [
+        {
+          "match": "claim.registered",
+          "score": 0.8383
+        }
+      ],
+      "clusters": [
+        [
+          "claim.registered"
+        ]
+      ]
+    }
+  },
+  "process_graph": [
+    {
+      "from": "recommendation.written",
+      "to": "recommendation.checked",
+      "activity_from": "Write recommendation",
+      "activity_to": "Check recommendation",
+      "source_id": "Task_2",
+      "target_id": "Task_3"
+    },
+    {
+      "from": "claim.examined",
+      "to": "recommendation.written",
+      "activity_from": "Examine claim ",
+      "activity_to": "Write recommendation",
+      "source_id": "Task_1",
+      "target_id": "Task_2"
+    },
+    {
+      "from": "claim.registered",
+      "to": "claim.examined",
+      "activity_from": "Register claim",
+      "activity_to": "Examine claim ",
+      "source_id": "Task_0",
+      "target_id": "Task_1"
+    },
+    {
+      "from": "recommendation.checked",
+      "to": "recommendation.written",
+      "activity_from": "Check recommendation",
+      "activity_to": "Write recommendation",
+      "source_id": "Task_3",
+      "target_id": "Task_2"
+    }
+  ],
+  "alignment": {
+    "claim.examined": {
+      "operator": "AND",
+      "quote": "After a claim is registered, it is examined by a claims officer.",
+      "terms": [
+        {
+          "term": "claim.registered",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED",
+      "clauses": [
+        {
+          "terms": [
+            "claim.registered"
+          ],
+          "status": "SATISFIED"
+        }
+      ]
+    },
+    "recommendation.written": {
+      "operator": "AND",
+      "quote": "The claims officer then writes a settlement recommendation.",
+      "terms": [
+        {
+          "term": "claim.examined",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED",
+      "clauses": [
+        {
+          "terms": [
+            "claim.examined"
+          ],
+          "status": "SATISFIED"
+        }
+      ]
+    },
+    "recommendation.checked": {
+      "operator": "AND",
+      "quote": "This recommendation is then checked by a senior claims officer who may mark the claim as OK or Not OK.",
+      "terms": [
+        {
+          "term": "recommendation.written",
+          "status": "SATISFIED",
+          "reason": null,
+          "missing": []
+        }
+      ],
+      "status": "SATISFIED",
+      "clauses": [
+        {
+          "terms": [
+            "recommendation.written"
+          ],
+          "status": "SATISFIED"
+        }
+      ]
+    },
+    "claim.not_ok": {
+      "operator": "AND",
+      "quote": "If the claim is marked as Not OK, it is sent back to the claims officer and the recommendation is repeated.",
+      "terms": [
+        {
+          "term": "recommendation.checked",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['claim.not_ok']",
+          "missing": [
+            "claim.not_ok"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "recommendation.checked"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "recommendation.repeated": {
+      "operator": "AND",
+      "quote": "If the claim is marked as Not OK, it is sent back to the claims officer and the recommendation is repeated.",
+      "terms": [
+        {
+          "term": "claim.not_ok",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['claim.not_ok', 'recommendation.repeated']",
+          "missing": [
+            "claim.not_ok",
+            "recommendation.repeated"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "claim.not_ok"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    }
+  },
+  "report": {
+    "verdict": {
+      "verdict": "FAITHFUL_WITH_RESERVATIONS",
+      "justification": "No gap found, but 1 requirement(s) from the text could not be associated with any clear activity in the observed process -- neither confirmed nor refuted. This verdict is NOT a confirmation of full faithfulness.",
+      "scope": "This verdict covers the causal reachability of the requirements expressed in the source text, not the general quality of the process model -- a multiplicity defect (an activity executed more than once due to a mismatched branching structure) is not covered by this verdict, even if the process is otherwise well-formed."
+    },
+    "summary": {
+      "ecarts": 0,
+      "non_verifiable": 1,
+      "conforme": 3
+    },
+    "ecarts": [],
+    "non_verifiable": [
+      {
+        "root_cause": "claim not ok",
+        "quote": "If the claim is marked as Not OK, it is sent back to the claims officer and the recommendation is repeated.",
+        "explanation": "The requirement states that the activity \"claim not ok\" can only occur if a specific condition is already met. The source text includes the quote: \"If the claim is marked as Not OK, it is sent back to the claims officer and the recommendation is repeated.\" This quote shows that a condition is required before the activity can happen, but it does not clearly link to any observable activity in the process. Because no clear activity in the observed process matches this condition, it is impossible to verify whether the condition is met or not. Therefore, we cannot confirm or refute conformance — we simply lack the information to decide. (This same root cause also affects: recommendation repeated.)",
+        "quote_verbatim": true,
+        "affected_activities": [
+          "claim not ok",
+          "recommendation repeated"
+        ],
+        "affected_count": 3
+      }
+    ],
+    "conforme": [
+      {
+        "target": "Examine claim ",
+        "term": "Register claim"
+      },
+      {
+        "target": "Write recommendation",
+        "term": "Examine claim "
+      },
+      {
+        "target": "Check recommendation",
+        "term": "Write recommendation"
+      }
+    ],
+    "piece_jointe_alignement_brut": {
+      "claim.examined": {
+        "operator": "AND",
+        "quote": "After a claim is registered, it is examined by a claims officer.",
+        "terms": [
+          {
+            "term": "claim.registered",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED",
+        "clauses": [
+          {
+            "terms": [
+              "claim.registered"
+            ],
+            "status": "SATISFIED"
+          }
+        ]
+      },
+      "recommendation.written": {
+        "operator": "AND",
+        "quote": "The claims officer then writes a settlement recommendation.",
+        "terms": [
+          {
+            "term": "claim.examined",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED",
+        "clauses": [
+          {
+            "terms": [
+              "claim.examined"
+            ],
+            "status": "SATISFIED"
+          }
+        ]
+      },
+      "recommendation.checked": {
+        "operator": "AND",
+        "quote": "This recommendation is then checked by a senior claims officer who may mark the claim as OK or Not OK.",
+        "terms": [
+          {
+            "term": "recommendation.written",
+            "status": "SATISFIED",
+            "reason": null,
+            "missing": []
+          }
+        ],
+        "status": "SATISFIED",
+        "clauses": [
+          {
+            "terms": [
+              "recommendation.written"
+            ],
+            "status": "SATISFIED"
+          }
+        ]
+      },
+      "claim.not_ok": {
+        "operator": "AND",
+        "quote": "If the claim is marked as Not OK, it is sent back to the claims officer and the recommendation is repeated.",
+        "terms": [
+          {
+            "term": "recommendation.checked",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['claim.not_ok']",
+            "missing": [
+              "claim.not_ok"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "recommendation.checked"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "recommendation.repeated": {
+        "operator": "AND",
+        "quote": "If the claim is marked as Not OK, it is sent back to the claims officer and the recommendation is repeated.",
+        "terms": [
+          {
+            "term": "claim.not_ok",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['claim.not_ok', 'recommendation.repeated']",
+            "missing": [
+              "claim.not_ok",
+              "recommendation.repeated"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "claim.not_ok"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      }
+    }
+  },
+  "errors": []
+}

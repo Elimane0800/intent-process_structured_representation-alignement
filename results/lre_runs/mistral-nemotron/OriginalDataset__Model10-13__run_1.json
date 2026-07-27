@@ -1,0 +1,696 @@
+{
+  "case_name": "OriginalDataset/Model10-13",
+  "text": "The INQ transmits the transaction data request to the IP. The IP checks the request of the INQ. The IP answers the question of the INQ depending on the outcome of the examination, i.e. Transmission of data or rejected.",
+  "state_space_prompt_name": "one_shot",
+  "state_space_model": "mistral-nemotron",
+  "precondition_prompt_name": "zero_shot",
+  "precondition_model": "mistral-nemotron",
+  "bpmn_path": "/Users/yassineseidou/Desktop/thèse CIFRE Devoteam/these_codes/BPMN/AAAI/../datasets/lre/alignment_model_text-master/datasets/OriginalDataset/Models/Model10-13.bpmn",
+  "report_model": "mistral-nemotron",
+  "candidates": {
+    "transaction_data_request": {
+      "states": [
+        "transmitted",
+        "checked",
+        "answered"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": [
+        "ip"
+      ]
+    },
+    "ip": {
+      "states": [
+        "checking",
+        "transmitting_data",
+        "rejecting"
+      ],
+      "exclusive_groups": [
+        [
+          "transmitting_data",
+          "rejecting"
+        ]
+      ],
+      "concurrent_with": [
+        "transaction_data_request"
+      ]
+    }
+  },
+  "validation_report": {
+    "transaction_data_request": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "request"
+    },
+    "ip": {
+      "f_lex": "ENTITY",
+      "kept": true,
+      "head_used": "ip"
+    },
+    "__meta__": {
+      "total_candidates": 2,
+      "indeterminate_kept_count": 0
+    }
+  },
+  "exclusive_groups_report": {
+    "accepted": [
+      {
+        "entity": "ip",
+        "states": [
+          "transmitting_data",
+          "rejecting"
+        ],
+        "quote": "Transmission of data or rejected"
+      }
+    ],
+    "rejected": []
+  },
+  "state_space": {
+    "transaction_data_request": {
+      "states": [
+        "transmitted",
+        "checked",
+        "answered"
+      ],
+      "exclusive_groups": [],
+      "concurrent_with": [
+        "ip"
+      ]
+    },
+    "ip": {
+      "states": [
+        "checking",
+        "transmitting_data",
+        "rejecting"
+      ],
+      "exclusive_groups": [
+        [
+          "transmitting_data",
+          "rejecting"
+        ]
+      ],
+      "concurrent_with": [
+        "transaction_data_request"
+      ]
+    }
+  },
+  "state_space_dedup": {
+    "merged": {},
+    "ambiguous_not_merged": {}
+  },
+  "raw_preconditions": {
+    "transaction_data_request.transmitted": {
+      "precondition": "INITIAL",
+      "quote": null
+    },
+    "transaction_data_request.checked": {
+      "precondition": "transaction_data_request.transmitted",
+      "quote": "The IP checks the request of the INQ."
+    },
+    "transaction_data_request.answered": {
+      "precondition": "transaction_data_request.checked",
+      "quote": "The IP answers the question of the INQ depending on the outcome of the examination, i.e. Transmission of data or rejected."
+    },
+    "ip.checking": {
+      "precondition": "transaction_data_request.transmitted",
+      "quote": "The IP checks the request of the INQ."
+    },
+    "ip.transmitting_data": {
+      "precondition": "transaction_data_request.checked",
+      "quote": "The IP answers the question of the INQ depending on the outcome of the examination, i.e. Transmission of data or rejected."
+    },
+    "ip.rejecting": {
+      "precondition": "transaction_data_request.checked",
+      "quote": "The IP answers the question of the INQ depending on the outcome of the examination, i.e. Transmission of data or rejected."
+    }
+  },
+  "validated_preconditions": {
+    "transaction_data_request.transmitted": {
+      "precondition": "INITIAL",
+      "quote": null,
+      "status": "OK",
+      "reason": null
+    },
+    "transaction_data_request.checked": {
+      "precondition": "transaction_data_request.transmitted",
+      "quote": "The IP checks the request of the INQ.",
+      "status": "OK",
+      "reason": null
+    },
+    "transaction_data_request.answered": {
+      "precondition": "transaction_data_request.checked",
+      "quote": "The IP answers the question of the INQ depending on the outcome of the examination, i.e. Transmission of data or rejected.",
+      "status": "OK",
+      "reason": null
+    },
+    "ip.checking": {
+      "precondition": "transaction_data_request.transmitted",
+      "quote": "The IP checks the request of the INQ.",
+      "status": "OK",
+      "reason": null
+    },
+    "ip.transmitting_data": {
+      "precondition": "transaction_data_request.checked",
+      "quote": "The IP answers the question of the INQ depending on the outcome of the examination, i.e. Transmission of data or rejected.",
+      "status": "OK",
+      "reason": null
+    },
+    "ip.rejecting": {
+      "precondition": "transaction_data_request.checked",
+      "quote": "The IP answers the question of the INQ depending on the outcome of the examination, i.e. Transmission of data or rejected.",
+      "status": "OK",
+      "reason": null
+    }
+  },
+  "precondition_cycles": [],
+  "branch_conflicts": [
+    {
+      "entity": "ip",
+      "exclusive_group": [
+        "transmitting_data",
+        "rejecting"
+      ],
+      "conflicting_targets": [
+        "ip.transmitting_data",
+        "ip.rejecting"
+      ],
+      "shared_precondition": "transaction_data_request.checked",
+      "reason": "targets marked mutually exclusive in the state space share the exact same accepted precondition -- reaching it would trigger both branches at once"
+    }
+  ],
+  "reference_graph": {
+    "nodes": [
+      {
+        "id": "transaction_data_request.transmitted",
+        "weight": 0.5
+      },
+      {
+        "id": "transaction_data_request.checked",
+        "weight": 1.0
+      },
+      {
+        "id": "transaction_data_request.answered",
+        "weight": 0.25
+      },
+      {
+        "id": "ip.checking",
+        "weight": 0.25
+      },
+      {
+        "id": "ip.transmitting_data",
+        "weight": 0.25
+      },
+      {
+        "id": "ip.rejecting",
+        "weight": 0.25
+      }
+    ],
+    "edges": [
+      {
+        "from": "transaction_data_request.transmitted",
+        "to": "transaction_data_request.checked",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "The IP checks the request of the INQ.",
+        "negated": false
+      },
+      {
+        "from": "transaction_data_request.checked",
+        "to": "transaction_data_request.answered",
+        "clause": 0,
+        "type": "sequence",
+        "quote": "The IP answers the question of the INQ depending on the outcome of the examination, i.e. Transmission of data or rejected.",
+        "negated": false
+      },
+      {
+        "from": "transaction_data_request.transmitted",
+        "to": "ip.checking",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "The IP checks the request of the INQ.",
+        "negated": false
+      },
+      {
+        "from": "transaction_data_request.checked",
+        "to": "ip.transmitting_data",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "The IP answers the question of the INQ depending on the outcome of the examination, i.e. Transmission of data or rejected.",
+        "negated": false
+      },
+      {
+        "from": "transaction_data_request.checked",
+        "to": "ip.rejecting",
+        "clause": 0,
+        "type": "cross_entity_guard",
+        "quote": "The IP answers the question of the INQ depending on the outcome of the examination, i.e. Transmission of data or rejected.",
+        "negated": false
+      }
+    ],
+    "cycles": [],
+    "branch_conflicts": [
+      {
+        "entity": "ip",
+        "exclusive_group": [
+          "transmitting_data",
+          "rejecting"
+        ],
+        "conflicting_targets": [
+          "ip.transmitting_data",
+          "ip.rejecting"
+        ],
+        "shared_precondition": "transaction_data_request.checked",
+        "reason": "targets marked mutually exclusive in the state space share the exact same accepted precondition -- reaching it would trigger both branches at once"
+      }
+    ],
+    "exclusive_pairs": [
+      {
+        "entity": "ip",
+        "nodes": [
+          "ip.transmitting_data",
+          "ip.rejecting"
+        ]
+      }
+    ]
+  },
+  "dfg_edges": [
+    {
+      "source_id": "IntermediateMessageEventThrowing_0",
+      "source_label": "",
+      "target_id": "IntermediateMessageEventCatching_0",
+      "target_label": "",
+      "gateway_context": []
+    },
+    {
+      "source_id": "IntermediateMessageEventThrowing_0",
+      "source_label": "",
+      "target_id": "Task_3",
+      "target_label": "Check",
+      "gateway_context": [
+        "NormalStartEvent"
+      ]
+    },
+    {
+      "source_id": "Task_0",
+      "source_label": "Request",
+      "target_id": "IntermediateMessageEventThrowing_0",
+      "target_label": "",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_3",
+      "source_label": "Check",
+      "target_id": "Task_1",
+      "target_label": "Transmit data",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_3",
+      "source_label": "Check",
+      "target_id": "Task_2",
+      "target_label": "Reject",
+      "gateway_context": [
+        "ExclusiveGateway"
+      ]
+    },
+    {
+      "source_id": "Task_1",
+      "source_label": "Transmit data",
+      "target_id": "IntermediateMessageEventCatching_0",
+      "target_label": "",
+      "gateway_context": []
+    },
+    {
+      "source_id": "Task_2",
+      "source_label": "Reject",
+      "target_id": "IntermediateMessageEventCatching_0",
+      "target_label": "",
+      "gateway_context": []
+    }
+  ],
+  "spo_triples": [
+    {
+      "subject": "",
+      "subject_id": "IntermediateMessageEventThrowing_0",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "IntermediateMessageEventCatching_0"
+    },
+    {
+      "subject": "",
+      "subject_id": "IntermediateMessageEventThrowing_0",
+      "predicate": "follows",
+      "object": "Check",
+      "object_id": "Task_3"
+    },
+    {
+      "subject": "Request",
+      "subject_id": "Task_0",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "IntermediateMessageEventThrowing_0"
+    },
+    {
+      "subject": "Check",
+      "subject_id": "Task_3",
+      "predicate": "follows",
+      "object": "Transmit data",
+      "object_id": "Task_1"
+    },
+    {
+      "subject": "Check",
+      "subject_id": "Task_3",
+      "predicate": "follows",
+      "object": "Reject",
+      "object_id": "Task_2"
+    },
+    {
+      "subject": "Transmit data",
+      "subject_id": "Task_1",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "IntermediateMessageEventCatching_0"
+    },
+    {
+      "subject": "Reject",
+      "subject_id": "Task_2",
+      "predicate": "follows",
+      "object": "",
+      "object_id": "IntermediateMessageEventCatching_0"
+    }
+  ],
+  "matches": {
+    "Task_3": {
+      "activity_label": "Check",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_0": {
+      "activity_label": "Request",
+      "matches": [
+        {
+          "match": "transaction_data_request.transmitted",
+          "score": 0.487
+        }
+      ],
+      "clusters": [
+        [
+          "transaction_data_request.transmitted"
+        ]
+      ]
+    },
+    "Task_1": {
+      "activity_label": "Transmit data",
+      "matches": [],
+      "clusters": []
+    },
+    "Task_2": {
+      "activity_label": "Reject",
+      "matches": [],
+      "clusters": []
+    }
+  },
+  "process_graph": [],
+  "alignment": {
+    "transaction_data_request.checked": {
+      "operator": "AND",
+      "quote": "The IP checks the request of the INQ.",
+      "terms": [
+        {
+          "term": "transaction_data_request.transmitted",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['transaction_data_request.checked']",
+          "missing": [
+            "transaction_data_request.checked"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "transaction_data_request.transmitted"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "transaction_data_request.answered": {
+      "operator": "AND",
+      "quote": "The IP answers the question of the INQ depending on the outcome of the examination, i.e. Transmission of data or rejected.",
+      "terms": [
+        {
+          "term": "transaction_data_request.checked",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['transaction_data_request.checked', 'transaction_data_request.answered']",
+          "missing": [
+            "transaction_data_request.checked",
+            "transaction_data_request.answered"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "transaction_data_request.checked"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "ip.checking": {
+      "operator": "AND",
+      "quote": "The IP checks the request of the INQ.",
+      "terms": [
+        {
+          "term": "transaction_data_request.transmitted",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['ip.checking']",
+          "missing": [
+            "ip.checking"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "transaction_data_request.transmitted"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "ip.transmitting_data": {
+      "operator": "AND",
+      "quote": "The IP answers the question of the INQ depending on the outcome of the examination, i.e. Transmission of data or rejected.",
+      "terms": [
+        {
+          "term": "transaction_data_request.checked",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['transaction_data_request.checked', 'ip.transmitting_data']",
+          "missing": [
+            "transaction_data_request.checked",
+            "ip.transmitting_data"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "transaction_data_request.checked"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    },
+    "ip.rejecting": {
+      "operator": "AND",
+      "quote": "The IP answers the question of the INQ depending on the outcome of the examination, i.e. Transmission of data or rejected.",
+      "terms": [
+        {
+          "term": "transaction_data_request.checked",
+          "status": "UNRESOLVABLE",
+          "reason": "no match in process for: ['transaction_data_request.checked', 'ip.rejecting']",
+          "missing": [
+            "transaction_data_request.checked",
+            "ip.rejecting"
+          ]
+        }
+      ],
+      "status": "UNRESOLVABLE",
+      "clauses": [
+        {
+          "terms": [
+            "transaction_data_request.checked"
+          ],
+          "status": "UNRESOLVABLE"
+        }
+      ]
+    }
+  },
+  "report": {
+    "verdict": {
+      "verdict": "FAITHFUL_WITH_RESERVATIONS",
+      "justification": "No gap found, but 2 requirement(s) from the text could not be associated with any clear activity in the observed process -- neither confirmed nor refuted. This verdict is NOT a confirmation of full faithfulness.",
+      "scope": "This verdict covers the causal reachability of the requirements expressed in the source text, not the general quality of the process model -- a multiplicity defect (an activity executed more than once due to a mismatched branching structure) is not covered by this verdict, even if the process is otherwise well-formed."
+    },
+    "summary": {
+      "ecarts": 0,
+      "non_verifiable": 2,
+      "conforme": 0
+    },
+    "ecarts": [],
+    "non_verifiable": [
+      {
+        "root_cause": "transaction data request checked",
+        "quote": "The IP checks the request of the INQ.",
+        "explanation": "The activity \"transaction data request checked\" requires a condition to be met beforehand, as stated in the source text: \"The IP checks the request of the INQ.\" However, the observed process does not clearly show any activity that would fulfill this condition, making it impossible to confirm whether this requirement is met or not. (This same root cause also affects: ip rejecting, ip transmitting data, transaction data request answered.)",
+        "quote_verbatim": true,
+        "affected_activities": [
+          "ip rejecting",
+          "ip transmitting data",
+          "transaction data request answered",
+          "transaction data request checked"
+        ],
+        "affected_count": 7
+      },
+      {
+        "root_cause": "ip checking",
+        "quote": "The IP checks the request of the INQ.",
+        "explanation": "The process requires that a specific condition be met before \"ip checking\" can occur, as stated in the source text: \"The IP checks the request of the INQ.\" However, the observed process does not clearly show any activity that would fulfill this condition, making it impossible to confirm whether this requirement is met or not.",
+        "quote_verbatim": true,
+        "affected_activities": [
+          "ip checking"
+        ],
+        "affected_count": 1
+      }
+    ],
+    "conforme": [],
+    "piece_jointe_alignement_brut": {
+      "transaction_data_request.checked": {
+        "operator": "AND",
+        "quote": "The IP checks the request of the INQ.",
+        "terms": [
+          {
+            "term": "transaction_data_request.transmitted",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['transaction_data_request.checked']",
+            "missing": [
+              "transaction_data_request.checked"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "transaction_data_request.transmitted"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "transaction_data_request.answered": {
+        "operator": "AND",
+        "quote": "The IP answers the question of the INQ depending on the outcome of the examination, i.e. Transmission of data or rejected.",
+        "terms": [
+          {
+            "term": "transaction_data_request.checked",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['transaction_data_request.checked', 'transaction_data_request.answered']",
+            "missing": [
+              "transaction_data_request.checked",
+              "transaction_data_request.answered"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "transaction_data_request.checked"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "ip.checking": {
+        "operator": "AND",
+        "quote": "The IP checks the request of the INQ.",
+        "terms": [
+          {
+            "term": "transaction_data_request.transmitted",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['ip.checking']",
+            "missing": [
+              "ip.checking"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "transaction_data_request.transmitted"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "ip.transmitting_data": {
+        "operator": "AND",
+        "quote": "The IP answers the question of the INQ depending on the outcome of the examination, i.e. Transmission of data or rejected.",
+        "terms": [
+          {
+            "term": "transaction_data_request.checked",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['transaction_data_request.checked', 'ip.transmitting_data']",
+            "missing": [
+              "transaction_data_request.checked",
+              "ip.transmitting_data"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "transaction_data_request.checked"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      },
+      "ip.rejecting": {
+        "operator": "AND",
+        "quote": "The IP answers the question of the INQ depending on the outcome of the examination, i.e. Transmission of data or rejected.",
+        "terms": [
+          {
+            "term": "transaction_data_request.checked",
+            "status": "UNRESOLVABLE",
+            "reason": "no match in process for: ['transaction_data_request.checked', 'ip.rejecting']",
+            "missing": [
+              "transaction_data_request.checked",
+              "ip.rejecting"
+            ]
+          }
+        ],
+        "status": "UNRESOLVABLE",
+        "clauses": [
+          {
+            "terms": [
+              "transaction_data_request.checked"
+            ],
+            "status": "UNRESOLVABLE"
+          }
+        ]
+      }
+    }
+  },
+  "errors": []
+}
